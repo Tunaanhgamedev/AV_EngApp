@@ -1,27 +1,85 @@
 import { Router } from 'express';
-import { GeminiService } from '../services/gemini.service';
+import { GeminiService, genAI } from '../services/gemini.service';
 import { authenticate } from '../middleware/auth.middleware';
 
 const router = Router();
+
+// Helper for retry logic (Debugging Strategy)
+const generateWithRetry = async (model: any, prompt: string, retries = 1) => {
+  try {
+    const result = await model.generateContent(prompt);
+    return await result.response;
+  } catch (error: any) {
+    if (retries > 0 && (error.status === 429 || error.message?.includes('429'))) {
+      console.log('Rate limit hit, retrying in 2 seconds...');
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      return generateWithRetry(model, prompt, retries - 1);
+    }
+    throw error;
+  }
+};
 
 // AI Translate
 router.post('/translate', async (req, res) => {
   const { text, targetLang = 'Vietnamese' } = req.body;
   
-  if (!text) {
-    return res.status(400).json({ error: 'Text is required' });
+  if (!text) return res.status(400).json({ error: 'Text is required' });
+
+  // Diagnostic: Check API Key
+  if (!process.env.GEMINI_API_KEY) {
+    console.error('[AI] CRITICAL: GEMINI_API_KEY is missing in .env');
+    return res.status(500).json({ error: 'Server configuration error: Missing API Key' });
   }
 
   try {
-    const prompt = `Translate the following text to ${targetLang}. Provide ONLY the translation.\n\nText: "${text}"`;
-    const model = (GeminiService as any).genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-    const result = await model.generateContent(prompt);
-    const translation = result.response.text().trim();
+    // 1. Primary: Gemini AI (Try 2.0 Flash)
+    console.log(`[AI] Attempting Gemini 2.0: "${text}"`);
+    const prompt = `Translate exactly to ${targetLang}: "${text}". Provide ONLY the translation.`;
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    const response = await generateWithRetry(model, prompt);
+    const translation = response.text().trim();
     
-    res.json({ translation });
+    return res.json({ translation, provider: 'AI (Gemini)' });
   } catch (error: any) {
-    console.error('Translation Error:', error);
-    res.status(500).json({ error: 'Failed to translate' });
+    console.error('[AI] Gemini Failed:', error.status || 'Error', error.message);
+    
+    // 2. Secondary: Google Translate (Unofficial Fallback - Accurate for short phrases)
+    try {
+      const tLang = targetLang === 'Vietnamese' ? 'vi' : 'en';
+      const sLang = targetLang === 'Vietnamese' ? 'en' : 'vi';
+      const googleUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sLang}&tl=${tLang}&dt=t&q=${encodeURIComponent(text)}`;
+      
+      const gRes = await fetch(googleUrl);
+      const gData = await gRes.json();
+      if (gData && gData[0] && gData[0][0] && gData[0][0][0]) {
+        console.log('[AI] Fallback Success: Google Translate');
+        return res.json({ 
+          translation: gData[0][0][0],
+          provider: 'AI (Backup)' 
+        });
+      }
+    } catch (gError) {
+      console.error('[AI] Google Fallback Failed:', gError);
+    }
+
+    // 3. Final Resort: MyMemory
+    try {
+      const targetCode = targetLang === 'Vietnamese' ? 'vi' : 'en';
+      const sourceCode = targetLang === 'Vietnamese' ? 'en' : 'vi';
+      const fallbackUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${sourceCode}|${targetCode}`;
+      const fallbackRes = await fetch(fallbackUrl);
+      const fallbackData = await fallbackRes.json();
+      if (fallbackData.responseData?.translatedText) {
+        return res.json({ 
+          translation: fallbackData.responseData.translatedText,
+          provider: 'Community (Fallback)'
+        });
+      }
+    } catch (mError) {
+      console.error('[AI] MyMemory Failed:', mError);
+    }
+
+    res.status(500).json({ error: 'All translation services failed' });
   }
 });
 
@@ -50,7 +108,7 @@ router.post('/analyze-speaking', async (req, res) => {
       }
     `;
 
-    const model = (GeminiService as any).genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
     const result = await model.generateContent(prompt);
     const text = result.response.text();
     const jsonStr = text.replace(/```json|```/g, "").trim();

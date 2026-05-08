@@ -11,7 +11,7 @@ export class GeminiService {
    */
   static async analyzeJournal(content: string) {
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
       
       const prompt = `
         You are EngBot, an expert AI English teacher. Analyze the following journal entry written by an English learner.
@@ -47,7 +47,7 @@ export class GeminiService {
    */
   static async generateChatResponse(messages: any[], persona: string, scenario: string) {
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
 
       const chatMessages = messages.map(m => ({
         role: m.role === 'assistant' ? 'model' : 'user',
@@ -90,7 +90,7 @@ export class GeminiService {
    */
   static async explainWord(word: string) {
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
       
       const prompt = `
         You are EngBot, an expert AI English teacher. Explain the English word "${word}".
@@ -124,7 +124,7 @@ export class GeminiService {
    */
   static async enrichWordData(word: string) {
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
       
       const prompt = `
         As EngBot (Expert English Teacher), provide full metadata for the word "${word}".
