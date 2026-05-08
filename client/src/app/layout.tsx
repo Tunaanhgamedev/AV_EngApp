@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { Sidebar } from "@/components/Sidebar";
+import { AuthProvider } from "@/context/AuthContext";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -29,12 +30,14 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${poppins.variable} antialiased flex min-h-full bg-background`}
       >
-        <Sidebar />
-        <main className="flex-1 ml-64 min-h-screen">
-          <div className="max-w-7xl mx-auto p-8">
-            {children}
-          </div>
-        </main>
+        <AuthProvider>
+          <Sidebar />
+          <main className="flex-1 ml-64 min-h-screen">
+            <div className="max-w-7xl mx-auto p-8">
+              {children}
+            </div>
+          </main>
+        </AuthProvider>
       </body>
     </html>
   );

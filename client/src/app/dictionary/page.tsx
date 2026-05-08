@@ -10,14 +10,20 @@ import {
   BookOpen,
   CheckCircle2,
   AlertCircle,
-  Loader2
+  Loader2,
+  Plus,
+  Check
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { searchWord } from '@/services/vocabulary.service';
+import { searchWord, saveWordToUser } from '@/services/vocabulary.service';
+import { useAuth } from '@/context/AuthContext';
 
 export default function DictionaryPage() {
+  const { user, dbUser, signInWithGoogle, refreshDbUser } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
   const [isSearching, setIsSearching] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
   const [wordData, setWordData] = useState<any>(null);
   const [error, setError] = useState('');
 
@@ -27,6 +33,7 @@ export default function DictionaryPage() {
 
     setIsSearching(true);
     setError('');
+    setSaved(false);
     
     try {
       const data = await searchWord(searchTerm.trim());
@@ -36,6 +43,27 @@ export default function DictionaryPage() {
       setWordData(null);
     } finally {
       setIsSearching(false);
+    }
+  };
+
+  const handleSaveToVocab = async () => {
+    if (!user) {
+      signInWithGoogle();
+      return;
+    }
+
+    if (!wordData || isSaving) return;
+
+    setIsSaving(true);
+    try {
+      const token = await user.getIdToken();
+      await saveWordToUser(user.uid, wordData, token);
+      setSaved(true);
+      refreshDbUser(); // Update XP
+    } catch (err: any) {
+      alert(err.message || 'Failed to save word.');
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -49,9 +77,12 @@ export default function DictionaryPage() {
   return (
     <div className="max-w-5xl mx-auto space-y-8 animate-in fade-in duration-700">
       <header className="text-center space-y-4">
-        <h1 className="text-4xl font-bold tracking-tight">AI Dictionary</h1>
-        <p className="text-slate-500 max-w-lg mx-auto">
-          Instant definitions combined with AI-powered explanations and CEFR levels.
+        <div className="inline-flex p-3 bg-primary/10 rounded-2xl text-primary mb-2">
+          <Search className="w-8 h-8" />
+        </div>
+        <h1 className="text-4xl font-bold tracking-tight">AI Dictionary by <span className="gradient-text">EngBot</span></h1>
+        <p className="text-slate-500 max-w-lg mx-auto font-medium">
+          Get instant definitions and smart AI explanations. Save words to your study list with one click.
         </p>
       </header>
 
@@ -77,7 +108,7 @@ export default function DictionaryPage() {
       </div>
 
       {error && (
-        <div className="max-w-2xl mx-auto p-4 bg-rose-50 border border-rose-100 rounded-xl flex items-center gap-3 text-rose-600">
+        <div className="max-w-2xl mx-auto p-4 bg-rose-50 border border-rose-100 rounded-xl flex items-center gap-3 text-rose-600 animate-in shake-1 duration-500">
           <AlertCircle className="w-5 h-5" />
           <p className="text-sm font-medium">{error}</p>
         </div>
@@ -85,7 +116,7 @@ export default function DictionaryPage() {
 
       {/* Results */}
       {wordData && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start animate-in slide-in-from-bottom-4 duration-500">
           <div className="lg:col-span-2 space-y-6">
             <div className="premium-card p-8">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
@@ -111,9 +142,24 @@ export default function DictionaryPage() {
                     )}
                   </div>
                 </div>
-                <button className="flex items-center gap-2 px-6 py-3 bg-slate-900 text-white rounded-2xl font-bold text-sm hover:bg-slate-800 transition-all shadow-lg shadow-slate-900/20">
-                  <Bookmark className="w-4 h-4" />
-                  Add to My Vocab
+                <button 
+                  onClick={handleSaveToVocab}
+                  disabled={isSaving || saved}
+                  className={cn(
+                    "flex items-center gap-2 px-6 py-3 rounded-2xl font-bold text-sm transition-all shadow-lg",
+                    saved 
+                      ? "bg-green-500 text-white shadow-green-500/20" 
+                      : "bg-slate-900 text-white hover:bg-slate-800 shadow-slate-900/20"
+                  )}
+                >
+                  {isSaving ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : saved ? (
+                    <Check className="w-4 h-4" />
+                  ) : (
+                    <Plus className="w-4 h-4" />
+                  )}
+                  {saved ? 'Saved to Vocab' : 'Add to My Vocab'}
                 </button>
               </div>
 
@@ -131,9 +177,9 @@ export default function DictionaryPage() {
                   </div>
                   <h3 className="text-xs font-black uppercase tracking-widest text-primary mb-3 flex items-center gap-2">
                     <Sparkles className="w-4 h-4 fill-primary" />
-                    AI Smart Explanation
+                    EngBot Smart Explanation
                   </h3>
-                  <p className="text-slate-800 leading-relaxed">
+                  <p className="text-slate-800 leading-relaxed font-medium">
                     {wordData.meaningVi}
                   </p>
                 </section>
@@ -191,10 +237,17 @@ export default function DictionaryPage() {
               <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-primary/20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000" />
               <h3 className="font-bold mb-2 relative z-10">Smart Learning</h3>
               <p className="text-xs text-slate-400 mb-6 relative z-10 leading-relaxed">
-                Add this word to your daily review queue. Our AI will help you memorize it forever using SRS.
+                Add this word to your daily review queue. EngBot will help you memorize it forever using spaced repetition.
               </p>
-              <button className="w-full py-3 bg-primary text-white rounded-xl font-bold text-sm hover:opacity-90 transition-all relative z-10">
-                Start Learning Now
+              <button 
+                onClick={handleSaveToVocab}
+                disabled={saved}
+                className={cn(
+                  "w-full py-3 rounded-xl font-bold text-sm transition-all relative z-10",
+                  saved ? "bg-green-500" : "bg-primary hover:opacity-90"
+                )}
+              >
+                {saved ? 'Word Saved!' : 'Start Learning Now'}
               </button>
             </div>
           </div>
@@ -203,7 +256,7 @@ export default function DictionaryPage() {
 
       {/* Initial State / Empty State */}
       {!wordData && !isSearching && !error && (
-        <div className="max-w-2xl mx-auto pt-12">
+        <div className="max-w-2xl mx-auto pt-12 animate-in fade-in duration-1000">
           <h3 className="font-bold text-slate-400 text-center mb-6">Popular Searches</h3>
           <div className="flex flex-wrap justify-center gap-3">
             {['Resilience', 'Eloquence', 'Pragmatic', 'Ephemeral', 'Cognitive'].map((w) => (
@@ -211,7 +264,8 @@ export default function DictionaryPage() {
                 key={w} 
                 onClick={() => {
                   setSearchTerm(w);
-                  handleSearch();
+                  setWordData(null); // Clear previous
+                  setTimeout(() => handleSearch(), 0);
                 }}
                 className="px-5 py-2 bg-white border border-slate-100 rounded-xl text-sm font-semibold text-slate-500 hover:border-primary hover:text-primary transition-all shadow-sm"
               >

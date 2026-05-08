@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import prisma from '../lib/prisma';
 import { SRSService } from '../services/srs.service';
-import { OpenAIService } from '../services/openai.service';
+import { AIService } from '../services/ai.service';
 
 export const getDueWords = async (req: Request, res: Response) => {
   const { userId } = req.params;
@@ -149,7 +149,7 @@ export const searchWord = async (req: Request, res: Response) => {
     }
 
     // 3. Get AI Supplement
-    const aiData = await OpenAIService.explainWord(word);
+    const aiData = await AIService.explainWord(word);
 
     // 4. Combine
     const transformedWord = {

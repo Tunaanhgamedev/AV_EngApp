@@ -1,9 +1,14 @@
 import { Router } from 'express';
-import { getUsers, createUser } from '../controllers/user.controller';
+import { getUsers, createUser, syncUser } from '../controllers/user.controller';
+import { authenticate } from '../middleware/auth.middleware';
 
 const router = Router();
 
-router.get('/', getUsers);
-router.post('/', createUser);
+// Sync user after login
+router.post('/sync', authenticate, syncUser);
+
+// Manage users
+router.get('/', authenticate, getUsers);
+router.post('/', authenticate, createUser);
 
 export default router;

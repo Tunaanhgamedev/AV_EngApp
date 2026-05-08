@@ -11,15 +11,15 @@ import {
   Trash2,
   Calendar,
   BarChart3,
-  Loader2
+  Loader2,
+  LogIn
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { analyzeJournal, getJournalHistory } from '@/services/journal.service';
-
-// Mock user ID for development
-const MOCK_USER_ID = 'user-123-abc';
+import { useAuth } from '@/context/AuthContext';
 
 export default function JournalPage() {
+  const { user, signInWithGoogle, refreshDbUser } = useAuth();
   const [entry, setEntry] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
@@ -28,13 +28,17 @@ export default function JournalPage() {
   const [isLoadingHistory, setIsLoadingHistory] = useState(false);
 
   useEffect(() => {
-    fetchHistory();
-  }, []);
+    if (user) {
+      fetchHistory();
+    }
+  }, [user]);
 
   const fetchHistory = async () => {
+    if (!user) return;
     setIsLoadingHistory(true);
     try {
-      const data = await getJournalHistory(MOCK_USER_ID);
+      const token = await user.getIdToken();
+      const data = await getJournalHistory(user.uid, token);
       setHistory(data);
     } catch (error) {
       console.error('Failed to load history');
@@ -44,24 +48,27 @@ export default function JournalPage() {
   };
 
   const handleAnalyze = async () => {
-    if (!entry.trim()) return;
+    if (!entry.trim() || !user) return;
     
     setIsAnalyzing(true);
     setShowFeedback(false);
 
     try {
-      const result = await analyzeJournal(MOCK_USER_ID, entry);
+      const token = await user.getIdToken();
+      const title = entry.substring(0, 30) + (entry.length > 30 ? '...' : '');
+      const result = await analyzeJournal(user.uid, entry, title, token);
       setAnalysisResult(result.entry);
       setShowFeedback(true);
       fetchHistory(); // Refresh history
+      refreshDbUser(); // Update XP/Level in Sidebar/Dashboard
     } catch (error) {
-      alert('Analysis failed. Please make sure the backend is running and the OpenAI API key is valid.');
+      console.error(error);
+      alert('Analysis failed. Please check your connection to EngBot.');
     } finally {
       setIsAnalyzing(false);
     }
   };
 
-  // Helper to parse AI feedback JSON
   const parseFeedback = (feedbackStr: string) => {
     try {
       return JSON.parse(feedbackStr);
@@ -69,6 +76,29 @@ export default function JournalPage() {
       return { correctedText: '', feedback: feedbackStr };
     }
   };
+
+  if (!user) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[70vh] space-y-6 text-center animate-in fade-in duration-700">
+        <div className="w-20 h-20 bg-primary/10 rounded-3xl flex items-center justify-center text-primary">
+          <PenTool className="w-10 h-10" />
+        </div>
+        <div className="space-y-2">
+          <h1 className="text-3xl font-bold">Sign In to Journal</h1>
+          <p className="text-slate-500 max-w-sm mx-auto">
+            Log in to track your writing progress and get grammar feedback from EngBot.
+          </p>
+        </div>
+        <button 
+          onClick={signInWithGoogle}
+          className="flex items-center gap-2 px-8 py-3 bg-slate-900 text-white rounded-xl font-bold hover:bg-slate-800 transition-all shadow-lg"
+        >
+          <LogIn className="w-5 h-5" />
+          Sign In with Google
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8 animate-in fade-in duration-700">
@@ -78,7 +108,7 @@ export default function JournalPage() {
             <PenTool className="w-8 h-8 text-primary" />
             Writing Journal
           </h1>
-          <p className="text-slate-500">Practice writing daily and get AI-powered feedback.</p>
+          <p className="text-slate-500">Practice writing daily and get <span className="text-primary font-bold">EngBot</span>'s feedback.</p>
         </div>
         <div className="flex items-center gap-3">
           <button 
@@ -86,7 +116,7 @@ export default function JournalPage() {
             className="flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-xl font-bold text-sm hover:bg-slate-50 transition-colors"
           >
             {isLoadingHistory ? <Loader2 className="w-4 h-4 animate-spin" /> : <History className="w-4 h-4" />}
-            Refresh
+            Refresh History
           </button>
         </div>
       </header>
@@ -97,7 +127,7 @@ export default function JournalPage() {
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3 text-slate-500">
                 <Calendar className="w-4 h-4" />
-                <span className="text-sm font-medium">May 8, 2026</span>
+                <span className="text-sm font-medium">{new Date().toLocaleDateString()}</span>
               </div>
               <div className="flex items-center gap-4">
                 <span className="text-xs text-slate-400 font-medium">{entry.split(/\s+/).filter(w => w !== '').length} words</span>
@@ -106,7 +136,7 @@ export default function JournalPage() {
             
             <textarea
               className="flex-1 w-full bg-transparent border-none focus:ring-0 text-lg leading-relaxed resize-none placeholder:text-slate-300"
-              placeholder="Start writing your thoughts in English here..."
+              placeholder="What's on your mind? Write in English and let EngBot help..."
               value={entry}
               onChange={(e) => setEntry(e.target.value)}
               disabled={isAnalyzing}
@@ -124,27 +154,23 @@ export default function JournalPage() {
                 </button>
               </div>
               <div className="flex items-center gap-3">
-                <button className="flex items-center gap-2 px-6 py-2.5 border border-slate-200 rounded-xl font-bold text-sm hover:bg-slate-50 transition-colors">
-                  <Save className="w-4 h-4" />
-                  Save Draft
-                </button>
                 <button 
                   onClick={handleAnalyze}
                   disabled={entry.length < 10 || isAnalyzing}
                   className={cn(
-                    "flex items-center gap-2 px-6 py-2.5 bg-primary text-white rounded-xl font-bold text-sm transition-all shadow-lg shadow-primary/20",
+                    "flex items-center gap-2 px-8 py-3 bg-primary text-white rounded-xl font-bold text-sm transition-all shadow-lg shadow-primary/20",
                     (entry.length < 10 || isAnalyzing) && "opacity-50 cursor-not-allowed grayscale"
                   )}
                 >
                   {isAnalyzing ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      AI Analyzing...
+                      EngBot is Analyzing...
                     </>
                   ) : (
                     <>
                       <Sparkles className="w-4 h-4 fill-white" />
-                      AI Analysis
+                      Analyze with EngBot
                     </>
                   )}
                 </button>
@@ -156,7 +182,10 @@ export default function JournalPage() {
           <div className="space-y-4">
             <h3 className="font-bold text-lg">Recent Entries</h3>
             {history.length === 0 ? (
-              <p className="text-sm text-slate-400 italic">No previous entries found.</p>
+              <div className="p-10 border-2 border-dashed rounded-2xl flex flex-col items-center justify-center text-slate-400 space-y-2">
+                <History className="w-8 h-8 opacity-20" />
+                <p className="text-sm italic">No entries yet. Write your first journal!</p>
+              </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {history.slice(0, 4).map((item) => (
@@ -189,7 +218,7 @@ export default function JournalPage() {
             <div className="premium-card p-6 bg-gradient-to-br from-blue-50 to-purple-50 border-primary/20 animate-in zoom-in-95 duration-500">
               <h3 className="font-bold flex items-center gap-2 text-primary mb-6">
                 <Sparkles className="w-5 h-5 fill-primary" />
-                AI Writing Feedback
+                EngBot's Analysis
               </h3>
 
               <div className="space-y-6">
@@ -260,23 +289,10 @@ export default function JournalPage() {
               </div>
               <div className="space-y-1">
                 <h3 className="font-bold text-slate-400">No analysis yet</h3>
-                <p className="text-xs text-slate-400 max-w-[200px]">Write something and click "AI Analysis" to get feedback from our AI teacher.</p>
+                <p className="text-xs text-slate-400 max-w-[200px]">Write something and click "Analyze with EngBot" to get feedback.</p>
               </div>
             </div>
           )}
-
-          <div className="premium-card p-6">
-            <h3 className="font-bold mb-4">Writing Progress</h3>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-slate-500">Weekly Entries</span>
-                <span className="text-sm font-bold">{history.length} / 5</span>
-              </div>
-              <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                <div className="h-full bg-primary" style={{ width: `${Math.min((history.length / 5) * 100, 100)}%` }} />
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>

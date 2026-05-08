@@ -2,12 +2,11 @@ import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import dotenv from 'dotenv';
 import userRoutes from './routes/user.routes';
 import vocabularyRoutes from './routes/vocabulary.routes';
 import journalRoutes from './routes/journal.routes';
+import chatRoutes from './routes/chat.routes';
 
-dotenv.config();
 
 const app: Application = express();
 
@@ -22,6 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/users', userRoutes);
 app.use('/api/vocabulary', vocabularyRoutes);
 app.use('/api/journal', journalRoutes);
+app.use('/api/chat', chatRoutes);
 
 app.get('/', (req: Request, res: Response) => {
   res.json({ message: 'Welcome to AVEngApp API' });

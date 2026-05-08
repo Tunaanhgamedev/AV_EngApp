@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import prisma from '../lib/prisma';
-import { OpenAIService } from '../services/openai.service';
+import { AIService } from '../services/ai.service';
 
 export const createJournalEntry = async (req: Request, res: Response) => {
   const { userId, content, title } = req.body;
@@ -11,7 +11,7 @@ export const createJournalEntry = async (req: Request, res: Response) => {
 
   try {
     // 1. Get AI analysis
-    const analysis = await OpenAIService.analyzeJournal(content);
+    const analysis = await AIService.analyzeJournal(content);
 
     // 2. Save to database
     const entry = await prisma.journalEntry.create({
