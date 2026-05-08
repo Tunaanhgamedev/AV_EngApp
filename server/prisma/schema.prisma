@@ -1,0 +1,173 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  // url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String   @id @default(uuid())
+  username        String
+  email           String   @unique
+  avatarUrl       String?  @map("avatar_url")
+  xp              Int      @default(0)
+  level           Int      @default(1)
+  streak          Int      @default(0)
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  // Relations
+  learnedWords    UserLearnedWord[]
+  reviewHistory   ReviewHistory[]
+  journalEntries  JournalEntry[]
+  aiChatHistory   AIChatHistory[]
+  speakingPractice SpeakingPractice[]
+  achievements     UserAchievement[]
+  dailyActivity    UserDailyActivity[]
+
+  @@map("users")
+  @@index([email])
+}
+
+model VocabularyWord {
+  id          String   @id @default(uuid())
+  word        String
+  phonetic    String?
+  meaningEn   String   @map("meaning_en")
+  meaningVi   String   @map("meaning_vi")
+  wordType    String   @map("word_type")
+  cefrLevel   String?  @map("cefr_level")
+  audioUs     String?  @map("audio_us")
+  audioUk     String?  @map("audio_uk")
+  imageUrl    String?  @map("image_url")
+
+  // Relations
+  learnedBy   UserLearnedWord[]
+  reviews     ReviewHistory[]
+
+  @@map("vocabulary_words")
+  @@index([word])
+}
+
+model UserLearnedWord {
+  id             String    @id @default(uuid())
+  userId         String    @map("user_id")
+  wordId         String    @map("word_id")
+  masteryLevel   Int       @default(0) @map("mastery_level")
+  reviewCount    Int       @default(0) @map("review_count")
+  lastReviewedAt DateTime? @map("last_reviewed_at")
+  nextReviewAt   DateTime? @map("next_review_at")
+  isFavorite     Boolean   @default(false) @map("is_favorite")
+
+  // Relations
+  user           User           @relation(fields: [userId], references: [id])
+  word           VocabularyWord @relation(fields: [wordId], references: [id])
+
+  @@unique([userId, wordId])
+  @@map("user_learned_words")
+  @@index([userId])
+}
+
+model ReviewHistory {
+  id           String   @id @default(uuid())
+  userId       String   @map("user_id")
+  wordId       String   @map("word_id")
+  isCorrect    Boolean  @map("is_correct")
+  responseTime Int      @map("response_time") // In milliseconds
+  reviewedAt   DateTime @default(now()) @map("reviewed_at")
+
+  // Relations
+  user         User           @relation(fields: [userId], references: [id])
+  word         VocabularyWord @relation(fields: [wordId], references: [id])
+
+  @@map("review_history")
+  @@index([userId])
+}
+
+model JournalEntry {
+  id              String   @id @default(uuid())
+  userId          String   @map("user_id")
+  title           String?
+  content         String   @db.Text
+  aiFeedback      String?  @map("ai_feedback") @db.Text
+  grammarScore    Int?     @map("grammar_score")
+  vocabularyScore Int?     @map("vocabulary_score")
+  fluencyScore    Int?     @map("fluency_score")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  // Relations
+  user            User     @relation(fields: [userId], references: [id])
+
+  @@map("journal_entries")
+}
+
+model AIChatHistory {
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  userMessage String   @map("user_message") @db.Text
+  aiResponse  String   @map("ai_response") @db.Text
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  // Relations
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@map("ai_chat_history")
+}
+
+model SpeakingPractice {
+  id                 String   @id @default(uuid())
+  userId             String   @map("user_id")
+  audioUrl           String   @map("audio_url")
+  pronunciationScore Int?     @map("pronunciation_score")
+  aiFeedback         String?  @map("ai_feedback") @db.Text
+  createdAt          DateTime @default(now()) @map("created_at")
+
+  // Relations
+  user               User     @relation(fields: [userId], references: [id])
+
+  @@map("speaking_practice")
+}
+
+model Achievement {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  badgeIcon   String   @map("badge_icon")
+  xpReward    Int      @map("xp_reward")
+
+  // Relations
+  users       UserAchievement[]
+
+  @@map("achievements")
+}
+
+model UserAchievement {
+  id            String   @id @default(uuid())
+  userId        String   @map("user_id")
+  achievementId String   @map("achievement_id")
+  earnedAt      DateTime @default(now()) @map("earned_at")
+
+  // Relations
+  user          User        @relation(fields: [userId], references: [id])
+  achievement   Achievement @relation(fields: [achievementId], references: [id])
+
+  @@unique([userId, achievementId])
+  @@map("user_achievements")
+}
+
+model UserDailyActivity {
+  id           String   @id @default(uuid())
+  userId       String   @map("user_id")
+  activityDate DateTime @default(now()) @map("activity_date") @db.Date
+  totalMinutes Int      @default(0) @map("total_minutes")
+
+  // Relations
+  user         User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, activityDate])
+  @@map("user_daily_activity")
+}
