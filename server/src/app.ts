@@ -6,6 +6,7 @@ import userRoutes from './routes/user.routes';
 import vocabularyRoutes from './routes/vocabulary.routes';
 import journalRoutes from './routes/journal.routes';
 import chatRoutes from './routes/chat.routes';
+import aiRoutes from './routes/ai.routes';
 
 
 const app: Application = express();
@@ -22,6 +23,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/vocabulary', vocabularyRoutes);
 app.use('/api/journal', journalRoutes);
 app.use('/api/chat', chatRoutes);
+app.use('/api/ai', aiRoutes);
 // DB Fix: SSL authorized
 
 

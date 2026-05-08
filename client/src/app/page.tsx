@@ -127,8 +127,8 @@ export default function Dashboard() {
       {/* Stats Grid */}
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {[
-          { label: 'Words Learned', value: stats.wordsLearned.toString(), sub: 'Total saved words', icon: BookOpen, color: 'text-blue-500', bg: 'bg-blue-50' },
-          { label: 'Oxford 3000™', value: `${((stats.oxfordLearned / 3000) * 100).toFixed(1)}%`, sub: `${stats.oxfordLearned} / 3000 learned`, icon: Target, color: 'text-rose-500', bg: 'bg-rose-50' },
+          { label: 'Words Learned', value: (stats?.wordsLearned ?? 0).toString(), sub: 'Total saved words', icon: BookOpen, color: 'text-blue-500', bg: 'bg-blue-50' },
+          { label: 'Oxford 3000™', value: `${(((stats?.oxfordLearned || 0) / 3000) * 100).toFixed(1)}%`, sub: `${stats?.oxfordLearned || 0} / 3000 learned`, icon: Target, color: 'text-rose-500', bg: 'bg-rose-50' },
           { label: 'XP Points', value: dbUser?.xp?.toLocaleString() || '0', sub: 'Ranking...', icon: TrendingUp, color: 'text-purple-500', bg: 'bg-purple-50' },
           { label: 'Learning Time', value: '1.5h', sub: 'This week', icon: Clock, color: 'text-green-500', bg: 'bg-green-50' },
         ].map((stat, i) => (
@@ -196,7 +196,7 @@ export default function Dashboard() {
             <div className="flex items-center justify-between mb-6">
               <h3 className="font-bold text-lg">Oxford 3000™</h3>
               <span className="text-xs font-bold text-primary px-2 py-1 bg-primary/10 rounded-full">
-                {stats.oxfordLearned} / 3000
+                {stats?.oxfordLearned || 0} / 3000
               </span>
             </div>
             
@@ -208,7 +208,7 @@ export default function Dashboard() {
                   <circle 
                     cx="60" cy="60" r="52" fill="none" 
                     stroke="url(#progressGrad)" strokeWidth="10" strokeLinecap="round"
-                    strokeDasharray={`${(stats.oxfordLearned / 3000) * 326.7} 326.7`}
+                    strokeDasharray={`${((stats?.oxfordLearned || 0) / 3000) * 326.7} 326.7`}
                     className="transition-all duration-1000 ease-out"
                   />
                   <defs>
@@ -220,7 +220,7 @@ export default function Dashboard() {
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
                   <span className="text-3xl font-black text-slate-800">
-                    {((stats.oxfordLearned / 3000) * 100).toFixed(0)}%
+                    {(((stats?.oxfordLearned || 0) / 3000) * 100).toFixed(0)}%
                   </span>
                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Complete</span>
                 </div>

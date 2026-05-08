@@ -81,18 +81,31 @@ export default function LearnPage() {
     const word = words[currentIndex];
     if (!word) return;
     
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+    }
+
     if (word.audioUs) {
       const audio = new Audio(word.audioUs);
       audio.play().catch(() => {
-        const utterance = new SpeechSynthesisUtterance(word.word);
-        utterance.lang = 'en-US';
-        utterance.rate = 0.85;
-        window.speechSynthesis.speak(utterance);
+        speak(word.word);
       });
     } else {
-      const utterance = new SpeechSynthesisUtterance(word.word);
+      speak(word.word);
+    }
+  };
+
+  const speak = (text: string) => {
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'en-US';
-      utterance.rate = 0.85;
+      utterance.rate = 0.9;
+      
+      const voices = window.speechSynthesis.getVoices();
+      const preferredVoice = voices.find(v => v.name.includes('Google') && v.lang === 'en-US') || 
+                             voices.find(v => v.lang === 'en-US');
+      
+      if (preferredVoice) utterance.voice = preferredVoice;
       window.speechSynthesis.speak(utterance);
     }
   };

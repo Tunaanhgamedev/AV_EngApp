@@ -22,15 +22,15 @@ router.get('/stats', authenticate, async (req: any, res) => {
   try {
     const userId = req.user.uid;
     const { rows } = await pool.query(
-      `SELECT COUNT(*)::int as "wordsLearned" FROM "UserLearnedWord" WHERE "userId" = $1`,
+      `SELECT COUNT(*)::int as "wordsLearned" FROM user_learned_words WHERE user_id = $1`,
       [userId]
     );
     // Get Oxford 3000 progress (words learned that are part of Oxford)
     const { rows: oxRows } = await pool.query(
       `SELECT COUNT(*)::int as "oxfordLearned" 
-       FROM "UserLearnedWord" ulw
-       JOIN vocabulary_words vw ON ulw."wordId" = vw.id
-       WHERE ulw."userId" = $1 AND vw.cefr_level IN ('A1', 'A2', 'B1', 'B2', 'C1', 'C2')`,
+       FROM user_learned_words ulw
+       JOIN vocabulary_words vw ON ulw.word_id = vw.id
+       WHERE ulw.user_id = $1 AND vw.cefr_level IN ('A1', 'A2', 'B1', 'B2', 'C1', 'C2')`,
       [userId]
     );
     res.json({ 

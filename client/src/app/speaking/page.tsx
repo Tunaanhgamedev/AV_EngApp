@@ -41,44 +41,80 @@ const PRACTICE_PHRASES = [
 
 export default function SpeakingPage() {
   const [currentPhrase, setCurrentPhrase] = useState(PRACTICE_PHRASES[0]);
+  const [recognition, setRecognition] = useState<any>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [results, setResults] = useState<any>(null);
   const [transcript, setTranscript] = useState('');
   const [timer, setTimer] = useState(0);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
+  useEffect(() => {
+    if (typeof window !== 'undefined' && (window as any).webkitSpeechRecognition) {
+      const rec = new (window as any).webkitSpeechRecognition();
+      rec.continuous = true;
+      rec.interimResults = true;
+      rec.lang = 'en-US';
+
+      rec.onresult = (event: any) => {
+        let finalTranscript = '';
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          if (event.results[i].isFinal) {
+            finalTranscript += event.results[i][0].transcript;
+          }
+        }
+        if (finalTranscript) setTranscript(prev => prev + ' ' + finalTranscript);
+      };
+
+      rec.onend = () => {
+        setIsRecording(false);
+      };
+
+      setRecognition(rec);
+    }
+  }, []);
+
   const startRecording = () => {
-    setIsRecording(true);
-    setResults(null);
+    if (!recognition) {
+      alert("Speech recognition not supported in this browser.");
+      return;
+    }
     setTranscript('');
+    setResults(null);
+    setIsRecording(true);
     setTimer(0);
+    recognition.start();
     timerRef.current = setInterval(() => {
       setTimer(prev => prev + 1);
     }, 1000);
-
-    // Mock speech recognition behavior
-    setTimeout(() => {
-      if (isRecording) {
-        setTranscript("The quick brown fox jumps over the lazy dog...");
-      }
-    }, 2000);
   };
 
   const stopRecording = () => {
+    if (recognition) recognition.stop();
     setIsRecording(false);
     if (timerRef.current) clearInterval(timerRef.current);
-    
-    // Mock processing results
-    setTimeout(() => {
-      setResults({
-        score: 92,
-        fluency: 88,
-        pronunciation: 95,
-        accuracy: 93,
-        feedback: "Excellent! Your pronunciation of 'jumps' and 'brown' was very clear. Try to speak a bit faster for better fluency.",
-        mispronounced: ['lazy']
+    handleAnalyze();
+  };
+
+  const handleAnalyze = async () => {
+    if (!transcript) return;
+    setIsAnalyzing(true);
+    try {
+      const response = await fetch('http://localhost:5000/api/ai/analyze-speaking', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          transcript, 
+          targetText: currentPhrase.text 
+        }),
       });
-    }, 1500);
+      const data = await response.json();
+      setResults(data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsAnalyzing(false);
+    }
   };
 
   return (
@@ -200,7 +236,15 @@ export default function SpeakingPage() {
 
         {/* Results / Feedback Sidebar */}
         <div className="space-y-6">
-          {results ? (
+          {isAnalyzing ? (
+            <div className="premium-card p-12 border-dashed flex flex-col items-center justify-center text-center space-y-6">
+              <Loader2 className="w-12 h-12 text-primary animate-spin" />
+              <div className="space-y-2">
+                <h3 className="font-bold text-slate-800">EngBot is analyzing...</h3>
+                <p className="text-xs text-slate-400">Comparing your speech with the model phrase.</p>
+              </div>
+            </div>
+          ) : results ? (
             <div className="premium-card p-8 space-y-8 animate-in zoom-in-95 duration-500">
               <div className="text-center">
                 <div className="inline-flex p-4 bg-yellow-400 rounded-full text-white mb-4 shadow-lg shadow-yellow-400/20">

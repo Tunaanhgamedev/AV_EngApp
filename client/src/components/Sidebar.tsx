@@ -14,6 +14,7 @@ import {
   Gamepad2, 
   Search,
   Settings,
+  Languages,
   Trophy,
   User as UserIcon,
   LogIn,
@@ -26,6 +27,7 @@ import { useAuth } from '@/context/AuthContext';
 const menuItems = [
   { icon: LayoutDashboard, label: 'Dashboard', href: '/' },
   { icon: Search, label: 'Dictionary', href: '/dictionary' },
+  { icon: Languages, label: 'AI Translator', href: '/translate' },
   { icon: BookOpen, label: 'Learn Vocabulary', href: '/learn' },
   { icon: BookMarked, label: 'Review System', href: '/review' },
   { icon: NotebookPen, label: 'My Notebook', href: '/notebook' },
