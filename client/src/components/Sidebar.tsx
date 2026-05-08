@@ -16,7 +16,9 @@ import {
   Settings,
   Trophy,
   User as UserIcon,
-  LogIn
+  LogIn,
+  LogOut,
+  NotebookPen
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
@@ -26,6 +28,7 @@ const menuItems = [
   { icon: Search, label: 'Dictionary', href: '/dictionary' },
   { icon: BookOpen, label: 'Learn Vocabulary', href: '/learn' },
   { icon: BookMarked, label: 'Review System', href: '/review' },
+  { icon: NotebookPen, label: 'My Notebook', href: '/notebook' },
   { icon: Mic2, label: 'Speaking AI', href: '/speaking' },
   { icon: Headphones, label: 'Listening', href: '/listening' },
   { icon: PenTool, label: 'Writing Journal', href: '/journal' },
@@ -36,7 +39,7 @@ const menuItems = [
 
 export function Sidebar() {
   const pathname = usePathname();
-  const { user, dbUser, signInWithGoogle, loading } = useAuth();
+  const { user, dbUser, signInWithGoogle, logout, loading } = useAuth();
 
   return (
     <aside className="w-64 h-screen glass border-r flex flex-col fixed left-0 top-0 z-50">
@@ -87,24 +90,33 @@ export function Sidebar() {
             </div>
           </div>
         ) : user ? (
-          <Link
-            href="/profile"
-            className="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-          >
-            {user.photoURL ? (
-              <img src={user.photoURL} alt={user.displayName || 'User'} className="w-10 h-10 rounded-full object-cover border-2 border-primary/20" />
-            ) : (
-              <div className="w-10 h-10 rounded-full gradient-bg flex items-center justify-center text-white font-bold">
-                {user.displayName?.charAt(0) || 'U'}
+          <div className="space-y-3">
+            <Link
+              href="/profile"
+              className="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            >
+              {user.photoURL ? (
+                <img src={user.photoURL} alt={user.displayName || 'User'} className="w-10 h-10 rounded-full object-cover border-2 border-primary/20" />
+              ) : (
+                <div className="w-10 h-10 rounded-full gradient-bg flex items-center justify-center text-white font-bold">
+                  {user.displayName?.charAt(0) || 'U'}
+                </div>
+              )}
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold truncate">{user.displayName || 'Learner'}</p>
+                <p className="text-[10px] text-slate-500 truncate font-medium">
+                  Lvl {dbUser?.level || 1} • {dbUser?.xp?.toLocaleString() || 0} XP
+                </p>
               </div>
-            )}
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold truncate">{user.displayName || 'Learner'}</p>
-              <p className="text-[10px] text-slate-500 truncate font-medium">
-                Lvl {dbUser?.level || 1} • {dbUser?.xp?.toLocaleString() || 0} XP
-              </p>
-            </div>
-          </Link>
+            </Link>
+            <button
+              onClick={logout}
+              className="w-full flex items-center gap-3 px-3 py-2 text-sm text-slate-500 hover:text-red-500 transition-colors"
+            >
+              <LogOut className="w-4 h-4" />
+              <span>Logout</span>
+            </button>
+          </div>
         ) : (
           <button
             onClick={signInWithGoogle}

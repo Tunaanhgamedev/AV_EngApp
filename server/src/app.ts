@@ -22,6 +22,8 @@ app.use('/api/users', userRoutes);
 app.use('/api/vocabulary', vocabularyRoutes);
 app.use('/api/journal', journalRoutes);
 app.use('/api/chat', chatRoutes);
+// DB Fix: SSL authorized
+
 
 app.get('/', (req: Request, res: Response) => {
   res.json({ message: 'Welcome to AVEngApp API' });

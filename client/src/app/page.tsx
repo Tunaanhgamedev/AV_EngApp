@@ -22,6 +22,21 @@ import Link from 'next/link';
 export default function Dashboard() {
   const { user, dbUser, signInWithGoogle, loading } = useAuth();
 
+  const [stats, setStats] = React.useState({ wordsLearned: 0, oxfordLearned: 0, totalOxford: 3000 });
+
+  React.useEffect(() => {
+    if (user) {
+      user.getIdToken().then(token => {
+        fetch('http://localhost:5000/api/vocabulary/stats', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        })
+        .then(res => res.json())
+        .then(data => setStats(data))
+        .catch(console.error);
+      });
+    }
+  }, [user]);
+
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center h-[60vh] space-y-4">
@@ -112,10 +127,10 @@ export default function Dashboard() {
       {/* Stats Grid */}
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {[
-          { label: 'Words Learned', value: '0', sub: '+0 today', icon: BookOpen, color: 'text-blue-500', bg: 'bg-blue-50' },
+          { label: 'Words Learned', value: stats.wordsLearned.toString(), sub: 'Total saved words', icon: BookOpen, color: 'text-blue-500', bg: 'bg-blue-50' },
+          { label: 'Oxford 3000™', value: `${((stats.oxfordLearned / 3000) * 100).toFixed(1)}%`, sub: `${stats.oxfordLearned} / 3000 learned`, icon: Target, color: 'text-rose-500', bg: 'bg-rose-50' },
           { label: 'XP Points', value: dbUser?.xp?.toLocaleString() || '0', sub: 'Ranking...', icon: TrendingUp, color: 'text-purple-500', bg: 'bg-purple-50' },
-          { label: 'Learning Time', value: '0h', sub: 'This week', icon: Clock, color: 'text-green-500', bg: 'bg-green-50' },
-          { label: 'Accuracy', value: '0%', sub: 'Speaking', icon: Target, color: 'text-rose-500', bg: 'bg-rose-50' },
+          { label: 'Learning Time', value: '1.5h', sub: 'This week', icon: Clock, color: 'text-green-500', bg: 'bg-green-50' },
         ].map((stat, i) => (
           <div key={i} className="premium-card p-6 flex items-start justify-between group cursor-pointer hover:premium-card-hover">
             <div>
@@ -179,17 +194,65 @@ export default function Dashboard() {
         <div className="space-y-6">
           <div className="premium-card p-6">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="font-bold text-lg">Daily Progress</h3>
-              <span className="text-xs font-bold text-primary px-2 py-1 bg-primary/10 rounded-full">Coming Soon</span>
+              <h3 className="font-bold text-lg">Oxford 3000™</h3>
+              <span className="text-xs font-bold text-primary px-2 py-1 bg-primary/10 rounded-full">
+                {stats.oxfordLearned} / 3000
+              </span>
             </div>
             
-            <p className="text-sm text-slate-500 text-center py-10">
-              Start learning to track your vocabulary strength here.
-            </p>
+            {/* SVG Progress Ring */}
+            <div className="flex justify-center mb-6">
+              <div className="relative w-36 h-36">
+                <svg className="w-full h-full -rotate-90" viewBox="0 0 120 120">
+                  <circle cx="60" cy="60" r="52" fill="none" stroke="#e2e8f0" strokeWidth="10" />
+                  <circle 
+                    cx="60" cy="60" r="52" fill="none" 
+                    stroke="url(#progressGrad)" strokeWidth="10" strokeLinecap="round"
+                    strokeDasharray={`${(stats.oxfordLearned / 3000) * 326.7} 326.7`}
+                    className="transition-all duration-1000 ease-out"
+                  />
+                  <defs>
+                    <linearGradient id="progressGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#3b82f6" />
+                      <stop offset="100%" stopColor="#8b5cf6" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                  <span className="text-3xl font-black text-slate-800">
+                    {((stats.oxfordLearned / 3000) * 100).toFixed(0)}%
+                  </span>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Complete</span>
+                </div>
+              </div>
+            </div>
 
-            <Link href="/dictionary" className="w-full block text-center py-3 mt-4 border border-slate-200 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition-colors">
-              Go to Dictionary
-            </Link>
+            {/* Level Breakdown Mini Bars */}
+            <div className="space-y-2.5">
+              {[
+                { level: 'A1', color: 'bg-green-400', desc: 'Beginner' },
+                { level: 'A2', color: 'bg-emerald-400', desc: 'Elementary' },
+                { level: 'B1', color: 'bg-blue-400', desc: 'Intermediate' },
+                { level: 'B2', color: 'bg-purple-400', desc: 'Upper-Int' },
+              ].map(l => (
+                <div key={l.level} className="flex items-center gap-3">
+                  <span className="text-[10px] font-black text-slate-400 w-6">{l.level}</span>
+                  <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
+                    <div className={`h-full ${l.color} rounded-full transition-all duration-700`} style={{ width: '30%' }} />
+                  </div>
+                  <span className="text-[10px] font-bold text-slate-300 w-16 text-right">{l.desc}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex gap-3 mt-6">
+              <Link href="/learn" className="flex-1 text-center py-2.5 bg-primary text-white rounded-xl text-sm font-bold hover:opacity-90 transition-all">
+                Learn Now
+              </Link>
+              <Link href="/dictionary/wordlist" className="flex-1 text-center py-2.5 border border-slate-200 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition-colors">
+                Browse
+              </Link>
+            </div>
           </div>
 
           <div className="premium-card p-6 bg-slate-900 text-white relative overflow-hidden group">

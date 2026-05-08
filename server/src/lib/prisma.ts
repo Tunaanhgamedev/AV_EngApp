@@ -8,7 +8,10 @@ const prismaClientSingleton = () => {
   }
 
   // Khởi tạo kết nối PostgreSQL truyền thống
-  const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+  const pool = new Pool({ 
+    connectionString: process.env.DATABASE_URL,
+    ssl: { rejectUnauthorized: false }
+  });
   
   // Sử dụng Adapter để Prisma bản 7 có thể làm việc trực tiếp
   const adapter = new PrismaPg(pool);

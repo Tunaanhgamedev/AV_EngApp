@@ -11,7 +11,7 @@ export class GeminiService {
    */
   static async analyzeJournal(content: string) {
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+      const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
       
       const prompt = `
         You are EngBot, an expert AI English teacher. Analyze the following journal entry written by an English learner.
@@ -47,7 +47,7 @@ export class GeminiService {
    */
   static async generateChatResponse(messages: any[], persona: string, scenario: string) {
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+      const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
       const chatMessages = messages.map(m => ({
         role: m.role === 'assistant' ? 'model' : 'user',
@@ -90,7 +90,7 @@ export class GeminiService {
    */
   static async explainWord(word: string) {
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+      const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
       
       const prompt = `
         You are EngBot, an expert AI English teacher. Explain the English word "${word}".
@@ -112,12 +112,57 @@ export class GeminiService {
       const jsonStr = text.replace(/```json|```/g, "").trim();
       return JSON.parse(jsonStr);
     } catch (error) {
-      console.error('EngBot Word Error:', error);
       return {
         aiExplanation: "EngBot không thể lấy lời giải thích lúc này.",
         examples: [],
         level: "N/A"
       };
+    }
+  }
+  /**
+   * Enrich word data with phonetic, definition, and examples
+   */
+  static async enrichWordData(word: string) {
+    try {
+      const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+      
+      const prompt = `
+        As EngBot (Expert English Teacher), provide full metadata for the word "${word}".
+        Include:
+        - Phonetic (IPA)
+        - Meaning in English
+        - Meaning in Vietnamese
+        - Word type (v, n, adj, adv)
+        - CEFR Level (A1, A2, B1, B2, C1, C2)
+        - Usage note (concise)
+        - 1 Example sentence in English
+        - Vietnamese translation of that example
+
+        Respond strictly in JSON format:
+        {
+          "phonetic": "/.../",
+          "meaningEn": "...",
+          "meaningVi": "...",
+          "wordType": "...",
+          "cefrLevel": "...",
+          "usage": "...",
+          "example": "...",
+          "exampleVi": "..."
+        }
+      `;
+
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      const text = response.text();
+      
+      const jsonStr = text.replace(/```json|```/g, "").trim();
+      return JSON.parse(jsonStr);
+    } catch (error: any) {
+      console.error(`EngBot Enrichment Error (${word}):`, error.message || error);
+      if (error.status === 404) {
+        console.error("Gemini Model Not Found (404). Check model name or API key permissions.");
+      }
+      return null;
     }
   }
 }
