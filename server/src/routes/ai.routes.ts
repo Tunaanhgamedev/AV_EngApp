@@ -83,6 +83,49 @@ router.post('/translate', async (req, res) => {
   }
 });
 
+// AI Word Insight — for Notebook feature
+router.post('/word-insight', async (req, res) => {
+  const { word } = req.body;
+  if (!word) return res.status(400).json({ error: 'Word is required' });
+
+  const prompt = `You are EngBot, an expert English teacher. Analyze the English word: "${word}"
+
+Respond ONLY with this exact JSON (no markdown):
+{
+  "word": "${word}",
+  "phonetic": "IPA pronunciation e.g. /həˈloʊ/",
+  "wordTypes": [
+    { "type": "verb/noun/adjective/adverb/etc", "meaningEn": "English definition", "meaningVi": "Vietnamese meaning" }
+  ],
+  "usageExamples": [
+    { "context": "Daily Life", "sentence": "Natural English sentence", "sentenceVi": "Vietnamese translation" },
+    { "context": "Work / Study", "sentence": "Natural English sentence", "sentenceVi": "Vietnamese translation" },
+    { "context": "Social Media", "sentence": "Natural English sentence", "sentenceVi": "Vietnamese translation" }
+  ],
+  "tip": "One memorable tip in Vietnamese to remember this word",
+  "cefrLevel": "A1/A2/B1/B2/C1/C2"
+}`;
+
+  try {
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+    const result = await generateWithRetry(model, prompt);
+    const raw = result.text().replace(/```json|```/g, '').trim();
+    const data = JSON.parse(raw);
+    return res.json(data);
+  } catch (err: any) {
+    console.error('[AI] word-insight error:', err.message);
+    // Fallback: basic structure so UI doesn't crash
+    return res.json({
+      word,
+      phonetic: '',
+      wordTypes: [{ type: 'unknown', meaningEn: 'Could not load definition', meaningVi: 'Không thể tải định nghĩa' }],
+      usageExamples: [],
+      tip: 'AI hiện đang bận, vui lòng thử lại sau.',
+      cefrLevel: '—'
+    });
+  }
+});
+
 // AI Speaking Analysis
 router.post('/analyze-speaking', async (req, res) => {
   const { transcript, targetText } = req.body;

@@ -2,31 +2,133 @@
 
 import React, { useState, useEffect } from 'react';
 import { 
-  Languages, 
-  ArrowRightLeft, 
-  Copy, 
-  Volume2, 
-  Sparkles, 
-  RefreshCw,
-  Loader2,
-  Trash2,
-  History,
-  Check
+  Languages, ArrowRightLeft, Copy, Volume2, Sparkles, RefreshCw,
+  Loader2, Trash2, Check, BookMarked, Plus, X, Tag, Info, AlertCircle
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/context/AuthContext';
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+
+const WORD_TYPES = ['noun','verb','adjective','adverb','phrase','idiom','other'];
+const TYPE_LABELS: Record<string,string> = {
+  noun:'🔵 Danh từ', verb:'🔴 Động từ', adjective:'🟣 Tính từ',
+  adverb:'🟡 Trạng từ', phrase:'🟢 Cụm từ', idiom:'🩷 Thành ngữ', other:'⚪ Khác',
+};
+
+// ─── Save to Notebook Panel ───────────────────────────────────────────────────
+function SaveToNotebookPanel({
+  sourceText, translatedText, onClose, initialType = '', isEnToVi = true
+}: { sourceText: string; translatedText: string; onClose: () => void; initialType?: string; isEnToVi?: boolean }) {
+  const { user, signInWithGoogle } = useAuth();
+  const [wordType, setWordType]   = useState(initialType);
+  const [editedVi, setEditedVi]   = useState(translatedText);
+  const [saving, setSaving]       = useState(false);
+  const [saved, setSaved]         = useState(false);
+
+  const displayWord = isEnToVi ? sourceText.trim() : translatedText.trim();
+  const displayMeaning = isEnToVi ? editedVi.trim() : sourceText.trim();
+
+  const handleSave = async () => {
+    if (!user) { signInWithGoogle(); return; }
+    if (saving || saved) return;
+    setSaving(true);
+    try {
+      const token = await user.getIdToken();
+      const res = await fetch(`${API_BASE}/vocabulary/notebook`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({
+          word: displayWord,
+          wordType: wordType || 'other',
+          meaningVi: displayMeaning,
+        })
+      });
+      if (res.ok) { setSaved(true); setTimeout(onClose, 2000); }
+    } catch { /* ignore */ }
+    finally { setSaving(false); }
+  };
+
+  return (
+    <div className="premium-card border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-indigo-50 animate-in slide-in-from-top-4 duration-400 overflow-hidden mt-6 shadow-2xl">
+      <div className="flex items-center justify-between px-6 py-4 border-b border-primary/10 bg-white/60">
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-primary/10 rounded-xl"><BookMarked className="w-5 h-5 text-primary" /></div>
+          <div>
+            <h3 className="font-black text-slate-800 text-sm">Xác nhận lưu vào Notebook</h3>
+            <p className="text-[11px] text-slate-400 font-medium">Lưu "{displayWord}" để ôn tập sau</p>
+          </div>
+        </div>
+        <button onClick={onClose} className="p-1.5 text-slate-300 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-all"><X className="w-4 h-4" /></button>
+      </div>
+
+      <div className="p-6 space-y-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-4">
+             <div className="p-4 bg-white rounded-2xl border border-slate-100">
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Từ / Cụm từ (EN)</p>
+                <p className="text-lg font-black text-slate-800">{displayWord}</p>
+             </div>
+             <div>
+                <label className="flex items-center gap-1.5 text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2"><BookMarked className="w-3 h-3" /> Nghĩa (VI)</label>
+                <textarea
+                  value={displayMeaning} readOnly={!isEnToVi}
+                  onChange={e => setEditedVi(e.target.value)}
+                  rows={2} className={cn("w-full p-3 bg-white border-2 border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all", !isEnToVi && "bg-slate-50 cursor-not-allowed")}
+                />
+             </div>
+          </div>
+          <div>
+            <label className="flex items-center gap-1.5 text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3"><Tag className="w-3 h-3" /> Loại từ</label>
+            <div className="flex flex-wrap gap-2">
+              {WORD_TYPES.map(t => (
+                <button key={t} type="button"
+                  onClick={() => setWordType(wordType === t ? '' : t)}
+                  className={cn(
+                    "px-3 py-1.5 rounded-full text-[11px] font-bold border-2 transition-all",
+                    wordType === t ? "bg-primary text-white border-primary shadow-md" : "bg-white text-slate-500 border-slate-200 hover:border-primary/40 hover:text-primary"
+                  )}>{TYPE_LABELS[t]}</button>
+              ))}
+            </div>
+            <p className="text-[10px] text-slate-400 mt-4 italic">💡 Notebook dùng để lưu từ đơn hoặc cụm từ cố định (idioms/phrases). Không nên lưu cả câu văn dài.</p>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-end gap-3 pt-2 border-t border-slate-100">
+            <button onClick={onClose} className="px-4 py-2.5 text-slate-400 hover:text-slate-600 text-sm font-bold transition-colors">Bỏ qua</button>
+            {saved ? (
+              <div className="flex items-center gap-2 px-6 py-2.5 bg-green-50 text-green-700 rounded-xl font-bold text-sm border border-green-200 animate-in zoom-in duration-300">
+                <Check className="w-4 h-4" /> Đã lưu!
+              </div>
+            ) : (
+              <button onClick={handleSave} disabled={saving || !displayMeaning}
+                className={cn(
+                  "flex items-center gap-2 px-8 py-3 rounded-xl font-bold text-sm text-white transition-all shadow-lg",
+                  displayMeaning && !saving ? "bg-primary hover:bg-primary/90 shadow-primary/20 hover:scale-[1.01]" : "bg-slate-300 cursor-not-allowed"
+                )}>
+                {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
+                Xác nhận Lưu
+              </button>
+            )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Main Page ────────────────────────────────────────────────────────────────
 export default function TranslatePage() {
-  const [inputText, setInputText] = useState('');
+  const [inputText, setInputText]           = useState('');
   const [translatedText, setTranslatedText] = useState('');
-  const [isTranslating, setIsTranslating] = useState(false);
-  const [sourceLang, setSourceLang] = useState('English');
-  const [targetLang, setTargetLang] = useState('Vietnamese');
-  const [copied, setCopied] = useState(false);
-  const [cache, setCache] = useState<Record<string, string>>({});
-  const [cooldown, setCooldown] = useState(0);
-  const [translationProvider, setTranslationProvider] = useState<'AI' | 'Fallback' | null>(null);
+  const [isTranslating, setIsTranslating]   = useState(false);
+  const [sourceLang, setSourceLang]         = useState('English');
+  const [targetLang, setTargetLang]         = useState('Vietnamese');
+  const [copied, setCopied]                 = useState(false);
+  const [cache, setCache]                   = useState<Record<string, any>>({});
+  const [cooldown, setCooldown]             = useState(0);
+  const [showSavePanel, setShowSavePanel]   = useState(false);
+  const [wordInsight, setWordInsight]       = useState<any>(null);
 
-  // Countdown timer for cooldown
   useEffect(() => {
     if (cooldown > 0) {
       const timer = setInterval(() => setCooldown(prev => prev - 1), 1000);
@@ -35,272 +137,201 @@ export default function TranslatePage() {
   }, [cooldown]);
 
   const handleTranslate = async () => {
-    const textToTranslate = inputText.trim();
-    if (!textToTranslate || isTranslating || cooldown > 0) return;
-
-    // 1. Check Cache first (Brainstorming: Zero-waste strategy)
-    const cacheKey = `${sourceLang}-${targetLang}-${textToTranslate}`;
+    const text = inputText.trim();
+    if (!text || isTranslating || cooldown > 0) return;
+    
+    const cacheKey = `${sourceLang}-${targetLang}-${text}`;
     if (cache[cacheKey]) {
-      setTranslatedText(cache[cacheKey]);
+      setTranslatedText(cache[cacheKey].translation);
+      setWordInsight(cache[cacheKey].insight);
       return;
     }
 
     setIsTranslating(true);
-    setTranslatedText(''); 
-    try {
-      const response = await fetch('http://localhost:5000/api/ai/translate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          text: textToTranslate, 
-          targetLang: targetLang 
-        }),
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        setTranslatedText(data.error || 'Dịch thất bại');
-        setTranslationProvider(null);
-        // 3. Set Cooldown on 429 (Frontend Design: Visual feedback)
-        if (response.status === 429) setCooldown(30);
-      } else {
-        const result = data.translation;
-        setTranslatedText(result);
-        if (data.provider === 'AI (Gemini)') setTranslationProvider('AI');
-        else if (data.provider === 'AI (Backup)') setTranslationProvider('AI');
-        else setTranslationProvider('Fallback');
-        // 2. Store in Cache (Debugging: Prevent repeated 429s)
-        setCache(prev => ({ ...prev, [cacheKey]: result }));
-      }
-    } catch (err: any) {
-      console.error(err);
-      setTranslatedText('Lỗi kết nối máy chủ');
-    } finally {
-      setIsTranslating(false);
-    }
-  };
+    setTranslatedText('');
+    setShowSavePanel(false);
+    setWordInsight(null);
 
-  // Manual trigger mode - auto-translate removed
+    try {
+      const res = await fetch(`${API_BASE}/ai/translate`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, targetLang }),
+      });
+      const data = await res.json();
+      
+      if (!res.ok) {
+        setTranslatedText(data.error || 'Dịch thất bại');
+        if (res.status === 429) setCooldown(30);
+      } else {
+        setTranslatedText(data.translation);
+        
+        // Single word or short phrase insight ONLY for English source
+        const wordCount = text.split(/\s+/).length;
+        if (wordCount <= 3 && sourceLang === 'English') {
+          try {
+            const insightRes = await fetch(`${API_BASE}/ai/word-insight`, {
+              method: 'POST', headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ word: text }),
+            });
+            const insight = await insightRes.json();
+            setWordInsight(insight);
+          } catch { /* ignore */ }
+        }
+        setCache(prev => ({ ...prev, [cacheKey]: { translation: data.translation, insight: wordInsight } }));
+      }
+    } catch { setTranslatedText('Lỗi kết nối máy chủ'); }
+    finally { setIsTranslating(false); }
+  };
 
   const swapLangs = () => {
-    setSourceLang(targetLang);
-    setTargetLang(sourceLang);
+    const s = sourceLang;
+    const t = targetLang;
+    setSourceLang(t);
+    setTargetLang(s);
     setInputText(translatedText);
     setTranslatedText(inputText);
+    setShowSavePanel(false);
+    setWordInsight(null);
   };
 
-  const speak = (text: string, lang: string = 'en-US') => {
-    if (!text || typeof window === 'undefined' || !window.speechSynthesis) return;
+  const speak = (text: string, lang = 'en-US') => {
+    if (!text || typeof window === 'undefined') return;
     window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = lang;
-    utterance.rate = 0.9;
-    window.speechSynthesis.speak(utterance);
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = lang; u.rate = 0.9;
+    window.speechSynthesis.speak(u);
   };
 
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
+  const hasResult = translatedText && !translatedText.includes('Failed') && !translatedText.includes('thất bại') && !translatedText.includes('Lỗi');
+  
+  // Logic: strictly only 1 word for notebook as per user request
+  const wordCount = inputText.trim().split(/\s+/).length;
+  const isPhraseOrSentence = wordCount >= 2 || inputText.trim().endsWith('.') || inputText.trim().endsWith('!');
+  const canSaveToNotebook = hasResult && !isPhraseOrSentence && sourceLang === 'English';
 
   return (
     <div className="max-w-6xl mx-auto space-y-8 py-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <header className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <div className="p-3 bg-gradient-to-br from-primary to-indigo-600 rounded-2xl text-white shadow-xl shadow-primary/20">
-            <Languages className="w-8 h-8" />
-          </div>
+          <div className="p-3 bg-gradient-to-br from-primary to-indigo-600 rounded-2xl text-white shadow-xl shadow-primary/20"><Languages className="w-8 h-8" /></div>
           <div>
             <h1 className="text-3xl font-black text-slate-800 tracking-tight">Nebula AI Translator</h1>
-            <p className="text-slate-500 font-medium">Precision translation powered by <span className="text-primary font-bold">EngBot Intelligence</span></p>
+            <p className="text-slate-500 font-medium">Bản dịch chính xác từ <span className="text-primary font-bold">EngBot AI</span></p>
           </div>
-        </div>
-        <div className="flex items-center gap-3">
-          <button className="p-2.5 bg-white/80 backdrop-blur-md border rounded-xl hover:bg-white transition-all text-slate-400 shadow-sm">
-            <History className="w-5 h-5" />
-          </button>
         </div>
       </header>
 
-      {/* Language Toggle Bar */}
+      {/* Language Switcher */}
       <div className="flex items-center justify-center gap-6">
-        <div className="px-8 py-3 bg-white/80 backdrop-blur-md border border-slate-100 rounded-2xl font-black text-sm text-slate-600 shadow-sm min-w-[140px] text-center">
-          {sourceLang}
-        </div>
-        <button 
-          onClick={swapLangs}
-          className="p-4 bg-primary text-white rounded-full hover:rotate-180 hover:scale-110 transition-all duration-500 shadow-lg shadow-primary/30 active:scale-95"
-        >
+        <div className={cn("px-8 py-3 rounded-2xl font-black text-sm shadow-sm transition-all border", sourceLang === 'English' ? "bg-slate-900 text-white border-slate-900" : "bg-white text-slate-600 border-slate-100")}>{sourceLang}</div>
+        <button onClick={swapLangs} className="p-4 bg-primary text-white rounded-full hover:rotate-180 hover:scale-110 transition-all duration-500 shadow-lg shadow-primary/30 active:scale-95">
           <ArrowRightLeft className="w-5 h-5" />
         </button>
-        <div className="px-8 py-3 bg-white/80 backdrop-blur-md border border-slate-100 rounded-2xl font-black text-sm text-slate-600 shadow-sm min-w-[140px] text-center">
-          {targetLang}
-        </div>
+        <div className={cn("px-8 py-3 rounded-2xl font-black text-sm shadow-sm transition-all border", targetLang === 'English' ? "bg-slate-900 text-white border-slate-900" : "bg-white text-slate-600 border-slate-100")}>{targetLang}</div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-[520px]">
-        {/* Input Side */}
-        <div className="premium-card p-0 flex flex-col relative group overflow-hidden border-2 border-transparent focus-within:border-primary/20 transition-all duration-500">
-          <textarea 
+      {/* Main Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Input */}
+        <div className="premium-card p-0 flex flex-col relative border-2 border-transparent focus-within:border-primary/20 transition-all duration-500 shadow-xl h-[400px]">
+          <textarea
             className="flex-1 p-8 bg-transparent border-none focus:ring-0 text-2xl font-medium resize-none placeholder:text-slate-200"
-            placeholder="What would you like to translate?"
+            placeholder={sourceLang === 'English' ? "Type in English..." : "Nhập tiếng Việt..."}
             value={inputText}
-            onChange={(e) => {
-              setInputText(e.target.value);
-              // Clear error if user starts typing again
-              if (translatedText.includes('Rate limit') || translatedText.includes('thất bại')) {
-                setTranslatedText('');
-              }
-            }}
+            onChange={e => { setInputText(e.target.value); setShowSavePanel(false); if (translatedText.includes('thất bại')) setTranslatedText(''); }}
           />
-          
-          {/* Magic Button Section */}
-          <div className="absolute bottom-24 right-8 left-8 flex justify-center transition-all duration-500">
-             {inputText.trim() && (
-               <button 
-                 onClick={handleTranslate}
-                 disabled={isTranslating || cooldown > 0}
-                 className={cn(
-                   "group relative px-8 py-4 rounded-2xl font-bold flex items-center gap-3 overflow-hidden shadow-2xl transition-all",
-                   cooldown > 0 ? "bg-slate-200 text-slate-500 cursor-not-allowed" : "bg-slate-900 text-white hover:scale-105 active:scale-95"
-                 )}
-               >
-                 {cooldown === 0 && (
-                   <div className="absolute inset-0 bg-gradient-to-r from-primary via-purple-500 to-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-gradient-x" />
-                 )}
-                 <Sparkles className={cn("w-5 h-5 relative z-10", (isTranslating || cooldown > 0) && "animate-pulse")} />
-                 <span className="relative z-10">
-                   {isTranslating ? 'Consulting EngBot...' : 
-                    cooldown > 0 ? `AI Resting (${cooldown}s)` : 'Magic Translate'}
-                 </span>
-               </button>
-             )}
-          </div>
-
-          <div className="p-6 flex items-center justify-between border-t border-slate-50 bg-slate-50/30 backdrop-blur-sm">
-            <div className="flex gap-2">
-              <button 
-                onClick={() => speak(inputText)}
-                className="p-2.5 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-all"
-              >
-                <Volume2 className="w-5 h-5" />
-              </button>
-            </div>
-            <div className="text-[10px] font-black text-slate-300 uppercase tracking-widest">
-              {inputText.length} characters
-            </div>
-            <button 
-              onClick={() => setInputText('')}
-              className="p-2.5 text-slate-300 hover:text-rose-500 hover:bg-rose-50 rounded-lg transition-all"
-            >
-              <Trash2 className="w-5 h-5" />
+          <div className="p-6 flex items-center justify-between border-t border-slate-50 bg-slate-50/30">
+            <button onClick={() => speak(inputText, sourceLang === 'English' ? 'en-US' : 'vi-VN')} className="p-2.5 text-slate-400 hover:text-primary transition-all"><Volume2 className="w-5 h-5" /></button>
+            <button onClick={handleTranslate} disabled={isTranslating || !inputText.trim() || cooldown > 0}
+                className={cn("px-8 py-3.5 rounded-2xl font-black text-sm flex items-center gap-2 transition-all shadow-xl",
+                  cooldown > 0 ? "bg-slate-200 text-slate-400" : "bg-slate-900 text-white hover:scale-105 active:scale-95"
+                )}>
+                {isTranslating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
+                {isTranslating ? 'Đang dịch...' : 'Dịch Ngay'}
             </button>
+            <button onClick={() => { setInputText(''); setTranslatedText(''); setShowSavePanel(false); }} className="p-2.5 text-slate-300 hover:text-rose-500 transition-colors"><Trash2 className="w-5 h-5" /></button>
           </div>
         </div>
 
-        {/* Output Side */}
-        <div className="premium-card p-0 flex flex-col bg-gradient-to-br from-white to-slate-50 border-primary/10 shadow-2xl shadow-primary/5 relative">
-          <div className="flex-1 p-8 text-2xl font-bold leading-relaxed overflow-y-auto">
+        {/* Output */}
+        <div className="premium-card p-0 flex flex-col bg-white border-primary/5 shadow-2xl relative h-[400px]">
+          <div className="flex-1 p-8 overflow-y-auto">
             {isTranslating ? (
               <div className="h-full flex flex-col items-center justify-center gap-4 text-slate-300">
-                <div className="w-12 h-12 border-4 border-primary/10 border-t-primary rounded-full animate-spin" />
-                <p className="text-sm font-black uppercase tracking-widest animate-pulse">Nebula is thinking...</p>
-              </div>
-            ) : translatedText.includes('Failed') || translatedText.includes('thất bại') ? (
-              <div className="h-full flex flex-col items-center justify-center text-center space-y-6 animate-in fade-in zoom-in duration-500">
-                <div className="p-4 bg-rose-50 text-rose-500 rounded-full">
-                  <RefreshCw className="w-8 h-8 animate-spin-slow" />
-                </div>
-                <div>
-                  <h4 className="text-slate-800 text-lg font-black">Translation Encountered a Hitch</h4>
-                  <p className="text-slate-400 text-sm font-medium mt-1">AI is currently overwhelmed. Let's use the fallback.</p>
-                </div>
-                <a 
-                  href={`https://translate.google.com/?sl=${sourceLang === 'English' ? 'en' : 'vi'}&tl=${targetLang === 'English' ? 'en' : 'vi'}&text=${encodeURIComponent(inputText)}&op=translate`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-8 py-3 bg-primary text-white rounded-2xl font-bold shadow-lg shadow-primary/25 hover:scale-105 active:scale-95 transition-all flex items-center gap-2"
-                >
-                  <Languages className="w-5 h-5" />
-                  Try Google Translate
-                </a>
+                <Loader2 className="w-10 h-10 animate-spin text-primary" />
+                <p className="text-xs font-black uppercase tracking-widest animate-pulse">EngBot đang nghĩ...</p>
               </div>
             ) : (
-              <div className="text-slate-800">
-                {translatedText || <span className="text-slate-200 font-medium italic">Your AI translation will manifest here...</span>}
+              <div className="space-y-6 animate-in fade-in duration-500">
+                <div className="text-3xl font-black text-slate-800 leading-tight">
+                  {translatedText || <span className="text-slate-200 font-medium italic">Kết quả dịch...</span>}
+                </div>
+
+                {/* Insight ONLY for single word */}
+                {wordInsight && hasResult && sourceLang === 'English' && !isPhraseOrSentence && (
+                  <div className="p-5 bg-slate-50 rounded-2xl border border-slate-100 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2 text-primary">
+                        <Info className="w-4 h-4" />
+                        <span className="text-[10px] font-black uppercase tracking-widest">Chi tiết từ vựng</span>
+                      </div>
+                      <span className="text-[10px] font-bold px-2 py-0.5 bg-blue-50 text-blue-600 rounded-full">{wordInsight.cefrLevel}</span>
+                    </div>
+                    <div className="flex flex-wrap gap-4">
+                      {wordInsight.wordTypes?.map((wt: any, i: number) => (
+                        <div key={i}>
+                          <span className="text-[10px] font-black text-slate-400 uppercase tracking-tighter">{wt.type}</span>
+                          <p className="text-sm text-slate-700 font-bold">{wt.meaningVi}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
+                {/* Phrase/Sentence Warning */}
+                {isPhraseOrSentence && hasResult && (
+                  <div className="flex items-start gap-3 p-4 bg-slate-50 rounded-2xl border border-slate-100 text-slate-500">
+                    <Info className="w-5 h-5 flex-shrink-0 mt-0.5 text-primary" />
+                    <div className="text-xs font-medium">
+                      <p className="font-black uppercase tracking-widest text-[10px] mb-1">Dịch Cụm từ / Câu văn</p>
+                      Bạn đang dịch cụm từ hoặc câu. Hệ thống chỉ cho phép lưu **từ vựng đơn lẻ** vào Notebook để đảm bảo hiệu quả ôn tập.
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>
 
-          <div className="p-6 flex items-center justify-between border-t border-slate-100 bg-white/50 backdrop-blur-sm">
+          <div className="p-6 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
             <div className="flex gap-2">
-              <button 
-                onClick={() => speak(translatedText, targetLang === 'Vietnamese' ? 'vi-VN' : 'en-US')}
-                className="p-2.5 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-all"
-              >
-                <Volume2 className="w-5 h-5" />
-              </button>
-              <button 
-                onClick={() => copyToClipboard(translatedText)}
-                className={cn(
-                  "p-2.5 transition-all flex items-center gap-2 rounded-lg",
-                  copied ? "text-green-500 bg-green-50" : "text-slate-400 hover:text-primary hover:bg-primary/5"
-                )}
-              >
+              <button onClick={() => speak(translatedText, targetLang === 'Vietnamese' ? 'vi-VN' : 'en-US')} className="p-2 text-slate-400 hover:text-primary transition-all"><Volume2 className="w-5 h-5" /></button>
+              <button onClick={() => { navigator.clipboard.writeText(translatedText); setCopied(true); setTimeout(()=>setCopied(false),2000); }} 
+                className={cn("p-2 transition-all", copied ? "text-green-500" : "text-slate-400 hover:text-primary")}>
                 {copied ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
               </button>
             </div>
-            <div className="flex items-center gap-3">
-              <a 
-                href={`https://translate.google.com/?sl=${sourceLang === 'English' ? 'en' : 'vi'}&tl=${targetLang === 'English' ? 'en' : 'vi'}&text=${encodeURIComponent(inputText)}&op=translate`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white hover:bg-black rounded-xl text-[10px] font-black uppercase tracking-widest transition-all shadow-lg"
-              >
-                Google Translate
-              </a>
-              {translationProvider === 'AI' ? (
-                <div className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-primary/20 animate-in fade-in zoom-in duration-300">
-                  <Sparkles className="w-4 h-4" />
-                  AI Corrected
-                </div>
-              ) : translationProvider === 'Fallback' ? (
-                <div className="flex items-center gap-2 px-4 py-2 bg-amber-500 text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-amber-500/20 animate-in fade-in zoom-in duration-300">
-                  <RefreshCw className="w-4 h-4" />
-                  Community Fallback
-                </div>
-              ) : null}
-            </div>
+            {canSaveToNotebook && (
+              <button onClick={() => setShowSavePanel(!showSavePanel)}
+                className={cn("flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all shadow-md",
+                  showSavePanel ? "bg-primary text-white" : "bg-white text-slate-600 hover:text-primary"
+                )}>
+                <BookMarked className="w-4 h-4" /> {showSavePanel ? 'Hủy' : 'Lưu từ vựng'}
+              </button>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Suggested Sentences */}
-      <div className="space-y-4">
-        <h3 className="font-black text-slate-400 text-[10px] uppercase tracking-[0.2em] flex items-center gap-2 px-2">
-          <RefreshCw className="w-4 h-4" />
-          Neural Suggestions
-        </h3>
-        <div className="flex flex-wrap gap-3">
-          {[
-            "How can I improve my English skills?",
-            "What is the best way to learn new vocabulary?",
-            "I would like to order a cup of coffee, please.",
-            "Excuse me, could you tell me where the library is?",
-            "The weather today is quite pleasant, isn't it?"
-          ].map((phrase) => (
-            <button 
-              key={phrase}
-              onClick={() => {
-                setInputText(phrase);
-              }}
-              className="px-6 py-3 bg-white border border-slate-100 rounded-2xl text-sm font-bold text-slate-600 hover:border-primary hover:text-primary hover:shadow-md hover:-translate-y-0.5 transition-all shadow-sm"
-            >
-              {phrase}
-            </button>
-          ))}
-        </div>
-      </div>
+      {/* Save Panel Integration */}
+      {showSavePanel && canSaveToNotebook && (
+        <SaveToNotebookPanel
+          sourceText={inputText}
+          translatedText={translatedText}
+          isEnToVi={sourceLang === 'English'}
+          initialType={wordInsight?.wordTypes?.[0]?.type || (wordCount > 1 ? 'phrase' : '')}
+          onClose={() => setShowSavePanel(false)}
+        />
+      )}
     </div>
   );
 }

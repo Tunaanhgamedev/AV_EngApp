@@ -337,29 +337,29 @@ router.post('/notebook', authenticate, async (req: any, res) => {
       where: { word: { equals: normalizedWord, mode: 'insensitive' } }
     });
 
-    // Step 2: If not in global DB, try AI lookup or use user-provided data
-    if (!vocabWord) {
-      let finalMeaningEn = meaningEn || '';
-      let finalMeaningVi = meaningVi || '';
-      let finalWordType = wordType || 'Unknown';
-      let finalPhonetic = phonetic || '';
+    // Step 2: Use user-provided data or AI lookup
+    let finalMeaningEn = meaningEn || (vocabWord?.meaningEn) || '';
+    let finalMeaningVi = meaningVi || (vocabWord?.meaningVi) || '';
+    let finalWordType  = wordType  || (vocabWord?.wordType) || 'Unknown';
+    let finalPhonetic  = phonetic  || (vocabWord?.phonetic) || '';
 
-      // Auto-lookup via Gemini if no meaning provided
-      if (!finalMeaningEn) {
-        try {
-          const { GeminiService } = await import('../services/gemini.service');
-          const aiResult = await GeminiService.explainWord(normalizedWord);
-          if (aiResult) {
-            finalMeaningEn = aiResult.meaning || '';
-            finalMeaningVi = aiResult.meaningVi || '';
-            finalWordType  = aiResult.wordType || 'Unknown';
-            finalPhonetic  = aiResult.phonetic || '';
-          }
-        } catch (aiErr) {
-          console.warn('AI lookup failed, using user-provided data:', aiErr);
+    // Auto-lookup via Gemini if missing core info
+    if (!finalMeaningVi || !finalMeaningEn) {
+      try {
+        const { GeminiService } = await import('../services/gemini.service');
+        const aiResult = await GeminiService.explainWord(normalizedWord);
+        if (aiResult) {
+          if (!finalMeaningEn) finalMeaningEn = aiResult.meaning || '';
+          if (!finalMeaningVi) finalMeaningVi = aiResult.meaningVi || '';
+          if (finalWordType === 'Unknown') finalWordType = aiResult.wordType || 'Unknown';
+          if (!finalPhonetic) finalPhonetic = aiResult.phonetic || '';
         }
+      } catch (aiErr) {
+        console.warn('AI lookup failed during notebook save:', aiErr);
       }
+    }
 
+    if (!vocabWord) {
       const id = require('crypto').randomUUID();
       await (prisma as any).$executeRawUnsafe(
         `INSERT INTO vocabulary_words (id, word, phonetic, meaning_en, meaning_vi, word_type, cefr_level)
@@ -367,9 +367,20 @@ router.post('/notebook', authenticate, async (req: any, res) => {
          ON CONFLICT (word) DO NOTHING`,
         id, normalizedWord, finalPhonetic, finalMeaningEn, finalMeaningVi, finalWordType, 'Custom'
       );
-
+      
       vocabWord = await prisma.vocabularyWord.findFirst({
         where: { word: { equals: normalizedWord, mode: 'insensitive' } }
+      });
+    } else {
+      // Update existing word with user provided data if it was missing or generic
+      await prisma.vocabularyWord.update({
+        where: { id: vocabWord.id },
+        data: {
+          meaningVi: finalMeaningVi,
+          wordType: finalWordType,
+          phonetic: finalPhonetic,
+          meaningEn: finalMeaningEn
+        }
       });
     }
 
