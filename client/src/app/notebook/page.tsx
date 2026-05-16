@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect, useCallback } from 'react';
-import { BookMarked, Plus, Search, Trash2, Sparkles, Loader2, LogIn, Volume2, Star, X, ChevronDown, Clock, CheckCheck, Lightbulb, MessageSquare, Tag, RotateCcw, AlertCircle } from 'lucide-react';
+import { BookMarked, Plus, Search, Trash2, Sparkles, Loader2, LogIn, Volume2, Star, X, ChevronDown, Clock, CheckCheck, Lightbulb, MessageSquare, Tag, RotateCcw, AlertCircle, Brain, ChevronRight } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { cn } from '@/lib/utils';
 
@@ -240,8 +240,11 @@ function AddWordPanel({ onAdd }: { onAdd: (d: any) => Promise<void> }) {
   );
 }
 
+import { useRouter } from 'next/navigation';
+
 export default function NotebookPage() {
   const { user, signInWithGoogle } = useAuth();
+  const router = useRouter();
   const [words, setWords]         = useState<NotebookWord[]>([]);
   const [loading, setLoading]     = useState(true);
   const [search, setSearch]       = useState('');
@@ -291,15 +294,72 @@ export default function NotebookPage() {
   );
 
   const filtered = words.filter(w => w.word.toLowerCase().includes(search.toLowerCase()) || w.meaningVi?.includes(search));
+  const reviewDue = words.filter(w => w.nextReviewAt && new Date(w.nextReviewAt) <= new Date()).length;
 
   return (
     <div className="space-y-8 pb-10">
       {toast && <div className={cn("fixed top-6 right-6 z-50 px-6 py-3 rounded-xl font-bold text-sm shadow-2xl animate-in slide-in-from-right-4", toast.ok ? "bg-slate-900 text-white" : "bg-rose-500 text-white")}>{toast.msg}</div>}
       
-      <header>
-        <h1 className="text-3xl font-black flex items-center gap-3"><BookMarked className="w-8 h-8 text-primary" />Notebook</h1>
-        <p className="text-slate-500 font-medium">Lưu trữ từ vựng đơn lẻ để ôn tập chuyên sâu cùng EngBot AI.</p>
+      <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-black flex items-center gap-3"><BookMarked className="w-8 h-8 text-primary" />Notebook</h1>
+          <p className="text-slate-500 font-medium">Lưu trữ từ vựng đơn lẻ để ôn tập chuyên sâu cùng EngBot AI.</p>
+        </div>
+        <div className="flex items-center gap-3">
+          <button 
+            onClick={() => router.push('/notebook/review')}
+            className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-xl font-bold hover:scale-105 transition-all shadow-lg"
+          >
+            <RotateCcw className="w-4 h-4" /> Ôn tập
+            {reviewDue > 0 && <span className="flex h-5 w-5 items-center justify-center rounded-full bg-rose-500 text-[10px] text-white animate-pulse">{reviewDue}</span>}
+          </button>
+          <div className="flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-xl">
+            <BookMarked className="w-4 h-4 text-primary" />
+            <span className="text-sm font-bold text-primary">{words.length} từ</span>
+          </div>
+        </div>
       </header>
+
+      {/* Review CTA Banner - Always visible but dynamic */}
+      <div className={cn(
+        "premium-card p-6 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl relative overflow-hidden group border-none",
+        reviewDue > 0 
+          ? "bg-gradient-to-r from-primary to-indigo-600 text-white shadow-primary/20" 
+          : "bg-white text-slate-800 border-2 border-slate-100"
+      )}>
+        <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none group-hover:scale-110 transition-transform duration-500">
+          <Brain className={cn("w-32 h-32", reviewDue > 0 ? "text-white" : "text-primary")} />
+        </div>
+        
+        <div className="space-y-1 relative z-10 text-center md:text-left">
+          <h2 className="text-xl font-black flex items-center justify-center md:justify-start gap-2">
+            {reviewDue > 0 ? (
+              <>
+                <Sparkles className="w-5 h-5 fill-white" /> Đã đến lúc ôn tập!
+              </>
+            ) : (
+              <>
+                <CheckCheck className="w-5 h-5 text-green-500" /> Bạn đã thuộc hết từ hôm nay!
+              </>
+            )}
+          </h2>
+          <p className={cn("font-medium", reviewDue > 0 ? "text-white/80" : "text-slate-500")}>
+            {reviewDue > 0 
+              ? `Bạn có ${reviewDue} từ vựng đang chờ được nhắc lại để không bị quên.`
+              : "Bạn không có từ nào đến hạn ôn tập. Nhưng bạn vẫn có thể luyện tập thêm để nhớ lâu hơn!"}
+          </p>
+        </div>
+
+        <button 
+          onClick={() => router.push('/notebook/review')}
+          className={cn(
+            "px-8 py-3.5 rounded-2xl font-black text-sm shadow-xl hover:scale-105 active:scale-95 transition-all relative z-10 flex items-center gap-2",
+            reviewDue > 0 ? "bg-white text-primary" : "bg-slate-900 text-white"
+          )}
+        >
+          {reviewDue > 0 ? "BẮT ĐẦU ÔN TẬP" : "LUYỆN TẬP NGAY"} <ChevronRight className="w-5 h-5" />
+        </button>
+      </div>
 
       <AddWordPanel onAdd={handleAdd} />
 

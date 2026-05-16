@@ -433,5 +433,159 @@ router.delete('/notebook/:wordId', authenticate, async (req: any, res) => {
   }
 });
 
+// ──────────────────────────────────────────────
+// SRS REVIEW SYSTEM
+// ──────────────────────────────────────────────
+
+// GET /review/session - Get words due for review with AI-generated contextual questions
+router.get('/review/session', authenticate, async (req: any, res) => {
+  try {
+    const userId = req.user.uid;
+    const now = new Date();
+
+    let dueEntries = await prisma.userLearnedWord.findMany({
+      where: {
+        userId,
+        isFavorite: true,
+        nextReviewAt: { lte: now }
+      },
+      include: { word: true },
+      take: 10,
+      orderBy: { nextReviewAt: 'asc' }
+    });
+
+    // Fallback: If no words are strictly due, get the most recent ones for "Early Practice"
+    if (dueEntries.length === 0) {
+      dueEntries = await prisma.userLearnedWord.findMany({
+        where: {
+          userId,
+          isFavorite: true
+        },
+        include: { word: true },
+        take: 10,
+        orderBy: { savedAt: 'desc' }
+      });
+    }
+
+    if (dueEntries.length === 0) {
+      return res.json({ words: [], message: 'All caught up! Check back tomorrow.' });
+    }
+
+    // Get some random words from notebook AND global vocab for fallback distractors
+    const allNotebookWords = await prisma.userLearnedWord.findMany({
+      where: { userId, isFavorite: true },
+      include: { word: true },
+      take: 10
+    });
+    
+    const globalRandomWords = await pool.query(
+      `SELECT meaning_vi as "meaningVi" FROM vocabulary_words ORDER BY RANDOM() LIMIT 20`
+    );
+
+    const distractorsPool = [
+      ...allNotebookWords.map(n => n.word.meaningVi),
+      ...globalRandomWords.rows.map(r => r.meaningVi)
+    ].filter(Boolean);
+
+    // Enhance with AI questions for each word (async to speed up response)
+    const sessionWords = await Promise.all(dueEntries.map(async (entry) => {
+      // Basic info
+      const word = entry.word;
+      
+      // Try to get dynamic question from Gemini
+      let question = `Fill in the blank: The word "${word.word}" means _____ in Vietnamese.`;
+      let options: string[] = [word.meaningVi];
+      
+      try {
+        const aiQuestion = await GeminiService.generateReviewQuestion(word.word);
+        if (aiQuestion && aiQuestion.options && aiQuestion.options.length === 4) {
+          question = aiQuestion.question;
+          options = aiQuestion.options;
+        } else {
+          throw new Error('Invalid AI response');
+        }
+      } catch (e) {
+        // Fallback: Use distractors from pool
+        const others = distractorsPool.filter(d => d !== word.meaningVi).sort(() => Math.random() - 0.5);
+        options = [word.meaningVi, ...others.slice(0, 3)];
+        
+        // Ensure we always have 4 options
+        while (options.length < 4) {
+          options.push(`Nghĩa khác ${options.length}`);
+        }
+      }
+
+      return {
+        id: entry.id,
+        wordId: word.id,
+        word: word.word,
+        phonetic: word.phonetic,
+        meaningVi: word.meaningVi,
+        meaningEn: word.meaningEn,
+        wordType: word.wordType,
+        masteryLevel: entry.masteryLevel,
+        question,
+        options: options.sort(() => Math.random() - 0.5) // Shuffle
+      };
+    }));
+
+    res.json({ words: sessionWords });
+  } catch (error) {
+    console.error('Review session error:', error);
+    res.status(500).json({ error: 'Failed to create review session' });
+  }
+});
+
+// POST /review/submit - Update SRS status for a word
+router.post('/review/submit', authenticate, async (req: any, res) => {
+  try {
+    const userId = req.user.uid;
+    const { wordId, isCorrect } = req.body;
+
+    const entry = await prisma.userLearnedWord.findUnique({
+      where: { userId_wordId: { userId, wordId } }
+    });
+
+    if (!entry) return res.status(404).json({ error: 'Entry not found' });
+
+    // Spaced Repetition Logic (Leitner inspired)
+    // Intervals: 1, 3, 7, 14, 30, 90, 180 days
+    const intervals = [1, 3, 7, 14, 30, 90, 180];
+    let newLevel = entry.masteryLevel;
+    
+    if (isCorrect) {
+      newLevel = Math.min(newLevel + 1, intervals.length - 1);
+    } else {
+      newLevel = Math.max(newLevel - 1, 0); // Slip back one level
+    }
+
+    const nextDays = intervals[newLevel];
+    const nextReviewAt = new Date();
+    nextReviewAt.setDate(nextReviewAt.getDate() + nextDays);
+
+    await prisma.userLearnedWord.update({
+      where: { id: entry.id },
+      data: {
+        masteryLevel: newLevel,
+        lastReviewedAt: new Date(),
+        nextReviewAt
+      }
+    });
+
+    // Reward XP for correct review
+    if (isCorrect) {
+      await prisma.user.update({
+        where: { id: userId },
+        data: { xp: { increment: 10 } }
+      });
+    }
+
+    res.json({ success: true, nextReviewAt, newLevel });
+  } catch (error) {
+    console.error('Review submit error:', error);
+    res.status(500).json({ error: 'Failed to submit review' });
+  }
+});
+
 export default router;
 

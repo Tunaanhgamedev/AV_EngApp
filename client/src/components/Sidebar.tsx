@@ -24,24 +24,52 @@ import {
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
 
-const menuItems = [
-  { icon: LayoutDashboard, label: 'Dashboard', href: '/' },
-  { icon: Search, label: 'Dictionary', href: '/dictionary' },
-  { icon: Languages, label: 'AI Translator', href: '/translate' },
-  { icon: BookOpen, label: 'Learn Vocabulary', href: '/learn' },
-  { icon: BookMarked, label: 'Review System', href: '/review' },
-  { icon: NotebookPen, label: 'My Notebook', href: '/notebook' },
-  { icon: Mic2, label: 'Speaking AI', href: '/speaking' },
-  { icon: Headphones, label: 'Listening', href: '/listening' },
-  { icon: PenTool, label: 'Writing Journal', href: '/journal' },
-  { icon: MessageSquare, label: 'AI Chat', href: '/chat' },
-  { icon: Gamepad2, label: 'Quiz & Games', href: '/games' },
-  { icon: Trophy, label: 'Leaderboard', href: '/leaderboard' },
-];
-
 export function Sidebar() {
   const pathname = usePathname();
   const { user, dbUser, signInWithGoogle, logout, loading } = useAuth();
+  const [reviewCount, setReviewCount] = React.useState(0);
+
+  React.useEffect(() => {
+    const fetchReviewCount = async () => {
+      if (!user) return;
+      try {
+        const token = await user.getIdToken();
+        const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+        const res = await fetch(`${API_BASE}/vocabulary/notebook`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (data.words) {
+          const due = data.words.filter((w: any) => 
+            w.nextReviewAt && new Date(w.nextReviewAt) <= new Date()
+          ).length;
+          setReviewCount(due);
+        }
+      } catch (err) {
+        console.error('Failed to fetch review count:', err);
+      }
+    };
+
+    fetchReviewCount();
+    // Refresh every 5 minutes
+    const interval = setInterval(fetchReviewCount, 5 * 60 * 1000);
+    return () => clearInterval(interval);
+  }, [user]);
+
+  const menuItems = [
+    { icon: LayoutDashboard, label: 'Dashboard', href: '/' },
+    { icon: Search, label: 'Dictionary', href: '/dictionary' },
+    { icon: Languages, label: 'AI Translator', href: '/translate' },
+    { icon: BookOpen, label: 'Learn Vocabulary', href: '/learn' },
+    { icon: BookMarked, label: 'Review System', href: '/notebook/review', badge: reviewCount },
+    { icon: NotebookPen, label: 'My Notebook', href: '/notebook' },
+    { icon: Mic2, label: 'Speaking AI', href: '/speaking' },
+    { icon: Headphones, label: 'Listening', href: '/listening' },
+    { icon: PenTool, label: 'Writing Journal', href: '/journal' },
+    { icon: MessageSquare, label: 'AI Chat', href: '/chat' },
+    { icon: Gamepad2, label: 'Quiz & Games', href: '/games' },
+    { icon: Trophy, label: 'Leaderboard', href: '/leaderboard' },
+  ];
 
   return (
     <aside className="w-64 h-screen glass border-r flex flex-col fixed left-0 top-0 z-50">
@@ -64,7 +92,7 @@ export function Sidebar() {
                 <Link
                   href={item.href}
                   className={cn(
-                    "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group",
+                    "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group relative",
                     isActive 
                       ? "bg-primary text-white shadow-md shadow-primary/20" 
                       : "text-slate-600 hover:bg-slate-100 hover:text-primary dark:text-slate-400 dark:hover:bg-slate-800"
@@ -74,7 +102,12 @@ export function Sidebar() {
                     "w-5 h-5",
                     isActive ? "text-white" : "text-slate-400 group-hover:text-primary"
                   )} />
-                  <span className="font-medium text-sm">{item.label}</span>
+                  <span className="font-medium text-sm flex-1">{item.label}</span>
+                  {item.badge > 0 && (
+                    <span className="bg-rose-500 text-white text-[10px] font-black px-1.5 py-0.5 rounded-full min-w-[18px] text-center animate-pulse">
+                      {item.badge}
+                    </span>
+                  )}
                 </Link>
               </li>
             );

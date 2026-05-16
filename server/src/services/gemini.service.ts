@@ -165,4 +165,39 @@ export class GeminiService {
       return null;
     }
   }
+  /**
+   * Generate a contextual review question for a word
+   */
+  static async generateReviewQuestion(word: string) {
+    try {
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+      
+      const prompt = `
+        As EngBot (Expert English Teacher), create a challenging multiple-choice question for the word "${word}".
+        
+        Requirements:
+        1. Context: Create a natural English sentence where "${word}" is missing (____).
+        2. Distractors: The 3 incorrect options MUST be "tricky". They should be words that are often confused with "${word}", have a similar vibe, or belong to the same category (e.g., if "${word}" is an emotion, all options should be emotions).
+        3. Language: Options must be in Vietnamese.
+        4. Diversity: Do NOT just use random words. Use sophisticated Vietnamese vocabulary.
+        
+        Respond ONLY in JSON format:
+        {
+          "question": "The sentence with blank...",
+          "options": ["Nghĩa đúng", "Nghĩa sai khôn khéo 1", "Nghĩa sai khôn khéo 2", "Nghĩa sai khôn khéo 3"],
+          "answer": "Nghĩa đúng"
+        }
+      `;
+
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      const text = response.text();
+      
+      const jsonStr = text.replace(/```json|```/g, "").trim();
+      return JSON.parse(jsonStr);
+    } catch (error) {
+      console.error('Gemini Review Question Error:', error);
+      return null;
+    }
+  }
 }
