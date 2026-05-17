@@ -198,4 +198,50 @@ export class GeminiService {
       return null;
     }
   }
+
+  /**
+   * Bulk translate/enrich multiple words in a single API call (fast batch mode)
+   * Returns an array of { word, meaningVi, phonetic, wordType, cefrLevel, meaningEn, usage, example, exampleVi }
+   */
+  static async bulkTranslate(words: string[]): Promise<any[] | null> {
+    try {
+      const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+      
+      const wordList = words.map((w, i) => `${i + 1}. ${w}`).join('\n');
+      
+      const prompt = `
+        As EngBot (Expert English Teacher for Vietnamese learners), provide COMPLETE metadata for these English words:
+
+${wordList}
+
+        For EACH word, provide:
+        - "phonetic": IPA transcription
+        - "meaningEn": clear English definition (1 sentence)
+        - "meaningVi": nghĩa tiếng Việt chính xác (NEVER empty, NEVER the English word itself)
+        - "wordType": v/n/adj/adv/prep/conj/det/pron
+        - "cefrLevel": A1/A2/B1/B2/C1/C2
+        - "usage": when/how to use this word (in Vietnamese)
+        - "example": natural English sentence
+        - "exampleVi": Vietnamese translation of example
+
+        CRITICAL: "meaningVi" must be a real Vietnamese translation. For C1/C2 words, use precise Vietnamese equivalents.
+
+        Respond ONLY with a JSON array (no markdown, no extra text):
+        [
+          { "word": "...", "phonetic": "...", "meaningEn": "...", "meaningVi": "...", "wordType": "...", "cefrLevel": "...", "usage": "...", "example": "...", "exampleVi": "..." },
+          ...
+        ]
+      `;
+
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      const text = response.text();
+      
+      const jsonStr = text.replace(/```json|```/g, "").trim();
+      return JSON.parse(jsonStr);
+    } catch (error: any) {
+      console.error(`EngBot Bulk Translate Error:`, error.message || error);
+      return null;
+    }
+  }
 }

@@ -51,7 +51,7 @@ export default function DictionaryPage() {
 
   // Enrichment state
   const [enriching, setEnriching] = useState(false);
-  const [enrichResult, setEnrichResult] = useState<{ enriched: number; remaining: number; results?: any[] } | null>(null);
+  const [enrichResult, setEnrichResult] = useState<{ enriched?: number; translated?: number; remaining: number; results?: any[] } | null>(null);
   const [showEnrichPanel, setShowEnrichPanel] = useState(false);
 
   // Handle precise search (the card)
@@ -127,7 +127,7 @@ export default function DictionaryPage() {
     fetchWordlist(1, selectedLetter, selectedLevel, searchTerm);
   }, []);
 
-  // Batch enrichment handler
+  // Batch enrichment handler (one-by-one, full metadata)
   const handleBatchEnrich = async (batchSize = 10) => {
     setEnriching(true);
     try {
@@ -139,12 +139,33 @@ export default function DictionaryPage() {
       });
       const data = await res.json();
       setEnrichResult(data);
-      // Refresh current page to show updated data
       if (data.enriched > 0) {
         fetchWordlist(page, selectedLetter, selectedLevel, searchTerm);
       }
     } catch (err) {
       console.error('Batch enrich error:', err);
+    } finally {
+      setEnriching(false);
+    }
+  };
+
+  // Bulk translate handler (20 words per single API call — FAST)
+  const handleBulkTranslate = async (batchSize = 20) => {
+    setEnriching(true);
+    try {
+      const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+      const res = await fetch(`${API_BASE}/vocabulary/bulk-translate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ batchSize })
+      });
+      const data = await res.json();
+      setEnrichResult(data);
+      if (data.translated > 0) {
+        fetchWordlist(page, selectedLetter, selectedLevel, searchTerm);
+      }
+    } catch (err) {
+      console.error('Bulk translate error:', err);
     } finally {
       setEnriching(false);
     }
@@ -561,20 +582,20 @@ export default function DictionaryPage() {
               </div>
               
               <p className="text-xs text-slate-500">
-                Dùng AI để bổ sung nghĩa tiếng Việt, phiên âm, loại từ, cách dùng cho những từ còn thiếu.
+                Dùng AI để bổ sung và dịch tiếng Việt cho từ vựng Oxford3000.
               </p>
 
               {enrichResult && (
                 <div className="bg-slate-50 rounded-2xl p-4 space-y-2">
                   <div className="flex justify-between text-xs">
-                    <span className="text-green-600 font-bold">✅ Đã bổ sung: {enrichResult.enriched}</span>
+                    <span className="text-green-600 font-bold">✅ Đã xử lý: {enrichResult.enriched || enrichResult.translated || 0}</span>
                     <span className="text-amber-600 font-bold">⏳ Còn lại: {enrichResult.remaining}</span>
                   </div>
                   {enrichResult.remaining > 0 && (
                     <div className="w-full bg-slate-200 rounded-full h-1.5">
                       <div 
                         className="bg-green-500 h-1.5 rounded-full transition-all duration-500" 
-                        style={{ width: `${Math.max(5, 100 - (enrichResult.remaining / (enrichResult.remaining + enrichResult.enriched) * 100))}%` }}
+                        style={{ width: `${Math.max(5, 100 - (enrichResult.remaining / (enrichResult.remaining + (enrichResult.enriched || enrichResult.translated || 0)) * 100))}%` }}
                       />
                     </div>
                   )}
@@ -583,7 +604,7 @@ export default function DictionaryPage() {
                       {enrichResult.results.map((r: any, i: number) => (
                         <div key={i} className="text-[10px] text-slate-500 flex justify-between">
                           <span className="font-bold">{r.word}</span>
-                          <span>{r.status}</span>
+                          <span>{r.meaningVi ? `→ ${r.meaningVi}` : r.status}</span>
                         </div>
                       ))}
                     </div>
@@ -591,23 +612,48 @@ export default function DictionaryPage() {
                 </div>
               )}
 
-              <div className="flex gap-2">
-                <button
-                  onClick={() => handleBatchEnrich(5)}
-                  disabled={enriching}
-                  className="flex-1 px-4 py-3 bg-primary text-white rounded-xl font-bold text-xs hover:bg-primary/90 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
-                >
-                  {enriching ? <Loader2 className="w-4 h-4 animate-spin" /> : <Wand2 className="w-4 h-4" />}
-                  {enriching ? 'Đang xử lý...' : '5 từ'}
-                </button>
-                <button
-                  onClick={() => handleBatchEnrich(10)}
-                  disabled={enriching}
-                  className="flex-1 px-4 py-3 bg-[#002147] text-white rounded-xl font-bold text-xs hover:bg-[#00316e] transition-all disabled:opacity-50 flex items-center justify-center gap-2"
-                >
-                  {enriching ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
-                  {enriching ? 'Đang xử lý...' : '10 từ'}
-                </button>
+              {/* Fast Bulk Translate (20 words/call) */}
+              <div className="space-y-2">
+                <p className="text-[10px] font-black text-primary uppercase tracking-widest">⚡ Dịch nhanh (20 từ/lần gọi)</p>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handleBulkTranslate(20)}
+                    disabled={enriching}
+                    className="flex-1 px-4 py-3 bg-primary text-white rounded-xl font-bold text-xs hover:bg-primary/90 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                  >
+                    {enriching ? <Loader2 className="w-4 h-4 animate-spin" /> : <Wand2 className="w-4 h-4" />}
+                    {enriching ? 'Đang xử lý...' : '20 từ'}
+                  </button>
+                  <button
+                    onClick={() => handleBulkTranslate(25)}
+                    disabled={enriching}
+                    className="flex-1 px-4 py-3 bg-[#002147] text-white rounded-xl font-bold text-xs hover:bg-[#00316e] transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                  >
+                    {enriching ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
+                    {enriching ? 'Đang xử lý...' : '25 từ'}
+                  </button>
+                </div>
+              </div>
+
+              {/* Detailed Enrich (1 word/call, full metadata) */}
+              <div className="space-y-2">
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">🔍 Bổ sung chi tiết (1 từ/lần)</p>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handleBatchEnrich(5)}
+                    disabled={enriching}
+                    className="flex-1 px-4 py-2.5 bg-slate-100 text-slate-700 rounded-xl font-bold text-xs hover:bg-slate-200 transition-all disabled:opacity-50 flex items-center justify-center gap-1"
+                  >
+                    5 từ
+                  </button>
+                  <button
+                    onClick={() => handleBatchEnrich(10)}
+                    disabled={enriching}
+                    className="flex-1 px-4 py-2.5 bg-slate-100 text-slate-700 rounded-xl font-bold text-xs hover:bg-slate-200 transition-all disabled:opacity-50 flex items-center justify-center gap-1"
+                  >
+                    10 từ
+                  </button>
+                </div>
               </div>
             </div>
           ) : (

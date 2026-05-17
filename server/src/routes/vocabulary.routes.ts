@@ -315,69 +315,56 @@ router.get('/wordlist', async (req, res) => {
       `SELECT COUNT(*)::int as total FROM vocabulary_words WHERE ${where}`, params
     );
 
-    // Lazy enrichment for incomplete words on current page (max 3 per request)
+    // Send response IMMEDIATELY (no blocking)
+    res.json({ words, total: cnt[0].total, pages: Math.ceil(cnt[0].total / limit) });
+
+    // Background enrichment: fire-and-forget AFTER response is sent
     const shouldEnrich = enrich !== 'false';
     if (shouldEnrich && words.length > 0) {
-      const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-      let enrichCount = 0;
-      const MAX_ENRICH = 3;
+      const incompleteWords = words.filter((w: any) => 
+        !w.meaningVi || w.meaningVi === w.word || !w.phonetic || !w.usage || !w.wordType || w.wordType === '-'
+      ).slice(0, 2); // Max 2 per background run
 
-      for (let idx = 0; idx < words.length && enrichCount < MAX_ENRICH; idx++) {
-        const w = words[idx];
-        const isMissingData = !w.meaningVi || w.meaningVi === w.word || !w.phonetic || !w.usage || !w.wordType || w.wordType === '-';
-
-        if (isMissingData) {
-          try {
-            if (enrichCount > 0) await delay(1200);
-            console.log(`[Dict Enrich] ${w.word} — missing: ${[!w.meaningVi && 'meaningVi', !w.phonetic && 'phonetic', !w.usage && 'usage', (!w.wordType || w.wordType === '-') && 'wordType'].filter(Boolean).join(', ')}`);
-
-            const aiData = await GeminiService.enrichWordData(w.word);
-            if (aiData) {
-              enrichCount++;
-              // Update the response object in-place
-              if (!w.meaningVi || w.meaningVi === w.word) words[idx].meaningVi = aiData.meaningVi;
-              if (!w.meaningEn || w.meaningEn.length < 5) words[idx].meaningEn = aiData.meaningEn;
-              if (!w.phonetic) words[idx].phonetic = aiData.phonetic;
-              if (!w.wordType || w.wordType === '-') words[idx].wordType = aiData.wordType;
-              if (!w.usage) words[idx].usage = aiData.usage;
-              if (!w.example) words[idx].example = aiData.example;
-              if (!w.exampleVi) words[idx].exampleVi = aiData.exampleVi;
-              if (w.cefrLevel === 'Custom' || w.cefrLevel === 'OXFORD3000') words[idx].cefrLevel = aiData.cefrLevel;
-
-              // Persist to DB in background
-              pool.query(
-                `UPDATE vocabulary_words SET 
-                  meaning_vi = COALESCE(NULLIF($2, ''), meaning_vi),
-                  meaning_en = COALESCE(NULLIF($3, ''), meaning_en),
-                  phonetic = COALESCE(NULLIF($4, ''), phonetic),
-                  word_type = COALESCE(NULLIF($5, ''), word_type),
-                  usage = COALESCE(NULLIF($6, ''), usage),
-                  example = COALESCE(NULLIF($7, ''), example),
-                  example_vi = COALESCE(NULLIF($8, ''), example_vi),
-                  cefr_level = CASE WHEN cefr_level IN ('Custom', 'OXFORD3000', '') OR cefr_level IS NULL THEN $9 ELSE cefr_level END
-                WHERE id = $1`,
-                [w.id, aiData.meaningVi, aiData.meaningEn, aiData.phonetic, aiData.wordType, aiData.usage, aiData.example, aiData.exampleVi, aiData.cefrLevel || 'B1']
-              ).catch(err => console.error(`[Dict Enrich] DB update failed for ${w.word}:`, err.message));
+      if (incompleteWords.length > 0) {
+        // Run in background — does NOT block the response
+        (async () => {
+          const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+          let enrichCount = 0;
+          for (const w of incompleteWords) {
+            try {
+              if (enrichCount > 0) await delay(1500);
+              console.log(`[BG Enrich] ${w.word}`);
+              const aiData = await GeminiService.enrichWordData(w.word);
+              if (aiData) {
+                enrichCount++;
+                pool.query(
+                  `UPDATE vocabulary_words SET 
+                    meaning_vi = COALESCE(NULLIF($2, ''), meaning_vi),
+                    meaning_en = COALESCE(NULLIF($3, ''), meaning_en),
+                    phonetic = COALESCE(NULLIF($4, ''), phonetic),
+                    word_type = COALESCE(NULLIF($5, ''), word_type),
+                    usage = COALESCE(NULLIF($6, ''), usage),
+                    example = COALESCE(NULLIF($7, ''), example),
+                    example_vi = COALESCE(NULLIF($8, ''), example_vi),
+                    cefr_level = CASE WHEN cefr_level IN ('Custom', 'OXFORD3000', '') OR cefr_level IS NULL THEN $9 ELSE cefr_level END
+                  WHERE id = $1`,
+                  [w.id, aiData.meaningVi, aiData.meaningEn, aiData.phonetic, aiData.wordType, aiData.usage, aiData.example, aiData.exampleVi, aiData.cefrLevel || 'B1']
+                ).catch(err => console.error(`[BG Enrich] DB fail ${w.word}:`, err.message));
+              }
+            } catch (err: any) {
+              if (err?.message?.includes('429')) break;
+              console.error(`[BG Enrich] Failed ${w.word}:`, err.message);
             }
-          } catch (err: any) {
-            if (err?.message?.includes('429') || err?.status === 429) {
-              console.log(`[Dict Enrich] Rate limited, stopping enrichment for this request`);
-              break; // Stop enriching on rate limit
-            }
-            console.error(`[Dict Enrich] Failed for ${w.word}:`, err.message);
           }
-        }
-      }
-
-      if (enrichCount > 0) {
-        console.log(`[Dict Enrich] Enriched ${enrichCount} words on page ${page}`);
+          if (enrichCount > 0) console.log(`[BG Enrich] Done: ${enrichCount} words on page ${page}`);
+        })().catch(() => {}); // Swallow any unhandled errors
       }
     }
-
-    res.json({ words, total: cnt[0].total, pages: Math.ceil(cnt[0].total / limit) });
   } catch (error: any) {
     console.error('Wordlist error:', error.message);
-    res.status(500).json({ error: 'Failed to fetch wordlist', message: error.message });
+    if (!res.headersSent) {
+      res.status(500).json({ error: 'Failed to fetch wordlist', message: error.message });
+    }
   }
 });
 
@@ -487,6 +474,108 @@ router.post('/enrich-batch', async (req, res) => {
   } catch (error: any) {
     console.error('Batch enrich error:', error.message);
     res.status(500).json({ error: 'Batch enrichment failed', message: error.message });
+  }
+});
+
+// ──────────────────────────────────────────────
+// BULK TRANSLATE: Fast batch translation for Oxford3000 words (20 words per API call)
+// ──────────────────────────────────────────────
+
+router.post('/bulk-translate', async (req, res) => {
+  try {
+    const batchSize = Math.min(Number(req.body?.batchSize) || 20, 25);
+    const level = req.body?.level; // Optional: target specific CEFR level
+
+    // Find untranslated words
+    const levelFilter = level ? `AND (cefr_level = '${level}' OR cefr_level = 'OXFORD3000' OR cefr_level = 'Custom')` : '';
+    const { rows: untranslated } = await pool.query(
+      `SELECT id, word, cefr_level as "cefrLevel"
+       FROM vocabulary_words 
+       WHERE (meaning_vi IS NULL OR meaning_vi = '' OR meaning_vi = word)
+       ${levelFilter}
+       ORDER BY word ASC
+       LIMIT $1`,
+      [batchSize]
+    );
+
+    if (untranslated.length === 0) {
+      const { rows: cnt } = await pool.query(
+        `SELECT COUNT(*)::int as remaining FROM vocabulary_words 
+         WHERE meaning_vi IS NULL OR meaning_vi = '' OR meaning_vi = word`
+      );
+      return res.json({ 
+        success: true, 
+        translated: 0, 
+        remaining: cnt[0].remaining,
+        message: 'Tất cả từ vựng đã được dịch sang tiếng Việt!' 
+      });
+    }
+
+    // Use bulkTranslate (single API call for all words!)
+    const wordList = untranslated.map((w: any) => w.word);
+    console.log(`[Bulk Translate] Processing ${wordList.length} words: ${wordList.slice(0, 5).join(', ')}...`);
+    
+    const aiResults = await GeminiService.bulkTranslate(wordList);
+    
+    let translated = 0;
+    const results: { word: string; status: string; meaningVi?: string }[] = [];
+
+    if (aiResults && Array.isArray(aiResults)) {
+      for (const ai of aiResults) {
+        if (!ai?.word || !ai?.meaningVi) {
+          results.push({ word: ai?.word || '?', status: '⚠️ Missing data' });
+          continue;
+        }
+
+        // Find matching DB record
+        const dbWord = untranslated.find((w: any) => w.word.toLowerCase() === ai.word.toLowerCase());
+        if (!dbWord) {
+          results.push({ word: ai.word, status: '⚠️ Not found in DB' });
+          continue;
+        }
+
+        try {
+          await pool.query(
+            `UPDATE vocabulary_words SET 
+              meaning_vi = COALESCE(NULLIF($2, ''), meaning_vi),
+              meaning_en = COALESCE(NULLIF($3, ''), meaning_en),
+              phonetic = COALESCE(NULLIF($4, ''), phonetic),
+              word_type = COALESCE(NULLIF($5, ''), word_type),
+              usage = COALESCE(NULLIF($6, ''), usage),
+              example = COALESCE(NULLIF($7, ''), example),
+              example_vi = COALESCE(NULLIF($8, ''), example_vi),
+              cefr_level = CASE WHEN cefr_level IN ('Custom', 'OXFORD3000', '') OR cefr_level IS NULL THEN $9 ELSE cefr_level END
+            WHERE id = $1`,
+            [dbWord.id, ai.meaningVi, ai.meaningEn, ai.phonetic, ai.wordType, ai.usage, ai.example, ai.exampleVi, ai.cefrLevel || 'B1']
+          );
+          translated++;
+          results.push({ word: ai.word, status: '✅ OK', meaningVi: ai.meaningVi });
+        } catch (dbErr: any) {
+          results.push({ word: ai.word, status: `❌ DB error: ${dbErr.message?.slice(0, 40)}` });
+        }
+      }
+    } else {
+      results.push({ word: 'batch', status: '❌ AI returned invalid data' });
+    }
+
+    // Count remaining
+    const { rows: countRows } = await pool.query(
+      `SELECT COUNT(*)::int as remaining FROM vocabulary_words 
+       WHERE meaning_vi IS NULL OR meaning_vi = '' OR meaning_vi = word`
+    );
+
+    console.log(`[Bulk Translate] Done: ${translated}/${untranslated.length} translated, ${countRows[0].remaining} remaining`);
+
+    res.json({ 
+      success: true, 
+      translated, 
+      total: untranslated.length,
+      remaining: countRows[0].remaining,
+      results 
+    });
+  } catch (error: any) {
+    console.error('Bulk translate error:', error.message);
+    res.status(500).json({ error: 'Bulk translation failed', message: error.message });
   }
 });
 
