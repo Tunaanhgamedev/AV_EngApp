@@ -2,7 +2,7 @@
 
 # 🚀 AV_EngApp
 
-<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=28&duration=3000&pause=1000&color=00C2FF&center=true&vCenter=true&width=900&lines=AI-Powered+English+Learning+Platform;Vocabulary+%2B+Speaking+%2B+AI+Tutor;Built+with+NextJS+%2B+ExpressJS+%2B+OpenAI" />
+<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=28&duration=3000&pause=1000&color=00C2FF&center=true&vCenter=true&width=900&lines=AI-Powered+English+Learning+Platform;Vocabulary+%2B+Speaking+%2B+AI+Tutor;Built+with+NextJS+%2B+ExpressJS+%2B+GeminiAI" />
 
 <br/>
 
