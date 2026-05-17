@@ -134,7 +134,7 @@ export default function Dashboard() {
               <p className="text-xs text-rose-600 font-medium">Bạn có {reviewDue} từ cần được nhắc lại hôm nay.</p>
             </div>
           </div>
-          <Link href="/notebook/review" className="px-6 py-2 bg-rose-500 text-white rounded-xl font-bold text-xs hover:bg-rose-600 transition-all shadow-md">
+          <Link href="/review/quiz" className="px-6 py-2 bg-rose-500 text-white rounded-xl font-bold text-xs hover:bg-rose-600 transition-all shadow-md">
             ÔN TẬP NGAY
           </Link>
         </div>

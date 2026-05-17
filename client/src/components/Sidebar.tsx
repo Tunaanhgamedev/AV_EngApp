@@ -19,7 +19,9 @@ import {
   User as UserIcon,
   LogIn,
   LogOut,
-  NotebookPen
+  NotebookPen,
+  Volume2,
+  FileText
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
@@ -61,10 +63,12 @@ export function Sidebar() {
     { icon: Search, label: 'Dictionary', href: '/dictionary' },
     { icon: Languages, label: 'AI Translator', href: '/translate' },
     { icon: BookOpen, label: 'Learn Vocabulary', href: '/learn' },
-    { icon: BookMarked, label: 'Review System', href: '/notebook/review', badge: reviewCount },
+    { icon: BookMarked, label: 'Review System', href: '/review', badge: reviewCount },
     { icon: NotebookPen, label: 'My Notebook', href: '/notebook' },
+    { icon: FileText, label: 'Reading Room', href: '/reading' },
+    { icon: Headphones, label: 'Listening Lab', href: '/listening' },
+    { icon: Volume2, label: 'Pronunciation', href: '/pronunciation' },
     { icon: Mic2, label: 'Speaking AI', href: '/speaking' },
-    { icon: Headphones, label: 'Listening', href: '/listening' },
     { icon: PenTool, label: 'Writing Journal', href: '/journal' },
     { icon: MessageSquare, label: 'AI Chat', href: '/chat' },
     { icon: Gamepad2, label: 'Quiz & Games', href: '/games' },

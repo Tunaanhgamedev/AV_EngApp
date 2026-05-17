@@ -19,15 +19,15 @@ interface NotebookWord {
   nextReviewAt?: string; savedAt?: string;
 }
 
-const MASTERY = ['New','Familiar','Learning','Practiced','Mastered','Expert'];
-const MASTERY_CLR = ['bg-slate-200 text-slate-600','bg-blue-100 text-blue-700','bg-yellow-100 text-yellow-700','bg-orange-100 text-orange-700','bg-green-100 text-green-700','bg-purple-100 text-purple-700'];
-const TYPE_COLORS: Record<string,string> = { noun:'bg-sky-100 text-sky-700', verb:'bg-rose-100 text-rose-700', adjective:'bg-violet-100 text-violet-700', adverb:'bg-amber-100 text-amber-700', phrase:'bg-teal-100 text-teal-700', idiom:'bg-pink-100 text-pink-700' };
+const MASTERY = ['New', 'Familiar', 'Learning', 'Practiced', 'Mastered', 'Expert'];
+const MASTERY_CLR = ['bg-slate-200 text-slate-600', 'bg-blue-100 text-blue-700', 'bg-yellow-100 text-yellow-700', 'bg-orange-100 text-orange-700', 'bg-green-100 text-green-700', 'bg-purple-100 text-purple-700'];
+const TYPE_COLORS: Record<string, string> = { noun: 'bg-sky-100 text-sky-700', verb: 'bg-rose-100 text-rose-700', adjective: 'bg-violet-100 text-violet-700', adverb: 'bg-amber-100 text-amber-700', phrase: 'bg-teal-100 text-teal-700', idiom: 'bg-pink-100 text-pink-700' };
 const speak = (text: string, lang = 'en-US') => { if (typeof window === 'undefined') return; const u = new SpeechSynthesisUtterance(text); u.lang = lang; u.rate = 0.85; const v = window.speechSynthesis.getVoices().find(v => v.lang === 'en-US' && v.name.includes('Google')) || window.speechSynthesis.getVoices().find(v => v.lang === 'en-US'); if (v) u.voice = v; window.speechSynthesis.speak(u); };
 
 // ─── Word Card ────────────────────────────────────────────────────────────────
 function WordCard({ word, onDelete }: { word: NotebookWord; onDelete: (id: string) => void }) {
   const [expanded, setExpanded] = useState(false);
-  const [tab, setTab] = useState<'definition'|'usage'|'pronunciation'>('definition');
+  const [tab, setTab] = useState<'definition' | 'usage' | 'pronunciation'>('definition');
   const [insight, setInsight] = useState<WordInsight | null>(null);
   const [loading, setLoading] = useState(false);
   const reviewDue = word.nextReviewAt ? new Date(word.nextReviewAt) <= new Date() : false;
@@ -86,7 +86,7 @@ function WordCard({ word, onDelete }: { word: NotebookWord; onDelete: (id: strin
       {expanded && (
         <div className="border-t border-slate-100 animate-in slide-in-from-top-2 duration-300">
           <div className="flex border-b border-slate-100 bg-slate-50/50">
-            {(['definition','usage','pronunciation'] as const).map(t => (
+            {(['definition', 'usage', 'pronunciation'] as const).map(t => (
               <button key={t} onClick={() => setTab(t)} className={cn("flex-1 py-3 text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-1.5", tab === t ? "text-primary border-b-2 border-primary bg-white" : "text-slate-400 hover:text-slate-600")}>
                 {t === 'definition' && <BookMarked className="w-3.5 h-3.5" />}
                 {t === 'usage' && <Lightbulb className="w-3.5 h-3.5" />}
@@ -166,11 +166,11 @@ function WordCard({ word, onDelete }: { word: NotebookWord; onDelete: (id: strin
 
 // ─── Add Word Panel ────────────────────────────────────────────────────────────
 function AddWordPanel({ onAdd }: { onAdd: (d: any) => Promise<void> }) {
-  const [word, setWord]           = useState('');
-  const [wordType, setWordType]   = useState('');
+  const [word, setWord] = useState('');
+  const [wordType, setWordType] = useState('');
   const [meaningVi, setMeaningVi] = useState('');
-  const [expanded, setExpanded]   = useState(false);
-  const [loading, setLoading]     = useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const wordCount = word.trim().split(/\s+/).length;
   const isTooLong = wordCount >= 2;
@@ -214,7 +214,7 @@ function AddWordPanel({ onAdd }: { onAdd: (d: any) => Promise<void> }) {
                 <div>
                   <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block">Loại từ</label>
                   <div className="flex flex-wrap gap-2">
-                    {['noun','verb','adjective','adverb','other'].map(t => (
+                    {['noun', 'verb', 'adjective', 'adverb', 'other'].map(t => (
                       <button key={t} type="button" onClick={() => setWordType(t)} className={cn("px-4 py-2 rounded-xl text-xs font-bold border-2 transition-all", wordType === t ? "bg-primary text-white border-primary" : "bg-white text-slate-500 border-slate-200")}>
                         {t === 'noun' ? 'Danh từ' : t === 'verb' ? 'Động từ' : t === 'adjective' ? 'Tính từ' : t === 'adverb' ? 'Trạng từ' : 'Khác'}
                       </button>
@@ -245,10 +245,10 @@ import { useRouter } from 'next/navigation';
 export default function NotebookPage() {
   const { user, signInWithGoogle } = useAuth();
   const router = useRouter();
-  const [words, setWords]         = useState<NotebookWord[]>([]);
-  const [loading, setLoading]     = useState(true);
-  const [search, setSearch]       = useState('');
-  const [toast, setToast]         = useState<{ msg: string; ok: boolean } | null>(null);
+  const [words, setWords] = useState<NotebookWord[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
+  const [toast, setToast] = useState<{ msg: string; ok: boolean } | null>(null);
 
   const showToast = (msg: string, ok = true) => { setToast({ msg, ok }); setTimeout(() => setToast(null), 3000); };
   const fetchWords = useCallback(async () => {
@@ -272,8 +272,16 @@ export default function NotebookPage() {
       method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
       body: JSON.stringify(form)
     });
-    if (!res.ok) { showToast('Không thể thêm từ', false); return; }
-    showToast(`✨ Đã thêm "${form.word}" vào Notebook!`);
+    if (!res.ok) { 
+      const errData = await res.json().catch(() => ({}));
+      showToast(errData.error || 'Không thể thêm từ', false); 
+      return; 
+    }
+    const data = await res.json();
+    const dictMsg = data.syncedToDictionary 
+      ? ` → Đã đồng bộ vào Dictionary (${data.cefrLevel})`
+      : '';
+    showToast(`✨ Đã thêm "${form.word}" vào Notebook!${dictMsg}`);
     fetchWords();
   };
 
@@ -299,15 +307,15 @@ export default function NotebookPage() {
   return (
     <div className="space-y-8 pb-10">
       {toast && <div className={cn("fixed top-6 right-6 z-50 px-6 py-3 rounded-xl font-bold text-sm shadow-2xl animate-in slide-in-from-right-4", toast.ok ? "bg-slate-900 text-white" : "bg-rose-500 text-white")}>{toast.msg}</div>}
-      
+
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-black flex items-center gap-3"><BookMarked className="w-8 h-8 text-primary" />Notebook</h1>
           <p className="text-slate-500 font-medium">Lưu trữ từ vựng đơn lẻ để ôn tập chuyên sâu cùng EngBot AI.</p>
         </div>
         <div className="flex items-center gap-3">
-          <button 
-            onClick={() => router.push('/notebook/review')}
+          <button
+            onClick={() => router.push('/review')}
             className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-xl font-bold hover:scale-105 transition-all shadow-lg"
           >
             <RotateCcw className="w-4 h-4" /> Ôn tập
@@ -323,14 +331,14 @@ export default function NotebookPage() {
       {/* Review CTA Banner - Always visible but dynamic */}
       <div className={cn(
         "premium-card p-6 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl relative overflow-hidden group border-none",
-        reviewDue > 0 
-          ? "bg-gradient-to-r from-primary to-indigo-600 text-white shadow-primary/20" 
+        reviewDue > 0
+          ? "bg-gradient-to-r from-primary to-indigo-600 text-white shadow-primary/20"
           : "bg-white text-slate-800 border-2 border-slate-100"
       )}>
         <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none group-hover:scale-110 transition-transform duration-500">
           <Brain className={cn("w-32 h-32", reviewDue > 0 ? "text-white" : "text-primary")} />
         </div>
-        
+
         <div className="space-y-1 relative z-10 text-center md:text-left">
           <h2 className="text-xl font-black flex items-center justify-center md:justify-start gap-2">
             {reviewDue > 0 ? (
@@ -344,14 +352,14 @@ export default function NotebookPage() {
             )}
           </h2>
           <p className={cn("font-medium", reviewDue > 0 ? "text-white/80" : "text-slate-500")}>
-            {reviewDue > 0 
+            {reviewDue > 0
               ? `Bạn có ${reviewDue} từ vựng đang chờ được nhắc lại để không bị quên.`
               : "Bạn không có từ nào đến hạn ôn tập. Nhưng bạn vẫn có thể luyện tập thêm để nhớ lâu hơn!"}
           </p>
         </div>
 
-        <button 
-          onClick={() => router.push('/notebook/review')}
+        <button
+          onClick={() => router.push('/review/quiz')}
           className={cn(
             "px-8 py-3.5 rounded-2xl font-black text-sm shadow-xl hover:scale-105 active:scale-95 transition-all relative z-10 flex items-center gap-2",
             reviewDue > 0 ? "bg-white text-primary" : "bg-slate-900 text-white"

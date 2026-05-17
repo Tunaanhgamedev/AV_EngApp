@@ -110,8 +110,8 @@ export default function ReviewPage() {
         <h1 className="text-2xl font-black">Tuyệt vời! Bạn đã hoàn thành hết bài tập</h1>
         <p className="text-slate-500 mt-2">Hôm nay không còn từ vựng nào cần ôn tập. Hãy quay lại vào ngày mai nhé!</p>
       </div>
-      <button onClick={() => router.push('/notebook')} className="px-8 py-3 bg-slate-900 text-white rounded-xl font-bold shadow-xl hover:scale-105 transition-all flex items-center gap-2">
-        <ArrowLeft className="w-5 h-5" /> Quay lại Notebook
+      <button onClick={() => router.push('/review')} className="px-8 py-3 bg-slate-900 text-white rounded-xl font-bold shadow-xl hover:scale-105 transition-all flex items-center gap-2">
+        <ArrowLeft className="w-5 h-5" /> Quay lại Dashboard
       </button>
     </div>
   );
@@ -139,7 +139,7 @@ export default function ReviewPage() {
           </div>
         </div>
         <div className="space-y-3 pt-4">
-          <button onClick={() => router.push('/notebook')} className="w-full py-4 bg-slate-900 text-white rounded-2xl font-black text-sm shadow-xl hover:scale-[1.02] active:scale-95 transition-all">TIẾP TỤC HỌC</button>
+          <button onClick={() => router.push('/review')} className="w-full py-4 bg-slate-900 text-white rounded-2xl font-black text-sm shadow-xl hover:scale-[1.02] active:scale-95 transition-all">TIẾP TỤC HỌC</button>
           <button onClick={() => window.location.reload()} className="w-full py-4 bg-white border-2 border-slate-100 text-slate-600 rounded-2xl font-black text-sm hover:bg-slate-50 transition-all flex items-center justify-center gap-2">
             <RotateCcw className="w-4 h-4" /> ÔN LẠI LẦN NỮA
           </button>
@@ -154,7 +154,7 @@ export default function ReviewPage() {
     <div className="max-w-2xl mx-auto space-y-8 py-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <button onClick={() => router.push('/notebook')} className="p-2 text-slate-400 hover:text-slate-600 transition-colors">
+        <button onClick={() => router.push('/review')} className="p-2 text-slate-400 hover:text-slate-600 transition-colors">
           <ArrowLeft className="w-6 h-6" />
         </button>
         <div className="flex-1 px-8">

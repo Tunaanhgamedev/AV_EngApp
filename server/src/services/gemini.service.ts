@@ -11,7 +11,7 @@ export class GeminiService {
    */
   static async analyzeJournal(content: string) {
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+      const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
       
       const prompt = `
         You are EngBot, an expert AI English teacher. Analyze the following journal entry written by an English learner.
@@ -47,7 +47,7 @@ export class GeminiService {
    */
   static async generateChatResponse(messages: any[], persona: string, scenario: string) {
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+      const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
       const chatMessages = messages.map(m => ({
         role: m.role === 'assistant' ? 'model' : 'user',
@@ -90,7 +90,7 @@ export class GeminiService {
    */
   static async explainWord(word: string) {
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+      const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
       
       const prompt = `
         You are EngBot, an expert AI English teacher. Explain the English word "${word}".
@@ -124,30 +124,28 @@ export class GeminiService {
    */
   static async enrichWordData(word: string) {
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+      const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
       
       const prompt = `
-        As EngBot (Expert English Teacher), provide full metadata for the word "${word}".
-        Include:
-        - Phonetic (IPA)
-        - Meaning in English
-        - Meaning in Vietnamese
-        - Word type (v, n, adj, adv)
-        - CEFR Level (A1, A2, B1, B2, C1, C2)
-        - Usage note (concise)
-        - 1 Example sentence in English
-        - Vietnamese translation of that example
+        As EngBot (Expert English Teacher), provide COMPLETE metadata for the English word "${word}".
 
-        Respond strictly in JSON format:
+        CRITICAL RULES:
+        1. "meaningVi" MUST be a proper Vietnamese translation — NEVER leave it empty, NEVER use the English word itself.
+        2. "example" MUST be a real, natural English sentence using "${word}" in context.
+        3. "exampleVi" MUST be the Vietnamese translation of that example sentence.
+        4. "usage" MUST explain when/how to use this word (e.g., "Used in formal writing", "Common in academic contexts").
+        5. For advanced words (C1/C2), provide clear, precise Vietnamese equivalents.
+
+        Respond STRICTLY in this JSON format (no extra text):
         {
-          "phonetic": "/.../",
-          "meaningEn": "...",
-          "meaningVi": "...",
-          "wordType": "...",
-          "cefrLevel": "...",
-          "usage": "...",
-          "example": "...",
-          "exampleVi": "..."
+          "phonetic": "/IPA transcription/",
+          "meaningEn": "clear English definition",
+          "meaningVi": "nghĩa tiếng Việt chính xác",
+          "wordType": "v/n/adj/adv/prep/conj",
+          "cefrLevel": "A1/A2/B1/B2/C1/C2",
+          "usage": "khi nào và cách dùng từ này",
+          "example": "A natural English sentence using the word",
+          "exampleVi": "Bản dịch tiếng Việt của câu ví dụ"
         }
       `;
 
@@ -170,7 +168,7 @@ export class GeminiService {
    */
   static async generateReviewQuestion(word: string) {
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+      const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
       
       const prompt = `
         As EngBot (Expert English Teacher), create a challenging multiple-choice question for the word "${word}".

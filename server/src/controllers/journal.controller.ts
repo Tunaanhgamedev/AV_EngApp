@@ -40,11 +40,11 @@ export const createJournalEntry = async (req: Request, res: Response) => {
 };
 
 export const getJournalHistory = async (req: Request, res: Response) => {
-  const { userId } = req.params;
+  const userId = req.params.userId as string;
 
   try {
     const history = await prisma.journalEntry.findMany({
-      where: { userId },
+      where: { userId: String(userId) },
       orderBy: { createdAt: 'desc' }
     });
     res.json(history);

@@ -62,7 +62,7 @@ export default function LearnPage() {
           const token = await user.getIdToken();
           headers['Authorization'] = `Bearer ${token}`;
         }
-        const res = await fetch(`http://localhost:5000/api/vocabulary/learn-new?level=${selectedLevel}&limit=15`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/vocabulary/learn-new?level=${selectedLevel}&limit=15`, {
           headers
         });
         const data = await res.json();
@@ -133,7 +133,7 @@ export default function LearnPage() {
     if (user && word) {
       try {
         const token = await user.getIdToken();
-        await fetch('http://localhost:5000/api/vocabulary/save', {
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/vocabulary/save`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -304,7 +304,9 @@ export default function LearnPage() {
               <div className="space-y-1">
                 <span className="text-emerald-400/60 text-[10px] font-black uppercase tracking-[0.2em]">Vietnamese Meaning</span>
                 <p className="text-4xl text-emerald-400 font-bold tracking-tight">
-                  {currentWord.meaningVi || 'Đang cập nhật...'}
+                  {currentWord.meaningVi && currentWord.meaningVi !== currentWord.word 
+                    ? currentWord.meaningVi 
+                    : <span className="flex items-center justify-center gap-2 text-2xl text-white/50"><Loader2 className="w-6 h-6 animate-spin" />AI đang dịch...</span>}
                 </p>
               </div>
 
@@ -336,10 +338,10 @@ export default function LearnPage() {
                 </div>
                 <div>
                   <p className="text-white font-medium italic">
-                    {currentWord.example || `Example for ${currentWord.word} coming soon...`}
+                    {currentWord.example || `"${currentWord.word}" is commonly used in everyday English.`}
                   </p>
                   <p className="text-emerald-400/70 text-xs mt-1 italic">
-                    {currentWord.exampleVi || 'Dịch nghĩa ví dụ đang được cập nhật...'}
+                    {currentWord.exampleVi || ''}
                   </p>
                 </div>
               </div>

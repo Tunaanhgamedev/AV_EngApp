@@ -3,14 +3,14 @@ import prisma from '../lib/prisma';
 import { AIService } from '../services/ai.service';
 
 export const sendMessage = async (req: Request, res: Response) => {
-  const { userId, sessionId, message, persona, scenario, history } = req.body;
+  const { userId, message, persona, scenario, history } = req.body;
 
   if (!message) {
     return res.status(400).json({ error: 'Message is required' });
   }
 
   try {
-    // 1. Prepare messages for OpenAI (history + new message)
+    // 1. Prepare messages for AI (history + new message)
     const messages = [
       ...history,
       { role: "user", content: message }
@@ -19,27 +19,17 @@ export const sendMessage = async (req: Request, res: Response) => {
     // 2. Get AI Response
     const aiResult = await AIService.generateChatResponse(messages, persona, scenario);
 
-    // 3. (Optional) Save to Database if sessionId exists
-    if (sessionId) {
+    // 3. Save to Database
+    try {
       await prisma.aIChatHistory.create({
         data: {
           userId,
-          sessionId,
-          role: 'user',
-          message: message,
+          userMessage: message,
+          aiResponse: JSON.stringify(aiResult),
         }
       });
-
-      await prisma.aIChatHistory.create({
-        data: {
-          userId,
-          sessionId,
-          role: 'assistant',
-          message: aiResult.aiMessage,
-          translation: aiResult.translation,
-          feedback: aiResult.tutorFeedback
-        }
-      });
+    } catch (dbErr) {
+      console.error('Failed to save chat history:', dbErr);
     }
 
     res.json(aiResult);
@@ -50,11 +40,11 @@ export const sendMessage = async (req: Request, res: Response) => {
 };
 
 export const getChatHistory = async (req: Request, res: Response) => {
-  const { userId, sessionId } = req.params;
+  const userId = req.params.userId as string;
 
   try {
     const history = await prisma.aIChatHistory.findMany({
-      where: { userId, sessionId },
+      where: { userId: String(userId) },
       orderBy: { createdAt: 'asc' }
     });
     res.json(history);

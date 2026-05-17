@@ -65,19 +65,24 @@ export default function DictionaryPage() {
     }
   };
 
-  // Fetch words for the list
-  const fetchWordlist = useCallback(async () => {
+  // Stable fetch function using direct params (no stale closure)
+  const fetchWordlist = useCallback(async (
+    fetchPage: number,
+    fetchLetter: string | null,
+    fetchLevel: string | null,
+    fetchSearch: string
+  ) => {
     setLoadingList(true);
     try {
       const params = new URLSearchParams({
-        page: page.toString(),
-        limit: '12',
-        ...(selectedLetter && { letter: selectedLetter }),
-        ...(selectedLevel && { level: selectedLevel }),
-        ...(searchTerm && { search: searchTerm })
+        page: fetchPage.toString(),
+        ...(fetchLetter && { letter: fetchLetter }),
+        ...(fetchLevel && { level: fetchLevel }),
+        ...(fetchSearch && { search: fetchSearch })
       });
 
-      const res = await fetch(`http://localhost:5000/api/vocabulary/wordlist?${params}`);
+      const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+      const res = await fetch(`${API_BASE}/vocabulary/wordlist?${params}`);
       const data = await res.json();
       setWords(data.words || []);
       setTotalPages(data.pages || 1);
@@ -87,21 +92,32 @@ export default function DictionaryPage() {
     } finally {
       setLoadingList(false);
     }
-  }, [page, selectedLetter, selectedLevel, searchTerm]);
+  }, []);
 
-  // Sync search term and wordlist
+  // Debounced search (only for typing — 400ms delay)
   useEffect(() => {
     const timer = setTimeout(() => {
       setPage(1);
-      fetchWordlist();
-    }, 400); // Debounce
+      fetchWordlist(1, selectedLetter, selectedLevel, searchTerm);
+    }, 400);
     return () => clearTimeout(timer);
-  }, [searchTerm, selectedLetter, selectedLevel]);
+  }, [searchTerm]); // Only debounce text input changes
 
-  // Page change
+  // Instant filter changes (letter or level click — no debounce)
   useEffect(() => {
-    fetchWordlist();
+    setPage(1);
+    fetchWordlist(1, selectedLetter, selectedLevel, searchTerm);
+  }, [selectedLetter, selectedLevel]);
+
+  // Page navigation
+  useEffect(() => {
+    fetchWordlist(page, selectedLetter, selectedLevel, searchTerm);
   }, [page]);
+
+  // Initial load
+  useEffect(() => {
+    fetchWordlist(1, selectedLetter, selectedLevel, searchTerm);
+  }, []);
 
   const saveWord = async (word: any) => {
     if (!user) {
@@ -239,6 +255,16 @@ export default function DictionaryPage() {
                     <p className="text-sm text-slate-600 font-medium">{wordData.usage}</p>
                   </div>
                 )}
+
+                {wordData.example && (
+                  <div className="p-6 bg-blue-50/50 rounded-2xl border border-blue-100/50 space-y-2">
+                    <p className="text-xs font-black text-blue-400 uppercase tracking-widest">Example</p>
+                    <p className="text-sm text-slate-700 font-medium italic">"{wordData.example}"</p>
+                    {wordData.exampleVi && (
+                      <p className="text-xs text-blue-500/70 italic mt-1">→ {wordData.exampleVi}</p>
+                    )}
+                  </div>
+                )}
               </div>
 
               <button 
@@ -352,6 +378,11 @@ export default function DictionaryPage() {
                     <p className="text-sm text-slate-600 line-clamp-2 font-medium leading-relaxed">
                       {word.meaningEn}
                     </p>
+                    {word.meaningVi && (
+                      <p className="text-xs text-primary/60 italic line-clamp-1 mt-1">
+                        {word.meaningVi}
+                      </p>
+                    )}
                   </div>
                 </div>
 

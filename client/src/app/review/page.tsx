@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { 
+import {
   BookMarked,
   Zap,
   TrendingUp,
@@ -82,30 +82,30 @@ export default function ReviewPage() {
               <Zap className={cn("w-3 h-3 fill-current", dueCount > 0 ? "fill-orange-600" : "fill-green-600")} />
               {dueCount > 0 ? "Review session ready" : "All caught up for today"}
             </div>
-            
+
             <h2 className="text-4xl font-black leading-tight text-slate-800">
-              {dueCount > 0 
+              {dueCount > 0
                 ? <>You have <span className="text-primary">{dueCount} words</span> due for testing.</>
                 : "Your memory is at peak performance!"}
             </h2>
-            
+
             <p className="text-slate-500 text-lg font-medium">
-              {dueCount > 0 
+              {dueCount > 0
                 ? "Daily testing helps move words into your long-term memory. Let's practice those words from yesterday!"
                 : "Great job! You've reviewed all your words. Come back tomorrow for new challenges."}
             </p>
 
             <div className="flex flex-wrap gap-4 justify-center md:justify-start">
               {dueCount > 0 ? (
-                <Link 
+                <Link
                   href="/learn"
                   className="px-10 py-4 bg-primary text-white rounded-2xl font-black text-lg hover:opacity-90 transition-all shadow-xl shadow-primary/30 flex items-center gap-3 group"
                 >
-                  Start Review Now
+                  Bắt đầu ôn tập ngay
                   <ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
                 </Link>
               ) : (
-                <Link 
+                <Link
                   href="/learn"
                   className="px-10 py-4 bg-slate-900 text-white rounded-2xl font-black text-lg hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/20 flex items-center gap-3"
                 >
@@ -115,7 +115,7 @@ export default function ReviewPage() {
               )}
             </div>
           </div>
-          
+
           <div className="w-full md:w-1/3 flex justify-center">
             <div className="relative">
               <div className="w-48 h-48 rounded-full border-[12px] border-slate-50 flex items-center justify-center relative">
@@ -124,11 +124,11 @@ export default function ReviewPage() {
                   <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Memory Power</p>
                 </div>
                 <svg className="absolute -inset-3 w-54 h-54 rotate-[-90deg]" viewBox="0 0 100 100">
-                  <circle 
-                    cx="50" cy="50" r="45" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    strokeWidth="8" 
+                  <circle
+                    cx="50" cy="50" r="45"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="8"
                     className="text-primary"
                     strokeDasharray="282.7"
                     strokeDashoffset={dueCount === 0 ? "0" : "50.8"}

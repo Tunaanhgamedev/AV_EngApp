@@ -113,31 +113,47 @@ router.get('/learn-new', authenticate, async (req: any, res) => {
       );
     }
 
-    // On-the-fly enrichment (Sequential to avoid rate limits)
+    // On-the-fly enrichment (Sequential with rate limit handling)
     const enrichedWords = [];
+    let enrichCount = 0;
+    const MAX_ENRICH_PER_REQUEST = 4; // Free tier: 5 calls/min, leave 1 buffer
+    
+    const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+    
     for (const word of finalWords) {
-      if (!word.phonetic || !word.usage || !word.example) {
-        console.log(`Lazy-enriching: ${word.word}...`);
+      const needsEnrichment = !word.meaningVi || !word.usage || !word.example || !word.exampleVi || !word.phonetic || word.meaningVi === word.word;
+      if (needsEnrichment && enrichCount < MAX_ENRICH_PER_REQUEST) {
+        console.log(`Lazy-enriching: ${word.word} (missing: ${[!word.meaningVi && 'meaningVi', !word.usage && 'usage', !word.example && 'example', !word.exampleVi && 'exampleVi', !word.phonetic && 'phonetic'].filter(Boolean).join(', ')})...`);
+        
+        // Rate limit: wait between requests
+        if (enrichCount > 0) {
+          await delay(1500);
+        }
+        
+        let aiData = null;
         try {
-          const aiData = await GeminiService.enrichWordData(word.word);
-          if (aiData) {
-            // Update DB in background
-            prisma.vocabularyWord.update({
-              where: { id: word.id },
-              data: {
-                phonetic: aiData.phonetic,
-                meaningEn: aiData.meaningEn,
-                meaningVi: aiData.meaningVi,
-                wordType: aiData.wordType,
-                cefrLevel: aiData.cefrLevel,
-                usage: aiData.usage,
-                example: aiData.example,
-                exampleVi: aiData.exampleVi
-              }
-            }).catch(err => console.error(`Failed to update DB for ${word.word}:`, err));
-            
-            enrichedWords.push({
-              ...word,
+          aiData = await GeminiService.enrichWordData(word.word);
+        } catch (err: any) {
+          // Retry once on rate limit (429)
+          if (err?.message?.includes('429') || err?.status === 429) {
+            console.log(`Rate limited, waiting 12s before retry for ${word.word}...`);
+            await delay(12000);
+            try {
+              aiData = await GeminiService.enrichWordData(word.word);
+            } catch (retryErr) {
+              console.error(`Retry also failed for ${word.word}:`, retryErr);
+            }
+          } else {
+            console.error(`Enrichment failed for ${word.word}:`, err);
+          }
+        }
+        
+        if (aiData) {
+          enrichCount++;
+          // Update DB in background
+          prisma.vocabularyWord.update({
+            where: { id: word.id },
+            data: {
               phonetic: aiData.phonetic,
               meaningEn: aiData.meaningEn,
               meaningVi: aiData.meaningVi,
@@ -146,11 +162,21 @@ router.get('/learn-new', authenticate, async (req: any, res) => {
               usage: aiData.usage,
               example: aiData.example,
               exampleVi: aiData.exampleVi
-            });
-            continue;
-          }
-        } catch (err) {
-          console.error(`Enrichment failed for ${word.word}:`, err);
+            }
+          }).catch(err => console.error(`Failed to update DB for ${word.word}:`, err));
+          
+          enrichedWords.push({
+            ...word,
+            phonetic: aiData.phonetic,
+            meaningEn: aiData.meaningEn,
+            meaningVi: aiData.meaningVi,
+            wordType: aiData.wordType,
+            cefrLevel: aiData.cefrLevel,
+            usage: aiData.usage,
+            example: aiData.example,
+            exampleVi: aiData.exampleVi
+          });
+          continue;
         }
       }
       enrichedWords.push(word);
@@ -233,7 +259,7 @@ router.get('/search', async (req, res) => {
 
     // Step 1: Try exact match first
     let result = await pool.query(
-      `SELECT id, word, phonetic, meaning_en as "meaningEn", meaning_vi as "meaningVi", word_type as "wordType", cefr_level as "cefrLevel", audio_us as "audioUs", additional_examples as "additionalExamples", synonyms, antonyms
+      `SELECT id, word, phonetic, meaning_en as "meaningEn", meaning_vi as "meaningVi", word_type as "wordType", cefr_level as "cefrLevel", audio_us as "audioUs", additional_examples as "additionalExamples", synonyms, antonyms, usage, example, example_vi as "exampleVi"
        FROM vocabulary_words 
        WHERE LOWER(word) = LOWER($1) LIMIT 1`,
       [word]
@@ -242,7 +268,7 @@ router.get('/search', async (req, res) => {
     // Step 2: If no exact match, try prefix match (fuzzy)
     if (result.rows.length === 0) {
       result = await pool.query(
-        `SELECT id, word, phonetic, meaning_en as "meaningEn", meaning_vi as "meaningVi", word_type as "wordType", cefr_level as "cefrLevel", audio_us as "audioUs", additional_examples as "additionalExamples", synonyms, antonyms
+        `SELECT id, word, phonetic, meaning_en as "meaningEn", meaning_vi as "meaningVi", word_type as "wordType", cefr_level as "cefrLevel", audio_us as "audioUs", additional_examples as "additionalExamples", synonyms, antonyms, usage, example, example_vi as "exampleVi"
          FROM vocabulary_words 
          WHERE word ILIKE $1 
          ORDER BY LENGTH(word) ASC LIMIT 1`,
@@ -281,7 +307,7 @@ router.get('/wordlist', async (req, res) => {
 
     const where = conditions.join(' AND ');
     const { rows: words } = await pool.query(
-      `SELECT id, word, phonetic, meaning_en as "meaningEn", meaning_vi as "meaningVi", word_type as "wordType", cefr_level as "cefrLevel", audio_us as "audioUs"
+      `SELECT id, word, phonetic, meaning_en as "meaningEn", meaning_vi as "meaningVi", word_type as "wordType", cefr_level as "cefrLevel", audio_us as "audioUs", usage, example, example_vi as "exampleVi"
        FROM vocabulary_words WHERE ${where} ORDER BY word ASC LIMIT $${i++} OFFSET $${i++}`,
       [...params, limit, offset]
     );
@@ -320,7 +346,7 @@ router.get('/notebook', authenticate, async (req: any, res) => {
   }
 });
 
-// POST /notebook - Add a new word to personal notebook (with AI auto-lookup)
+// POST /notebook - Add a new word to personal notebook (with FULL Dictionary sync)
 router.post('/notebook', authenticate, async (req: any, res) => {
   try {
     const userId = req.user.uid;
@@ -331,64 +357,104 @@ router.post('/notebook', authenticate, async (req: any, res) => {
     }
 
     const normalizedWord = word.trim();
+    const wordCount = normalizedWord.split(/\s+/).filter(Boolean).length;
 
-    // Step 1: Check if word already exists in global vocabulary
+    if (wordCount > 1) {
+      return res.status(400).json({ 
+        error: 'Chỉ lưu từ vựng đơn lẻ vào notebook. Cụm từ hoặc câu không được hỗ trợ lưu tại đây.' 
+      });
+    }
+
+    // Step 1: Check if word already exists in global vocabulary (Dictionary)
     let vocabWord = await prisma.vocabularyWord.findFirst({
       where: { word: { equals: normalizedWord, mode: 'insensitive' } }
     });
 
-    // Step 2: Use user-provided data or AI lookup
+    // Step 2: Determine if the word needs full enrichment for Dictionary quality
+    const isNewWord = !vocabWord;
+    const needsFullEnrichment = isNewWord || 
+      !vocabWord?.meaningVi || 
+      !(vocabWord as any)?.usage || 
+      !(vocabWord as any)?.example || 
+      !(vocabWord as any)?.exampleVi || 
+      !vocabWord?.phonetic || 
+      vocabWord?.cefrLevel === 'Custom';
+
+    // Step 3: Use enrichWordData() for FULL Dictionary-quality data (not just explainWord)
     let finalMeaningEn = meaningEn || (vocabWord?.meaningEn) || '';
     let finalMeaningVi = meaningVi || (vocabWord?.meaningVi) || '';
     let finalWordType  = wordType  || (vocabWord?.wordType) || 'Unknown';
     let finalPhonetic  = phonetic  || (vocabWord?.phonetic) || '';
+    let finalCefrLevel = (vocabWord?.cefrLevel && vocabWord.cefrLevel !== 'Custom') ? vocabWord.cefrLevel : '';
+    let finalUsage     = (vocabWord as any)?.usage || '';
+    let finalExample   = (vocabWord as any)?.example || '';
+    let finalExampleVi = (vocabWord as any)?.exampleVi || '';
+    let syncedToDictionary = false;
 
-    // Auto-lookup via Gemini if missing core info
-    if (!finalMeaningVi || !finalMeaningEn) {
+    if (needsFullEnrichment) {
       try {
-        const { GeminiService } = await import('../services/gemini.service');
-        const aiResult = await GeminiService.explainWord(normalizedWord);
-        if (aiResult) {
-          if (!finalMeaningEn) finalMeaningEn = aiResult.meaning || '';
-          if (!finalMeaningVi) finalMeaningVi = aiResult.meaningVi || '';
-          if (finalWordType === 'Unknown') finalWordType = aiResult.wordType || 'Unknown';
-          if (!finalPhonetic) finalPhonetic = aiResult.phonetic || '';
+        console.log(`[Dictionary Sync] Full enrichment for: "${normalizedWord}" (new=${isNewWord})`);
+        const aiData = await GeminiService.enrichWordData(normalizedWord);
+        if (aiData) {
+          if (!finalMeaningEn || finalMeaningEn.length < 5) finalMeaningEn = aiData.meaningEn || finalMeaningEn;
+          if (!finalMeaningVi || finalMeaningVi === normalizedWord) finalMeaningVi = aiData.meaningVi || finalMeaningVi;
+          if (finalWordType === 'Unknown') finalWordType = aiData.wordType || finalWordType;
+          if (!finalPhonetic) finalPhonetic = aiData.phonetic || '';
+          if (!finalCefrLevel) finalCefrLevel = aiData.cefrLevel || 'B1';
+          if (!finalUsage) finalUsage = aiData.usage || '';
+          if (!finalExample) finalExample = aiData.example || '';
+          if (!finalExampleVi) finalExampleVi = aiData.exampleVi || '';
+          syncedToDictionary = true;
         }
       } catch (aiErr) {
-        console.warn('AI lookup failed during notebook save:', aiErr);
+        console.warn('[Dictionary Sync] AI enrichment failed, using partial data:', aiErr);
       }
     }
 
+    // Ensure CEFR level is always valid (never leave as 'Custom')
+    if (!finalCefrLevel || finalCefrLevel === 'Custom') {
+      finalCefrLevel = 'B1'; // Default to B1 if AI didn't provide one
+    }
+
+    // Step 4: Insert or update the global vocabulary_words table (= the Dictionary)
     if (!vocabWord) {
       const id = require('crypto').randomUUID();
       await (prisma as any).$executeRawUnsafe(
-        `INSERT INTO vocabulary_words (id, word, phonetic, meaning_en, meaning_vi, word_type, cefr_level)
-         VALUES ($1, $2, $3, $4, $5, $6, $7)
+        `INSERT INTO vocabulary_words (id, word, phonetic, meaning_en, meaning_vi, word_type, cefr_level, usage, example, example_vi)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
          ON CONFLICT (word) DO NOTHING`,
-        id, normalizedWord, finalPhonetic, finalMeaningEn, finalMeaningVi, finalWordType, 'Custom'
+        id, normalizedWord, finalPhonetic, finalMeaningEn, finalMeaningVi, finalWordType, finalCefrLevel, finalUsage, finalExample, finalExampleVi
       );
       
       vocabWord = await prisma.vocabularyWord.findFirst({
         where: { word: { equals: normalizedWord, mode: 'insensitive' } }
       });
+      syncedToDictionary = true;
+      console.log(`[Dictionary Sync] NEW word "${normalizedWord}" added to Dictionary as ${finalCefrLevel}`);
     } else {
-      // Update existing word with user provided data if it was missing or generic
+      // Update existing Dictionary entry with enriched data
       await prisma.vocabularyWord.update({
         where: { id: vocabWord.id },
         data: {
           meaningVi: finalMeaningVi,
           wordType: finalWordType,
           phonetic: finalPhonetic,
-          meaningEn: finalMeaningEn
+          meaningEn: finalMeaningEn,
+          cefrLevel: finalCefrLevel,
+          usage: finalUsage || undefined,
+          example: finalExample || undefined,
+          exampleVi: finalExampleVi || undefined
         }
       });
+      syncedToDictionary = true;
+      console.log(`[Dictionary Sync] UPDATED word "${normalizedWord}" in Dictionary (${finalCefrLevel})`);
     }
 
     if (!vocabWord) {
       return res.status(500).json({ error: 'Could not create vocabulary entry' });
     }
 
-    // Step 3: Add to user's personal notebook (isFavorite = true marks it as "user-added")
+    // Step 5: Add to user's personal notebook (isFavorite = true marks it as "user-added")
     const entry = await prisma.userLearnedWord.upsert({
       where: { userId_wordId: { userId, wordId: vocabWord.id } },
       update: { isFavorite: true, lastReviewedAt: new Date() },
@@ -402,13 +468,20 @@ router.post('/notebook', authenticate, async (req: any, res) => {
       }
     });
 
-    // Step 4: Award 5 XP for adding a new word
+    // Step 6: Award 5 XP for adding a new word
     await prisma.user.update({
       where: { id: userId },
       data: { xp: { increment: 5 } }
     });
 
-    res.json({ success: true, word: vocabWord, entry, context });
+    res.json({ 
+      success: true, 
+      word: vocabWord, 
+      entry, 
+      context,
+      syncedToDictionary, // Tell frontend the word is now in Dictionary
+      cefrLevel: finalCefrLevel
+    });
   } catch (error: any) {
     console.error('Notebook POST error:', error);
     res.status(500).json({ error: 'Failed to add word', message: error.message });
@@ -456,14 +529,14 @@ router.get('/review/session', authenticate, async (req: any, res) => {
 
     // Fallback: If no words are strictly due, get the most recent ones for "Early Practice"
     if (dueEntries.length === 0) {
-      dueEntries = await prisma.userLearnedWord.findMany({
+      dueEntries = await (prisma.userLearnedWord.findMany as any)({
         where: {
           userId,
           isFavorite: true
         },
         include: { word: true },
         take: 10,
-        orderBy: { savedAt: 'desc' }
+        orderBy: { nextReviewAt: 'desc' }
       });
     }
 
