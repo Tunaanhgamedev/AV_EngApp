@@ -121,7 +121,7 @@ Learn Vocabulary • AI Chat • Speaking • Journal • Gamification
 | ORM            | Prisma                         |
 | Authentication | Firebase Auth                  |
 | Storage        | Firebase Storage               |
-| AI             | OpenAI API                     |
+| AI             | GEMINI API                     |
 | Deployment     | Render                         |
 
 ---
@@ -143,7 +143,7 @@ Learn Vocabulary • AI Chat • Speaking • Journal • Gamification
                   │
       ┌───────────┼───────────┐
       ▼           ▼           ▼
- PostgreSQL   Firebase     OpenAI
+ PostgreSQL   Firebase      GEMINI
   Supabase    Auth/Store      AI
 ```
 
@@ -157,7 +157,7 @@ flowchart LR
     FRONTEND --> BACKEND[Express API]
     BACKEND --> DB[(PostgreSQL)]
     BACKEND --> FIREBASE[(Firebase)]
-    BACKEND --> OPENAI[(OpenAI API)]
+    BACKEND --> GEMINIAI[(Gemini API)]
 ```
 
 ---
@@ -266,7 +266,7 @@ NEXT_PUBLIC_FIREBASE_APP_ID=
 
 ```env
 DATABASE_URL=
-OPENAI_API_KEY=
+GEMINIAI_API_KEY=
 JWT_SECRET=
 FIREBASE_PROJECT_ID=
 FIREBASE_CLIENT_EMAIL=
@@ -311,7 +311,7 @@ npm run dev
 | Database       | Supabase PostgreSQL |
 | Storage        | Firebase Storage    |
 | Authentication | Firebase Auth       |
-| AI Engine      | OpenAI API          |
+| AI Engine      | GEMINIAI API        |
 
 </div>
 
@@ -337,7 +337,7 @@ Use Supabase PostgreSQL.
 
 * `.env`
 * `firebase-service-account.json`
-* OpenAI keys
+* GeminiAI keys
 * Firebase private keys
 * Database credentials
 
