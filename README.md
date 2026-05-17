@@ -15,7 +15,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Firebase-Auth-orange?style=for-the-badge&logo=firebase" />
-  <img src="https://img.shields.io/badge/OpenAI-AI-red?style=for-the-badge&logo=openai" />
+  <img src="https://img.shields.io/badge/GeminiAI-AI-blue?style=for-the-badge&logo=geminiai" />
   <img src="https://img.shields.io/badge/Deploy-Render-purple?style=for-the-badge&logo=render" />
   <img src="https://img.shields.io/badge/License-MIT-success?style=for-the-badge" />
 </p>
