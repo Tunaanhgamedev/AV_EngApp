@@ -14,7 +14,10 @@ import {
   Plus,
   Check,
   Filter,
-  ChevronLeft
+  ChevronLeft,
+  Wand2,
+  RefreshCw,
+  Database
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { searchWord, saveWordToUser } from '@/services/vocabulary.service';
@@ -45,6 +48,11 @@ export default function DictionaryPage() {
   const [selectedLevel, setSelectedLevel] = useState<string | null>(searchParams.get('level'));
   const [savingId, setSavingId] = useState<string | null>(null);
   const [savedIds, setSavedIds] = useState<Set<string>>(new Set());
+
+  // Enrichment state
+  const [enriching, setEnriching] = useState(false);
+  const [enrichResult, setEnrichResult] = useState<{ enriched: number; remaining: number; results?: any[] } | null>(null);
+  const [showEnrichPanel, setShowEnrichPanel] = useState(false);
 
   // Handle precise search (the card)
   const handlePreciseSearch = async (term: string) => {
@@ -118,6 +126,29 @@ export default function DictionaryPage() {
   useEffect(() => {
     fetchWordlist(1, selectedLetter, selectedLevel, searchTerm);
   }, []);
+
+  // Batch enrichment handler
+  const handleBatchEnrich = async (batchSize = 10) => {
+    setEnriching(true);
+    try {
+      const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+      const res = await fetch(`${API_BASE}/vocabulary/enrich-batch`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ batchSize })
+      });
+      const data = await res.json();
+      setEnrichResult(data);
+      // Refresh current page to show updated data
+      if (data.enriched > 0) {
+        fetchWordlist(page, selectedLetter, selectedLevel, searchTerm);
+      }
+    } catch (err) {
+      console.error('Batch enrich error:', err);
+    } finally {
+      setEnriching(false);
+    }
+  };
 
   const saveWord = async (word: any) => {
     if (!user) {
@@ -307,7 +338,7 @@ export default function DictionaryPage() {
             {LEVELS.map(lvl => (
               <button 
                 key={lvl}
-                onClick={() => { setSelectedLevel(selectedLevel === lvl ? null : lvl); setPage(1); }}
+                onClick={() => setSelectedLevel(selectedLevel === lvl ? null : lvl)}
                 className={cn(
                   "px-6 py-2.5 rounded-xl text-sm font-black transition-all border-2",
                   selectedLevel === lvl ? "bg-[#002147] text-white border-[#002147] shadow-lg shadow-[#002147]/20" : "bg-white text-slate-400 border-slate-100 hover:border-[#002147]/30"
@@ -322,7 +353,7 @@ export default function DictionaryPage() {
         {/* Alphabet Picker */}
         <div className="flex flex-wrap gap-2 bg-slate-50/50 p-4 rounded-2xl">
           <button 
-            onClick={() => { setSelectedLetter(null); setPage(1); }}
+            onClick={() => setSelectedLetter(null)}
             className={cn(
               "px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-tighter transition-all",
               selectedLetter === null ? "bg-primary text-white" : "bg-white text-slate-400 hover:bg-slate-100"
@@ -333,16 +364,49 @@ export default function DictionaryPage() {
           {ALPHABET.map(l => (
             <button 
               key={l}
-              onClick={() => { setSelectedLetter(l); setPage(1); }}
+              onClick={() => setSelectedLetter(l)}
               className={cn(
                 "w-10 h-10 rounded-xl text-xs font-black transition-all",
-                selectedLetter === l ? "bg-primary text-white" : "bg-white text-slate-400 hover:bg-slate-100"
+                selectedLetter === l ? "bg-primary text-white shadow-md shadow-primary/20" : "bg-white text-slate-400 hover:bg-slate-100"
               )}
             >
               {l}
             </button>
           ))}
         </div>
+
+        {/* Active Filters Indicator */}
+        {(selectedLetter || selectedLevel || searchTerm) && (
+          <div className="flex items-center gap-3 px-4 py-3 bg-[#002147]/5 rounded-2xl animate-in fade-in duration-300">
+            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Đang lọc:</span>
+            <div className="flex items-center gap-2 flex-wrap">
+              {selectedLetter && (
+                <span className="px-3 py-1 bg-primary text-white text-xs font-bold rounded-lg flex items-center gap-1.5">
+                  Chữ {selectedLetter}
+                  <button onClick={() => setSelectedLetter(null)} className="hover:opacity-70">×</button>
+                </span>
+              )}
+              {selectedLevel && (
+                <span className="px-3 py-1 bg-[#002147] text-white text-xs font-bold rounded-lg flex items-center gap-1.5">
+                  {selectedLevel}
+                  <button onClick={() => setSelectedLevel(null)} className="hover:opacity-70">×</button>
+                </span>
+              )}
+              {searchTerm && (
+                <span className="px-3 py-1 bg-slate-700 text-white text-xs font-bold rounded-lg flex items-center gap-1.5">
+                  "{searchTerm}"
+                  <button onClick={() => setSearchTerm('')} className="hover:opacity-70">×</button>
+                </span>
+              )}
+            </div>
+            <button 
+              onClick={() => { setSelectedLetter(null); setSelectedLevel(null); setSearchTerm(''); }}
+              className="ml-auto text-xs font-bold text-slate-400 hover:text-rose-500 transition-colors"
+            >
+              Xóa tất cả
+            </button>
+          </div>
+        )}
 
         {/* Word Grid */}
         {loadingList ? (
@@ -480,6 +544,83 @@ export default function DictionaryPage() {
           </div>
         )}
       </div>
+
+      {/* Floating Enrich Panel */}
+      {user && (
+        <div className="fixed bottom-6 right-6 z-50">
+          {showEnrichPanel ? (
+            <div className="bg-white rounded-3xl shadow-2xl shadow-slate-900/20 border border-slate-100 p-6 w-80 space-y-4 animate-in slide-in-from-bottom-4 duration-300">
+              <div className="flex items-center justify-between">
+                <h4 className="font-black text-sm text-slate-800 flex items-center gap-2">
+                  <Database className="w-4 h-4 text-primary" />
+                  Bổ sung từ vựng
+                </h4>
+                <button onClick={() => setShowEnrichPanel(false)} className="text-slate-400 hover:text-slate-600 text-lg">
+                  ×
+                </button>
+              </div>
+              
+              <p className="text-xs text-slate-500">
+                Dùng AI để bổ sung nghĩa tiếng Việt, phiên âm, loại từ, cách dùng cho những từ còn thiếu.
+              </p>
+
+              {enrichResult && (
+                <div className="bg-slate-50 rounded-2xl p-4 space-y-2">
+                  <div className="flex justify-between text-xs">
+                    <span className="text-green-600 font-bold">✅ Đã bổ sung: {enrichResult.enriched}</span>
+                    <span className="text-amber-600 font-bold">⏳ Còn lại: {enrichResult.remaining}</span>
+                  </div>
+                  {enrichResult.remaining > 0 && (
+                    <div className="w-full bg-slate-200 rounded-full h-1.5">
+                      <div 
+                        className="bg-green-500 h-1.5 rounded-full transition-all duration-500" 
+                        style={{ width: `${Math.max(5, 100 - (enrichResult.remaining / (enrichResult.remaining + enrichResult.enriched) * 100))}%` }}
+                      />
+                    </div>
+                  )}
+                  {enrichResult.results && enrichResult.results.length > 0 && (
+                    <div className="max-h-32 overflow-y-auto space-y-1 mt-2">
+                      {enrichResult.results.map((r: any, i: number) => (
+                        <div key={i} className="text-[10px] text-slate-500 flex justify-between">
+                          <span className="font-bold">{r.word}</span>
+                          <span>{r.status}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <div className="flex gap-2">
+                <button
+                  onClick={() => handleBatchEnrich(5)}
+                  disabled={enriching}
+                  className="flex-1 px-4 py-3 bg-primary text-white rounded-xl font-bold text-xs hover:bg-primary/90 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  {enriching ? <Loader2 className="w-4 h-4 animate-spin" /> : <Wand2 className="w-4 h-4" />}
+                  {enriching ? 'Đang xử lý...' : '5 từ'}
+                </button>
+                <button
+                  onClick={() => handleBatchEnrich(10)}
+                  disabled={enriching}
+                  className="flex-1 px-4 py-3 bg-[#002147] text-white rounded-xl font-bold text-xs hover:bg-[#00316e] transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  {enriching ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
+                  {enriching ? 'Đang xử lý...' : '10 từ'}
+                </button>
+              </div>
+            </div>
+          ) : (
+            <button
+              onClick={() => setShowEnrichPanel(true)}
+              className="w-14 h-14 bg-gradient-to-br from-primary to-[#002147] text-white rounded-2xl shadow-2xl shadow-primary/30 flex items-center justify-center hover:scale-110 active:scale-95 transition-all"
+              title="Bổ sung từ vựng thiếu"
+            >
+              <Wand2 className="w-6 h-6" />
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }

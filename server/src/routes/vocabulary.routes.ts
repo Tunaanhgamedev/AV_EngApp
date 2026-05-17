@@ -287,10 +287,10 @@ router.get('/search', async (req, res) => {
   }
 });
 
-// Oxford 3000 Style Wordlist API
+// Oxford 3000 Style Wordlist API (with lazy enrichment)
 router.get('/wordlist', async (req, res) => {
   try {
-    const { letter, level, search, page = 1 } = req.query;
+    const { letter, level, search, page = 1, enrich = 'true' } = req.query;
     const limit = 50;
     const offset = (Number(page) - 1) * limit;
 
@@ -315,10 +315,178 @@ router.get('/wordlist', async (req, res) => {
       `SELECT COUNT(*)::int as total FROM vocabulary_words WHERE ${where}`, params
     );
 
+    // Lazy enrichment for incomplete words on current page (max 3 per request)
+    const shouldEnrich = enrich !== 'false';
+    if (shouldEnrich && words.length > 0) {
+      const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+      let enrichCount = 0;
+      const MAX_ENRICH = 3;
+
+      for (let idx = 0; idx < words.length && enrichCount < MAX_ENRICH; idx++) {
+        const w = words[idx];
+        const isMissingData = !w.meaningVi || w.meaningVi === w.word || !w.phonetic || !w.usage || !w.wordType || w.wordType === '-';
+
+        if (isMissingData) {
+          try {
+            if (enrichCount > 0) await delay(1200);
+            console.log(`[Dict Enrich] ${w.word} — missing: ${[!w.meaningVi && 'meaningVi', !w.phonetic && 'phonetic', !w.usage && 'usage', (!w.wordType || w.wordType === '-') && 'wordType'].filter(Boolean).join(', ')}`);
+
+            const aiData = await GeminiService.enrichWordData(w.word);
+            if (aiData) {
+              enrichCount++;
+              // Update the response object in-place
+              if (!w.meaningVi || w.meaningVi === w.word) words[idx].meaningVi = aiData.meaningVi;
+              if (!w.meaningEn || w.meaningEn.length < 5) words[idx].meaningEn = aiData.meaningEn;
+              if (!w.phonetic) words[idx].phonetic = aiData.phonetic;
+              if (!w.wordType || w.wordType === '-') words[idx].wordType = aiData.wordType;
+              if (!w.usage) words[idx].usage = aiData.usage;
+              if (!w.example) words[idx].example = aiData.example;
+              if (!w.exampleVi) words[idx].exampleVi = aiData.exampleVi;
+              if (w.cefrLevel === 'Custom' || w.cefrLevel === 'OXFORD3000') words[idx].cefrLevel = aiData.cefrLevel;
+
+              // Persist to DB in background
+              pool.query(
+                `UPDATE vocabulary_words SET 
+                  meaning_vi = COALESCE(NULLIF($2, ''), meaning_vi),
+                  meaning_en = COALESCE(NULLIF($3, ''), meaning_en),
+                  phonetic = COALESCE(NULLIF($4, ''), phonetic),
+                  word_type = COALESCE(NULLIF($5, ''), word_type),
+                  usage = COALESCE(NULLIF($6, ''), usage),
+                  example = COALESCE(NULLIF($7, ''), example),
+                  example_vi = COALESCE(NULLIF($8, ''), example_vi),
+                  cefr_level = CASE WHEN cefr_level IN ('Custom', 'OXFORD3000', '') OR cefr_level IS NULL THEN $9 ELSE cefr_level END
+                WHERE id = $1`,
+                [w.id, aiData.meaningVi, aiData.meaningEn, aiData.phonetic, aiData.wordType, aiData.usage, aiData.example, aiData.exampleVi, aiData.cefrLevel || 'B1']
+              ).catch(err => console.error(`[Dict Enrich] DB update failed for ${w.word}:`, err.message));
+            }
+          } catch (err: any) {
+            if (err?.message?.includes('429') || err?.status === 429) {
+              console.log(`[Dict Enrich] Rate limited, stopping enrichment for this request`);
+              break; // Stop enriching on rate limit
+            }
+            console.error(`[Dict Enrich] Failed for ${w.word}:`, err.message);
+          }
+        }
+      }
+
+      if (enrichCount > 0) {
+        console.log(`[Dict Enrich] Enriched ${enrichCount} words on page ${page}`);
+      }
+    }
+
     res.json({ words, total: cnt[0].total, pages: Math.ceil(cnt[0].total / limit) });
   } catch (error: any) {
     console.error('Wordlist error:', error.message);
     res.status(500).json({ error: 'Failed to fetch wordlist', message: error.message });
+  }
+});
+
+// ──────────────────────────────────────────────
+// BATCH ENRICHMENT: Fix all incomplete Dictionary words
+// ──────────────────────────────────────────────
+
+router.post('/enrich-batch', async (req, res) => {
+  try {
+    const batchSize = Math.min(Number(req.body?.batchSize) || 10, 15); // Max 15 per batch
+
+    // Find words missing critical data
+    const { rows: incomplete } = await pool.query(
+      `SELECT id, word, phonetic, meaning_en as "meaningEn", meaning_vi as "meaningVi", 
+              word_type as "wordType", cefr_level as "cefrLevel", usage, example, example_vi as "exampleVi"
+       FROM vocabulary_words 
+       WHERE meaning_vi IS NULL 
+          OR meaning_vi = '' 
+          OR meaning_vi = word 
+          OR phonetic IS NULL 
+          OR phonetic = '' 
+          OR word_type IS NULL 
+          OR word_type = '' 
+          OR word_type = '-'
+          OR usage IS NULL 
+          OR usage = ''
+       ORDER BY word ASC
+       LIMIT $1`,
+      [batchSize]
+    );
+
+    if (incomplete.length === 0) {
+      // Also count remaining
+      const { rows: countRows } = await pool.query(
+        `SELECT COUNT(*)::int as remaining FROM vocabulary_words 
+         WHERE meaning_vi IS NULL OR meaning_vi = '' OR meaning_vi = word 
+            OR phonetic IS NULL OR phonetic = '' 
+            OR word_type IS NULL OR word_type = '' OR word_type = '-'
+            OR usage IS NULL OR usage = ''`
+      );
+      return res.json({ 
+        success: true, 
+        enriched: 0, 
+        remaining: countRows[0].remaining,
+        message: 'Tất cả từ vựng đã được bổ sung đầy đủ!' 
+      });
+    }
+
+    const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+    let enriched = 0;
+    const results: { word: string; status: string }[] = [];
+
+    for (const w of incomplete) {
+      try {
+        if (enriched > 0) await delay(1500); // Rate limit buffer
+        
+        console.log(`[Batch Enrich] Processing: ${w.word}`);
+        const aiData = await GeminiService.enrichWordData(w.word);
+        
+        if (aiData) {
+          await pool.query(
+            `UPDATE vocabulary_words SET 
+              meaning_vi = COALESCE(NULLIF($2, ''), meaning_vi),
+              meaning_en = COALESCE(NULLIF($3, ''), meaning_en),
+              phonetic = COALESCE(NULLIF($4, ''), phonetic),
+              word_type = COALESCE(NULLIF($5, ''), word_type),
+              usage = COALESCE(NULLIF($6, ''), usage),
+              example = COALESCE(NULLIF($7, ''), example),
+              example_vi = COALESCE(NULLIF($8, ''), example_vi),
+              cefr_level = CASE WHEN cefr_level IN ('Custom', 'OXFORD3000', '') OR cefr_level IS NULL THEN $9 ELSE cefr_level END
+            WHERE id = $1`,
+            [w.id, aiData.meaningVi, aiData.meaningEn, aiData.phonetic, aiData.wordType, aiData.usage, aiData.example, aiData.exampleVi, aiData.cefrLevel || 'B1']
+          );
+          enriched++;
+          results.push({ word: w.word, status: '✅ OK' });
+        } else {
+          results.push({ word: w.word, status: '⚠️ AI returned null' });
+        }
+      } catch (err: any) {
+        if (err?.message?.includes('429') || err?.status === 429) {
+          console.log(`[Batch Enrich] Rate limited at ${w.word}, stopping batch`);
+          results.push({ word: w.word, status: '⏳ Rate limited' });
+          break;
+        }
+        results.push({ word: w.word, status: `❌ ${err.message?.slice(0, 50)}` });
+      }
+    }
+
+    // Count remaining
+    const { rows: countRows } = await pool.query(
+      `SELECT COUNT(*)::int as remaining FROM vocabulary_words 
+       WHERE meaning_vi IS NULL OR meaning_vi = '' OR meaning_vi = word 
+          OR phonetic IS NULL OR phonetic = '' 
+          OR word_type IS NULL OR word_type = '' OR word_type = '-'
+          OR usage IS NULL OR usage = ''`
+    );
+
+    console.log(`[Batch Enrich] Done: ${enriched}/${incomplete.length} enriched, ${countRows[0].remaining} remaining`);
+
+    res.json({ 
+      success: true, 
+      enriched, 
+      total: incomplete.length,
+      remaining: countRows[0].remaining,
+      results 
+    });
+  } catch (error: any) {
+    console.error('Batch enrich error:', error.message);
+    res.status(500).json({ error: 'Batch enrichment failed', message: error.message });
   }
 });
 
