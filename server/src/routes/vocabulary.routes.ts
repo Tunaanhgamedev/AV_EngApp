@@ -113,43 +113,22 @@ router.get('/learn-new', authenticate, async (req: any, res) => {
       );
     }
 
-    // On-the-fly enrichment (Sequential with rate limit handling)
+    // On-the-fly enrichment (Sequential with automatic dictionary fallback)
     const enrichedWords = [];
-    let enrichCount = 0;
-    const MAX_ENRICH_PER_REQUEST = 4; // Free tier: 5 calls/min, leave 1 buffer
-    
-    const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
     
     for (const word of finalWords) {
       const needsEnrichment = !word.meaningVi || !word.usage || !word.example || !word.exampleVi || !word.phonetic || word.meaningVi === word.word;
-      if (needsEnrichment && enrichCount < MAX_ENRICH_PER_REQUEST) {
+      if (needsEnrichment) {
         console.log(`Lazy-enriching: ${word.word} (missing: ${[!word.meaningVi && 'meaningVi', !word.usage && 'usage', !word.example && 'example', !word.exampleVi && 'exampleVi', !word.phonetic && 'phonetic'].filter(Boolean).join(', ')})...`);
-        
-        // Rate limit: wait between requests
-        if (enrichCount > 0) {
-          await delay(1500);
-        }
         
         let aiData = null;
         try {
           aiData = await GeminiService.enrichWordData(word.word);
         } catch (err: any) {
-          // Retry once on rate limit (429)
-          if (err?.message?.includes('429') || err?.status === 429) {
-            console.log(`Rate limited, waiting 12s before retry for ${word.word}...`);
-            await delay(12000);
-            try {
-              aiData = await GeminiService.enrichWordData(word.word);
-            } catch (retryErr) {
-              console.error(`Retry also failed for ${word.word}:`, retryErr);
-            }
-          } else {
-            console.error(`Enrichment failed for ${word.word}:`, err);
-          }
+          console.error(`Enrichment failed for ${word.word}:`, err);
         }
         
         if (aiData) {
-          enrichCount++;
           // Update DB in background
           prisma.vocabularyWord.update({
             where: { id: word.id },
@@ -161,7 +140,9 @@ router.get('/learn-new', authenticate, async (req: any, res) => {
               cefrLevel: aiData.cefrLevel,
               usage: aiData.usage,
               example: aiData.example,
-              exampleVi: aiData.exampleVi
+              exampleVi: aiData.exampleVi,
+              audioUs: aiData.audioUs || null,
+              audioUk: aiData.audioUk || null
             }
           }).catch(err => console.error(`Failed to update DB for ${word.word}:`, err));
           
@@ -174,7 +155,9 @@ router.get('/learn-new', authenticate, async (req: any, res) => {
             cefrLevel: aiData.cefrLevel,
             usage: aiData.usage,
             example: aiData.example,
-            exampleVi: aiData.exampleVi
+            exampleVi: aiData.exampleVi,
+            audioUs: aiData.audioUs || word.audioUs,
+            audioUk: aiData.audioUk || word.audioUk
           });
           continue;
         }
@@ -456,9 +439,11 @@ router.post('/enrich-batch', async (req, res) => {
               usage = COALESCE(NULLIF($6, ''), usage),
               example = COALESCE(NULLIF($7, ''), example),
               example_vi = COALESCE(NULLIF($8, ''), example_vi),
-              cefr_level = CASE WHEN cefr_level IN ('Custom', 'OXFORD3000', '') OR cefr_level IS NULL THEN $9 ELSE cefr_level END
+              cefr_level = CASE WHEN cefr_level IN ('Custom', 'OXFORD3000', '') OR cefr_level IS NULL THEN $9 ELSE cefr_level END,
+              audio_us = COALESCE(NULLIF($10, ''), audio_us),
+              audio_uk = COALESCE(NULLIF($11, ''), audio_uk)
             WHERE id = $1`,
-            [w.id, aiData.meaningVi, aiData.meaningEn, aiData.phonetic, aiData.wordType, aiData.usage, aiData.example, aiData.exampleVi, aiData.cefrLevel || 'B1']
+            [w.id, aiData.meaningVi, aiData.meaningEn, aiData.phonetic, aiData.wordType, aiData.usage, aiData.example, aiData.exampleVi, aiData.cefrLevel || 'B1', aiData.audioUs || '', aiData.audioUk || '']
           );
           enriched++;
           results.push({ word: w.word, status: '✅ OK' });

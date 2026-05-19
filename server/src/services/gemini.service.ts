@@ -195,12 +195,107 @@ export class GeminiService {
       const text = response.text();
       
       const jsonStr = text.replace(/```json|```/g, "").trim();
-      return JSON.parse(jsonStr);
-    } catch (error: any) {
-      console.error(`EngBot Enrichment Error (${word}):`, error.message || error);
-      if (error.status === 404) {
-        console.error("Gemini Model Not Found (404). Check model name or API key permissions.");
+      const parsed = JSON.parse(jsonStr);
+      if (!parsed.meaningVi || parsed.meaningVi === word || !parsed.meaningEn || !parsed.example) {
+        throw new Error('Incomplete or invalid JSON response from Gemini');
       }
+      return parsed;
+    } catch (error: any) {
+      console.error(`EngBot Enrichment Error (${word}), switching to Dictionary API + Google Translate fallback:`, error.message || error);
+      return await GeminiService.enrichWordDataFallback(word);
+    }
+  }
+
+  /**
+   * Free Dictionary API + Google Translate fallback enrichment
+   */
+  static async enrichWordDataFallback(word: string) {
+    try {
+      const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+      let phonetic = '';
+      let meaningEn = '';
+      let wordType = 'n';
+      let example = '';
+      let audioUs = '';
+      let audioUk = '';
+
+      if (res.ok) {
+        const data: any = await res.json();
+        const entry = data[0];
+        
+        // Extract phonetic
+        phonetic = entry.phonetic || '';
+        if (!phonetic && entry.phonetics && entry.phonetics.length > 0) {
+          phonetic = entry.phonetics.find((p: any) => p.text)?.text || '';
+        }
+
+        // Extract audio Us/Uk
+        if (entry.phonetics && entry.phonetics.length > 0) {
+          const usAudio = entry.phonetics.find((p: any) => p.audio && p.audio.includes('us'));
+          const ukAudio = entry.phonetics.find((p: any) => p.audio && p.audio.includes('uk'));
+          const generalAudio = entry.phonetics.find((p: any) => p.audio);
+          
+          audioUs = usAudio?.audio || generalAudio?.audio || '';
+          audioUk = ukAudio?.audio || generalAudio?.audio || '';
+        }
+
+        // Extract definition and example
+        if (entry.meanings && entry.meanings.length > 0) {
+          const m = entry.meanings[0];
+          wordType = m.partOfSpeech || 'n';
+          if (m.definitions && m.definitions.length > 0) {
+            meaningEn = m.definitions[0].definition || '';
+            
+            // Search definitions for a valid example sentence
+            for (const d of m.definitions) {
+              if (d.example) {
+                example = d.example;
+                break;
+              }
+            }
+          }
+        }
+      }
+
+      // If no example is found, build a basic one
+      if (!example) {
+        example = `We should study the meaning of the word "${word}" to improve our vocabulary.`;
+      }
+      if (!meaningEn) {
+        meaningEn = `The English word "${word}".`;
+      }
+
+      // Translate meaningEn and example to Vietnamese using Google Translate
+      const translateText = async (text: string) => {
+        try {
+          const transRes = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=vi&dt=t&q=${encodeURIComponent(text)}`);
+          if (transRes.ok) {
+            const transData: any = await transRes.json();
+            return transData[0]?.map((x: any) => x[0]).join('').trim() || '';
+          }
+        } catch (e) {
+          console.error('Fallback translation error:', e);
+        }
+        return '';
+      };
+
+      const meaningVi = await translateText(word) || `từ "${word}"`;
+      const exampleVi = await translateText(example) || '';
+
+      return {
+        phonetic,
+        meaningEn,
+        meaningVi,
+        wordType: wordType.substring(0, 10), // Truncate wordType just in case
+        cefrLevel: 'B1',
+        usage: 'Sử dụng phổ biến trong giao tiếp hàng ngày.',
+        example,
+        exampleVi,
+        audioUs,
+        audioUk
+      };
+    } catch (err: any) {
+      console.error(`Double Fallback Enrichment Error for ${word}:`, err.message || err);
       return null;
     }
   }
