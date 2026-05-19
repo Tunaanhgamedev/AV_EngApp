@@ -368,6 +368,28 @@ router.get('/wordlist', async (req, res) => {
   }
 });
 
+// GET random vocabulary words for games (Vocab Match, Speed Quiz, Word Scramble, Sentence Builder)
+router.get('/game-data', async (req, res) => {
+  try {
+    const limit = Math.min(Number(req.query.limit) || 35, 50);
+    
+    const { rows: words } = await pool.query(
+      `SELECT id, word, phonetic, meaning_en as "meaningEn", meaning_vi as "meaningVi", 
+              word_type as "wordType", cefr_level as "cefrLevel", example, example_vi as "exampleVi"
+       FROM vocabulary_words 
+       WHERE meaning_vi IS NOT NULL AND meaning_vi != '' AND meaning_vi != word AND example IS NOT NULL AND example != ''
+       ORDER BY RANDOM()
+       LIMIT $1`,
+      [limit]
+    );
+
+    res.json({ words });
+  } catch (error: any) {
+    console.error('Game data error:', error.message);
+    res.status(500).json({ error: 'Failed to fetch game vocabulary words' });
+  }
+});
+
 // ──────────────────────────────────────────────
 // BATCH ENRICHMENT: Fix all incomplete Dictionary words
 // ──────────────────────────────────────────────

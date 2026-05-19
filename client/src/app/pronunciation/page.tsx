@@ -1,8 +1,47 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Volume2, BookOpen, Sparkles, ChevronDown, Mic, Target, Star, Play, Info } from 'lucide-react';
+import { Volume2, BookOpen, Sparkles, ChevronDown, Mic, Target, Star, Play, Info, ArrowRight, HelpCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
+
+// ─── Alphabet & Phonics Data ──────────────────────────────────────────────────
+interface AlphabetLetter {
+  letter: string;
+  name: string;
+  phonic: string;
+  phonicIpa: string;
+  example: string;
+  exampleVi: string;
+}
+
+const ALPHABET: AlphabetLetter[] = [
+  { letter: 'A', name: 'ay', phonicIpa: '/æ/', phonic: 'æ (như trong apple)', example: 'Apple', exampleVi: 'Quả táo' },
+  { letter: 'B', name: 'bee', phonicIpa: '/b/', phonic: 'b (như trong boy)', example: 'Banana', exampleVi: 'Quả chuối' },
+  { letter: 'C', name: 'see', phonicIpa: '/k/', phonic: 'k (như trong cat)', example: 'Cat', exampleVi: 'Con mèo' },
+  { letter: 'D', name: 'dee', phonicIpa: '/d/', phonic: 'd (như trong dog)', example: 'Dog', exampleVi: 'Con chó' },
+  { letter: 'E', name: 'ee', phonicIpa: '/e/', phonic: 'e (như trong egg)', example: 'Egg', exampleVi: 'Quả trứng' },
+  { letter: 'F', name: 'ef', phonicIpa: '/f/', phonic: 'f (như trong fish)', example: 'Fish', exampleVi: 'Con cá' },
+  { letter: 'G', name: 'jee', phonicIpa: '/ɡ/', phonic: 'g (như trong go)', example: 'Goat', exampleVi: 'Con dê' },
+  { letter: 'H', name: 'aitch', phonicIpa: '/h/', phonic: 'h (như trong hat)', example: 'Hat', exampleVi: 'Cái mũ' },
+  { letter: 'I', name: 'eye', phonicIpa: '/ɪ/', phonic: 'ɪ (như trong ink)', example: 'Igloo', exampleVi: 'Lều tuyết' },
+  { letter: 'J', name: 'jay', phonicIpa: '/dʒ/', phonic: 'dʒ (như trong jam)', example: 'Jam', exampleVi: 'Mứt' },
+  { letter: 'K', name: 'kay', phonicIpa: '/k/', phonic: 'k (như trong kite)', example: 'Kite', exampleVi: 'Cái diều' },
+  { letter: 'L', name: 'el', phonicIpa: '/l/', phonic: 'l (như trong leaf)', example: 'Lion', exampleVi: 'Sư tử' },
+  { letter: 'M', name: 'em', phonicIpa: '/m/', phonic: 'm (như trong moon)', example: 'Monkey', exampleVi: 'Con khỉ' },
+  { letter: 'N', name: 'en', phonicIpa: '/n/', phonic: 'n (như trong nest)', example: 'Nest', exampleVi: 'Tổ chim' },
+  { letter: 'O', name: 'oh', phonicIpa: '/ɒ/', phonic: 'ɒ (như trong orange)', example: 'Orange', exampleVi: 'Quả cam' },
+  { letter: 'P', name: 'pee', phonicIpa: '/p/', phonic: 'p (như trong pen)', example: 'Pen', exampleVi: 'Bút viết' },
+  { letter: 'Q', name: 'cue', phonicIpa: '/kw/', phonic: 'kw (như trong queen)', example: 'Queen', exampleVi: 'Nữ hoàng' },
+  { letter: 'R', name: 'ar', phonicIpa: '/r/', phonic: 'r (như trong red)', example: 'Rabbit', exampleVi: 'Con thỏ' },
+  { letter: 'S', name: 'es', phonicIpa: '/s/', phonic: 's (như trong sun)', example: 'Sun', exampleVi: 'Mặt trời' },
+  { letter: 'T', name: 'tee', phonicIpa: '/t/', phonic: 't (như trong table)', example: 'Tiger', exampleVi: 'Con hổ' },
+  { letter: 'U', name: 'you', phonicIpa: '/ʌ/', phonic: 'ʌ (như trong umbrella)', example: 'Umbrella', exampleVi: 'Cái ô' },
+  { letter: 'V', name: 'vee', phonicIpa: '/v/', phonic: 'v (như trong violin)', example: 'Violin', exampleVi: 'Đàn vi-ô-lông' },
+  { letter: 'W', name: 'double-you', phonicIpa: '/w/', phonic: 'w (như trong watch)', example: 'Window', exampleVi: 'Cửa sổ' },
+  { letter: 'X', name: 'ex', phonicIpa: '/ks/', phonic: 'ks (như trong box)', example: 'Xylophone', exampleVi: 'Đàn mộc cầm' },
+  { letter: 'Y', name: 'why', phonicIpa: '/j/', phonic: 'j (như trong yellow)', example: 'Yellow', exampleVi: 'Màu vàng' },
+  { letter: 'Z', name: 'zed', phonicIpa: '/z/', phonic: 'z (như trong zebra)', example: 'Zebra', exampleVi: 'Ngựa vằn' },
+];
 
 // ─── IPA Data ──────────────────────────────────────────────────────────────────
 const VOWELS = [
@@ -75,12 +114,12 @@ const MINIMAL_PAIRS = [
   { a: { word: "bat", ipa: "/bæt/" }, b: { word: "pat", ipa: "/pæt/" }, focus: "b vs p" },
 ];
 
-const speak = (text: string) => {
+const speak = (text: string, rate: number = 0.7) => {
   if (typeof window === 'undefined') return;
   window.speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
   u.lang = 'en-US';
-  u.rate = 0.7;
+  u.rate = rate;
   const voices = window.speechSynthesis.getVoices();
   const v = voices.find(v => v.lang === 'en-US' && v.name.includes('Google')) || voices.find(v => v.lang === 'en-US');
   if (v) u.voice = v;
@@ -94,7 +133,7 @@ function IPACell({ item, color }: { item: { ipa: string; example: string; word: 
       onClick={() => speak(item.example)}
       className={cn(
         "group relative flex flex-col items-center gap-1 p-4 rounded-2xl border-2 transition-all duration-200",
-        "hover:shadow-lg hover:-translate-y-0.5 active:scale-95",
+        "hover:shadow-lg hover:-translate-y-0.5 active:scale-95 text-slate-800",
         color
       )}
     >
@@ -108,13 +147,15 @@ function IPACell({ item, color }: { item: { ipa: string; example: string; word: 
 }
 
 export default function PronunciationPage() {
-  const [activeTab, setActiveTab] = useState<'chart' | 'stress' | 'pairs'>('chart');
+  const [activeTab, setActiveTab] = useState<'alphabet' | 'chart' | 'stress' | 'pairs' | 'building'>('alphabet');
   const [chartSection, setChartSection] = useState<'vowels' | 'diphthongs' | 'consonants'>('vowels');
 
   const tabs = [
-    { id: 'chart' as const, label: 'Bảng Phiên Âm IPA', icon: BookOpen },
+    { id: 'alphabet' as const, label: 'Bảng Chữ Cái & Phonics', icon: BookOpen },
+    { id: 'chart' as const, label: 'Bảng Phiên Âm IPA', icon: Volume2 },
     { id: 'stress' as const, label: 'Quy Tắc Trọng Âm', icon: Target },
     { id: 'pairs' as const, label: 'Cặp Tối Thiểu', icon: Mic },
+    { id: 'building' as const, label: 'Quy Tắc Nối Câu & Chữ', icon: Sparkles },
   ];
 
   return (
@@ -125,7 +166,7 @@ export default function PronunciationPage() {
           <Volume2 className="w-8 h-8 text-primary" />Pronunciation Lab
         </h1>
         <p className="text-slate-500 font-medium">
-          Học phát âm chuẩn với bảng phiên âm IPA, quy tắc trọng âm và bài tập cặp tối thiểu.
+          Học bảng chữ cái, phát âm chuẩn IPA, quy tắc trọng âm và các quy tắc nối chữ thành từ, nối từ thành câu.
         </p>
       </header>
 
@@ -147,6 +188,54 @@ export default function PronunciationPage() {
           </button>
         ))}
       </div>
+
+      {/* ════════════════════════════════════════════ ALPHABET & PHONICS ═══════════ */}
+      {activeTab === 'alphabet' && (
+        <div className="space-y-6">
+          <div className="premium-card p-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
+            <h3 className="text-lg font-black text-blue-800 flex items-center gap-2 mb-2">
+              <BookOpen className="w-5 h-5 text-blue-600" /> Bảng Chữ Cái Tiếng Anh & Phonics
+            </h3>
+            <p className="text-sm text-blue-700 leading-relaxed">
+              Bảng chữ cái tiếng Anh gồm 26 chữ cái. Mỗi chữ cái có một **Tên gọi (Name)** và một hoặc nhiều **Âm phát âm (Phonics)** khi ghép vào từ. Nhấp vào mỗi thẻ để nghe cách đọc tên chữ cái và cách phát âm Phonics của nó.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            {ALPHABET.map((item) => (
+              <div 
+                key={item.letter}
+                className="premium-card bg-white p-5 border border-slate-200 rounded-[2rem] flex flex-col items-center justify-between text-center relative overflow-hidden group hover:shadow-xl transition-all duration-300"
+              >
+                <span className="text-4xl font-black text-slate-800 mb-2">{item.letter}</span>
+                
+                <div className="space-y-2 w-full">
+                  <div>
+                    <span className="text-[10px] text-slate-400 font-bold block uppercase tracking-wider">Tên chữ cái</span>
+                    <button 
+                      onClick={() => speak(item.letter, 0.6)}
+                      className="px-3 py-1 bg-blue-50 border border-blue-100 rounded-full text-blue-700 font-black text-xs hover:bg-blue-100 transition-all flex items-center gap-1 mx-auto"
+                    >
+                      /{item.name}/ <Play className="w-2.5 h-2.5 fill-blue-700 text-blue-700" />
+                    </button>
+                  </div>
+
+                  <div className="border-t border-slate-100 pt-2">
+                    <span className="text-[10px] text-slate-400 font-bold block uppercase tracking-wider">Âm vị (Phonics)</span>
+                    <button 
+                      onClick={() => speak(item.example, 0.6)}
+                      className="px-2 py-1 bg-emerald-50 border border-emerald-100 rounded-full text-emerald-700 font-bold text-[10px] hover:bg-emerald-100 transition-all flex items-center gap-1 mx-auto"
+                    >
+                      {item.phonicIpa} {item.example} <Play className="w-2.5 h-2.5 fill-emerald-700 text-emerald-700" />
+                    </button>
+                    <span className="text-[10px] text-slate-500 block mt-1 font-medium italic">{item.exampleVi}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* ════════════════════════════════════════════ IPA CHART ═══════════════════ */}
       {activeTab === 'chart' && (
@@ -208,15 +297,15 @@ export default function PronunciationPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="premium-card p-5 border-l-4 border-sky-400">
               <h4 className="font-black text-sm text-sky-700 mb-1">Nguyên Âm (Vowels)</h4>
-              <p className="text-xs text-slate-500">Âm phát ra khi luồng khí không bị chặn. Có 12 nguyên âm đơn trong tiếng Anh.</p>
+              <p className="text-xs text-slate-500 font-medium">Âm phát ra khi luồng khí không bị chặn. Có 12 nguyên âm đơn trong tiếng Anh.</p>
             </div>
             <div className="premium-card p-5 border-l-4 border-violet-400">
               <h4 className="font-black text-sm text-violet-700 mb-1">Nguyên Âm Đôi (Diphthongs)</h4>
-              <p className="text-xs text-slate-500">Sự kết hợp của 2 nguyên âm trượt vào nhau. Có 8 nguyên âm đôi.</p>
+              <p className="text-xs text-slate-500 font-medium">Sự kết hợp của 2 nguyên âm trượt vào nhau. Có 8 nguyên âm đôi.</p>
             </div>
             <div className="premium-card p-5 border-l-4 border-emerald-400">
               <h4 className="font-black text-sm text-emerald-700 mb-1">Phụ Âm (Consonants)</h4>
-              <p className="text-xs text-slate-500">Âm phát ra khi luồng khí bị chặn hoàn toàn hoặc một phần. Có 24 phụ âm.</p>
+              <p className="text-xs text-slate-500 font-medium">Âm phát ra khi luồng khí bị chặn hoàn toàn hoặc một phần. Có 24 phụ âm.</p>
             </div>
           </div>
         </div>
@@ -229,7 +318,7 @@ export default function PronunciationPage() {
             <h3 className="text-lg font-black text-amber-800 flex items-center gap-2 mb-2">
               <Sparkles className="w-5 h-5 fill-amber-500 text-amber-500" /> Trọng âm là gì?
             </h3>
-            <p className="text-sm text-amber-700 leading-relaxed">
+            <p className="text-sm text-amber-700 leading-relaxed font-medium">
               Trọng âm (word stress) là việc nhấn mạnh một âm tiết trong từ. Âm tiết được nhấn sẽ phát ra to hơn, dài hơn và cao hơn.
               Sai trọng âm có thể khiến người nghe không hiểu bạn, dù bạn phát âm đúng từng âm.
             </p>
@@ -252,10 +341,10 @@ export default function PronunciationPage() {
                     <button
                       key={j}
                       onClick={() => speak(ex.replace(/[ˈˌ.]/g, ''))}
-                      className="px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono font-bold hover:border-primary hover:bg-primary/5 transition-all flex items-center gap-2 group"
+                      className="px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono font-bold hover:border-primary hover:bg-primary/5 transition-all flex items-center gap-2 group text-slate-700"
                     >
                       {ex}
-                      <Play className="w-3 h-3 text-slate-300 group-hover:text-primary" />
+                      <Play className="w-3 h-3 text-slate-300 group-hover:text-primary fill-slate-300 group-hover:fill-primary" />
                     </button>
                   ))}
                 </div>
@@ -272,7 +361,7 @@ export default function PronunciationPage() {
             <h3 className="text-lg font-black text-rose-800 flex items-center gap-2 mb-2">
               <Target className="w-5 h-5 text-rose-500" /> Cặp Tối Thiểu (Minimal Pairs)
             </h3>
-            <p className="text-sm text-rose-700 leading-relaxed">
+            <p className="text-sm text-rose-700 leading-relaxed font-medium">
               Cặp tối thiểu là hai từ chỉ khác nhau ở một âm duy nhất. Luyện tập phân biệt các cặp này giúp bạn cải thiện khả năng nghe và phát âm.
             </p>
           </div>
@@ -309,6 +398,157 @@ export default function PronunciationPage() {
               </div>
             ))}
           </div>
+        </div>
+      )}
+
+      {/* ════════════════════════════════════════════ WORD & SENTENCE BUILDING ═════ */}
+      {activeTab === 'building' && (
+        <div className="space-y-8">
+          <div className="premium-card p-6 bg-gradient-to-r from-purple-50 to-indigo-50 border-purple-200">
+            <h3 className="text-lg font-black text-purple-800 flex items-center gap-2 mb-2">
+              <Sparkles className="w-5 h-5 text-purple-600" /> Quy Tắc Ghép Chữ Thành Từ & Nối Từ Thành Câu
+            </h3>
+            <p className="text-sm text-purple-700 leading-relaxed font-medium">
+              Cách kết hợp âm để tạo nên từ vựng hoàn chỉnh, và các nguyên tắc liên kết âm (linking sounds) giúp câu nói tự nhiên, mượt mà như người bản xứ.
+            </p>
+          </div>
+
+          {/* Section 1: Nối chữ thành từ */}
+          <section className="space-y-4">
+            <div className="flex items-center gap-2 border-b border-slate-100 pb-2">
+              <span className="w-2.5 h-6 bg-purple-600 rounded-full"></span>
+              <h3 className="text-xl font-black text-slate-800">I. Nối Chữ thành Từ (Word Building)</h3>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Phonics Blend */}
+              <div className="premium-card p-6 space-y-3 hover:shadow-lg transition-all bg-white border border-slate-200 rounded-[2rem]">
+                <div className="w-10 h-10 rounded-2xl bg-purple-50 flex items-center justify-center text-purple-600 font-black text-lg">1</div>
+                <h4 className="font-black text-slate-800">Ghép vần Phonics (Blending)</h4>
+                <p className="text-xs text-slate-500 font-medium leading-relaxed">
+                  Phương pháp đọc trơn bằng cách ghép nối các âm đơn lẻ lại với nhau. Phổ biến nhất là quy tắc CVC (Consonant - Vowel - Consonant).
+                </p>
+                <div className="p-3 bg-slate-50 rounded-xl font-mono text-xs space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span>c - a - t</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
+                    <button onClick={() => speak("cat")} className="font-bold text-purple-600 flex items-center gap-1">cat <Play className="w-2 h-2 fill-purple-600 text-purple-600" /></button>
+                  </div>
+                  <div className="flex items-center justify-between border-t border-slate-200/50 pt-2">
+                    <span>d - o - g</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
+                    <button onClick={() => speak("dog")} className="font-bold text-purple-600 flex items-center gap-1">dog <Play className="w-2 h-2 fill-purple-600 text-purple-600" /></button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Digraphs & Blends */}
+              <div className="premium-card p-6 space-y-3 hover:shadow-lg transition-all bg-white border border-slate-200 rounded-[2rem]">
+                <div className="w-10 h-10 rounded-2xl bg-purple-50 flex items-center justify-center text-purple-600 font-black text-lg">2</div>
+                <h4 className="font-black text-slate-800">Âm đôi & Âm ghép (Digraphs)</h4>
+                <p className="text-xs text-slate-500 font-medium leading-relaxed">
+                  Khi hai phụ âm đi liền với nhau tạo thành một âm hoàn toàn mới (Digraphs) hoặc giữ nguyên đặc trưng nhưng đọc lướt nhanh (Blends).
+                </p>
+                <div className="p-3 bg-slate-50 rounded-xl font-mono text-xs space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span>s + h ➔ /ʃ/</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
+                    <button onClick={() => speak("ship")} className="font-bold text-purple-600 flex items-center gap-1">ship <Play className="w-2 h-2 fill-purple-600 text-purple-600" /></button>
+                  </div>
+                  <div className="flex items-center justify-between border-t border-slate-200/50 pt-2">
+                    <span>c + h ➔ /tʃ/</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
+                    <button onClick={() => speak("chair")} className="font-bold text-purple-600 flex items-center gap-1">chair <Play className="w-2 h-2 fill-purple-600 text-purple-600" /></button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Syllables */}
+              <div className="premium-card p-6 space-y-3 hover:shadow-lg transition-all bg-white border border-slate-200 rounded-[2rem]">
+                <div className="w-10 h-10 rounded-2xl bg-purple-50 flex items-center justify-center text-purple-600 font-black text-lg">3</div>
+                <h4 className="font-black text-slate-800">Phân tách Âm tiết (Syllables)</h4>
+                <p className="text-xs text-slate-500 font-medium leading-relaxed">
+                  Một từ có thể cấu tạo từ nhiều âm tiết. Đọc chuẩn từng âm tiết riêng lẻ rồi ghép lại giúp bạn phát âm các từ dài cực kỳ tự tin.
+                </p>
+                <div className="p-3 bg-slate-50 rounded-xl font-mono text-xs space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span>ti - ger</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
+                    <button onClick={() => speak("tiger")} className="font-bold text-purple-600 flex items-center gap-1">tiger <Play className="w-2 h-2 fill-purple-600 text-purple-600" /></button>
+                  </div>
+                  <div className="flex items-center justify-between border-t border-slate-200/50 pt-2">
+                    <span>com - pu - ter</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
+                    <button onClick={() => speak("computer")} className="font-bold text-purple-600 flex items-center gap-1">computer <Play className="w-2 h-2 fill-purple-600 text-purple-600" /></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Section 2: Nối từ thành câu */}
+          <section className="space-y-4">
+            <div className="flex items-center gap-2 border-b border-slate-100 pb-2">
+              <span className="w-2.5 h-6 bg-purple-600 rounded-full"></span>
+              <h3 className="text-xl font-black text-slate-800">II. Nối Từ thành Câu (Liaison / Linking Words)</h3>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Consonant to Vowel */}
+              <div className="premium-card p-6 space-y-4 hover:shadow-lg transition-all bg-white border border-slate-200 rounded-[2rem]">
+                <h4 className="font-black text-slate-800 flex items-center gap-2">
+                  <span className="p-1.5 bg-blue-100 text-blue-600 rounded-lg text-xs">Phụ âm ➔ Nguyên âm</span>
+                  Nối Phụ âm với Nguyên âm
+                </h4>
+                <p className="text-xs text-slate-500 font-medium leading-relaxed">
+                  Khi một từ kết thúc bằng một **phụ âm** và từ tiếp theo bắt đầu bằng một **nguyên âm**, chúng ta nối phụ âm đó sang nguyên âm đứng sau.
+                </p>
+                <div className="space-y-2">
+                  <div className="p-3 bg-slate-50 rounded-xl space-y-1">
+                    <p className="text-xs font-mono font-bold text-slate-700">Turn on ➔ "tur-non"</p>
+                    <div className="flex justify-between items-center text-[11px] text-slate-400 font-medium">
+                      <span>Bật lên</span>
+                      <button onClick={() => speak("turn on")} className="text-purple-600 font-bold flex items-center gap-1">Nghe phát âm <Play className="w-2 h-2 fill-purple-600 text-purple-600" /></button>
+                    </div>
+                  </div>
+                  <div className="p-3 bg-slate-50 rounded-xl space-y-1">
+                    <p className="text-xs font-mono font-bold text-slate-700">Read a book ➔ "rea-da-book"</p>
+                    <div className="flex justify-between items-center text-[11px] text-slate-400 font-medium">
+                      <span>Đọc một cuốn sách</span>
+                      <button onClick={() => speak("read a book")} className="text-purple-600 font-bold flex items-center gap-1">Nghe phát âm <Play className="w-2 h-2 fill-purple-600 text-purple-600" /></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Vowel to Vowel */}
+              <div className="premium-card p-6 space-y-4 hover:shadow-lg transition-all bg-white border border-slate-200 rounded-[2rem]">
+                <h4 className="font-black text-slate-800 flex items-center gap-2">
+                  <span className="p-1.5 bg-emerald-100 text-emerald-600 rounded-lg text-xs">Nguyên âm ➔ Nguyên âm</span>
+                  Nối Nguyên âm với Nguyên âm
+                </h4>
+                <p className="text-xs text-slate-500 font-medium leading-relaxed">
+                  Khi từ trước kết thúc bằng nguyên âm và từ sau bắt đầu bằng nguyên âm, ta thêm âm nhẹ **/w/** hoặc **/j/** để câu liền mạch.
+                </p>
+                <div className="space-y-2">
+                  <div className="p-3 bg-slate-50 rounded-xl space-y-1">
+                    <p className="text-xs font-mono font-bold text-slate-700">Go on ➔ thêm âm /w/ ➔ "go-w-on"</p>
+                    <div className="flex justify-between items-center text-[11px] text-slate-400 font-medium">
+                      <span>Tiếp tục</span>
+                      <button onClick={() => speak("go on")} className="text-purple-600 font-bold flex items-center gap-1">Nghe phát âm <Play className="w-2 h-2 fill-purple-600 text-purple-600" /></button>
+                    </div>
+                  </div>
+                  <div className="p-3 bg-slate-50 rounded-xl space-y-1">
+                    <p className="text-xs font-mono font-bold text-slate-700">See it ➔ thêm âm /j/ ➔ "see-y-it"</p>
+                    <div className="flex justify-between items-center text-[11px] text-slate-400 font-medium">
+                      <span>Nhìn thấy nó</span>
+                      <button onClick={() => speak("see it")} className="text-purple-600 font-bold flex items-center gap-1">Nghe phát âm <Play className="w-2 h-2 fill-purple-600 text-purple-600" /></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
       )}
     </div>
