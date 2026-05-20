@@ -4,7 +4,7 @@ import { SRSService } from '../services/srs.service';
 import { AIService } from '../services/ai.service';
 
 export const getDueWords = async (req: Request, res: Response) => {
-  const { userId } = req.params;
+  const userId = req.params.userId as string;
 
   try {
     const dueWords = await prisma.userLearnedWord.findMany(
@@ -108,12 +108,12 @@ export const submitReview = async (req: Request, res: Response) => {
 };
 
 export const searchWord = async (req: Request, res: Response) => {
-  const { word } = req.params;
+  const word = req.params.word as string;
 
   try {
     // 1. Check if word exists in our database already
     let dbWord = await prisma.vocabularyWord.findFirst({
-      where: { word: { equals: word, mode: 'insensitive' } }
+      where: { word: { equals: word, mode: 'insensitive' as const } }
     });
 
     if (dbWord) {

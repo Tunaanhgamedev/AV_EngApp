@@ -71,7 +71,7 @@ export class SRSService {
         word: true,
       },
       orderBy: {
-        nextReviewAt: 'asc',
+        nextReviewAt: 'asc' as const,
       },
     };
   }

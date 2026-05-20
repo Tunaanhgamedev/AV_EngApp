@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Gamepad2, Zap, Trophy, Target, Brain, Timer, Star, ChevronRight, Flame, Sparkles, X, CheckCircle2, RotateCcw, Play, RefreshCw, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/context/AuthContext';
 
 // ─── Speak Utility ─────────────────────────────────────────────────────────────
 const speak = (text: string) => {
@@ -93,7 +94,7 @@ const STATIC_SCRAMBLE_IDIOMS = [
 const shuffle = <T,>(arr: T[]): T[] => [...arr].sort(() => Math.random() - 0.5);
 
 // ─── Vocabulary Match Game ────────────────────────────────────────────────────
-function VocabMatchGame({ dbWords, onClose }: { dbWords: any[]; onClose: () => void }) {
+function VocabMatchGame({ dbWords, onClose, awardXp }: { dbWords: any[]; onClose: () => void; awardXp?: (amount: number, reason: string) => void }) {
   const [cards, setCards] = useState<Card[]>([]);
   const [selected, setSelected] = useState<Card[]>([]);
   const [matches, setMatches] = useState(0);
@@ -147,7 +148,11 @@ function VocabMatchGame({ dbWords, onClose }: { dbWords: any[]; onClose: () => v
         setCards(prev => prev.map(c => c.pairId === next[0].pairId ? { ...c, matched: true } : c));
         setMatches(m => {
           const nm = m + 1;
-          if (nm === pairCount) { setRunning(false); setWon(true); }
+          if (nm === pairCount) { 
+            setRunning(false); 
+            setWon(true); 
+            awardXp?.(50, 'Vocab Match Game');
+          }
           return nm;
         });
         setTimeout(() => setSelected([]), 300);
@@ -218,7 +223,7 @@ function VocabMatchGame({ dbWords, onClose }: { dbWords: any[]; onClose: () => v
 }
 
 // ─── Speed Quiz Game ───────────────────────────────────────────────────────────
-function SpeedQuizGame({ dbWords, onClose }: { dbWords: any[]; onClose: () => void }) {
+function SpeedQuizGame({ dbWords, onClose, awardXp }: { dbWords: any[]; onClose: () => void; awardXp?: (amount: number, reason: string) => void }) {
   const [questions, setQuestions] = useState<any[]>([]);
   const [qIdx, setQIdx] = useState(0);
   const [score, setScore] = useState(0);
@@ -283,6 +288,12 @@ function SpeedQuizGame({ dbWords, onClose }: { dbWords: any[]; onClose: () => vo
   }, [dbWords]);
 
   useEffect(() => { initGame(); }, [initGame]);
+
+  useEffect(() => {
+    if (done && score > 0) {
+      awardXp?.(score * 20, 'Speed Quiz Game');
+    }
+  }, [done, score, awardXp]);
 
   useEffect(() => {
     if (done || selected !== null || questions.length === 0) return;
@@ -364,7 +375,7 @@ function SpeedQuizGame({ dbWords, onClose }: { dbWords: any[]; onClose: () => vo
 }
 
 // ─── Word Scramble Game (Nối Chữ Thành Từ) ──────────────────────────────────────
-function WordScrambleGame({ dbWords, onClose }: { dbWords: any[]; onClose: () => void }) {
+function WordScrambleGame({ dbWords, onClose, awardXp }: { dbWords: any[]; onClose: () => void; awardXp?: (amount: number, reason: string) => void }) {
   const [scrambleList, setScrambleList] = useState<any[]>([]);
   const [wordIdx, setWordIdx] = useState(0);
   const [score, setScore] = useState(0);
@@ -389,6 +400,12 @@ function WordScrambleGame({ dbWords, onClose }: { dbWords: any[]; onClose: () =>
   }, [dbWords]);
 
   useEffect(() => { initGame(); }, [initGame]);
+
+  useEffect(() => {
+    if (done && score > 0) {
+      awardXp?.(score * 15, 'Word Scramble Game');
+    }
+  }, [done, score, awardXp]);
 
   const activeWord = scrambleList[wordIdx];
 
@@ -545,7 +562,7 @@ function WordScrambleGame({ dbWords, onClose }: { dbWords: any[]; onClose: () =>
 }
 
 // ─── Sentence Builder Game (Nối Từ Thành Câu) ───────────────────────────────────
-function SentenceBuilderGame({ dbWords, onClose }: { dbWords: any[]; onClose: () => void }) {
+function SentenceBuilderGame({ dbWords, onClose, awardXp }: { dbWords: any[]; onClose: () => void; awardXp?: (amount: number, reason: string) => void }) {
   const [sentenceList, setSentenceList] = useState<any[]>([]);
   const [sentIdx, setSentIdx] = useState(0);
   const [score, setScore] = useState(0);
@@ -583,6 +600,12 @@ function SentenceBuilderGame({ dbWords, onClose }: { dbWords: any[]; onClose: ()
   }, [dbWords]);
 
   useEffect(() => { initGame(); }, [initGame]);
+
+  useEffect(() => {
+    if (done && score > 0) {
+      awardXp?.(score * 20, 'Sentence Builder Game');
+    }
+  }, [done, score, awardXp]);
 
   const activeSent = sentenceList[sentIdx];
 
@@ -740,7 +763,7 @@ function SentenceBuilderGame({ dbWords, onClose }: { dbWords: any[]; onClose: ()
 }
 
 // ─── Idiom Connector Game (Nối Từ Thành Thành Ngữ) ──────────────────────────────
-function IdiomConnectorGame({ onClose }: { onClose: () => void }) {
+function IdiomConnectorGame({ onClose, awardXp }: { onClose: () => void; awardXp?: (amount: number, reason: string) => void }) {
   const [idiomList, setIdiomList] = useState<any[]>([]);
   const [idiomIdx, setIdiomIdx] = useState(0);
   const [score, setScore] = useState(0);
@@ -758,6 +781,12 @@ function IdiomConnectorGame({ onClose }: { onClose: () => void }) {
   }, []);
 
   useEffect(() => { initGame(); }, [initGame]);
+
+  useEffect(() => {
+    if (done && score > 0) {
+      awardXp?.(score * 25, 'Idiom Connector Game');
+    }
+  }, [done, score, awardXp]);
 
   const activeIdiom = idiomList[idiomIdx];
 
@@ -923,9 +952,31 @@ const GAMES = [
 ];
 
 export default function GamesPage() {
+  const { user } = useAuth();
   const [activeGame, setActiveGame] = useState<string | null>(null);
   const [dbWords, setDbWords] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+
+  const handleAwardXp = async (amount: number, reason: string) => {
+    if (!user) return;
+    try {
+      const token = await user.getIdToken();
+      const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+      const res = await fetch(`${API_BASE}/users/add-xp`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ xpToAdd: amount, reason })
+      });
+      if (res.ok) {
+        console.log(`Successfully awarded ${amount} XP for ${reason}`);
+      }
+    } catch (err) {
+      console.error('Failed to award XP:', err);
+    }
+  };
 
   useEffect(() => {
     const fetchGameData = async () => {
@@ -951,11 +1002,11 @@ export default function GamesPage() {
 
   return (
     <div className="space-y-10 animate-in fade-in duration-700">
-      {activeGame === 'vocab' && <VocabMatchGame dbWords={dbWords} onClose={() => setActiveGame(null)} />}
-      {activeGame === 'quiz'  && <SpeedQuizGame dbWords={dbWords} onClose={() => setActiveGame(null)} />}
-      {activeGame === 'scram' && <WordScrambleGame dbWords={dbWords} onClose={() => setActiveGame(null)} />}
-      {activeGame === 'sentence' && <SentenceBuilderGame dbWords={dbWords} onClose={() => setActiveGame(null)} />}
-      {activeGame === 'idiom' && <IdiomConnectorGame onClose={() => setActiveGame(null)} />}
+      {activeGame === 'vocab' && <VocabMatchGame dbWords={dbWords} onClose={() => setActiveGame(null)} awardXp={handleAwardXp} />}
+      {activeGame === 'quiz'  && <SpeedQuizGame dbWords={dbWords} onClose={() => setActiveGame(null)} awardXp={handleAwardXp} />}
+      {activeGame === 'scram' && <WordScrambleGame dbWords={dbWords} onClose={() => setActiveGame(null)} awardXp={handleAwardXp} />}
+      {activeGame === 'sentence' && <SentenceBuilderGame dbWords={dbWords} onClose={() => setActiveGame(null)} awardXp={handleAwardXp} />}
+      {activeGame === 'idiom' && <IdiomConnectorGame onClose={() => setActiveGame(null)} awardXp={handleAwardXp} />}
 
       <header className="text-center space-y-4">
         <div className="inline-flex p-3 bg-indigo-100 rounded-2xl text-indigo-600 mb-2"><Gamepad2 className="w-8 h-8" /></div>
