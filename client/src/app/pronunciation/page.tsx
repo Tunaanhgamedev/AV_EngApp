@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Volume2, BookOpen, Sparkles, ChevronDown, Mic, Target, Star, Play, Info, ArrowRight, HelpCircle } from 'lucide-react';
+import { Volume2, BookOpen, Sparkles, ChevronDown, Mic, Target, Star, Play, Info, ArrowRight, HelpCircle, Hash, FileText } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 // ─── Alphabet & Phonics Data ──────────────────────────────────────────────────
@@ -114,6 +114,62 @@ const MINIMAL_PAIRS = [
   { a: { word: "bat", ipa: "/bæt/" }, b: { word: "pat", ipa: "/pæt/" }, focus: "b vs p" },
 ];
 
+// ─── Numbers Data ──────────────────────────────────────────────────────────────
+const NUMBERS_BASIC = [
+  { num: '0', en: 'zero', vi: 'không' }, { num: '1', en: 'one', vi: 'một' }, { num: '2', en: 'two', vi: 'hai' },
+  { num: '3', en: 'three', vi: 'ba' }, { num: '4', en: 'four', vi: 'bốn' }, { num: '5', en: 'five', vi: 'năm' },
+  { num: '6', en: 'six', vi: 'sáu' }, { num: '7', en: 'seven', vi: 'bảy' }, { num: '8', en: 'eight', vi: 'tám' },
+  { num: '9', en: 'nine', vi: 'chín' }, { num: '10', en: 'ten', vi: 'mười' }, { num: '11', en: 'eleven', vi: 'mười một' },
+  { num: '12', en: 'twelve', vi: 'mười hai' }, { num: '13', en: 'thirteen', vi: 'mười ba' }, { num: '14', en: 'fourteen', vi: 'mười bốn' },
+  { num: '15', en: 'fifteen', vi: 'mười lăm' }, { num: '16', en: 'sixteen', vi: 'mười sáu' }, { num: '17', en: 'seventeen', vi: 'mười bảy' },
+  { num: '18', en: 'eighteen', vi: 'mười tám' }, { num: '19', en: 'nineteen', vi: 'mười chín' }, { num: '20', en: 'twenty', vi: 'hai mươi' },
+];
+const NUMBERS_TENS = [
+  { num: '10', en: 'ten', vi: 'mười' }, { num: '20', en: 'twenty', vi: 'hai mươi' }, { num: '30', en: 'thirty', vi: 'ba mươi' },
+  { num: '40', en: 'forty', vi: 'bốn mươi' }, { num: '50', en: 'fifty', vi: 'năm mươi' }, { num: '60', en: 'sixty', vi: 'sáu mươi' },
+  { num: '70', en: 'seventy', vi: 'bảy mươi' }, { num: '80', en: 'eighty', vi: 'tám mươi' }, { num: '90', en: 'ninety', vi: 'chín mươi' },
+  { num: '100', en: 'one hundred', vi: 'một trăm' },
+];
+const NUMBERS_BIG = [
+  { num: '100', en: 'one hundred', ipa: '/wʌn ˈhʌn.drəd/', vi: '100', rule: 'hundred = trăm' },
+  { num: '1,000', en: 'one thousand', ipa: '/wʌn ˈθaʊ.zənd/', vi: '1.000', rule: 'thousand = nghìn' },
+  { num: '10,000', en: 'ten thousand', ipa: '/ten ˈθaʊ.zənd/', vi: '10.000', rule: '10 × thousand' },
+  { num: '100,000', en: 'one hundred thousand', ipa: '/wʌn ˈhʌn.drəd ˈθaʊ.zənd/', vi: '100.000', rule: '100 × thousand' },
+  { num: '1,000,000', en: 'one million', ipa: '/wʌn ˈmɪl.jən/', vi: '1 triệu', rule: 'million = triệu' },
+  { num: '1,000,000,000', en: 'one billion', ipa: '/wʌn ˈbɪl.jən/', vi: '1 tỉ', rule: 'billion = tỉ' },
+];
+const NUMBERS_COMBO = [
+  { num: '25', en: 'twenty-five', rule: 'Hàng chục + dấu gạch ngang + hàng đơn vị' },
+  { num: '99', en: 'ninety-nine', rule: 'ninety + nine' },
+  { num: '101', en: 'one hundred and one', rule: 'hundred + "and" + đơn vị' },
+  { num: '256', en: 'two hundred and fifty-six', rule: 'hundred + "and" + chục + đơn vị' },
+  { num: '1,500', en: 'one thousand five hundred', rule: 'thousand + hundred (không cần "and")' },
+  { num: '3,742', en: 'three thousand seven hundred and forty-two', rule: 'thousand + hundred + "and" + chục + đơn vị' },
+  { num: '50,000', en: 'fifty thousand', rule: 'chục + thousand' },
+  { num: '1,000,000', en: 'one million', rule: 'million = 1.000.000' },
+  { num: '2,500,000', en: 'two million five hundred thousand', rule: 'million + hundred + thousand' },
+];
+const ORDINALS = [
+  { num: '1st', en: 'first', vi: 'thứ nhất' }, { num: '2nd', en: 'second', vi: 'thứ hai' },
+  { num: '3rd', en: 'third', vi: 'thứ ba' }, { num: '4th', en: 'fourth', vi: 'thứ tư' },
+  { num: '5th', en: 'fifth', vi: 'thứ năm' }, { num: '10th', en: 'tenth', vi: 'thứ mười' },
+  { num: '11th', en: 'eleventh', vi: 'thứ mười một' }, { num: '12th', en: 'twelfth', vi: 'thứ mười hai' },
+  { num: '20th', en: 'twentieth', vi: 'thứ hai mươi' }, { num: '21st', en: 'twenty-first', vi: 'thứ hai mốt' },
+  { num: '100th', en: 'one hundredth', vi: 'thứ một trăm' },
+];
+
+// ─── Word Endings Data ─────────────────────────────────────────────────────────
+const ED_RULES = [
+  { rule: 'Đọc /t/', condition: 'Sau phụ âm vô thanh: /p/, /k/, /f/, /s/, /ʃ/, /tʃ/', examples: [{ word: 'stopped', ipa: '/stɒpt/' }, { word: 'looked', ipa: '/lʊkt/' }, { word: 'washed', ipa: '/wɒʃt/' }] },
+  { rule: 'Đọc /d/', condition: 'Sau nguyên âm hoặc phụ âm hữu thanh: /b/, /g/, /v/, /z/, /m/, /n/', examples: [{ word: 'played', ipa: '/pleɪd/' }, { word: 'lived', ipa: '/lɪvd/' }, { word: 'called', ipa: '/kɔːld/' }] },
+  { rule: 'Đọc /ɪd/', condition: 'Sau âm /t/ hoặc /d/', examples: [{ word: 'wanted', ipa: '/ˈwɒn.tɪd/' }, { word: 'needed', ipa: '/ˈniː.dɪd/' }, { word: 'started', ipa: '/ˈstɑːr.tɪd/' }] },
+];
+const S_RULES = [
+  { rule: 'Đọc /s/', condition: 'Sau phụ âm vô thanh: /p/, /t/, /k/, /f/, /θ/', examples: [{ word: 'cups', ipa: '/kʌps/' }, { word: 'cats', ipa: '/kæts/' }, { word: 'books', ipa: '/bʊks/' }] },
+  { rule: 'Đọc /z/', condition: 'Sau nguyên âm hoặc phụ âm hữu thanh: /b/, /d/, /g/, /v/, /m/, /n/, /l/', examples: [{ word: 'dogs', ipa: '/dɒɡz/' }, { word: 'plays', ipa: '/pleɪz/' }, { word: 'trees', ipa: '/triːz/' }] },
+  { rule: 'Đọc /ɪz/', condition: 'Sau âm xì: /s/, /z/, /ʃ/, /ʒ/, /tʃ/, /dʒ/', examples: [{ word: 'buses', ipa: '/ˈbʌs.ɪz/' }, { word: 'watches', ipa: '/ˈwɒtʃ.ɪz/' }, { word: 'bridges', ipa: '/ˈbrɪdʒ.ɪz/' }] },
+];
+
 const speak = (text: string, rate: number = 0.7) => {
   if (typeof window === 'undefined') return;
   window.speechSynthesis.cancel();
@@ -147,15 +203,18 @@ function IPACell({ item, color }: { item: { ipa: string; example: string; word: 
 }
 
 export default function PronunciationPage() {
-  const [activeTab, setActiveTab] = useState<'alphabet' | 'chart' | 'stress' | 'pairs' | 'building'>('alphabet');
+  const [activeTab, setActiveTab] = useState<'alphabet' | 'chart' | 'stress' | 'pairs' | 'building' | 'numbers' | 'endings'>('alphabet');
   const [chartSection, setChartSection] = useState<'vowels' | 'diphthongs' | 'consonants'>('vowels');
+  const [numSection, setNumSection] = useState<'basic' | 'big' | 'combo' | 'ordinals'>('basic');
 
   const tabs = [
     { id: 'alphabet' as const, label: 'Bảng Chữ Cái & Phonics', icon: BookOpen },
     { id: 'chart' as const, label: 'Bảng Phiên Âm IPA', icon: Volume2 },
+    { id: 'numbers' as const, label: 'Số & Cách Đọc Số', icon: Hash },
     { id: 'stress' as const, label: 'Quy Tắc Trọng Âm', icon: Target },
+    { id: 'endings' as const, label: 'Đuôi -ed, -s/-es', icon: FileText },
     { id: 'pairs' as const, label: 'Cặp Tối Thiểu', icon: Mic },
-    { id: 'building' as const, label: 'Quy Tắc Nối Câu & Chữ', icon: Sparkles },
+    { id: 'building' as const, label: 'Nối Câu & Chữ', icon: Sparkles },
   ];
 
   return (
@@ -547,6 +606,216 @@ export default function PronunciationPage() {
                   </div>
                 </div>
               </div>
+            </div>
+          </section>
+        </div>
+      )}
+
+      {/* ════════════════════════════════════════════ NUMBERS ═══════════════════════ */}
+      {activeTab === 'numbers' && (
+        <div className="space-y-6">
+          <div className="premium-card p-6 bg-gradient-to-r from-teal-50 to-cyan-50 border-teal-200">
+            <h3 className="text-lg font-black text-teal-800 flex items-center gap-2 mb-2">
+              <Hash className="w-5 h-5 text-teal-600" /> Cách Đọc Số trong Tiếng Anh
+            </h3>
+            <p className="text-sm text-teal-700 leading-relaxed font-medium">
+              Học cách phát âm các số từ 0–20, hàng chục, hàng trăm, nghìn, triệu, tỉ và quy tắc ghép số. Nhấn vào mỗi số để nghe phát âm.
+            </p>
+          </div>
+
+          {/* Sub-tabs */}
+          <div className="flex gap-2 overflow-x-auto pb-1">
+            {[
+              { id: 'basic' as const, label: 'Số 0–20 & Hàng Chục' },
+              { id: 'big' as const, label: 'Trăm → Tỉ' },
+              { id: 'combo' as const, label: 'Quy Tắc Ghép Số' },
+              { id: 'ordinals' as const, label: 'Số Thứ Tự' },
+            ].map(s => (
+              <button
+                key={s.id}
+                onClick={() => setNumSection(s.id)}
+                className={cn(
+                  "px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all whitespace-nowrap",
+                  numSection === s.id ? "bg-teal-600 text-white shadow-md" : "bg-slate-50 text-slate-400 hover:bg-slate-100"
+                )}
+              >
+                {s.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Basic 0-20 + Tens */}
+          {numSection === 'basic' && (
+            <div className="space-y-6">
+              <h4 className="font-black text-slate-800 flex items-center gap-2">
+                <span className="w-2.5 h-6 bg-teal-500 rounded-full" />Số từ 0 đến 20
+              </h4>
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-3">
+                {NUMBERS_BASIC.map(n => (
+                  <button key={n.num} onClick={() => speak(n.en)} className="group premium-card p-4 flex flex-col items-center gap-1 hover:shadow-lg hover:-translate-y-0.5 transition-all border border-teal-100 bg-teal-50/30">
+                    <span className="text-2xl font-black text-teal-700">{n.num}</span>
+                    <span className="text-xs font-bold text-slate-700">{n.en}</span>
+                    <span className="text-[10px] text-slate-400 italic">{n.vi}</span>
+                    <Play className="w-3 h-3 text-slate-300 group-hover:text-teal-500 fill-slate-300 group-hover:fill-teal-500" />
+                  </button>
+                ))}
+              </div>
+
+              <h4 className="font-black text-slate-800 flex items-center gap-2 pt-4">
+                <span className="w-2.5 h-6 bg-teal-500 rounded-full" />Hàng Chục (10 – 100)
+              </h4>
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                {NUMBERS_TENS.map(n => (
+                  <button key={n.num} onClick={() => speak(n.en)} className="group premium-card p-4 flex flex-col items-center gap-1 hover:shadow-lg hover:-translate-y-0.5 transition-all border border-cyan-100 bg-cyan-50/30">
+                    <span className="text-2xl font-black text-cyan-700">{n.num}</span>
+                    <span className="text-xs font-bold text-slate-700">{n.en}</span>
+                    <span className="text-[10px] text-slate-400 italic">{n.vi}</span>
+                    <Play className="w-3 h-3 text-slate-300 group-hover:text-cyan-500 fill-slate-300 group-hover:fill-cyan-500" />
+                  </button>
+                ))}
+              </div>
+
+              <div className="premium-card p-4 bg-amber-50 border-amber-200 flex items-start gap-3">
+                <Info className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
+                <div className="text-sm text-amber-700 font-medium space-y-1">
+                  <p><strong>Lưu ý:</strong> Các số 13–19 có đuôi <span className="font-mono bg-amber-100 px-1 rounded">-teen</span> (nhấn mạnh âm TEEN). Hàng chục 20–90 có đuôi <span className="font-mono bg-amber-100 px-1 rounded">-ty</span> (nhấn âm đầu).</p>
+                  <p>VD: thir<strong>TEEN</strong> /θɜːˈtiːn/ vs <strong>THIR</strong>ty /ˈθɜː.ti/</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Big Numbers */}
+          {numSection === 'big' && (
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {NUMBERS_BIG.map(n => (
+                  <button key={n.num} onClick={() => speak(n.en)} className="group premium-card p-6 flex items-center gap-5 hover:shadow-xl transition-all text-left">
+                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-teal-500 to-cyan-500 text-white flex items-center justify-center font-black text-xs flex-shrink-0 shadow-lg">
+                      {n.num}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-lg font-black text-slate-800">{n.en}</p>
+                      <p className="text-xs font-mono text-slate-400">{n.ipa}</p>
+                      <p className="text-xs text-primary font-bold mt-1">📏 {n.rule}</p>
+                    </div>
+                    <Play className="w-5 h-5 text-slate-200 group-hover:text-teal-500 flex-shrink-0" />
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Combo Rules */}
+          {numSection === 'combo' && (
+            <div className="space-y-4">
+              <div className="premium-card p-4 bg-purple-50 border-purple-200 flex items-start gap-3">
+                <Sparkles className="w-5 h-5 text-purple-500 flex-shrink-0 mt-0.5" />
+                <div className="text-sm text-purple-700 font-medium">
+                  <p><strong>Quy tắc vàng:</strong> Đọc từ trái sang phải, lớn → nhỏ. Dùng <strong>"and"</strong> trước số hàng chục/đơn vị khi đứng sau hàng trăm.</p>
+                </div>
+              </div>
+              <div className="space-y-3">
+                {NUMBERS_COMBO.map((n, i) => (
+                  <button key={i} onClick={() => speak(n.en)} className="group w-full premium-card p-5 flex items-center gap-4 hover:shadow-lg transition-all text-left">
+                    <span className="w-24 text-right text-2xl font-black text-primary flex-shrink-0 font-mono">{n.num}</span>
+                    <div className="flex-1 min-w-0 border-l border-slate-200 pl-4">
+                      <p className="font-bold text-slate-800">{n.en}</p>
+                      <p className="text-xs text-slate-400 font-medium mt-0.5">📐 {n.rule}</p>
+                    </div>
+                    <Play className="w-4 h-4 text-slate-200 group-hover:text-primary flex-shrink-0" />
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Ordinals */}
+          {numSection === 'ordinals' && (
+            <div className="space-y-4">
+              <div className="premium-card p-4 bg-blue-50 border-blue-200 flex items-start gap-3">
+                <Info className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
+                <div className="text-sm text-blue-700 font-medium">
+                  <p>Số thứ tự dùng để chỉ vị trí, thứ hạng. Thường thêm đuôi <strong>-th</strong> (fourth, fifth...) trừ 1st, 2nd, 3rd.</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                {ORDINALS.map(n => (
+                  <button key={n.num} onClick={() => speak(n.en)} className="group premium-card p-4 flex flex-col items-center gap-1 hover:shadow-lg hover:-translate-y-0.5 transition-all border border-indigo-100 bg-indigo-50/30">
+                    <span className="text-2xl font-black text-indigo-700">{n.num}</span>
+                    <span className="text-xs font-bold text-slate-700">{n.en}</span>
+                    <span className="text-[10px] text-slate-400 italic">{n.vi}</span>
+                    <Play className="w-3 h-3 text-slate-300 group-hover:text-indigo-500 fill-slate-300 group-hover:fill-indigo-500" />
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ════════════════════════════════════════════ WORD ENDINGS ══════════════════ */}
+      {activeTab === 'endings' && (
+        <div className="space-y-8">
+          {/* -ed section */}
+          <section className="space-y-4">
+            <div className="premium-card p-6 bg-gradient-to-r from-rose-50 to-orange-50 border-rose-200">
+              <h3 className="text-lg font-black text-rose-800 flex items-center gap-2 mb-2">
+                <FileText className="w-5 h-5 text-rose-600" /> Cách phát âm đuôi -ED
+              </h3>
+              <p className="text-sm text-rose-700 leading-relaxed font-medium">
+                Đuôi -ed (quá khứ đơn, phân từ) có 3 cách đọc: <strong>/t/</strong>, <strong>/d/</strong>, hoặc <strong>/ɪd/</strong> tùy thuộc vào âm cuối của động từ gốc.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {ED_RULES.map((r, i) => (
+                <div key={i} className="premium-card p-6 hover:shadow-xl transition-all space-y-3">
+                  <div className="flex items-center gap-2">
+                    <span className={cn("text-sm font-black px-3 py-1 rounded-full", i === 0 ? "bg-sky-100 text-sky-700" : i === 1 ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700")}>{r.rule}</span>
+                  </div>
+                  <p className="text-xs text-slate-500 font-medium">{r.condition}</p>
+                  <div className="space-y-2">
+                    {r.examples.map((ex, j) => (
+                      <button key={j} onClick={() => speak(ex.word)} className="group w-full flex items-center justify-between p-3 bg-slate-50 rounded-xl hover:bg-primary/5 transition-all">
+                        <span className="font-bold text-sm text-slate-800">{ex.word}</span>
+                        <span className="text-xs font-mono text-slate-400">{ex.ipa}</span>
+                        <Play className="w-3 h-3 text-slate-300 group-hover:text-primary" />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* -s/-es section */}
+          <section className="space-y-4">
+            <div className="premium-card p-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
+              <h3 className="text-lg font-black text-blue-800 flex items-center gap-2 mb-2">
+                <FileText className="w-5 h-5 text-blue-600" /> Cách phát âm đuôi -S / -ES
+              </h3>
+              <p className="text-sm text-blue-700 leading-relaxed font-medium">
+                Đuôi -s/-es (số nhiều, ngôi thứ 3 số ít) có 3 cách đọc: <strong>/s/</strong>, <strong>/z/</strong>, hoặc <strong>/ɪz/</strong> tùy thuộc vào âm cuối.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {S_RULES.map((r, i) => (
+                <div key={i} className="premium-card p-6 hover:shadow-xl transition-all space-y-3">
+                  <div className="flex items-center gap-2">
+                    <span className={cn("text-sm font-black px-3 py-1 rounded-full", i === 0 ? "bg-sky-100 text-sky-700" : i === 1 ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700")}>{r.rule}</span>
+                  </div>
+                  <p className="text-xs text-slate-500 font-medium">{r.condition}</p>
+                  <div className="space-y-2">
+                    {r.examples.map((ex, j) => (
+                      <button key={j} onClick={() => speak(ex.word)} className="group w-full flex items-center justify-between p-3 bg-slate-50 rounded-xl hover:bg-primary/5 transition-all">
+                        <span className="font-bold text-sm text-slate-800">{ex.word}</span>
+                        <span className="text-xs font-mono text-slate-400">{ex.ipa}</span>
+                        <Play className="w-3 h-3 text-slate-300 group-hover:text-primary" />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
           </section>
         </div>
