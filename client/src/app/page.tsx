@@ -13,7 +13,8 @@ import {
   MessageSquare,
   PenTool,
   Sparkles, 
-  ArrowRight
+  ArrowRight,
+  Calendar
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
@@ -23,8 +24,92 @@ export default function Dashboard() {
   const { user, dbUser, signInWithGoogle, loading } = useAuth();
 
   const [stats, setStats] = React.useState({ wordsLearned: 0, oxfordLearned: 0, totalOxford: 3000 });
+  const [vietnamTime, setVietnamTime] = React.useState<Date | null>(null);
   const [reviewDue, setReviewDue] = React.useState(0);
+  const [checkedIn, setCheckedIn] = React.useState(true);
+  const [checkingIn, setCheckingIn] = React.useState(false);
   const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+
+  const handleCheckin = async () => {
+    if (!user || checkingIn || checkedIn) return;
+    try {
+      setCheckingIn(true);
+      const token = await user.getIdToken();
+      const res = await fetch(`${API_BASE}/users/checkin`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (res.ok) {
+        setCheckedIn(true);
+        // Refresh local view to update level/streak/XP stats dynamically
+        window.location.reload();
+      }
+    } catch (err) {
+      console.error('Failed to checkin:', err);
+    } finally {
+      setCheckingIn(false);
+    }
+  };
+
+  React.useEffect(() => {
+    const updateTime = () => {
+      const d = new Date();
+      const utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+      const ictTime = new Date(utc + (3600000 * 7));
+      setVietnamTime(ictTime);
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const renderMiniCalendar = (ictDate: Date) => {
+    const year = ictDate.getFullYear();
+    const month = ictDate.getMonth();
+    const todayDate = ictDate.getDate();
+
+    const firstDay = new Date(year, month, 1);
+    let startDayOfWeek = firstDay.getDay(); 
+    startDayOfWeek = startDayOfWeek === 0 ? 6 : startDayOfWeek - 1;
+
+    const totalDays = new Date(year, month + 1, 0).getDate();
+    const days = [];
+
+    for (let i = 0; i < startDayOfWeek; i++) {
+      days.push(<div key={`empty-${i}`} className="w-6 h-6" />);
+    }
+
+    for (let d = 1; d <= totalDays; d++) {
+      const isToday = d === todayDate;
+      days.push(
+        <div 
+          key={d} 
+          className={cn(
+            "w-6 h-6 rounded-lg text-[9px] font-black flex items-center justify-center transition-all",
+            isToday 
+              ? "bg-primary text-white shadow-md shadow-primary/30 scale-110" 
+              : "text-slate-600 hover:bg-slate-100"
+          )}
+        >
+          {d}
+        </div>
+      );
+    }
+
+    return (
+      <div className="space-y-2">
+        <div className="grid grid-cols-7 gap-1 text-[8px] font-bold text-slate-400 text-center uppercase tracking-wider">
+          <span>T2</span><span>T3</span><span>T4</span><span>T5</span><span>T6</span><span>T7</span><span>CN</span>
+        </div>
+        <div className="grid grid-cols-7 gap-1 text-center">
+          {days}
+        </div>
+      </div>
+    );
+  };
 
   React.useEffect(() => {
     if (user) {
@@ -50,6 +135,14 @@ export default function Dashboard() {
             setReviewDue(due);
           }
         })
+        .catch(console.error);
+
+        // Fetch Check-in Status
+        fetch(`${API_BASE}/users/checkin-status`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        })
+        .then(res => res.json())
+        .then(data => setCheckedIn(data.checkedIn))
         .catch(console.error);
       });
     }
@@ -122,6 +215,47 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-8 animate-in fade-in duration-700">
+      {/* Daily Check-in Notification */}
+      {!checkedIn ? (
+        <div className="premium-card p-6 bg-gradient-to-r from-amber-500 to-orange-600 text-white flex flex-col md:flex-row items-center justify-between gap-4 animate-in slide-in-from-top-4 relative overflow-hidden shadow-xl shadow-orange-500/20">
+          <div className="flex items-center gap-4 relative z-10">
+            <div className="w-12 h-12 rounded-full bg-white/20 text-white flex items-center justify-center shadow-inner">
+              <Flame className="w-6 h-6 animate-pulse text-yellow-300" />
+            </div>
+            <div>
+              <p className="text-lg font-black">Điểm Danh Hằng Ngày! 🌟</p>
+              <p className="text-xs text-white/80 font-medium">
+                Điểm danh hôm nay để tiếp tục chuỗi ngày học tập và nhận ngay <strong className="text-yellow-300">+50 XP</strong>!
+                <Link href="/checkin" className="underline font-bold text-yellow-200 ml-1.5 hover:text-white transition-all">Xem lịch sử</Link>
+              </p>
+            </div>
+          </div>
+          <button 
+            onClick={handleCheckin} 
+            disabled={checkingIn}
+            className="px-8 py-3 bg-white text-orange-600 rounded-2xl font-black text-sm hover:bg-orange-50 transition-all shadow-md relative z-10 disabled:opacity-50"
+          >
+            {checkingIn ? 'ĐANG ĐIỂM DANH...' : 'ĐIỂM DANH NGAY'}
+          </button>
+          <div className="absolute -right-8 -bottom-8 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
+        </div>
+      ) : (
+        <div className="premium-card p-4 bg-emerald-50 border-emerald-100 flex items-center justify-between gap-4 animate-in slide-in-from-top-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-lg shadow-emerald-500/20">
+              <Flame className="w-5 h-5 text-yellow-200" />
+            </div>
+            <div>
+              <p className="text-sm font-black text-emerald-950">Hôm nay bạn đã điểm danh thành công! 🎉</p>
+              <p className="text-xs text-emerald-600 font-medium">Bảo vệ chuỗi hoạt động học tập hằng ngày và nâng cao trình độ tiếng Anh.</p>
+            </div>
+          </div>
+          <Link href="/checkin" className="px-6 py-2 bg-emerald-500 text-white rounded-xl font-bold text-xs hover:bg-emerald-600 transition-all shadow-md">
+            CHI TIẾT LỊCH SỬ
+          </Link>
+        </div>
+      )}
+
       {/* Review Reminder Notification */}
       {reviewDue > 0 && (
         <div className="premium-card p-4 bg-rose-50 border-rose-100 flex items-center justify-between gap-4 animate-in slide-in-from-top-4">
@@ -228,6 +362,36 @@ export default function Dashboard() {
 
         {/* Right Sidebar */}
         <div className="space-y-6">
+          {/* Vietnam Time & Calendar Widget */}
+          <div className="premium-card p-6 space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="font-black text-slate-800 text-xs flex items-center gap-1.5 uppercase tracking-wider">
+                <Clock className="w-4 h-4 text-primary animate-pulse" /> Giờ Việt Nam (ICT)
+              </h3>
+              <span className="text-[8px] font-black text-primary bg-primary/10 px-2 py-0.5 rounded uppercase tracking-wider">
+                UTC+7
+              </span>
+            </div>
+            
+            <div className="bg-slate-900 text-white rounded-2xl p-4 text-center relative overflow-hidden shadow-inner">
+              <span className="text-3xl font-black tabular-nums tracking-widest block">
+                {vietnamTime ? vietnamTime.toLocaleTimeString('vi-VN') : '--:--:--'}
+              </span>
+              <span className="text-[9px] font-bold text-slate-400 block mt-1">
+                {vietnamTime ? vietnamTime.toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : ''}
+              </span>
+              <div className="absolute -right-6 -bottom-6 w-16 h-16 bg-primary/10 rounded-full blur-xl" />
+            </div>
+
+            <div className="border-t border-slate-100 pt-4">
+              {vietnamTime && renderMiniCalendar(vietnamTime)}
+            </div>
+
+            <Link href="/checkin" className="w-full text-center block py-2.5 bg-slate-50 border border-slate-100 hover:bg-slate-100 rounded-xl text-xs font-black uppercase tracking-widest text-slate-600 transition-all">
+              Lịch sử điểm danh ➜
+            </Link>
+          </div>
+
           <div className="premium-card p-6">
             <div className="flex items-center justify-between mb-6">
               <h3 className="font-bold text-lg">Oxford 3000™</h3>
