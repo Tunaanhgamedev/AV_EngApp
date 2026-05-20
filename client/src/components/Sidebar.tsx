@@ -30,6 +30,7 @@ export function Sidebar() {
   const pathname = usePathname();
   const { user, dbUser, signInWithGoogle, logout, loading } = useAuth();
   const [reviewCount, setReviewCount] = React.useState(0);
+  const [notebookNeedsReview, setNotebookNeedsReview] = React.useState(false);
 
   React.useEffect(() => {
     const fetchReviewCount = async () => {
@@ -46,6 +47,15 @@ export function Sidebar() {
             w.nextReviewAt && new Date(w.nextReviewAt) <= new Date()
           ).length;
           setReviewCount(due);
+        }
+
+        // Check daily review status for notebook badge
+        const statusRes = await fetch(`${API_BASE}/vocabulary/daily-review-status`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (statusRes.ok) {
+          const statusData = await statusRes.json();
+          setNotebookNeedsReview(statusData.needsReminder);
         }
       } catch (err) {
         console.error('Failed to fetch review count:', err);
@@ -64,7 +74,7 @@ export function Sidebar() {
     { icon: Languages, label: 'AI Translator', href: '/translate' },
     { icon: BookOpen, label: 'Learn Vocabulary', href: '/learn' },
     { icon: BookMarked, label: 'Review System', href: '/review', badge: reviewCount },
-    { icon: NotebookPen, label: 'My Notebook', href: '/notebook' },
+    { icon: NotebookPen, label: 'My Notebook', href: '/notebook', badge: notebookNeedsReview ? -1 : 0 },
     { icon: FileText, label: 'Reading Room', href: '/reading' },
     { icon: Headphones, label: 'Listening Lab', href: '/listening' },
     { icon: Volume2, label: 'Pronunciation', href: '/pronunciation' },
@@ -107,10 +117,13 @@ export function Sidebar() {
                     isActive ? "text-white" : "text-slate-400 group-hover:text-primary"
                   )} />
                   <span className="font-medium text-sm flex-1">{item.label}</span>
-                  {item.badge > 0 && (
+                  {item.badge && item.badge > 0 && (
                     <span className="bg-rose-500 text-white text-[10px] font-black px-1.5 py-0.5 rounded-full min-w-[18px] text-center animate-pulse">
                       {item.badge}
                     </span>
+                  )}
+                  {item.badge === -1 && (
+                    <span className="w-2.5 h-2.5 rounded-full bg-orange-400 animate-pulse" />
                   )}
                 </Link>
               </li>

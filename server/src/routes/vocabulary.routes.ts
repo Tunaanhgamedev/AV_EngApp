@@ -873,6 +873,77 @@ router.get('/review/session', authenticate, async (req: any, res) => {
   }
 });
 
+// GET /daily-review-status - Check if user has completed daily vocabulary review
+router.get('/daily-review-status', authenticate, async (req: any, res) => {
+  try {
+    const userId = req.user.uid;
+    const now = new Date();
+
+    // Get today's date at midnight (UTC) for comparison
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const todayEnd = new Date(todayStart);
+    todayEnd.setDate(todayEnd.getDate() + 1);
+
+    // Count how many notebook words are due for review
+    const dueCount = await prisma.userLearnedWord.count({
+      where: {
+        userId,
+        isFavorite: true,
+        nextReviewAt: { lte: now }
+      }
+    });
+
+    // Count total notebook words
+    const totalNotebook = await prisma.userLearnedWord.count({
+      where: { userId, isFavorite: true }
+    });
+
+    // Check if user has reviewed any word today (by checking lastReviewedAt on notebook words)
+    const reviewedToday = await prisma.userLearnedWord.count({
+      where: {
+        userId,
+        isFavorite: true,
+        lastReviewedAt: {
+          gte: todayStart,
+          lt: todayEnd
+        }
+      }
+    });
+
+    // Also check UserDailyActivity for today
+    const dailyActivity = await prisma.userDailyActivity.findFirst({
+      where: {
+        userId,
+        activityDate: {
+          gte: todayStart,
+          lt: todayEnd
+        }
+      }
+    });
+
+    // User has completed daily review if:
+    // 1. They have no words due AND have reviewed at least once today, OR
+    // 2. They have reviewed at least one word today (even if more are due)
+    // 3. They have a daily activity record for today with review_completed flag
+    const hasReviewedToday = reviewedToday > 0 || (dailyActivity && dailyActivity.totalMinutes > 0);
+    const hasWordsToReview = dueCount > 0;
+    const isCompleted = hasReviewedToday && !hasWordsToReview;
+
+    res.json({
+      hasWordsToReview,
+      dueCount,
+      totalNotebook,
+      hasReviewedToday: !!hasReviewedToday,
+      isCompleted,       // true = all done for today
+      reviewedToday,     // how many words reviewed today
+      needsReminder: totalNotebook > 0 && !hasReviewedToday && hasWordsToReview
+    });
+  } catch (error) {
+    console.error('Daily review status error:', error);
+    res.status(500).json({ error: 'Failed to check daily review status' });
+  }
+});
+
 // POST /review/submit - Update SRS status for a word
 router.post('/review/submit', authenticate, async (req: any, res) => {
   try {
@@ -915,6 +986,28 @@ router.post('/review/submit', authenticate, async (req: any, res) => {
         where: { id: userId },
         data: { xp: { increment: 10 } }
       });
+    }
+
+    // Record daily activity for review tracking
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    try {
+      await prisma.userDailyActivity.upsert({
+        where: {
+          userId_activityDate: { userId, activityDate: today }
+        },
+        update: {
+          totalMinutes: { increment: 1 }
+        },
+        create: {
+          userId,
+          activityDate: today,
+          totalMinutes: 1
+        }
+      });
+    } catch (actErr) {
+      // Non-critical — don't fail the review submission
+      console.warn('Daily activity upsert warning:', actErr);
     }
 
     res.json({ success: true, nextReviewAt, newLevel });

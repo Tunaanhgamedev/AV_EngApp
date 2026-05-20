@@ -242,6 +242,16 @@ function AddWordPanel({ onAdd }: { onAdd: (d: any) => Promise<void> }) {
 
 import { useRouter } from 'next/navigation';
 
+interface DailyReviewStatus {
+  hasWordsToReview: boolean;
+  dueCount: number;
+  totalNotebook: number;
+  hasReviewedToday: boolean;
+  isCompleted: boolean;
+  reviewedToday: number;
+  needsReminder: boolean;
+}
+
 export default function NotebookPage() {
   const { user, signInWithGoogle } = useAuth();
   const router = useRouter();
@@ -249,8 +259,22 @@ export default function NotebookPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [toast, setToast] = useState<{ msg: string; ok: boolean } | null>(null);
+  const [dailyStatus, setDailyStatus] = useState<DailyReviewStatus | null>(null);
 
   const showToast = (msg: string, ok = true) => { setToast({ msg, ok }); setTimeout(() => setToast(null), 3000); };
+
+  const fetchDailyStatus = useCallback(async () => {
+    if (!user) return;
+    try {
+      const token = await user.getIdToken();
+      const res = await fetch(`${API_BASE}/vocabulary/daily-review-status`, { headers: { Authorization: `Bearer ${token}` } });
+      if (res.ok) {
+        const data = await res.json();
+        setDailyStatus(data);
+      }
+    } catch (err) { console.error('Failed to fetch daily status:', err); }
+  }, [user]);
+
   const fetchWords = useCallback(async () => {
     if (!user) return;
     setLoading(true);
@@ -263,7 +287,7 @@ export default function NotebookPage() {
     finally { setLoading(false); }
   }, [user]);
 
-  useEffect(() => { fetchWords(); }, [fetchWords]);
+  useEffect(() => { fetchWords(); fetchDailyStatus(); }, [fetchWords, fetchDailyStatus]);
 
   const handleAdd = async (form: any) => {
     if (!user) return;
@@ -283,6 +307,7 @@ export default function NotebookPage() {
       : '';
     showToast(`✨ Đã thêm "${form.word}" vào Notebook!${dictMsg}`);
     fetchWords();
+    fetchDailyStatus();
   };
 
   const handleDelete = async (id: string) => {
@@ -302,7 +327,19 @@ export default function NotebookPage() {
   );
 
   const filtered = words.filter(w => w.word.toLowerCase().includes(search.toLowerCase()) || w.meaningVi?.includes(search));
-  const reviewDue = words.filter(w => w.nextReviewAt && new Date(w.nextReviewAt) <= new Date()).length;
+  const reviewDue = dailyStatus?.dueCount ?? words.filter(w => w.nextReviewAt && new Date(w.nextReviewAt) <= new Date()).length;
+  const hasReviewedToday = dailyStatus?.hasReviewedToday ?? false;
+  const needsReminder = dailyStatus?.needsReminder ?? false;
+
+  // Determine banner state:
+  // 1. needsReminder = new day + has due words + hasn't reviewed yet → urgent orange/red
+  // 2. reviewDue > 0 but hasReviewedToday → still words left, encouraging blue
+  // 3. reviewDue === 0 and hasReviewedToday → completed green ✓
+  // 4. reviewDue === 0 and !hasReviewedToday → no words to review (neutral)
+  const bannerState = needsReminder ? 'reminder' 
+    : reviewDue > 0 ? 'due' 
+    : hasReviewedToday ? 'completed' 
+    : 'idle';
 
   return (
     <div className="space-y-8 pb-10">
@@ -328,45 +365,59 @@ export default function NotebookPage() {
         </div>
       </header>
 
-      {/* Review CTA Banner - Always visible but dynamic */}
+      {/* Daily Review Banner — 4 states */}
       <div className={cn(
-        "premium-card p-6 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl relative overflow-hidden group border-none",
-        reviewDue > 0
-          ? "bg-gradient-to-r from-primary to-indigo-600 text-white shadow-primary/20"
-          : "bg-white text-slate-800 border-2 border-slate-100"
+        "premium-card p-6 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl relative overflow-hidden group border-none transition-all duration-500",
+        bannerState === 'reminder' && "bg-gradient-to-r from-orange-500 to-rose-500 text-white shadow-orange-500/20 animate-in slide-in-from-top-4",
+        bannerState === 'due' && "bg-gradient-to-r from-primary to-indigo-600 text-white shadow-primary/20",
+        bannerState === 'completed' && "bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-emerald-500/20",
+        bannerState === 'idle' && "bg-white text-slate-800 border-2 border-slate-100"
       )}>
         <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none group-hover:scale-110 transition-transform duration-500">
-          <Brain className={cn("w-32 h-32", reviewDue > 0 ? "text-white" : "text-primary")} />
+          <Brain className={cn("w-32 h-32", bannerState === 'idle' ? "text-primary" : "text-white")} />
         </div>
 
         <div className="space-y-1 relative z-10 text-center md:text-left">
           <h2 className="text-xl font-black flex items-center justify-center md:justify-start gap-2">
-            {reviewDue > 0 ? (
-              <>
-                <Sparkles className="w-5 h-5 fill-white" /> Đã đến lúc ôn tập!
-              </>
-            ) : (
-              <>
-                <CheckCheck className="w-5 h-5 text-green-500" /> Bạn đã thuộc hết từ hôm nay!
-              </>
+            {bannerState === 'reminder' && (
+              <><Clock className="w-5 h-5 animate-pulse" /> 🔔 Nhắc nhở: Bạn chưa ôn tập hôm nay!</>
+            )}
+            {bannerState === 'due' && (
+              <><Sparkles className="w-5 h-5 fill-white" /> Đã đến lúc ôn tập!</>
+            )}
+            {bannerState === 'completed' && (
+              <><CheckCheck className="w-5 h-5" /> ✅ Hoàn thành bài tập từ vựng hôm nay!</>
+            )}
+            {bannerState === 'idle' && (
+              <><CheckCheck className="w-5 h-5 text-green-500" /> Bạn đã thuộc hết từ hôm nay!</>
             )}
           </h2>
-          <p className={cn("font-medium", reviewDue > 0 ? "text-white/80" : "text-slate-500")}>
-            {reviewDue > 0
-              ? `Bạn có ${reviewDue} từ vựng đang chờ được nhắc lại để không bị quên.`
-              : "Bạn không có từ nào đến hạn ôn tập. Nhưng bạn vẫn có thể luyện tập thêm để nhớ lâu hơn!"}
+          <p className={cn("font-medium", bannerState === 'idle' ? "text-slate-500" : "text-white/80")}>
+            {bannerState === 'reminder' && `Ngày mới đã bắt đầu! Bạn có ${reviewDue} từ vựng cần ôn lại. Hãy dành vài phút để không bị quên nhé!`}
+            {bannerState === 'due' && `Bạn có ${reviewDue} từ vựng đang chờ được nhắc lại để không bị quên.`}
+            {bannerState === 'completed' && `Xuất sắc! Bạn đã ôn tập ${dailyStatus?.reviewedToday || 0} từ hôm nay. Hẹn gặp lại ngày mai!`}
+            {bannerState === 'idle' && "Bạn không có từ nào đến hạn ôn tập. Nhưng bạn vẫn có thể luyện tập thêm để nhớ lâu hơn!"}
           </p>
         </div>
 
-        <button
-          onClick={() => router.push('/review/quiz')}
-          className={cn(
-            "px-8 py-3.5 rounded-2xl font-black text-sm shadow-xl hover:scale-105 active:scale-95 transition-all relative z-10 flex items-center gap-2",
-            reviewDue > 0 ? "bg-white text-primary" : "bg-slate-900 text-white"
-          )}
-        >
-          {reviewDue > 0 ? "BẮT ĐẦU ÔN TẬP" : "LUYỆN TẬP NGAY"} <ChevronRight className="w-5 h-5" />
-        </button>
+        {bannerState !== 'completed' ? (
+          <button
+            onClick={() => router.push('/review/quiz')}
+            className={cn(
+              "px-8 py-3.5 rounded-2xl font-black text-sm shadow-xl hover:scale-105 active:scale-95 transition-all relative z-10 flex items-center gap-2 flex-shrink-0",
+              bannerState === 'reminder' && "bg-white text-orange-600",
+              bannerState === 'due' && "bg-white text-primary",
+              bannerState === 'idle' && "bg-slate-900 text-white"
+            )}
+          >
+            {bannerState === 'reminder' ? "ÔN TẬP NGAY BÂY GIỜ" : bannerState === 'due' ? "BẮT ĐẦU ÔN TẬP" : "LUYỆN TẬP NGAY"} <ChevronRight className="w-5 h-5" />
+          </button>
+        ) : (
+          <div className="flex items-center gap-3 px-6 py-3.5 bg-white/20 backdrop-blur rounded-2xl relative z-10 flex-shrink-0">
+            <CheckCheck className="w-6 h-6 text-white" />
+            <span className="font-black text-sm text-white">ĐÃ HOÀN THÀNH</span>
+          </div>
+        )}
       </div>
 
       <AddWordPanel onAdd={handleAdd} />
