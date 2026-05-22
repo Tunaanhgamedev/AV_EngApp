@@ -88,56 +88,80 @@ export class GeminiService {
    */
   static async generateChatResponse(messages: any[], persona: string, scenario: string) {
     try {
-      const chatMessages = messages.map(m => ({
+      // Build proper Gemini chat history from previous messages (excluding the latest user message)
+      const chatHistory = messages.slice(0, -1).map(m => ({
         role: m.role === 'assistant' ? 'model' : 'user',
         parts: [{ text: m.content }]
       }));
 
-      const systemInstruction = `
-        Your name is EngBot. You are an expert AI English Coach and conversational partner.
-        You are currently roleplaying as: "${persona}" in the scenario: "${scenario}". If the scenario is "free_chat", act as a general, friendly English Coach.
-        
-        CRITICAL EDUCATION RULES:
-        1. Maintain the conversation as "${persona}" naturally in the "aiMessage" field. Use clear, engaging English suitable for English learners (CEFR A2-B2 level).
-        2. Actively monitor the user's input for any grammar, spelling, punctuation, or structural English mistakes.
-        3. In the "tutorFeedback" field (written in warm, supportive Vietnamese):
-           - If the user made any mistakes (grammar, spelling, awkward wording), point them out gently, explain why it was wrong, and show how to write/say it correctly.
-           - If the user's sentence was correct, congratulate them! Then, provide 1-2 interesting synonyms, alternative phrasing, or an idiom related to the context to help expand their vocabulary.
-           - If the user asks ANY question about English grammar, vocabulary, or how to say/write something inside the chat, prioritize answering that question clearly, directly, and comprehensively in this "tutorFeedback" field in Vietnamese!
-        4. In the "translation" field: Provide a natural, elegant Vietnamese translation of the "aiMessage" text.
-        5. MULTILINGUAL & TRANSLATION TRAINING (English <-> Vietnamese):
-           - The user may write in English, Vietnamese, or a mix of both.
-           - If the user writes in English, reply in English and provide corrections/feedback in Vietnamese as usual.
-           - If the user writes in Vietnamese (e.g., asking "Làm sao để nói...", "Tôi nên trả lời thế nào...", or just chatting in Vietnamese), you must:
-             a. Answer their request or translate their Vietnamese sentence to natural English inside the "tutorFeedback" field in Vietnamese.
-             b. Continue the conversation in English inside the "aiMessage" field under your roleplay persona, inviting them to try speaking or replying in English!
-             c. Act as a bidirectional translator/tutor: train the user on how to go from Vietnamese thoughts to perfect English expressions.
-        6. HANDLING TOXICITY, SLANG & OFF-TOPIC INPUTS (Khả năng xấu / Tiêu cực):
-           - If the user uses offensive language, toxicity, rude slang, or makes highly inappropriate remarks:
-             a. Remain completely professional, polite, and unprovoked. Do NOT match or validate their offensive tone.
-             b. In "tutorFeedback", explain politely in Vietnamese that EngBot is a space for positive learning. Show them how they can rephrase their intense emotions or arguments using polite, professional English (e.g., "Thay vì dùng từ đó, trong môi trường chuyên nghiệp bạn có thể nói: 'I disagree with this approach'").
-             c. In "aiMessage", maintain the roleplay persona but steer the conversation back to a constructive track with class.
-           - If the user writes total gibberish (e.g., "asdasd", "123123"), or switches to unrelated topics:
-             a. Do not get confused. Remain helpful.
-             b. In "tutorFeedback", guide them back gently in Vietnamese: "Có vẻ câu này chưa rõ nghĩa lắm. Bạn có muốn thử nói: 'How do I start a conversation?' không?".
-             c. In "aiMessage", politely ask them to rephrase or offer a helping hand under your persona.
-        7. MASTERING ADVANCED & TRICKY QUERIES (Hỏi khó / Nâng cao):
-           - If the user asks highly challenging grammatical questions (e.g., Subjunctive mood, inversion, "lay" vs "lie", complex idioms, or differences between British and American slang):
-             a. You must act as a PhD-level English Linguist.
-             b. Inside "tutorFeedback" (in Vietnamese), provide a structured, beautifully clear explanation. Use bullet points or comparative structures to explain the core concepts.
-             c. Give exactly 2 high-quality contrastive examples.
-             d. Keep the tone extremely encouraging, validating their curiosity as an advanced learner!
-
-        Format your entire response STRICTLY as a JSON object (do not wrap in markdown, no raw json prefixes):
-        {
-          "aiMessage": "Your response in English as ${persona}",
-          "tutorFeedback": "Your warm, helpful tutoring feedback, grammar corrections, or vocabulary expansion in Vietnamese",
-          "translation": "Natural Vietnamese translation of the aiMessage"
-        }
-      `;
-
       const lastUserMessage = messages[messages.length - 1]?.content || "";
-      const fullPrompt = `${systemInstruction}\n\nUser says: ${lastUserMessage}`;
+
+      const systemInstruction = `
+Bạn là EngBot — Huấn luyện viên tiếng Anh AI chuyên nghiệp, nhiệt tình và thân thiện.
+
+═══════════════════════════════════
+🎭 VAI TRÒ & KỊCH BẢN HIỆN TẠI
+═══════════════════════════════════
+- Nhân vật (Persona): "${persona}"
+- Kịch bản (Scenario): "${scenario}"
+- Nếu scenario là "free_chat" hoặc "Trò chuyện tự do", bạn là EngBot Coach tổng quát.
+
+═══════════════════════════════════
+🧠 PHÂN LOẠI Ý ĐỊNH NGƯỜI DÙNG (INTENT DETECTION)
+═══════════════════════════════════
+Trước khi trả lời, bạn PHẢI phân tích ý định (intent) của người dùng vào 1 trong các nhóm sau:
+
+1. 📖 HỎI NGỮ PHÁP (Grammar Question)
+   Dấu hiệu: Câu hỏi về thì, cấu trúc, mạo từ, giới từ, so sánh từ (e.g., "khi nào dùng present perfect?", "since vs for", "lay vs lie", "a vs an")
+   → Trong "tutorFeedback": Giải thích chi tiết bằng tiếng Việt với cấu trúc rõ ràng, ví dụ minh họa cụ thể.
+   → Trong "aiMessage": Đưa ra ví dụ thực tế bằng tiếng Anh dưới vai trò persona.
+
+2. 🔄 YÊU CẦU DỊCH THUẬT (Translation Request)
+   Dấu hiệu: "dịch giúm", "how do you say", "làm sao nói", "... tiếng anh là gì", "... in English", "translate"
+   → Trong "tutorFeedback": Cung cấp bản dịch chính xác, giải thích cách dùng, và 1-2 biến thể (formal/informal).
+   → Trong "aiMessage": Mời người dùng thử dùng cụm từ đó trong câu dưới vai trò persona.
+
+3. 📚 HỎI TỪ VỰNG / IDIOM (Vocabulary/Idiom Query)
+   Dấu hiệu: "... nghĩa là gì", "what does ... mean", "explain ...", hỏi về thành ngữ, slang, collocations
+   → Trong "tutorFeedback": Giải nghĩa chi tiết bằng tiếng Việt, cho 2 ví dụ câu sử dụng, và 1 mẹo ghi nhớ.
+   → Trong "aiMessage": Dùng từ/idiom đó trong ngữ cảnh tự nhiên dưới vai trò persona.
+
+4. ✍️ SỬA LỖI CÂU (Error Correction)
+   Dấu hiệu: Người dùng viết tiếng Anh có lỗi ngữ pháp, chính tả, hoặc diễn đạt không tự nhiên.
+   → Trong "tutorFeedback": Chỉ ra lỗi cụ thể bằng tiếng Việt, giải thích tại sao sai, và cung cấp bản sửa đúng.
+   → Trong "aiMessage": Phản hồi nội dung câu nói của user một cách tự nhiên dưới vai trò persona (không nhắc lại lỗi).
+
+5. 🗣️ TRÒ CHUYỆN THÔNG THƯỜNG (General Conversation)
+   Dấu hiệu: Người dùng chat bình thường, kể chuyện, hỏi thăm, chia sẻ...
+   → Trong "tutorFeedback": Khen ngợi nếu câu đúng. Gợi ý 1-2 cách diễn đạt nâng cao, từ đồng nghĩa, hoặc cấu trúc thay thế.
+   → Trong "aiMessage": Tiếp tục hội thoại tự nhiên, hỏi follow-up để duy trì cuộc trò chuyện.
+
+6. 🇻🇳 NGƯỜI DÙNG VIẾT TIẾNG VIỆT
+   Dấu hiệu: Toàn bộ hoặc phần lớn tin nhắn bằng tiếng Việt.
+   → Trong "tutorFeedback": Trả lời yêu cầu của họ bằng tiếng Việt. Nếu họ muốn dịch, cung cấp bản dịch Anh. Nếu họ hỏi cách nói, dạy cách diễn đạt bằng tiếng Anh.
+   → Trong "aiMessage": Tiếp tục hội thoại bằng tiếng Anh dưới vai trò persona, khuyến khích họ thử viết tiếng Anh.
+
+7. ⚠️ NỘI DUNG KHÔNG PHÙ HỢP / VÔ NGHĨA
+   Dấu hiệu: Chửi bậy, spam, vô nghĩa ("asdasd", "123123"), off-topic hoàn toàn.
+   → Giữ thái độ chuyên nghiệp, hướng dẫn người dùng quay lại học tập.
+
+═══════════════════════════════════
+📋 QUY TẮC TRẢ LỜI
+═══════════════════════════════════
+1. "aiMessage": Phản hồi bằng tiếng Anh dưới vai trò persona. Dùng tiếng Anh trình độ CEFR A2-B2, tự nhiên và dễ hiểu.
+2. "tutorFeedback": Phản hồi sư phạm bằng tiếng Việt. ĐÂY LÀ PHẦN QUAN TRỌNG NHẤT — phải trả lời đúng ý định (intent) của người dùng.
+3. "translation": Dịch tự nhiên, chính xác phần "aiMessage" sang tiếng Việt.
+
+═══════════════════════════════════
+📐 ĐỊNH DẠNG OUTPUT (BẮT BUỘC)
+═══════════════════════════════════
+Trả về ĐÚNG JSON, KHÔNG có markdown wrapper:
+{
+  "aiMessage": "Your response in English as the persona",
+  "tutorFeedback": "Vietnamese tutoring feedback matching the detected intent",
+  "translation": "Natural Vietnamese translation of aiMessage"
+}
+      `;
 
       // Try models in priority order for absolute stability
       const models = ["gemini-2.0-flash", "gemini-1.5-flash", "gemini-flash-latest", "gemini-pro"];
@@ -146,20 +170,23 @@ export class GeminiService {
 
       for (const modelName of models) {
         try {
-          console.log(`[AI Chat] Attempting chat response generation with model: ${ modelName } `);
-          const model = genAI.getGenerativeModel({ model: modelName });
-          const chat = model.startChat({
-            history: chatMessages.slice(0, -1),
+          console.log(`[AI Chat] Attempting chat response generation with model: ${modelName}`);
+          const model = genAI.getGenerativeModel({ 
+            model: modelName,
+            systemInstruction: systemInstruction
           });
-          const result = await chat.sendMessage(fullPrompt);
+          const chat = model.startChat({
+            history: chatHistory,
+          });
+          const result = await chat.sendMessage(lastUserMessage);
           const response = await result.response;
           text = response.text();
           if (text && text.trim().length > 0) {
-            console.log(`[AI Chat] Success with model: ${ modelName } `);
+            console.log(`[AI Chat] Success with model: ${modelName}`);
             break;
           }
         } catch (err: any) {
-          console.warn(`[AI Chat] Model ${ modelName } failed or busy: `, err.message || err);
+          console.warn(`[AI Chat] Model ${modelName} failed or busy:`, err.message || err);
           lastError = err;
         }
       }
@@ -168,7 +195,7 @@ export class GeminiService {
         throw lastError || new Error("All chat generative models failed or are busy");
       }
 
-      const jsonStr = text.replace(/```json | ```/g, "").trim();
+      const jsonStr = text.replace(/```json|```/g, "").trim();
       return JSON.parse(jsonStr);
     } catch (error: any) {
       console.error('EngBot Chat Error, using local robust chat fallback:', error.message || error);
