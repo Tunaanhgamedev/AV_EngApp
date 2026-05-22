@@ -311,7 +311,7 @@ export default function IELTSPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-7 gap-3">
+          <div className="grid grid-cols-4 sm:grid-cols-7 gap-3">
             {BAND_DESCRIPTORS.map(b => (
               <div key={b.band} className="text-center space-y-2 group cursor-default">
                 <div className={cn("h-16 rounded-xl flex items-center justify-center text-white font-black text-lg transition-transform group-hover:scale-105", b.color)}>

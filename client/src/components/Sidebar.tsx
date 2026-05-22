@@ -29,7 +29,7 @@ import {
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
 
-export function Sidebar() {
+export function Sidebar({ isOpen, onClose }: { isOpen?: boolean; onClose?: () => void }) {
   const pathname = usePathname();
   const { user, dbUser, signInWithGoogle, logout, loading } = useAuth();
   const [reviewCount, setReviewCount] = React.useState(0);
@@ -93,7 +93,11 @@ export function Sidebar() {
   ];
 
   return (
-    <aside className="w-64 h-screen glass border-r flex flex-col fixed left-0 top-0 z-50">
+    <aside className={cn(
+      "w-64 h-screen glass border-r flex flex-col fixed left-0 top-0 z-50 transition-transform duration-300",
+      isOpen ? "translate-x-0" : "-translate-x-full",
+      "lg:translate-x-0"
+    )}>
       <div className="p-6">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-lg gradient-bg flex items-center justify-center text-white font-bold text-lg">E</div>
@@ -112,6 +116,7 @@ export function Sidebar() {
               <li key={item.label}>
                 <Link
                   href={item.href}
+                  onClick={onClose}
                   className={cn(
                     "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group relative",
                     isActive 

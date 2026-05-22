@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
-import { Sidebar } from "@/components/Sidebar";
 import { AuthProvider } from "@/context/AuthContext";
 import { MusicProvider } from "@/context/MusicContext";
 import { MusicWidget } from "@/components/MusicWidget";
+import { LayoutWrapper } from "@/components/LayoutWrapper";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -34,12 +34,9 @@ export default function RootLayout({
       >
         <AuthProvider>
           <MusicProvider>
-            <Sidebar />
-            <main className="flex-1 ml-64 min-h-screen">
-              <div className="max-w-7xl mx-auto p-8">
-                {children}
-              </div>
-            </main>
+            <LayoutWrapper>
+              {children}
+            </LayoutWrapper>
             <MusicWidget />
           </MusicProvider>
         </AuthProvider>
