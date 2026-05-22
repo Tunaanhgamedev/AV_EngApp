@@ -48,7 +48,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       });
       if (response.ok) {
         const data = await response.json();
-        setDbUser(data.user);
+        setDbUser(data.user || data);
       }
     } catch (error) {
       console.error("Error fetching db user", error);

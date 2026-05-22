@@ -5,6 +5,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getCheckinHistory = exports.getCheckinStatus = exports.dailyCheckin = exports.addXP = exports.getLeaderboard = exports.createUser = exports.getUsers = exports.syncUser = void 0;
 const prisma_1 = __importDefault(require("../lib/prisma"));
+const getICTDate = (d = new Date()) => {
+    // Convert current server time to Vietnam ICT (UTC+7)
+    const utcTime = d.getTime() + (d.getTimezoneOffset() * 60000);
+    const ictTime = new Date(utcTime + (3600000 * 7));
+    const yyyy = ictTime.getFullYear();
+    const mm = String(ictTime.getMonth() + 1).padStart(2, '0');
+    const dd = String(ictTime.getDate()).padStart(2, '0');
+    // Create Date object representing midnight of that day in UTC
+    return new Date(`${yyyy}-${mm}-${dd}T00:00:00.000Z`);
+};
 const syncUser = async (req, res) => {
     const firebaseUser = req.user;
     if (!firebaseUser) {
@@ -28,7 +38,7 @@ const syncUser = async (req, res) => {
                 streak: 0,
             }
         });
-        res.json(user);
+        res.json({ user });
     }
     catch (error) {
         console.error('Sync User Error:', error);
@@ -121,11 +131,7 @@ const dailyCheckin = async (req, res) => {
         return res.status(401).json({ error: 'User not authenticated' });
     }
     try {
-        const now = new Date();
-        // Convert to Vietnam timezone ICT (UTC+7)
-        const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
-        const ictTime = new Date(utcTime + (3600000 * 7));
-        const today = new Date(ictTime.getFullYear(), ictTime.getMonth(), ictTime.getDate());
+        const today = getICTDate();
         // Check if daily activity already marked with a high sentinel (>9000) representing checkin
         const existingActivity = await prisma_1.default.userDailyActivity.findFirst({
             where: {
@@ -187,11 +193,7 @@ const getCheckinStatus = async (req, res) => {
         return res.status(401).json({ error: 'User not authenticated' });
     }
     try {
-        const now = new Date();
-        // Convert to Vietnam timezone ICT (UTC+7)
-        const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
-        const ictTime = new Date(utcTime + (3600000 * 7));
-        const today = new Date(ictTime.getFullYear(), ictTime.getMonth(), ictTime.getDate());
+        const today = getICTDate();
         const activity = await prisma_1.default.userDailyActivity.findFirst({
             where: {
                 userId,
@@ -225,7 +227,15 @@ const getCheckinHistory = async (req, res) => {
                 activityDate: 'asc'
             }
         });
-        res.json(activities.map(a => a.activityDate));
+        // Format all dates to YYYY-MM-DD representing Vietnam local checkin dates
+        const formattedDates = activities.map(a => {
+            const d = a.activityDate;
+            const yyyy = d.getUTCFullYear();
+            const mm = String(d.getUTCMonth() + 1).padStart(2, '0');
+            const dd = String(d.getUTCDate()).padStart(2, '0');
+            return `${yyyy}-${mm}-${dd}`;
+        });
+        res.json(formattedDates);
     }
     catch (error) {
         console.error('Get Checkin History Error:', error);

@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 
 export default function CheckinPage() {
   const { user, dbUser } = useAuth();
-  const [checkedIn, setCheckedIn] = useState(true);
+  const [checkedIn, setCheckedIn] = useState(false);
   const [checkingIn, setCheckingIn] = useState(false);
   const [checkinHistory, setCheckinHistory] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
@@ -97,14 +97,13 @@ export default function CheckinPage() {
     return `${d.getDate()}/${d.getMonth() + 1}`;
   };
 
-  // Check if a date has check-in activity (ignoring time)
+  // Check if a date has check-in activity (ignoring time, using YYYY-MM-DD string)
   const isDateCheckedIn = (date: Date) => {
-    const target = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
-    return checkinHistory.some(h => {
-      const d = new Date(h);
-      const histDate = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
-      return histDate === target;
-    });
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
+    const dateStr = `${yyyy}-${mm}-${dd}`;
+    return checkinHistory.includes(dateStr);
   };
 
   // ─── Stats Generators ──────────────────────────────────────────────────────────
@@ -225,15 +224,17 @@ export default function CheckinPage() {
   const weekDays = getWeekDays();
   const checkedInThisWeek = weekDays.filter(d => isDateCheckedIn(d)).length;
 
-  const currentMonth = vietnamTime.getMonth();
-  const checkedInThisMonth = checkinHistory.filter(h => {
-    const d = new Date(h);
-    return d.getMonth() === currentMonth && d.getFullYear() === vietnamTime.getFullYear();
+  const currentMonthStr = String(vietnamTime.getMonth() + 1).padStart(2, '0');
+  const currentYearStr = String(vietnamTime.getFullYear());
+
+  const checkedInThisMonth = checkinHistory.filter(dateStr => {
+    const parts = dateStr.split('-');
+    return parts[1] === currentMonthStr && parts[0] === currentYearStr;
   }).length;
 
-  const checkedInThisYear = checkinHistory.filter(h => {
-    const d = new Date(h);
-    return d.getFullYear() === vietnamTime.getFullYear();
+  const checkedInThisYear = checkinHistory.filter(dateStr => {
+    const parts = dateStr.split('-');
+    return parts[0] === currentYearStr;
   }).length;
 
   return (
@@ -289,10 +290,7 @@ export default function CheckinPage() {
             </h2>
             <p className={cn("text-sm", checkedIn ? "text-emerald-700 font-medium" : "text-white/80")}>
               {checkedIn 
-                ? `Bạn đã điểm danh thành công lúc ${new Date(checkinHistory.find(h => {
-                    const d = new Date(h);
-                    return d.getDate() === vietnamTime.getDate() && d.getMonth() === vietnamTime.getMonth();
-                  }) || new Date()).toLocaleTimeString('vi-VN')} Việt Nam.`
+                ? 'Bạn đã điểm danh thành công ngày hôm nay.'
                 : 'Điểm danh ngay để nhận ngay +50 XP và phát triển ngọn lửa học tập của bạn!'}
             </p>
           </div>

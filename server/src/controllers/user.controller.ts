@@ -2,6 +2,17 @@ import { Request, Response } from 'express';
 import prisma from '../lib/prisma';
 import { AuthRequest } from '../middleware/auth.middleware';
 
+const getICTDate = (d = new Date()) => {
+  // Convert current server time to Vietnam ICT (UTC+7)
+  const utcTime = d.getTime() + (d.getTimezoneOffset() * 60000);
+  const ictTime = new Date(utcTime + (3600000 * 7));
+  const yyyy = ictTime.getFullYear();
+  const mm = String(ictTime.getMonth() + 1).padStart(2, '0');
+  const dd = String(ictTime.getDate()).padStart(2, '0');
+  // Create Date object representing midnight of that day in UTC
+  return new Date(`${yyyy}-${mm}-${dd}T00:00:00.000Z`);
+};
+
 export const syncUser = async (req: AuthRequest, res: Response) => {
   const firebaseUser = req.user;
 
@@ -28,7 +39,7 @@ export const syncUser = async (req: AuthRequest, res: Response) => {
       }
     });
 
-    res.json(user);
+    res.json({ user });
   } catch (error) {
     console.error('Sync User Error:', error);
     res.status(500).json({ error: 'Failed to sync user with database' });
@@ -125,11 +136,7 @@ export const dailyCheckin = async (req: AuthRequest, res: Response) => {
   }
 
   try {
-    const now = new Date();
-    // Convert to Vietnam timezone ICT (UTC+7)
-    const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
-    const ictTime = new Date(utcTime + (3600000 * 7));
-    const today = new Date(ictTime.getFullYear(), ictTime.getMonth(), ictTime.getDate());
+    const today = getICTDate();
 
     // Check if daily activity already marked with a high sentinel (>9000) representing checkin
     const existingActivity = await prisma.userDailyActivity.findFirst({
@@ -198,11 +205,7 @@ export const getCheckinStatus = async (req: AuthRequest, res: Response) => {
   }
 
   try {
-    const now = new Date();
-    // Convert to Vietnam timezone ICT (UTC+7)
-    const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
-    const ictTime = new Date(utcTime + (3600000 * 7));
-    const today = new Date(ictTime.getFullYear(), ictTime.getMonth(), ictTime.getDate());
+    const today = getICTDate();
 
     const activity = await prisma.userDailyActivity.findFirst({
       where: {
@@ -240,7 +243,16 @@ export const getCheckinHistory = async (req: AuthRequest, res: Response) => {
       }
     });
 
-    res.json(activities.map(a => a.activityDate));
+    // Format all dates to YYYY-MM-DD representing Vietnam local checkin dates
+    const formattedDates = activities.map(a => {
+      const d = a.activityDate;
+      const yyyy = d.getUTCFullYear();
+      const mm = String(d.getUTCMonth() + 1).padStart(2, '0');
+      const dd = String(d.getUTCDate()).padStart(2, '0');
+      return `${yyyy}-${mm}-${dd}`;
+    });
+
+    res.json(formattedDates);
   } catch (error) {
     console.error('Get Checkin History Error:', error);
     res.status(500).json({ error: 'Failed to get checkin history' });

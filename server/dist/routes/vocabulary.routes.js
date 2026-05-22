@@ -681,37 +681,35 @@ router.get('/review/session', auth_middleware_1.authenticate, async (req, res) =
         let dueEntries = await prisma_1.default.userLearnedWord.findMany({
             where: {
                 userId,
-                isFavorite: true,
                 nextReviewAt: { lte: now }
             },
             include: { word: true },
             take: 10,
             orderBy: { nextReviewAt: 'asc' }
         });
-        // Fallback: If no words are strictly due, get the most recent ones for "Early Practice"
+        // Fallback: If no words are strictly due, get the oldest-reviewed ones for "Early Practice"
         if (dueEntries.length === 0) {
             dueEntries = await prisma_1.default.userLearnedWord.findMany({
                 where: {
-                    userId,
-                    isFavorite: true
+                    userId
                 },
                 include: { word: true },
                 take: 10,
-                orderBy: { nextReviewAt: 'desc' }
+                orderBy: { nextReviewAt: 'asc' }
             });
         }
         if (dueEntries.length === 0) {
             return res.json({ words: [], message: 'All caught up! Check back tomorrow.' });
         }
-        // Get some random words from notebook AND global vocab for fallback distractors
-        const allNotebookWords = await prisma_1.default.userLearnedWord.findMany({
-            where: { userId, isFavorite: true },
+        // Get some random words from user's learned vocab AND global vocab for fallback distractors
+        const allLearnedWords = await prisma_1.default.userLearnedWord.findMany({
+            where: { userId },
             include: { word: true },
-            take: 10
+            take: 20
         });
         const globalRandomWords = await pool.query(`SELECT meaning_vi as "meaningVi" FROM vocabulary_words ORDER BY RANDOM() LIMIT 20`);
         const distractorsPool = [
-            ...allNotebookWords.map(n => n.word.meaningVi),
+            ...allLearnedWords.map(n => n.word.meaningVi),
             ...globalRandomWords.rows.map(r => r.meaningVi)
         ].filter(Boolean);
         // Enhance with AI questions for each word (async to speed up response)
@@ -765,58 +763,48 @@ router.get('/daily-review-status', auth_middleware_1.authenticate, async (req, r
     try {
         const userId = req.user.uid;
         const now = new Date();
-        // Get today's date at midnight (UTC) for comparison
-        const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        const todayEnd = new Date(todayStart);
-        todayEnd.setDate(todayEnd.getDate() + 1);
-        // Count how many notebook words are due for review
+        // Convert to Vietnam ICT (UTC+7) for consistent day boundary
+        const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
+        const ictTime = new Date(utcTime + (3600000 * 7));
+        const yyyy = ictTime.getFullYear();
+        const mm = String(ictTime.getMonth() + 1).padStart(2, '0');
+        const dd = String(ictTime.getDate()).padStart(2, '0');
+        const todayStart = new Date(`${yyyy}-${mm}-${dd}T00:00:00.000Z`);
+        const todayEnd = new Date(`${yyyy}-${mm}-${dd}T23:59:59.999Z`);
+        // Count how many of user's ALL learned words are due for review
         const dueCount = await prisma_1.default.userLearnedWord.count({
             where: {
                 userId,
-                isFavorite: true,
                 nextReviewAt: { lte: now }
             }
         });
-        // Count total notebook words
-        const totalNotebook = await prisma_1.default.userLearnedWord.count({
-            where: { userId, isFavorite: true }
+        // Count total learned words
+        const totalLearned = await prisma_1.default.userLearnedWord.count({
+            where: { userId }
         });
-        // Check if user has reviewed any word today (by checking lastReviewedAt on notebook words)
+        // Check if user has reviewed any word today (by checking lastReviewedAt)
         const reviewedToday = await prisma_1.default.userLearnedWord.count({
             where: {
                 userId,
-                isFavorite: true,
                 lastReviewedAt: {
                     gte: todayStart,
-                    lt: todayEnd
+                    lte: todayEnd
                 }
             }
         });
-        // Also check UserDailyActivity for today
-        const dailyActivity = await prisma_1.default.userDailyActivity.findFirst({
-            where: {
-                userId,
-                activityDate: {
-                    gte: todayStart,
-                    lt: todayEnd
-                }
-            }
-        });
-        // User has completed daily review if:
-        // 1. They have no words due AND have reviewed at least once today, OR
-        // 2. They have reviewed at least one word today (even if more are due)
-        // 3. They have a daily activity record for today with review_completed flag
-        const hasReviewedToday = reviewedToday > 0 || (dailyActivity && dailyActivity.totalMinutes > 0);
+        const hasReviewedToday = reviewedToday > 0;
         const hasWordsToReview = dueCount > 0;
-        const isCompleted = hasReviewedToday && !hasWordsToReview;
+        // A user should always be reminded to review if they have learned words
+        // The reminder shows if: they have words AND haven't reviewed today
+        const needsReminder = totalLearned > 0 && !hasReviewedToday;
         res.json({
             hasWordsToReview,
             dueCount,
-            totalNotebook,
-            hasReviewedToday: !!hasReviewedToday,
-            isCompleted, // true = all done for today
-            reviewedToday, // how many words reviewed today
-            needsReminder: totalNotebook > 0 && !hasReviewedToday && hasWordsToReview
+            totalLearned,
+            hasReviewedToday,
+            isCompleted: hasReviewedToday,
+            reviewedToday,
+            needsReminder
         });
     }
     catch (error) {
@@ -862,9 +850,14 @@ router.post('/review/submit', auth_middleware_1.authenticate, async (req, res) =
                 data: { xp: { increment: 10 } }
             });
         }
-        // Record daily activity for review tracking
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
+        // Record daily activity for review tracking (use ICT timezone)
+        const actNow = new Date();
+        const actUtc = actNow.getTime() + (actNow.getTimezoneOffset() * 60000);
+        const actIct = new Date(actUtc + (3600000 * 7));
+        const ayyyy = actIct.getFullYear();
+        const amm = String(actIct.getMonth() + 1).padStart(2, '0');
+        const add = String(actIct.getDate()).padStart(2, '0');
+        const today = new Date(`${ayyyy}-${amm}-${add}T00:00:00.000Z`);
         try {
             await prisma_1.default.userDailyActivity.upsert({
                 where: {

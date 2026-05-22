@@ -26,7 +26,8 @@ export default function Dashboard() {
   const [stats, setStats] = React.useState({ wordsLearned: 0, oxfordLearned: 0, totalOxford: 3000 });
   const [vietnamTime, setVietnamTime] = React.useState<Date | null>(null);
   const [reviewDue, setReviewDue] = React.useState(0);
-  const [checkedIn, setCheckedIn] = React.useState(true);
+  const [needsReview, setNeedsReview] = React.useState(false);
+  const [checkedIn, setCheckedIn] = React.useState(false);
   const [checkingIn, setCheckingIn] = React.useState(false);
   const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
@@ -122,18 +123,14 @@ export default function Dashboard() {
         .then(data => setStats(data))
         .catch(console.error);
 
-        // Fetch Review Count
-        fetch(`${API_BASE}/vocabulary/notebook`, {
+        // Fetch Review Status (uses dedicated API, not notebook)
+        fetch(`${API_BASE}/vocabulary/daily-review-status`, {
           headers: { 'Authorization': `Bearer ${token}` }
         })
         .then(res => res.json())
         .then(data => {
-          if (data.words) {
-            const due = data.words.filter((w: any) => 
-              w.nextReviewAt && new Date(w.nextReviewAt) <= new Date()
-            ).length;
-            setReviewDue(due);
-          }
+          setReviewDue(data.dueCount || 0);
+          setNeedsReview(data.needsReminder || false);
         })
         .catch(console.error);
 
@@ -257,7 +254,7 @@ export default function Dashboard() {
       )}
 
       {/* Review Reminder Notification */}
-      {reviewDue > 0 && (
+      {(needsReview || reviewDue > 0) && (
         <div className="premium-card p-4 bg-rose-50 border-rose-100 flex items-center justify-between gap-4 animate-in slide-in-from-top-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-rose-500 text-white flex items-center justify-center shadow-lg shadow-rose-500/20">
@@ -265,10 +262,14 @@ export default function Dashboard() {
             </div>
             <div>
               <p className="text-sm font-black text-rose-900">Đã đến lúc ôn tập từ vựng!</p>
-              <p className="text-xs text-rose-600 font-medium">Bạn có {reviewDue} từ cần được nhắc lại hôm nay.</p>
+              <p className="text-xs text-rose-600 font-medium">
+                {reviewDue > 0 
+                  ? `Bạn có ${reviewDue} từ cần được ôn tập lại hôm nay.`
+                  : 'Hãy ôn tập lại từ vựng mỗi ngày để ghi nhớ tốt hơn!'}
+              </p>
             </div>
           </div>
-          <Link href="/review/quiz" className="px-6 py-2 bg-rose-500 text-white rounded-xl font-bold text-xs hover:bg-rose-600 transition-all shadow-md">
+          <Link href="/review" className="px-6 py-2 bg-rose-500 text-white rounded-xl font-bold text-xs hover:bg-rose-600 transition-all shadow-md">
             ÔN TẬP NGAY
           </Link>
         </div>
