@@ -611,24 +611,22 @@ export default function NotebookPage() {
           </p>
         </div>
 
-        {bannerState !== 'completed' ? (
-          <button
-            onClick={() => router.push('/review/quiz')}
-            className={cn(
-              "px-8 py-3.5 rounded-2xl font-black text-sm shadow-xl hover:scale-105 active:scale-95 transition-all relative z-10 flex items-center gap-2 flex-shrink-0",
-              bannerState === 'reminder' && "bg-white text-orange-600",
-              bannerState === 'due' && "bg-white text-primary",
-              bannerState === 'idle' && "bg-slate-900 text-white"
-            )}
-          >
-            {bannerState === 'reminder' ? "ÔN TẬP NGAY BÂY GIỜ" : bannerState === 'due' ? "BẮT ĐẦU ÔN TẬP" : "LUYỆN TẬP NGAY"} <ChevronRight className="w-5 h-5" />
-          </button>
-        ) : (
-          <div className="flex items-center gap-3 px-6 py-3.5 bg-white/20 backdrop-blur rounded-2xl relative z-10 flex-shrink-0">
-            <CheckCheck className="w-6 h-6 text-white" />
-            <span className="font-black text-sm text-white">ĐÃ HOÀN THÀNH</span>
-          </div>
-        )}
+        <button
+          onClick={() => router.push('/review/quiz')}
+          className={cn(
+            "px-8 py-3.5 rounded-2xl font-black text-sm shadow-xl hover:scale-105 active:scale-95 transition-all relative z-10 flex items-center gap-2 flex-shrink-0",
+            bannerState === 'reminder' && "bg-white text-orange-600",
+            bannerState === 'due' && "bg-white text-primary",
+            bannerState === 'idle' && "bg-slate-900 text-white",
+            bannerState === 'completed' && "bg-white/25 hover:bg-white/30 text-white border border-white/25 backdrop-blur-md"
+          )}
+        >
+          {bannerState === 'reminder' && "ÔN TẬP NGAY BÂY GIỜ"}
+          {bannerState === 'due' && "BẮT ĐẦU ÔN TẬP"}
+          {bannerState === 'idle' && "LUYỆN TẬP NGAY"}
+          {bannerState === 'completed' && "ÔN TẬP LẠI"}
+          <ChevronRight className="w-5 h-5" />
+        </button>
       </div>
 
       <AddWordPanel onAdd={handleAdd} />

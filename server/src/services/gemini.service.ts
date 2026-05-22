@@ -420,18 +420,19 @@ export class GeminiService {
     const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
 
     const prompt = `
-        As EngBot (Expert English Teacher), create a challenging multiple-choice question for the word "${word}".
+        Bạn là EngBot (Giáo viên tiếng Anh chuyên nghiệp). Hãy tạo một câu hỏi trắc nghiệm để kiểm tra nghĩa tiếng Việt của từ "${word}".
         
-        Requirements:
-        1. Context: Create a natural English sentence where "${word}" is missing (____).
-        2. Distractors: The 3 incorrect options MUST be "tricky". They should be words that are often confused with "${word}", have a similar vibe, or belong to the same category (e.g., if "${word}" is an emotion, all options should be emotions).
-        3. Language: Options must be in Vietnamese.
-        4. Diversity: Do NOT just use random words. Use sophisticated Vietnamese vocabulary.
+        Yêu cầu:
+        1. Ngữ cảnh (context): Tạo 1 câu tiếng Anh TỰ NHIÊN trong đó từ "${word}" bị ẩn bằng dấu gạch dưới (____). Câu này phải giúp người đọc đoán được nghĩa của từ qua ngữ cảnh.
+        2. Câu hỏi (question): Viết bằng tiếng Việt, hỏi "Từ cần điền có nghĩa tiếng Việt là gì?" hoặc tương tự.
+        3. Đáp án (options): 4 lựa chọn bằng tiếng Việt. Đáp án đúng phải là nghĩa chính xác của "${word}". 3 đáp án sai phải là các từ tiếng Việt dễ nhầm lẫn, cùng nhóm nghĩa hoặc cùng chủ đề (ví dụ: nếu "${word}" là cảm xúc, tất cả đáp án phải là cảm xúc).
+        4. Không dùng từ ngẫu nhiên. Dùng từ vựng tiếng Việt tinh tế, chuyên sâu.
         
-        Respond ONLY in JSON format:
+        Trả về ĐÚNG định dạng JSON, KHÔNG có text thừa:
         {
-          "question": "The sentence with blank...",
-          "options": ["Nghĩa đúng", "Nghĩa sai khôn khéo 1", "Nghĩa sai khôn khéo 2", "Nghĩa sai khôn khéo 3"],
+          "context": "Câu tiếng Anh với chỗ trống ____...",
+          "question": "Từ cần điền trong câu trên có nghĩa tiếng Việt là gì?",
+          "options": ["Nghĩa đúng", "Nghĩa sai 1", "Nghĩa sai 2", "Nghĩa sai 3"],
           "answer": "Nghĩa đúng"
         }
       `;

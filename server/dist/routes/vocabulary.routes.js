@@ -750,13 +750,19 @@ router.get('/review/session', auth_middleware_1.authenticate, async (req, res) =
             // Basic info
             const word = entry.word;
             // Try to get dynamic question from Gemini
-            let question = `Fill in the blank: The word "${word.word}" means _____ in Vietnamese.`;
+            let context = '';
+            let question = `Từ "${word.word}" có nghĩa tiếng Việt là gì?`;
             let options = [word.meaningVi];
+            let correctAnswer = word.meaningVi;
             try {
                 const aiQuestion = await gemini_service_1.GeminiService.generateReviewQuestion(word.word);
-                if (aiQuestion && aiQuestion.options && aiQuestion.options.length === 4) {
-                    question = aiQuestion.question;
+                if (aiQuestion && aiQuestion.options && aiQuestion.options.length === 4 && aiQuestion.answer) {
+                    context = aiQuestion.context || '';
+                    question = aiQuestion.question || `Từ cần điền có nghĩa tiếng Việt là gì?`;
                     options = aiQuestion.options;
+                    // Match the AI's returned answer to one of the generated options to avoid case/space mismatches
+                    const match = options.find(opt => opt.trim().toLowerCase() === aiQuestion.answer.trim().toLowerCase());
+                    correctAnswer = match || aiQuestion.answer;
                 }
                 else {
                     throw new Error('Invalid AI response');
@@ -766,6 +772,8 @@ router.get('/review/session', auth_middleware_1.authenticate, async (req, res) =
                 // Fallback: Use distractors from pool
                 const others = distractorsPool.filter(d => d !== word.meaningVi).sort(() => Math.random() - 0.5);
                 options = [word.meaningVi, ...others.slice(0, 3)];
+                correctAnswer = word.meaningVi;
+                context = '';
                 // Ensure we always have 4 options
                 while (options.length < 4) {
                     options.push(`Nghĩa khác ${options.length}`);
@@ -776,10 +784,11 @@ router.get('/review/session', auth_middleware_1.authenticate, async (req, res) =
                 wordId: word.id,
                 word: word.word,
                 phonetic: word.phonetic,
-                meaningVi: word.meaningVi,
+                meaningVi: correctAnswer,
                 meaningEn: word.meaningEn,
                 wordType: word.wordType,
                 masteryLevel: entry.masteryLevel,
+                context,
                 question,
                 options: options.sort(() => Math.random() - 0.5) // Shuffle
             };
@@ -800,10 +809,11 @@ router.get('/daily-review-status', auth_middleware_1.authenticate, async (req, r
         const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
         const ictTime = new Date(utcTime + (3600000 * 7));
         const yyyy = ictTime.getFullYear();
-        const mm = String(ictTime.getMonth() + 1).padStart(2, '0');
-        const dd = String(ictTime.getDate()).padStart(2, '0');
-        const todayStart = new Date(`${yyyy}-${mm}-${dd}T00:00:00.000Z`);
-        const todayEnd = new Date(`${yyyy}-${mm}-${dd}T23:59:59.999Z`);
+        const mm = ictTime.getMonth();
+        const dd = ictTime.getDate();
+        // Correctly align start and end of Vietnam's day with UTC timestamps
+        const todayStart = new Date(Date.UTC(yyyy, mm, dd, 0, 0, 0, 0) - 7 * 3600000);
+        const todayEnd = new Date(Date.UTC(yyyy, mm, dd, 23, 59, 59, 999) - 7 * 3600000);
         // Count how many notebook words (isFavorite) are due for review
         const dueCount = await prisma_1.default.userLearnedWord.count({
             where: {
@@ -816,12 +826,11 @@ router.get('/daily-review-status', auth_middleware_1.authenticate, async (req, r
         const totalNotebook = await prisma_1.default.userLearnedWord.count({
             where: { userId, isFavorite: true }
         });
-        // Check if user has reviewed any notebook word today (by checking lastReviewedAt)
-        const reviewedToday = await prisma_1.default.userLearnedWord.count({
+        // Check if user has reviewed any notebook word today (by checking reviewHistory)
+        const reviewedToday = await prisma_1.default.reviewHistory.count({
             where: {
                 userId,
-                isFavorite: true,
-                lastReviewedAt: {
+                reviewedAt: {
                     gte: todayStart,
                     lte: todayEnd
                 }
@@ -829,8 +838,8 @@ router.get('/daily-review-status', auth_middleware_1.authenticate, async (req, r
         });
         const hasReviewedToday = reviewedToday > 0;
         const hasWordsToReview = dueCount > 0;
-        // Remind user daily if they have notebook words and haven't reviewed today
-        const needsReminder = totalNotebook > 0 && !hasReviewedToday;
+        // Remind user daily only if they have words due today and haven't reviewed today
+        const needsReminder = dueCount > 0 && !hasReviewedToday;
         res.json({
             hasWordsToReview,
             dueCount,
@@ -877,6 +886,20 @@ router.post('/review/submit', auth_middleware_1.authenticate, async (req, res) =
                 nextReviewAt
             }
         });
+        // Create a ReviewHistory entry for this review
+        try {
+            await prisma_1.default.reviewHistory.create({
+                data: {
+                    userId,
+                    wordId,
+                    isCorrect: !!isCorrect,
+                    responseTime: 0
+                }
+            });
+        }
+        catch (historyErr) {
+            console.warn('Failed to record review history entry:', historyErr);
+        }
         // Reward XP for correct review
         if (isCorrect) {
             await prisma_1.default.user.update({

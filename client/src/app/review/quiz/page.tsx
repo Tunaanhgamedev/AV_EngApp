@@ -14,6 +14,7 @@ interface ReviewWord {
   phonetic?: string;
   meaningVi: string;
   meaningEn: string;
+  context?: string;
   question: string;
   options: string[];
 }
@@ -186,9 +187,17 @@ export default function ReviewPage() {
             <div className="space-y-4 text-center">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary/10 text-primary rounded-full">
                 <Sparkles className="w-4 h-4 fill-primary" />
-                <span className="text-[10px] font-black uppercase tracking-widest">Hỏi đáp ngữ cảnh</span>
+                <span className="text-[10px] font-black uppercase tracking-widest">{currentWord.context ? 'Đọc ngữ cảnh & chọn đáp án' : 'Chọn nghĩa đúng'}</span>
               </div>
-              <h2 className="text-2xl font-bold text-slate-800 leading-relaxed">
+              {currentWord.context && (
+                <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 text-left">
+                  <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Ngữ cảnh tiếng Anh</p>
+                  <p className="text-lg font-semibold text-slate-700 leading-relaxed italic">
+                    {currentWord.context}
+                  </p>
+                </div>
+              )}
+              <h2 className="text-xl font-bold text-slate-800 leading-relaxed">
                 {currentWord.question}
               </h2>
             </div>

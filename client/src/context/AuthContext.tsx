@@ -71,7 +71,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
-    provider.setCustomParameters({ prompt: 'select_account' });
     try {
       const result = await signInWithPopup(auth, provider);
       if (result.user) {
@@ -81,7 +80,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       console.error("Error signing in with Google", error);
     }
   };
-
 
   const logout = async () => {
     try {

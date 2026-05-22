@@ -15,7 +15,8 @@ import {
   Lightbulb,
   BookOpen,
   ArrowRight,
-  Sparkles
+  Sparkles,
+  RotateCcw
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
@@ -26,26 +27,38 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 export default function ReviewPage() {
   const { user } = useAuth();
   const [dueWords, setDueWords] = useState<any[]>([]);
+  const [dailyStatus, setDailyStatus] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchDueReviews = async () => {
+    const fetchData = async () => {
       if (!user) return;
       try {
         const token = await user.getIdToken();
-        const res = await fetch(`${API_BASE}/vocabulary/due-reviews`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        const data = await res.json();
-        setDueWords(data.words || []);
+        const [dueRes, statusRes] = await Promise.all([
+          fetch(`${API_BASE}/vocabulary/due-reviews`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          }),
+          fetch(`${API_BASE}/vocabulary/daily-review-status`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          })
+        ]);
+        
+        if (dueRes.ok) {
+          const dueData = await dueRes.json();
+          setDueWords(dueData.words || []);
+        }
+        if (statusRes.ok) {
+          const statusData = await statusRes.json();
+          setDailyStatus(statusData);
+        }
       } catch (err) {
         console.error(err);
-        setDueWords([]);
       } finally {
         setLoading(false);
       }
     };
-    fetchDueReviews();
+    fetchData();
   }, [user]);
 
   if (loading) {
@@ -124,14 +137,31 @@ export default function ReviewPage() {
                   <ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
                 </Link>
               ) : (
-                <Link
-                  href="/learn"
-                  className="px-10 py-4 bg-slate-900 text-white rounded-2xl font-black text-lg hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/20 flex items-center gap-3"
-                >
-                  <BookOpen className="w-5 h-5" />
-                  Học từ mới
-                  <ChevronRight className="w-6 h-6" />
-                </Link>
+                <>
+                  {dailyStatus?.totalNotebook > 0 && (
+                    <Link
+                      href="/review/quiz"
+                      className="px-10 py-4 bg-slate-900 text-white rounded-2xl font-black text-lg hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/20 flex items-center gap-3 group"
+                    >
+                      <RotateCcw className="w-5 h-5" />
+                      Luyện tập thêm
+                      <ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+                    </Link>
+                  )}
+                  <Link
+                    href="/learn"
+                    className={cn(
+                      "px-10 py-4 rounded-2xl font-black text-lg transition-all shadow-xl flex items-center gap-3",
+                      dailyStatus?.totalNotebook > 0
+                        ? "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"
+                        : "bg-slate-900 text-white hover:bg-slate-800"
+                    )}
+                  >
+                    <BookOpen className="w-5 h-5" />
+                    Học từ mới
+                    <ChevronRight className="w-6 h-6" />
+                  </Link>
+                </>
               )}
               <Link
                 href="/notebook"

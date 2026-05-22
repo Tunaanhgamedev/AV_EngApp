@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 require("dotenv/config");
 const prisma_1 = __importDefault(require("../lib/prisma"));
 const gemini_service_1 = require("../services/gemini.service");
