@@ -3,6 +3,8 @@ import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { Sidebar } from "@/components/Sidebar";
 import { AuthProvider } from "@/context/AuthContext";
+import { MusicProvider } from "@/context/MusicContext";
+import { MusicWidget } from "@/components/MusicWidget";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -31,12 +33,15 @@ export default function RootLayout({
         className={`${inter.variable} ${poppins.variable} antialiased flex min-h-full bg-background`}
       >
         <AuthProvider>
-          <Sidebar />
-          <main className="flex-1 ml-64 min-h-screen">
-            <div className="max-w-7xl mx-auto p-8">
-              {children}
-            </div>
-          </main>
+          <MusicProvider>
+            <Sidebar />
+            <main className="flex-1 ml-64 min-h-screen">
+              <div className="max-w-7xl mx-auto p-8">
+                {children}
+              </div>
+            </main>
+            <MusicWidget />
+          </MusicProvider>
         </AuthProvider>
       </body>
     </html>

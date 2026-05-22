@@ -21,7 +21,8 @@ import {
   LogOut,
   NotebookPen,
   Volume2,
-  FileText
+  FileText,
+  Music
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
@@ -82,6 +83,7 @@ export function Sidebar() {
     { icon: PenTool, label: 'Writing Journal', href: '/journal' },
     { icon: MessageSquare, label: 'AI Chat', href: '/chat' },
     { icon: Gamepad2, label: 'Quiz & Games', href: '/games' },
+    { icon: Music, label: 'Music Hub', href: '/music' },
     { icon: Trophy, label: 'Leaderboard', href: '/leaderboard' },
   ];
 
