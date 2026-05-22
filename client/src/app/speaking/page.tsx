@@ -1059,16 +1059,16 @@ export default function SpeakingPage() {
             {mouthFeedback ? (
               <div className="premium-card p-6 md:p-8 bg-white border border-slate-100 shadow-xl rounded-3xl space-y-6 animate-in slide-in-from-bottom-3 duration-500">
                 <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary font-black font-mono">
-                      {mouthFeedback.sound}
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary font-black font-mono shrink-0">
+                      {mouthFeedback.sound.length > 5 ? "IPA" : mouthFeedback.sound}
                     </div>
-                    <div>
-                      <h3 className="font-black text-slate-800 text-base">Hướng Dẫn Khẩu Hình Chi Tiết: {mouthFeedback.word}</h3>
+                    <div className="min-w-0">
+                      <h3 className="font-black text-slate-800 text-base truncate">Hướng Dẫn Khẩu Hình Chi Tiết: {mouthFeedback.word}</h3>
                       <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Cung cấp bởi EngBot Articulation Lab</p>
                     </div>
                   </div>
-                  <span className="px-3 py-1 bg-emerald-50 border border-emerald-100 text-emerald-600 rounded-full font-black text-[9px] uppercase tracking-wider flex items-center gap-1">
+                  <span className="px-3 py-1 bg-emerald-50 border border-emerald-100 text-emerald-600 rounded-full font-black text-[9px] uppercase tracking-wider flex items-center gap-1 shrink-0">
                     <Check className="w-3 h-3" /> ĐÃ PHÂN TÍCH
                   </span>
                 </div>
