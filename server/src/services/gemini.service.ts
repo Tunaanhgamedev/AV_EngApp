@@ -521,4 +521,203 @@ ${wordList}
     return null;
   }
 }
+
+  /**
+   * Generate TOEIC Practice Questions using Gemini
+   */
+  static async generateToeicPractice(part: number) {
+    try {
+      const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+
+      const prompt = `
+        Bạn là chuyên gia ra đề thi TOEIC. Hãy tạo một đề luyện tập TOEIC Part ${part} gồm 5 câu hỏi chất lượng cao, bám sát cấu trúc đề thi thật mới nhất.
+        
+        Yêu cầu chi tiết cho Part ${part}:
+        ${part === 1 ? '- Part 1 (Photographs): Mô tả một bức ảnh sinh động bằng văn bản tiếng Anh trong trường "audioDescription" (Ví dụ: "A man is sitting at a desk, typing on a laptop..."). Tạo 4 đáp án A, B, C, D mô tả bức ảnh.' : ''}
+        ${part === 2 ? '- Part 2 (Question-Response): Tạo một câu hỏi/phát biểu tiếng Anh trong trường "audioDescription". Tạo 3 đáp án A, B, C (đáp án D để trống hoặc không tạo).' : ''}
+        ${part === 3 ? '- Part 3 (Conversations): Tạo một đoạn hội thoại tự nhiên từ 2-3 người bằng tiếng Anh trong trường "context". Tạo 3 câu hỏi liên quan, mỗi câu hỏi có 4 đáp án A, B, C, D.' : ''}
+        ${part === 4 ? '- Part 4 (Short Talks): Tạo một bài nói ngắn (thông báo, quảng cáo, tin nhắn thoại) bằng tiếng Anh trong trường "context". Tạo 3 câu hỏi liên quan, mỗi câu hỏi có 4 đáp án A, B, C, D.' : ''}
+        ${part === 5 ? '- Part 5 (Incomplete Sentences): Tạo một câu có chỗ trống (marked as "_______") bằng tiếng Anh trong trường "questionText". Tạo 4 lựa chọn A, B, C, D.' : ''}
+        ${part === 6 ? '- Part 6 (Text Completion): Tạo một đoạn văn ngắn bằng tiếng Anh trong trường "context" có các chỗ trống đánh số (1), (2), (3). Tạo 3 câu hỏi tương ứng với 3 chỗ trống, mỗi câu hỏi có 4 đáp án A, B, C, D.' : ''}
+        ${part === 7 ? '- Part 7 (Reading Comprehension): Tạo một hoặc hai văn bản (email, thư báo, quảng cáo) bằng tiếng Anh trong trường "context". Tạo 3 câu hỏi liên quan, mỗi câu có 4 đáp án A, B, C, D.' : ''}
+
+        Trả về ĐÚNG định dạng JSON sau (không chứa bất kỳ giải thích nào khác ngoài JSON):
+        {
+          "part": ${part},
+          "questions": [
+            {
+              "id": "q1",
+              "audioDescription": "Nội dung nghe mô phỏng (dành cho Part 1, 2) hoặc trống",
+              "context": "Đoạn hội thoại/bài nói/đoạn văn (dành cho Part 3, 4, 6, 7) hoặc trống",
+              "questionText": "Câu hỏi cụ thể bằng tiếng Anh (ví dụ: 'What is the purpose of the email?') hoặc câu chứa chỗ trống cho Part 5",
+              "choices": ["A. choice A", "B. choice B", "C. choice C", "D. choice D"],
+              "correctAnswer": "A",
+              "explanation": "Lời giải thích chi tiết, dịch nghĩa của câu hỏi và đáp án bằng tiếng Việt."
+            }
+          ]
+        }
+      `;
+
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      const text = response.text();
+
+      const jsonStr = text.replace(/```json|```/g, "").trim();
+      return JSON.parse(jsonStr);
+    } catch (error: any) {
+      console.error(`Generate TOEIC Practice Part ${part} Error, using high-quality local fallback:`, error.message || error);
+      
+      // Local fallback in case Gemini fails
+      const fallbackData: any = {
+        part: part,
+        questions: []
+      };
+
+      if (part === 1) {
+        fallbackData.questions = [
+          {
+            id: "q1",
+            audioDescription: "A modern kitchen with clean countertops and stainless steel appliances.",
+            context: "",
+            questionText: "Which statement best describes the picture?",
+            choices: [
+              "A. The countertops are cluttered with dishes.",
+              "B. The kitchen appliances are made of stainless steel.",
+              "C. Someone is washing dishes in the sink.",
+              "D. The kitchen is being painted."
+            ],
+            correctAnswer: "B",
+            explanation: "Bức ảnh mô tả một căn bếp hiện đại với mặt bếp sạch sẽ và các thiết bị bằng thép không gỉ. Đáp án B đúng: 'Các thiết bị nhà bếp được làm bằng thép không gỉ.' Các đáp án khác không phù hợp với mô tả cảnh vật sạch sẽ và không có người."
+          }
+        ];
+      } else if (part === 5) {
+        fallbackData.questions = [
+          {
+            id: "q1",
+            audioDescription: "",
+            context: "",
+            questionText: "The management team has decided to _______ the launch of the new product until next month.",
+            choices: [
+              "A. postpone",
+              "B. postpones",
+              "C. postponing",
+              "D. postponed"
+            ],
+            correctAnswer: "A",
+            explanation: "Sau cấu trúc 'decided to' cần một động từ nguyên mẫu (V-inf). Trong các đáp án, 'postpone' (trì hoãn) là động từ nguyên mẫu. Dịch: Ban quản lý đã quyết định trì hoãn việc ra mắt sản phẩm mới cho đến tháng sau."
+          }
+        ];
+      } else {
+        fallbackData.questions = [
+          {
+            id: "q1",
+            audioDescription: "",
+            context: "Attention all passengers on flight VN123 to London. Due to adverse weather conditions at the destination airport, our departure has been delayed by approximately 45 minutes. Please remain near the boarding gate for further announcements. We apologize for any inconvenience caused.",
+            questionText: "What is the main cause of the delay?",
+            choices: [
+              "A. Technical issues with the aircraft.",
+              "B. Bad weather at the destination.",
+              "C. A strike by air traffic control.",
+              "D. A scheduling conflict."
+            ],
+            correctAnswer: "B",
+            explanation: "Trong bài nói có câu: 'Due to adverse weather conditions at the destination airport' (Do điều kiện thời tiết bất lợi tại sân bay đến), do đó nguyên nhân chính là thời tiết xấu tại điểm đến (Đáp án B)."
+          }
+        ];
+      }
+
+      return fallbackData;
+    }
+  }
+
+  /**
+   * Generate IELTS Practice Questions using Gemini
+   */
+  static async generateIeltsPractice(skill: string) {
+    try {
+      const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+
+      const prompt = `
+        Bạn là chuyên gia khảo thí IELTS quốc tế. Hãy tạo một bài luyện tập IELTS cho kĩ năng "${skill}" chất lượng cao, bám sát định dạng bài thi thật.
+        
+        Yêu cầu chi tiết cho kĩ năng "${skill}":
+        - Nếu skill là "listening": Tạo một đoạn script nghe bằng tiếng Anh trong trường "context". Tạo 5 câu hỏi trắc nghiệm hoặc điền từ liên quan.
+        - Nếu skill là "reading": Tạo một đoạn văn học thuật khoảng 300 từ bằng tiếng Anh trong trường "context". Tạo 5 câu hỏi True/False/Not Given hoặc trắc nghiệm liên quan.
+        - Nếu skill là "writing": Tạo đề bài viết IELTS Task 1 hoặc Task 2 trong trường "questionText". Trong trường "context", cung cấp dàn ý gợi ý (outline) và từ vựng nên dùng.
+        - Nếu skill là "speaking": Tạo đề bài nói IELTS Part 1, Part 2 (Cue card) hoặc Part 3 trong trường "questionText". Cung cấp các câu hỏi gợi ý và từ vựng hữu ích trong "context".
+
+        Trả về ĐÚNG định dạng JSON sau (không chứa bất kỳ giải thích nào khác ngoài JSON):
+        {
+          "skill": "${skill}",
+          "questions": [
+            {
+              "id": "q1",
+              "context": "Đoạn văn đọc/Script nghe/Gợi ý viết hoặc nói bằng tiếng Anh",
+              "questionText": "Câu hỏi cụ thể hoặc đề bài viết/nói bằng tiếng Anh",
+              "choices": ["A. Choice A", "B. Choice B", "C. Choice C", "D. Choice D"] (chừa trống nếu là điền từ, viết hoặc nói),
+              "correctAnswer": "Đáp án đúng (hoặc dàn ý mẫu, câu trả lời mẫu cho viết/nói)",
+              "explanation": "Lời giải thích chi tiết, gợi ý từ vựng, cấu trúc câu nâng cao bằng tiếng Việt."
+            }
+          ]
+        }
+      `;
+
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      const text = response.text();
+
+      const jsonStr = text.replace(/```json|```/g, "").trim();
+      return JSON.parse(jsonStr);
+    } catch (error: any) {
+      console.error(`Generate IELTS Practice ${skill} Error, using local fallback:`, error.message || error);
+      
+      const fallbackData: any = {
+        skill: skill,
+        questions: []
+      };
+
+      if (skill === 'writing') {
+        fallbackData.questions = [
+          {
+            id: "q1",
+            context: "Outline Suggestion:\n1. Introduction: Paraphrase the prompt.\n2. Overview: Highlight the main trends.\n3. Body 1: Detail the first group of data.\n4. Body 2: Detail the remaining data.\n\nUseful Vocabulary: fluctuate, upward trend, plummet, peak at, steadily decrease.",
+            questionText: "The chart below shows the percentage of households with internet access in three different countries between 2015 and 2025. Summarize the information by selecting and reporting the main features, and make comparisons where relevant.",
+            choices: [],
+            correctAnswer: "Sample Answer: The line graph illustrates the proportion of families having internet connectivity in Country A, Country B, and Country C over a decade-long period starting from 2015...",
+            explanation: "Bài viết Task 1 cần nêu bật được Overview (xu hướng chung) và so sánh dữ liệu giữa các quốc gia. Sử dụng các trạng từ chỉ mức độ tăng giảm như 'steadily', 'dramatically'."
+          }
+        ];
+      } else if (skill === 'speaking') {
+        fallbackData.questions = [
+          {
+            id: "q1",
+            context: "Part 2 Cue Card. Preparation: 1 minute. Speaking: 2 minutes.\n\nFollow-up questions:\n- Why do you think this person is successful?\n- What qualities are needed for success in business?",
+            questionText: "Describe a successful person you admire. You should say:\n- Who this person is\n- What they do\n- How you know about them\n- And explain why you admire them.",
+            choices: [],
+            correctAnswer: "Sample Points:\n- Talk about Elon Musk or a local entrepreneur.\n- Mention their resilience, vision, and hard work.\n- Highlight their contribution to technology or society.",
+            explanation: "Đối với Part 2, hãy tận dụng 1 phút chuẩn bị để viết từ khóa (keywords) theo sơ đồ tư duy. Chú ý chia đúng thì quá khứ đơn khi kể về quá trình lập nghiệp của họ."
+          }
+        ];
+      } else {
+        fallbackData.questions = [
+          {
+            id: "q1",
+            context: "The industrial revolution, which began in the late 18th century, profoundly transformed agrarian societies into industrialized, urban ones. Technological innovations, most notably the steam engine developed by James Watt, played a key role in boosting manufacturing productivity. Consequently, populations migrated in massive numbers from rural villages to cities in search of factory employment.",
+            questionText: "According to the passage, what drove population migration to cities?",
+            choices: [
+              "A. A desire for better agricultural land.",
+              "B. The development of James Watt's steam engine.",
+              "C. The search for employment in factories.",
+              "D. The beauty of industrialized cities."
+            ],
+            correctAnswer: "C",
+            explanation: "Trong đoạn văn có câu: 'Consequently, populations migrated in massive numbers from rural villages to cities in search of factory employment.' (Hệ quả là, người dân di cư số lượng lớn từ các vùng nông thôn ra thành phố để tìm kiếm việc làm trong nhà máy). Đáp án đúng là C."
+          }
+        ];
+      }
+
+      return fallbackData;
+    }
+  }
 }
+

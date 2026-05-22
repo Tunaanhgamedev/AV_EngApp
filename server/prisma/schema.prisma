@@ -28,6 +28,9 @@ model User {
   achievements     UserAchievement[]
   dailyActivity    UserDailyActivity[]
 
+  toeicHistory     ToeicPracticeHistory[]
+  ieltsHistory     IeltsPracticeHistory[]
+
   @@map("users")
   @@index([email])
 }
@@ -172,4 +175,39 @@ model UserDailyActivity {
 
   @@unique([userId, activityDate])
   @@map("user_daily_activity")
+}
+
+model ToeicPracticeHistory {
+  id             String   @id @default(uuid())
+  userId         String   @map("user_id")
+  part           Int?     // null if full test, or 1-7 for specific part
+  listeningScore Int?     @map("listening_score") // if full test
+  readingScore   Int?     @map("reading_score")   // if full test
+  totalScore     Int?     @map("total_score")     // for part practice or full test
+  correctCount   Int      @map("correct_count")
+  totalQuestions Int      @map("total_questions")
+  details        String   @db.Text // JSON string of answers and explanations
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  // Relations
+  user           User     @relation(fields: [userId], references: [id])
+
+  @@map("toeic_practice_history")
+}
+
+model IeltsPracticeHistory {
+  id             String   @id @default(uuid())
+  userId         String   @map("user_id")
+  skill          String   @map("skill") // "listening", "reading", "writing", "speaking", "full"
+  bandScore      Float    @map("band_score")
+  correctCount   Int?     @map("correct_count") // for listening/reading
+  totalQuestions Int?     @map("total_questions") // for listening/reading
+  aiFeedback     String?  @map("ai_feedback") @db.Text // for writing/speaking/full
+  details        String   @db.Text // JSON string of answers/transcripts/essays and corrections
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  // Relations
+  user           User     @relation(fields: [userId], references: [id])
+
+  @@map("ielts_practice_history")
 }

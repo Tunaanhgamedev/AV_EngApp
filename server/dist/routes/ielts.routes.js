@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const ielts_controller_1 = require("../controllers/ielts.controller");
+const auth_middleware_1 = require("../middleware/auth.middleware");
+const router = (0, express_1.Router)();
+router.get('/practice/:skill', auth_middleware_1.authenticate, ielts_controller_1.generatePractice);
+router.post('/submit', auth_middleware_1.authenticate, ielts_controller_1.submitPractice);
+router.get('/history/:userId', auth_middleware_1.authenticate, ielts_controller_1.getHistory);
+exports.default = router;

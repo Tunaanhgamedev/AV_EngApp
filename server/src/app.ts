@@ -7,6 +7,8 @@ import vocabularyRoutes from './routes/vocabulary.routes';
 import journalRoutes from './routes/journal.routes';
 import chatRoutes from './routes/chat.routes';
 import aiRoutes from './routes/ai.routes';
+import toeicRoutes from './routes/toeic.routes';
+import ieltsRoutes from './routes/ielts.routes';
 
 
 const app: Application = express();
@@ -24,6 +26,8 @@ app.use('/api/vocabulary', vocabularyRoutes);
 app.use('/api/journal', journalRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/toeic', toeicRoutes);
+app.use('/api/ielts', ieltsRoutes);
 // DB Fix: SSL authorized
 
 

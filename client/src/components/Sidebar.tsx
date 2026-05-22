@@ -22,7 +22,9 @@ import {
   NotebookPen,
   Volume2,
   FileText,
-  Music
+  Music,
+  GraduationCap,
+  Award
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
@@ -84,6 +86,8 @@ export function Sidebar() {
     { icon: PenTool, label: 'Writing Journal', href: '/journal' },
     { icon: MessageSquare, label: 'AI Chat', href: '/chat' },
     { icon: Gamepad2, label: 'Quiz & Games', href: '/games' },
+    { icon: GraduationCap, label: 'TOEIC Center', href: '/toeic' },
+    { icon: Award, label: 'IELTS Center', href: '/ielts' },
     { icon: Music, label: 'Music Hub', href: '/music' },
     { icon: Trophy, label: 'Leaderboard', href: '/leaderboard' },
   ];
