@@ -102,6 +102,8 @@ export default function SpeakingPage() {
   const [cameraError, setCameraError] = useState<string | null>(null);
   const [isMouthAnalyzing, setIsMouthAnalyzing] = useState(false);
   const [mouthFeedback, setMouthFeedback] = useState<any>(null);
+  const [customWordInput, setCustomWordInput] = useState("");
+  const [customWordError, setCustomWordError] = useState<string | null>(null);
   
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -293,6 +295,109 @@ export default function SpeakingPage() {
     }
   };
 
+  // Helper to dynamically generate highly accurate mouth articulation feedback locally when server or API quota is limited
+  const generateLocalMouthFeedback = (word: string): any => {
+    const w = word.trim().toLowerCase();
+    
+    let lips = "Mở rộng cơ miệng vừa phải, hai bên mép môi thả lỏng tự nhiên khi phát âm.";
+    let tongue = "Đầu lưỡi thả lỏng đặt ở hàm dưới cho các nguyên âm, nâng nhẹ lên khi chuyển sang phụ âm.";
+    let airflow = "Đẩy luồng hơi nhẹ nhàng từ thanh quản ra khoang miệng, rung nhẹ dây thanh quản cho các nguyên âm.";
+    let mistakes = `Khi đọc từ '${word}', người Việt thường có xu hướng nuốt âm cuối (ending sounds) hoặc phát âm không rõ phần trọng âm.`;
+    let steps = [
+      `Bước 1: Nhìn vào gương hoặc webcam để đảm bảo khẩu hình thả lỏng tự nhiên khi bắt đầu phát âm '${word}'.`,
+      `Bước 2: Đọc chậm rãi các âm tiết, cố gắng làm rõ các nguyên âm cấu thành.`,
+      `Bước 3: Phát âm rõ âm đuôi (âm cuối) của từ để hoàn thành cấu âm chuẩn xác.`
+    ];
+
+    // Specific phonetic classifications
+    if (w.includes("th")) {
+      lips = "Hai mép hơi mở nhẹ sang hai bên, giữ cho môi trên và môi dưới không cản trở răng.";
+      tongue = "Đặt đầu lưỡi nhô ra ngoài kẹp nhẹ giữa hàm răng cửa trên và dưới. Đây là mấu chốt quan trọng nhất!";
+      airflow = "Thổi luồng hơi mạnh đi qua khe giữa mặt trên của lưỡi và răng cửa trên. Cố gắng không rung cổ họng đối với âm vô thanh như trong 'think'.";
+      mistakes = `Người Việt hay đọc âm 'th' trong từ '${word}' thành âm /t/ (đọc giống 't') hoặc âm /s/ (đọc giống 'x'). Hãy chú ý kẹp nhẹ lưỡi giữa răng để sửa đổi.`;
+      steps = [
+        `Bước 1: Đưa đầu lưỡi ra ngoài kẹp nhẹ giữa hai hàm răng cửa khi bắt đầu phát âm '${word}'.`,
+        `Bước 2: Đẩy luồng hơi mạnh từ bụng ra qua khe giữa lưỡi và răng cửa trên.`,
+        `Bước 3: Thu nhanh lưỡi vào trong và hoàn thành phát âm phần còn lại của từ.`
+      ];
+    } 
+    else if (w.includes("sh") || w.includes("tion") || w.includes("sion") || w.includes("ch") || w.includes("scene") || w.includes("she")) {
+      lips = "Chu tròn môi và hướng nhẹ ra phía trước (vành môi mở tròn), hơi căng cơ má.";
+      tongue = "Cong đầu lưỡi lên hướng về phía vòm họng trên nhưng không chạm vào vòm họng. Lưỡi hơi lùi về phía sau.";
+      airflow = "Đẩy luồng hơi mạnh đi qua khe giữa đầu lưỡi và vòm họng cửa, tạo ra tiếng xì gió dày và ấm.";
+      mistakes = `Với từ '${word}', người Việt thường phát âm nhẹ giống âm /s/ trong tiếng Việt mà quên không chu tròn môi và cong lưỡi để tạo ra âm gió dày /ʃ/.`;
+      steps = [
+        `Bước 1: Chu tròn môi hướng ra phía trước giống như khi đang ra hiệu im lặng 'suỵt' khi chuẩn bị phát âm '${word}'.`,
+        `Bước 2: Cong đầu lưỡi lên phía vòm họng trên và thổi một luồng hơi gió dày ra ngoài.`,
+        `Bước 3: Giữ nguyên hình dáng môi căng tròn và kết nối liền mạch vào các âm tiếp theo.`
+      ];
+    }
+    else if (w.includes("s") || w.includes("ce") || w.includes("se")) {
+      lips = "Hai bên mép môi hơi kéo nhẹ sang hai bên giống như đang mỉm cười nhẹ, răng cửa khép hờ.";
+      tongue = "Đặt đầu lưỡi gần chân răng cửa hàm trên (nhưng không chạm hẳn vào răng), lưỡi thả phẳng.";
+      airflow = "Thổi luồng hơi xì đều đặn đi qua khe hẹp giữa đầu lưỡi và chân răng cửa trên, không rung dây thanh.";
+      mistakes = `Với từ '${word}' (chứa phụ âm xì /s/), người Việt hay quên không xì hơi ở âm đuôi hoặc đọc quá nhẹ. Hãy chú ý giữ luồng xì gió rõ nét.`;
+      steps = [
+        `Bước 1: Khép nhẹ răng cửa, kéo nhẹ hai mép môi sang hai bên để mở rộng khe xì gió cho từ '${word}'.`,
+        `Bước 2: Đẩy luồng hơi gió liên tục và đều đặn qua khe răng cửa trên.`,
+        `Bước 3: Chú ý nhấn rõ âm xì nếu âm này nằm ở cuối từ.`
+      ];
+    }
+    else if (w.includes("r") || w.includes("wr")) {
+      lips = "Môi hơi tròn nhẹ và hướng ra ngoài ở giai đoạn đầu, sau đó thả lỏng dần khi phát âm.";
+      tongue = "Cong sâu đầu lưỡi ngược vào trong vòm họng, giữ cho đầu lưỡi tuyệt đối không chạm vào bất kỳ phần nào của miệng.";
+      airflow = "Đẩy luồng hơi nhẹ đi qua khoang miệng khi lưỡi đang cong sâu, làm rung dây thanh quản tạo âm rền ấm.";
+      mistakes = `Khi đọc âm /r/ trong từ '${word}', học viên Việt Nam thường để lưỡi chạm vào vòm họng giống âm 'r' tiếng Việt. Hãy nhớ lưỡi phải lơ lửng không chạm!`;
+      steps = [
+        `Bước 1: Mở miệng nhỏ, hơi chu nhẹ môi và chuẩn bị phát âm '${word}'.`,
+        `Bước 2: Cong ngược đầu lưỡi vào trong khoang họng, giữ lơ lửng không chạm lợi răng.`,
+        `Bước 3: Phát âm và đồng thời thả lỏng dần lưỡi về vị trí tự nhiên.`
+      ];
+    }
+    else if (w.includes("l")) {
+      lips = "Mở rộng cơ miệng tự nhiên theo chiều dọc, hai mép thả lỏng thoải mái.";
+      tongue = "Đặt đầu lưỡi chạm chắc vào phần lợi ngay phía sau chân răng cửa hàm trên.";
+      airflow = "Để luồng hơi đi ra tự do qua hai bên cạnh của lưỡi, đồng thời làm rung mạnh dây thanh quản.";
+      mistakes = `Với âm /l/ trong từ '${word}', hãy phân biệt rõ 'l' đứng đầu (chạm thả lưỡi) và 'l' đứng cuối (giữ lưỡi chạm chân răng để tạo âm ồ nhẹ).`;
+      steps = [
+        `Bước 1: Mở rộng miệng thoải mái và nâng đầu lưỡi chạm vào lợi răng trên để phát âm '${word}'.`,
+        `Bước 2: Giữ chặt đầu lưỡi tại vị trí lợi răng trên và phát âm ngân vang rung dây thanh quản.`,
+        `Bước 3: Thả lưỡi ra nếu âm 'l' ở đầu từ, hoặc giữ nguyên lưỡi chạm răng nếu là âm 'l' cuối.`
+      ];
+    }
+    else if (w.includes("p") || w.includes("b") || w.includes("m")) {
+      lips = "Hai môi mím chặt lại hoàn toàn để chặn luồng hơi, sau đó mở nhanh môi ra để bật hơi.";
+      tongue = "Đặt lưỡi tự nhiên nằm phẳng ở hàm dưới, không cần cử động lưỡi.";
+      airflow = "Nén hơi trong khoang miệng đằng sau đôi môi mím, sau đó bật luồng hơi ra đột ngột (không rung dây thanh cho âm /p/, rung cho âm /b/).";
+      mistakes = `Người Việt hay nhầm lẫn giữa âm bật hơi vô thanh /p/ và hữu thanh /b/ trong từ '${word}'. Cần mím chặt môi để bật hơi rõ ràng hơn.`;
+      steps = [
+        `Bước 1: Mím chặt môi để nén hơi lại trong khoang miệng trước khi phát âm '${word}'.`,
+        `Bước 2: Mở nhanh đôi môi để giải phóng luồng hơi bị nén ra ngoài tạo tiếng bật rõ rệt.`,
+        `Bước 3: Đảm bảo luồng hơi bật mạnh nếu là âm /p/ ở đầu hoặc cuối từ.`
+      ];
+    }
+    else if (w.includes("f") || w.includes("v")) {
+      lips = "Răng cửa hàm trên chạm nhẹ vào phần phía trong của môi dưới. Đây là tư thế cấu âm răng - môi.";
+      tongue = "Đặt lưỡi ở trạng thái nghỉ tự nhiên ở sàn miệng, không tham gia vào cấu âm.";
+      airflow = "Thổi luồng hơi gió nhẹ nhàng đi xuyên qua khe hẹp giữa răng cửa trên và môi dưới.";
+      mistakes = `Với âm răng - môi trong từ '${word}', người học thỉnh thoảng nuốt mất âm 'f'/'v' cuối hoặc phát âm nhầm thành âm 'p' (mím môi). Hãy chạm răng vào môi dưới để sửa.`;
+      steps = [
+        `Bước 1: Đưa răng cửa trên chạm nhẹ lên bờ môi dưới khi bắt đầu phát âm '${word}'.`,
+        `Bước 2: Đẩy luồng hơi gió xì nhẹ qua kẽ răng và môi dưới.`,
+        `Bước 3: Ngân dài âm xì gió này nếu từ kết thúc bằng âm 'f' hoặc 'v'.`
+      ];
+    }
+
+    return {
+      sound: "IPA",
+      word: word,
+      mouthShape: { lips, tongue, airflow },
+      vietnameseMistakes: mistakes,
+      correctionSteps: steps,
+      feedback: `Đã chuẩn bị xong hướng dẫn cấu âm thông minh cho từ '${word}'. Vui lòng bật camera soi khẩu hình và bấm nói thử nhé!`
+    };
+  };
+
   // Articulation analysis query
   const handleAnalyzeMouthShape = async () => {
     setIsMouthAnalyzing(true);
@@ -311,24 +416,52 @@ export default function SpeakingPage() {
       const data = await response.json();
       setMouthFeedback(data);
     } catch (err) {
-      console.error(err);
-      // Premium fallback feedback
-      setMouthFeedback({
-        sound: selectedSound.sound,
-        word: selectedSound.word,
-        mouthShape: {
-          lips: "Mở nhẹ, hai bên mép môi hơi kéo sang hai bên giống như đang mỉm cười nhẹ.",
-          tongue: "Đặt đầu lưỡi kẹp nhẹ giữa hàm răng trên và hàm răng dưới. Tránh thụt lưỡi vào quá sâu.",
-          airflow: "Thổi luồng hơi mạnh đi qua khe giữa mặt trên của lưỡi và răng cửa trên. Đây là âm vô thanh nên không rung dây thanh quản."
-        },
-        vietnameseMistakes: "Người học Việt Nam hay có xu hướng thay thế âm này bằng âm /t/ (đọc thành 'tinh') hoặc âm /s/ (đọc thành 'xinh'). Hãy chú ý kẹp lưỡi giữa răng để thổi hơi đúng chuẩn.",
-        correctionSteps: [
-          "Bước 1: Há miệng nhỏ và đưa đầu lưỡi ra ngoài kẹp nhẹ giữa hai hàm răng cửa.",
-          "Bước 2: Sử dụng luồng hơi mạnh từ bụng đẩy ra qua khe răng mà không tạo ra tiếng động ở cổ họng.",
-          "Bước 3: Nhanh chóng thu lưỡi vào trong và tiếp tục phát âm phần còn lại của từ (ink)."
-        ],
-        feedback: "Hãy chú ý giữ lưỡi ổn định và hơi nhô ra ngoài khi thổi luồng hơi. Bạn có thể nhìn vào camera phía trên để đối chiếu khớp khẩu hình miệng chưa nhé!"
+      console.error("Using local articulation fallback generator:", err);
+      // Use our dynamic intelligent fallback generator!
+      setMouthFeedback(generateLocalMouthFeedback(selectedSound.word));
+    } finally {
+      setIsMouthAnalyzing(false);
+    }
+  };
+
+  const handleAnalyzeCustomWord = async () => {
+    const word = customWordInput.trim();
+    if (!word) return;
+
+    // Validate that the input is a valid standard English word (no Vietnamese diacritics, numbers, or special symbols)
+    const englishRegex = /^[a-zA-Z'-]+$/;
+    if (!englishRegex.test(word)) {
+      setCustomWordError("Từ nhập chứa dấu tiếng Việt, số hoặc ký tự lạ. Vui lòng chỉ dùng ký tự tiếng Anh không dấu (Ví dụ: Beautiful, Schedule, Voice...)!");
+      return;
+    }
+    setCustomWordError(null);
+
+    setSelectedSound({
+      sound: "IPA",
+      word: word,
+      desc: `Từ tự nhập: ${word}`
+    });
+    setMouthFeedback(null);
+    setTranscript('');
+    setIsMouthAnalyzing(true);
+    
+    try {
+      const response = await fetch(`${API_BASE}/ai/analyze-pronunciation`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sound: "IPA & Cấu âm tổng quát",
+          word: word,
+          transcript: ""
+        })
       });
+      if (!response.ok) throw new Error("API busy");
+      const data = await response.json();
+      setMouthFeedback(data);
+    } catch (err) {
+      console.error("Custom word api failed, using dynamic local generator:", err);
+      // Fallback
+      setMouthFeedback(generateLocalMouthFeedback(word));
     } finally {
       setIsMouthAnalyzing(false);
     }
@@ -669,6 +802,70 @@ export default function SpeakingPage() {
           
           {/* Sound Selector Sidebar */}
           <div className="lg:col-span-4 space-y-4">
+            
+            {/* Custom Word Input Block */}
+            <div className="premium-card p-5 bg-white border border-slate-100 shadow-md rounded-3xl space-y-4">
+              <h3 className="font-black text-sm text-slate-800 flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-primary fill-primary animate-pulse" /> Tự Nhập Từ Luyện Tập
+              </h3>
+              <div className="space-y-2.5">
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={customWordInput}
+                    onChange={(e) => {
+                      setCustomWordInput(e.target.value);
+                      if (customWordError) setCustomWordError(null);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') handleAnalyzeCustomWord();
+                    }}
+                    placeholder="Ví dụ: Beautiful, Schedule, Rural..."
+                    className="w-full pl-3 pr-8 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-primary transition-all shadow-inner"
+                  />
+                  {customWordInput && (
+                    <button 
+                      onClick={() => {
+                        setCustomWordInput("");
+                        setCustomWordError(null);
+                      }}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 font-bold text-xs"
+                    >
+                      ×
+                    </button>
+                  )}
+                </div>
+                {customWordError && (
+                  <p className="text-rose-500 font-bold text-[10px] leading-relaxed bg-rose-50 border border-rose-100 p-2.5 rounded-xl flex items-start gap-1.5 animate-in fade-in slide-in-from-top-1 duration-200 shadow-sm">
+                    <AlertCircle className="w-3.5 h-3.5 shrink-0 text-rose-500 mt-0.5" />
+                    {customWordError}
+                  </p>
+                )}
+                <button
+                  onClick={handleAnalyzeCustomWord}
+                  disabled={!customWordInput.trim() || isMouthAnalyzing}
+                  className={cn(
+                    "w-full py-2.5 rounded-xl text-xs font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-sm",
+                    customWordInput.trim() && !isMouthAnalyzing
+                      ? "bg-slate-900 hover:bg-slate-800 text-white hover:scale-[1.01] active:scale-95 cursor-pointer"
+                      : "bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200/50"
+                  )}
+                >
+                  {isMouthAnalyzing ? (
+                    <>
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      Đang phân tích...
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+                      Phân Tích Cấu Âm Từ
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+
             <div className="premium-card p-5 bg-white border border-slate-100 shadow-md rounded-3xl">
               <h3 className="font-black text-base text-slate-800 mb-4 flex items-center gap-2">
                 <BookOpen className="w-4 h-4 text-primary" /> Chọn Âm Cần Luyện

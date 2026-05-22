@@ -19,6 +19,24 @@ const generateWithRetry = async (model: any, prompt: string, retries = 1) => {
   }
 };
 
+// Safe JSON parser to robustly extract objects/arrays from conversational LLM responses
+const safeParseJSON = (text: string): any => {
+  const firstBrace = text.indexOf('{');
+  const lastBrace = text.lastIndexOf('}');
+  if (firstBrace === -1 || lastBrace === -1 || lastBrace < firstBrace) {
+    const firstBracket = text.indexOf('[');
+    const lastBracket = text.lastIndexOf(']');
+    if (firstBracket !== -1 && lastBracket !== -1 && lastBracket > firstBracket) {
+      const cleanJson = text.substring(firstBracket, lastBracket + 1);
+      return JSON.parse(cleanJson);
+    }
+    const cleanStr = text.replace(/```json|```/g, "").trim();
+    return JSON.parse(cleanStr);
+  }
+  const cleanJson = text.substring(firstBrace, lastBrace + 1);
+  return JSON.parse(cleanJson);
+};
+
 // AI Translate
 router.post('/translate', async (req, res) => {
   const { text, targetLang = 'Vietnamese' } = req.body;
@@ -154,8 +172,7 @@ router.post('/analyze-speaking', async (req, res) => {
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
     const result = await model.generateContent(prompt);
     const text = result.response.text();
-    const jsonStr = text.replace(/```json|```/g, "").trim();
-    const analysis = JSON.parse(jsonStr);
+    const analysis = safeParseJSON(text);
 
     res.json(analysis);
   } catch (error: any) {
@@ -204,8 +221,7 @@ router.post('/analyze-pronunciation', async (req, res) => {
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
     const result = await model.generateContent(prompt);
     const text = result.response.text();
-    const jsonStr = text.replace(/```json|```/g, "").trim();
-    const analysis = JSON.parse(jsonStr);
+    const analysis = safeParseJSON(text);
 
     res.json(analysis);
   } catch (error: any) {
