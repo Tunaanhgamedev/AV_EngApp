@@ -722,13 +722,12 @@ router.post('/notebook', authenticate, async (req: any, res) => {
     // Step 5: Add to user's personal notebook (isFavorite = true marks it as "user-added")
     const entry = await prisma.userLearnedWord.upsert({
       where: { userId_wordId: { userId, wordId: vocabWord.id } },
-      update: { isFavorite: true, lastReviewedAt: new Date() },
+      update: { isFavorite: true },
       create: {
         userId,
         wordId: vocabWord.id,
         isFavorite: true,
         masteryLevel: 0,
-        lastReviewedAt: new Date(),
         nextReviewAt: new Date(Date.now() + 24 * 60 * 60 * 1000) // Review tomorrow
       }
     });
@@ -920,8 +919,10 @@ router.get('/daily-review-status', authenticate, async (req: any, res) => {
     const yyyy = ictTime.getFullYear();
     const mm = String(ictTime.getMonth() + 1).padStart(2, '0');
     const dd = String(ictTime.getDate()).padStart(2, '0');
-    const todayStart = new Date(`${yyyy}-${mm}-${dd}T00:00:00.000Z`);
-    const todayEnd = new Date(`${yyyy}-${mm}-${dd}T23:59:59.999Z`);
+    
+    // Explicitly set boundaries relative to ICT (+07:00 offset) to match UTC timestamps correctly
+    const todayStart = new Date(`${yyyy}-${mm}-${dd}T00:00:00.000+07:00`);
+    const todayEnd = new Date(`${yyyy}-${mm}-${dd}T23:59:59.999+07:00`);
 
     // Count how many notebook words (isFavorite) are due for review
     const dueCount = await prisma.userLearnedWord.count({
@@ -951,8 +952,8 @@ router.get('/daily-review-status', authenticate, async (req: any, res) => {
 
     const hasReviewedToday = reviewedToday > 0;
     const hasWordsToReview = dueCount > 0;
-    // Remind user daily if they have notebook words and haven't reviewed today
-    const needsReminder = totalNotebook > 0 && !hasReviewedToday;
+    // Remind user daily ONLY if they have pending words due today and haven't reviewed yet today
+    const needsReminder = dueCount > 0 && !hasReviewedToday;
 
     res.json({
       hasWordsToReview,
