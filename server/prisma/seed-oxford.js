@@ -1,7 +1,16 @@
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+const { Pool } = require('pg');
+const { PrismaPg } = require('@prisma/adapter-pg');
 const { PrismaClient } = require('@prisma/client');
 const { v4: uuidv4 } = require('uuid');
+require('dotenv').config();
 
-const prisma = new PrismaClient();
+const pool = new Pool({ 
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
+});
+const adapter = new PrismaPg(pool);
+const prisma = new PrismaClient({ adapter });
 
 const OXFORD_WORDS = [
   'abandon','ability','able','about','above','abroad','absolute','absolutely','academic','accept',

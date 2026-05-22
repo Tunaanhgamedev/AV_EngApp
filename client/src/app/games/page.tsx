@@ -93,6 +93,14 @@ const STATIC_SCRAMBLE_IDIOMS = [
 // Helper to shuffle array
 const shuffle = <T,>(arr: T[]): T[] => [...arr].sort(() => Math.random() - 0.5);
 
+interface Card {
+  id: number;
+  word: string;
+  type: 'en' | 'vi';
+  pairId: number;
+  matched: boolean;
+}
+
 // ─── Vocabulary Match Game ────────────────────────────────────────────────────
 function VocabMatchGame({ dbWords, onClose, awardXp }: { dbWords: any[]; onClose: () => void; awardXp?: (amount: number, reason: string) => void }) {
   const [cards, setCards] = useState<Card[]>([]);

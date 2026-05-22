@@ -27,7 +27,7 @@ import { useSearchParams } from 'next/navigation';
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 const LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 
-export default function DictionaryPage() {
+function DictionaryContent() {
   const searchParams = useSearchParams();
   const { user, dbUser, signInWithGoogle, refreshDbUser } = useAuth();
   
@@ -668,5 +668,18 @@ export default function DictionaryPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function DictionaryPage() {
+  return (
+    <React.Suspense fallback={
+      <div className="max-w-6xl mx-auto space-y-12 pb-20 p-8 text-center text-slate-500">
+        <Loader2 className="w-10 h-10 animate-spin mx-auto mb-2 text-[#002147]" />
+        <p className="font-bold text-slate-400">Loading dictionary...</p>
+      </div>
+    }>
+      <DictionaryContent />
+    </React.Suspense>
   );
 }

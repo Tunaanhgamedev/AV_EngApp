@@ -24,6 +24,13 @@ import { useAuth } from '@/context/AuthContext';
 
 const SCENARIOS = [
   { 
+    id: 'free_chat', 
+    title: 'Free Chat with EngBot', 
+    icon: MessageSquare, 
+    persona: 'EngBot, a supportive AI English Coach and conversational tutor.',
+    scenario: 'Trò chuyện tự do với EngBot. Bạn có thể nói về bất kỳ chủ đề nào, hỏi ngữ pháp, nhờ dịch thuật, hoặc tập phản xạ tiếng Anh.'
+  },
+  { 
     id: 'coffee_shop', 
     title: 'Ordering Coffee', 
     icon: Coffee, 
@@ -94,11 +101,18 @@ export default function ChatPage() {
 
   const handleStartScenario = (scenario: any) => {
     setSelectedScenario(scenario);
+    const content = scenario.id === 'free_chat'
+      ? `Hello ${user?.displayName?.split(' ')[0] || ''}! I'm EngBot, your AI English Coach. We can chat about anything you like! You can type in English or Vietnamese, ask me questions, or practice translating. How are you doing today?`
+      : `Hello ${user?.displayName?.split(' ')[0] || ''}! I'm your ${scenario.title} partner. ${scenario.scenario}. How can I help you today?`;
+    const translation = scenario.id === 'free_chat'
+      ? `Chào ${user?.displayName?.split(' ')[0] || ''}! Tôi là EngBot, Huấn luyện viên tiếng Anh AI của bạn. Chúng ta có thể trò chuyện tự do về bất cứ chủ đề nào bạn thích! Bạn có thể gõ bằng tiếng Anh hoặc tiếng Việt, đặt câu hỏi cho tôi hoặc luyện dịch. Hôm nay bạn thế nào?`
+      : `Chào ${user?.displayName?.split(' ')[0] || ''}! Tôi là đối tác luyện tập ${scenario.title} của bạn. ${scenario.scenario}. Tôi có thể giúp gì cho bạn hôm nay?`;
+
     setMessages([
       { 
         role: 'assistant', 
-        content: `Hello ${user.displayName?.split(' ')[0] || ''}! I'm your ${scenario.title} partner. ${scenario.scenario}. How can I help you today?`,
-        translation: `Chào ${user.displayName?.split(' ')[0] || ''}! Tôi là đối tác luyện tập của bạn. Hãy bắt đầu nhé.`
+        content,
+        translation
       }
     ]);
   };

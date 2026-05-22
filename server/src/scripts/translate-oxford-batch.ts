@@ -1,3 +1,4 @@
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 import 'dotenv/config';
 import prisma from '../lib/prisma';
 import { GeminiService } from '../services/gemini.service';

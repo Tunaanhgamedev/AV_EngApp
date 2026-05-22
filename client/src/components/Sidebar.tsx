@@ -58,8 +58,9 @@ export function Sidebar() {
           const statusData = await statusRes.json();
           setNotebookNeedsReview(statusData.needsReminder);
         }
-      } catch (err) {
-        console.error('Failed to fetch review count:', err);
+      } catch (err: any) {
+        // Quietly log a gentle warning to avoid red stack traces when server is offline/restarting
+        console.warn('[Sidebar] API server is offline or starting up. Retrying review count fetch in 5 minutes.');
       }
     };
 

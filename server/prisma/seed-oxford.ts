@@ -1,3 +1,4 @@
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 import { PrismaClient } from '@prisma/client';
 import { randomUUID } from 'crypto';
 
