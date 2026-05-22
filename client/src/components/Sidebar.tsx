@@ -90,6 +90,7 @@ export function Sidebar({ isOpen, onClose }: { isOpen?: boolean; onClose?: () =>
     { icon: Award, label: 'IELTS Center', href: '/ielts' },
     { icon: Music, label: 'Music Hub', href: '/music' },
     { icon: Trophy, label: 'Leaderboard', href: '/leaderboard' },
+    { icon: Settings, label: 'Settings', href: '/settings' },
   ];
 
   return (

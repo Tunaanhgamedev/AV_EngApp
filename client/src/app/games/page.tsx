@@ -964,6 +964,8 @@ export default function GamesPage() {
   const [activeGame, setActiveGame] = useState<string | null>(null);
   const [dbWords, setDbWords] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [rank, setRank] = useState<string>('#-');
+  const [xp, setXp] = useState<string>('0');
 
   const handleAwardXp = async (amount: number, reason: string) => {
     if (!user) return;
@@ -1008,6 +1010,33 @@ export default function GamesPage() {
     fetchGameData();
   }, []);
 
+  useEffect(() => {
+    const fetchUserRank = async () => {
+      if (!user) return;
+      try {
+        const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+        const token = await user.getIdToken();
+        const res = await fetch(`${API_BASE}/users/leaderboard`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (res.ok) {
+          const dbUsers: any[] = await res.json();
+          const sorted = [...dbUsers].sort((a, b) => b.xp - a.xp);
+          const myIndex = sorted.findIndex(u => u.id === user.uid || u.email === user.email);
+          const myUser = sorted[myIndex];
+          if (myIndex !== -1 && myUser) {
+            setRank(`#${myIndex + 1}`);
+            setXp(myUser.xp.toLocaleString());
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch user rank on games page:', err);
+      }
+    };
+
+    fetchUserRank();
+  }, [user]);
+
   return (
     <div className="space-y-10 animate-in fade-in duration-700">
       {activeGame === 'vocab' && <VocabMatchGame dbWords={dbWords} onClose={() => setActiveGame(null)} awardXp={handleAwardXp} />}
@@ -1044,12 +1073,14 @@ export default function GamesPage() {
             </div>
           </div>
           <div className="hidden md:flex gap-4 ml-auto">
-            {[{ label: 'Hạng của bạn', value: '#12' }, { label: 'Tích lũy XP', value: '450' }].map((c, i) => (
-              <div key={i} className="p-6 bg-white/5 backdrop-blur-md rounded-3xl border border-white/10 text-center min-w-[100px]">
-                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{c.label}</p>
-                <p className="text-2xl font-black mt-1 text-white">{c.value}</p>
-              </div>
-            ))}
+            <div className="p-6 bg-white/5 backdrop-blur-md rounded-3xl border border-white/10 text-center min-w-[120px]">
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Hạng của bạn</p>
+              <p className="text-2xl font-black mt-1 text-white">{rank}</p>
+            </div>
+            <div className="p-6 bg-white/5 backdrop-blur-md rounded-3xl border border-white/10 text-center min-w-[120px]">
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Tích lũy XP</p>
+              <p className="text-2xl font-black mt-1 text-white">{xp}</p>
+            </div>
           </div>
         </div>
       </section>

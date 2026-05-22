@@ -258,3 +258,27 @@ export const getCheckinHistory = async (req: AuthRequest, res: Response) => {
     res.status(500).json({ error: 'Failed to get checkin history' });
   }
 };
+
+export const updateProfile = async (req: AuthRequest, res: Response) => {
+  const userId = req.user?.uid;
+  const { username, avatarUrl } = req.body;
+
+  if (!userId) {
+    return res.status(401).json({ error: 'User not authenticated' });
+  }
+
+  try {
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        username: username || undefined,
+        avatarUrl: avatarUrl || undefined,
+      }
+    });
+
+    res.json({ success: true, user: updatedUser });
+  } catch (error) {
+    console.error('Update Profile Error:', error);
+    res.status(500).json({ error: 'Failed to update profile' });
+  }
+};

@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCheckinHistory = exports.getCheckinStatus = exports.dailyCheckin = exports.addXP = exports.getLeaderboard = exports.createUser = exports.getUsers = exports.syncUser = void 0;
+exports.updateProfile = exports.getCheckinHistory = exports.getCheckinStatus = exports.dailyCheckin = exports.addXP = exports.getLeaderboard = exports.createUser = exports.getUsers = exports.syncUser = void 0;
 const prisma_1 = __importDefault(require("../lib/prisma"));
 const getICTDate = (d = new Date()) => {
     // Convert current server time to Vietnam ICT (UTC+7)
@@ -243,3 +243,25 @@ const getCheckinHistory = async (req, res) => {
     }
 };
 exports.getCheckinHistory = getCheckinHistory;
+const updateProfile = async (req, res) => {
+    const userId = req.user?.uid;
+    const { username, avatarUrl } = req.body;
+    if (!userId) {
+        return res.status(401).json({ error: 'User not authenticated' });
+    }
+    try {
+        const updatedUser = await prisma_1.default.user.update({
+            where: { id: userId },
+            data: {
+                username: username || undefined,
+                avatarUrl: avatarUrl || undefined,
+            }
+        });
+        res.json({ success: true, user: updatedUser });
+    }
+    catch (error) {
+        console.error('Update Profile Error:', error);
+        res.status(500).json({ error: 'Failed to update profile' });
+    }
+};
+exports.updateProfile = updateProfile;

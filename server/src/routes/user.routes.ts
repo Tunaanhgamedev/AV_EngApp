@@ -7,7 +7,8 @@ import {
   addXP, 
   dailyCheckin, 
   getCheckinStatus,
-  getCheckinHistory
+  getCheckinHistory,
+  updateProfile
 } from '../controllers/user.controller';
 import { authenticate } from '../middleware/auth.middleware';
 
@@ -15,6 +16,9 @@ const router = Router();
 
 // Sync user after login
 router.post('/sync', authenticate, syncUser);
+
+// Profile management
+router.put('/profile', authenticate, updateProfile);
 
 // Leaderboard & Gamification routes
 router.get('/leaderboard', authenticate, getLeaderboard);

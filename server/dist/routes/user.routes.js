@@ -6,6 +6,8 @@ const auth_middleware_1 = require("../middleware/auth.middleware");
 const router = (0, express_1.Router)();
 // Sync user after login
 router.post('/sync', auth_middleware_1.authenticate, user_controller_1.syncUser);
+// Profile management
+router.put('/profile', auth_middleware_1.authenticate, user_controller_1.updateProfile);
 // Leaderboard & Gamification routes
 router.get('/leaderboard', auth_middleware_1.authenticate, user_controller_1.getLeaderboard);
 router.post('/add-xp', auth_middleware_1.authenticate, user_controller_1.addXP);
