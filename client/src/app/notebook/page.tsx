@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect, useCallback } from 'react';
-import { BookMarked, Plus, Search, Trash2, Sparkles, Loader2, LogIn, Volume2, Star, X, ChevronDown, Clock, CheckCheck, Lightbulb, MessageSquare, Tag, RotateCcw, AlertCircle, Brain, ChevronRight } from 'lucide-react';
+import { BookMarked, Plus, Search, Trash2, Sparkles, Loader2, LogIn, Volume2, Star, X, ChevronDown, Clock, CheckCheck, Lightbulb, MessageSquare, Tag, RotateCcw, AlertCircle, Brain, ChevronRight, Pencil, Save } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { cn } from '@/lib/utils';
 
@@ -17,6 +17,7 @@ interface NotebookWord {
   id: string; word: string; phonetic?: string; meaningEn: string; meaningVi: string;
   wordType: string; cefrLevel?: string; masteryLevel: number;
   nextReviewAt?: string; savedAt?: string;
+  example?: string; exampleVi?: string;
 }
 
 const MASTERY = ['New', 'Familiar', 'Learning', 'Practiced', 'Mastered', 'Expert'];
@@ -25,12 +26,32 @@ const TYPE_COLORS: Record<string, string> = { noun: 'bg-sky-100 text-sky-700', v
 const speak = (text: string, lang = 'en-US') => { if (typeof window === 'undefined') return; const u = new SpeechSynthesisUtterance(text); u.lang = lang; u.rate = 0.85; const v = window.speechSynthesis.getVoices().find(v => v.lang === 'en-US' && v.name.includes('Google')) || window.speechSynthesis.getVoices().find(v => v.lang === 'en-US'); if (v) u.voice = v; window.speechSynthesis.speak(u); };
 
 // ─── Word Card ────────────────────────────────────────────────────────────────
-function WordCard({ word, onDelete }: { word: NotebookWord; onDelete: (id: string) => void }) {
+function WordCard({ word, onDelete, onUpdate }: { word: NotebookWord; onDelete: (id: string) => void; onUpdate: (id: string, fields: any) => Promise<void> }) {
   const [expanded, setExpanded] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [tab, setTab] = useState<'definition' | 'usage' | 'pronunciation'>('definition');
   const [insight, setInsight] = useState<WordInsight | null>(null);
   const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const reviewDue = word.nextReviewAt ? new Date(word.nextReviewAt) <= new Date() : false;
+
+  // Edit Form Fields State
+  const [editMeaningVi, setEditMeaningVi] = useState(word.meaningVi || '');
+  const [editMeaningEn, setEditMeaningEn] = useState(word.meaningEn || '');
+  const [editWordType, setEditWordType] = useState(word.wordType || '');
+  const [editPhonetic, setEditPhonetic] = useState(word.phonetic || '');
+  const [editExample, setEditExample] = useState(word.example || '');
+  const [editExampleVi, setEditExampleVi] = useState(word.exampleVi || '');
+
+  // Sync edits if word data updates from backend
+  useEffect(() => {
+    setEditMeaningVi(word.meaningVi || '');
+    setEditMeaningEn(word.meaningEn || '');
+    setEditWordType(word.wordType || '');
+    setEditPhonetic(word.phonetic || '');
+    setEditExample(word.example || '');
+    setEditExampleVi(word.exampleVi || '');
+  }, [word]);
 
   const loadInsight = async () => {
     if (insight) return;
@@ -48,11 +69,157 @@ function WordCard({ word, onDelete }: { word: NotebookWord; onDelete: (id: strin
   };
 
   const handleExpand = () => {
+    if (isEditing) return; // Disable expanding if we are editing
     if (!expanded) loadInsight();
     setExpanded(e => !e);
   };
 
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    try {
+      await onUpdate(word.id, {
+        meaningVi: editMeaningVi.trim(),
+        meaningEn: editMeaningEn.trim(),
+        wordType: editWordType,
+        phonetic: editPhonetic.trim(),
+        example: editExample.trim(),
+        exampleVi: editExampleVi.trim(),
+      });
+      setIsEditing(false);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   const typeColor = TYPE_COLORS[word.wordType?.toLowerCase()] || 'bg-slate-100 text-slate-500';
+
+  if (isEditing) {
+    return (
+      <div className="premium-card p-6 border-2 border-primary/20 bg-gradient-to-br from-white to-primary/5 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+        <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            <h3 className="text-sm font-black text-slate-800 uppercase tracking-wider">Chỉnh sửa: <span className="text-primary font-black">{word.word}</span></h3>
+          </div>
+          <button 
+            type="button" 
+            onClick={() => setIsEditing(false)} 
+            className="p-1 text-slate-400 hover:text-slate-600 transition-colors"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+
+        <form onSubmit={handleSave} className="space-y-4">
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 block">Phiên âm</label>
+              <input 
+                type="text" 
+                value={editPhonetic} 
+                onChange={e => setEditPhonetic(e.target.value)} 
+                placeholder="/.../" 
+                className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-primary/20 focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 block">Loại từ</label>
+              <select 
+                value={editWordType} 
+                onChange={e => setEditWordType(e.target.value)}
+                className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-primary/20 focus:outline-none"
+              >
+                <option value="noun">Noun (Danh từ)</option>
+                <option value="verb">Verb (Động từ)</option>
+                <option value="adjective">Adjective (Tính từ)</option>
+                <option value="adverb">Adverb (Trạng từ)</option>
+                <option value="phrase">Phrase (Cụm từ)</option>
+                <option value="idiom">Idiom (Thành ngữ)</option>
+                <option value="other">Other (Khác)</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 block">Định nghĩa tiếng Anh</label>
+            <textarea 
+              value={editMeaningEn} 
+              onChange={e => setEditMeaningEn(e.target.value)} 
+              rows={2}
+              placeholder="English definition" 
+              className="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-primary/20 focus:outline-none resize-none"
+            />
+          </div>
+
+          <div>
+            <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 block">Nghĩa tiếng Việt</label>
+            <textarea 
+              value={editMeaningVi} 
+              onChange={e => setEditMeaningVi(e.target.value)} 
+              rows={2}
+              placeholder="Nghĩa dịch tiếng Việt" 
+              className="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-primary/20 focus:outline-none resize-none"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div>
+              <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 block">Ví dụ tiếng Anh</label>
+              <textarea 
+                value={editExample} 
+                onChange={e => setEditExample(e.target.value)} 
+                rows={2}
+                placeholder="English example sentence" 
+                className="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-primary/20 focus:outline-none resize-none"
+              />
+            </div>
+
+            <div>
+              <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 block">Dịch ví dụ tiếng Việt</label>
+              <textarea 
+                value={editExampleVi} 
+                onChange={e => setEditExampleVi(e.target.value)} 
+                rows={2}
+                placeholder="Vietnamese translation of the example" 
+                className="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-primary/20 focus:outline-none resize-none"
+              />
+            </div>
+          </div>
+
+          <div className="flex justify-end gap-2 pt-2 border-t border-slate-100">
+            <button 
+              type="button" 
+              onClick={() => setIsEditing(false)} 
+              className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg font-black text-[10px] uppercase tracking-wider transition-colors"
+            >
+              HỦY
+            </button>
+            <button 
+              type="submit" 
+              disabled={submitting}
+              className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg font-black text-[10px] uppercase tracking-wider transition-colors flex items-center gap-1.5 shadow-md shadow-slate-900/10"
+            >
+              {submitting ? (
+                <>
+                  <Loader2 className="w-3 animate-spin" />
+                  ĐANG LƯU...
+                </>
+              ) : (
+                <>
+                  <Save className="w-3 h-3" />
+                  LƯU THAY ĐỔI
+                </>
+              )}
+            </button>
+          </div>
+        </form>
+      </div>
+    );
+  }
 
   return (
     <div className={cn("premium-card overflow-hidden transition-all duration-300", expanded ? "shadow-2xl" : "hover:shadow-xl hover:-translate-y-0.5")}>
@@ -71,6 +238,16 @@ function WordCard({ word, onDelete }: { word: NotebookWord; onDelete: (id: strin
             </div>
           </div>
           <div className="flex items-center gap-1">
+            <button 
+              onClick={e => { 
+                e.stopPropagation(); 
+                setIsEditing(true); 
+              }} 
+              className="p-1.5 text-slate-200 hover:text-primary transition-all"
+              title="Chỉnh sửa từ vựng"
+            >
+              <Pencil className="w-4 h-4" />
+            </button>
             <button onClick={e => { e.stopPropagation(); onDelete(word.id); }} className="p-1.5 text-slate-200 hover:text-rose-500 transition-all"><Trash2 className="w-4 h-4" /></button>
             <ChevronDown className={cn("w-5 h-5 text-slate-300 transition-transform", expanded && "rotate-180")} />
           </div>
@@ -123,6 +300,13 @@ function WordCard({ word, onDelete }: { word: NotebookWord; onDelete: (id: strin
                             <p className="text-sm text-primary italic mt-0.5">{word.meaningVi}</p>
                           </div>
                         </div>
+                        {word.example && (
+                          <div className="mt-3 p-3 bg-slate-50 rounded-xl border border-slate-100">
+                            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1 block">Ví dụ:</p>
+                            <p className="text-xs font-semibold text-slate-700">"{word.example}"</p>
+                            {word.exampleVi && <p className="text-[11px] text-slate-400 italic mt-0.5">{word.exampleVi}</p>}
+                          </div>
+                        )}
                         <div className="p-4 bg-amber-50 rounded-2xl border border-amber-100 flex items-center gap-3">
                           <AlertCircle className="w-5 h-5 text-amber-500" />
                           <p className="text-xs text-amber-700 font-medium">AI hiện đang bận hoặc từ này không có trong từ điển. Thử nhấn nút làm mới bên dưới.</p>
@@ -145,7 +329,14 @@ function WordCard({ word, onDelete }: { word: NotebookWord; onDelete: (id: strin
                         <div className="px-4 py-2 bg-slate-50 flex items-center gap-2"><span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{ex.context}</span></div>
                         <div className="p-4"><p className="text-sm font-semibold text-slate-800">"{ex.sentence}"</p><p className="text-xs text-slate-400 italic mt-1">{ex.sentenceVi}</p></div>
                       </div>
-                    )) || <div className="text-center py-8 text-slate-300">Không có ví dụ cho từ này</div>}
+                    )) || (word.example ? (
+                      <div className="rounded-2xl border border-slate-100 overflow-hidden">
+                        <div className="px-4 py-2 bg-slate-50 flex items-center gap-2"><span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Ví dụ</span></div>
+                        <div className="p-4"><p className="text-sm font-semibold text-slate-800">"{word.example}"</p>{word.exampleVi && <p className="text-xs text-slate-400 italic mt-1">{word.exampleVi}</p>}</div>
+                      </div>
+                    ) : (
+                      <div className="text-center py-8 text-slate-300">Không có ví dụ cho từ này</div>
+                    ))}
                   </div>
                 )}
                 {tab === 'pronunciation' && (
@@ -318,6 +509,26 @@ export default function NotebookPage() {
     showToast('Đã xóa từ');
   };
 
+  const handleUpdate = async (id: string, fields: any) => {
+    if (!user) return;
+    const token = await user.getIdToken();
+    const res = await fetch(`${API_BASE}/vocabulary/notebook/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(fields)
+    });
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      showToast(errData.error || 'Không thể cập nhật từ vựng', false);
+      throw new Error('Update failed');
+    }
+    showToast('Đã cập nhật từ vựng thành công! ✨');
+    fetchWords();
+  };
+
   if (!user) return (
     <div className="flex flex-col items-center justify-center h-[60vh] text-center p-6">
       <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-6"><BookMarked className="w-10 h-10" /></div>
@@ -436,7 +647,7 @@ export default function NotebookPage() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filtered.map(w => <WordCard key={w.id} word={w} onDelete={handleDelete} />)}
+          {filtered.map(w => <WordCard key={w.id} word={w} onDelete={handleDelete} onUpdate={handleUpdate} />)}
         </div>
       )}
     </div>

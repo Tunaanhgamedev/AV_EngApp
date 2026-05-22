@@ -153,4 +153,50 @@ router.post('/analyze-speaking', async (req, res) => {
         res.status(500).json({ error: 'Failed to analyze speaking' });
     }
 });
+// AI Mouth Shape & Pronunciation Articulation Analysis
+router.post('/analyze-pronunciation', async (req, res) => {
+    const { sound, word, transcript } = req.body;
+    if (!sound || !word) {
+        return res.status(400).json({ error: 'Sound and word are required' });
+    }
+    try {
+        const prompt = `
+      As EngBot (AI English Pronunciation Expert), analyze the articulation of the phonetic sound or word.
+      Target Sound: "${sound}"
+      Target Word: "${word}"
+      User Attempted Transcript (if any): "${transcript || ''}"
+
+      Analyze the mouth shape, tongue placement, lips, jaw, and airflow required for this sound.
+      Provide highly detailed feedback on how a student can visual-align their mouth using a webcam/mirror.
+
+      Provide analysis in JSON format (do not include markdown wrapper, return raw json):
+      {
+        "sound": "${sound}",
+        "word": "${word}",
+        "mouthShape": {
+          "lips": "Miêu tả hình dáng môi bằng tiếng Việt (ví dụ: mở rộng sang hai bên, tròn môi và hướng ra trước,...)",
+          "tongue": "Miêu tả vị trí lưỡi bằng tiếng Việt (ví dụ: cong lưỡi chạm chân răng trên, đầu lưỡi đặt nhẹ giữa hai hàm răng,...)",
+          "airflow": "Miêu tả luồng hơi và dây thanh bằng tiếng Việt (ví dụ: hơi đẩy mạnh qua khe lưỡi, rung dây thanh quản,...)"
+        },
+        "vietnameseMistakes": "Các lỗi phát âm người Việt thường mắc phải với âm này (ví dụ: hay đọc nhầm thành âm /s/ hoặc /t/,...)",
+        "correctionSteps": [
+          "Bước 1 chi tiết...",
+          "Bước 2 chi tiết...",
+          "Bước 3 chi tiết..."
+        ],
+        "feedback": "Nhận xét tổng quát và động viên (bằng tiếng Việt) dựa trên transcript '${transcript || ''}'"
+      }
+    `;
+        const model = gemini_service_1.genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+        const result = await model.generateContent(prompt);
+        const text = result.response.text();
+        const jsonStr = text.replace(/```json|```/g, "").trim();
+        const analysis = JSON.parse(jsonStr);
+        res.json(analysis);
+    }
+    catch (error) {
+        console.error('Pronunciation Lab Analysis Error:', error);
+        res.status(500).json({ error: 'Failed to analyze pronunciation' });
+    }
+});
 exports.default = router;

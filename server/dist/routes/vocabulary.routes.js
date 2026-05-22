@@ -180,7 +180,7 @@ router.post('/save', auth_middleware_1.authenticate, async (req, res) => {
         res.status(500).json({ error: 'Failed to save word progress' });
     }
 });
-// Get due reviews (The "Test tomorrow" logic)
+// Get due reviews (only notebook/favorite words)
 router.get('/due-reviews', auth_middleware_1.authenticate, async (req, res) => {
     try {
         const userId = req.user.uid;
@@ -188,6 +188,7 @@ router.get('/due-reviews', auth_middleware_1.authenticate, async (req, res) => {
         const dueWords = await prisma_1.default.userLearnedWord.findMany({
             where: {
                 userId,
+                isFavorite: true,
                 nextReviewAt: { lte: now }
             },
             include: {
@@ -670,6 +671,36 @@ router.delete('/notebook/:wordId', auth_middleware_1.authenticate, async (req, r
         res.status(500).json({ error: 'Failed to remove word' });
     }
 });
+// PUT /notebook/:wordId - Update word details in notebook
+router.put('/notebook/:wordId', auth_middleware_1.authenticate, async (req, res) => {
+    try {
+        const userId = req.user.uid;
+        const { wordId } = req.params;
+        const { meaningVi, meaningEn, wordType, phonetic, example, exampleVi } = req.body;
+        const entry = await prisma_1.default.userLearnedWord.findUnique({
+            where: { userId_wordId: { userId, wordId } }
+        });
+        if (!entry || !entry.isFavorite) {
+            return res.status(404).json({ error: 'Từ vựng không tồn tại trong notebook của bạn.' });
+        }
+        const updatedWord = await prisma_1.default.vocabularyWord.update({
+            where: { id: wordId },
+            data: {
+                meaningVi: meaningVi !== undefined ? meaningVi : undefined,
+                meaningEn: meaningEn !== undefined ? meaningEn : undefined,
+                wordType: wordType !== undefined ? wordType : undefined,
+                phonetic: phonetic !== undefined ? phonetic : undefined,
+                example: example !== undefined ? example : undefined,
+                exampleVi: exampleVi !== undefined ? exampleVi : undefined,
+            }
+        });
+        res.json({ success: true, word: updatedWord });
+    }
+    catch (error) {
+        console.error('Notebook PUT error:', error);
+        res.status(500).json({ error: 'Không thể cập nhật từ vựng', message: error.message });
+    }
+});
 // ──────────────────────────────────────────────
 // SRS REVIEW SYSTEM
 // ──────────────────────────────────────────────
@@ -681,17 +712,19 @@ router.get('/review/session', auth_middleware_1.authenticate, async (req, res) =
         let dueEntries = await prisma_1.default.userLearnedWord.findMany({
             where: {
                 userId,
+                isFavorite: true,
                 nextReviewAt: { lte: now }
             },
             include: { word: true },
             take: 10,
             orderBy: { nextReviewAt: 'asc' }
         });
-        // Fallback: If no words are strictly due, get the oldest-reviewed ones for "Early Practice"
+        // Fallback: If no notebook words are strictly due, get the oldest-reviewed notebook ones for "Early Practice"
         if (dueEntries.length === 0) {
             dueEntries = await prisma_1.default.userLearnedWord.findMany({
                 where: {
-                    userId
+                    userId,
+                    isFavorite: true
                 },
                 include: { word: true },
                 take: 10,
@@ -771,21 +804,23 @@ router.get('/daily-review-status', auth_middleware_1.authenticate, async (req, r
         const dd = String(ictTime.getDate()).padStart(2, '0');
         const todayStart = new Date(`${yyyy}-${mm}-${dd}T00:00:00.000Z`);
         const todayEnd = new Date(`${yyyy}-${mm}-${dd}T23:59:59.999Z`);
-        // Count how many of user's ALL learned words are due for review
+        // Count how many notebook words (isFavorite) are due for review
         const dueCount = await prisma_1.default.userLearnedWord.count({
             where: {
                 userId,
+                isFavorite: true,
                 nextReviewAt: { lte: now }
             }
         });
-        // Count total learned words
-        const totalLearned = await prisma_1.default.userLearnedWord.count({
-            where: { userId }
+        // Count total notebook words
+        const totalNotebook = await prisma_1.default.userLearnedWord.count({
+            where: { userId, isFavorite: true }
         });
-        // Check if user has reviewed any word today (by checking lastReviewedAt)
+        // Check if user has reviewed any notebook word today (by checking lastReviewedAt)
         const reviewedToday = await prisma_1.default.userLearnedWord.count({
             where: {
                 userId,
+                isFavorite: true,
                 lastReviewedAt: {
                     gte: todayStart,
                     lte: todayEnd
@@ -794,13 +829,12 @@ router.get('/daily-review-status', auth_middleware_1.authenticate, async (req, r
         });
         const hasReviewedToday = reviewedToday > 0;
         const hasWordsToReview = dueCount > 0;
-        // A user should always be reminded to review if they have learned words
-        // The reminder shows if: they have words AND haven't reviewed today
-        const needsReminder = totalLearned > 0 && !hasReviewedToday;
+        // Remind user daily if they have notebook words and haven't reviewed today
+        const needsReminder = totalNotebook > 0 && !hasReviewedToday;
         res.json({
             hasWordsToReview,
             dueCount,
-            totalLearned,
+            totalNotebook,
             hasReviewedToday,
             isCompleted: hasReviewedToday,
             reviewedToday,
