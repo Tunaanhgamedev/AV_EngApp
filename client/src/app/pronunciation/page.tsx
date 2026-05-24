@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Volume2, BookOpen, Sparkles, ChevronDown, Mic, Target, Star, Play, Info, ArrowRight, HelpCircle, Hash, FileText } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -45,56 +45,56 @@ const ALPHABET: AlphabetLetter[] = [
 
 // ─── IPA Data ──────────────────────────────────────────────────────────────────
 const VOWELS = [
-  { ipa: 'iː', example: 'see', word: '/siː/', desc: 'Long "ee"' },
-  { ipa: 'ɪ',  example: 'sit', word: '/sɪt/', desc: 'Short "i"' },
-  { ipa: 'e',  example: 'bed', word: '/bed/', desc: 'Short "e"' },
-  { ipa: 'æ',  example: 'cat', word: '/kæt/', desc: 'Flat "a"' },
-  { ipa: 'ɑː', example: 'car', word: '/kɑːr/', desc: 'Long "ah"' },
-  { ipa: 'ɒ',  example: 'hot', word: '/hɒt/', desc: 'Short "o"' },
-  { ipa: 'ɔː', example: 'saw', word: '/sɔː/', desc: 'Long "aw"' },
-  { ipa: 'ʊ',  example: 'put', word: '/pʊt/', desc: 'Short "oo"' },
-  { ipa: 'uː', example: 'too', word: '/tuː/', desc: 'Long "oo"' },
-  { ipa: 'ʌ',  example: 'cup', word: '/kʌp/', desc: 'Short "uh"' },
-  { ipa: 'ɜː', example: 'bird', word: '/bɜːd/', desc: 'Long "ur"' },
-  { ipa: 'ə',  example: 'about', word: '/əˈbaʊt/', desc: 'Schwa' },
+  { ipa: 'iː', example: 'see', word: '/siː/', desc: 'Long "ee"', tts: 'ee', guide: 'Môi mở rộng sang hai bên như đang mỉm cười. Lưỡi nâng cao lên gần vòm họng. Phát âm âm "i" kéo dài.' },
+  { ipa: 'ɪ',  example: 'sit', word: '/sɪt/', desc: 'Short "i"', tts: 'ih', guide: 'Môi hơi mở rộng. Lưỡi đặt thấp hơn âm /iː/. Phát âm âm "i" ngắn, dứt khoát và thư giãn cơ miệng.' },
+  { ipa: 'e',  example: 'bed', word: '/bed/', desc: 'Short "e"', tts: 'eh', guide: 'Miệng mở rộng vừa phải theo chiều dọc (rộng hơn âm /ɪ/). Đầu lưỡi chạm nhẹ vào răng dưới. Phát âm âm "e" dứt khoát.' },
+  { ipa: 'æ',  example: 'cat', word: '/kæt/', desc: 'Flat "a"', tts: 'aa', guide: 'Mở to miệng hết cỡ theo cả chiều ngang và chiều dọc. Hạ lưỡi xuống thấp nhất chạm răng dưới. Phát âm lai giữa âm "a" và "e".' },
+  { ipa: 'ɑː', example: 'car', word: '/kɑːr/', desc: 'Long "ah"', tts: 'ah', guide: 'Mở to miệng theo chiều dọc giống như lúc bác sĩ khám họng. Lưỡi hạ thấp xuống đáy miệng. Phát âm âm "a" kéo dài từ sâu trong cổ họng.' },
+  { ipa: 'ɒ',  example: 'hot', word: '/hɒt/', desc: 'Short "o"', tts: 'ah', guide: 'Mở miệng tròn vừa phải, môi hơi hướng ra ngoài. Lưỡi thụt nhẹ về phía sau. Phát âm âm "o" ngắn, dứt khoát.' },
+  { ipa: 'ɔː', example: 'saw', word: '/sɔː/', desc: 'Long "aw"', tts: 'aw', guide: 'Tròn môi và khép môi lại một chút so với âm /ɒ/, môi hướng ra ngoài nhiều hơn. Lưỡi thụt về phía sau. Phát âm âm "o" kéo dài.' },
+  { ipa: 'ʊ',  example: 'put', word: '/pʊt/', desc: 'Short "oo"', tts: 'uu', guide: 'Môi tròn hơi đưa ra ngoài (giống như đang huýt sáo nhẹ). Lưỡi nâng cao về phía sau. Phát âm âm "u" ngắn, dứt khoát, cơ miệng thả lỏng.' },
+  { ipa: 'uː', example: 'too', word: '/tuː/', desc: 'Long "oo"', tts: 'oo', guide: 'Chu môi tròn và nhỏ như đang huýt sáo. Lưỡi nâng cao về phía sau gần vòm họng. Phát âm âm "u" kéo dài từ khoang miệng.' },
+  { ipa: 'ʌ',  example: 'cup', word: '/kʌp/', desc: 'Short "uh"', tts: 'uh', guide: 'Miệng mở tự nhiên vừa phải. Lưỡi đặt ở giữa miệng hơi nâng lên. Phát âm âm "á" ngắn, dứt khoát, gần giống tiếng Việt.' },
+  { ipa: 'ɜː', example: 'bird', word: '/bɜːd/', desc: 'Long "ur"', tts: 'ur', guide: 'Miệng mở tự nhiên. Lưỡi nâng lên độ cao trung bình, hơi cong lưỡi về phía sau. Phát âm âm "ơ" kéo dài và hơi uốn lưỡi.' },
+  { ipa: 'ə',  example: 'about', word: '/əˈbaʊt/', desc: 'Schwa', tts: 'uh', guide: 'Miệng mở tự nhiên và thả lỏng hoàn toàn tất cả các cơ. Lưỡi đặt ở giữa miệng. Phát âm âm "ơ" rất ngắn và nhẹ.' },
 ];
 
 const DIPHTHONGS = [
-  { ipa: 'eɪ', example: 'day', word: '/deɪ/', desc: '"ay"' },
-  { ipa: 'aɪ', example: 'my', word: '/maɪ/', desc: '"eye"' },
-  { ipa: 'ɔɪ', example: 'boy', word: '/bɔɪ/', desc: '"oy"' },
-  { ipa: 'aʊ', example: 'now', word: '/naʊ/', desc: '"ow"' },
-  { ipa: 'əʊ', example: 'go', word: '/ɡəʊ/', desc: '"oh"' },
-  { ipa: 'ɪə', example: 'here', word: '/hɪər/', desc: '"ear"' },
-  { ipa: 'eə', example: 'hair', word: '/heər/', desc: '"air"' },
-  { ipa: 'ʊə', example: 'tour', word: '/tʊər/', desc: '"oor"' },
+  { ipa: 'eɪ', example: 'day', word: '/deɪ/', desc: '"ay"', tts: 'ay', guide: 'Bắt đầu bằng âm /e/ sau đó trượt nhanh sang âm /ɪ/. Môi mở rộng dần sang hai bên.' },
+  { ipa: 'aɪ', example: 'my', word: '/maɪ/', desc: '"eye"', tts: 'eye', guide: 'Bắt đầu bằng âm /a/ rộng miệng sau đó khép dần và trượt sang âm /ɪ/.' },
+  { ipa: 'ɔɪ', example: 'boy', word: '/bɔɪ/', desc: '"oy"', tts: 'oy', guide: 'Bắt đầu bằng âm /ɔː/ tròn môi sau đó mở dần sang hai bên và trượt sang âm /ɪ/.' },
+  { ipa: 'aʊ', example: 'now', word: '/naʊ/', desc: '"ow"', tts: 'ow', guide: 'Bắt đầu bằng âm /a/ sau đó tròn dần môi và trượt sang âm /ʊ/.' },
+  { ipa: 'əʊ', example: 'go', word: '/ɡəʊ/', desc: '"oh"', tts: 'oh', guide: 'Bắt đầu bằng âm /ə/ thả lỏng sau đó tròn dần môi và trượt sang âm /ʊ/.' },
+  { ipa: 'ɪə', example: 'here', word: '/hɪər/', desc: '"ear"', tts: 'ear', guide: 'Bắt đầu bằng âm /ɪ/ ngắn sau đó lướt nhẹ sang âm /ə/.' },
+  { ipa: 'eə', example: 'hair', word: '/heər/', desc: '"air"', tts: 'air', guide: 'Bắt đầu bằng âm /e/ sau đó lướt nhẹ sang âm /ə/.' },
+  { ipa: 'ʊə', example: 'tour', word: '/tʊər/', desc: '"oor"', tts: 'oor', guide: 'Bắt đầu bằng âm /ʊ/ sau đó lướt nhẹ sang âm /ə/.' },
 ];
 
 const CONSONANTS = [
-  { ipa: 'p', example: 'pen', word: '/pen/', desc: 'Voiceless bilabial' },
-  { ipa: 'b', example: 'bad', word: '/bæd/', desc: 'Voiced bilabial' },
-  { ipa: 't', example: 'tea', word: '/tiː/', desc: 'Voiceless alveolar' },
-  { ipa: 'd', example: 'did', word: '/dɪd/', desc: 'Voiced alveolar' },
-  { ipa: 'k', example: 'cat', word: '/kæt/', desc: 'Voiceless velar' },
-  { ipa: 'ɡ', example: 'get', word: '/ɡet/', desc: 'Voiced velar' },
-  { ipa: 'f', example: 'fall', word: '/fɔːl/', desc: 'Voiceless labiodental' },
-  { ipa: 'v', example: 'van', word: '/væn/', desc: 'Voiced labiodental' },
-  { ipa: 'θ', example: 'thin', word: '/θɪn/', desc: 'Voiceless dental' },
-  { ipa: 'ð', example: 'this', word: '/ðɪs/', desc: 'Voiced dental' },
-  { ipa: 's', example: 'see', word: '/siː/', desc: 'Voiceless alveolar fricative' },
-  { ipa: 'z', example: 'zoo', word: '/zuː/', desc: 'Voiced alveolar fricative' },
-  { ipa: 'ʃ', example: 'she', word: '/ʃiː/', desc: '"sh" sound' },
-  { ipa: 'ʒ', example: 'vision', word: '/ˈvɪʒ.ən/', desc: '"zh" sound' },
-  { ipa: 'h', example: 'hat', word: '/hæt/', desc: 'Glottal fricative' },
-  { ipa: 'tʃ', example: 'chain', word: '/tʃeɪn/', desc: '"ch" sound' },
-  { ipa: 'dʒ', example: 'jam', word: '/dʒæm/', desc: '"j" sound' },
-  { ipa: 'm', example: 'man', word: '/mæn/', desc: 'Bilabial nasal' },
-  { ipa: 'n', example: 'no', word: '/nəʊ/', desc: 'Alveolar nasal' },
-  { ipa: 'ŋ', example: 'sing', word: '/sɪŋ/', desc: 'Velar nasal "ng"' },
-  { ipa: 'l', example: 'leg', word: '/leɡ/', desc: 'Lateral approximant' },
-  { ipa: 'r', example: 'red', word: '/red/', desc: 'Alveolar approximant' },
-  { ipa: 'j', example: 'yes', word: '/jes/', desc: 'Palatal approximant' },
-  { ipa: 'w', example: 'wet', word: '/wet/', desc: 'Labial-velar approximant' },
+  { ipa: 'p', example: 'pen', word: '/pen/', desc: 'Voiceless bilabial', tts: 'p', guide: 'Mím chặt hai môi để chặn luồng khí lại, sau đó bật mạnh hơi ra ngoài mà không rung dây thanh quản (âm vô thanh).' },
+  { ipa: 'b', example: 'bad', word: '/bæd/', desc: 'Voiced bilabial', tts: 'b', guide: 'Mím chặt hai môi để chặn luồng khí lại, sau đó bật hơi ra ngoài đồng thời làm rung dây thanh quản ở cổ họng (âm hữu thanh).' },
+  { ipa: 't', example: 'tea', word: '/tiː/', desc: 'Voiceless alveolar', tts: 't', guide: 'Đặt đầu lưỡi chạm vào phần lợi phía sau răng cửa trên, chặn khí lại, sau đó bật mạnh hơi ra (vô thanh).' },
+  { ipa: 'd', example: 'did', word: '/dɪd/', desc: 'Voiced alveolar', tts: 'd', guide: 'Đặt đầu lưỡi chạm vào phần lợi phía sau răng cửa trên, chặn khí, sau đó bật hơi đồng thời làm rung dây thanh quản (hữu thanh).' },
+  { ipa: 'k', example: 'cat', word: '/kæt/', desc: 'Voiceless velar', tts: 'k', guide: 'Nâng phần sau của lưỡi chạm vào vòm họng mềm để chặn khí, sau đó bật mạnh hơi ra ngoài (vô thanh).' },
+  { ipa: 'ɡ', example: 'get', word: '/ɡet/', desc: 'Voiced velar', tts: 'g', guide: 'Nâng phần sau của lưỡi chạm vào vòm họng mềm để chặn khí, bật hơi đồng thời làm rung dây thanh quản (hữu thanh).' },
+  { ipa: 'f', example: 'fall', word: '/fɔːl/', desc: 'Voiceless labiodental', tts: 'f', guide: 'Đặt răng cửa hàm trên chạm nhẹ vào môi dưới, đẩy luồng khí thoát ra qua khe hở giữa răng và môi (vô thanh).' },
+  { ipa: 'v', example: 'van', word: '/væn/', desc: 'Voiced labiodental', tts: 'v', guide: 'Đặt răng cửa hàm trên chạm nhẹ vào môi dưới, đẩy luồng khí thoát ra ngoài đồng thời làm rung dây thanh quản (hữu thanh).' },
+  { ipa: 'θ', example: 'thin', word: '/θɪn/', desc: 'Voiceless dental', tts: 'th', guide: 'Đặt đầu lưỡi ở giữa răng cửa trên và răng cửa dưới, đẩy nhẹ luồng khí thoát ra qua khe răng (vô thanh).' },
+  { ipa: 'ð', example: 'this', word: '/ðɪs/', desc: 'Voiced dental', tts: 'th', guide: 'Đặt đầu lưỡi ở giữa răng cửa trên và răng cửa dưới, đẩy nhẹ luồng khí đồng thời làm rung dây thanh quản (hữu thanh).' },
+  { ipa: 's', example: 'see', word: '/siː/', desc: 'Voiceless alveolar fricative', tts: 's', guide: 'Khép hai răng lại gần nhau, đặt đầu lưỡi gần lợi răng trên, đẩy luồng hơi thoát ra qua khe hẹp tạo tiếng xì nhẹ (vô thanh).' },
+  { ipa: 'z', example: 'zoo', word: '/zuː/', desc: 'Voiced alveolar fricative', tts: 'z', guide: 'Khép hai răng lại gần nhau, đặt đầu lưỡi gần lợi răng trên, đẩy luồng hơi đồng thời làm rung dây thanh quản (hữu thanh).' },
+  { ipa: 'ʃ', example: 'she', word: '/ʃiː/', desc: '"sh" sound', tts: 'sh', guide: 'Chu môi tròn hướng ra ngoài, mặt lưỡi nâng lên gần vòm họng, đẩy luồng hơi thoát ra tạo tiếng rít gió lớn (vô thanh).' },
+  { ipa: 'ʒ', example: 'vision', word: '/ˈvɪʒ.ən/', desc: '"zh" sound', tts: 'zh', guide: 'Chu môi tròn hướng ra ngoài, mặt lưỡi nâng lên gần vòm họng, đẩy hơi đồng thời làm rung mạnh dây thanh quản (hữu thanh).' },
+  { ipa: 'h', example: 'hat', word: '/hæt/', desc: 'Glottal fricative', tts: 'h', guide: 'Mở miệng tự nhiên, đẩy luồng hơi nhẹ từ sâu trong cổ họng ra ngoài như đang thở dài (vô thanh).' },
+  { ipa: 'tʃ', example: 'chain', word: '/tʃeɪn/', desc: '"ch" sound', tts: 'ch', guide: 'Đặt đầu lưỡi chạm phần lợi sau răng trên để chặn khí, sau đó bật mạnh hơi ra ngoài đồng thời chu môi (vô thanh).' },
+  { ipa: 'dʒ', example: 'jam', word: '/dʒæm/', desc: '"j" sound', tts: 'j', guide: 'Đặt đầu lưỡi chạm phần lợi sau răng trên để chặn khí, bật mạnh hơi đồng thời làm rung dây thanh quản và chu môi (hữu thanh).' },
+  { ipa: 'm', example: 'man', word: '/mæn/', desc: 'Bilabial nasal', tts: 'm', guide: 'Mím chặt hai môi, đẩy toàn bộ luồng khí thoát ra ngoài bằng đường mũi đồng thời làm rung dây thanh quản.' },
+  { ipa: 'n', example: 'no', word: '/nəʊ/', desc: 'Alveolar nasal', tts: 'n', guide: 'Đặt đầu lưỡi chạm lợi sau răng trên, chặn miệng lại và đẩy hơi thoát ra bằng đường mũi đồng thời làm rung dây thanh quản.' },
+  { ipa: 'ŋ', example: 'sing', word: '/sɪŋ/', desc: 'Velar nasal "ng"', tts: 'ng', guide: 'Nâng phần sau của lưỡi chạm vòm họng mềm, chặn miệng lại và đẩy luồng hơi thoát ra bằng đường mũi (âm rung ở cổ họng).' },
+  { ipa: 'l', example: 'leg', word: '/leɡ/', desc: 'Lateral approximant', tts: 'l', guide: 'Đặt đầu lưỡi chạm vào lợi sau răng cửa trên, cho luồng khí đi ra bằng hai bên rìa lưỡi đồng thời rung dây thanh quản.' },
+  { ipa: 'r', example: 'red', word: '/red/', desc: 'Alveolar approximant', tts: 'r', guide: 'Hơi cong đầu lưỡi về phía sau vòm họng (không chạm vòm họng), đẩy hơi và làm rung dây thanh quản.' },
+  { ipa: 'j', example: 'yes', word: '/jes/', desc: 'Palatal approximant', tts: 'y', guide: 'Mở miệng hẹp, nâng phần giữa lưỡi lên gần vòm họng cứng, đẩy hơi thoát ra đồng thời rung dây thanh quản.' },
+  { ipa: 'w', example: 'wet', word: '/wet/', desc: 'Labial-velar approximant', tts: 'w', guide: 'Chu tròn và nhỏ môi như đang chuẩn bị phát âm âm "u", sau đó mở rộng nhanh môi và làm rung dây thanh quản.' },
 ];
 
 const STRESS_RULES = [
@@ -182,15 +182,118 @@ const speak = (text: string, rate: number = 0.7) => {
   window.speechSynthesis.speak(u);
 };
 
+// ─── Speech Practice Section Component ─────────────────────────────────────────
+function SpeechPracticeSection({ targetWord }: { targetWord: string }) {
+  const [isRecording, setIsRecording] = useState(false);
+  const [resultText, setResultText] = useState('');
+  const [accuracy, setAccuracy] = useState<number | null>(null);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const startListening = () => {
+    if (typeof window === 'undefined') return;
+    
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      setErrorMessage('Trình duyệt không hỗ trợ nhận diện giọng nói (API Web Speech). Hãy dùng Chrome/Safari.');
+      return;
+    }
+
+    setResultText('');
+    setAccuracy(null);
+    setErrorMessage('');
+    setIsRecording(true);
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.onresult = (event: any) => {
+      const speechToText = event.results[0][0].transcript;
+      setResultText(speechToText);
+
+      const targetClean = targetWord.toLowerCase().replace(/[^a-z]/g, '');
+      const spokenClean = speechToText.toLowerCase().replace(/[^a-z]/g, '');
+
+      if (spokenClean === targetClean) {
+        setAccuracy(100);
+      } else if (spokenClean.includes(targetClean) || targetClean.includes(spokenClean)) {
+        setAccuracy(80);
+      } else {
+        setAccuracy(30);
+      }
+    };
+
+    recognition.onerror = (event: any) => {
+      console.error(event);
+      setErrorMessage('Không nhận diện được giọng nói hoặc micro bị chặn.');
+      setIsRecording(false);
+    };
+
+    recognition.onend = () => {
+      setIsRecording(false);
+    };
+
+    recognition.start();
+  };
+
+  return (
+    <div className="flex flex-col sm:flex-row items-center gap-4 p-4 bg-slate-800/30 border border-slate-700/50 rounded-2xl">
+      <div className="flex-1 min-w-0 text-left">
+        <h4 className="text-xs font-black text-primary uppercase tracking-widest">Luyện phát âm AI</h4>
+        <p className="text-xs text-slate-400 mt-0.5 font-medium">Nhấp vào micro, đọc từ ví dụ <strong className="text-slate-200">"{targetWord}"</strong> để kiểm tra.</p>
+        
+        {resultText && (
+          <p className="text-xs text-slate-200 mt-2 font-medium">
+            Bạn đã đọc: <span className="text-yellow-400 font-bold">"{resultText}"</span>
+          </p>
+        )}
+
+        {accuracy !== null && (
+          <div className="flex flex-wrap items-center gap-2 mt-1.5">
+            <span className={cn(
+              "text-[10px] font-black px-2.5 py-0.5 rounded-full",
+              accuracy === 100 ? "bg-emerald-500/20 text-emerald-400" : accuracy >= 80 ? "bg-blue-500/20 text-blue-400" : "bg-rose-500/20 text-rose-400"
+            )}>
+              Độ khớp: {accuracy}%
+            </span>
+            <span className="text-xs font-bold text-slate-300">
+              {accuracy === 100 ? 'Rất tuyệt vời! Phát âm hoàn hảo.' : accuracy >= 80 ? 'Khá tốt, gần chính xác!' : 'Chưa khớp lắm, hãy thử lại.'}
+            </span>
+          </div>
+        )}
+
+        {errorMessage && (
+          <p className="text-xs text-rose-400 mt-2 font-medium">⚠️ {errorMessage}</p>
+        )}
+      </div>
+
+      <button
+        onClick={startListening}
+        disabled={isRecording}
+        className={cn(
+          "w-12 h-12 rounded-full flex items-center justify-center transition-all cursor-pointer shadow-lg shrink-0",
+          isRecording 
+            ? "bg-rose-600 text-white animate-pulse" 
+            : "bg-primary/20 text-primary border border-primary/30 hover:bg-primary/30 hover:text-white"
+        )}
+        title="Bấm để ghi âm"
+      >
+        <Mic className="w-5 h-5" />
+      </button>
+    </div>
+  );
+}
+
 // ─── IPA Cell Component ────────────────────────────────────────────────────────
-function IPACell({ item, color }: { item: { ipa: string; example: string; word: string; desc: string }; color: string }) {
+function IPACell({ item, color, isActive, onClick }: { item: any; color: string; isActive: boolean; onClick: () => void }) {
   return (
     <button
-      onClick={() => speak(item.example)}
+      onClick={onClick}
       className={cn(
         "group relative flex flex-col items-center gap-1 p-4 rounded-2xl border-2 transition-all duration-200",
-        "hover:shadow-lg hover:-translate-y-0.5 active:scale-95 text-slate-800",
-        color
+        "hover:shadow-lg hover:-translate-y-0.5 active:scale-95 text-slate-800 cursor-pointer",
+        isActive ? "border-primary bg-primary/10 scale-[1.03] shadow-md shadow-primary/5" : color
       )}
     >
       <span className="text-2xl font-black font-mono">{item.ipa}</span>
@@ -206,6 +309,18 @@ export default function PronunciationPage() {
   const [activeTab, setActiveTab] = useState<'alphabet' | 'chart' | 'stress' | 'pairs' | 'building' | 'numbers' | 'endings'>('alphabet');
   const [chartSection, setChartSection] = useState<'vowels' | 'diphthongs' | 'consonants'>('vowels');
   const [numSection, setNumSection] = useState<'basic' | 'big' | 'combo' | 'ordinals'>('basic');
+  const [selectedSound, setSelectedSound] = useState<any>(null);
+
+  // Initialize selectedSound when section changes
+  useEffect(() => {
+    if (chartSection === 'vowels') {
+      setSelectedSound(VOWELS[0]);
+    } else if (chartSection === 'diphthongs') {
+      setSelectedSound(DIPHTHONGS[0]);
+    } else if (chartSection === 'consonants') {
+      setSelectedSound(CONSONANTS[0]);
+    }
+  }, [chartSection]);
 
   const tabs = [
     { id: 'alphabet' as const, label: 'Bảng Chữ Cái & Phonics', icon: BookOpen },
@@ -236,7 +351,7 @@ export default function PronunciationPage() {
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={cn(
-              "flex items-center gap-2 px-5 py-3 rounded-xl font-bold text-sm whitespace-nowrap transition-all",
+              "flex items-center gap-2 px-5 py-3 rounded-xl font-bold text-sm whitespace-nowrap transition-all cursor-pointer",
               activeTab === tab.id
                 ? "bg-slate-900 text-white shadow-lg"
                 : "bg-white text-slate-500 border border-slate-200 hover:border-primary"
@@ -255,7 +370,7 @@ export default function PronunciationPage() {
             <h3 className="text-lg font-black text-blue-800 flex items-center gap-2 mb-2">
               <BookOpen className="w-5 h-5 text-blue-600" /> Bảng Chữ Cái Tiếng Anh & Phonics
             </h3>
-            <p className="text-sm text-blue-700 leading-relaxed">
+            <p className="text-sm text-blue-700 leading-relaxed font-medium">
               Bảng chữ cái tiếng Anh gồm 26 chữ cái. Mỗi chữ cái có một **Tên gọi (Name)** và một hoặc nhiều **Âm phát âm (Phonics)** khi ghép vào từ. Nhấp vào mỗi thẻ để nghe cách đọc tên chữ cái và cách phát âm Phonics của nó.
             </p>
           </div>
@@ -270,20 +385,20 @@ export default function PronunciationPage() {
                 
                 <div className="space-y-2 w-full">
                   <div>
-                    <span className="text-[10px] text-slate-400 font-bold block uppercase tracking-wider">Tên chữ cái</span>
+                    <span className="text-[10px] text-slate-400 font-bold block uppercase tracking-wider font-sans">Tên chữ cái</span>
                     <button 
                       onClick={() => speak(item.letter, 0.6)}
-                      className="px-3 py-1 bg-blue-50 border border-blue-100 rounded-full text-blue-700 font-black text-xs hover:bg-blue-100 transition-all flex items-center gap-1 mx-auto"
+                      className="px-3 py-1 bg-blue-50 border border-blue-100 rounded-full text-blue-700 font-black text-xs hover:bg-blue-100 transition-all flex items-center gap-1 mx-auto cursor-pointer"
                     >
                       /{item.name}/ <Play className="w-2.5 h-2.5 fill-blue-700 text-blue-700" />
                     </button>
                   </div>
 
                   <div className="border-t border-slate-100 pt-2">
-                    <span className="text-[10px] text-slate-400 font-bold block uppercase tracking-wider">Âm vị (Phonics)</span>
+                    <span className="text-[10px] text-slate-400 font-bold block uppercase tracking-wider font-sans">Âm vị (Phonics)</span>
                     <button 
                       onClick={() => speak(item.example, 0.6)}
-                      className="px-2 py-1 bg-emerald-50 border border-emerald-100 rounded-full text-emerald-700 font-bold text-[10px] hover:bg-emerald-100 transition-all flex items-center gap-1 mx-auto"
+                      className="px-2 py-1 bg-emerald-50 border border-emerald-100 rounded-full text-emerald-700 font-bold text-[10px] hover:bg-emerald-100 transition-all flex items-center gap-1 mx-auto cursor-pointer"
                     >
                       {item.phonicIpa} {item.example} <Play className="w-2.5 h-2.5 fill-emerald-700 text-emerald-700" />
                     </button>
@@ -310,7 +425,7 @@ export default function PronunciationPage() {
                 key={s.id}
                 onClick={() => setChartSection(s.id)}
                 className={cn(
-                  "px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all",
+                  "px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all cursor-pointer",
                   chartSection === s.id
                     ? "bg-primary text-white shadow-md"
                     : "bg-slate-50 text-slate-400 hover:bg-slate-100"
@@ -325,7 +440,7 @@ export default function PronunciationPage() {
           <div className="premium-card p-4 bg-blue-50 border-blue-100 flex items-start gap-3">
             <Info className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
             <p className="text-sm text-blue-700 font-medium">
-              Nhấn vào mỗi ô để nghe phát âm. Mỗi ký hiệu IPA đại diện cho một âm duy nhất trong tiếng Anh.
+              Nhấn vào mỗi ô để xem hướng dẫn khẩu hình miệng chi tiết và nghe phát âm. Mỗi ký hiệu IPA đại diện cho một âm duy nhất.
             </p>
           </div>
 
@@ -333,22 +448,113 @@ export default function PronunciationPage() {
           {chartSection === 'vowels' && (
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
               {VOWELS.map(v => (
-                <IPACell key={v.ipa} item={v} color="border-sky-200 bg-sky-50/50 hover:border-sky-400" />
+                <IPACell 
+                  key={v.ipa} 
+                  item={v} 
+                  color="border-sky-200 bg-sky-50/50 hover:border-sky-400" 
+                  isActive={selectedSound?.ipa === v.ipa}
+                  onClick={() => setSelectedSound(v)}
+                />
               ))}
             </div>
           )}
           {chartSection === 'diphthongs' && (
             <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
               {DIPHTHONGS.map(d => (
-                <IPACell key={d.ipa} item={d} color="border-violet-200 bg-violet-50/50 hover:border-violet-400" />
+                <IPACell 
+                  key={d.ipa} 
+                  item={d} 
+                  color="border-violet-200 bg-violet-50/50 hover:border-violet-400" 
+                  isActive={selectedSound?.ipa === d.ipa}
+                  onClick={() => setSelectedSound(d)}
+                />
               ))}
             </div>
           )}
           {chartSection === 'consonants' && (
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
               {CONSONANTS.map(c => (
-                <IPACell key={c.ipa} item={c} color="border-emerald-200 bg-emerald-50/50 hover:border-emerald-400" />
+                <IPACell 
+                  key={c.ipa} 
+                  item={c} 
+                  color="border-emerald-200 bg-emerald-50/50 hover:border-emerald-400" 
+                  isActive={selectedSound?.ipa === c.ipa}
+                  onClick={() => setSelectedSound(c)}
+                />
               ))}
+            </div>
+          )}
+
+          {/* Selected Sound Detail Panel */}
+          {selectedSound && (
+            <div className="premium-card p-6 bg-gradient-to-br from-slate-900 to-slate-950 text-white border-slate-800 shadow-xl rounded-3xl mt-6 animate-in slide-in-from-bottom-3 duration-300">
+              <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+                
+                {/* Left Visual Area: Large IPA Circle & Hear Buttons */}
+                <div className="flex flex-col items-center gap-3 w-full md:w-56 flex-shrink-0">
+                  <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-primary to-blue-500 flex items-center justify-center border-4 border-slate-800 shadow-2xl relative">
+                    <span className="text-4xl font-black font-mono text-white">/{selectedSound.ipa}/</span>
+                    <span className="absolute -bottom-2.5 px-3 py-0.5 bg-slate-800 rounded-full border border-slate-700 text-[8px] font-black tracking-widest text-primary uppercase">
+                      {chartSection === 'vowels' ? 'Vowel' : chartSection === 'diphthongs' ? 'Diphthong' : 'Consonant'}
+                    </span>
+                  </div>
+
+                  <div className="flex flex-col gap-2 w-full mt-3">
+                    <button
+                      onClick={() => speak(selectedSound.tts, 0.55)}
+                      className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-primary hover:bg-primary/95 text-white font-black text-xs uppercase tracking-wider rounded-xl active:scale-95 transition-all cursor-pointer shadow-md shadow-primary/20"
+                    >
+                      <Volume2 className="w-4 h-4 fill-white" /> Nghe âm riêng lẻ
+                    </button>
+                    
+                    <button
+                      onClick={() => speak(selectedSound.example, 0.7)}
+                      className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-bold text-xs rounded-xl active:scale-95 transition-all cursor-pointer"
+                    >
+                      <Play className="w-3.5 h-3.5 fill-slate-200" /> Nghe từ: "{selectedSound.example}"
+                    </button>
+                  </div>
+                </div>
+
+                {/* Right Content Area: Explanation & Practice */}
+                <div className="flex-1 space-y-4 text-left w-full">
+                  <div>
+                    <h3 className="text-lg font-black text-slate-100 flex items-center gap-2">
+                      Hướng dẫn Phát âm âm <span className="text-primary">/{selectedSound.ipa}/</span>
+                    </h3>
+                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">
+                      Phân loại: {selectedSound.desc}
+                    </p>
+                  </div>
+
+                  <div className="p-4 bg-slate-800/40 border border-slate-800/80 rounded-2xl">
+                    <h4 className="text-xs font-black text-slate-300 uppercase tracking-widest mb-1.5 flex items-center gap-1.5">
+                      <Info className="w-3.5 h-3.5 text-primary" /> Hướng dẫn khẩu hình miệng:
+                    </h4>
+                    <p className="text-sm text-slate-300 leading-relaxed font-medium">
+                      {selectedSound.guide}
+                    </p>
+                  </div>
+
+                  {/* Word Context / Example */}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="p-3 bg-slate-800/30 border border-slate-800/60 rounded-xl">
+                      <span className="text-[9px] font-bold text-slate-500 uppercase block">Từ ví dụ</span>
+                      <span className="text-base font-black text-slate-200">{selectedSound.example}</span>
+                    </div>
+                    <div className="p-3 bg-slate-800/30 border border-slate-800/60 rounded-xl">
+                      <span className="text-[9px] font-bold text-slate-500 uppercase block">Phiên âm của từ</span>
+                      <span className="text-base font-black text-slate-200 font-mono">{selectedSound.word}</span>
+                    </div>
+                  </div>
+
+                  {/* Gamified AI Speech Practice (Microphone) */}
+                  <div className="pt-2 border-t border-slate-800/80">
+                    <SpeechPracticeSection targetWord={selectedSound.example} />
+                  </div>
+                </div>
+
+              </div>
             </div>
           )}
 
@@ -400,7 +606,7 @@ export default function PronunciationPage() {
                     <button
                       key={j}
                       onClick={() => speak(ex.replace(/[ˈˌ.]/g, ''))}
-                      className="px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono font-bold hover:border-primary hover:bg-primary/5 transition-all flex items-center gap-2 group text-slate-700"
+                      className="px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono font-bold hover:border-primary hover:bg-primary/5 transition-all flex items-center gap-2 group text-slate-700 cursor-pointer"
                     >
                       {ex}
                       <Play className="w-3 h-3 text-slate-300 group-hover:text-primary fill-slate-300 group-hover:fill-primary" />
@@ -436,7 +642,7 @@ export default function PronunciationPage() {
                 <div className="flex items-center justify-center gap-4">
                   <button
                     onClick={() => speak(pair.a.word)}
-                    className="flex-1 flex flex-col items-center gap-2 p-5 rounded-2xl border-2 border-sky-200 bg-sky-50/50 hover:border-sky-400 hover:shadow-md transition-all group"
+                    className="flex-1 flex flex-col items-center gap-2 p-5 rounded-2xl border-2 border-sky-200 bg-sky-50/50 hover:border-sky-400 hover:shadow-md transition-all group cursor-pointer"
                   >
                     <span className="text-2xl font-black text-slate-800">{pair.a.word}</span>
                     <span className="text-xs font-mono text-slate-400">{pair.a.ipa}</span>
@@ -447,7 +653,7 @@ export default function PronunciationPage() {
 
                   <button
                     onClick={() => speak(pair.b.word)}
-                    className="flex-1 flex flex-col items-center gap-2 p-5 rounded-2xl border-2 border-rose-200 bg-rose-50/50 hover:border-rose-400 hover:shadow-md transition-all group"
+                    className="flex-1 flex flex-col items-center gap-2 p-5 rounded-2xl border-2 border-rose-200 bg-rose-50/50 hover:border-rose-400 hover:shadow-md transition-all group cursor-pointer"
                   >
                     <span className="text-2xl font-black text-slate-800">{pair.b.word}</span>
                     <span className="text-xs font-mono text-slate-400">{pair.b.ipa}</span>
@@ -491,12 +697,12 @@ export default function PronunciationPage() {
                   <div className="flex items-center justify-between">
                     <span>c - a - t</span>
                     <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
-                    <button onClick={() => speak("cat")} className="font-bold text-purple-600 flex items-center gap-1">cat <Play className="w-2 h-2 fill-purple-600 text-purple-600" /></button>
+                    <button onClick={() => speak("cat")} className="font-bold text-purple-600 flex items-center gap-1 cursor-pointer">cat <Play className="w-2 h-2 fill-purple-600 text-purple-600" /></button>
                   </div>
                   <div className="flex items-center justify-between border-t border-slate-200/50 pt-2">
                     <span>d - o - g</span>
                     <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
-                    <button onClick={() => speak("dog")} className="font-bold text-purple-600 flex items-center gap-1">dog <Play className="w-2 h-2 fill-purple-600 text-purple-600" /></button>
+                    <button onClick={() => speak("dog")} className="font-bold text-purple-600 flex items-center gap-1 cursor-pointer">dog <Play className="w-2 h-2 fill-purple-600 text-purple-600" /></button>
                   </div>
                 </div>
               </div>
@@ -512,12 +718,12 @@ export default function PronunciationPage() {
                   <div className="flex items-center justify-between">
                     <span>s + h ➔ /ʃ/</span>
                     <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
-                    <button onClick={() => speak("ship")} className="font-bold text-purple-600 flex items-center gap-1">ship <Play className="w-2 h-2 fill-purple-600 text-purple-600" /></button>
+                    <button onClick={() => speak("ship")} className="font-bold text-purple-600 flex items-center gap-1 cursor-pointer">ship <Play className="w-2 h-2 fill-purple-600 text-purple-600" /></button>
                   </div>
                   <div className="flex items-center justify-between border-t border-slate-200/50 pt-2">
                     <span>c + h ➔ /tʃ/</span>
                     <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
-                    <button onClick={() => speak("chair")} className="font-bold text-purple-600 flex items-center gap-1">chair <Play className="w-2 h-2 fill-purple-600 text-purple-600" /></button>
+                    <button onClick={() => speak("chair")} className="font-bold text-purple-600 flex items-center gap-1 cursor-pointer">chair <Play className="w-2 h-2 fill-purple-600 text-purple-600" /></button>
                   </div>
                 </div>
               </div>
@@ -533,12 +739,12 @@ export default function PronunciationPage() {
                   <div className="flex items-center justify-between">
                     <span>ti - ger</span>
                     <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
-                    <button onClick={() => speak("tiger")} className="font-bold text-purple-600 flex items-center gap-1">tiger <Play className="w-2 h-2 fill-purple-600 text-purple-600" /></button>
+                    <button onClick={() => speak("tiger")} className="font-bold text-purple-600 flex items-center gap-1 cursor-pointer">tiger <Play className="w-2 h-2 fill-purple-600 text-purple-600" /></button>
                   </div>
                   <div className="flex items-center justify-between border-t border-slate-200/50 pt-2">
                     <span>com - pu - ter</span>
                     <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
-                    <button onClick={() => speak("computer")} className="font-bold text-purple-600 flex items-center gap-1">computer <Play className="w-2 h-2 fill-purple-600 text-purple-600" /></button>
+                    <button onClick={() => speak("computer")} className="font-bold text-purple-600 flex items-center gap-1 cursor-pointer">computer <Play className="w-2 h-2 fill-purple-600 text-purple-600" /></button>
                   </div>
                 </div>
               </div>
@@ -567,14 +773,14 @@ export default function PronunciationPage() {
                     <p className="text-xs font-mono font-bold text-slate-700">Turn on ➔ "tur-non"</p>
                     <div className="flex justify-between items-center text-[11px] text-slate-400 font-medium">
                       <span>Bật lên</span>
-                      <button onClick={() => speak("turn on")} className="text-purple-600 font-bold flex items-center gap-1">Nghe phát âm <Play className="w-2 h-2 fill-purple-600 text-purple-600" /></button>
+                      <button onClick={() => speak("turn on")} className="text-purple-600 font-bold flex items-center gap-1 cursor-pointer">Nghe phát âm <Play className="w-2 h-2 fill-purple-600 text-purple-600" /></button>
                     </div>
                   </div>
                   <div className="p-3 bg-slate-50 rounded-xl space-y-1">
                     <p className="text-xs font-mono font-bold text-slate-700">Read a book ➔ "rea-da-book"</p>
                     <div className="flex justify-between items-center text-[11px] text-slate-400 font-medium">
                       <span>Đọc một cuốn sách</span>
-                      <button onClick={() => speak("read a book")} className="text-purple-600 font-bold flex items-center gap-1">Nghe phát âm <Play className="w-2 h-2 fill-purple-600 text-purple-600" /></button>
+                      <button onClick={() => speak("read a book")} className="text-purple-600 font-bold flex items-center gap-1 cursor-pointer">Nghe phát âm <Play className="w-2 h-2 fill-purple-600 text-purple-600" /></button>
                     </div>
                   </div>
                 </div>
@@ -594,14 +800,14 @@ export default function PronunciationPage() {
                     <p className="text-xs font-mono font-bold text-slate-700">Go on ➔ thêm âm /w/ ➔ "go-w-on"</p>
                     <div className="flex justify-between items-center text-[11px] text-slate-400 font-medium">
                       <span>Tiếp tục</span>
-                      <button onClick={() => speak("go on")} className="text-purple-600 font-bold flex items-center gap-1">Nghe phát âm <Play className="w-2 h-2 fill-purple-600 text-purple-600" /></button>
+                      <button onClick={() => speak("go on")} className="text-purple-600 font-bold flex items-center gap-1 cursor-pointer">Nghe phát âm <Play className="w-2 h-2 fill-purple-600 text-purple-600" /></button>
                     </div>
                   </div>
                   <div className="p-3 bg-slate-50 rounded-xl space-y-1">
                     <p className="text-xs font-mono font-bold text-slate-700">See it ➔ thêm âm /j/ ➔ "see-y-it"</p>
                     <div className="flex justify-between items-center text-[11px] text-slate-400 font-medium">
                       <span>Nhìn thấy nó</span>
-                      <button onClick={() => speak("see it")} className="text-purple-600 font-bold flex items-center gap-1">Nghe phát âm <Play className="w-2 h-2 fill-purple-600 text-purple-600" /></button>
+                      <button onClick={() => speak("see it")} className="text-purple-600 font-bold flex items-center gap-1 cursor-pointer">Nghe phát âm <Play className="w-2 h-2 fill-purple-600 text-purple-600" /></button>
                     </div>
                   </div>
                 </div>
@@ -635,7 +841,7 @@ export default function PronunciationPage() {
                 key={s.id}
                 onClick={() => setNumSection(s.id)}
                 className={cn(
-                  "px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all whitespace-nowrap",
+                  "px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all whitespace-nowrap cursor-pointer",
                   numSection === s.id ? "bg-teal-600 text-white shadow-md" : "bg-slate-50 text-slate-400 hover:bg-slate-100"
                 )}
               >
@@ -652,10 +858,10 @@ export default function PronunciationPage() {
               </h4>
               <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-3">
                 {NUMBERS_BASIC.map(n => (
-                  <button key={n.num} onClick={() => speak(n.en)} className="group premium-card p-4 flex flex-col items-center gap-1 hover:shadow-lg hover:-translate-y-0.5 transition-all border border-teal-100 bg-teal-50/30">
+                  <button key={n.num} onClick={() => speak(n.en)} className="group premium-card p-4 flex flex-col items-center gap-1 hover:shadow-lg hover:-translate-y-0.5 transition-all border border-teal-100 bg-teal-50/30 cursor-pointer">
                     <span className="text-2xl font-black text-teal-700">{n.num}</span>
                     <span className="text-xs font-bold text-slate-700">{n.en}</span>
-                    <span className="text-[10px] text-slate-400 italic">{n.vi}</span>
+                    <span className="text-[10px] text-slate-400 italic font-sans">{n.vi}</span>
                     <Play className="w-3 h-3 text-slate-300 group-hover:text-teal-500 fill-slate-300 group-hover:fill-teal-500" />
                   </button>
                 ))}
@@ -666,10 +872,10 @@ export default function PronunciationPage() {
               </h4>
               <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
                 {NUMBERS_TENS.map(n => (
-                  <button key={n.num} onClick={() => speak(n.en)} className="group premium-card p-4 flex flex-col items-center gap-1 hover:shadow-lg hover:-translate-y-0.5 transition-all border border-cyan-100 bg-cyan-50/30">
+                  <button key={n.num} onClick={() => speak(n.en)} className="group premium-card p-4 flex flex-col items-center gap-1 hover:shadow-lg hover:-translate-y-0.5 transition-all border border-cyan-100 bg-cyan-50/30 cursor-pointer">
                     <span className="text-2xl font-black text-cyan-700">{n.num}</span>
                     <span className="text-xs font-bold text-slate-700">{n.en}</span>
-                    <span className="text-[10px] text-slate-400 italic">{n.vi}</span>
+                    <span className="text-[10px] text-slate-400 italic font-sans">{n.vi}</span>
                     <Play className="w-3 h-3 text-slate-300 group-hover:text-cyan-500 fill-slate-300 group-hover:fill-cyan-500" />
                   </button>
                 ))}
@@ -690,7 +896,7 @@ export default function PronunciationPage() {
             <div className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {NUMBERS_BIG.map(n => (
-                  <button key={n.num} onClick={() => speak(n.en)} className="group premium-card p-6 flex items-center gap-5 hover:shadow-xl transition-all text-left">
+                  <button key={n.num} onClick={() => speak(n.en)} className="group premium-card p-6 flex items-center gap-5 hover:shadow-xl transition-all text-left cursor-pointer">
                     <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-teal-500 to-cyan-500 text-white flex items-center justify-center font-black text-xs flex-shrink-0 shadow-lg">
                       {n.num}
                     </div>
@@ -717,7 +923,7 @@ export default function PronunciationPage() {
               </div>
               <div className="space-y-3">
                 {NUMBERS_COMBO.map((n, i) => (
-                  <button key={i} onClick={() => speak(n.en)} className="group w-full premium-card p-5 flex items-center gap-4 hover:shadow-lg transition-all text-left">
+                  <button key={i} onClick={() => speak(n.en)} className="group w-full premium-card p-5 flex items-center gap-4 hover:shadow-lg transition-all text-left cursor-pointer">
                     <span className="w-24 text-right text-2xl font-black text-primary flex-shrink-0 font-mono">{n.num}</span>
                     <div className="flex-1 min-w-0 border-l border-slate-200 pl-4">
                       <p className="font-bold text-slate-800">{n.en}</p>
@@ -741,10 +947,10 @@ export default function PronunciationPage() {
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                 {ORDINALS.map(n => (
-                  <button key={n.num} onClick={() => speak(n.en)} className="group premium-card p-4 flex flex-col items-center gap-1 hover:shadow-lg hover:-translate-y-0.5 transition-all border border-indigo-100 bg-indigo-50/30">
+                  <button key={n.num} onClick={() => speak(n.en)} className="group premium-card p-4 flex flex-col items-center gap-1 hover:shadow-lg hover:-translate-y-0.5 transition-all border border-indigo-100 bg-indigo-50/30 cursor-pointer">
                     <span className="text-2xl font-black text-indigo-700">{n.num}</span>
                     <span className="text-xs font-bold text-slate-700">{n.en}</span>
-                    <span className="text-[10px] text-slate-400 italic">{n.vi}</span>
+                    <span className="text-[10px] text-slate-400 italic font-sans">{n.vi}</span>
                     <Play className="w-3 h-3 text-slate-300 group-hover:text-indigo-500 fill-slate-300 group-hover:fill-indigo-500" />
                   </button>
                 ))}
@@ -776,7 +982,7 @@ export default function PronunciationPage() {
                   <p className="text-xs text-slate-500 font-medium">{r.condition}</p>
                   <div className="space-y-2">
                     {r.examples.map((ex, j) => (
-                      <button key={j} onClick={() => speak(ex.word)} className="group w-full flex items-center justify-between p-3 bg-slate-50 rounded-xl hover:bg-primary/5 transition-all">
+                      <button key={j} onClick={() => speak(ex.word)} className="group w-full flex items-center justify-between p-3 bg-slate-50 rounded-xl hover:bg-primary/5 transition-all cursor-pointer">
                         <span className="font-bold text-sm text-slate-800">{ex.word}</span>
                         <span className="text-xs font-mono text-slate-400">{ex.ipa}</span>
                         <Play className="w-3 h-3 text-slate-300 group-hover:text-primary" />
@@ -807,7 +1013,7 @@ export default function PronunciationPage() {
                   <p className="text-xs text-slate-500 font-medium">{r.condition}</p>
                   <div className="space-y-2">
                     {r.examples.map((ex, j) => (
-                      <button key={j} onClick={() => speak(ex.word)} className="group w-full flex items-center justify-between p-3 bg-slate-50 rounded-xl hover:bg-primary/5 transition-all">
+                      <button key={j} onClick={() => speak(ex.word)} className="group w-full flex items-center justify-between p-3 bg-slate-50 rounded-xl hover:bg-primary/5 transition-all cursor-pointer">
                         <span className="font-bold text-sm text-slate-800">{ex.word}</span>
                         <span className="text-xs font-mono text-slate-400">{ex.ipa}</span>
                         <Play className="w-3 h-3 text-slate-300 group-hover:text-primary" />
