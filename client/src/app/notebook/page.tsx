@@ -166,7 +166,7 @@ function WordCard({ word, onDelete, onUpdate }: { word: NotebookWord; onDelete: 
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 block">Ví dụ tiếng Anh</label>
               <textarea 
@@ -578,7 +578,7 @@ export default function NotebookPage() {
 
       {/* Daily Review Banner — 4 states */}
       <div className={cn(
-        "premium-card p-6 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl relative overflow-hidden group border-none transition-all duration-500",
+        "premium-card p-6 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-2xl relative overflow-hidden group border-none transition-all duration-500",
         bannerState === 'reminder' && "bg-gradient-to-r from-orange-500 to-rose-500 text-white shadow-orange-500/20 animate-in slide-in-from-top-4",
         bannerState === 'due' && "bg-gradient-to-r from-primary to-indigo-600 text-white shadow-primary/20",
         bannerState === 'completed' && "bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-emerald-500/20",
@@ -588,8 +588,8 @@ export default function NotebookPage() {
           <Brain className={cn("w-32 h-32", bannerState === 'idle' ? "text-primary" : "text-white")} />
         </div>
 
-        <div className="space-y-1 relative z-10 text-center md:text-left">
-          <h2 className="text-xl font-black flex items-center justify-center md:justify-start gap-2">
+        <div className="space-y-1 relative z-10 text-center sm:text-left">
+          <h2 className="text-xl font-black flex items-center justify-center sm:justify-start gap-2">
             {bannerState === 'reminder' && (
               <><Clock className="w-5 h-5 animate-pulse" /> 🔔 Nhắc nhở: Bạn chưa ôn tập hôm nay!</>
             )}
@@ -644,7 +644,7 @@ export default function NotebookPage() {
           <p className="font-bold">Không tìm thấy từ nào</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filtered.map(w => <WordCard key={w.id} word={w} onDelete={handleDelete} onUpdate={handleUpdate} />)}
         </div>
       )}

@@ -183,6 +183,7 @@ router.post('/save', authenticate, async (req: any, res) => {
         userId_wordId: { userId, wordId }
       },
       update: {
+        isFavorite: true,
         masteryLevel: { increment: 1 },
         lastReviewedAt: new Date(),
         nextReviewAt: new Date(Date.now() + 24 * 60 * 60 * 1000) // Test tomorrow
@@ -190,6 +191,7 @@ router.post('/save', authenticate, async (req: any, res) => {
       create: {
         userId,
         wordId,
+        isFavorite: true,
         masteryLevel: 1,
         nextReviewAt: new Date(Date.now() + 24 * 60 * 60 * 1000)
       }
@@ -722,7 +724,7 @@ router.post('/notebook', authenticate, async (req: any, res) => {
     // Step 5: Add to user's personal notebook (isFavorite = true marks it as "user-added")
     const entry = await prisma.userLearnedWord.upsert({
       where: { userId_wordId: { userId, wordId: vocabWord.id } },
-      update: { isFavorite: true, lastReviewedAt: new Date() },
+      update: { isFavorite: true, lastReviewedAt: new Date(), nextReviewAt: new Date(Date.now() + 24 * 60 * 60 * 1000) },
       create: {
         userId,
         wordId: vocabWord.id,
@@ -859,25 +861,27 @@ router.get('/review/session', authenticate, async (req: any, res) => {
       ...globalRandomWords.rows.map((r: any) => r.meaningVi)
     ].filter(Boolean);
 
-    // Enhance with AI questions for each word (async to speed up response)
-    const sessionWords = await Promise.all(dueEntries.map(async (entry: any) => {
-      // Basic info
+    // Enhance with AI questions for each word sequentially to prevent Gemini 429 rate limit errors
+    const sessionWords = [];
+    for (const entry of dueEntries) {
       const word = entry.word;
-      
-      // Try to get dynamic question from Gemini
       let context = '';
       let question = `Từ "${word.word}" có nghĩa tiếng Việt là gì?`;
       let options: string[] = [word.meaningVi];
       let correctAnswer = word.meaningVi;
       
       try {
+        // Add a tiny delay between Gemini API requests
+        if (sessionWords.length > 0) {
+          await new Promise(resolve => setTimeout(resolve, 150));
+        }
+        
         const aiQuestion = await GeminiService.generateReviewQuestion(word.word);
         if (aiQuestion && aiQuestion.options && aiQuestion.options.length === 4 && aiQuestion.answer) {
           context = aiQuestion.context || '';
           question = aiQuestion.question || `Từ cần điền có nghĩa tiếng Việt là gì?`;
           options = aiQuestion.options;
           
-          // Match the AI's returned answer to one of the generated options to avoid case/space mismatches
           const match = options.find(opt => opt.trim().toLowerCase() === aiQuestion.answer.trim().toLowerCase());
           correctAnswer = match || aiQuestion.answer;
         } else {
@@ -890,13 +894,12 @@ router.get('/review/session', authenticate, async (req: any, res) => {
         correctAnswer = word.meaningVi;
         context = '';
         
-        // Ensure we always have 4 options
         while (options.length < 4) {
           options.push(`Nghĩa khác ${options.length}`);
         }
       }
 
-      return {
+      sessionWords.push({
         id: entry.id,
         wordId: word.id,
         word: word.word,
@@ -907,9 +910,9 @@ router.get('/review/session', authenticate, async (req: any, res) => {
         masteryLevel: entry.masteryLevel,
         context,
         question,
-        options: options.sort(() => Math.random() - 0.5) // Shuffle
-      };
-    }));
+        options: options.sort(() => Math.random() - 0.5)
+      });
+    }
 
     res.json({ words: sessionWords });
   } catch (error) {
@@ -970,7 +973,7 @@ router.get('/daily-review-status', authenticate, async (req: any, res) => {
       dueCount,
       totalNotebook,
       hasReviewedToday,
-      isCompleted: hasReviewedToday,
+      isCompleted: dueCount === 0 && reviewedToday > 0,
       reviewedToday,
       needsReminder
     });

@@ -87,7 +87,7 @@ export default function ReviewPage() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto space-y-10 pb-20 animate-in fade-in duration-700">
+    <div className="w-full max-w-5xl mx-auto space-y-6 sm:space-y-10 pb-20 px-2 sm:px-4 animate-in fade-in duration-700">
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="space-y-1">
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full mb-2">
@@ -104,8 +104,8 @@ export default function ReviewPage() {
 
       {/* Hero Review Section */}
       <section className="premium-card p-1 gradient-bg rounded-3xl overflow-hidden shadow-2xl shadow-primary/20">
-        <div className="bg-white/95 backdrop-blur-xl rounded-[22px] p-8 md:p-12 flex flex-col md:flex-row items-center gap-10">
-          <div className="flex-1 space-y-6 text-center md:text-left">
+        <div className="bg-white/95 backdrop-blur-xl rounded-[22px] p-6 sm:p-10 flex flex-col sm:flex-row items-center gap-6 sm:gap-10">
+          <div className="flex-1 space-y-6 text-center sm:text-left">
             <div className={cn(
               "inline-flex items-center gap-2 px-3 py-1 rounded-full font-black text-[10px] uppercase tracking-widest",
               dueCount > 0 ? "bg-orange-100 text-orange-600 animate-pulse" : "bg-green-100 text-green-600"
@@ -126,7 +126,7 @@ export default function ReviewPage() {
                 : "Bạn đã ôn hết tất cả từ vựng. Hãy thêm từ mới vào Notebook hoặc quay lại vào ngày mai."}
             </p>
 
-            <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+            <div className="flex flex-wrap gap-3 sm:gap-4 justify-center sm:justify-start">
               {dueCount > 0 ? (
                 <Link
                   href="/review/quiz"
@@ -173,7 +173,7 @@ export default function ReviewPage() {
             </div>
           </div>
 
-          <div className="w-full md:w-1/3 flex justify-center">
+          <div className="w-full sm:w-1/3 flex justify-center">
             <div className="relative">
               <div className="w-48 h-48 rounded-full border-[12px] border-slate-50 flex items-center justify-center relative">
                 <div className="text-center">
@@ -200,8 +200,8 @@ export default function ReviewPage() {
       </section>
 
       {/* Info Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="md:col-span-2 premium-card p-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 premium-card p-6 sm:p-8">
           <div className="flex items-center justify-between mb-8">
             <h3 className="text-xl font-bold flex items-center gap-2">
               <Calendar className="w-5 h-5 text-primary" />

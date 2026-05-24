@@ -61,7 +61,7 @@ export default function ReviewPage() {
     if (!selectedOption || !user) return;
     setIsAnswered(true);
     
-    const isCorrect = selectedOption === currentWord.meaningVi;
+    const isCorrect = selectedOption?.trim().toLowerCase() === currentWord.meaningVi?.trim().toLowerCase();
     if (isCorrect) setScore(s => s + 1);
 
     setSubmitting(true);
@@ -214,13 +214,13 @@ export default function ReviewPage() {
                     selectedOption === option 
                       ? "border-primary bg-primary/5 ring-4 ring-primary/10" 
                       : "border-slate-100 hover:border-primary/30 hover:bg-slate-50",
-                    isAnswered && option === currentWord.meaningVi && "border-green-500 bg-green-50 text-green-700",
-                    isAnswered && selectedOption === option && option !== currentWord.meaningVi && "border-rose-500 bg-rose-50 text-rose-700"
+                    isAnswered && option?.trim().toLowerCase() === currentWord.meaningVi?.trim().toLowerCase() && "border-green-500 bg-green-50 text-green-700",
+                    isAnswered && selectedOption === option && option?.trim().toLowerCase() !== currentWord.meaningVi?.trim().toLowerCase() && "border-rose-500 bg-rose-50 text-rose-700"
                   )}
                 >
                   <span>{option}</span>
-                  {isAnswered && option === currentWord.meaningVi && <CheckCircle2 className="w-5 h-5 text-green-500" />}
-                  {isAnswered && selectedOption === option && option !== currentWord.meaningVi && <XCircle className="w-5 h-5 text-rose-500" />}
+                  {isAnswered && option?.trim().toLowerCase() === currentWord.meaningVi?.trim().toLowerCase() && <CheckCircle2 className="w-5 h-5 text-green-500" />}
+                  {isAnswered && selectedOption === option && option?.trim().toLowerCase() !== currentWord.meaningVi?.trim().toLowerCase() && <XCircle className="w-5 h-5 text-rose-500" />}
                 </button>
               ))}
             </div>
