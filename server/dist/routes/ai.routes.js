@@ -344,4 +344,117 @@ router.post('/analyze-pronunciation', async (req, res) => {
         return res.json(localFeedback);
     }
 });
+// Intelligent Local Heuristic Stress Analyzer (Fallback)
+const generateLocalStressAnalysis = (word) => {
+    const cleanWord = word.trim().toLowerCase();
+    // Simple syllable splitter based on vowel clusters
+    let syllables = cleanWord.match(/[^aeiouy]*[aeiouy]+(?:[^aeiouy]*(?=$|[^aeiouy]))?/gi) || [cleanWord];
+    if (syllables.length === 0)
+        syllables = [cleanWord];
+    let stressedIndex = 0;
+    let ruleExplanation = "Đối với từ tiếng Anh thông thường, trọng âm thường rơi vào âm tiết đầu tiên đối với danh từ/tính từ, hoặc âm tiết thứ hai đối với động từ.";
+    let guide = `Nhấn giọng mạnh và cao hơn ở âm tiết đầu tiên: "${syllables[0].toUpperCase()}", các âm tiết sau đọc nhẹ và thấp hơn.`;
+    let similarWords = [
+        { word: "happy", phonetic: "/ˈhæp.i/" },
+        { word: "doctor", phonetic: "/ˈdɒk.tər/" }
+    ];
+    if (cleanWord.endsWith("tion") || cleanWord.endsWith("sion")) {
+        if (syllables.length >= 2) {
+            stressedIndex = syllables.length - 2;
+            ruleExplanation = "Quy tắc: Các từ có đuôi '-tion' hoặc '-sion' thì trọng âm luôn rơi vào âm tiết ngay trước nó.";
+            guide = `Đọc nhấn giọng mạnh vào âm tiết "${syllables[stressedIndex].toUpperCase()}" trước đuôi -tion.`;
+            similarWords = [
+                { word: "action", phonetic: "/ˈæk.ʃən/" },
+                { word: "nation", phonetic: "/ˈneɪ.ʃən/" }
+            ];
+        }
+    }
+    else if (cleanWord.endsWith("ic") || cleanWord.endsWith("ical")) {
+        if (syllables.length >= 2) {
+            stressedIndex = syllables.length - 2;
+            ruleExplanation = "Quy tắc: Các từ kết thúc bằng đuôi '-ic' hoặc '-ical' có trọng âm rơi vào âm tiết liền kề trước nó.";
+            guide = `Nhấn giọng mạnh vào âm tiết "${syllables[stressedIndex].toUpperCase()}" ngay trước đuôi -ic.`;
+            similarWords = [
+                { word: "music", phonetic: "/ˈmjuː.zɪk/" },
+                { word: "artistic", phonetic: "/ɑːˈtɪs.tɪk/" }
+            ];
+        }
+    }
+    else if (cleanWord.endsWith("ity") || cleanWord.endsWith("ety")) {
+        if (syllables.length >= 3) {
+            stressedIndex = syllables.length - 3;
+            ruleExplanation = "Quy tắc: Các từ tận cùng bằng đuôi '-ity' hoặc '-ety' có trọng âm rơi vào âm tiết thứ 3 từ cuối lên.";
+            guide = `Đọc nhấn giọng vào âm tiết "${syllables[stressedIndex].toUpperCase()}" (âm tiết thứ 3 từ cuối).`;
+            similarWords = [
+                { word: "ability", phonetic: "/əˈbɪl.ə.ti/" },
+                { word: "society", phonetic: "/səˈsaɪ.ə.ti/" }
+            ];
+        }
+    }
+    else if (syllables.length === 2) {
+        stressedIndex = 0;
+        ruleExplanation = "Quy tắc: Phần lớn các danh từ và tính từ có 2 âm tiết thì trọng âm rơi vào âm tiết thứ nhất.";
+        guide = `Đọc to rõ và lên giọng ở âm tiết đầu tiên "${syllables[0].toUpperCase()}", hạ giọng ở âm tiết thứ hai.`;
+        similarWords = [
+            { word: "table", phonetic: "/ˈteɪ.bəl/" },
+            { word: "student", phonetic: "/ˈstjuː.dənt/" }
+        ];
+    }
+    else if (syllables.length >= 3) {
+        stressedIndex = 0;
+        ruleExplanation = "Quy tắc: Đối với các từ có nhiều âm tiết khác, trọng âm thường rơi vào âm tiết thứ nhất hoặc thứ ba từ cuối lên tùy thuộc vào tiền tố/hậu tố.";
+        guide = `Hãy chú ý nhấn giọng ở âm tiết "${syllables[0].toUpperCase()}".`;
+        similarWords = [
+            { word: "family", phonetic: "/ˈfæm.əl.i/" },
+            { word: "difficult", phonetic: "/ˈdɪf.ɪ.kəlt/" }
+        ];
+    }
+    const formattedSyllables = syllables.map(s => s.trim());
+    return {
+        word: cleanWord,
+        phonetic: `/${formattedSyllables.map((s, idx) => (idx === stressedIndex ? `ˈ${s}` : s)).join(".")}/`,
+        syllables: formattedSyllables,
+        stressedSyllableIndex: stressedIndex,
+        secondaryStressedSyllableIndex: -1,
+        ruleExplanation,
+        pronunciationGuide: guide,
+        similarWords
+    };
+};
+// AI Word Stress Analyzer Route
+router.post('/analyze-stress', async (req, res) => {
+    const { word } = req.body;
+    if (!word || typeof word !== 'string' || word.trim().length === 0) {
+        return res.status(400).json({ error: 'Word is required' });
+    }
+    try {
+        const prompt = `
+      You are EngBot (AI English Pronunciation & Phonology Expert).
+      Analyze the word stress (trọng âm) for the English word: "${word}"
+
+      Provide the analysis in JSON format (do not include markdown wrapper, return raw json):
+      {
+        "word": "${word}",
+        "phonetic": "IPA pronunciation of the word highlighting the primary stress with 'ˈ' (e.g., /ˌed.jʊˈkeɪ.ʃən/)",
+        "syllables": ["ed", "u", "ca", "tion"],
+        "stressedSyllableIndex": 2,
+        "secondaryStressedSyllableIndex": 0,
+        "ruleExplanation": "Chi tiết quy tắc trọng âm áp dụng cho từ này bằng tiếng Việt",
+        "pronunciationGuide": "Hướng dẫn cách đọc nhấn giọng từ này bằng tiếng Việt",
+        "similarWords": [
+          { "word": "creation", "phonetic": "/kriˈeɪ.ʃən/" },
+          { "word": "relation", "phonetic": "/rɪˈleɪ.ʃən/" }
+        ]
+      }
+    `;
+        const text = await generateContentWithModelFallback(prompt);
+        const analysis = safeParseJSON(text);
+        return res.json(analysis);
+    }
+    catch (error) {
+        console.error('[AI] Word Stress Analysis Error, using local robust heuristic:', error.message);
+        const localAnalysis = generateLocalStressAnalysis(word);
+        return res.json(localAnalysis);
+    }
+});
 exports.default = router;

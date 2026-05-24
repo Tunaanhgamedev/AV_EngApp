@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Volume2, BookOpen, Sparkles, ChevronDown, Mic, Target, Star, Play, Info, ArrowRight, HelpCircle, Hash, FileText } from 'lucide-react';
+import { Volume2, BookOpen, Sparkles, ChevronDown, Mic, Target, Star, Play, Info, ArrowRight, HelpCircle, Hash, FileText, Search, Loader2, Calendar, Globe } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 // ─── Alphabet & Phonics Data ──────────────────────────────────────────────────
@@ -170,6 +170,63 @@ const S_RULES = [
   { rule: 'Đọc /ɪz/', condition: 'Sau âm xì: /s/, /z/, /ʃ/, /ʒ/, /tʃ/, /dʒ/', examples: [{ word: 'buses', ipa: '/ˈbʌs.ɪz/' }, { word: 'watches', ipa: '/ˈwɒtʃ.ɪz/' }, { word: 'bridges', ipa: '/ˈbrɪdʒ.ɪz/' }] },
 ];
 
+// ─── Days, Months, Years Data ────────────────────────────────────────────────
+const DAYS_OF_WEEK = [
+  { day: 'Monday', abbreviation: 'Mon', ipa: '/ˈmʌn.deɪ/', vi: 'Thứ Hai' },
+  { day: 'Tuesday', abbreviation: 'Tue', ipa: '/ˈtjuːz.deɪ/', vi: 'Thứ Ba' },
+  { day: 'Wednesday', abbreviation: 'Wed', ipa: '/ˈwenz.deɪ/', vi: 'Thứ Tư' },
+  { day: 'Thursday', abbreviation: 'Thu', ipa: '/ˈθɜːz.deɪ/', vi: 'Thứ Năm' },
+  { day: 'Friday', abbreviation: 'Fri', ipa: '/ˈfraɪ.deɪ/', vi: 'Thứ Sáu' },
+  { day: 'Saturday', abbreviation: 'Sat', ipa: '/ˈsæt.ə.deɪ/', vi: 'Thứ Bảy' },
+  { day: 'Sunday', abbreviation: 'Sun', ipa: '/ˈsʌn.deɪ/', vi: 'Chủ Nhật' },
+];
+
+const MONTHS_OF_YEAR = [
+  { month: 'January', abbreviation: 'Jan', ipa: '/ˈdʒæn.ju.ə.ri/', vi: 'Tháng Một' },
+  { month: 'February', abbreviation: 'Feb', ipa: '/ˈfeb.ru.ə.ri/', vi: 'Tháng Hai' },
+  { month: 'March', abbreviation: 'Mar', ipa: '/mɑːtʃ/', vi: 'Tháng Ba' },
+  { month: 'April', abbreviation: 'Apr', ipa: '/ˈeɪ.prəl/', vi: 'Tháng Tư' },
+  { month: 'May', abbreviation: 'May', ipa: '/meɪ/', vi: 'Tháng Năm' },
+  { month: 'June', abbreviation: 'Jun', ipa: '/dʒuːn/', vi: 'Tháng Sáu' },
+  { month: 'July', abbreviation: 'Jul', ipa: '/dʒuˈlaɪ/', vi: 'Tháng Bảy' },
+  { month: 'August', abbreviation: 'Aug', ipa: '/ɔːˈɡʌst/', vi: 'Tháng Tám' },
+  { month: 'September', abbreviation: 'Sep', ipa: '/sepˈtem.bər/', vi: 'Tháng Chín' },
+  { month: 'October', abbreviation: 'Oct', ipa: '/ɒkˈtəʊ.bər/', vi: 'Tháng Mười' },
+  { month: 'November', abbreviation: 'Nov', ipa: '/nəʊˈvem.bər/', vi: 'Tháng Mười Một' },
+  { month: 'December', abbreviation: 'Dec', ipa: '/dɪˈsem.bər/', vi: 'Tháng Mười Hai' },
+];
+
+const YEAR_RULES = [
+  { example: '1998', read: 'nineteen ninety-eight', ipa: '/ˌnaɪn.tiːn ˌnaɪn.tiˈeɪt/', rule: 'Đọc tách đôi thành 19 và 98' },
+  { example: '2026', read: 'twenty twenty-six', ipa: '/ˌtwen.ti ˌtwen.tiˈsɪks/', rule: 'Đọc tách đôi thành 20 và 26 (phổ biến nhất)' },
+  { example: '2005', read: 'two thousand and five', ipa: '/tuː ˈθaʊ.zənd ənd faɪv/', rule: 'Đọc cả nghìn + "and" + đơn vị (năm 2000-2009)' },
+  { example: '1900', read: 'nineteen hundred', ipa: '/ˌnaɪn.tiːn ˈhʌn.drəd/', rule: 'Năm tròn trăm: đọc số trăm đầu tiên + hundred' },
+  { example: '2000', read: 'two thousand', ipa: '/tuː ˈθaʊ.zənd/', rule: 'Đọc cả số nghìn' },
+  { example: '1808', read: 'eighteen oh-eight', ipa: '/ˌeɪ.tiːn oʊ ˈeɪt/', rule: 'Số hàng chục là 0: đọc oh + số hàng đơn vị' }
+];
+
+// ─── Countries & Nationalities Data ──────────────────────────────────────────
+const COUNTRIES_DATA = [
+  { flag: '🇻🇳', country: 'Vietnam', countryIpa: '/ˌvjetˈnæm/', nationality: 'Vietnamese', nationalityIpa: '/ˌvjet.nəˈmiːz/', region: 'Asia', vi: 'Việt Nam' },
+  { flag: '🇺🇸', country: 'United States', countryIpa: '/juːˌnaɪ.tɪd ˈsteɪts/', nationality: 'American', nationalityIpa: '/əˈmer.ɪ.kən/', region: 'Americas', vi: 'Mỹ (Hoa Kỳ)' },
+  { flag: '🇬🇧', country: 'United Kingdom', countryIpa: '/juːˌnaɪ.tɪd ˈkɪŋ.dəm/', nationality: 'British', nationalityIpa: '/ˈbrɪt.ɪʃ/', region: 'Europe', vi: 'Vương Quốc Anh' },
+  { flag: '🇯🇵', country: 'Japan', countryIpa: '/dʒəˈpæn/', nationality: 'Japanese', nationalityIpa: '/ˌdʒæp.ənˈiːz/', region: 'Asia', vi: 'Nhật Bản' },
+  { flag: '🇰🇷', country: 'South Korea', countryIpa: '/ˌsaʊθ kəˈriː.ə/', nationality: 'Korean', nationalityIpa: '/kəˈriː.ən/', region: 'Asia', vi: 'Hàn Quốc' },
+  { flag: '🇨🇳', country: 'China', countryIpa: '/ˈtʃaɪ.nə/', nationality: 'Chinese', nationalityIpa: '/ˌtʃaɪˈniːz/', region: 'Asia', vi: 'Trung Quốc' },
+  { flag: '🇫🇷', country: 'France', countryIpa: '/frɑːns/', nationality: 'French', nationalityIpa: '/frentʃ/', region: 'Europe', vi: 'Pháp' },
+  { flag: '🇩🇪', country: 'Germany', countryIpa: '/ˈdʒɜː.mə.ni/', nationality: 'German', nationalityIpa: '/ˈdʒɜː.mən/', region: 'Europe', vi: 'Đức' },
+  { flag: '🇮🇹', country: 'Italy', countryIpa: '/ˈɪt.əl.i/', nationality: 'Italian', nationalityIpa: '/ɪˈtæl.jən/', region: 'Europe', vi: 'Ý (Italia)' },
+  { flag: '🇪🇸', country: 'Spain', countryIpa: '/speɪn/', nationality: 'Spanish', nationalityIpa: '/ˈspæn.ɪʃ/', region: 'Europe', vi: 'Tây Ban Nha' },
+  { flag: '🇨🇦', country: 'Canada', countryIpa: '/ˈkæn.ə.də/', nationality: 'Canadian', nationalityIpa: '/kəˈneɪ.di.ən/', region: 'Americas', vi: 'Canada' },
+  { flag: '🇦🇺', country: 'Australia', countryIpa: '/ɒsˈtreɪ.li.ə/', nationality: 'Australian', nationalityIpa: '/ɒsˈtreɪ.li.ən/', region: 'Oceania', vi: 'Úc' },
+  { flag: '🇸🇬', country: 'Singapore', countryIpa: '/ˌsɪŋ.əˈpɔːr/', nationality: 'Singaporean', nationalityIpa: '/ˌsɪŋ.əˈpɔː.ri.ən/', region: 'Asia', vi: 'Singapore' },
+  { flag: '🇷🇺', country: 'Russia', countryIpa: '/ˈrʌʃ.ə/', nationality: 'Russian', nationalityIpa: '/ˈrʌʃ.ən/', region: 'Europe', vi: 'Nga' },
+  { flag: '🇮🇳', country: 'India', countryIpa: '/ˈɪn.di.ə/', nationality: 'Indian', nationalityIpa: '/ˈɪn.di.ən/', region: 'Asia', vi: 'Ấn Độ' },
+  { flag: '🇧🇷', country: 'Brazil', countryIpa: '/brəˈzɪl/', nationality: 'Brazilian', nationalityIpa: '/brəˈzɪl.jən/', region: 'Americas', vi: 'Brazil' },
+  { flag: '🇿🇦', country: 'South Africa', countryIpa: '/ˌsaʊθ ˈæf.rɪ.kə/', nationality: 'South African', nationalityIpa: '/ˌsaʊθ ˈæf.rɪ.kən/', region: 'Africa', vi: 'Nam Phi' },
+  { flag: '🇪🇬', country: 'Egypt', countryIpa: '/ˈiː.dʒɪpt/', nationality: 'Egyptian', nationalityIpa: '/iˈdʒɪp.ʃən/', region: 'Africa', vi: 'Ai Cập' }
+];
+
 const speak = (text: string, rate: number = 0.7) => {
   if (typeof window === 'undefined') return;
   window.speechSynthesis.cancel();
@@ -306,10 +363,54 @@ function IPACell({ item, color, isActive, onClick }: { item: any; color: string;
 }
 
 export default function PronunciationPage() {
-  const [activeTab, setActiveTab] = useState<'alphabet' | 'chart' | 'stress' | 'pairs' | 'building' | 'numbers' | 'endings'>('alphabet');
+  const [activeTab, setActiveTab] = useState<'alphabet' | 'chart' | 'stress' | 'pairs' | 'building' | 'numbers' | 'endings' | 'datetime' | 'countries'>('alphabet');
   const [chartSection, setChartSection] = useState<'vowels' | 'diphthongs' | 'consonants'>('vowels');
   const [numSection, setNumSection] = useState<'basic' | 'big' | 'combo' | 'ordinals'>('basic');
   const [selectedSound, setSelectedSound] = useState<any>(null);
+
+  // New Datetime & Countries states
+  const [datetimeSection, setDatetimeSection] = useState<'days' | 'months' | 'years'>('days');
+  const [countrySearch, setCountrySearch] = useState('');
+  const [selectedRegion, setSelectedRegion] = useState<string>('All');
+
+  // AI Stress Analyzer States
+  const [stressInput, setStressInput] = useState('');
+  const [stressResult, setStressResult] = useState<any>(null);
+  const [analyzingStress, setAnalyzingStress] = useState(false);
+  const [stressError, setStressError] = useState('');
+
+  const handleAnalyzeStress = async (wordToAnalyze?: string) => {
+    const targetWord = wordToAnalyze || stressInput;
+    if (!targetWord || targetWord.trim().length === 0) return;
+    
+    setAnalyzingStress(true);
+    setStressError('');
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/ai/analyze-stress`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ word: targetWord.trim() })
+      });
+      if (!res.ok) throw new Error('Không thể phân tích trọng âm');
+      const data = await res.json();
+      setStressResult(data);
+      if (wordToAnalyze) {
+        setStressInput(wordToAnalyze);
+      }
+    } catch (err: any) {
+      console.error(err);
+      setStressError(err.message || 'Có lỗi xảy ra khi phân tích.');
+    } finally {
+      setAnalyzingStress(false);
+    }
+  };
+
+  // Pre-load default word when entering stress tab
+  useEffect(() => {
+    if (activeTab === 'stress' && !stressResult) {
+      handleAnalyzeStress('communication');
+    }
+  }, [activeTab]);
 
   // Initialize selectedSound when section changes
   useEffect(() => {
@@ -326,6 +427,8 @@ export default function PronunciationPage() {
     { id: 'alphabet' as const, label: 'Bảng Chữ Cái & Phonics', icon: BookOpen },
     { id: 'chart' as const, label: 'Bảng Phiên Âm IPA', icon: Volume2 },
     { id: 'numbers' as const, label: 'Số & Cách Đọc Số', icon: Hash },
+    { id: 'datetime' as const, label: 'Thứ, Tháng, Năm', icon: Calendar },
+    { id: 'countries' as const, label: 'Các Nước & Quốc Tịch', icon: Globe },
     { id: 'stress' as const, label: 'Quy Tắc Trọng Âm', icon: Target },
     { id: 'endings' as const, label: 'Đuôi -ed, -s/-es', icon: FileText },
     { id: 'pairs' as const, label: 'Cặp Tối Thiểu', icon: Mic },
@@ -587,6 +690,162 @@ export default function PronunciationPage() {
               Trọng âm (word stress) là việc nhấn mạnh một âm tiết trong từ. Âm tiết được nhấn sẽ phát ra to hơn, dài hơn và cao hơn.
               Sai trọng âm có thể khiến người nghe không hiểu bạn, dù bạn phát âm đúng từng âm.
             </p>
+          </div>
+
+          {/* AI Stress Analyzer Widget */}
+          <div className="premium-card p-6 bg-slate-900 text-white border-slate-800 shadow-xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none">
+              <Target className="w-32 h-32 text-slate-700" />
+            </div>
+
+            <div className="space-y-4 relative z-10">
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <div>
+                  <h3 className="text-xl font-black text-slate-100 flex items-center gap-2">
+                    <Sparkles className="w-5 h-5 fill-primary text-primary" /> Phân Tích Trọng Âm AI
+                  </h3>
+                  <p className="text-xs text-slate-400 font-medium">Nhập từ tiếng Anh để phân tích số âm tiết và trọng âm chính/phụ.</p>
+                </div>
+              </div>
+
+              {/* Input Form */}
+              <div className="flex flex-col sm:flex-row gap-3">
+                <div className="relative flex-1">
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
+                  <input
+                    type="text"
+                    value={stressInput}
+                    onChange={(e) => setStressInput(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleAnalyzeStress()}
+                    placeholder="Nhập từ cần phân tích... (ví dụ: photography)"
+                    className="w-full pl-12 pr-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:outline-none placeholder-slate-500 text-white"
+                  />
+                </div>
+                <button
+                  onClick={() => handleAnalyzeStress()}
+                  disabled={analyzingStress || !stressInput.trim()}
+                  className="px-6 py-3 bg-primary hover:bg-primary/95 disabled:bg-slate-800 disabled:text-slate-500 text-white font-black text-sm uppercase tracking-wider rounded-xl active:scale-95 transition-all cursor-pointer shadow-md shadow-primary/20 flex items-center justify-center gap-2"
+                >
+                  {analyzingStress ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" /> ĐANG PHÂN TÍCH...
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="w-4 h-4 fill-white" /> PHÂN TÍCH
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {stressError && (
+                <p className="text-sm text-rose-400 font-medium">⚠️ {stressError}</p>
+              )}
+
+              {/* Analyzer Results */}
+              {stressResult && (
+                <div className="space-y-6 pt-4 border-t border-slate-800/80 animate-in fade-in duration-500">
+                  {/* Syllables Visualization */}
+                  <div className="space-y-2 text-center">
+                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">Phân tách âm tiết & Trọng âm</span>
+                    <div className="flex flex-wrap items-center justify-center gap-4 py-6">
+                      {stressResult.syllables.map((syl: string, idx: number) => {
+                        const isPrimary = idx === stressResult.stressedSyllableIndex;
+                        const isSecondary = idx === stressResult.secondaryStressedSyllableIndex;
+                        return (
+                          <div key={idx} className="flex flex-col items-center gap-1.5">
+                            {/* Accent indicator label */}
+                            {isPrimary && (
+                              <span className="text-[8px] font-black text-amber-400 uppercase tracking-widest bg-amber-500/10 px-1.5 py-0.5 rounded">
+                                Trọng âm chính
+                              </span>
+                            )}
+                            {isSecondary && (
+                              <span className="text-[8px] font-black text-purple-400 uppercase tracking-widest bg-purple-500/10 px-1.5 py-0.5 rounded">
+                                Trọng âm phụ
+                              </span>
+                            )}
+                            {!isPrimary && !isSecondary && <span className="h-[17px] w-1" />}
+
+                            <button
+                              onClick={() => speak(syl)}
+                              className={cn(
+                                "h-16 px-6 rounded-2xl flex items-center justify-center font-black text-lg transition-all duration-300 relative group cursor-pointer border-2",
+                                isPrimary
+                                  ? "bg-gradient-to-br from-amber-400 to-orange-500 border-amber-300 text-white shadow-lg shadow-orange-500/20 scale-110 ring-4 ring-orange-500/20"
+                                  : isSecondary
+                                    ? "bg-gradient-to-br from-purple-500 to-indigo-600 border-purple-400 text-white shadow-md shadow-purple-500/10 scale-105"
+                                    : "bg-slate-800 border-slate-700 hover:border-slate-500 text-slate-300"
+                              )}
+                            >
+                              {/* Primary Stress Marker */}
+                              {isPrimary && <span className="absolute -left-2 text-2xl text-amber-300 font-mono">ˈ</span>}
+                              {/* Secondary Stress Marker */}
+                              {isSecondary && <span className="absolute -left-2 text-xl text-purple-300 font-mono">ˌ</span>}
+                              
+                              <span>{syl}</span>
+                            </button>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Monospace Phonetics + Audio Button */}
+                  <div className="flex justify-center pb-2">
+                    <button
+                      onClick={() => speak(stressResult.word, 0.7)}
+                      className="px-6 py-3 bg-slate-800 hover:bg-slate-750 border border-slate-700 rounded-2xl flex items-center gap-3 group active:scale-95 transition-all cursor-pointer"
+                    >
+                      <Volume2 className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
+                      <span className="font-mono font-black text-base text-slate-200">{stressResult.phonetic}</span>
+                      <Play className="w-3.5 h-3.5 fill-slate-400 text-slate-400 group-hover:text-white" />
+                    </button>
+                  </div>
+
+                  {/* Side-by-side Explanations (Fluid layout) */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="p-4 bg-slate-800/40 border border-slate-800 rounded-xl space-y-1.5 text-left">
+                      <h4 className="text-xs font-black text-amber-400 uppercase tracking-widest flex items-center gap-1.5">
+                        <Target className="w-4 h-4 text-amber-400" /> Quy tắc trọng âm:
+                      </h4>
+                      <p className="text-sm text-slate-300 font-medium leading-relaxed">
+                        {stressResult.ruleExplanation}
+                      </p>
+                    </div>
+
+                    <div className="p-4 bg-slate-800/40 border border-slate-800 rounded-xl space-y-1.5 text-left">
+                      <h4 className="text-xs font-black text-primary uppercase tracking-widest flex items-center gap-1.5">
+                        <Info className="w-4 h-4" /> Hướng dẫn nhấn giọng:
+                      </h4>
+                      <p className="text-sm text-slate-300 font-medium leading-relaxed">
+                        {stressResult.pronunciationGuide}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Sibling similar words */}
+                  {stressResult.similarWords && stressResult.similarWords.length > 0 && (
+                    <div className="pt-2 border-t border-slate-800/80">
+                      <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest block mb-2 text-left">Từ có trọng âm tương tự:</span>
+                      <div className="flex flex-wrap gap-2.5">
+                        {stressResult.similarWords.map((sim: any, idx: number) => (
+                          <button
+                            key={idx}
+                            onClick={() => handleAnalyzeStress(sim.word)}
+                            className="px-4 py-2 bg-slate-800 hover:bg-slate-750 border border-slate-700 hover:border-slate-500 rounded-xl text-xs font-medium text-slate-300 hover:text-white transition-all flex items-center gap-2 cursor-pointer"
+                          >
+                            <span className="font-bold">{sim.word}</span>
+                            <span className="font-mono text-slate-500 text-[10px]">{sim.phonetic}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="space-y-4">
@@ -1024,6 +1283,227 @@ export default function PronunciationPage() {
               ))}
             </div>
           </section>
+        </div>
+      )}
+
+      {/* ════════════════════════════════════════════ DATETIME ═══════════════════════ */}
+      {activeTab === 'datetime' && (
+        <div className="space-y-6 animate-in fade-in duration-500">
+          <div className="premium-card p-6 bg-gradient-to-r from-violet-50 to-purple-50 border-violet-200">
+            <h3 className="text-lg font-black text-violet-800 flex items-center gap-2 mb-2">
+              <Calendar className="w-5 h-5 text-violet-600" /> Phát Âm Thứ, Tháng & Năm trong Tiếng Anh
+            </h3>
+            <p className="text-sm text-violet-700 leading-relaxed font-medium">
+              Cách đọc chuẩn xác các thứ trong tuần, tháng trong năm và quy tắc đọc các mốc năm trong tiếng Anh kèm phiên âm IPA đầy đủ.
+            </p>
+          </div>
+
+          {/* Sub-tabs */}
+          <div className="flex gap-2 overflow-x-auto pb-1">
+            {[
+              { id: 'days' as const, label: 'Thứ trong tuần' },
+              { id: 'months' as const, label: 'Tháng trong năm' },
+              { id: 'years' as const, label: 'Cách đọc Năm' },
+            ].map(s => (
+              <button
+                key={s.id}
+                onClick={() => setDatetimeSection(s.id)}
+                className={cn(
+                  "px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all whitespace-nowrap cursor-pointer",
+                  datetimeSection === s.id ? "bg-violet-600 text-white shadow-md" : "bg-white border border-slate-200 text-slate-500 hover:bg-slate-50"
+                )}
+              >
+                {s.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Days of week */}
+          {datetimeSection === 'days' && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+              {DAYS_OF_WEEK.map(d => (
+                <button
+                  key={d.day}
+                  onClick={() => speak(d.day)}
+                  className="group premium-card p-5 flex flex-col items-center justify-center text-center gap-2 hover:shadow-xl hover:-translate-y-0.5 transition-all border border-violet-100 bg-violet-50/10 cursor-pointer"
+                >
+                  <span className="text-[10px] font-black text-violet-500 uppercase tracking-widest bg-violet-100 px-2 py-0.5 rounded-md">{d.abbreviation}</span>
+                  <span className="text-xl font-black text-slate-800">{d.day}</span>
+                  <span className="text-xs font-mono text-slate-400 font-medium">{d.ipa}</span>
+                  <span className="text-xs font-medium text-slate-500 border-t border-slate-100 w-full pt-1.5 mt-1">{d.vi}</span>
+                  <div className="w-8 h-8 rounded-full bg-slate-100 group-hover:bg-violet-500 flex items-center justify-center transition-colors mt-1">
+                    <Play className="w-3.5 h-3.5 fill-slate-400 text-slate-400 group-hover:fill-white group-hover:text-white transition-colors" />
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Months of year */}
+          {datetimeSection === 'months' && (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+              {MONTHS_OF_YEAR.map(m => (
+                <button
+                  key={m.month}
+                  onClick={() => speak(m.month)}
+                  className="group premium-card p-5 flex items-center gap-4 hover:shadow-xl hover:-translate-y-0.5 transition-all border border-purple-100 bg-purple-50/10 cursor-pointer text-left"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center font-black text-sm uppercase flex-shrink-0">
+                    {m.abbreviation}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-lg font-black text-slate-800 leading-tight">{m.month}</p>
+                    <p className="text-xs font-mono text-slate-400 font-medium">{m.ipa}</p>
+                    <p className="text-xs text-slate-500 font-medium mt-0.5">{m.vi}</p>
+                  </div>
+                  <Play className="w-4 h-4 text-slate-200 group-hover:text-purple-600 flex-shrink-0 transition-colors" />
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Years rules */}
+          {datetimeSection === 'years' && (
+            <div className="space-y-4">
+              <div className="premium-card p-4 bg-amber-50 border-amber-200 flex items-start gap-3 text-left">
+                <Info className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
+                <div className="text-sm text-amber-700 font-medium space-y-1">
+                  <p><strong>Nguyên tắc chung:</strong> Đối với các năm trước năm 2000, ta thường chia đôi năm thành 2 cụm số hàng chục để đọc. Kể từ năm 2000 trở đi, có thể đọc cả số nghìn hoặc tiếp tục áp dụng quy tắc chia đôi.</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {YEAR_RULES.map((y, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => speak(y.read)}
+                    className="group premium-card p-5 flex items-center gap-5 hover:shadow-xl transition-all text-left cursor-pointer"
+                  >
+                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-500 to-purple-600 text-white flex items-center justify-center font-black text-lg flex-shrink-0 shadow-lg shadow-purple-500/10">
+                      {y.example}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-base font-black text-slate-800 leading-tight">{y.read}</p>
+                      <p className="text-xs font-mono text-slate-400 font-medium mt-0.5">{y.ipa}</p>
+                      <p className="text-xs text-violet-600 font-bold mt-1">💡 {y.rule}</p>
+                    </div>
+                    <Play className="w-5 h-5 text-slate-200 group-hover:text-violet-600 flex-shrink-0 transition-colors" />
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ════════════════════════════════════════════ COUNTRIES & NATIONALITIES ════ */}
+      {activeTab === 'countries' && (
+        <div className="space-y-6 animate-in fade-in duration-500">
+          <div className="premium-card p-6 bg-gradient-to-r from-emerald-50 to-teal-50 border-emerald-200">
+            <h3 className="text-lg font-black text-emerald-800 flex items-center gap-2 mb-2">
+              <Globe className="w-5 h-5 text-emerald-600" /> Tên Quốc Gia & Quốc Tịch (Countries & Nationalities)
+            </h3>
+            <p className="text-sm text-emerald-700 leading-relaxed font-medium">
+              Luyện phát âm chuẩn xác tên các quốc gia lớn trên thế giới và danh từ chỉ quốc tịch/ngôn ngữ tương ứng kèm phiên âm quốc tế IPA.
+            </p>
+          </div>
+
+          {/* Search & Region Filters */}
+          <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
+            {/* Search Input */}
+            <div className="relative w-full sm:w-80">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-slate-400" />
+              <input
+                type="text"
+                placeholder="Tìm quốc gia hoặc quốc tịch..."
+                value={countrySearch}
+                onChange={(e) => setCountrySearch(e.target.value)}
+                className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-medium focus:ring-2 focus:ring-emerald-500/20 focus:outline-none placeholder-slate-400 text-slate-800"
+              />
+            </div>
+
+            {/* Region Filter Buttons */}
+            <div className="flex gap-1.5 overflow-x-auto w-full sm:w-auto pb-1">
+              {['All', 'Asia', 'Europe', 'Americas', 'Africa', 'Oceania'].map(reg => (
+                <button
+                  key={reg}
+                  onClick={() => setSelectedRegion(reg)}
+                  className={cn(
+                    "px-3.5 py-1.5 rounded-lg text-xs font-black uppercase tracking-wider transition-all whitespace-nowrap cursor-pointer",
+                    selectedRegion === reg
+                      ? "bg-emerald-600 text-white shadow-sm"
+                      : "bg-white border border-slate-200 text-slate-500 hover:bg-slate-50"
+                  )}
+                >
+                  {reg === 'All' ? 'Tất cả' : reg}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Grid of Countries */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {COUNTRIES_DATA.filter(c => {
+              const matchesSearch = c.country.toLowerCase().includes(countrySearch.toLowerCase()) || 
+                                    c.nationality.toLowerCase().includes(countrySearch.toLowerCase()) || 
+                                    c.vi.toLowerCase().includes(countrySearch.toLowerCase());
+              const matchesRegion = selectedRegion === 'All' || c.region === selectedRegion;
+              return matchesSearch && matchesRegion;
+            }).map((c, idx) => (
+              <div
+                key={idx}
+                className="premium-card p-5 flex flex-col justify-between hover:shadow-xl transition-all border border-slate-100 bg-white"
+              >
+                {/* Header Flag & Vietnamese translation */}
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-3xl filter drop-shadow-sm select-none">{c.flag}</span>
+                  <span className="text-[10px] font-black text-slate-400 bg-slate-50 border border-slate-100 px-2 py-0.5 rounded-full uppercase tracking-wider">{c.region}</span>
+                </div>
+
+                {/* Country section */}
+                <div className="space-y-4">
+                  <div className="text-left">
+                    <span className="text-[9px] font-black text-emerald-600 uppercase tracking-widest block mb-0.5 text-left">Quốc Gia (Country)</span>
+                    <button
+                      onClick={() => speak(c.country)}
+                      className="group flex items-center gap-2 hover:text-emerald-600 transition-colors text-left cursor-pointer"
+                    >
+                      <span className="text-base font-black text-slate-800 group-hover:text-emerald-600 transition-colors">{c.country}</span>
+                      <Play className="w-3.5 h-3.5 text-slate-300 group-hover:text-emerald-600 fill-slate-100 group-hover:fill-emerald-100 transition-all flex-shrink-0" />
+                    </button>
+                    <p className="text-xs font-mono text-slate-400 font-medium mt-0.5 text-left">{c.countryIpa}</p>
+                    <p className="text-xs text-slate-500 font-bold mt-1 text-left">({c.vi})</p>
+                  </div>
+
+                  {/* Nationality section */}
+                  <div className="pt-3 border-t border-slate-100 text-left">
+                    <span className="text-[9px] font-black text-blue-600 uppercase tracking-widest block mb-0.5 text-left">Quốc Tịch / Ngôn Ngữ</span>
+                    <button
+                      onClick={() => speak(c.nationality)}
+                      className="group flex items-center gap-2 hover:text-blue-600 transition-colors text-left cursor-pointer"
+                    >
+                      <span className="text-sm font-bold text-slate-700 group-hover:text-blue-600 transition-colors">{c.nationality}</span>
+                      <Play className="w-3.5 h-3.5 text-slate-300 group-hover:text-blue-600 fill-slate-100 group-hover:fill-blue-100 transition-all flex-shrink-0" />
+                    </button>
+                    <p className="text-xs font-mono text-slate-400 font-medium mt-0.5 text-left">{c.nationalityIpa}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Empty state */}
+          {COUNTRIES_DATA.filter(c => {
+            const matchesSearch = c.country.toLowerCase().includes(countrySearch.toLowerCase()) || 
+                                  c.nationality.toLowerCase().includes(countrySearch.toLowerCase()) || 
+                                  c.vi.toLowerCase().includes(countrySearch.toLowerCase());
+            const matchesRegion = selectedRegion === 'All' || c.region === selectedRegion;
+            return matchesSearch && matchesRegion;
+          }).length === 0 && (
+            <div className="text-center py-12 premium-card bg-slate-50/50">
+              <p className="text-slate-400 font-medium text-sm">Không tìm thấy quốc gia phù hợp với từ khóa.</p>
+            </div>
+          )}
         </div>
       )}
     </div>
