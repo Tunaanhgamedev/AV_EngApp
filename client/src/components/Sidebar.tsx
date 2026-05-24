@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { 
   LayoutDashboard, 
   BookOpen, 
@@ -31,6 +31,7 @@ import { useAuth } from '@/context/AuthContext';
 
 export function Sidebar({ isOpen, onClose }: { isOpen?: boolean; onClose?: () => void }) {
   const pathname = usePathname();
+  const router = useRouter();
   const { user, dbUser, signInWithGoogle, logout, loading } = useAuth();
   const [reviewCount, setReviewCount] = React.useState(0);
   const [notebookNeedsReview, setNotebookNeedsReview] = React.useState(false);
@@ -184,7 +185,10 @@ export function Sidebar({ isOpen, onClose }: { isOpen?: boolean; onClose?: () =>
           </div>
         ) : (
           <button
-            onClick={signInWithGoogle}
+            onClick={() => {
+              onClose?.();
+              router.push('/login');
+            }}
             className="w-full flex items-center justify-center gap-2 p-3 rounded-xl bg-slate-900 text-white hover:bg-slate-800 transition-all font-medium text-sm shadow-lg shadow-slate-900/10"
           >
             <LogIn className="w-4 h-4" />

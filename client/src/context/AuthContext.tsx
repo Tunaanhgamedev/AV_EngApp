@@ -99,20 +99,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
     try {
-      if (isMobileBrowser()) {
-        // Mobile: use redirect flow (no popup blocking issues)
-        await signInWithRedirect(auth, provider);
-      } else {
-        // Desktop: use popup flow (instant UX)
-        const result = await signInWithPopup(auth, provider);
-        if (result.user) {
-          await fetchDbUser(result.user);
-        }
+      // Primary: Try popup sign-in first for all environments
+      // This is because on mobile Chrome/Safari, signInWithPopup works natively if user-triggered
+      // and avoids the Safari ITP / third-party cookies block that breaks signInWithRedirect.
+      const result = await signInWithPopup(auth, provider);
+      if (result.user) {
+        await fetchDbUser(result.user);
       }
     } catch (error: any) {
-      // If popup fails on desktop (e.g. popup blocker), fall back to redirect
-      if (error?.code === 'auth/popup-blocked' || error?.code === 'auth/popup-closed-by-user') {
-        console.warn("Popup blocked, falling back to redirect sign-in...");
+      console.warn("signInWithPopup failed or was blocked, attempting redirect fallback...", error);
+      // Fallback: If popup is blocked, closed, or cancelled, use redirect
+      if (
+        error?.code === 'auth/popup-blocked' || 
+        error?.code === 'auth/popup-closed-by-user' || 
+        error?.code === 'auth/cancelled-popup-request' ||
+        error?.code === 'auth/operation-not-supported-in-this-environment'
+      ) {
         try {
           await signInWithRedirect(auth, provider);
         } catch (redirectError) {

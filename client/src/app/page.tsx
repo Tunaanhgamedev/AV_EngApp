@@ -19,9 +19,11 @@ import {
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function Dashboard() {
   const { user, dbUser, signInWithGoogle, loading } = useAuth();
+  const router = useRouter();
 
   const [stats, setStats] = React.useState({ wordsLearned: 0, oxfordLearned: 0, totalOxford: 3000 });
   const [vietnamTime, setVietnamTime] = React.useState<Date | null>(null);
@@ -171,7 +173,7 @@ export default function Dashboard() {
           </p>
           <div className="flex flex-wrap justify-center gap-4 pt-6">
             <button 
-              onClick={signInWithGoogle}
+              onClick={() => router.push('/login')}
               className="px-8 py-4 bg-slate-900 text-white rounded-2xl font-bold text-lg hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/20 flex items-center gap-2 group"
             >
               Get Started for Free

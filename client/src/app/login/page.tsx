@@ -1,14 +1,23 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
-import { LogIn, Mail, Loader2 } from 'lucide-react';
+import { LogIn, Mail, Loader2, AlertTriangle, Compass } from 'lucide-react';
 
 export default function LoginPage() {
   const { user, signInWithGoogle, loading } = useAuth();
   const router = useRouter();
   const [signingIn, setSigningIn] = useState(false);
+  const [isInApp, setIsInApp] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const ua = navigator.userAgent || navigator.vendor || '';
+      const inApp = /FBAN|FBAV|Instagram|Zalo|Messenger|Line|WeChat|Kakaotalk|MicroMessenger/i.test(ua);
+      setIsInApp(inApp);
+    }
+  }, []);
 
   if (loading) {
     return (
@@ -33,8 +42,6 @@ export default function LoginPage() {
     } catch {
       setSigningIn(false);
     }
-    // Note: On mobile, signInWithRedirect will navigate away,
-    // so setSigningIn(false) won't execute — that's expected behavior.
   };
 
   return (
@@ -49,6 +56,21 @@ export default function LoginPage() {
             Learn English with AI. Sign in to track your progress.
           </p>
         </div>
+
+        {isInApp && (
+          <div className="p-4 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-2xl flex items-start gap-3 text-amber-800 animate-in fade-in duration-300">
+            <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+            <div className="space-y-1">
+              <p className="text-xs font-black uppercase tracking-wider">⚠️ Phát hiện trình duyệt nội bộ</p>
+              <p className="text-[11px] leading-relaxed font-medium">
+                Bạn đang mở web bằng Zalo/Facebook. Google không cho phép đăng nhập tại đây.
+              </p>
+              <p className="text-[11px] font-bold text-amber-950 flex items-center gap-1 mt-1">
+                <Compass className="w-3.5 h-3.5" /> Bấm nút ba chấm (...) ở góc màn hình và chọn <strong>"Mở bằng trình duyệt Safari/Chrome"</strong> để tiếp tục.
+              </p>
+            </div>
+          </div>
+        )}
         
         <div className="mt-6 sm:mt-8 space-y-3 sm:space-y-4">
           <button
