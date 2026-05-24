@@ -18,6 +18,7 @@ import { useAuth } from '@/context/AuthContext';
 
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 const LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
 export default function WordlistPage() {
   const { user, signInWithGoogle } = useAuth();
@@ -41,7 +42,7 @@ export default function WordlistPage() {
         ...(searchTerm && { search: searchTerm })
       });
 
-      const res = await fetch(`http://localhost:5000/api/vocabulary/wordlist?${params}`);
+      const res = await fetch(`${API_BASE}/vocabulary/wordlist?${params}`);
       const data = await res.json();
       setWords(data.words || []);
       setTotalPages(data.pages || 1);
@@ -72,7 +73,7 @@ export default function WordlistPage() {
     setSavingId(wordId);
     try {
       const token = await user.getIdToken();
-      const res = await fetch('http://localhost:5000/api/vocabulary/save', {
+      const res = await fetch(`${API_BASE}/vocabulary/save`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
