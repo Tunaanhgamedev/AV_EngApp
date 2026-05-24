@@ -6,15 +6,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.authenticate = void 0;
 const firebase_admin_1 = __importDefault(require("firebase-admin"));
 const path_1 = __importDefault(require("path"));
-// Path to your service account key file
-const serviceAccountPath = path_1.default.join(process.cwd(), 'firebase-service-account.json');
 // Initialize Firebase Admin
 if (!firebase_admin_1.default.apps.length) {
     try {
-        firebase_admin_1.default.initializeApp({
-            credential: firebase_admin_1.default.credential.cert(serviceAccountPath),
-        });
-        console.log('Firebase Admin initialized successfully');
+        if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+            // Parse JSON string from environment variable
+            const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+            firebase_admin_1.default.initializeApp({
+                credential: firebase_admin_1.default.credential.cert(serviceAccount),
+            });
+            console.log('Firebase Admin initialized via environment variable successfully');
+        }
+        else {
+            const serviceAccountPath = path_1.default.join(process.cwd(), 'firebase-service-account.json');
+            firebase_admin_1.default.initializeApp({
+                credential: firebase_admin_1.default.credential.cert(serviceAccountPath),
+            });
+            console.log('Firebase Admin initialized successfully from local JSON file');
+        }
     }
     catch (error) {
         console.error('Firebase Admin initialization error:', error);

@@ -2,16 +2,23 @@ import { Request, Response, NextFunction } from 'express';
 import admin from 'firebase-admin';
 import path from 'path';
 
-// Path to your service account key file
-const serviceAccountPath = path.join(process.cwd(), 'firebase-service-account.json');
-
 // Initialize Firebase Admin
 if (!admin.apps.length) {
   try {
-    admin.initializeApp({
-      credential: admin.credential.cert(serviceAccountPath),
-    });
-    console.log('Firebase Admin initialized successfully');
+    if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+      // Parse JSON string from environment variable
+      const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+      admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+      });
+      console.log('Firebase Admin initialized via environment variable successfully');
+    } else {
+      const serviceAccountPath = path.join(process.cwd(), 'firebase-service-account.json');
+      admin.initializeApp({
+        credential: admin.credential.cert(serviceAccountPath),
+      });
+      console.log('Firebase Admin initialized successfully from local JSON file');
+    }
   } catch (error) {
     console.error('Firebase Admin initialization error:', error);
   }
