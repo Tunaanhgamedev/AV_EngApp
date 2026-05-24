@@ -86,8 +86,8 @@ router.get('/learn-new', authenticate, async (req: any, res) => {
         console.log('Auto-seed (Bulk via Prisma) complete');
     }
 
-    const learnedWordIds = learnedWords.map(w => w.wordId);
-    const excludeIds = learnedWordIds.length > 0 ? learnedWordIds.map(id => `'${id}'`).join(',') : "'00000000-0000-0000-0000-000000000000'";
+    const learnedWordIds = learnedWords.map((w: any) => w.wordId);
+    const excludeIds = learnedWordIds.length > 0 ? learnedWordIds.map((id: any) => `'${id}'`).join(',') : "'00000000-0000-0000-0000-000000000000'";
 
     // Step 1: Try level-specific fetch
     const levelWords: any = await prisma.$queryRawUnsafe(
@@ -144,7 +144,7 @@ router.get('/learn-new', authenticate, async (req: any, res) => {
               audioUs: aiData.audioUs || null,
               audioUk: aiData.audioUk || null
             }
-          }).catch(err => console.error(`Failed to update DB for ${word.word}:`, err));
+          }).catch((err: any) => console.error(`Failed to update DB for ${word.word}:`, err));
           
           enrichedWords.push({
             ...word,
@@ -228,7 +228,7 @@ router.get('/due-reviews', authenticate, async (req: any, res) => {
       }
     });
 
-    res.json({ words: dueWords.map(d => d.word) });
+    res.json({ words: dueWords.map((d: any) => d.word) });
   } catch (error) {
     console.error('Fetch Reviews Error:', error);
     res.status(500).json({ error: 'Failed to fetch reviews' });
@@ -604,7 +604,7 @@ router.get('/notebook', authenticate, async (req: any, res) => {
       orderBy: { lastReviewedAt: 'desc' }
     });
 
-    res.json({ words: entries.map(e => ({ ...e.word, masteryLevel: e.masteryLevel, nextReviewAt: e.nextReviewAt, savedAt: e.lastReviewedAt })) });
+    res.json({ words: entries.map((e: any) => ({ ...e.word, masteryLevel: e.masteryLevel, nextReviewAt: e.nextReviewAt, savedAt: e.lastReviewedAt })) });
   } catch (error) {
     console.error('Notebook GET error:', error);
     res.status(500).json({ error: 'Failed to fetch notebook' });
@@ -855,12 +855,12 @@ router.get('/review/session', authenticate, async (req: any, res) => {
     );
 
     const distractorsPool = [
-      ...allLearnedWords.map(n => n.word.meaningVi),
-      ...globalRandomWords.rows.map(r => r.meaningVi)
+      ...allLearnedWords.map((n: any) => n.word.meaningVi),
+      ...globalRandomWords.rows.map((r: any) => r.meaningVi)
     ].filter(Boolean);
 
     // Enhance with AI questions for each word (async to speed up response)
-    const sessionWords = await Promise.all(dueEntries.map(async (entry) => {
+    const sessionWords = await Promise.all(dueEntries.map(async (entry: any) => {
       // Basic info
       const word = entry.word;
       

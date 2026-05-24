@@ -228,7 +228,7 @@ const getCheckinHistory = async (req, res) => {
             }
         });
         // Format all dates to YYYY-MM-DD representing Vietnam local checkin dates
-        const formattedDates = activities.map(a => {
+        const formattedDates = activities.map((a) => {
             const d = a.activityDate;
             const yyyy = d.getUTCFullYear();
             const mm = String(d.getUTCMonth() + 1).padStart(2, '0');

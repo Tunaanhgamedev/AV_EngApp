@@ -75,8 +75,8 @@ router.get('/learn-new', auth_middleware_1.authenticate, async (req, res) => {
         `);
             console.log('Auto-seed (Bulk via Prisma) complete');
         }
-        const learnedWordIds = learnedWords.map(w => w.wordId);
-        const excludeIds = learnedWordIds.length > 0 ? learnedWordIds.map(id => `'${id}'`).join(',') : "'00000000-0000-0000-0000-000000000000'";
+        const learnedWordIds = learnedWords.map((w) => w.wordId);
+        const excludeIds = learnedWordIds.length > 0 ? learnedWordIds.map((id) => `'${id}'`).join(',') : "'00000000-0000-0000-0000-000000000000'";
         // Step 1: Try level-specific fetch
         const levelWords = await prisma_1.default.$queryRawUnsafe(`SELECT id, word, phonetic, meaning_en as "meaningEn", meaning_vi as "meaningVi", word_type as "wordType", cefr_level as "cefrLevel", audio_us as "audioUs", usage, example, example_vi as "exampleVi"
        FROM vocabulary_words 
@@ -121,7 +121,7 @@ router.get('/learn-new', auth_middleware_1.authenticate, async (req, res) => {
                             audioUs: aiData.audioUs || null,
                             audioUk: aiData.audioUk || null
                         }
-                    }).catch(err => console.error(`Failed to update DB for ${word.word}:`, err));
+                    }).catch((err) => console.error(`Failed to update DB for ${word.word}:`, err));
                     enrichedWords.push({
                         ...word,
                         phonetic: aiData.phonetic,
@@ -198,7 +198,7 @@ router.get('/due-reviews', auth_middleware_1.authenticate, async (req, res) => {
                 nextReviewAt: 'asc'
             }
         });
-        res.json({ words: dueWords.map(d => d.word) });
+        res.json({ words: dueWords.map((d) => d.word) });
     }
     catch (error) {
         console.error('Fetch Reviews Error:', error);
@@ -513,7 +513,7 @@ router.get('/notebook', auth_middleware_1.authenticate, async (req, res) => {
             include: { word: true },
             orderBy: { lastReviewedAt: 'desc' }
         });
-        res.json({ words: entries.map(e => ({ ...e.word, masteryLevel: e.masteryLevel, nextReviewAt: e.nextReviewAt, savedAt: e.lastReviewedAt })) });
+        res.json({ words: entries.map((e) => ({ ...e.word, masteryLevel: e.masteryLevel, nextReviewAt: e.nextReviewAt, savedAt: e.lastReviewedAt })) });
     }
     catch (error) {
         console.error('Notebook GET error:', error);
@@ -742,8 +742,8 @@ router.get('/review/session', auth_middleware_1.authenticate, async (req, res) =
         });
         const globalRandomWords = await pool.query(`SELECT meaning_vi as "meaningVi" FROM vocabulary_words ORDER BY RANDOM() LIMIT 20`);
         const distractorsPool = [
-            ...allLearnedWords.map(n => n.word.meaningVi),
-            ...globalRandomWords.rows.map(r => r.meaningVi)
+            ...allLearnedWords.map((n) => n.word.meaningVi),
+            ...globalRandomWords.rows.map((r) => r.meaningVi)
         ].filter(Boolean);
         // Enhance with AI questions for each word (async to speed up response)
         const sessionWords = await Promise.all(dueEntries.map(async (entry) => {

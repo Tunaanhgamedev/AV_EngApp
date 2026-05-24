@@ -138,7 +138,7 @@ async function main() {
     let failedCount = 0;
     for (let i = 0; i < totalToTranslate; i += BATCH_SIZE) {
         const chunk = untranslated.slice(i, i + BATCH_SIZE);
-        const words = chunk.map(w => w.word);
+        const words = chunk.map((w) => w.word);
         console.log(`\n[Batch ${Math.floor(i / BATCH_SIZE) + 1}] Đang dịch nhóm ${i + 1} - ${Math.min(i + BATCH_SIZE, totalToTranslate)}...`);
         console.log(`Các từ trong nhóm: ${words.join(', ')}`);
         let batchResults = [];
@@ -160,7 +160,7 @@ async function main() {
         }
         // Nếu Gemini lỗi, chạy Fallback miễn phí song song cực kỳ nhanh
         if (isFallbackUsed) {
-            const fallbackPromises = words.map(w => translateAndEnrichFreeFallback(w));
+            const fallbackPromises = words.map((w) => translateAndEnrichFreeFallback(w));
             const fallbackResults = await Promise.all(fallbackPromises);
             batchResults = fallbackResults.filter(Boolean);
         }
@@ -170,7 +170,7 @@ async function main() {
                     continue;
                 }
                 // Khớp từ vựng với DB (case-insensitive)
-                const dbItem = chunk.find(item => item.word.toLowerCase() === ai.word.toLowerCase());
+                const dbItem = chunk.find((item) => item.word.toLowerCase() === ai.word.toLowerCase());
                 if (!dbItem) {
                     continue;
                 }
