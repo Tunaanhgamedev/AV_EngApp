@@ -9,7 +9,16 @@ if (!admin.apps.length) {
     const envVal = process.env.FIREBASE_SERVICE_ACCOUNT;
 
     if (envVal) {
-      const trimmed = envVal.trim();
+      let trimmed = envVal.trim();
+      
+      // Auto-repair missing curly braces if the value contains service account markers
+      if (!trimmed.startsWith('{') && (trimmed.includes('"project_id"') || trimmed.includes('"private_key"'))) {
+        trimmed = '{' + trimmed;
+      }
+      if (!trimmed.endsWith('}') && (trimmed.includes('"project_id"') || trimmed.includes('"private_key"'))) {
+        trimmed = trimmed + '}';
+      }
+
       if (trimmed.startsWith('{')) {
         // It is raw JSON content
         serviceAccount = JSON.parse(trimmed);
@@ -40,6 +49,20 @@ if (!admin.apps.length) {
     }
 
     if (serviceAccount) {
+      // Normalize private key newlines if they are escaped as double backslashes
+      if (serviceAccount.private_key && typeof serviceAccount.private_key === 'string') {
+        serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n');
+      }
+      // Normalize malformed URLs (e.g. single slash after https:)
+      const urlKeys = ['auth_uri', 'token_uri', 'auth_provider_x509_cert_url', 'client_x509_cert_url'];
+      for (const key of urlKeys) {
+        if (serviceAccount[key] && typeof serviceAccount[key] === 'string') {
+          if (serviceAccount[key].startsWith('https:/') && !serviceAccount[key].startsWith('https://')) {
+            serviceAccount[key] = serviceAccount[key].replace('https:/', 'https://');
+          }
+        }
+      }
+
       admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
       });
