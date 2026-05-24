@@ -8,7 +8,8 @@ import app from './app';
 
 // EngBot Backend Server - Updated for Prisma 7.3 (SSL handled in prisma.ts)
 const PORT = process.env.PORT || 5000;
+const HOST = '0.0.0.0';
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+app.listen(Number(PORT), HOST, () => {
+  console.log(`Server is running on port ${PORT} (bound to ${HOST})`);
 });
