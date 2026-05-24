@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, useRef } from 'react';
 import { 
   onAuthStateChanged, 
   User as FirebaseUser,
@@ -33,17 +33,21 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Detect mobile browsers where signInWithPopup may fail
-const isMobileBrowser = (): boolean => {
-  if (typeof window === 'undefined') return false;
-  const ua = navigator.userAgent || navigator.vendor || '';
-  return /android|iphone|ipad|ipod|webos|blackberry|windows phone|opera mini|iemobile|mobile/i.test(ua);
-};
+// Maximum time to wait for Firebase Auth to initialize before showing content
+const AUTH_TIMEOUT_MS = 5000;
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<FirebaseUser | null>(null);
   const [dbUser, setDbUser] = useState<DbUser | null>(null);
   const [loading, setLoading] = useState(true);
+  const loadingResolved = useRef(false);
+
+  const resolveLoading = () => {
+    if (!loadingResolved.current) {
+      loadingResolved.current = true;
+      setLoading(false);
+    }
+  };
 
   const fetchDbUser = async (firebaseUser: FirebaseUser) => {
     try {
@@ -64,24 +68,37 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  // Handle redirect result on page load (for mobile signInWithRedirect flow)
+  // Safety timeout: If Firebase Auth takes too long to respond (slow network,
+  // in-app browser issues, etc.), force loading to false so user sees content
+  // instead of an infinite spinner.
   useEffect(() => {
-    const handleRedirectResult = async () => {
-      try {
-        const result = await getRedirectResult(auth);
-        if (result?.user) {
-          await fetchDbUser(result.user);
-        }
-      } catch (error: any) {
-        // Silently ignore "no redirect result" — this is normal on non-redirect loads
-        if (error?.code !== 'auth/popup-closed-by-user') {
-          console.error("Redirect sign-in error:", error);
-        }
+    const timeout = setTimeout(() => {
+      if (!loadingResolved.current) {
+        console.warn(`[AuthContext] Firebase Auth did not respond within ${AUTH_TIMEOUT_MS}ms. Forcing loading=false.`);
+        resolveLoading();
       }
-    };
-    handleRedirectResult();
+    }, AUTH_TIMEOUT_MS);
+    return () => clearTimeout(timeout);
   }, []);
 
+  // Handle redirect result on page load (for mobile signInWithRedirect flow).
+  // This runs independently and does NOT block the main auth state listener.
+  useEffect(() => {
+    getRedirectResult(auth)
+      .then((result) => {
+        if (result?.user) {
+          fetchDbUser(result.user);
+        }
+      })
+      .catch((error: any) => {
+        // Silently ignore expected non-redirect errors
+        if (error?.code !== 'auth/popup-closed-by-user') {
+          console.warn("Redirect result check:", error?.code || error?.message);
+        }
+      });
+  }, []);
+
+  // Main auth state listener — this is what resolves loading
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       setUser(firebaseUser);
@@ -90,7 +107,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       } else {
         setDbUser(null);
       }
-      setLoading(false);
+      resolveLoading();
     });
 
     return () => unsubscribe();
@@ -99,15 +116,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
     try {
-      // Primary: Try popup sign-in first for all environments
-      // This is because on mobile Chrome/Safari, signInWithPopup works natively if user-triggered
+      // Primary: Try popup sign-in first for all environments.
+      // On mobile Chrome/Safari, signInWithPopup works natively if user-triggered
       // and avoids the Safari ITP / third-party cookies block that breaks signInWithRedirect.
       const result = await signInWithPopup(auth, provider);
       if (result.user) {
         await fetchDbUser(result.user);
       }
     } catch (error: any) {
-      console.warn("signInWithPopup failed or was blocked, attempting redirect fallback...", error);
+      console.warn("signInWithPopup failed, attempting redirect fallback...", error?.code);
       // Fallback: If popup is blocked, closed, or cancelled, use redirect
       if (
         error?.code === 'auth/popup-blocked' || 

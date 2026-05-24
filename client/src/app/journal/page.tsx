@@ -16,10 +16,11 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { analyzeJournal, getJournalHistory } from '@/services/journal.service';
+import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 
 export default function JournalPage() {
-  const { user, signInWithGoogle, refreshDbUser } = useAuth();
+  const { user, refreshDbUser } = useAuth();
   const [entry, setEntry] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
@@ -89,13 +90,13 @@ export default function JournalPage() {
             Log in to track your writing progress and get grammar feedback from EngBot.
           </p>
         </div>
-        <button 
-          onClick={signInWithGoogle}
+        <Link 
+          href="/login"
           className="flex items-center gap-2 px-8 py-3 bg-slate-900 text-white rounded-xl font-bold hover:bg-slate-800 transition-all shadow-lg"
         >
           <LogIn className="w-5 h-5" />
           Sign In with Google
-        </button>
+        </Link>
       </div>
     );
   }

@@ -3,6 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { BookMarked, Plus, Search, Trash2, Sparkles, Loader2, LogIn, Volume2, Star, X, ChevronDown, Clock, CheckCheck, Lightbulb, MessageSquare, Tag, RotateCcw, AlertCircle, Brain, ChevronRight, Pencil, Save } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
@@ -444,7 +445,7 @@ interface DailyReviewStatus {
 }
 
 export default function NotebookPage() {
-  const { user, signInWithGoogle } = useAuth();
+  const { user } = useAuth();
   const router = useRouter();
   const [words, setWords] = useState<NotebookWord[]>([]);
   const [loading, setLoading] = useState(true);
@@ -533,7 +534,12 @@ export default function NotebookPage() {
     <div className="flex flex-col items-center justify-center h-[60vh] text-center p-6">
       <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-6"><BookMarked className="w-10 h-10" /></div>
       <h1 className="text-2xl font-black">Đăng nhập để xem Notebook</h1>
-      <button onClick={signInWithGoogle} className="mt-6 px-8 py-3 bg-slate-900 text-white rounded-xl font-bold shadow-xl">Đăng nhập với Google</button>
+      <Link 
+        href="/login" 
+        className="mt-6 px-8 py-3 bg-slate-900 text-white rounded-xl font-bold shadow-xl flex items-center justify-center gap-2 hover:bg-slate-800 transition-all cursor-pointer"
+      >
+        Đăng nhập với Google
+      </Link>
     </div>
   );
 

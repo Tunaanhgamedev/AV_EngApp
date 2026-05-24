@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
@@ -20,7 +21,8 @@ const TYPE_LABELS: Record<string,string> = {
 function SaveToNotebookPanel({
   sourceText, translatedText, onClose, initialType = '', isEnToVi = true
 }: { sourceText: string; translatedText: string; onClose: () => void; initialType?: string; isEnToVi?: boolean }) {
-  const { user, signInWithGoogle } = useAuth();
+  const { user } = useAuth();
+  const router = useRouter();
   const [wordType, setWordType]   = useState(initialType);
   const [editedVi, setEditedVi]   = useState(translatedText);
   const [saving, setSaving]       = useState(false);
@@ -30,7 +32,7 @@ function SaveToNotebookPanel({
   const displayMeaning = isEnToVi ? editedVi.trim() : sourceText.trim();
 
   const handleSave = async () => {
-    if (!user) { signInWithGoogle(); return; }
+    if (!user) { router.push('/login'); return; }
     if (saving || saved) return;
     setSaving(true);
     try {

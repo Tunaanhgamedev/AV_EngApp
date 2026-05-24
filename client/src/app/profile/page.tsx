@@ -20,9 +20,10 @@ import {
 import { useAuth } from '@/context/AuthContext';
 import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function ProfilePage() {
-  const { user, dbUser, logout, signInWithGoogle, loading } = useAuth();
+  const { user, dbUser, logout, loading } = useAuth();
   const router = useRouter();
 
   const handleLogout = async () => {
@@ -48,13 +49,13 @@ export default function ProfilePage() {
           <h2 className="text-2xl font-bold">Sign in to see your profile</h2>
           <p className="text-slate-500">Track your learning progress, XP, and streaks.</p>
         </div>
-        <button 
-          onClick={signInWithGoogle}
+        <Link 
+          href="/login"
           className="px-8 py-3 bg-primary text-white rounded-2xl font-bold hover:opacity-90 transition-all flex items-center gap-2"
         >
           <User className="w-5 h-5" />
           Sign in with Google
-        </button>
+        </Link>
       </div>
     );
   }

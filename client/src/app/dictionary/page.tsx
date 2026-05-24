@@ -22,14 +22,15 @@ import {
 import { cn } from '@/lib/utils';
 import { searchWord, saveWordToUser } from '@/services/vocabulary.service';
 import { useAuth } from '@/context/AuthContext';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 const LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 
 function DictionaryContent() {
   const searchParams = useSearchParams();
-  const { user, dbUser, signInWithGoogle, refreshDbUser } = useAuth();
+  const router = useRouter();
+  const { user, dbUser, refreshDbUser } = useAuth();
   
   // Search state
   const [searchTerm, setSearchTerm] = useState('');
@@ -173,7 +174,7 @@ function DictionaryContent() {
 
   const saveWord = async (word: any) => {
     if (!user) {
-      signInWithGoogle();
+      router.push('/login');
       return;
     }
 

@@ -19,9 +19,10 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 export default function SettingsPage() {
-  const { user, dbUser, signInWithGoogle, loading } = useAuth();
+  const { user, dbUser, loading } = useAuth();
   
   // Profile settings state
   const [displayName, setDisplayName] = useState('');
@@ -178,12 +179,12 @@ export default function SettingsPage() {
             <h2 className="text-2xl font-black text-slate-800">Yêu Cầu Đăng Nhập</h2>
             <p className="text-slate-500 font-medium max-w-sm mx-auto">Vui lòng đăng nhập để lưu trữ cấu hình đồng bộ trực tiếp lên máy chủ cơ sở dữ liệu!</p>
           </div>
-          <button 
-            onClick={signInWithGoogle}
+          <Link 
+            href="/login"
             className="px-8 py-3.5 bg-primary text-white rounded-2xl font-black text-lg hover:opacity-90 transition-all flex items-center gap-2 justify-center mx-auto shadow-xl shadow-primary/30 cursor-pointer animate-pulse"
           >
             <User className="w-5 h-5" /> Đăng nhập với Google
-          </button>
+          </Link>
         </div>
       ) : (
         <form onSubmit={handleSaveSettings} className="space-y-8">

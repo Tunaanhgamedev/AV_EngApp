@@ -21,6 +21,7 @@ import {
 import { cn } from '@/lib/utils';
 import { sendMessage } from '@/services/chat.service';
 import { useAuth } from '@/context/AuthContext';
+import Link from 'next/link';
 
 const SCENARIOS = [
   { 
@@ -61,7 +62,7 @@ const SCENARIOS = [
 ];
 
 export default function ChatPage() {
-  const { user, signInWithGoogle } = useAuth();
+  const { user } = useAuth();
   const [selectedScenario, setSelectedScenario] = useState<any>(null);
   const [messages, setMessages] = useState<any[]>([]);
   const [input, setInput] = useState('');
@@ -88,13 +89,13 @@ export default function ChatPage() {
             Log in to save your conversation history and get personalized feedback from EngBot.
           </p>
         </div>
-        <button 
-          onClick={signInWithGoogle}
+        <Link 
+          href="/login"
           className="flex items-center gap-2 px-8 py-3 bg-slate-900 text-white rounded-xl font-bold hover:bg-slate-800 transition-all shadow-lg"
         >
           <LogIn className="w-5 h-5" />
           Sign In with Google
-        </button>
+        </Link>
       </div>
     );
   }

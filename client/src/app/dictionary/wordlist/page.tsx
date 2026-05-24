@@ -15,13 +15,15 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 const LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
 export default function WordlistPage() {
-  const { user, signInWithGoogle } = useAuth();
+  const { user } = useAuth();
+  const router = useRouter();
   const [words, setWords] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -66,7 +68,7 @@ export default function WordlistPage() {
 
   const saveWord = async (wordId: string) => {
     if (!user) {
-      signInWithGoogle();
+      router.push('/login');
       return;
     }
 
