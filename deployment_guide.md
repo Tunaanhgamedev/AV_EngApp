@@ -136,19 +136,24 @@ app.use(cors({
 
 ---
 
-## 🔄 Quy Trình Tự Động Hóa CI/CD Khi Sửa Code
+## 🔄 Quy Trình Tự Động Hóa CI/CD Toàn Diện (GitHub Actions)
 
-Sau khi hoàn thành 3 bước trên, mỗi lần bạn muốn cập nhật tính năng mới:
+Dự án đã được cấu hình bộ tích hợp và triển khai tự động chuyên nghiệp **GitHub Actions** tại file `.github/workflows/ci-cd.yml`. Mỗi khi có commit mới được `git push` hoặc `Pull Request`:
 
-1. **Thực hiện thay đổi code** ở máy cá nhân (Local).
-2. **Commit và Push lên GitHub:**
-   ```bash
-   git add .
-   git commit -m "style: optimize spacing on mobile settings page"
-   git push origin main
-   ```
-3. **CI/CD Tự Động Chạy:**
-   *   **Render** sẽ nhận biết sự kiện push mới ở thư mục `server`, tự động kéo code về, biên dịch TypeScript (`tsc`) và khởi động lại API.
-   *   **Vercel** sẽ nhận biết sự kiện push ở thư mục `client`, tự động build tĩnh lại Next.js và cập nhật tức thì đến người dùng toàn cầu mà **không gây gián đoạn dịch vụ** (Zero-downtime deployment).
+1.  **Phía Kiểm Tra (CI)**:
+    *   Hệ thống sẽ chạy song song hai luồng build để kiểm tra lỗi biên dịch TypeScript và đóng gói Next.js (ở cả client và server).
+    *   Nếu code có lỗi biên dịch, GitHub Actions sẽ báo đỏ 🔴 ngay lập tức để bạn sửa lỗi trước khi ảnh hưởng đến sản phẩm trực tuyến.
+2.  **Phía Triển Khai (CD)**:
+    *   Sau khi hai luồng build kiểm tra thành công, nếu nhánh là `main`/`master`, GitHub Actions sẽ tự động kích hoạt tiến trình Deploy 🚀 lên **Vercel** và **Render**.
+
+### 🔑 Cấu Hình GitHub Secrets (Để Tự Động Hóa Deploy CD)
+Để GitHub Actions có quyền truy cập và triển khai ứng dụng của bạn, hãy vào trang Repository của bạn trên GitHub, chọn **Settings** -> **Secrets and variables** -> **Actions** -> click **New repository secret** và thêm các biến khóa sau:
+
+1.  **`RENDER_DEPLOY_HOOK_URL`**:
+    *   *Cách lấy:* Vào Render Dashboard -> Chọn Web Service của bạn -> Tab **Settings** -> Cuộn xuống tìm dòng **Deploy Hook** -> Sao chép URL hiển thị (dạng `https://api.render.com/deploy/srv-...`).
+2.  **`VERCEL_TOKEN`**:
+    *   *Cách lấy:* Vào Vercel Dashboard -> Chọn **Account Settings** -> **Tokens** -> Click **Create** để sinh mã Token mới với quyền Admin.
+3.  **`VERCEL_ORG_ID`** và **`VERCEL_PROJECT_ID`**:
+    *   *Cách lấy:* Chạy lệnh `vercel link` ở thư mục client trên máy cá nhân để liên kết dự án, thông tin ID sẽ nằm trong file cấu hình `.vercel/project.json`. Hoặc xem trực tiếp trong phần Settings dự án Vercel.
 
 ---
