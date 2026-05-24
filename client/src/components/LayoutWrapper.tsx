@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { Sidebar } from './Sidebar';
 import { Menu, X } from 'lucide-react';
 
@@ -8,8 +9,17 @@ interface LayoutWrapperProps {
   children: React.ReactNode;
 }
 
+// Pages that should render without the sidebar/topbar shell
+const FULL_SCREEN_PAGES = ['/login'];
+
 export function LayoutWrapper({ children }: LayoutWrapperProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+
+  // Render children directly without shell for full-screen pages (e.g. login)
+  if (FULL_SCREEN_PAGES.includes(pathname)) {
+    return <>{children}</>;
+  }
 
   return (
     <div className="min-h-screen flex flex-col w-full relative">
@@ -51,3 +61,4 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
     </div>
   );
 }
+
