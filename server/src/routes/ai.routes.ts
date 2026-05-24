@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { GeminiService, genAI } from '../services/gemini.service';
 import { authenticate } from '../middleware/auth.middleware';
+import prisma from '../lib/prisma';
 
 const router = Router();
 
@@ -396,7 +397,9 @@ const generateLocalStressAnalysis = (word: string) => {
   let syllables = cleanWord.match(/[^aeiouy]*[aeiouy]+(?:[^aeiouy]*(?=$|[^aeiouy]))?/gi) || [cleanWord];
   if (syllables.length === 0) syllables = [cleanWord];
   
+  const len = syllables.length;
   let stressedIndex = 0;
+  let secondaryStressedIndex = -1;
   let ruleExplanation = "Đối với từ tiếng Anh thông thường, trọng âm thường rơi vào âm tiết đầu tiên đối với danh từ/tính từ, hoặc âm tiết thứ hai đối với động từ.";
   let guide = `Nhấn giọng mạnh và cao hơn ở âm tiết đầu tiên: "${syllables[0].toUpperCase()}", các âm tiết sau đọc nhẹ và thấp hơn.`;
   let similarWords = [
@@ -405,18 +408,18 @@ const generateLocalStressAnalysis = (word: string) => {
   ];
 
   if (cleanWord.endsWith("tion") || cleanWord.endsWith("sion")) {
-    if (syllables.length >= 2) {
-      stressedIndex = syllables.length - 2;
+    if (len >= 2) {
+      stressedIndex = len - 2;
       ruleExplanation = "Quy tắc: Các từ có đuôi '-tion' hoặc '-sion' thì trọng âm luôn rơi vào âm tiết ngay trước nó.";
-      guide = `Đọc nhấn giọng mạnh vào âm tiết "${syllables[stressedIndex].toUpperCase()}" trước đuôi -tion.`;
+      guide = `Đọc nhấn giọng mạnh vào âm tiết "${syllables[stressedIndex].toUpperCase()}" trước đuôi -tion/-sion.`;
       similarWords = [
         { word: "action", phonetic: "/ˈæk.ʃən/" },
         { word: "nation", phonetic: "/ˈneɪ.ʃən/" }
       ];
     }
   } else if (cleanWord.endsWith("ic") || cleanWord.endsWith("ical")) {
-    if (syllables.length >= 2) {
-      stressedIndex = syllables.length - 2;
+    if (len >= 2) {
+      stressedIndex = len - 2;
       ruleExplanation = "Quy tắc: Các từ kết thúc bằng đuôi '-ic' hoặc '-ical' có trọng âm rơi vào âm tiết liền kề trước nó.";
       guide = `Nhấn giọng mạnh vào âm tiết "${syllables[stressedIndex].toUpperCase()}" ngay trước đuôi -ic.`;
       similarWords = [
@@ -425,8 +428,8 @@ const generateLocalStressAnalysis = (word: string) => {
       ];
     }
   } else if (cleanWord.endsWith("ity") || cleanWord.endsWith("ety")) {
-    if (syllables.length >= 3) {
-      stressedIndex = syllables.length - 3;
+    if (len >= 3) {
+      stressedIndex = len - 3;
       ruleExplanation = "Quy tắc: Các từ tận cùng bằng đuôi '-ity' hoặc '-ety' có trọng âm rơi vào âm tiết thứ 3 từ cuối lên.";
       guide = `Đọc nhấn giọng vào âm tiết "${syllables[stressedIndex].toUpperCase()}" (âm tiết thứ 3 từ cuối).`;
       similarWords = [
@@ -434,7 +437,25 @@ const generateLocalStressAnalysis = (word: string) => {
         { word: "society", phonetic: "/səˈsaɪ.ə.ti/" }
       ];
     }
-  } else if (syllables.length === 2) {
+  } else if (cleanWord.endsWith("ee") || cleanWord.endsWith("eer") || cleanWord.endsWith("ese") || cleanWord.endsWith("ique")) {
+    stressedIndex = len - 1;
+    ruleExplanation = "Quy tắc: Các từ kết thúc bằng đuôi '-ee', '-eer', '-ese', '-ique' nhận trọng âm chính ở ngay chính đuôi này.";
+    guide = `Đọc nhấn giọng mạnh vào âm tiết cuối cùng chứa đuôi: "${syllables[stressedIndex].toUpperCase()}".`;
+    similarWords = [
+      { word: "employee", phonetic: "/ɪmˈplɔɪ.iː/" },
+      { word: "Vietnamese", phonetic: "/ˌvjet.nəˈmiːz/" }
+    ];
+  } else if (cleanWord.startsWith("de") || cleanWord.startsWith("re") || cleanWord.startsWith("con") || cleanWord.startsWith("pro") || cleanWord.startsWith("ex") || cleanWord.startsWith("in")) {
+    if (len >= 2) {
+      stressedIndex = 1;
+      ruleExplanation = "Quy tắc: Các động từ ghép bắt đầu bằng tiền tố (de-, re-, con-, pro-, ex-, in-) thường nhấn trọng âm ở âm tiết thứ hai.";
+      guide = `Đọc lướt qua tiền tố và nhấn mạnh vào âm tiết thứ hai: "${syllables[1].toUpperCase()}".`;
+      similarWords = [
+        { word: "decide", phonetic: "/dɪˈsaɪd/" },
+        { word: "explain", phonetic: "/ɪkˈspleɪn/" }
+      ];
+    }
+  } else if (len === 2) {
     stressedIndex = 0;
     ruleExplanation = "Quy tắc: Phần lớn các danh từ và tính từ có 2 âm tiết thì trọng âm rơi vào âm tiết thứ nhất.";
     guide = `Đọc to rõ và lên giọng ở âm tiết đầu tiên "${syllables[0].toUpperCase()}", hạ giọng ở âm tiết thứ hai.`;
@@ -442,10 +463,10 @@ const generateLocalStressAnalysis = (word: string) => {
       { word: "table", phonetic: "/ˈteɪ.bəl/" },
       { word: "student", phonetic: "/ˈstjuː.dənt/" }
     ];
-  } else if (syllables.length >= 3) {
-    stressedIndex = 0;
-    ruleExplanation = "Quy tắc: Đối với các từ có nhiều âm tiết khác, trọng âm thường rơi vào âm tiết thứ nhất hoặc thứ ba từ cuối lên tùy thuộc vào tiền tố/hậu tố.";
-    guide = `Hãy chú ý nhấn giọng ở âm tiết "${syllables[0].toUpperCase()}".`;
+  } else if (len >= 3) {
+    stressedIndex = Math.max(0, len - 3);
+    ruleExplanation = "Quy tắc: Phần lớn các từ có 3 âm tiết trở lên không có hậu tố đặc biệt sẽ nhận trọng âm ở âm tiết thứ 3 từ cuối lên.";
+    guide = `Đọc nhấn giọng vào âm tiết "${syllables[stressedIndex].toUpperCase()}" (âm tiết thứ 3 từ cuối lên).`;
     similarWords = [
       { word: "family", phonetic: "/ˈfæm.əl.i/" },
       { word: "difficult", phonetic: "/ˈdɪf.ɪ.kəlt/" }
@@ -456,10 +477,10 @@ const generateLocalStressAnalysis = (word: string) => {
 
   return {
     word: cleanWord,
-    phonetic: `/${formattedSyllables.map((s, idx) => (idx === stressedIndex ? `ˈ${s}` : s)).join(".")}/`,
+    phonetic: `/${formattedSyllables.map((s, idx) => (idx === stressedIndex ? `ˈ${s}` : idx === secondaryStressedIndex ? `ˌ${s}` : s)).join(".")}/`,
     syllables: formattedSyllables,
     stressedSyllableIndex: stressedIndex,
-    secondaryStressedSyllableIndex: -1,
+    secondaryStressedSyllableIndex: secondaryStressedIndex,
     ruleExplanation,
     pronunciationGuide: guide,
     similarWords
@@ -468,40 +489,148 @@ const generateLocalStressAnalysis = (word: string) => {
 
 // AI Word Stress Analyzer Route
 router.post('/analyze-stress', async (req, res) => {
-  const { word } = req.body;
+  const { word, bypassCache } = req.body;
 
   if (!word || typeof word !== 'string' || word.trim().length === 0) {
     return res.status(400).json({ error: 'Word is required' });
   }
 
+  const cleanWord = word.trim().toLowerCase();
+
   try {
-    const prompt = `
-      You are EngBot (AI English Pronunciation & Phonology Expert).
-      Analyze the word stress (trọng âm) for the English word: "${word}"
+    // 1. Check DB Cache first (unless bypassCache is requested)
+    if (!bypassCache) {
+      const cachedAnalysis = await prisma.wordStressAnalysis.findUnique({
+        where: { word: cleanWord }
+      });
 
-      Provide the analysis in JSON format (do not include markdown wrapper, return raw json):
-      {
-        "word": "${word}",
-        "phonetic": "IPA pronunciation of the word highlighting the primary stress with 'ˈ' (e.g., /ˌed.jʊˈkeɪ.ʃən/)",
-        "syllables": ["ed", "u", "ca", "tion"],
-        "stressedSyllableIndex": 2,
-        "secondaryStressedSyllableIndex": 0,
-        "ruleExplanation": "Chi tiết quy tắc trọng âm áp dụng cho từ này bằng tiếng Việt",
-        "pronunciationGuide": "Hướng dẫn cách đọc nhấn giọng từ này bằng tiếng Việt",
-        "similarWords": [
-          { "word": "creation", "phonetic": "/kriˈeɪ.ʃən/" },
-          { "word": "relation", "phonetic": "/rɪˈleɪ.ʃən/" }
-        ]
+      if (cachedAnalysis) {
+        console.log(`[AI] Found word stress analysis cache in database for: "${cleanWord}"`);
+        return res.json({
+          word: cachedAnalysis.word,
+          phonetic: cachedAnalysis.phonetic,
+          syllables: cachedAnalysis.syllables,
+          stressedSyllableIndex: cachedAnalysis.stressedSyllableIndex,
+          secondaryStressedSyllableIndex: cachedAnalysis.secondaryStressedSyllableIndex,
+          ruleExplanation: cachedAnalysis.ruleExplanation,
+          pronunciationGuide: cachedAnalysis.pronunciationGuide,
+          similarWords: cachedAnalysis.similarWords
+        });
       }
-    `;
+    } else {
+      console.log(`[AI] Bypassing DB cache (force re-analyze) for: "${cleanWord}"`);
+    }
 
-    const text = await generateContentWithModelFallback(prompt);
-    const analysis = safeParseJSON(text);
-    return res.json(analysis);
+    console.log(`[AI] Analyzing word stress via AI/heuristic for: "${cleanWord}"`);
+    let analysis: any;
+
+    try {
+      const prompt = `
+        You are EngBot (AI English Pronunciation & Phonology Expert).
+        Analyze the word stress (trọng âm) for the English word: "${cleanWord}"
+
+        Follow these steps strictly to ensure the analysis is 100% correct:
+        1. Break the word into written lowercase syllables. For example:
+           - "communication" -> ["com", "mu", "ni", "ca", "tion"]
+           - "happy" -> ["hap", "py"]
+           - "education" -> ["ed", "u", "ca", "tion"]
+           - "develop" -> ["de", "vel", "op"]
+           Do NOT use IPA characters in the "syllables" array; use the original written English letters.
+
+        2. Identify the IPA phonetic transcription showing primary stress (ˈ) and secondary stress (ˌ).
+           For example:
+           - "communication" -> /kəˌmjuː.nɪˈkeɪ.ʃən/
+           - "develop" -> /dɪˈvel.əp/
+
+        3. Find the EXACT 0-based index of the primary stressed syllable inside your "syllables" array.
+           - For "communication": the primary stress is on "ca", which is index 3 of ["com", "mu", "ni", "ca", "tion"]. So "stressedSyllableIndex" MUST be 3.
+           - For "develop": the primary stress is on "vel", which is index 1 of ["de", "vel", "op"]. So "stressedSyllableIndex" MUST be 1.
+           Double check: syllables[stressedSyllableIndex] MUST contain the primary stressed sound!
+
+        4. Find the EXACT 0-based index of the secondary stressed syllable inside your "syllables" array (use -1 if none).
+           - For "communication": secondary stress is on "mu", which is index 1. So "secondaryStressedSyllableIndex" MUST be 1.
+           - For "develop": there is no secondary stress. So "secondaryStressedSyllableIndex" MUST be -1.
+
+        5. Provide a detailed explanation in Vietnamese of the stress rule applied (ruleExplanation) and a tip for Vietnamese speakers on how to accent it (pronunciationGuide).
+        6. Suggest 2-3 similar words with their IPA.
+
+        Provide the analysis in JSON format (do not include markdown wrapper, return raw json):
+        {
+          "word": "${cleanWord}",
+          "phonetic": "IPA pronunciation showing stress marks, e.g. /kəˌmjuː.nɪˈkeɪ.ʃən/",
+          "syllables": ["com", "mu", "ni", "ca", "tion"],
+          "stressedSyllableIndex": 3,
+          "secondaryStressedSyllableIndex": 1,
+          "ruleExplanation": "Chi tiết quy tắc trọng âm bằng tiếng Việt",
+          "pronunciationGuide": "Hướng dẫn đọc nhấn giọng chi tiết bằng tiếng Việt",
+          "similarWords": [
+            { "word": "education", "phonetic": "/ˌed.jʊˈkeɪ.ʃən/" },
+            { "word": "relation", "phonetic": "/rɪˈleɪ.ʃən/" }
+          ]
+        }
+      `;
+
+      const text = await generateContentWithModelFallback(prompt);
+      analysis = safeParseJSON(text);
+    } catch (error: any) {
+      console.error('[AI] Word Stress Analysis AI generation failed, using local heuristic:', error.message);
+      analysis = generateLocalStressAnalysis(cleanWord);
+    }
+
+    // Ensure all response keys exist and have proper default fallbacks
+    const finalizedAnalysis = {
+      word: cleanWord,
+      phonetic: analysis.phonetic || `/${cleanWord}/`,
+      syllables: analysis.syllables || [cleanWord],
+      stressedSyllableIndex: analysis.stressedSyllableIndex !== undefined ? Number(analysis.stressedSyllableIndex) : 0,
+      secondaryStressedSyllableIndex: analysis.secondaryStressedSyllableIndex !== undefined ? Number(analysis.secondaryStressedSyllableIndex) : -1,
+      ruleExplanation: analysis.ruleExplanation || 'Không có giải thích quy tắc cụ thể.',
+      pronunciationGuide: analysis.pronunciationGuide || 'Đọc từ tự nhiên.',
+      similarWords: analysis.similarWords || []
+    };
+
+    // Post-processing boundary check
+    const sylLength = finalizedAnalysis.syllables.length;
+    if (finalizedAnalysis.stressedSyllableIndex < 0 || finalizedAnalysis.stressedSyllableIndex >= sylLength) {
+      finalizedAnalysis.stressedSyllableIndex = 0;
+    }
+    if (finalizedAnalysis.secondaryStressedSyllableIndex < -1 || finalizedAnalysis.secondaryStressedSyllableIndex >= sylLength) {
+      finalizedAnalysis.secondaryStressedSyllableIndex = -1;
+    }
+
+    // 2. Save result to database cache (using upsert so we can overwrite incorrect records)
+    try {
+      await prisma.wordStressAnalysis.upsert({
+        where: { word: cleanWord },
+        update: {
+          phonetic: finalizedAnalysis.phonetic,
+          syllables: finalizedAnalysis.syllables,
+          stressedSyllableIndex: finalizedAnalysis.stressedSyllableIndex,
+          secondaryStressedSyllableIndex: finalizedAnalysis.secondaryStressedSyllableIndex,
+          ruleExplanation: finalizedAnalysis.ruleExplanation,
+          pronunciationGuide: finalizedAnalysis.pronunciationGuide,
+          similarWords: finalizedAnalysis.similarWords
+        },
+        create: {
+          word: cleanWord,
+          phonetic: finalizedAnalysis.phonetic,
+          syllables: finalizedAnalysis.syllables,
+          stressedSyllableIndex: finalizedAnalysis.stressedSyllableIndex,
+          secondaryStressedSyllableIndex: finalizedAnalysis.secondaryStressedSyllableIndex,
+          ruleExplanation: finalizedAnalysis.ruleExplanation,
+          pronunciationGuide: finalizedAnalysis.pronunciationGuide,
+          similarWords: finalizedAnalysis.similarWords
+        }
+      });
+      console.log(`[AI] Successfully cached/updated word stress analysis in database for: "${cleanWord}"`);
+    } catch (dbError: any) {
+      console.error('[AI] Failed to cache/update word stress analysis in database:', dbError.message);
+    }
+
+    return res.json(finalizedAnalysis);
   } catch (error: any) {
-    console.error('[AI] Word Stress Analysis Error, using local robust heuristic:', error.message);
-    const localAnalysis = generateLocalStressAnalysis(word);
-    return res.json(localAnalysis);
+    console.error('[AI] Word Stress Route error:', error.message);
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 

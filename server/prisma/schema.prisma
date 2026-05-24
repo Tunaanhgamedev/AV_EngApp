@@ -211,3 +211,19 @@ model IeltsPracticeHistory {
 
   @@map("ielts_practice_history")
 }
+
+model WordStressAnalysis {
+  id                             String   @id @default(uuid())
+  word                           String   @unique
+  phonetic                       String
+  syllables                      String[]
+  stressedSyllableIndex          Int      @map("stressed_syllable_index")
+  secondaryStressedSyllableIndex Int      @map("secondary_stressed_syllable_index")
+  ruleExplanation                String   @map("rule_explanation") @db.Text
+  pronunciationGuide             String   @map("pronunciation_guide") @db.Text
+  similarWords                   Json     @map("similar_words")
+  createdAt                      DateTime @default(now()) @map("created_at")
+
+  @@map("word_stress_analysis")
+  @@index([word])
+}

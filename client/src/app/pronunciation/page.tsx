@@ -379,7 +379,7 @@ export default function PronunciationPage() {
   const [analyzingStress, setAnalyzingStress] = useState(false);
   const [stressError, setStressError] = useState('');
 
-  const handleAnalyzeStress = async (wordToAnalyze?: string) => {
+  const handleAnalyzeStress = async (wordToAnalyze?: string, bypassCache = false) => {
     const targetWord = wordToAnalyze || stressInput;
     if (!targetWord || targetWord.trim().length === 0) return;
     
@@ -389,7 +389,7 @@ export default function PronunciationPage() {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/ai/analyze-stress`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ word: targetWord.trim() })
+        body: JSON.stringify({ word: targetWord.trim(), bypassCache })
       });
       if (!res.ok) throw new Error('Không thể phân tích trọng âm');
       const data = await res.json();
@@ -791,15 +791,25 @@ export default function PronunciationPage() {
                     </div>
                   </div>
 
-                  {/* Monospace Phonetics + Audio Button */}
-                  <div className="flex justify-center pb-2">
+                  {/* Monospace Phonetics + Audio Button + Re-analyze Button */}
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pb-2">
                     <button
                       onClick={() => speak(stressResult.word, 0.7)}
-                      className="px-6 py-3 bg-slate-800 hover:bg-slate-750 border border-slate-700 rounded-2xl flex items-center gap-3 group active:scale-95 transition-all cursor-pointer"
+                      className="px-6 py-3 bg-slate-800 hover:bg-slate-750 border border-slate-700 rounded-2xl flex items-center gap-3 group active:scale-95 transition-all cursor-pointer w-full sm:w-auto justify-center"
                     >
                       <Volume2 className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
                       <span className="font-mono font-black text-base text-slate-200">{stressResult.phonetic}</span>
                       <Play className="w-3.5 h-3.5 fill-slate-400 text-slate-400 group-hover:text-white" />
+                    </button>
+
+                    <button
+                      onClick={() => handleAnalyzeStress(stressResult.word, true)}
+                      disabled={analyzingStress}
+                      className="px-4 py-3 bg-slate-800 hover:bg-slate-750 hover:text-amber-400 border border-slate-700/80 rounded-2xl flex items-center gap-2 group active:scale-95 transition-all cursor-pointer text-slate-400 text-xs font-black uppercase tracking-wider w-full sm:w-auto justify-center transition-colors"
+                      title="Nếu AI phân tích trọng âm sai, bấm vào đây để yêu cầu AI phân tích lại và lưu đè lên hệ thống"
+                    >
+                      <Sparkles className="w-4.5 h-4.5 text-amber-400/80 group-hover:scale-110 transition-transform" />
+                      <span>{analyzingStress ? 'Đang phân tích lại...' : 'AI Phân tích lại (Sửa lỗi)'}</span>
                     </button>
                   </div>
 
