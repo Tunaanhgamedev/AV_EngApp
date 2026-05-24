@@ -5,19 +5,45 @@ import path from 'path';
 // Initialize Firebase Admin
 if (!admin.apps.length) {
   try {
-    if (process.env.FIREBASE_SERVICE_ACCOUNT) {
-      // Parse JSON string from environment variable
-      const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+    let serviceAccount: any = null;
+    const envVal = process.env.FIREBASE_SERVICE_ACCOUNT;
+
+    if (envVal) {
+      const trimmed = envVal.trim();
+      if (trimmed.startsWith('{')) {
+        // It is raw JSON content
+        serviceAccount = JSON.parse(trimmed);
+        console.log('Firebase Admin: parsed configuration from environment variable JSON string');
+      } else {
+        // It might be a filename/path (like "firebase-service-account.json")
+        const fs = require('fs');
+        const resolvedPath = path.isAbsolute(trimmed) ? trimmed : path.join(process.cwd(), trimmed);
+        if (fs.existsSync(resolvedPath)) {
+          const fileContent = fs.readFileSync(resolvedPath, 'utf8');
+          serviceAccount = JSON.parse(fileContent.trim());
+          console.log(`Firebase Admin: loaded configuration from file path pointed to by environment variable: ${resolvedPath}`);
+        } else {
+          throw new Error(`FIREBASE_SERVICE_ACCOUNT env var is set to "${trimmed}", but it is not valid JSON and the file does not exist at resolved path: ${resolvedPath}`);
+        }
+      }
+    } else {
+      // Default fallback if no env variable is specified
+      const defaultPath = path.join(process.cwd(), 'firebase-service-account.json');
+      const fs = require('fs');
+      if (fs.existsSync(defaultPath)) {
+        const fileContent = fs.readFileSync(defaultPath, 'utf8');
+        serviceAccount = JSON.parse(fileContent.trim());
+        console.log('Firebase Admin: loaded configuration from default local JSON file');
+      } else {
+        console.warn('Firebase Admin: No credentials found. Admin SDK might fail to authenticate incoming requests.');
+      }
+    }
+
+    if (serviceAccount) {
       admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
       });
-      console.log('Firebase Admin initialized via environment variable successfully');
-    } else {
-      const serviceAccountPath = path.join(process.cwd(), 'firebase-service-account.json');
-      admin.initializeApp({
-        credential: admin.credential.cert(serviceAccountPath),
-      });
-      console.log('Firebase Admin initialized successfully from local JSON file');
+      console.log('Firebase Admin initialized successfully');
     }
   } catch (error) {
     console.error('Firebase Admin initialization error:', error);
