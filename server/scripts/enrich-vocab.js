@@ -26,7 +26,7 @@ async function main() {
     // Get words missing phonetic or meaningEn
     const { rows: words } = await client.query(`
       SELECT id, word, meaning_vi FROM vocabulary_words
-      WHERE (phonetic IS NULL OR phonetic = '' OR meaning_en IS NULL OR meaning_en = '' OR meaning_en = word)
+      WHERE (phonetic IS NULL OR phonetic = '' OR meaning_en IS NULL OR meaning_en = '' OR meaning_en = word OR meaning_vi LIKE 'từ "%')
       ORDER BY word ASC
     `);
 
@@ -58,7 +58,7 @@ async function main() {
         for (const item of enriched) {
           const dbWord = batch.find(w => w.word.toLowerCase() === item.word?.toLowerCase());
           if (!dbWord) continue;
-          const finalVi = (dbWord.meaning_vi && dbWord.meaning_vi.length > 2)
+          const finalVi = (dbWord.meaning_vi && dbWord.meaning_vi.length > 2 && !dbWord.meaning_vi.startsWith('từ "'))
             ? dbWord.meaning_vi : (item.meaningVi || '');
           await client.query(
             `UPDATE vocabulary_words SET phonetic=$1, word_type=$2, meaning_en=$3, meaning_vi=$4 WHERE id=$5`,

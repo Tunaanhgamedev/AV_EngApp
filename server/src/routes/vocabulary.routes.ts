@@ -117,7 +117,7 @@ router.get('/learn-new', authenticate, async (req: any, res) => {
     const enrichedWords = [];
     
     for (const word of finalWords) {
-      const needsEnrichment = !word.meaningVi || !word.usage || !word.example || !word.exampleVi || !word.phonetic || word.meaningVi === word.word;
+      const needsEnrichment = !word.meaningVi || !word.usage || !word.example || !word.exampleVi || !word.phonetic || word.meaningVi === word.word || (word.meaningVi && word.meaningVi.startsWith('từ "'));
       if (needsEnrichment) {
         console.log(`Lazy-enriching: ${word.word} (missing: ${[!word.meaningVi && 'meaningVi', !word.usage && 'usage', !word.example && 'example', !word.exampleVi && 'exampleVi', !word.phonetic && 'phonetic'].filter(Boolean).join(', ')})...`);
         
@@ -308,7 +308,7 @@ router.get('/wordlist', async (req, res) => {
     const shouldEnrich = enrich !== 'false';
     if (shouldEnrich && words.length > 0) {
       const incompleteWords = words.filter((w: any) => 
-        !w.meaningVi || w.meaningVi === w.word || !w.phonetic || !w.usage || !w.wordType || w.wordType === '-'
+        !w.meaningVi || w.meaningVi === w.word || (w.meaningVi && w.meaningVi.startsWith('từ "')) || !w.phonetic || !w.usage || !w.wordType || w.wordType === '-'
       ).slice(0, 2); // Max 2 per background run
 
       if (incompleteWords.length > 0) {
@@ -392,7 +392,8 @@ router.post('/enrich-batch', async (req, res) => {
        WHERE meaning_vi IS NULL 
           OR meaning_vi = '' 
           OR meaning_vi = word 
-          OR phonetic IS NULL 
+          OR meaning_vi LIKE 'từ "%'
+          OR phonetic IS NULL  
           OR phonetic = '' 
           OR word_type IS NULL 
           OR word_type = '' 
@@ -408,7 +409,7 @@ router.post('/enrich-batch', async (req, res) => {
       // Also count remaining
       const { rows: countRows } = await pool.query(
         `SELECT COUNT(*)::int as remaining FROM vocabulary_words 
-         WHERE meaning_vi IS NULL OR meaning_vi = '' OR meaning_vi = word 
+         WHERE meaning_vi IS NULL OR meaning_vi = '' OR meaning_vi = word OR meaning_vi LIKE 'từ "%'
             OR phonetic IS NULL OR phonetic = '' 
             OR word_type IS NULL OR word_type = '' OR word_type = '-'
             OR usage IS NULL OR usage = ''`
@@ -501,7 +502,7 @@ router.post('/bulk-translate', async (req, res) => {
     const { rows: untranslated } = await pool.query(
       `SELECT id, word, cefr_level as "cefrLevel"
        FROM vocabulary_words 
-       WHERE (meaning_vi IS NULL OR meaning_vi = '' OR meaning_vi = word)
+       WHERE (meaning_vi IS NULL OR meaning_vi = '' OR meaning_vi = word OR meaning_vi LIKE 'từ "%')
        ${levelFilter}
        ORDER BY word ASC
        LIMIT $1`,
@@ -511,7 +512,7 @@ router.post('/bulk-translate', async (req, res) => {
     if (untranslated.length === 0) {
       const { rows: cnt } = await pool.query(
         `SELECT COUNT(*)::int as remaining FROM vocabulary_words 
-         WHERE meaning_vi IS NULL OR meaning_vi = '' OR meaning_vi = word`
+         WHERE meaning_vi IS NULL OR meaning_vi = '' OR meaning_vi = word OR meaning_vi LIKE 'từ "%'`
       );
       return res.json({ 
         success: true, 
@@ -571,7 +572,7 @@ router.post('/bulk-translate', async (req, res) => {
     // Count remaining
     const { rows: countRows } = await pool.query(
       `SELECT COUNT(*)::int as remaining FROM vocabulary_words 
-       WHERE meaning_vi IS NULL OR meaning_vi = '' OR meaning_vi = word`
+       WHERE meaning_vi IS NULL OR meaning_vi = '' OR meaning_vi = word OR meaning_vi LIKE 'từ "%'`
     );
 
     console.log(`[Bulk Translate] Done: ${translated}/${untranslated.length} translated, ${countRows[0].remaining} remaining`);
