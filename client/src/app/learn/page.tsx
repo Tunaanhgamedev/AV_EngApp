@@ -247,9 +247,18 @@ export default function LearnPage() {
     const word = words[currentIndex];
     if (!word) return;
     
+    // Warm up speech synthesis immediately and synchronously in the direct user gesture
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      try {
+        const dummy = new SpeechSynthesisUtterance('');
+        window.speechSynthesis.speak(dummy);
+      } catch (e) {}
+    }
+    
     if (word.audioUs) {
       const audio = new Audio(word.audioUs);
-      audio.play().catch(() => {
+      audio.play().catch((err) => {
+        console.log("Audio play failed, falling back to speech synthesis:", err);
         speak(word.word);
       });
     } else {
@@ -266,6 +275,13 @@ export default function LearnPage() {
   }, [currentIndex, words, loading, completed, activeMode]);
 
   const handleNext = () => {
+    // Synchronously unlock voice on user gesture
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      try {
+        const dummy = new SpeechSynthesisUtterance('');
+        window.speechSynthesis.speak(dummy);
+      } catch (e) {}
+    }
     setShowHint(false);
     if (currentIndex < words.length - 1) {
       setCurrentIndex(prev => prev + 1);
@@ -276,6 +292,13 @@ export default function LearnPage() {
   };
 
   const handleIKnowIt = async () => {
+    // Synchronously unlock voice on user gesture
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      try {
+        const dummy = new SpeechSynthesisUtterance('');
+        window.speechSynthesis.speak(dummy);
+      } catch (e) {}
+    }
     const word = words[currentIndex];
     if (user && word) {
       try {

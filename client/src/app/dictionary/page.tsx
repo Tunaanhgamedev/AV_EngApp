@@ -192,10 +192,18 @@ function DictionaryContent() {
   };
 
   const playAudio = (word: string, url?: string) => {
+    // Warm up SpeechSynthesis synchronously in the user gesture
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      try {
+        const dummy = new SpeechSynthesisUtterance('');
+        window.speechSynthesis.speak(dummy);
+      } catch (e) {}
+    }
+
     if (url) {
       const audio = new Audio(url);
-      audio.play().catch(() => {
-        // If URL fails, use synthesis
+      audio.play().catch((err) => {
+        console.log("Audio play failed, falling back to speech synthesis:", err);
         speak(word);
       });
     } else {
@@ -207,6 +215,11 @@ function DictionaryContent() {
     if (typeof window !== 'undefined' && window.speechSynthesis) {
       // Cancel any ongoing speech
       window.speechSynthesis.cancel();
+
+      try {
+        const dummy = new SpeechSynthesisUtterance('');
+        window.speechSynthesis.speak(dummy);
+      } catch (e) {}
 
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'en-US';
