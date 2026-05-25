@@ -84,6 +84,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // Handle redirect result on page load (for mobile signInWithRedirect flow).
   // This runs independently and does NOT block the main auth state listener.
   useEffect(() => {
+    const isPending = typeof window !== 'undefined' && localStorage.getItem('auth_redirect_pending') === 'true';
+
     getRedirectResult(auth)
       .then((result) => {
         if (result?.user) {
@@ -91,9 +93,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
       })
       .catch((error: any) => {
-        // Silently ignore expected non-redirect errors
-        if (error?.code !== 'auth/popup-closed-by-user') {
-          console.warn("Redirect result check:", error?.code || error?.message);
+        if (error?.code === 'auth/unauthorized-domain') {
+          const currentDomain = typeof window !== 'undefined' ? window.location.hostname : '';
+          alert(
+            `Lỗi cấu hình Firebase (Redirect):\nTên miền này (${currentDomain}) chưa được cấp phép (Authorized Domains) trong Firebase Console.\n\n` +
+            `Vui lòng truy cập Firebase Console -> Authentication -> Settings -> Authorized domains và thêm tên miền này vào danh sách.`
+          );
+        } else if (error?.code !== 'auth/popup-closed-by-user') {
+          console.warn("Redirect result check error:", error?.code || error?.message);
+        }
+      })
+      .finally(() => {
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('auth_redirect_pending');
+        }
+        // If we were waiting specifically on a redirect callback, resolve loading now
+        if (isPending) {
+          resolveLoading();
         }
       });
   }, []);
@@ -107,7 +123,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       } else {
         setDbUser(null);
       }
-      resolveLoading();
+      
+      // If a redirect is actively pending, do not clear the loading state yet.
+      // The getRedirectResult handler will resolve it in its finally block.
+      const isPending = typeof window !== 'undefined' && localStorage.getItem('auth_redirect_pending') === 'true';
+      if (!isPending) {
+        resolveLoading();
+      }
     });
 
     return () => unsubscribe();
@@ -115,30 +137,55 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: 'select_account' });
+    
     try {
-      // Primary: Try popup sign-in first for all environments.
-      // On mobile Chrome/Safari, signInWithPopup works natively if user-triggered
-      // and avoids the Safari ITP / third-party cookies block that breaks signInWithRedirect.
+      console.log("[Auth] Attempting signInWithPopup...");
       const result = await signInWithPopup(auth, provider);
       if (result.user) {
         await fetchDbUser(result.user);
       }
     } catch (error: any) {
-      console.warn("signInWithPopup failed, attempting redirect fallback...", error?.code);
-      // Fallback: If popup is blocked, closed, or cancelled, use redirect
-      if (
-        error?.code === 'auth/popup-blocked' || 
-        error?.code === 'auth/popup-closed-by-user' || 
-        error?.code === 'auth/cancelled-popup-request' ||
-        error?.code === 'auth/operation-not-supported-in-this-environment'
-      ) {
+      console.warn("[Auth] signInWithPopup failed:", error?.code || error?.message || error);
+      
+      // 1. If it's a configuration issue (unauthorized domain), alert immediately and throw
+      if (error?.code === 'auth/unauthorized-domain') {
+        const currentDomain = typeof window !== 'undefined' ? window.location.hostname : '';
+        alert(
+          `Lỗi cấu hình Firebase:\nTên miền này (${currentDomain}) chưa được cấp phép (Authorized Domains) trong Firebase Console.\n\n` +
+          `Vui lòng truy cập Firebase Console -> Authentication -> Settings -> Authorized domains và thêm tên miền "${currentDomain}" để sử dụng chức năng đăng nhập Google.`
+        );
+        throw error;
+      }
+      
+      // 2. Identify if we should fall back to a full redirect (blocked popups, mobile webviews, or browser limits)
+      const isPopupBlocked = error?.code === 'auth/popup-blocked';
+      const isEnvNotSupported = error?.code === 'auth/operation-not-supported-in-this-environment';
+      const isCrossOriginOrFrameError = /cross-origin|iframe|closed|blocked/i.test(error?.message || '') || error?.code?.includes('iframe');
+      
+      const shouldRedirectFallback = isPopupBlocked || isEnvNotSupported || isCrossOriginOrFrameError;
+      
+      if (shouldRedirectFallback) {
+        console.log("[Auth] Popup blocked or not supported. Falling back to signInWithRedirect...");
         try {
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('auth_redirect_pending', 'true');
+          }
           await signInWithRedirect(auth, provider);
-        } catch (redirectError) {
-          console.error("Redirect sign-in also failed:", redirectError);
+        } catch (redirectError: any) {
+          if (typeof window !== 'undefined') {
+            localStorage.removeItem('auth_redirect_pending');
+          }
+          console.error("[Auth] Redirect fallback also failed:", redirectError);
+          alert(
+            "Không thể đăng nhập bằng Google.\n" +
+            "Vui lòng tắt các trình chặn Quảng cáo/Popup trên trình duyệt của bạn hoặc chọn 'Mở bằng Chrome/Safari' để tiếp tục."
+          );
+          throw redirectError;
         }
       } else {
-        console.error("Error signing in with Google:", error);
+        // If it's cancelled by the user (popup-closed-by-user), just rethrow so caller resets loading spinner state
+        throw error;
       }
     }
   };
