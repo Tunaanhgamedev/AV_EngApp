@@ -152,70 +152,143 @@ export default function ListeningPage() {
   const [filterLevel, setFilterLevel] = useState('All');
   const [showResources, setShowResources] = useState(false);
   const utterRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const fallbackAudioRef = useRef<HTMLAudioElement | null>(null);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const TOTAL = 30;
 
   const stopSpeech = () => {
     if (typeof window !== 'undefined') window.speechSynthesis?.cancel();
+    if (fallbackAudioRef.current) {
+      fallbackAudioRef.current.pause();
+      fallbackAudioRef.current = null;
+    }
     if (intervalRef.current) clearInterval(intervalRef.current);
   };
 
   const speakLine = (text: string) => {
-    if (typeof window === 'undefined' || !window.speechSynthesis) return;
-    
-    const words = new SpeechSynthesisUtterance(text);
-    words.lang = 'en-US';
-    words.rate = 0.85;
-    const voices = window.speechSynthesis.getVoices();
-    const v = voices.find(voice => voice.lang === 'en-US' && voice.name.includes('Google')) || voices.find(voice => voice.lang === 'en-US');
-    if (v) words.voice = v;
+    if (typeof window === 'undefined') return;
 
-    if (window.speechSynthesis.speaking) {
-      window.speechSynthesis.cancel();
-      setTimeout(() => {
+    const playTranslateTTS = () => {
+      const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=${encodeURIComponent(text)}`;
+      const audio = new Audio(url);
+      fallbackAudioRef.current = audio;
+      audio.play().catch((err) => {
+        console.error("Google Translate TTS fallback failed:", err);
+      });
+    };
+
+    if (window.speechSynthesis) {
+      const voices = window.speechSynthesis.getVoices();
+      if (voices.length === 0) {
+        playTranslateTTS();
+        return;
+      }
+
+      const words = new SpeechSynthesisUtterance(text);
+      words.lang = 'en-US';
+      words.rate = 0.85;
+      const v = voices.find(voice => voice.lang === 'en-US' && voice.name.includes('Google')) || voices.find(voice => voice.lang === 'en-US');
+      if (v) words.voice = v;
+
+      words.onerror = (e) => {
+        console.log("speechSynthesis error, playing Google Translate TTS:", e);
+        playTranslateTTS();
+      };
+
+      if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel();
+        setTimeout(() => {
+          window.speechSynthesis.speak(words);
+        }, 50);
+      } else {
         window.speechSynthesis.speak(words);
-      }, 50);
+      }
     } else {
-      window.speechSynthesis.speak(words);
+      playTranslateTTS();
     }
   };
 
   const playLesson = () => {
-    if (typeof window === 'undefined' || !window.speechSynthesis) return;
+    if (typeof window === 'undefined') return;
 
     const fullText = selected.transcript.map(l => l.text).join('. ');
-    const utt = new SpeechSynthesisUtterance(fullText);
-    utt.lang = 'en-US'; utt.rate = 0.85;
-    const voices = window.speechSynthesis.getVoices();
-    const v = voices.find(v => v.lang === 'en-US' && v.name.includes('Google')) || voices.find(v => v.lang === 'en-US');
-    if (v) utt.voice = v;
-    utt.onend = () => { setIsPlaying(false); setProgress(100); stopSpeech(); };
-    utterRef.current = utt;
 
-    const startPlaying = () => {
-      window.speechSynthesis.speak(utt);
-      setIsPlaying(true);
-      let sec = elapsed;
-      intervalRef.current = setInterval(() => {
-        sec++;
-        setElapsed(sec);
-        setProgress((sec / TOTAL) * 100);
-        const lineIdx = selected.transcript.findIndex((l, i) => {
-          const next = selected.transcript[i + 1];
-          const scaledTime = Math.round(l.time * (TOTAL / (selected.transcript[selected.transcript.length - 1].time + 6)));
-          const scaledNext = next ? Math.round(next.time * (TOTAL / (selected.transcript[selected.transcript.length - 1].time + 6))) : TOTAL;
-          return sec >= scaledTime && sec < scaledNext;
-        });
-        if (lineIdx >= 0) setActiveLine(lineIdx);
-        if (sec >= TOTAL) { stopSpeech(); setIsPlaying(false); }
-      }, 1000);
+    const playTranslateTTS = () => {
+      const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=${encodeURIComponent(fullText)}`;
+      const audio = new Audio(url);
+      fallbackAudioRef.current = audio;
+      audio.onended = () => { setIsPlaying(false); setProgress(100); stopSpeech(); };
+      audio.play().then(() => {
+        setIsPlaying(true);
+        let sec = elapsed;
+        intervalRef.current = setInterval(() => {
+          sec++;
+          setElapsed(sec);
+          setProgress((sec / TOTAL) * 100);
+          const lineIdx = selected.transcript.findIndex((l, i) => {
+            const next = selected.transcript[i + 1];
+            const scaledTime = Math.round(l.time * (TOTAL / (selected.transcript[selected.transcript.length - 1].time + 6)));
+            const scaledNext = next ? Math.round(next.time * (TOTAL / (selected.transcript[selected.transcript.length - 1].time + 6))) : TOTAL;
+            return sec >= scaledTime && sec < scaledNext;
+          });
+          if (lineIdx >= 0) setActiveLine(lineIdx);
+          if (sec >= TOTAL) {
+            audio.pause();
+            stopSpeech();
+            setIsPlaying(false);
+          }
+        }, 1000);
+      }).catch((err) => {
+        console.error("Google Translate TTS fallback failed:", err);
+      });
     };
 
-    if (window.speechSynthesis.speaking) {
-      stopSpeech();
-      setTimeout(startPlaying, 50);
+    if (window.speechSynthesis) {
+      const voices = window.speechSynthesis.getVoices();
+      if (voices.length === 0) {
+        playTranslateTTS();
+        return;
+      }
+
+      const utt = new SpeechSynthesisUtterance(fullText);
+      utt.lang = 'en-US'; utt.rate = 0.85;
+      const v = voices.find(v => v.lang === 'en-US' && v.name.includes('Google')) || voices.find(v => v.lang === 'en-US');
+      if (v) utt.voice = v;
+      utt.onend = () => { setIsPlaying(false); setProgress(100); stopSpeech(); };
+      utterRef.current = utt;
+
+      utt.onerror = (e) => {
+        console.log("speechSynthesis error, playing Google Translate TTS:", e);
+        playTranslateTTS();
+      };
+
+      const startPlaying = () => {
+        window.speechSynthesis.speak(utt);
+        setIsPlaying(true);
+        let sec = elapsed;
+        intervalRef.current = setInterval(() => {
+          sec++;
+          setElapsed(sec);
+          setProgress((sec / TOTAL) * 100);
+          const lineIdx = selected.transcript.findIndex((l, i) => {
+            const next = selected.transcript[i + 1];
+            const scaledTime = Math.round(l.time * (TOTAL / (selected.transcript[selected.transcript.length - 1].time + 6)));
+            const scaledNext = next ? Math.round(next.time * (TOTAL / (selected.transcript[selected.transcript.length - 1].time + 6))) : TOTAL;
+            return sec >= scaledTime && sec < scaledNext;
+          });
+          if (lineIdx >= 0) setActiveLine(lineIdx);
+          if (sec >= TOTAL) { stopSpeech(); setIsPlaying(false); }
+        }, 1000);
+      };
+
+      if (window.speechSynthesis.speaking) {
+        stopSpeech();
+        setTimeout(startPlaying, 50);
+      } else {
+        startPlaying();
+      }
     } else {
-      startPlaying();
+      playTranslateTTS();
     }
   };
 

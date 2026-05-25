@@ -212,25 +212,48 @@ function DictionaryContent() {
   };
 
   const speak = (text: string) => {
-    if (typeof window !== 'undefined' && window.speechSynthesis) {
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'en-US';
-      utterance.rate = 0.9; // Slightly slower for clarity
+    if (typeof window !== 'undefined') {
+      const playTranslateTTS = () => {
+        const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=${encodeURIComponent(text)}`;
+        const audio = new Audio(url);
+        audio.play().catch((err) => {
+          console.error("Google Translate TTS fallback failed:", err);
+        });
+      };
 
-      // Try to find a premium English voice if available
-      const voices = window.speechSynthesis.getVoices();
-      const preferredVoice = voices.find(v => v.name.includes('Google') && v.lang === 'en-US') ||
-        voices.find(v => v.lang === 'en-US');
+      if (window.speechSynthesis) {
+        const voices = window.speechSynthesis.getVoices();
+        
+        // Fallback to Translate TTS if no voices are loaded/installed
+        if (voices.length === 0) {
+          playTranslateTTS();
+          return;
+        }
 
-      if (preferredVoice) utterance.voice = preferredVoice;
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-US';
+        utterance.rate = 0.9; // Slightly slower for clarity
 
-      if (window.speechSynthesis.speaking) {
-        window.speechSynthesis.cancel();
-        setTimeout(() => {
+        const preferredVoice = voices.find(v => v.name.includes('Google') && v.lang === 'en-US') ||
+          voices.find(v => v.lang === 'en-US');
+
+        if (preferredVoice) utterance.voice = preferredVoice;
+
+        utterance.onerror = (e) => {
+          console.log("speechSynthesis error, playing Google Translate TTS:", e);
+          playTranslateTTS();
+        };
+
+        if (window.speechSynthesis.speaking) {
+          window.speechSynthesis.cancel();
+          setTimeout(() => {
+            window.speechSynthesis.speak(utterance);
+          }, 50);
+        } else {
           window.speechSynthesis.speak(utterance);
-        }, 50);
+        }
       } else {
-        window.speechSynthesis.speak(utterance);
+        playTranslateTTS();
       }
     }
   };

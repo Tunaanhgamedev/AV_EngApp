@@ -197,24 +197,49 @@ export default function TranslatePage() {
   };
 
   const speak = (text: string, lang = 'en-US') => {
-    if (!text || typeof window === 'undefined' || !window.speechSynthesis) return;
-    
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = lang; 
-    u.rate = 0.9;
-    
-    const voices = window.speechSynthesis.getVoices();
-    const preferredVoice = voices.find(v => v.lang === lang && v.name.includes('Google')) || 
-                           voices.find(v => v.lang === lang);
-    if (preferredVoice) u.voice = preferredVoice;
-    
-    if (window.speechSynthesis.speaking) {
-      window.speechSynthesis.cancel();
-      setTimeout(() => {
+    if (!text || typeof window === 'undefined') return;
+
+    const playTranslateTTS = () => {
+      const tl = lang.split('-')[0];
+      const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=${tl}&client=tw-ob&q=${encodeURIComponent(text)}`;
+      const audio = new Audio(url);
+      audio.play().catch((err) => {
+        console.error("Google Translate TTS fallback failed:", err);
+      });
+    };
+
+    if (window.speechSynthesis) {
+      const voices = window.speechSynthesis.getVoices();
+      
+      // Fallback to Translate TTS if no voices are loaded/installed
+      if (voices.length === 0) {
+        playTranslateTTS();
+        return;
+      }
+
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = lang; 
+      u.rate = 0.9;
+      
+      const preferredVoice = voices.find(v => v.lang === lang && v.name.includes('Google')) || 
+                             voices.find(v => v.lang === lang);
+      if (preferredVoice) u.voice = preferredVoice;
+
+      u.onerror = (e) => {
+        console.log("speechSynthesis error, playing Google Translate TTS:", e);
+        playTranslateTTS();
+      };
+      
+      if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel();
+        setTimeout(() => {
+          window.speechSynthesis.speak(u);
+        }, 50);
+      } else {
         window.speechSynthesis.speak(u);
-      }, 50);
+      }
     } else {
-      window.speechSynthesis.speak(u);
+      playTranslateTTS();
     }
   };
 

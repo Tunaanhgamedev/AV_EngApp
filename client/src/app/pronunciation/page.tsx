@@ -228,22 +228,46 @@ const COUNTRIES_DATA = [
 ];
 
 const speak = (text: string, rate: number = 0.7) => {
-  if (typeof window === 'undefined' || !window.speechSynthesis) return;
-  
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = 'en-US';
-  u.rate = rate;
-  const voices = window.speechSynthesis.getVoices();
-  const v = voices.find(v => v.lang === 'en-US' && v.name.includes('Google')) || voices.find(v => v.lang === 'en-US');
-  if (v) u.voice = v;
-  
-  if (window.speechSynthesis.speaking) {
-    window.speechSynthesis.cancel();
-    setTimeout(() => {
+  if (typeof window === 'undefined') return;
+
+  const playTranslateTTS = () => {
+    const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=${encodeURIComponent(text)}`;
+    const audio = new Audio(url);
+    audio.play().catch((err) => {
+      console.error("Google Translate TTS fallback failed:", err);
+    });
+  };
+
+  if (window.speechSynthesis) {
+    const voices = window.speechSynthesis.getVoices();
+    
+    // Fallback to Translate TTS if no voices are loaded/installed
+    if (voices.length === 0) {
+      playTranslateTTS();
+      return;
+    }
+
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-US';
+    u.rate = rate;
+    const v = voices.find(v => v.lang === 'en-US' && v.name.includes('Google')) || voices.find(v => v.lang === 'en-US');
+    if (v) u.voice = v;
+
+    u.onerror = (e) => {
+      console.log("speechSynthesis error, playing Google Translate TTS:", e);
+      playTranslateTTS();
+    };
+    
+    if (window.speechSynthesis.speaking) {
+      window.speechSynthesis.cancel();
+      setTimeout(() => {
+        window.speechSynthesis.speak(u);
+      }, 50);
+    } else {
       window.speechSynthesis.speak(u);
-    }, 50);
+    }
   } else {
-    window.speechSynthesis.speak(u);
+    playTranslateTTS();
   }
 };
 

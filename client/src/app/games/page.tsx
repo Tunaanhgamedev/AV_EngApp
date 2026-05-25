@@ -7,7 +7,7 @@ import { useAuth } from '@/context/AuthContext';
 
 const speak = (text: string) => {
   if (typeof window === 'undefined' || !window.speechSynthesis) return;
-  
+
   const u = new SpeechSynthesisUtterance(text);
   u.lang = 'en-US';
   u.rate = 0.8;
@@ -124,7 +124,7 @@ function VocabMatchGame({ dbWords, onClose, awardXp }: { dbWords: any[]; onClose
     if (dbWords && dbWords.length >= 6) {
       pool = dbWords.map(w => ({ en: w.word, vi: w.meaningVi }));
     }
-    
+
     const selectedPairs = shuffle(pool).slice(0, 6);
     const deck: Card[] = [];
     selectedPairs.forEach((p, idx) => {
@@ -132,7 +132,7 @@ function VocabMatchGame({ dbWords, onClose, awardXp }: { dbWords: any[]; onClose
       deck.push({ id: pairId * 10, word: p.en, type: 'en', pairId, matched: false });
       deck.push({ id: pairId * 10 + 1, word: p.vi, type: 'vi', pairId, matched: false });
     });
-    
+
     setCards(shuffle(deck));
     setSelected([]);
     setMatches(0);
@@ -156,16 +156,16 @@ function VocabMatchGame({ dbWords, onClose, awardXp }: { dbWords: any[]; onClose
     const next = [...selected, card];
     setSelected(next);
     if (card.type === 'en') speak(card.word);
-    
+
     if (next.length === 2) {
       setMoves(m => m + 1);
       if (next[0].pairId === next[1].pairId) {
         setCards(prev => prev.map(c => c.pairId === next[0].pairId ? { ...c, matched: true } : c));
         setMatches(m => {
           const nm = m + 1;
-          if (nm === pairCount) { 
-            setRunning(false); 
-            setWon(true); 
+          if (nm === pairCount) {
+            setRunning(false);
+            setWon(true);
             awardXp?.(50, 'Vocab Match Game');
           }
           return nm;
@@ -220,10 +220,10 @@ function VocabMatchGame({ dbWords, onClose, awardXp }: { dbWords: any[]; onClose
                     card.matched
                       ? "bg-green-50 border-green-200 text-green-600 scale-95 cursor-default"
                       : isSel
-                      ? "bg-indigo-600 border-indigo-600 text-white scale-105 shadow-lg"
-                      : card.type === 'en'
-                      ? "bg-slate-900 border-slate-700 text-white hover:scale-105 hover:shadow-md"
-                      : "bg-blue-50 border-blue-100 text-blue-800 hover:scale-105 hover:shadow-md"
+                        ? "bg-indigo-600 border-indigo-600 text-white scale-105 shadow-lg"
+                        : card.type === 'en'
+                          ? "bg-slate-900 border-slate-700 text-white hover:scale-105 hover:shadow-md"
+                          : "bg-blue-50 border-blue-100 text-blue-800 hover:scale-105 hover:shadow-md"
                   )}
                 >
                   {card.matched ? <CheckCircle2 className="w-5 h-5 mx-auto text-green-500" /> : card.word}
@@ -248,28 +248,28 @@ function SpeedQuizGame({ dbWords, onClose, awardXp }: { dbWords: any[]; onClose:
 
   const initGame = useCallback(() => {
     let generated: any[] = [];
-    
+
     // Generate questions dynamically if database words are loaded
     if (dbWords && dbWords.length >= 10) {
       const shuffledWords = shuffle(dbWords);
-      
+
       for (let index = 0; index < 5; index++) {
         const target = shuffledWords[index];
         const isFillInBlank = Math.random() > 0.5 && target.example && target.example.toLowerCase().includes(target.word.toLowerCase());
-        
+
         // Option distraction pool (exclude target word)
         const distractors = shuffledWords
           .filter(w => w.word !== target.word)
           .slice(0, 3);
-          
+
         if (isFillInBlank) {
           // Fill in the blank question
           const regex = new RegExp(`\\b${target.word}\\b`, 'gi');
           const blanked = target.example.replace(regex, '_______');
-          
+
           const options = shuffle([target.word, ...distractors.map(d => d.word)]);
           const answer = options.indexOf(target.word);
-          
+
           generated.push({
             q: `Điền từ thích hợp vào chỗ trống:\n"${blanked}" (${target.exampleVi || 'Dịch nghĩa câu'})`,
             options,
@@ -279,7 +279,7 @@ function SpeedQuizGame({ dbWords, onClose, awardXp }: { dbWords: any[]; onClose:
           // Meaning question
           const options = shuffle([target.meaningVi, ...distractors.map(d => d.meaningVi)]);
           const answer = options.indexOf(target.meaningVi);
-          
+
           generated.push({
             q: `Từ "${target.word}" trong tiếng Việt mang ý nghĩa là gì?`,
             options,
@@ -288,12 +288,12 @@ function SpeedQuizGame({ dbWords, onClose, awardXp }: { dbWords: any[]; onClose:
         }
       }
     }
-    
+
     // Fallback to static questions if no DB or empty database
     if (generated.length === 0) {
       generated = shuffle(STATIC_QUIZ_QUESTIONS).slice(0, 5);
     }
-    
+
     setQuestions(generated);
     setQIdx(0);
     setScore(0);
@@ -322,14 +322,14 @@ function SpeedQuizGame({ dbWords, onClose, awardXp }: { dbWords: any[]; onClose:
     setSelected(idx);
     const q = questions[qIdx];
     if (idx === q.answer) setScore(s => s + 1);
-    
+
     setTimeout(() => {
-      if (qIdx < questions.length - 1) { 
-        setQIdx(q => q + 1); 
-        setSelected(null); 
-        setTimeLeft(15); 
-      } else { 
-        setDone(true); 
+      if (qIdx < questions.length - 1) {
+        setQIdx(q => q + 1);
+        setSelected(null);
+        setTimeLeft(15);
+      } else {
+        setDone(true);
       }
     }, 1200);
   };
@@ -373,9 +373,9 @@ function SpeedQuizGame({ dbWords, onClose, awardXp }: { dbWords: any[]; onClose:
                   className={cn(
                     "p-4 rounded-2xl text-sm font-bold border-2 text-left transition-all cursor-pointer",
                     selected === null ? "border-slate-100 hover:border-rose-300 hover:bg-rose-50/50" :
-                    i === q.answer ? "bg-green-50 border-green-400 text-green-700" :
-                    i === selected ? "bg-rose-50 border-rose-400 text-rose-700" :
-                    "border-slate-100 opacity-40"
+                      i === q.answer ? "bg-green-50 border-green-400 text-green-700" :
+                        i === selected ? "bg-rose-50 border-rose-400 text-rose-700" :
+                          "border-slate-100 opacity-40"
                   )}
                 >{opt}</button>
               ))}
@@ -513,8 +513,8 @@ function WordScrambleGame({ dbWords, onClose, awardXp }: { dbWords: any[]; onClo
               <div className={cn(
                 "min-h-16 p-3 rounded-2xl border-2 border-dashed flex flex-wrap gap-2 items-center justify-center transition-all duration-300",
                 isCorrect === true ? "bg-green-50 border-green-400" :
-                isCorrect === false ? "bg-red-50 border-red-400 animate-shake" :
-                "bg-slate-50 border-slate-200"
+                  isCorrect === false ? "bg-red-50 border-red-400 animate-shake" :
+                    "bg-slate-50 border-slate-200"
               )}>
                 {answer.map((item, idx) => (
                   <button
@@ -540,8 +540,8 @@ function WordScrambleGame({ dbWords, onClose, awardXp }: { dbWords: any[]; onClo
                     disabled={item.used}
                     className={cn(
                       "w-12 h-12 rounded-xl text-lg font-black flex items-center justify-center border-2 transition-all cursor-pointer shadow-sm",
-                      item.used 
-                        ? "bg-slate-100 border-slate-200 text-slate-300 scale-95" 
+                      item.used
+                        ? "bg-slate-100 border-slate-200 text-slate-300 scale-95"
                         : "bg-white border-purple-200 text-purple-700 hover:scale-115 hover:border-purple-400 active:scale-90"
                     )}
                   >
@@ -553,13 +553,13 @@ function WordScrambleGame({ dbWords, onClose, awardXp }: { dbWords: any[]; onClo
 
             {/* Controls */}
             <div className="flex gap-3 justify-end pt-2 border-t border-slate-100">
-              <button 
+              <button
                 onClick={resetWord}
                 className="px-4 py-2 border border-slate-200 rounded-xl font-bold text-xs hover:bg-slate-50 transition-all flex items-center gap-1.5 text-slate-500 cursor-pointer"
               >
                 <RefreshCw className="w-3.5 h-3.5" /> Xóa Tất Cả
               </button>
-              <button 
+              <button
                 onClick={checkAnswer}
                 disabled={answer.length !== activeWord?.word.length}
                 className="px-6 py-2 bg-indigo-600 text-white rounded-xl font-bold text-xs hover:opacity-90 transition-all flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer shadow-md shadow-indigo-600/20"
@@ -588,7 +588,7 @@ function SentenceBuilderGame({ dbWords, onClose, awardXp }: { dbWords: any[]; on
 
   const initGame = useCallback(() => {
     let pool = STATIC_SCRAMBLE_SENTENCES;
-    
+
     if (dbWords && dbWords.length >= 5) {
       // Find database words that have proper example sentences
       const dbPool = dbWords
@@ -601,7 +601,7 @@ function SentenceBuilderGame({ dbWords, onClose, awardXp }: { dbWords: any[]; on
             hint: w.exampleVi || `Ví dụ của từ "${w.word}"`
           };
         });
-      
+
       if (dbPool.length >= 4) {
         pool = dbPool;
       }
@@ -714,8 +714,8 @@ function SentenceBuilderGame({ dbWords, onClose, awardXp }: { dbWords: any[]; on
               <div className={cn(
                 "min-h-20 p-4 rounded-2xl border-2 border-dashed flex flex-wrap gap-2.5 items-center justify-center transition-all duration-300",
                 isCorrect === true ? "bg-green-50 border-green-400" :
-                isCorrect === false ? "bg-red-50 border-red-400 animate-shake" :
-                "bg-slate-50 border-slate-200"
+                  isCorrect === false ? "bg-red-50 border-red-400 animate-shake" :
+                    "bg-slate-50 border-slate-200"
               )}>
                 {answer.map((item, idx) => (
                   <button
@@ -741,8 +741,8 @@ function SentenceBuilderGame({ dbWords, onClose, awardXp }: { dbWords: any[]; on
                     disabled={item.used}
                     className={cn(
                       "px-4 py-2 rounded-xl text-sm font-bold flex items-center justify-center border-2 transition-all cursor-pointer shadow-sm",
-                      item.used 
-                        ? "bg-slate-100 border-slate-200 text-slate-300 scale-95" 
+                      item.used
+                        ? "bg-slate-100 border-slate-200 text-slate-300 scale-95"
                         : "bg-white border-emerald-200 text-emerald-700 hover:scale-105 hover:border-emerald-400 active:scale-90"
                     )}
                   >
@@ -754,13 +754,13 @@ function SentenceBuilderGame({ dbWords, onClose, awardXp }: { dbWords: any[]; on
 
             {/* Controls */}
             <div className="flex gap-3 justify-end pt-2 border-t border-slate-100">
-              <button 
+              <button
                 onClick={resetSentence}
                 className="px-4 py-2 border border-slate-200 rounded-xl font-bold text-xs hover:bg-slate-50 transition-all flex items-center gap-1.5 text-slate-500 cursor-pointer"
               >
                 <RefreshCw className="w-3.5 h-3.5" /> Xóa Tất Cả
               </button>
-              <button 
+              <button
                 onClick={checkAnswer}
                 disabled={answer.length !== wordsPool.length}
                 className="px-6 py-2 bg-indigo-600 text-white rounded-xl font-bold text-xs hover:opacity-90 transition-all flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer shadow-md shadow-indigo-600/20"
@@ -894,8 +894,8 @@ function IdiomConnectorGame({ onClose, awardXp }: { onClose: () => void; awardXp
               <div className={cn(
                 "min-h-20 p-4 rounded-2xl border-2 border-dashed flex flex-wrap gap-2.5 items-center justify-center transition-all duration-300",
                 isCorrect === true ? "bg-green-50 border-green-400" :
-                isCorrect === false ? "bg-red-50 border-red-400 animate-shake" :
-                "bg-slate-50 border-slate-200"
+                  isCorrect === false ? "bg-red-50 border-red-400 animate-shake" :
+                    "bg-slate-50 border-slate-200"
               )}>
                 {answer.map((item, idx) => (
                   <button
@@ -921,8 +921,8 @@ function IdiomConnectorGame({ onClose, awardXp }: { onClose: () => void; awardXp
                     disabled={item.used}
                     className={cn(
                       "px-4 py-2 rounded-xl text-sm font-bold flex items-center justify-center border-2 transition-all cursor-pointer shadow-sm",
-                      item.used 
-                        ? "bg-slate-100 border-slate-200 text-slate-300 scale-95" 
+                      item.used
+                        ? "bg-slate-100 border-slate-200 text-slate-300 scale-95"
                         : "bg-white border-violet-200 text-violet-700 hover:scale-105 hover:border-violet-400 active:scale-90"
                     )}
                   >
@@ -934,13 +934,13 @@ function IdiomConnectorGame({ onClose, awardXp }: { onClose: () => void; awardXp
 
             {/* Controls */}
             <div className="flex gap-3 justify-end pt-2 border-t border-slate-100">
-              <button 
+              <button
                 onClick={resetIdiom}
                 className="px-4 py-2 border border-slate-200 rounded-xl font-bold text-xs hover:bg-slate-50 transition-all flex items-center gap-1.5 text-slate-500 cursor-pointer"
               >
                 <RefreshCw className="w-3.5 h-3.5" /> Xóa Tất Cả
               </button>
-              <button 
+              <button
                 onClick={checkAnswer}
                 disabled={answer.length !== wordsPool.length}
                 className="px-6 py-2 bg-indigo-600 text-white rounded-xl font-bold text-xs hover:opacity-90 transition-all flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer shadow-md shadow-indigo-600/20"
@@ -960,10 +960,10 @@ function IdiomConnectorGame({ onClose, awardXp }: { onClose: () => void; awardXp
 // ─── Main Games Page ───────────────────────────────────────────────────────────
 const GAMES = [
   { id: 'vocab', title: "Vocabulary Match", description: "Ghép nối các từ vựng tiếng Anh với ý nghĩa tiếng Việt chính xác. Chinh phục thời gian ngắn nhất!", icon: <Target className="w-10 h-10" />, color: "bg-blue-500", shadow: "shadow-blue-500/20", xp: "+50 XP", players: "1.2k đang chơi" },
-  { id: 'quiz',  title: "Speed Quiz",       description: "Đua thời gian trả lời trắc nghiệm nhanh. Chỉ 15 giây cho một câu hỏi thú vị!", icon: <Timer className="w-10 h-10" />,  color: "bg-rose-500", shadow: "shadow-rose-500/20",  xp: "+100 XP", players: "800 đang chơi" },
-  { id: 'scram', title: "Word Scramble",    description: "Nối chữ thành từ. Ghép các ký tự bị xáo trộn thành từ tiếng Anh hoàn chỉnh theo gợi ý!", icon: <Brain className="w-10 h-10" />,  color: "bg-purple-500",shadow: "shadow-purple-500/20",xp: "+60 XP",  players: "950 đang chơi" },
-  { id: 'sentence', title: "Sentence Builder", description: "Nối từ thành câu. Lắp ghép các từ vựng lộn xộn thành câu nói chuẩn ngữ pháp!", icon: <Zap className="w-10 h-10" />,    color: "bg-emerald-500",shadow: "shadow-emerald-500/20",xp: "+75 XP",  players: "1.1k đang chơi" },
-  { id: 'idiom', title: "Idiom Connector",  description: "Nối từ thành thành ngữ. Khám phá kho tàng thành ngữ tiếng Anh qua trò chơi ghép chữ lý thú!", icon: <Sparkles className="w-10 h-10" />, color: "bg-violet-500",shadow: "shadow-violet-500/20",xp: "+120 XP", players: "640 đang chơi" },
+  { id: 'quiz', title: "Speed Quiz", description: "Đua thời gian trả lời trắc nghiệm nhanh. Chỉ 15 giây cho một câu hỏi thú vị!", icon: <Timer className="w-10 h-10" />, color: "bg-rose-500", shadow: "shadow-rose-500/20", xp: "+100 XP", players: "800 đang chơi" },
+  { id: 'scram', title: "Word Scramble", description: "Nối chữ thành từ. Ghép các ký tự bị xáo trộn thành từ tiếng Anh hoàn chỉnh theo gợi ý!", icon: <Brain className="w-10 h-10" />, color: "bg-purple-500", shadow: "shadow-purple-500/20", xp: "+60 XP", players: "950 đang chơi" },
+  { id: 'sentence', title: "Sentence Builder", description: "Nối từ thành câu. Lắp ghép các từ vựng lộn xộn thành câu nói chuẩn ngữ pháp!", icon: <Zap className="w-10 h-10" />, color: "bg-emerald-500", shadow: "shadow-emerald-500/20", xp: "+75 XP", players: "1.1k đang chơi" },
+  { id: 'idiom', title: "Idiom Connector", description: "Nối từ thành thành ngữ. Khám phá kho tàng thành ngữ tiếng Anh qua trò chơi ghép chữ lý thú!", icon: <Sparkles className="w-10 h-10" />, color: "bg-violet-500", shadow: "shadow-violet-500/20", xp: "+120 XP", players: "640 đang chơi" },
 ];
 
 export default function GamesPage() {
@@ -1047,7 +1047,7 @@ export default function GamesPage() {
   return (
     <div className="space-y-10 animate-in fade-in duration-700">
       {activeGame === 'vocab' && <VocabMatchGame dbWords={dbWords} onClose={() => setActiveGame(null)} awardXp={handleAwardXp} />}
-      {activeGame === 'quiz'  && <SpeedQuizGame dbWords={dbWords} onClose={() => setActiveGame(null)} awardXp={handleAwardXp} />}
+      {activeGame === 'quiz' && <SpeedQuizGame dbWords={dbWords} onClose={() => setActiveGame(null)} awardXp={handleAwardXp} />}
       {activeGame === 'scram' && <WordScrambleGame dbWords={dbWords} onClose={() => setActiveGame(null)} awardXp={handleAwardXp} />}
       {activeGame === 'sentence' && <SentenceBuilderGame dbWords={dbWords} onClose={() => setActiveGame(null)} awardXp={handleAwardXp} />}
       {activeGame === 'idiom' && <IdiomConnectorGame onClose={() => setActiveGame(null)} awardXp={handleAwardXp} />}
@@ -1056,7 +1056,7 @@ export default function GamesPage() {
         <div className="inline-flex p-3 bg-indigo-100 rounded-2xl text-indigo-600 mb-2"><Gamepad2 className="w-8 h-8" /></div>
         <h1 className="text-4xl font-black tracking-tight">Quiz & Games</h1>
         <p className="text-slate-500 max-w-lg mx-auto font-medium">Học mà chơi, chơi mà học. Tích lũy điểm kinh nghiệm XP, vượt qua các thử thách ghép câu và từ vựng thú vị!</p>
-        
+
         {loading && (
           <div className="flex items-center justify-center gap-2 text-xs font-bold text-slate-400">
             <Loader2 className="w-4 h-4 animate-spin text-primary" /> Đang tối ưu hóa và đồng bộ kho từ vựng động...
@@ -1095,9 +1095,9 @@ export default function GamesPage() {
       {/* Game Grid */}
       <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {GAMES.map((game) => (
-          <div 
-            key={game.id} 
-            className="premium-card p-1 group cursor-pointer hover:shadow-2xl transition-all duration-500" 
+          <div
+            key={game.id}
+            className="premium-card p-1 group cursor-pointer hover:shadow-2xl transition-all duration-500"
             onClick={() => setActiveGame(game.id)}
           >
             <div className="bg-white rounded-[22px] p-6 flex items-start gap-6 h-full">
@@ -1129,7 +1129,7 @@ export default function GamesPage() {
             <h3 className="text-xl font-bold flex items-center gap-2 text-slate-800"><Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />Huy Hiệu Trò Chơi</h3>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
-            {[{ label:'Sát Thủ Tốc Độ', value:'Cấp 4', icon:'⚡' }, { label:'Vua Chính Tả', value:'Cấp 2', icon:'👑' }, { label:'Ghép Cặp Tài Ba', value:'Cấp 5', icon:'🤝' }, { label:'Cao Thủ Ngữ Pháp', value:'Cấp 1', icon:'🎓' }].map((b, i) => (
+            {[{ label: 'Sát Thủ Tốc Độ', value: 'Cấp 4', icon: '⚡' }, { label: 'Vua Chính Tả', value: 'Cấp 2', icon: '👑' }, { label: 'Ghép Cặp Tài Ba', value: 'Cấp 5', icon: '🤝' }, { label: 'Cao Thủ Ngữ Pháp', value: 'Cấp 1', icon: '🎓' }].map((b, i) => (
               <div key={i} className="text-center space-y-3 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
                 <div className="text-3xl">{b.icon}</div>
                 <div><p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{b.label}</p><p className="font-bold text-slate-800">{b.value}</p></div>

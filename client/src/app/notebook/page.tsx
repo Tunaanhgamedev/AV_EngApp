@@ -25,21 +25,47 @@ const MASTERY = ['New', 'Familiar', 'Learning', 'Practiced', 'Mastered', 'Expert
 const MASTERY_CLR = ['bg-slate-200 text-slate-600', 'bg-blue-100 text-blue-700', 'bg-yellow-100 text-yellow-700', 'bg-orange-100 text-orange-700', 'bg-green-100 text-green-700', 'bg-purple-100 text-purple-700'];
 const TYPE_COLORS: Record<string, string> = { noun: 'bg-sky-100 text-sky-700', verb: 'bg-rose-100 text-rose-700', adjective: 'bg-violet-100 text-violet-700', adverb: 'bg-amber-100 text-amber-700', phrase: 'bg-teal-100 text-teal-700', idiom: 'bg-pink-100 text-pink-700' };
 const speak = (text: string, lang = 'en-US') => { 
-  if (typeof window === 'undefined' || !window.speechSynthesis) return; 
-  
-  const u = new SpeechSynthesisUtterance(text); 
-  u.lang = lang; 
-  u.rate = 0.85; 
-  const v = window.speechSynthesis.getVoices().find(v => v.lang === lang && v.name.includes('Google')) || window.speechSynthesis.getVoices().find(v => v.lang === lang); 
-  if (v) u.voice = v; 
-  
-  if (window.speechSynthesis.speaking) {
-    window.speechSynthesis.cancel();
-    setTimeout(() => {
+  if (typeof window === 'undefined') return; 
+
+  const playTranslateTTS = () => {
+    const tl = lang.split('-')[0];
+    const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=${tl}&client=tw-ob&q=${encodeURIComponent(text)}`;
+    const audio = new Audio(url);
+    audio.play().catch((err) => {
+      console.error("Google Translate TTS fallback failed:", err);
+    });
+  };
+
+  if (window.speechSynthesis) {
+    const voices = window.speechSynthesis.getVoices();
+    
+    // Fallback to Translate TTS if no voices are loaded/installed
+    if (voices.length === 0) {
+      playTranslateTTS();
+      return;
+    }
+
+    const u = new SpeechSynthesisUtterance(text); 
+    u.lang = lang; 
+    u.rate = 0.85; 
+    const v = voices.find(v => v.lang === lang && v.name.includes('Google')) || voices.find(v => v.lang === lang); 
+    if (v) u.voice = v; 
+
+    u.onerror = (e) => {
+      console.log("speechSynthesis error, playing Google Translate TTS:", e);
+      playTranslateTTS();
+    };
+    
+    if (window.speechSynthesis.speaking) {
+      window.speechSynthesis.cancel();
+      setTimeout(() => {
+        window.speechSynthesis.speak(u);
+      }, 50);
+    } else {
       window.speechSynthesis.speak(u);
-    }, 50);
+    }
   } else {
-    window.speechSynthesis.speak(u);
+    playTranslateTTS();
   }
 };
 
