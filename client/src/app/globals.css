@@ -21,7 +21,7 @@
   --radius: 1rem;
 }
 
-@layer utilities {
+
   .perspective-1000 {
     -webkit-perspective: 1500px;
     perspective: 1500px;
@@ -76,7 +76,7 @@
   .card-glow-active::after {
     opacity: 0.4;
   }
-}
+
 
 @media (prefers-color-scheme: dark) {
   :root {
