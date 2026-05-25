@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { Sidebar } from './Sidebar';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, AlertTriangle } from 'lucide-react';
 
 interface LayoutWrapperProps {
   children: React.ReactNode;
@@ -14,11 +14,46 @@ const FULL_SCREEN_PAGES = ['/login'];
 
 export function LayoutWrapper({ children }: LayoutWrapperProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [showConfigWarning, setShowConfigWarning] = useState(false);
   const pathname = usePathname();
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const hostname = window.location.hostname;
+      const isLocal = hostname === 'localhost' || hostname === '127.0.0.1' || hostname.startsWith('192.168.');
+      
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+      const isApiLocal = apiUrl.includes('localhost') || apiUrl.includes('127.0.0.1') || apiUrl.includes('192.168.');
+      
+      if (!isLocal && isApiLocal) {
+        setShowConfigWarning(true);
+      }
+    }
+  }, []);
 
   // Render children directly without shell for full-screen pages (e.g. login)
   if (FULL_SCREEN_PAGES.includes(pathname)) {
-    return <>{children}</>;
+    return (
+      <div className="w-full flex flex-col min-h-screen">
+        {showConfigWarning && (
+          <div className="w-full p-4 bg-amber-500/10 border-b border-amber-500/20 text-amber-800 dark:text-amber-300 flex items-start justify-center gap-3 shadow-sm animate-in slide-in-from-top duration-500 z-50">
+            <div className="max-w-4xl w-full flex items-start gap-3">
+              <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+              <div className="space-y-1">
+                <p className="text-sm font-black uppercase tracking-wider">⚠️ LỖI CẤU HÌNH KẾT NỐI API (THIẾU ENVIRONMENT VARIABLE)</p>
+                <p className="text-xs leading-relaxed font-medium">
+                  Website đang chạy trên internet nhưng lại kết nối tới API Backend tại <strong>localhost (máy cá nhân)</strong>. Điều này làm cho tất cả tính năng đăng nhập và đồng bộ dữ liệu báo lỗi kết nối.
+                </p>
+                <p className="text-xs font-bold text-amber-950 dark:text-amber-200 mt-1">
+                  👉 <strong>Cách khắc phục:</strong> Truy cập Vercel Dashboard &rarr; <strong>Settings</strong> &rarr; <strong>Environment Variables</strong> &rarr; thêm biến <code>NEXT_PUBLIC_API_URL</code> trỏ đến Backend Render của bạn (ví dụ: <code>https://your-backend.onrender.com/api</code>) và **Redeploy** lại dự án trên Vercel.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+        {children}
+      </div>
+    );
   }
 
   return (
@@ -54,7 +89,21 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
 
       {/* Main Content Area */}
       <main className="flex-1 lg:ml-64 min-h-screen pt-16 lg:pt-0 transition-all duration-300">
-        <div className="max-w-7xl mx-auto p-4 md:p-8">
+        <div className="max-w-7xl mx-auto p-4 md:p-8 space-y-6">
+          {showConfigWarning && (
+            <div className="p-4 bg-amber-500/10 border border-amber-500/20 text-amber-800 dark:text-amber-300 rounded-2xl flex items-start gap-3 shadow-sm animate-in slide-in-from-top duration-500">
+              <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+              <div className="space-y-1">
+                <p className="text-sm font-black uppercase tracking-wider">⚠️ LỖI CẤU HÌNH KẾT NỐI API (THIẾU ENVIRONMENT VARIABLE)</p>
+                <p className="text-xs leading-relaxed font-medium">
+                  Website đang chạy trên internet nhưng lại kết nối tới API Backend tại <strong>localhost (máy cá nhân)</strong>. Điều này làm cho tất cả các tính năng học từ vựng, dịch thuật, chat AI báo lỗi kết nối máy chủ.
+                </p>
+                <p className="text-xs font-bold text-amber-950 dark:text-amber-200 mt-1.5">
+                  👉 <strong>Cách khắc phục:</strong> Truy cập Vercel Dashboard dự án của bạn &rarr; <strong>Settings</strong> &rarr; <strong>Environment Variables</strong> và thêm biến <code>NEXT_PUBLIC_API_URL</code> với giá trị là đường dẫn API backend thực tế trên Render của bạn (ví dụ: <code>https://your-backend.onrender.com/api</code>), sau đó thực hiện <strong>Redeploy</strong> lại dự án trên Vercel.
+                </p>
+              </div>
+            </div>
+          )}
           {children}
         </div>
       </main>
