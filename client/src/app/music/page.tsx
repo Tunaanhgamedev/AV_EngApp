@@ -155,6 +155,43 @@ export default function MusicHub() {
     };
   }, []);
 
+  // Unlock audio elements on mobile devices during a direct user-gesture interaction
+  const unlockAmbientSounds = () => {
+    if (typeof window === 'undefined') return;
+
+    if (!rainAudioRef.current) {
+      const audio = new Audio("https://www.soundjay.com/nature/sounds/rain-07.mp3");
+      audio.loop = true;
+      audio.volume = 0;
+      rainAudioRef.current = audio;
+    }
+    if (!cafeAudioRef.current) {
+      const audio = new Audio("https://www.soundjay.com/misc/sounds/coffee-shop-1.mp3");
+      audio.loop = true;
+      audio.volume = 0;
+      cafeAudioRef.current = audio;
+    }
+
+    try {
+      // Warm up both ambient tracks to bypass strict mobile browser autoplay restrictions
+      const rainPlay = rainAudioRef.current.play();
+      if (rainPlay !== undefined) {
+        rainPlay.then(() => {
+          if (rainMix === 0) rainAudioRef.current?.pause();
+        }).catch(e => console.log("Ambient rain silent warm up failed:", e));
+      }
+
+      const cafePlay = cafeAudioRef.current.play();
+      if (cafePlay !== undefined) {
+        cafePlay.then(() => {
+          if (cafeMix === 0) cafeAudioRef.current?.pause();
+        }).catch(e => console.log("Ambient cafe silent warm up failed:", e));
+      }
+    } catch (err) {
+      console.log("Failed to warm up background audio engines:", err);
+    }
+  };
+
   const handleStartTimer = () => {
     setIsTimerRunning(!isTimerRunning);
   };
@@ -235,6 +272,9 @@ export default function MusicHub() {
             <p className="text-[10px] text-slate-400 font-bold max-w-[150px] leading-relaxed">
               *Nhạc vẫn chạy ngầm mượt mà khi bạn chuyển sang các trang học khác!
             </p>
+            <p className="text-[9px] text-amber-400 font-bold max-w-[150px] leading-relaxed border-t border-white/5 pt-1.5 mt-1.5">
+              📱 <strong>iOS/Android:</strong> Hãy tắt nút gạt im lặng (chế độ rung) của điện thoại để nghe tiếng nhạc.
+            </p>
           </div>
         </div>
       </div>
@@ -314,14 +354,20 @@ export default function MusicHub() {
           {/* Media Player Controls Row */}
           <div className="flex items-center justify-center gap-6 z-10 select-none">
             <button
-              onClick={prevTrack}
+              onClick={() => {
+                prevTrack();
+                unlockAmbientSounds();
+              }}
               className="p-3 text-slate-400 hover:text-white hover:bg-slate-800/80 rounded-2xl active:scale-90 transition-all border border-slate-800 cursor-pointer"
             >
               <SkipBack className="w-5 h-5 fill-slate-400" />
             </button>
 
             <button
-              onClick={togglePlay}
+              onClick={() => {
+                togglePlay();
+                unlockAmbientSounds();
+              }}
               className="p-5 bg-primary text-white rounded-full hover:scale-105 active:scale-95 transition-all shadow-lg shadow-primary/30 cursor-pointer border border-primary/20"
             >
               {isPlaying ? (
@@ -332,7 +378,10 @@ export default function MusicHub() {
             </button>
 
             <button
-              onClick={nextTrack}
+              onClick={() => {
+                nextTrack();
+                unlockAmbientSounds();
+              }}
               className="p-3 text-slate-400 hover:text-white hover:bg-slate-800/80 rounded-2xl active:scale-90 transition-all border border-slate-800 cursor-pointer"
             >
               <SkipForward className="w-5 h-5 fill-slate-400" />
@@ -542,7 +591,10 @@ export default function MusicHub() {
                   min="0"
                   max="100"
                   value={rainMix}
-                  onChange={(e) => setRainMix(parseInt(e.target.value))}
+                  onChange={(e) => {
+                    setRainMix(parseInt(e.target.value));
+                    unlockAmbientSounds();
+                  }}
                   className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500"
                 />
               </div>
@@ -560,7 +612,10 @@ export default function MusicHub() {
                   min="0"
                   max="100"
                   value={cafeMix}
-                  onChange={(e) => setCafeMix(parseInt(e.target.value))}
+                  onChange={(e) => {
+                    setCafeMix(parseInt(e.target.value));
+                    unlockAmbientSounds();
+                  }}
                   className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-500"
                 />
               </div>
@@ -597,7 +652,10 @@ export default function MusicHub() {
                     )}
 
                     <button
-                      onClick={() => playTrack(track)}
+                      onClick={() => {
+                        playTrack(track);
+                        unlockAmbientSounds();
+                      }}
                       className="flex-1 text-left flex items-start gap-3 cursor-pointer z-10"
                     >
                       <div className={cn(
