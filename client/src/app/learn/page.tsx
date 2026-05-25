@@ -704,11 +704,11 @@ export default function LearnPage() {
               {/* Word Flashcard */}
               <div className="perspective-1000 w-full h-[450px]">
                 <div className={cn(
-                  "relative w-full h-full preserve-3d transition-transform duration-500 border border-slate-200/80 rounded-[2.5rem] shadow-xl overflow-hidden",
+                  "relative w-full h-full preserve-3d transition-transform duration-500 border border-slate-200/80 rounded-[2.5rem] shadow-xl",
                   showHint ? "rotate-y-180" : ""
                 )}>
                   {/* Front Side */}
-                  <div className="absolute w-full h-full backface-hidden flex flex-col items-center justify-center text-center bg-white p-8">
+                  <div className="absolute w-full h-full backface-hidden flex flex-col items-center justify-center text-center bg-white p-8 rounded-[2.5rem]">
                     <span className="px-3 py-1 bg-green-100 text-green-700 text-[9px] font-black rounded-full uppercase tracking-wider mb-4">
                       {words[currentIndex].cefrLevel}
                     </span>
@@ -727,7 +727,7 @@ export default function LearnPage() {
                   </div>
 
                   {/* Back Side */}
-                  <div className="absolute w-full h-full backface-hidden rotate-y-180 flex flex-col items-center justify-center text-center bg-[#002147] text-white p-8 overflow-y-auto">
+                  <div className="absolute w-full h-full backface-hidden rotate-y-180 flex flex-col items-center justify-center text-center bg-[#002147] text-white p-8 overflow-y-auto rounded-[2.5rem]">
                     <div className="space-y-4 w-full">
                       <div>
                         <span className="text-[9px] text-emerald-400 font-black uppercase tracking-widest block">Nghĩa tiếng Việt</span>
