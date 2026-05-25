@@ -190,15 +190,14 @@ export default function MusicHub() {
     }
   };
 
-  const handleAddCustomSong = (e: React.FormEvent) => {
+  const handleAddCustomSong = async (e: React.FormEvent) => {
     e.preventDefault();
     if (addMode === 'url') {
       if (!newUrl.trim()) return;
-      addCustomTrack(newTitle, newArtist || "Mạng Internet", newUrl, "Custom Track");
+      await addCustomTrack(newTitle, newArtist || "Mạng Internet", newUrl, "Custom Track");
     } else {
       if (!selectedFile) return;
-      const objectUrl = URL.createObjectURL(selectedFile);
-      addCustomTrack(newTitle, newArtist || "File nhạc của tôi", objectUrl, "Local File");
+      await addCustomTrack(newTitle, newArtist || "File nhạc của tôi", "", "Local File", selectedFile);
     }
     setNewTitle("");
     setNewArtist("");
@@ -631,10 +630,10 @@ export default function MusicHub() {
                     {/* Delete button for custom account-specific songs */}
                     {isCustom && (
                       <button
-                        onClick={(e) => {
+                        onClick={async (e) => {
                           e.stopPropagation();
                           if (confirm(`Bạn có chắc chắn muốn xóa bài hát '${track.title}'?`)) {
-                            deleteCustomTrack(track.id);
+                            await deleteCustomTrack(track.id);
                           }
                         }}
                         className="p-1.5 text-slate-500 hover:text-rose-500 hover:bg-rose-500/10 rounded-lg transition-all absolute right-2.5 top-2.5 z-20 cursor-pointer"

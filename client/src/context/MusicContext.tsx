@@ -62,6 +62,60 @@ export const STUDY_TRACKS: Track[] = [
   }
 ];
 
+const DB_NAME = 'EngBotMusicDB';
+const STORE_NAME = 'local_tracks';
+
+function openDB(): Promise<IDBDatabase> {
+  return new Promise((resolve, reject) => {
+    if (typeof window === 'undefined') {
+      reject('Window is undefined');
+      return;
+    }
+    const request = indexedDB.open(DB_NAME, 1);
+    request.onupgradeneeded = () => {
+      const db = request.result;
+      if (!db.objectStoreNames.contains(STORE_NAME)) {
+        db.createObjectStore(STORE_NAME);
+      }
+    };
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+async function saveAudioFile(id: string | number, file: Blob): Promise<void> {
+  const db = await openDB();
+  return new Promise<void>((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readwrite');
+    const store = tx.objectStore(STORE_NAME);
+    store.put(file, String(id));
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
+async function getAudioFile(id: string | number): Promise<Blob | null> {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readonly');
+    const store = tx.objectStore(STORE_NAME);
+    const request = store.get(String(id));
+    request.onsuccess = () => resolve(request.result || null);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+async function deleteAudioFile(id: string | number): Promise<void> {
+  const db = await openDB();
+  return new Promise<void>((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readwrite');
+    const store = tx.objectStore(STORE_NAME);
+    store.delete(String(id));
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
 interface MusicContextType {
   tracks: Track[];
   customTracks: Track[];
@@ -77,8 +131,8 @@ interface MusicContextType {
   prevTrack: () => void;
   changeVolume: (val: number) => void;
   seek: (seconds: number) => void;
-  addCustomTrack: (title: string, artist: string, url: string, category?: string) => void;
-  deleteCustomTrack: (id: number) => void;
+  addCustomTrack: (title: string, artist: string, url: string, category?: string, file?: Blob) => Promise<void>;
+  deleteCustomTrack: (id: number) => Promise<void>;
 }
 
 const MusicContext = createContext<MusicContextType | undefined>(undefined);
@@ -118,9 +172,9 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
 
   // Initialize audio element ONLY ONCE on mount to ensure seamless playback without skips or resets!
   useEffect(() => {
-    // Create an empty Audio element with CORS support enabled
     const audio = new Audio();
-    audio.crossOrigin = "anonymous";
+    // Do NOT set audio.crossOrigin = "anonymous";
+    // This allows browser to stream custom URL audio files directly without failing CORS checks!
     audio.loop = false;
     audio.volume = volume;
     audioRef.current = audio;
@@ -162,22 +216,53 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
     playTrack(currentTracks[nextIndex]);
   };
 
-  // Load custom tracks from localStorage when the active user changes (isolating tracks per account!)
+  // Load custom tracks from localStorage and recreate objectURLs for local audio files dynamically!
   useEffect(() => {
-    if (user) {
-      const stored = localStorage.getItem(`custom_tracks_${user.uid}`);
-      if (stored) {
-        try {
-          setCustomTracks(JSON.parse(stored));
-        } catch (e) {
-          console.error("Failed to parse custom tracks", e);
+    const loadTracks = async () => {
+      if (user) {
+        const stored = localStorage.getItem(`custom_tracks_${user.uid}`);
+        if (stored) {
+          try {
+            const parsedTracks = JSON.parse(stored) as (Track & { isLocalFile?: boolean })[];
+            
+            // Restore actual valid blob URLs at runtime from IndexedDB
+            const tracksWithUrls = await Promise.all(
+              parsedTracks.map(async (t) => {
+                if (t.isLocalFile) {
+                  try {
+                    const blob = await getAudioFile(t.id);
+                    if (blob) {
+                      const objectUrl = URL.createObjectURL(blob);
+                      return { ...t, url: objectUrl };
+                    }
+                  } catch (e) {
+                    console.error(`Failed to load local file for track ${t.id}`, e);
+                  }
+                  return { ...t, url: "" }; // Empty URL fallback if DB retrieve fails
+                }
+                return t;
+              })
+            );
+            
+            setCustomTracks(tracksWithUrls);
+          } catch (e) {
+            console.error("Failed to parse custom tracks", e);
+          }
+        } else {
+          setCustomTracks([]);
         }
       } else {
+        // Revoke existing object URLs to avoid memory leaks before clearing
+        customTracks.forEach(t => {
+          if (t.url.startsWith('blob:')) {
+            URL.revokeObjectURL(t.url);
+          }
+        });
         setCustomTracks([]);
       }
-    } else {
-      setCustomTracks([]);
-    }
+    };
+
+    loadTracks();
   }, [user]);
 
   // Sync volume with state
@@ -267,29 +352,92 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  // Add custom user track (isolated strictly to the account)
-  const addCustomTrack = (title: string, artist: string, url: string, category: string = "Custom Track") => {
+  // Add custom user track (isolated strictly to the account, support storing local file in IndexedDB!)
+  const addCustomTrack = async (title: string, artist: string, url: string, category: string = "Custom Track", file?: Blob) => {
     if (!user) return;
-    const newTrack: Track = {
-      id: Date.now(),
+    
+    const trackId = Date.now();
+    const isLocalFile = !!file;
+    let trackUrl = url;
+
+    if (isLocalFile && file) {
+      try {
+        await saveAudioFile(trackId, file);
+        trackUrl = URL.createObjectURL(file);
+      } catch (e) {
+        console.error("Failed to save audio file to IndexedDB:", e);
+        alert("Không thể lưu file nhạc vào bộ nhớ trình duyệt.");
+        return;
+      }
+    }
+
+    const newTrack: Track & { isLocalFile?: boolean } = {
+      id: trackId,
       title: title || "Bài hát tùy chọn",
       artist: artist || "Tài khoản của tôi",
-      url: url,
+      url: trackUrl,
       category: category,
-      duration: "MP3",
-      studyBenefit: "Bản nhạc cá nhân được lưu trữ riêng biệt trên tài khoản của bạn để ôn tập."
+      duration: isLocalFile ? "Local File" : "MP3 URL",
+      studyBenefit: "Bản nhạc cá nhân được lưu trữ riêng biệt trên tài khoản của bạn để ôn tập.",
+      isLocalFile: isLocalFile
     };
-    const updated = [...customTracks, newTrack];
-    setCustomTracks(updated);
-    localStorage.setItem(`custom_tracks_${user.uid}`, JSON.stringify(updated));
+
+    // Strip temp URL for local files when writing metadata to localStorage to prevent stale references
+    const metadataToStore = {
+      ...newTrack,
+      url: isLocalFile ? "" : url
+    };
+
+    const stored = localStorage.getItem(`custom_tracks_${user.uid}`);
+    let existing: any[] = [];
+    if (stored) {
+      try {
+        existing = JSON.parse(stored);
+      } catch (e) {
+        existing = [];
+      }
+    }
+    
+    const updatedMetadata = [...existing, metadataToStore];
+    localStorage.setItem(`custom_tracks_${user.uid}`, JSON.stringify(updatedMetadata));
+    
+    // Add track with fresh valid URL to active memory state
+    setCustomTracks([...customTracks, newTrack]);
   };
 
-  // Delete custom track
-  const deleteCustomTrack = (id: number) => {
+  // Delete custom track (including its file storage in IndexedDB)
+  const deleteCustomTrack = async (id: number) => {
     if (!user) return;
-    const updated = customTracks.filter(t => t.id !== id);
-    setCustomTracks(updated);
-    localStorage.setItem(`custom_tracks_${user.uid}`, JSON.stringify(updated));
+    
+    // 1. If we have the track in memory, clean up its object URL to free memory
+    const targetTrack = customTracks.find(t => t.id === id);
+    if (targetTrack?.url.startsWith('blob:')) {
+      URL.revokeObjectURL(targetTrack.url);
+    }
+
+    // 2. Delete file binary from IndexedDB
+    try {
+      await deleteAudioFile(id);
+    } catch (e) {
+      console.error("Failed to delete local audio file from IndexedDB:", e);
+    }
+
+    // 3. Remove metadata from localStorage
+    const stored = localStorage.getItem(`custom_tracks_${user.uid}`);
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored) as (Track & { isLocalFile?: boolean })[];
+        const updated = parsed.filter(t => t.id !== id);
+        localStorage.setItem(`custom_tracks_${user.uid}`, JSON.stringify(updated));
+      } catch (e) {
+        console.error("Failed to update custom tracks metadata after delete:", e);
+      }
+    }
+
+    // 4. Update memory state
+    const updatedState = customTracks.filter(t => t.id !== id);
+    setCustomTracks(updatedState);
+
     // If the currently playing track was deleted, fallback to default
     if (currentTrack.id === id) {
       playTrack(STUDY_TRACKS[0]);
