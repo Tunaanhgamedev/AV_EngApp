@@ -198,13 +198,6 @@ export default function TranslatePage() {
 
   const speak = (text: string, lang = 'en-US') => {
     if (!text || typeof window === 'undefined' || !window.speechSynthesis) return;
-    window.speechSynthesis.cancel();
-    
-    try {
-      const dummy = new SpeechSynthesisUtterance('');
-      dummy.lang = lang;
-      window.speechSynthesis.speak(dummy);
-    } catch (e) {}
     
     const u = new SpeechSynthesisUtterance(text);
     u.lang = lang; 
@@ -215,7 +208,14 @@ export default function TranslatePage() {
                            voices.find(v => v.lang === lang);
     if (preferredVoice) u.voice = preferredVoice;
     
-    window.speechSynthesis.speak(u);
+    if (window.speechSynthesis.speaking) {
+      window.speechSynthesis.cancel();
+      setTimeout(() => {
+        window.speechSynthesis.speak(u);
+      }, 50);
+    } else {
+      window.speechSynthesis.speak(u);
+    }
   };
 
   const hasResult = translatedText && !translatedText.includes('Failed') && !translatedText.includes('thất bại') && !translatedText.includes('Lỗi');

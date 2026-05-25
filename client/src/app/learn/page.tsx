@@ -168,13 +168,6 @@ const FOUNDATION_TOPICS = [
 
 const speak = (text: string) => {
   if (typeof window !== 'undefined' && window.speechSynthesis) {
-    window.speechSynthesis.cancel();
-    
-    try {
-      const dummy = new SpeechSynthesisUtterance('');
-      window.speechSynthesis.speak(dummy);
-    } catch (e) {}
-    
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'en-US';
     utterance.rate = 0.75;
@@ -184,7 +177,15 @@ const speak = (text: string) => {
                            voices.find(v => v.lang === 'en-US');
     
     if (preferredVoice) utterance.voice = preferredVoice;
-    window.speechSynthesis.speak(utterance);
+
+    if (window.speechSynthesis.speaking) {
+      window.speechSynthesis.cancel();
+      setTimeout(() => {
+        window.speechSynthesis.speak(utterance);
+      }, 50);
+    } else {
+      window.speechSynthesis.speak(utterance);
+    }
   }
 };
 

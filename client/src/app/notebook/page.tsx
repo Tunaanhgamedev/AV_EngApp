@@ -26,20 +26,21 @@ const MASTERY_CLR = ['bg-slate-200 text-slate-600', 'bg-blue-100 text-blue-700',
 const TYPE_COLORS: Record<string, string> = { noun: 'bg-sky-100 text-sky-700', verb: 'bg-rose-100 text-rose-700', adjective: 'bg-violet-100 text-violet-700', adverb: 'bg-amber-100 text-amber-700', phrase: 'bg-teal-100 text-teal-700', idiom: 'bg-pink-100 text-pink-700' };
 const speak = (text: string, lang = 'en-US') => { 
   if (typeof window === 'undefined' || !window.speechSynthesis) return; 
-  window.speechSynthesis.cancel();
-  
-  try {
-    const dummy = new SpeechSynthesisUtterance('');
-    dummy.lang = lang;
-    window.speechSynthesis.speak(dummy);
-  } catch (e) {}
   
   const u = new SpeechSynthesisUtterance(text); 
   u.lang = lang; 
   u.rate = 0.85; 
   const v = window.speechSynthesis.getVoices().find(v => v.lang === lang && v.name.includes('Google')) || window.speechSynthesis.getVoices().find(v => v.lang === lang); 
   if (v) u.voice = v; 
-  window.speechSynthesis.speak(u); 
+  
+  if (window.speechSynthesis.speaking) {
+    window.speechSynthesis.cancel();
+    setTimeout(() => {
+      window.speechSynthesis.speak(u);
+    }, 50);
+  } else {
+    window.speechSynthesis.speak(u);
+  }
 };
 
 // ─── Word Card ────────────────────────────────────────────────────────────────

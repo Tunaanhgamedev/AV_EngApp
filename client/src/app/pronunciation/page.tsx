@@ -229,13 +229,6 @@ const COUNTRIES_DATA = [
 
 const speak = (text: string, rate: number = 0.7) => {
   if (typeof window === 'undefined' || !window.speechSynthesis) return;
-  window.speechSynthesis.cancel();
-  
-  try {
-    const dummy = new SpeechSynthesisUtterance('');
-    dummy.lang = 'en-US';
-    window.speechSynthesis.speak(dummy);
-  } catch (e) {}
   
   const u = new SpeechSynthesisUtterance(text);
   u.lang = 'en-US';
@@ -243,7 +236,15 @@ const speak = (text: string, rate: number = 0.7) => {
   const voices = window.speechSynthesis.getVoices();
   const v = voices.find(v => v.lang === 'en-US' && v.name.includes('Google')) || voices.find(v => v.lang === 'en-US');
   if (v) u.voice = v;
-  window.speechSynthesis.speak(u);
+  
+  if (window.speechSynthesis.speaking) {
+    window.speechSynthesis.cancel();
+    setTimeout(() => {
+      window.speechSynthesis.speak(u);
+    }, 50);
+  } else {
+    window.speechSynthesis.speak(u);
+  }
 };
 
 // ─── Speech Practice Section Component ─────────────────────────────────────────

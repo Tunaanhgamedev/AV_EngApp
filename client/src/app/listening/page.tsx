@@ -162,13 +162,6 @@ export default function ListeningPage() {
 
   const speakLine = (text: string) => {
     if (typeof window === 'undefined' || !window.speechSynthesis) return;
-    window.speechSynthesis.cancel();
-    
-    try {
-      const dummy = new SpeechSynthesisUtterance('');
-      dummy.lang = 'en-US';
-      window.speechSynthesis.speak(dummy);
-    } catch (e) {}
     
     const words = new SpeechSynthesisUtterance(text);
     words.lang = 'en-US';
@@ -176,18 +169,19 @@ export default function ListeningPage() {
     const voices = window.speechSynthesis.getVoices();
     const v = voices.find(voice => voice.lang === 'en-US' && voice.name.includes('Google')) || voices.find(voice => voice.lang === 'en-US');
     if (v) words.voice = v;
-    window.speechSynthesis.speak(words);
+
+    if (window.speechSynthesis.speaking) {
+      window.speechSynthesis.cancel();
+      setTimeout(() => {
+        window.speechSynthesis.speak(words);
+      }, 50);
+    } else {
+      window.speechSynthesis.speak(words);
+    }
   };
 
   const playLesson = () => {
     if (typeof window === 'undefined' || !window.speechSynthesis) return;
-    stopSpeech();
-    
-    try {
-      const dummy = new SpeechSynthesisUtterance('');
-      dummy.lang = 'en-US';
-      window.speechSynthesis.speak(dummy);
-    } catch (e) {}
 
     const fullText = selected.transcript.map(l => l.text).join('. ');
     const utt = new SpeechSynthesisUtterance(fullText);
@@ -197,22 +191,32 @@ export default function ListeningPage() {
     if (v) utt.voice = v;
     utt.onend = () => { setIsPlaying(false); setProgress(100); stopSpeech(); };
     utterRef.current = utt;
-    window.speechSynthesis.speak(utt);
-    setIsPlaying(true);
-    let sec = elapsed;
-    intervalRef.current = setInterval(() => {
-      sec++;
-      setElapsed(sec);
-      setProgress((sec / TOTAL) * 100);
-      const lineIdx = selected.transcript.findIndex((l, i) => {
-        const next = selected.transcript[i + 1];
-        const scaledTime = Math.round(l.time * (TOTAL / (selected.transcript[selected.transcript.length - 1].time + 6)));
-        const scaledNext = next ? Math.round(next.time * (TOTAL / (selected.transcript[selected.transcript.length - 1].time + 6))) : TOTAL;
-        return sec >= scaledTime && sec < scaledNext;
-      });
-      if (lineIdx >= 0) setActiveLine(lineIdx);
-      if (sec >= TOTAL) { stopSpeech(); setIsPlaying(false); }
-    }, 1000);
+
+    const startPlaying = () => {
+      window.speechSynthesis.speak(utt);
+      setIsPlaying(true);
+      let sec = elapsed;
+      intervalRef.current = setInterval(() => {
+        sec++;
+        setElapsed(sec);
+        setProgress((sec / TOTAL) * 100);
+        const lineIdx = selected.transcript.findIndex((l, i) => {
+          const next = selected.transcript[i + 1];
+          const scaledTime = Math.round(l.time * (TOTAL / (selected.transcript[selected.transcript.length - 1].time + 6)));
+          const scaledNext = next ? Math.round(next.time * (TOTAL / (selected.transcript[selected.transcript.length - 1].time + 6))) : TOTAL;
+          return sec >= scaledTime && sec < scaledNext;
+        });
+        if (lineIdx >= 0) setActiveLine(lineIdx);
+        if (sec >= TOTAL) { stopSpeech(); setIsPlaying(false); }
+      }, 1000);
+    };
+
+    if (window.speechSynthesis.speaking) {
+      stopSpeech();
+      setTimeout(startPlaying, 50);
+    } else {
+      startPlaying();
+    }
   };
 
   const pauseLesson = () => { stopSpeech(); setIsPlaying(false); };
