@@ -197,10 +197,24 @@ export default function TranslatePage() {
   };
 
   const speak = (text: string, lang = 'en-US') => {
-    if (!text || typeof window === 'undefined') return;
+    if (!text || typeof window === 'undefined' || !window.speechSynthesis) return;
     window.speechSynthesis.cancel();
+    
+    try {
+      const dummy = new SpeechSynthesisUtterance('');
+      dummy.lang = lang;
+      window.speechSynthesis.speak(dummy);
+    } catch (e) {}
+    
     const u = new SpeechSynthesisUtterance(text);
-    u.lang = lang; u.rate = 0.9;
+    u.lang = lang; 
+    u.rate = 0.9;
+    
+    const voices = window.speechSynthesis.getVoices();
+    const preferredVoice = voices.find(v => v.lang === lang && v.name.includes('Google')) || 
+                           voices.find(v => v.lang === lang);
+    if (preferredVoice) u.voice = preferredVoice;
+    
     window.speechSynthesis.speak(u);
   };
 

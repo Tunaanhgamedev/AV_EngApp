@@ -228,8 +228,15 @@ const COUNTRIES_DATA = [
 ];
 
 const speak = (text: string, rate: number = 0.7) => {
-  if (typeof window === 'undefined') return;
+  if (typeof window === 'undefined' || !window.speechSynthesis) return;
   window.speechSynthesis.cancel();
+  
+  try {
+    const dummy = new SpeechSynthesisUtterance('');
+    dummy.lang = 'en-US';
+    window.speechSynthesis.speak(dummy);
+  } catch (e) {}
+  
   const u = new SpeechSynthesisUtterance(text);
   u.lang = 'en-US';
   u.rate = rate;

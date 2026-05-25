@@ -279,7 +279,6 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
     try {
       audioRef.current.pause();
       audioRef.current.src = track.url;
-      audioRef.current.load();
       setCurrentTrack(track);
       setProgress(0);
       setCurrentTimeSec(0);

@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { 
-  Search, 
-  Volume2, 
-  Bookmark, 
-  Sparkles, 
-  ChevronRight, 
+import {
+  Search,
+  Volume2,
+  Bookmark,
+  Sparkles,
+  ChevronRight,
   BookOpen,
   CheckCircle2,
   AlertCircle,
@@ -31,7 +31,7 @@ function DictionaryContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { user, dbUser, refreshDbUser } = useAuth();
-  
+
   // Search state
   const [searchTerm, setSearchTerm] = useState('');
   const [isSearching, setIsSearching] = useState(false);
@@ -207,18 +207,18 @@ function DictionaryContent() {
     if (typeof window !== 'undefined' && window.speechSynthesis) {
       // Cancel any ongoing speech
       window.speechSynthesis.cancel();
-      
+
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'en-US';
       utterance.rate = 0.9; // Slightly slower for clarity
-      
+
       // Try to find a premium English voice if available
       const voices = window.speechSynthesis.getVoices();
-      const preferredVoice = voices.find(v => v.name.includes('Google') && v.lang === 'en-US') || 
-                             voices.find(v => v.lang === 'en-US');
-      
+      const preferredVoice = voices.find(v => v.name.includes('Google') && v.lang === 'en-US') ||
+        voices.find(v => v.lang === 'en-US');
+
       if (preferredVoice) utterance.voice = preferredVoice;
-      
+
       window.speechSynthesis.speak(utterance);
     }
   };
@@ -242,16 +242,16 @@ function DictionaryContent() {
       {/* Unified Search Section */}
       <div className="max-w-3xl mx-auto sticky top-4 z-40">
         <div className="relative group">
-          <input 
-            type="text" 
-            placeholder="Search words... (e.g. 'abandon')" 
+          <input
+            type="text"
+            placeholder="Search words... (e.g. 'abandon')"
             className="w-full h-20 pl-16 pr-32 bg-white/80 backdrop-blur-xl border-2 border-[#002147]/10 rounded-3xl shadow-2xl shadow-[#002147]/5 focus:border-[#002147] focus:bg-white focus:ring-0 transition-all text-xl font-bold placeholder:text-slate-300"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handlePreciseSearch(searchTerm)}
           />
           <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-7 h-7 text-[#002147]/30 group-focus-within:text-[#002147] transition-colors" />
-          <button 
+          <button
             onClick={() => handlePreciseSearch(searchTerm)}
             disabled={isSearching || !searchTerm.trim()}
             className="absolute right-4 top-1/2 -translate-y-1/2 px-8 py-3.5 bg-[#002147] text-white rounded-2xl font-black text-sm hover:bg-[#00316e] transition-all flex items-center gap-2 disabled:opacity-50"
@@ -273,7 +273,7 @@ function DictionaryContent() {
                     <span className="italic text-[#e32b26] font-bold text-lg">({wordData.wordType})</span>
                     <span className="text-slate-400 text-lg font-medium">{wordData.phonetic}</span>
                     {wordData.audioUs || true && (
-                      <button 
+                      <button
                         onClick={() => playAudio(wordData.word, wordData.audioUs)}
                         className="p-2 bg-slate-50 rounded-full hover:bg-[#002147] hover:text-white transition-all shadow-sm"
                       >
@@ -320,13 +320,13 @@ function DictionaryContent() {
                 )}
               </div>
 
-              <button 
+              <button
                 onClick={() => saveWord(wordData)}
                 disabled={isSaving || savedIds.has(wordData.id)}
                 className={cn(
                   "w-full py-5 rounded-2xl font-black text-sm tracking-widest transition-all flex items-center justify-center gap-3 shadow-xl",
-                  savedIds.has(wordData.id) 
-                    ? "bg-green-500 text-white" 
+                  savedIds.has(wordData.id)
+                    ? "bg-green-500 text-white"
                     : "bg-[#002147] text-white hover:bg-[#00316e] shadow-[#002147]/20"
                 )}
               >
@@ -358,7 +358,7 @@ function DictionaryContent() {
 
           <div className="flex flex-wrap gap-2">
             {LEVELS.map(lvl => (
-              <button 
+              <button
                 key={lvl}
                 onClick={() => setSelectedLevel(selectedLevel === lvl ? null : lvl)}
                 className={cn(
@@ -374,7 +374,7 @@ function DictionaryContent() {
 
         {/* Alphabet Picker */}
         <div className="flex flex-wrap gap-2 bg-slate-50/50 p-4 rounded-2xl">
-          <button 
+          <button
             onClick={() => setSelectedLetter(null)}
             className={cn(
               "px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-tighter transition-all",
@@ -384,7 +384,7 @@ function DictionaryContent() {
             ALL
           </button>
           {ALPHABET.map(l => (
-            <button 
+            <button
               key={l}
               onClick={() => setSelectedLetter(l)}
               className={cn(
@@ -421,7 +421,7 @@ function DictionaryContent() {
                 </span>
               )}
             </div>
-            <button 
+            <button
               onClick={() => { setSelectedLetter(null); setSelectedLevel(null); setSearchTerm(''); }}
               className="ml-auto text-xs font-bold text-slate-400 hover:text-rose-500 transition-colors"
             >
@@ -440,8 +440,8 @@ function DictionaryContent() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {words.length > 0 ? words.map((word) => (
-              <div 
-                key={word.id} 
+              <div
+                key={word.id}
                 className="premium-card p-6 flex flex-col justify-between group hover:-translate-y-2 transition-all relative overflow-hidden bg-white border-b-4 border-b-[#002147]/5 hover:border-b-[#002147]"
                 onClick={() => setSearchTerm(word.word)}
               >
@@ -454,7 +454,7 @@ function DictionaryContent() {
                       {word.cefrLevel}
                     </span>
                   </div>
-                  
+
                   <div className="space-y-1">
                     <div className="flex items-center gap-2 text-[10px] font-bold text-[#e32b26] uppercase tracking-widest">
                       <span>{word.wordType}</span>
@@ -473,13 +473,13 @@ function DictionaryContent() {
                 </div>
 
                 <div className="mt-6 flex items-center justify-between pt-4 border-t border-slate-50">
-                  <button 
+                  <button
                     onClick={(e) => { e.stopPropagation(); playAudio(word.word, word.audioUs); }}
                     className="p-2 bg-slate-50 rounded-lg hover:bg-[#002147]/10 text-slate-400 hover:text-[#002147] transition-all"
                   >
                     <Volume2 className="w-4 h-4" />
                   </button>
-                  <button 
+                  <button
                     onClick={(e) => { e.stopPropagation(); saveWord(word); }}
                     disabled={savingId === word.id || savedIds.has(word.id)}
                     className={cn(
@@ -509,21 +509,21 @@ function DictionaryContent() {
         {!loadingList && totalPages > 1 && (
           <div className="flex flex-col md:flex-row items-center justify-center gap-4 pt-12">
             <div className="flex items-center gap-2">
-              <button 
+              <button
                 onClick={() => setPage(prev => Math.max(1, prev - 1))}
                 disabled={page === 1}
                 className="w-10 h-10 flex items-center justify-center bg-white border border-slate-100 rounded-xl disabled:opacity-30 hover:border-primary hover:text-primary transition-all shadow-sm"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
-              
+
               <div className="flex items-center gap-2">
                 {(() => {
                   const pages = [];
                   const delta = 2; // Number of pages to show on each side of current
                   const left = page - delta;
                   const right = page + delta;
-                  
+
                   for (let i = 1; i <= totalPages; i++) {
                     if (i === 1 || i === totalPages || (i >= left && i <= right)) {
                       pages.push(i);
@@ -531,7 +531,7 @@ function DictionaryContent() {
                       pages.push('...');
                     }
                   }
-                  
+
                   return pages.map((p, i) => (
                     typeof p === 'number' ? (
                       <button
@@ -551,7 +551,7 @@ function DictionaryContent() {
                 })()}
               </div>
 
-              <button 
+              <button
                 onClick={() => setPage(prev => Math.min(totalPages, prev + 1))}
                 disabled={page === totalPages}
                 className="w-10 h-10 flex items-center justify-center bg-white border border-slate-100 rounded-xl disabled:opacity-30 hover:border-primary hover:text-primary transition-all shadow-sm"
@@ -559,7 +559,7 @@ function DictionaryContent() {
                 <ChevronRight className="w-5 h-5" />
               </button>
             </div>
-            
+
             <div className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] md:ml-4">
               Showing Page {page} of {totalPages}
             </div>
@@ -581,7 +581,7 @@ function DictionaryContent() {
                   ×
                 </button>
               </div>
-              
+
               <p className="text-xs text-slate-500">
                 Dùng AI để bổ sung và dịch tiếng Việt cho từ vựng Oxford3000.
               </p>
@@ -594,8 +594,8 @@ function DictionaryContent() {
                   </div>
                   {enrichResult.remaining > 0 && (
                     <div className="w-full bg-slate-200 rounded-full h-1.5">
-                      <div 
-                        className="bg-green-500 h-1.5 rounded-full transition-all duration-500" 
+                      <div
+                        className="bg-green-500 h-1.5 rounded-full transition-all duration-500"
                         style={{ width: `${Math.max(5, 100 - (enrichResult.remaining / (enrichResult.remaining + (enrichResult.enriched || enrichResult.translated || 0)) * 100))}%` }}
                       />
                     </div>

@@ -160,9 +160,35 @@ export default function ListeningPage() {
     if (intervalRef.current) clearInterval(intervalRef.current);
   };
 
+  const speakLine = (text: string) => {
+    if (typeof window === 'undefined' || !window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    
+    try {
+      const dummy = new SpeechSynthesisUtterance('');
+      dummy.lang = 'en-US';
+      window.speechSynthesis.speak(dummy);
+    } catch (e) {}
+    
+    const words = new SpeechSynthesisUtterance(text);
+    words.lang = 'en-US';
+    words.rate = 0.85;
+    const voices = window.speechSynthesis.getVoices();
+    const v = voices.find(voice => voice.lang === 'en-US' && voice.name.includes('Google')) || voices.find(voice => voice.lang === 'en-US');
+    if (v) words.voice = v;
+    window.speechSynthesis.speak(words);
+  };
+
   const playLesson = () => {
     if (typeof window === 'undefined' || !window.speechSynthesis) return;
     stopSpeech();
+    
+    try {
+      const dummy = new SpeechSynthesisUtterance('');
+      dummy.lang = 'en-US';
+      window.speechSynthesis.speak(dummy);
+    } catch (e) {}
+
     const fullText = selected.transcript.map(l => l.text).join('. ');
     const utt = new SpeechSynthesisUtterance(fullText);
     utt.lang = 'en-US'; utt.rate = 0.85;
@@ -315,7 +341,7 @@ export default function ListeningPage() {
                 </div>
                 <div className="space-y-2 max-h-56 overflow-y-auto pr-2">
                   {selected.transcript.map((line, i) => (
-                    <p key={i} onClick={() => { const words = new SpeechSynthesisUtterance(line.text); words.lang = 'en-US'; words.rate = 0.85; window.speechSynthesis?.speak(words); }}
+                    <p key={i} onClick={() => speakLine(line.text)}
                       className={cn("text-base leading-relaxed font-medium transition-all duration-500 rounded-xl p-3 cursor-pointer",
                         i === activeLine && isPlaying ? "bg-primary/10 text-primary font-bold border-l-4 border-primary" : "text-slate-500 hover:bg-slate-50"
                       )}>{line.text}</p>

@@ -24,7 +24,23 @@ interface NotebookWord {
 const MASTERY = ['New', 'Familiar', 'Learning', 'Practiced', 'Mastered', 'Expert'];
 const MASTERY_CLR = ['bg-slate-200 text-slate-600', 'bg-blue-100 text-blue-700', 'bg-yellow-100 text-yellow-700', 'bg-orange-100 text-orange-700', 'bg-green-100 text-green-700', 'bg-purple-100 text-purple-700'];
 const TYPE_COLORS: Record<string, string> = { noun: 'bg-sky-100 text-sky-700', verb: 'bg-rose-100 text-rose-700', adjective: 'bg-violet-100 text-violet-700', adverb: 'bg-amber-100 text-amber-700', phrase: 'bg-teal-100 text-teal-700', idiom: 'bg-pink-100 text-pink-700' };
-const speak = (text: string, lang = 'en-US') => { if (typeof window === 'undefined') return; const u = new SpeechSynthesisUtterance(text); u.lang = lang; u.rate = 0.85; const v = window.speechSynthesis.getVoices().find(v => v.lang === 'en-US' && v.name.includes('Google')) || window.speechSynthesis.getVoices().find(v => v.lang === 'en-US'); if (v) u.voice = v; window.speechSynthesis.speak(u); };
+const speak = (text: string, lang = 'en-US') => { 
+  if (typeof window === 'undefined' || !window.speechSynthesis) return; 
+  window.speechSynthesis.cancel();
+  
+  try {
+    const dummy = new SpeechSynthesisUtterance('');
+    dummy.lang = lang;
+    window.speechSynthesis.speak(dummy);
+  } catch (e) {}
+  
+  const u = new SpeechSynthesisUtterance(text); 
+  u.lang = lang; 
+  u.rate = 0.85; 
+  const v = window.speechSynthesis.getVoices().find(v => v.lang === lang && v.name.includes('Google')) || window.speechSynthesis.getVoices().find(v => v.lang === lang); 
+  if (v) u.voice = v; 
+  window.speechSynthesis.speak(u); 
+};
 
 // ─── Word Card ────────────────────────────────────────────────────────────────
 function WordCard({ word, onDelete, onUpdate }: { word: NotebookWord; onDelete: (id: string) => void; onUpdate: (id: string, fields: any) => Promise<void> }) {

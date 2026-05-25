@@ -10,6 +10,7 @@ export default function LoginPage() {
   const router = useRouter();
   const [signingIn, setSigningIn] = useState(false);
   const [isInApp, setIsInApp] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -37,10 +38,24 @@ export default function LoginPage() {
 
   const handleSignIn = async () => {
     setSigningIn(true);
+    setErrorMsg(null);
     try {
       await signInWithGoogle();
-    } catch {
+    } catch (err: any) {
       setSigningIn(false);
+      console.error("[Login] Google Sign-In error:", err);
+      
+      if (err?.code === 'auth/popup-blocked') {
+        setErrorMsg("Trình duyệt đã chặn cửa sổ đăng nhập (Popup). Hãy cấp quyền mở popup cho trang này hoặc thử lại.");
+      } else if (err?.code === 'auth/unauthorized-domain') {
+        setErrorMsg("Tên miền này chưa được cấp phép đăng nhập Google trong Firebase Console.");
+      } else if (err?.code === 'auth/cancelled-popup-request') {
+        setErrorMsg("Yêu cầu đăng nhập trước đó đã bị hủy.");
+      } else if (err?.code === 'auth/popup-closed-by-user') {
+        setErrorMsg("Bạn đã đóng cửa sổ đăng nhập trước khi hoàn tất.");
+      } else {
+        setErrorMsg(err?.message || "Đã xảy ra lỗi kết nối với Google.");
+      }
     }
   };
 
@@ -93,6 +108,12 @@ export default function LoginPage() {
                 </>
               )}
             </button>
+            
+            {errorMsg && (
+              <div className="p-3 bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 rounded-xl text-xs font-semibold leading-relaxed animate-in fade-in duration-300">
+                ⚠️ {errorMsg}
+              </div>
+            )}
             
             <button
               disabled

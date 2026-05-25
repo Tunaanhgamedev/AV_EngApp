@@ -5,10 +5,16 @@ import { Gamepad2, Zap, Trophy, Target, Brain, Timer, Star, ChevronRight, Flame,
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
 
-// ─── Speak Utility ─────────────────────────────────────────────────────────────
 const speak = (text: string) => {
-  if (typeof window === 'undefined') return;
+  if (typeof window === 'undefined' || !window.speechSynthesis) return;
   window.speechSynthesis.cancel();
+  
+  try {
+    const dummy = new SpeechSynthesisUtterance('');
+    dummy.lang = 'en-US';
+    window.speechSynthesis.speak(dummy);
+  } catch (e) {}
+  
   const u = new SpeechSynthesisUtterance(text);
   u.lang = 'en-US';
   u.rate = 0.8;

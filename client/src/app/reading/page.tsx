@@ -117,8 +117,15 @@ Tokyo is a city where ancient traditions meet modern technology. From traditiona
 ];
 
 const speak = (text: string) => {
-  if (typeof window === 'undefined') return;
+  if (typeof window === 'undefined' || !window.speechSynthesis) return;
   window.speechSynthesis.cancel();
+  
+  try {
+    const dummy = new SpeechSynthesisUtterance('');
+    dummy.lang = 'en-US';
+    window.speechSynthesis.speak(dummy);
+  } catch (e) {}
+  
   const u = new SpeechSynthesisUtterance(text);
   u.lang = 'en-US'; u.rate = 0.85;
   const voices = window.speechSynthesis.getVoices();

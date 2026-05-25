@@ -156,7 +156,7 @@ export default function MusicHub() {
   }, []);
 
   // Unlock audio elements on mobile devices during a direct user-gesture interaction
-  const unlockAmbientSounds = () => {
+  const unlockAmbientSounds = (rMix = rainMix, cMix = cafeMix, forcePlayingState?: boolean) => {
     if (typeof window === 'undefined') return;
 
     if (!rainAudioRef.current) {
@@ -173,19 +173,22 @@ export default function MusicHub() {
     }
 
     try {
-      // Warm up both ambient tracks to bypass strict mobile browser autoplay restrictions
-      const rainPlay = rainAudioRef.current.play();
-      if (rainPlay !== undefined) {
-        rainPlay.then(() => {
-          if (rainMix === 0) rainAudioRef.current?.pause();
-        }).catch(e => console.log("Ambient rain silent warm up failed:", e));
+      rainAudioRef.current.volume = rMix / 100;
+      cafeAudioRef.current.volume = cMix / 100;
+
+      const activePlaying = forcePlayingState !== undefined ? forcePlayingState : isPlaying;
+
+      // Force play/pause synchronously in user gesture
+      if (rMix > 0 && activePlaying) {
+        rainAudioRef.current.play().catch(e => console.log("Ambient rain play failed:", e));
+      } else {
+        rainAudioRef.current.pause();
       }
 
-      const cafePlay = cafeAudioRef.current.play();
-      if (cafePlay !== undefined) {
-        cafePlay.then(() => {
-          if (cafeMix === 0) cafeAudioRef.current?.pause();
-        }).catch(e => console.log("Ambient cafe silent warm up failed:", e));
+      if (cMix > 0 && activePlaying) {
+        cafeAudioRef.current.play().catch(e => console.log("Ambient cafe play failed:", e));
+      } else {
+        cafeAudioRef.current.pause();
       }
     } catch (err) {
       console.log("Failed to warm up background audio engines:", err);
@@ -356,7 +359,7 @@ export default function MusicHub() {
             <button
               onClick={() => {
                 prevTrack();
-                unlockAmbientSounds();
+                unlockAmbientSounds(rainMix, cafeMix, true);
               }}
               className="p-3 text-slate-400 hover:text-white hover:bg-slate-800/80 rounded-2xl active:scale-90 transition-all border border-slate-800 cursor-pointer"
             >
@@ -366,7 +369,7 @@ export default function MusicHub() {
             <button
               onClick={() => {
                 togglePlay();
-                unlockAmbientSounds();
+                unlockAmbientSounds(rainMix, cafeMix, !isPlaying);
               }}
               className="p-5 bg-primary text-white rounded-full hover:scale-105 active:scale-95 transition-all shadow-lg shadow-primary/30 cursor-pointer border border-primary/20"
             >
@@ -380,7 +383,7 @@ export default function MusicHub() {
             <button
               onClick={() => {
                 nextTrack();
-                unlockAmbientSounds();
+                unlockAmbientSounds(rainMix, cafeMix, true);
               }}
               className="p-3 text-slate-400 hover:text-white hover:bg-slate-800/80 rounded-2xl active:scale-90 transition-all border border-slate-800 cursor-pointer"
             >
@@ -592,8 +595,9 @@ export default function MusicHub() {
                   max="100"
                   value={rainMix}
                   onChange={(e) => {
-                    setRainMix(parseInt(e.target.value));
-                    unlockAmbientSounds();
+                    const val = parseInt(e.target.value);
+                    setRainMix(val);
+                    unlockAmbientSounds(val, cafeMix, isPlaying);
                   }}
                   className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500"
                 />
@@ -613,8 +617,9 @@ export default function MusicHub() {
                   max="100"
                   value={cafeMix}
                   onChange={(e) => {
-                    setCafeMix(parseInt(e.target.value));
-                    unlockAmbientSounds();
+                    const val = parseInt(e.target.value);
+                    setCafeMix(val);
+                    unlockAmbientSounds(rainMix, val, isPlaying);
                   }}
                   className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-500"
                 />
@@ -654,7 +659,7 @@ export default function MusicHub() {
                     <button
                       onClick={() => {
                         playTrack(track);
-                        unlockAmbientSounds();
+                        unlockAmbientSounds(rainMix, cafeMix, true);
                       }}
                       className="flex-1 text-left flex items-start gap-3 cursor-pointer z-10"
                     >

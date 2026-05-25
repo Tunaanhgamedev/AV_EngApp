@@ -169,6 +169,12 @@ const FOUNDATION_TOPICS = [
 const speak = (text: string) => {
   if (typeof window !== 'undefined' && window.speechSynthesis) {
     window.speechSynthesis.cancel();
+    
+    try {
+      const dummy = new SpeechSynthesisUtterance('');
+      window.speechSynthesis.speak(dummy);
+    } catch (e) {}
+    
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'en-US';
     utterance.rate = 0.75;

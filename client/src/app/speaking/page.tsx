@@ -73,12 +73,19 @@ const PHONETIC_LAB_SOUNDS = [
 ];
 
 const speak = (text: string, lang = 'en-US') => { 
-  if (typeof window === 'undefined') return; 
+  if (typeof window === 'undefined' || !window.speechSynthesis) return; 
   window.speechSynthesis.cancel();
+  
+  try {
+    const dummy = new SpeechSynthesisUtterance('');
+    dummy.lang = lang;
+    window.speechSynthesis.speak(dummy);
+  } catch (e) {}
+  
   const u = new SpeechSynthesisUtterance(text); 
   u.lang = lang; 
   u.rate = 0.8; 
-  const v = window.speechSynthesis.getVoices().find(v => v.lang === 'en-US' && v.name.includes('Google')) || window.speechSynthesis.getVoices().find(v => v.lang === 'en-US'); 
+  const v = window.speechSynthesis.getVoices().find(v => v.lang === lang && v.name.includes('Google')) || window.speechSynthesis.getVoices().find(v => v.lang === lang); 
   if (v) u.voice = v; 
   window.speechSynthesis.speak(u); 
 };
