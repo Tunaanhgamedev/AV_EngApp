@@ -522,50 +522,81 @@ router.post('/analyze-stress', async (req, res) => {
     }
 
     console.log(`[AI] Analyzing word stress via AI/heuristic for: "${cleanWord}"`);
+
+    // ── Step A: Fetch authoritative IPA from Free Dictionary API ──
+    let dictPhonetic = '';
+    try {
+      const dictRes = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(cleanWord)}`);
+      if (dictRes.ok) {
+        const dictData: any = await dictRes.json();
+        if (dictData?.[0]) {
+          dictPhonetic = dictData[0].phonetic || dictData[0].phonetics?.find((p: any) => p.text)?.text || '';
+        }
+      }
+    } catch (e) {
+      console.log(`[AI] Dictionary API phonetic fetch failed for "${cleanWord}"`);
+    }
+
     let analysis: any;
 
     try {
+      const dictHint = dictPhonetic ? `\nREFERENCE IPA from dictionary (use this to verify your answer): ${dictPhonetic}` : '';
+
       const prompt = `
         You are EngBot (AI English Pronunciation & Phonology Expert).
         Analyze the word stress (trọng âm) for the English word: "${cleanWord}"
+        ${dictHint}
 
-        Follow these steps strictly to ensure the analysis is 100% correct:
-        1. Break the word into written lowercase syllables. For example:
-           - "communication" -> ["com", "mu", "ni", "ca", "tion"]
-           - "happy" -> ["hap", "py"]
-           - "education" -> ["ed", "u", "ca", "tion"]
-           - "develop" -> ["de", "vel", "op"]
-           Do NOT use IPA characters in the "syllables" array; use the original written English letters.
+        FOLLOW THESE STEPS VERY CAREFULLY — accuracy is critical:
 
-        2. Identify the IPA phonetic transcription showing primary stress (ˈ) and secondary stress (ˌ).
-           For example:
-           - "communication" -> /kəˌmjuː.nɪˈkeɪ.ʃən/
-           - "develop" -> /dɪˈvel.əp/
+        STEP 1: Write out the STANDARD IPA phonetic transcription with stress marks (ˈ for primary, ˌ for secondary).
+        Use an authoritative pronunciation source. Examples:
+        - "communication" → /kəˌmjuː.nɪˈkeɪ.ʃən/
+        - "develop" → /dɪˈvel.əp/
+        - "beautiful" → /ˈbjuː.tɪ.fəl/
+        - "important" → /ɪmˈpɔːr.tənt/
+        - "photograph" → /ˈfoʊ.tə.ɡræf/
+        - "photography" → /fəˈtɒɡ.rə.fi/
+        - "particular" → /pərˈtɪk.jə.lər/
+        - "university" → /ˌjuː.nɪˈvɜːr.sə.ti/
+        - "comfortable" → /ˈkʌmf.tə.bəl/
+        - "interesting" → /ˈɪn.trəs.tɪŋ/
+        - "vocabulary" → /voʊˈkæb.jə.ler.i/
+        - "necessary" → /ˈnes.ə.ser.i/
+        - "economic" → /ˌiː.kəˈnɒm.ɪk/
 
-        3. Find the EXACT 0-based index of the primary stressed syllable inside your "syllables" array.
-           - For "communication": the primary stress is on "ca", which is index 3 of ["com", "mu", "ni", "ca", "tion"]. So "stressedSyllableIndex" MUST be 3.
-           - For "develop": the primary stress is on "vel", which is index 1 of ["de", "vel", "op"]. So "stressedSyllableIndex" MUST be 1.
-           Double check: syllables[stressedSyllableIndex] MUST contain the primary stressed sound!
+        STEP 2: Split the word into WRITTEN English syllables (not IPA). Rules:
+        - Each syllable must contain exactly one vowel sound
+        - Use the original English spelling
+        - Examples: "communication" → ["com","mu","ni","ca","tion"], "important" → ["im","por","tant"]
 
-        4. Find the EXACT 0-based index of the secondary stressed syllable inside your "syllables" array (use -1 if none).
-           - For "communication": secondary stress is on "mu", which is index 1. So "secondaryStressedSyllableIndex" MUST be 1.
-           - For "develop": there is no secondary stress. So "secondaryStressedSyllableIndex" MUST be -1.
+        STEP 3: Find which syllable receives the PRIMARY stress (ˈ) from Step 1.
+        Map it to the 0-based index in the syllables array from Step 2.
+        DOUBLE CHECK: The syllable at that index MUST correspond to the IPA syllable with ˈ before it.
 
-        5. Provide a detailed explanation in Vietnamese of the stress rule applied (ruleExplanation) and a tip for Vietnamese speakers on how to accent it (pronunciationGuide).
-        6. Suggest 2-3 similar words with their IPA.
+        STEP 4: Find which syllable (if any) receives SECONDARY stress (ˌ) from Step 1.
+        Use -1 if there is no secondary stress.
 
-        Provide the analysis in JSON format (do not include markdown wrapper, return raw json):
+        STEP 5: Verify your answer one more time:
+        - Read the IPA transcription
+        - Find where ˈ appears
+        - Count which syllable in your array matches
+        - If there's a mismatch, CORRECT your stressedSyllableIndex
+
+        Respond ONLY with raw JSON (no markdown, no explanation outside JSON):
         {
           "word": "${cleanWord}",
-          "phonetic": "IPA pronunciation showing stress marks, e.g. /kəˌmjuː.nɪˈkeɪ.ʃən/",
-          "syllables": ["com", "mu", "ni", "ca", "tion"],
-          "stressedSyllableIndex": 3,
-          "secondaryStressedSyllableIndex": 1,
-          "ruleExplanation": "Chi tiết quy tắc trọng âm bằng tiếng Việt",
-          "pronunciationGuide": "Hướng dẫn đọc nhấn giọng chi tiết bằng tiếng Việt",
+          "phonetic": "Full IPA with stress marks",
+          "syllables": ["syl1", "syl2", ...],
+          "stressedSyllable": "Name of the primary stressed syllable from the syllables list (e.g. 'ca' or 'por')",
+          "stressedSyllableIndex": <0-based index of primary stressed syllable>,
+          "secondaryStressedSyllable": "Name of the secondary stressed syllable (e.g. 'mu' or 'none')",
+          "secondaryStressedSyllableIndex": <0-based index or -1>,
+          "ruleExplanation": "Giải thích quy tắc trọng âm bằng tiếng Việt, chi tiết và dễ hiểu",
+          "pronunciationGuide": "Hướng dẫn cách đọc nhấn giọng cho người Việt",
           "similarWords": [
-            { "word": "education", "phonetic": "/ˌed.jʊˈkeɪ.ʃən/" },
-            { "word": "relation", "phonetic": "/rɪˈleɪ.ʃən/" }
+            { "word": "example1", "phonetic": "/IPA/" },
+            { "word": "example2", "phonetic": "/IPA/" }
           ]
         }
       `;
@@ -580,7 +611,7 @@ router.post('/analyze-stress', async (req, res) => {
     // Ensure all response keys exist and have proper default fallbacks
     const finalizedAnalysis = {
       word: cleanWord,
-      phonetic: analysis.phonetic || `/${cleanWord}/`,
+      phonetic: analysis.phonetic || dictPhonetic || `/${cleanWord}/`,
       syllables: analysis.syllables || [cleanWord],
       stressedSyllableIndex: analysis.stressedSyllableIndex !== undefined ? Number(analysis.stressedSyllableIndex) : 0,
       secondaryStressedSyllableIndex: analysis.secondaryStressedSyllableIndex !== undefined ? Number(analysis.secondaryStressedSyllableIndex) : -1,
@@ -589,7 +620,41 @@ router.post('/analyze-stress', async (req, res) => {
       similarWords: analysis.similarWords || []
     };
 
-    // Post-processing boundary check
+    // ── Step B: String-based Syllable Stress Validation ──
+    const formatSyl = (s: string) => s.toLowerCase().replace(/[^a-z]/g, '').trim();
+
+    if (finalizedAnalysis.syllables.length > 1) {
+      // 1. Validate Primary Stress
+      if (analysis.stressedSyllable) {
+        const targetSyl = formatSyl(analysis.stressedSyllable);
+        const idx = finalizedAnalysis.syllables.findIndex(s => formatSyl(s) === targetSyl);
+        if (idx !== -1) {
+          console.log(`[AI Stress Validation] Matched primary stressed syllable "${analysis.stressedSyllable}" to index ${idx} for "${cleanWord}"`);
+          finalizedAnalysis.stressedSyllableIndex = idx;
+        }
+      }
+
+      // 2. Validate Secondary Stress
+      if (analysis.secondaryStressedSyllable) {
+        const targetSyl = formatSyl(analysis.secondaryStressedSyllable);
+        if (targetSyl && targetSyl !== 'none' && targetSyl !== 'null') {
+          const idx = finalizedAnalysis.syllables.findIndex(s => formatSyl(s) === targetSyl);
+          if (idx !== -1) {
+            console.log(`[AI Stress Validation] Matched secondary stressed syllable "${analysis.secondaryStressedSyllable}" to index ${idx} for "${cleanWord}"`);
+            finalizedAnalysis.secondaryStressedSyllableIndex = idx;
+          }
+        } else {
+          finalizedAnalysis.secondaryStressedSyllableIndex = -1;
+        }
+      }
+    }
+
+    // Use dictionary IPA if available and AI returned a generic one
+    if (dictPhonetic && (!finalizedAnalysis.phonetic || finalizedAnalysis.phonetic === `/${cleanWord}/`)) {
+      finalizedAnalysis.phonetic = dictPhonetic;
+    }
+
+    // Boundary check
     const sylLength = finalizedAnalysis.syllables.length;
     if (finalizedAnalysis.stressedSyllableIndex < 0 || finalizedAnalysis.stressedSyllableIndex >= sylLength) {
       finalizedAnalysis.stressedSyllableIndex = 0;
