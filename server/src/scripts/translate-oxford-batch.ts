@@ -110,20 +110,16 @@ async function translateAndEnrichFreeFallback(word: string) {
 async function main() {
   console.log('=== KHỞI ĐỘNG TIẾN TRÌNH DỊCH TỪ VỰNG OXFORD 3000 SANG TIẾNG VIỆT ===');
   
-  // 1. Tìm tất cả các từ chưa được dịch
-  const untranslated = await prisma.vocabularyWord.findMany({
-    where: {
-      meaningVi: ''
-    },
-    select: {
-      id: true,
-      word: true,
-      cefrLevel: true
-    },
-    orderBy: {
-      word: 'asc'
-    }
-  });
+  // 1. Tìm tất cả các từ chưa được dịch (NULL, chuỗi rỗng, hoặc meaningVi == word)
+  // Using raw SQL because Prisma schema marks meaningVi as required String but DB may have NULLs
+  const untranslated: any[] = await prisma.$queryRawUnsafe(
+    `SELECT id, word, cefr_level as "cefrLevel", meaning_vi as "meaningVi"
+     FROM vocabulary_words 
+     WHERE meaning_vi IS NULL 
+        OR meaning_vi = '' 
+        OR LOWER(TRIM(meaning_vi)) = LOWER(TRIM(word))
+     ORDER BY word ASC`
+  );
 
   const totalToTranslate = untranslated.length;
   console.log(`Tìm thấy tổng cộng: ${totalToTranslate} từ chưa được dịch sang tiếng Việt.`);

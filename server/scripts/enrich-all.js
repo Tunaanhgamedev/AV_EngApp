@@ -100,7 +100,6 @@ async function run() {
      WHERE meaning_vi IS NULL 
         OR meaning_vi = '' 
         OR meaning_vi = word 
-        OR meaning_vi LIKE 'từ "%'
         OR example IS NULL 
         OR example = '' 
         OR example_vi IS NULL 
