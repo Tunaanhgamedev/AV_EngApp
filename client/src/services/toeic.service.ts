@@ -21,9 +21,12 @@ export const getToeicPractice = async (part: number, token?: string) => {
 
 export const submitToeicPractice = async (data: {
   userId: string;
-  part: number;
+  part: number | null;
   correctCount: number;
   totalQuestions: number;
+  listeningScore?: number;
+  readingScore?: number;
+  totalScore?: number;
   details: any;
 }, token?: string) => {
   try {

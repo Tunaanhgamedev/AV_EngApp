@@ -84,15 +84,16 @@ export default function IELTSPracticePage() {
         }
 
         // Call Gemini via Server to evaluate IELTS essay/speech
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/ai/analyze-pronunciation`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/ai/analyze-ielts-constructive`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             ...(token && { 'Authorization': `Bearer ${token}` })
           },
           body: JSON.stringify({
-            userId: user?.uid,
-            content: `IELTS ${skill.toUpperCase()} Submission for prompt "${questions[0]?.questionText}":\n\n${userText}`
+            skill,
+            questionText: questions[0]?.questionText,
+            userAnswer: userText
           })
         });
 
@@ -101,9 +102,8 @@ export default function IELTSPracticePage() {
 
         if (res.ok) {
           const aiData = await res.json();
-          aiFeedback = aiData.aiFeedback || aiData.feedback || '';
-          bandScore = parseFloat(aiData.pronunciationScore || aiData.score) / 10 || 6.5;
-          if (bandScore > 9) bandScore = 9.0;
+          aiFeedback = aiData.feedback || '';
+          bandScore = parseFloat(aiData.bandScore) || 6.5;
         }
 
         const submitResponse = await submitIeltsPractice({
