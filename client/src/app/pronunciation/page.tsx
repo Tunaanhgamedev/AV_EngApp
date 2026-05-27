@@ -206,26 +206,7 @@ const YEAR_RULES = [
 ];
 
 // ─── Countries & Nationalities Data ──────────────────────────────────────────
-const COUNTRIES_DATA = [
-  { flag: '🇻🇳', country: 'Vietnam', countryIpa: '/ˌvjetˈnæm/', nationality: 'Vietnamese', nationalityIpa: '/ˌvjet.nəˈmiːz/', region: 'Asia', vi: 'Việt Nam' },
-  { flag: '🇺🇸', country: 'United States', countryIpa: '/juːˌnaɪ.tɪd ˈsteɪts/', nationality: 'American', nationalityIpa: '/əˈmer.ɪ.kən/', region: 'Americas', vi: 'Mỹ (Hoa Kỳ)' },
-  { flag: '🇬🇧', country: 'United Kingdom', countryIpa: '/juːˌnaɪ.tɪd ˈkɪŋ.dəm/', nationality: 'British', nationalityIpa: '/ˈbrɪt.ɪʃ/', region: 'Europe', vi: 'Vương Quốc Anh' },
-  { flag: '🇯🇵', country: 'Japan', countryIpa: '/dʒəˈpæn/', nationality: 'Japanese', nationalityIpa: '/ˌdʒæp.ənˈiːz/', region: 'Asia', vi: 'Nhật Bản' },
-  { flag: '🇰🇷', country: 'South Korea', countryIpa: '/ˌsaʊθ kəˈriː.ə/', nationality: 'Korean', nationalityIpa: '/kəˈriː.ən/', region: 'Asia', vi: 'Hàn Quốc' },
-  { flag: '🇨🇳', country: 'China', countryIpa: '/ˈtʃaɪ.nə/', nationality: 'Chinese', nationalityIpa: '/ˌtʃaɪˈniːz/', region: 'Asia', vi: 'Trung Quốc' },
-  { flag: '🇫🇷', country: 'France', countryIpa: '/frɑːns/', nationality: 'French', nationalityIpa: '/frentʃ/', region: 'Europe', vi: 'Pháp' },
-  { flag: '🇩🇪', country: 'Germany', countryIpa: '/ˈdʒɜː.mə.ni/', nationality: 'German', nationalityIpa: '/ˈdʒɜː.mən/', region: 'Europe', vi: 'Đức' },
-  { flag: '🇮🇹', country: 'Italy', countryIpa: '/ˈɪt.əl.i/', nationality: 'Italian', nationalityIpa: '/ɪˈtæl.jən/', region: 'Europe', vi: 'Ý (Italia)' },
-  { flag: '🇪🇸', country: 'Spain', countryIpa: '/speɪn/', nationality: 'Spanish', nationalityIpa: '/ˈspæn.ɪʃ/', region: 'Europe', vi: 'Tây Ban Nha' },
-  { flag: '🇨🇦', country: 'Canada', countryIpa: '/ˈkæn.ə.də/', nationality: 'Canadian', nationalityIpa: '/kəˈneɪ.di.ən/', region: 'Americas', vi: 'Canada' },
-  { flag: '🇦🇺', country: 'Australia', countryIpa: '/ɒsˈtreɪ.li.ə/', nationality: 'Australian', nationalityIpa: '/ɒsˈtreɪ.li.ən/', region: 'Oceania', vi: 'Úc' },
-  { flag: '🇸🇬', country: 'Singapore', countryIpa: '/ˌsɪŋ.əˈpɔːr/', nationality: 'Singaporean', nationalityIpa: '/ˌsɪŋ.əˈpɔː.ri.ən/', region: 'Asia', vi: 'Singapore' },
-  { flag: '🇷🇺', country: 'Russia', countryIpa: '/ˈrʌʃ.ə/', nationality: 'Russian', nationalityIpa: '/ˈrʌʃ.ən/', region: 'Europe', vi: 'Nga' },
-  { flag: '🇮🇳', country: 'India', countryIpa: '/ˈɪn.di.ə/', nationality: 'Indian', nationalityIpa: '/ˈɪn.di.ən/', region: 'Asia', vi: 'Ấn Độ' },
-  { flag: '🇧🇷', country: 'Brazil', countryIpa: '/brəˈzɪl/', nationality: 'Brazilian', nationalityIpa: '/brəˈzɪl.jən/', region: 'Americas', vi: 'Brazil' },
-  { flag: '🇿🇦', country: 'South Africa', countryIpa: '/ˌsaʊθ ˈæf.rɪ.kə/', nationality: 'South African', nationalityIpa: '/ˌsaʊθ ˈæf.rɪ.kən/', region: 'Africa', vi: 'Nam Phi' },
-  { flag: '🇪🇬', country: 'Egypt', countryIpa: '/ˈiː.dʒɪpt/', nationality: 'Egyptian', nationalityIpa: '/iˈdʒɪp.ʃən/', region: 'Africa', vi: 'Ai Cập' }
-];
+import COUNTRIES_DATA from '@/data/countries';
 
 const speak = (text: string, rate: number = 0.7) => {
   if (typeof window === 'undefined') return;
@@ -380,12 +361,12 @@ function IPACell({ item, color, isActive, onClick }: { item: any; color: string;
     <button
       onClick={onClick}
       className={cn(
-        "group relative flex flex-col items-center gap-1 p-4 rounded-2xl border-2 transition-all duration-200",
+        "group relative flex flex-col items-center gap-1 p-3 sm:p-4 rounded-2xl border-2 transition-all duration-200",
         "hover:shadow-lg hover:-translate-y-0.5 active:scale-95 text-slate-800 cursor-pointer",
         isActive ? "border-primary bg-primary/10 scale-[1.03] shadow-md shadow-primary/5" : color
       )}
     >
-      <span className="text-2xl font-black font-mono">{item.ipa}</span>
+      <span className="text-xl sm:text-2xl font-black font-mono">{item.ipa}</span>
       <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{item.example}</span>
       <div className="absolute -top-1 -right-1 opacity-0 group-hover:opacity-100 transition-opacity">
         <Volume2 className="w-4 h-4 text-primary animate-pulse" />
@@ -623,10 +604,10 @@ export default function PronunciationPage() {
           {/* Selected Sound Detail Panel */}
           {selectedSound && (
             <div className="premium-card p-6 bg-gradient-to-br from-slate-900 to-slate-950 text-white border-slate-800 shadow-xl rounded-3xl mt-6 animate-in slide-in-from-bottom-3 duration-300">
-              <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
                 
                 {/* Left Visual Area: Large IPA Circle & Hear Buttons */}
-                <div className="flex flex-col items-center gap-3 w-full md:w-56 flex-shrink-0">
+                <div className="flex flex-col items-center gap-3 w-full sm:w-56 flex-shrink-0">
                   <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-primary to-blue-500 flex items-center justify-center border-4 border-slate-800 shadow-2xl relative">
                     <span className="text-4xl font-black font-mono text-white">/{selectedSound.ipa}/</span>
                     <span className="absolute -bottom-2.5 px-3 py-0.5 bg-slate-800 rounded-full border border-slate-700 text-[8px] font-black tracking-widest text-primary uppercase">
@@ -1466,7 +1447,7 @@ export default function PronunciationPage() {
 
             {/* Region Filter Buttons */}
             <div className="flex gap-1.5 overflow-x-auto w-full sm:w-auto pb-1">
-              {['All', 'Asia', 'Europe', 'Americas', 'Africa', 'Oceania'].map(reg => (
+              {['All', 'Asia', 'Middle East', 'Europe', 'Americas', 'Africa', 'Oceania'].map(reg => (
                 <button
                   key={reg}
                   onClick={() => setSelectedRegion(reg)}

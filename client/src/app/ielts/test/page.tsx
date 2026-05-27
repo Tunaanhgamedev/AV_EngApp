@@ -502,7 +502,7 @@ export default function IELTSFullTestPage() {
           {/* B2. READING SKILL PANEL                                 */}
           {/* ──────────────────────────────────────────────────────── */}
           {stage === 'reading' && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
               {/* Reading passage (Left pane) */}
               <div className="premium-card p-6 md:p-8 space-y-4">
                 <span className="text-xs font-black text-emerald-500 uppercase tracking-widest">Passage Text</span>

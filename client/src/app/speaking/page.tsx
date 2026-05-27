@@ -580,8 +580,8 @@ export default function SpeakingPage() {
 
       {activeTab === 'speaking' ? (
         // ─── TAB 1: SPEAKING PRACTICE ──────────────────────────────────────────
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="md:col-span-2 space-y-8">
             
             {/* Main Interactive Phrase Practice Card */}
             <div className="premium-card p-8 md:p-10 flex flex-col items-center text-center space-y-8 relative overflow-hidden bg-white border border-slate-100 shadow-xl rounded-3xl">
@@ -684,7 +684,7 @@ export default function SpeakingPage() {
               <h3 className="font-black text-lg text-slate-800 flex items-center gap-2">
                 <BookOpen className="w-5 h-5 text-primary" /> Chọn câu luyện tập khác
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {PRACTICE_PHRASES.map((p) => (
                   <button 
                     key={p.id}
@@ -832,10 +832,10 @@ export default function SpeakingPage() {
         </div>
       ) : (
         // ─── TAB 2: ARTICULATION & MOUTH SHAPE LAB ──────────────────────────────
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
           
           {/* Sound Selector Sidebar */}
-          <div className="lg:col-span-4 space-y-4">
+          <div className="md:col-span-4 space-y-4">
             
             {/* Custom Word Input Block */}
             <div className="premium-card p-5 bg-white border border-slate-100 shadow-md rounded-3xl space-y-4">
@@ -950,7 +950,7 @@ export default function SpeakingPage() {
           </div>
 
           {/* Articulation Center Panel */}
-          <div className="lg:col-span-8 space-y-8">
+          <div className="md:col-span-8 space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               
               {/* Webcam Viewport */}

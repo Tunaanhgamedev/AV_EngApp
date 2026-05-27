@@ -269,9 +269,9 @@ export default function TOEICFullTestPage() {
       {/* 1. EXAM ENVIRONMENT VIEW                                */}
       {/* ──────────────────────────────────────────────────────── */}
       {!isExamCompleted ? (
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 items-start">
           {/* Main Question Panel (Left 3 columns) */}
-          <div className="lg:col-span-3 space-y-6">
+          <div className="md:col-span-3 space-y-6">
             {/* Header / Info bar */}
             <div className="premium-card p-4 flex flex-wrap items-center justify-between gap-4">
               <button

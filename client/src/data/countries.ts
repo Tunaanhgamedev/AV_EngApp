@@ -1,0 +1,106 @@
+export interface CountryData {
+  flag: string;
+  country: string;
+  countryIpa: string;
+  nationality: string;
+  nationalityIpa: string;
+  region: string;
+  vi: string;
+}
+
+const COUNTRIES_DATA: CountryData[] = [
+  // ── ASIA ──
+  { flag: '🇻🇳', country: 'Vietnam', countryIpa: '/ˌvjetˈnæm/', nationality: 'Vietnamese', nationalityIpa: '/ˌvjet.nəˈmiːz/', region: 'Asia', vi: 'Việt Nam' },
+  { flag: '🇯🇵', country: 'Japan', countryIpa: '/dʒəˈpæn/', nationality: 'Japanese', nationalityIpa: '/ˌdʒæp.ənˈiːz/', region: 'Asia', vi: 'Nhật Bản' },
+  { flag: '🇰🇷', country: 'South Korea', countryIpa: '/ˌsaʊθ kəˈriː.ə/', nationality: 'Korean', nationalityIpa: '/kəˈriː.ən/', region: 'Asia', vi: 'Hàn Quốc' },
+  { flag: '🇨🇳', country: 'China', countryIpa: '/ˈtʃaɪ.nə/', nationality: 'Chinese', nationalityIpa: '/ˌtʃaɪˈniːz/', region: 'Asia', vi: 'Trung Quốc' },
+  { flag: '🇸🇬', country: 'Singapore', countryIpa: '/ˌsɪŋ.əˈpɔːr/', nationality: 'Singaporean', nationalityIpa: '/ˌsɪŋ.əˈpɔː.ri.ən/', region: 'Asia', vi: 'Singapore' },
+  { flag: '🇮🇳', country: 'India', countryIpa: '/ˈɪn.di.ə/', nationality: 'Indian', nationalityIpa: '/ˈɪn.di.ən/', region: 'Asia', vi: 'Ấn Độ' },
+  { flag: '🇹🇭', country: 'Thailand', countryIpa: '/ˈtaɪ.lænd/', nationality: 'Thai', nationalityIpa: '/taɪ/', region: 'Asia', vi: 'Thái Lan' },
+  { flag: '🇵🇭', country: 'Philippines', countryIpa: '/ˈfɪl.ɪ.piːnz/', nationality: 'Filipino', nationalityIpa: '/ˌfɪl.ɪˈpiː.noʊ/', region: 'Asia', vi: 'Philippines' },
+  { flag: '🇲🇾', country: 'Malaysia', countryIpa: '/məˈleɪ.ʒə/', nationality: 'Malaysian', nationalityIpa: '/məˈleɪ.ʒən/', region: 'Asia', vi: 'Malaysia' },
+  { flag: '🇮🇩', country: 'Indonesia', countryIpa: '/ˌɪn.dəˈniː.ʒə/', nationality: 'Indonesian', nationalityIpa: '/ˌɪn.dəˈniː.ʒən/', region: 'Asia', vi: 'Indonesia' },
+  { flag: '🇰🇭', country: 'Cambodia', countryIpa: '/kæmˈboʊ.di.ə/', nationality: 'Cambodian', nationalityIpa: '/kæmˈboʊ.di.ən/', region: 'Asia', vi: 'Campuchia' },
+  { flag: '🇱🇦', country: 'Laos', countryIpa: '/laʊs/', nationality: 'Laotian', nationalityIpa: '/leɪˈoʊ.ʃən/', region: 'Asia', vi: 'Lào' },
+  { flag: '🇲🇲', country: 'Myanmar', countryIpa: '/ˈmjæn.mɑːr/', nationality: 'Burmese', nationalityIpa: '/bɜːˈmiːz/', region: 'Asia', vi: 'Myanmar' },
+  { flag: '🇧🇩', country: 'Bangladesh', countryIpa: '/ˌbæŋ.ɡləˈdeʃ/', nationality: 'Bangladeshi', nationalityIpa: '/ˌbæŋ.ɡləˈdeʃ.i/', region: 'Asia', vi: 'Bangladesh' },
+  { flag: '🇵🇰', country: 'Pakistan', countryIpa: '/ˈpæk.ɪ.stæn/', nationality: 'Pakistani', nationalityIpa: '/ˌpæk.ɪˈstæn.i/', region: 'Asia', vi: 'Pakistan' },
+  { flag: '🇱🇰', country: 'Sri Lanka', countryIpa: '/ˌsriː ˈlæŋ.kə/', nationality: 'Sri Lankan', nationalityIpa: '/ˌsriː ˈlæŋ.kən/', region: 'Asia', vi: 'Sri Lanka' },
+  { flag: '🇳🇵', country: 'Nepal', countryIpa: '/nəˈpɔːl/', nationality: 'Nepalese', nationalityIpa: '/ˌnep.əˈliːz/', region: 'Asia', vi: 'Nepal' },
+  { flag: '🇲🇳', country: 'Mongolia', countryIpa: '/mɒŋˈɡoʊ.li.ə/', nationality: 'Mongolian', nationalityIpa: '/mɒŋˈɡoʊ.li.ən/', region: 'Asia', vi: 'Mông Cổ' },
+  { flag: '🇹🇼', country: 'Taiwan', countryIpa: '/ˌtaɪˈwɑːn/', nationality: 'Taiwanese', nationalityIpa: '/ˌtaɪ.wɑːˈniːz/', region: 'Asia', vi: 'Đài Loan' },
+  { flag: '🇧🇳', country: 'Brunei', countryIpa: '/bruːˈnaɪ/', nationality: 'Bruneian', nationalityIpa: '/bruːˈnaɪ.ən/', region: 'Asia', vi: 'Brunei' },
+  // ── MIDDLE EAST ──
+  { flag: '🇸🇦', country: 'Saudi Arabia', countryIpa: '/ˌsaʊ.di əˈreɪ.bi.ə/', nationality: 'Saudi', nationalityIpa: '/ˈsaʊ.di/', region: 'Middle East', vi: 'Ả Rập Xê Út' },
+  { flag: '🇦🇪', country: 'United Arab Emirates', countryIpa: '/juːˌnaɪ.tɪd ˌær.əb ˈem.ɪr.ɪts/', nationality: 'Emirati', nationalityIpa: '/ˌem.ɪˈrɑː.ti/', region: 'Middle East', vi: 'Các Tiểu Vương Quốc Ả Rập' },
+  { flag: '🇮🇷', country: 'Iran', countryIpa: '/ɪˈrɑːn/', nationality: 'Iranian', nationalityIpa: '/ɪˈreɪ.ni.ən/', region: 'Middle East', vi: 'Iran' },
+  { flag: '🇮🇶', country: 'Iraq', countryIpa: '/ɪˈræk/', nationality: 'Iraqi', nationalityIpa: '/ɪˈræk.i/', region: 'Middle East', vi: 'Iraq' },
+  { flag: '🇮🇱', country: 'Israel', countryIpa: '/ˈɪz.reɪ.əl/', nationality: 'Israeli', nationalityIpa: '/ɪzˈreɪ.li/', region: 'Middle East', vi: 'Israel' },
+  { flag: '🇹🇷', country: 'Turkey', countryIpa: '/ˈtɜː.ki/', nationality: 'Turkish', nationalityIpa: '/ˈtɜː.kɪʃ/', region: 'Middle East', vi: 'Thổ Nhĩ Kỳ' },
+  { flag: '🇶🇦', country: 'Qatar', countryIpa: '/ˈkæt.ɑːr/', nationality: 'Qatari', nationalityIpa: '/kəˈtɑː.ri/', region: 'Middle East', vi: 'Qatar' },
+  { flag: '🇰🇼', country: 'Kuwait', countryIpa: '/kuːˈweɪt/', nationality: 'Kuwaiti', nationalityIpa: '/kuːˈweɪ.ti/', region: 'Middle East', vi: 'Kuwait' },
+  { flag: '🇯🇴', country: 'Jordan', countryIpa: '/ˈdʒɔːr.dən/', nationality: 'Jordanian', nationalityIpa: '/dʒɔːrˈdeɪ.ni.ən/', region: 'Middle East', vi: 'Jordan' },
+  { flag: '🇱🇧', country: 'Lebanon', countryIpa: '/ˈleb.ə.nɒn/', nationality: 'Lebanese', nationalityIpa: '/ˌleb.əˈniːz/', region: 'Middle East', vi: 'Lebanon' },
+  // ── EUROPE ──
+  { flag: '🇬🇧', country: 'United Kingdom', countryIpa: '/juːˌnaɪ.tɪd ˈkɪŋ.dəm/', nationality: 'British', nationalityIpa: '/ˈbrɪt.ɪʃ/', region: 'Europe', vi: 'Vương Quốc Anh' },
+  { flag: '🇫🇷', country: 'France', countryIpa: '/frɑːns/', nationality: 'French', nationalityIpa: '/frentʃ/', region: 'Europe', vi: 'Pháp' },
+  { flag: '🇩🇪', country: 'Germany', countryIpa: '/ˈdʒɜː.mə.ni/', nationality: 'German', nationalityIpa: '/ˈdʒɜː.mən/', region: 'Europe', vi: 'Đức' },
+  { flag: '🇮🇹', country: 'Italy', countryIpa: '/ˈɪt.əl.i/', nationality: 'Italian', nationalityIpa: '/ɪˈtæl.jən/', region: 'Europe', vi: 'Ý' },
+  { flag: '🇪🇸', country: 'Spain', countryIpa: '/speɪn/', nationality: 'Spanish', nationalityIpa: '/ˈspæn.ɪʃ/', region: 'Europe', vi: 'Tây Ban Nha' },
+  { flag: '🇷🇺', country: 'Russia', countryIpa: '/ˈrʌʃ.ə/', nationality: 'Russian', nationalityIpa: '/ˈrʌʃ.ən/', region: 'Europe', vi: 'Nga' },
+  { flag: '🇵🇹', country: 'Portugal', countryIpa: '/ˈpɔːr.tʃʊ.ɡəl/', nationality: 'Portuguese', nationalityIpa: '/ˌpɔːr.tʃʊˈɡiːz/', region: 'Europe', vi: 'Bồ Đào Nha' },
+  { flag: '🇳🇱', country: 'Netherlands', countryIpa: '/ˈneð.ər.ləndz/', nationality: 'Dutch', nationalityIpa: '/dʌtʃ/', region: 'Europe', vi: 'Hà Lan' },
+  { flag: '🇧🇪', country: 'Belgium', countryIpa: '/ˈbel.dʒəm/', nationality: 'Belgian', nationalityIpa: '/ˈbel.dʒən/', region: 'Europe', vi: 'Bỉ' },
+  { flag: '🇨🇭', country: 'Switzerland', countryIpa: '/ˈswɪt.sər.lənd/', nationality: 'Swiss', nationalityIpa: '/swɪs/', region: 'Europe', vi: 'Thụy Sĩ' },
+  { flag: '🇦🇹', country: 'Austria', countryIpa: '/ˈɒs.tri.ə/', nationality: 'Austrian', nationalityIpa: '/ˈɒs.tri.ən/', region: 'Europe', vi: 'Áo' },
+  { flag: '🇸🇪', country: 'Sweden', countryIpa: '/ˈswiː.dən/', nationality: 'Swedish', nationalityIpa: '/ˈswiː.dɪʃ/', region: 'Europe', vi: 'Thụy Điển' },
+  { flag: '🇳🇴', country: 'Norway', countryIpa: '/ˈnɔːr.weɪ/', nationality: 'Norwegian', nationalityIpa: '/nɔːrˈwiː.dʒən/', region: 'Europe', vi: 'Na Uy' },
+  { flag: '🇩🇰', country: 'Denmark', countryIpa: '/ˈden.mɑːrk/', nationality: 'Danish', nationalityIpa: '/ˈdeɪ.nɪʃ/', region: 'Europe', vi: 'Đan Mạch' },
+  { flag: '🇫🇮', country: 'Finland', countryIpa: '/ˈfɪn.lənd/', nationality: 'Finnish', nationalityIpa: '/ˈfɪn.ɪʃ/', region: 'Europe', vi: 'Phần Lan' },
+  { flag: '🇵🇱', country: 'Poland', countryIpa: '/ˈpoʊ.lənd/', nationality: 'Polish', nationalityIpa: '/ˈpoʊ.lɪʃ/', region: 'Europe', vi: 'Ba Lan' },
+  { flag: '🇨🇿', country: 'Czech Republic', countryIpa: '/ˌtʃek rɪˈpʌb.lɪk/', nationality: 'Czech', nationalityIpa: '/tʃek/', region: 'Europe', vi: 'Séc' },
+  { flag: '🇬🇷', country: 'Greece', countryIpa: '/ɡriːs/', nationality: 'Greek', nationalityIpa: '/ɡriːk/', region: 'Europe', vi: 'Hy Lạp' },
+  { flag: '🇭🇺', country: 'Hungary', countryIpa: '/ˈhʌŋ.ɡər.i/', nationality: 'Hungarian', nationalityIpa: '/hʌŋˈɡer.i.ən/', region: 'Europe', vi: 'Hungary' },
+  { flag: '🇷🇴', country: 'Romania', countryIpa: '/roʊˈmeɪ.ni.ə/', nationality: 'Romanian', nationalityIpa: '/roʊˈmeɪ.ni.ən/', region: 'Europe', vi: 'Romania' },
+  { flag: '🇺🇦', country: 'Ukraine', countryIpa: '/juːˈkreɪn/', nationality: 'Ukrainian', nationalityIpa: '/juːˈkreɪ.ni.ən/', region: 'Europe', vi: 'Ukraine' },
+  { flag: '🇮🇪', country: 'Ireland', countryIpa: '/ˈaɪər.lənd/', nationality: 'Irish', nationalityIpa: '/ˈaɪ.rɪʃ/', region: 'Europe', vi: 'Ireland' },
+  { flag: '🇮🇸', country: 'Iceland', countryIpa: '/ˈaɪs.lənd/', nationality: 'Icelandic', nationalityIpa: '/aɪsˈlæn.dɪk/', region: 'Europe', vi: 'Iceland' },
+  { flag: '🇭🇷', country: 'Croatia', countryIpa: '/kroʊˈeɪ.ʃə/', nationality: 'Croatian', nationalityIpa: '/kroʊˈeɪ.ʃən/', region: 'Europe', vi: 'Croatia' },
+  { flag: '🇷🇸', country: 'Serbia', countryIpa: '/ˈsɜːr.bi.ə/', nationality: 'Serbian', nationalityIpa: '/ˈsɜːr.bi.ən/', region: 'Europe', vi: 'Serbia' },
+  { flag: '🇧🇬', country: 'Bulgaria', countryIpa: '/bʌlˈɡer.i.ə/', nationality: 'Bulgarian', nationalityIpa: '/bʌlˈɡer.i.ən/', region: 'Europe', vi: 'Bulgaria' },
+  // ── AMERICAS ──
+  { flag: '🇺🇸', country: 'United States', countryIpa: '/juːˌnaɪ.tɪd ˈsteɪts/', nationality: 'American', nationalityIpa: '/əˈmer.ɪ.kən/', region: 'Americas', vi: 'Mỹ' },
+  { flag: '🇨🇦', country: 'Canada', countryIpa: '/ˈkæn.ə.də/', nationality: 'Canadian', nationalityIpa: '/kəˈneɪ.di.ən/', region: 'Americas', vi: 'Canada' },
+  { flag: '🇧🇷', country: 'Brazil', countryIpa: '/brəˈzɪl/', nationality: 'Brazilian', nationalityIpa: '/brəˈzɪl.jən/', region: 'Americas', vi: 'Brazil' },
+  { flag: '🇲🇽', country: 'Mexico', countryIpa: '/ˈmek.sɪ.koʊ/', nationality: 'Mexican', nationalityIpa: '/ˈmek.sɪ.kən/', region: 'Americas', vi: 'Mexico' },
+  { flag: '🇦🇷', country: 'Argentina', countryIpa: '/ˌɑːr.dʒənˈtiː.nə/', nationality: 'Argentine', nationalityIpa: '/ˈɑːr.dʒən.taɪn/', region: 'Americas', vi: 'Argentina' },
+  { flag: '🇨🇴', country: 'Colombia', countryIpa: '/kəˈlʌm.bi.ə/', nationality: 'Colombian', nationalityIpa: '/kəˈlʌm.bi.ən/', region: 'Americas', vi: 'Colombia' },
+  { flag: '🇨🇱', country: 'Chile', countryIpa: '/ˈtʃɪl.i/', nationality: 'Chilean', nationalityIpa: '/ˈtʃɪl.i.ən/', region: 'Americas', vi: 'Chile' },
+  { flag: '🇵🇪', country: 'Peru', countryIpa: '/pəˈruː/', nationality: 'Peruvian', nationalityIpa: '/pəˈruː.vi.ən/', region: 'Americas', vi: 'Peru' },
+  { flag: '🇨🇺', country: 'Cuba', countryIpa: '/ˈkjuː.bə/', nationality: 'Cuban', nationalityIpa: '/ˈkjuː.bən/', region: 'Americas', vi: 'Cuba' },
+  { flag: '🇯🇲', country: 'Jamaica', countryIpa: '/dʒəˈmeɪ.kə/', nationality: 'Jamaican', nationalityIpa: '/dʒəˈmeɪ.kən/', region: 'Americas', vi: 'Jamaica' },
+  { flag: '🇻🇪', country: 'Venezuela', countryIpa: '/ˌven.ɪˈzweɪ.lə/', nationality: 'Venezuelan', nationalityIpa: '/ˌven.ɪˈzweɪ.lən/', region: 'Americas', vi: 'Venezuela' },
+  { flag: '🇪🇨', country: 'Ecuador', countryIpa: '/ˈek.wə.dɔːr/', nationality: 'Ecuadorian', nationalityIpa: '/ˌek.wəˈdɔːr.i.ən/', region: 'Americas', vi: 'Ecuador' },
+  { flag: '🇵🇦', country: 'Panama', countryIpa: '/ˈpæn.ə.mɑː/', nationality: 'Panamanian', nationalityIpa: '/ˌpæn.əˈmeɪ.ni.ən/', region: 'Americas', vi: 'Panama' },
+  // ── AFRICA ──
+  { flag: '🇿🇦', country: 'South Africa', countryIpa: '/ˌsaʊθ ˈæf.rɪ.kə/', nationality: 'South African', nationalityIpa: '/ˌsaʊθ ˈæf.rɪ.kən/', region: 'Africa', vi: 'Nam Phi' },
+  { flag: '🇪🇬', country: 'Egypt', countryIpa: '/ˈiː.dʒɪpt/', nationality: 'Egyptian', nationalityIpa: '/iˈdʒɪp.ʃən/', region: 'Africa', vi: 'Ai Cập' },
+  { flag: '🇳🇬', country: 'Nigeria', countryIpa: '/naɪˈdʒɪə.ri.ə/', nationality: 'Nigerian', nationalityIpa: '/naɪˈdʒɪə.ri.ən/', region: 'Africa', vi: 'Nigeria' },
+  { flag: '🇰🇪', country: 'Kenya', countryIpa: '/ˈken.jə/', nationality: 'Kenyan', nationalityIpa: '/ˈken.jən/', region: 'Africa', vi: 'Kenya' },
+  { flag: '🇬🇭', country: 'Ghana', countryIpa: '/ˈɡɑː.nə/', nationality: 'Ghanaian', nationalityIpa: '/ɡɑːˈneɪ.ən/', region: 'Africa', vi: 'Ghana' },
+  { flag: '🇪🇹', country: 'Ethiopia', countryIpa: '/ˌiː.θiˈoʊ.pi.ə/', nationality: 'Ethiopian', nationalityIpa: '/ˌiː.θiˈoʊ.pi.ən/', region: 'Africa', vi: 'Ethiopia' },
+  { flag: '🇲🇦', country: 'Morocco', countryIpa: '/məˈrɒk.oʊ/', nationality: 'Moroccan', nationalityIpa: '/məˈrɒk.ən/', region: 'Africa', vi: 'Ma-rốc' },
+  { flag: '🇹🇿', country: 'Tanzania', countryIpa: '/ˌtæn.zəˈniː.ə/', nationality: 'Tanzanian', nationalityIpa: '/ˌtæn.zəˈniː.ən/', region: 'Africa', vi: 'Tanzania' },
+  { flag: '🇺🇬', country: 'Uganda', countryIpa: '/juːˈɡæn.də/', nationality: 'Ugandan', nationalityIpa: '/juːˈɡæn.dən/', region: 'Africa', vi: 'Uganda' },
+  { flag: '🇸🇳', country: 'Senegal', countryIpa: '/ˌsen.ɪˈɡɔːl/', nationality: 'Senegalese', nationalityIpa: '/ˌsen.ɪ.ɡəˈliːz/', region: 'Africa', vi: 'Senegal' },
+  { flag: '🇨🇲', country: 'Cameroon', countryIpa: '/ˌkæm.əˈruːn/', nationality: 'Cameroonian', nationalityIpa: '/ˌkæm.əˈruː.ni.ən/', region: 'Africa', vi: 'Cameroon' },
+  { flag: '🇹🇳', country: 'Tunisia', countryIpa: '/tjuːˈnɪʒ.ə/', nationality: 'Tunisian', nationalityIpa: '/tjuːˈnɪʒ.ən/', region: 'Africa', vi: 'Tunisia' },
+  { flag: '🇩🇿', country: 'Algeria', countryIpa: '/ælˈdʒɪə.ri.ə/', nationality: 'Algerian', nationalityIpa: '/ælˈdʒɪə.ri.ən/', region: 'Africa', vi: 'Algeria' },
+  // ── OCEANIA ──
+  { flag: '🇦🇺', country: 'Australia', countryIpa: '/ɒsˈtreɪ.li.ə/', nationality: 'Australian', nationalityIpa: '/ɒsˈtreɪ.li.ən/', region: 'Oceania', vi: 'Úc' },
+  { flag: '🇳🇿', country: 'New Zealand', countryIpa: '/ˌnjuː ˈziː.lənd/', nationality: 'New Zealander', nationalityIpa: '/ˌnjuː ˈziː.lən.dər/', region: 'Oceania', vi: 'New Zealand' },
+  { flag: '🇫🇯', country: 'Fiji', countryIpa: '/ˈfiː.dʒi/', nationality: 'Fijian', nationalityIpa: '/ˈfiː.dʒi.ən/', region: 'Oceania', vi: 'Fiji' },
+  { flag: '🇵🇬', country: 'Papua New Guinea', countryIpa: '/ˌpæp.uː.ə njuː ˈɡɪn.i/', nationality: 'Papua New Guinean', nationalityIpa: '/ˌpæp.uː.ən njuː ˈɡɪn.i.ən/', region: 'Oceania', vi: 'Papua New Guinea' },
+];
+
+export default COUNTRIES_DATA;

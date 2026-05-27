@@ -751,46 +751,46 @@ export default function LearnPage() {
               </div>
 
               {/* Word Flashcard */}
-              <div className="perspective-1000 w-full h-[450px]">
+              <div className="perspective-1000 w-full h-[320px] xs:h-[360px] sm:h-[420px] md:h-[450px]">
                 <div className={cn(
                   "relative w-full h-full preserve-3d transition-transform duration-500 border border-slate-200/80 rounded-[2.5rem] shadow-xl",
                   showHint ? "rotate-y-180" : ""
                 )}>
                   {/* Front Side */}
-                  <div className="absolute w-full h-full backface-hidden flex flex-col items-center justify-center text-center bg-white p-8 rounded-[2.5rem]">
-                    <span className="px-3 py-1 bg-green-100 text-green-700 text-[9px] font-black rounded-full uppercase tracking-wider mb-4">
+                  <div className="absolute w-full h-full backface-hidden flex flex-col items-center justify-center text-center bg-white p-6 sm:p-8 rounded-[2.5rem]">
+                    <span className="px-3 py-1 bg-green-100 text-green-700 text-[9px] font-black rounded-full uppercase tracking-wider mb-3">
                       {words[currentIndex].cefrLevel}
                     </span>
-                    <h1 className="text-5xl font-black text-slate-800 tracking-tight mb-2">{words[currentIndex].word}</h1>
+                    <h1 className="text-4xl sm:text-5xl font-black text-slate-800 tracking-tight mb-1 sm:mb-2">{words[currentIndex].word}</h1>
                     <div className="flex items-center gap-2">
-                      <span className="text-lg font-serif text-slate-400">{words[currentIndex].phonetic}</span>
+                      <span className="text-base sm:text-lg font-serif text-slate-400">{words[currentIndex].phonetic}</span>
                       <span className="text-xs font-bold text-rose-500 font-sans italic">({words[currentIndex].wordType})</span>
                     </div>
                     <button 
                       onClick={playPronunciation}
-                      className="mt-6 w-16 h-16 rounded-full bg-green-50 border border-green-100 flex items-center justify-center text-green-500 hover:bg-green-500 hover:text-white transition-all shadow-sm cursor-pointer"
+                      className="mt-4 sm:mt-6 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-green-50 border border-green-100 flex items-center justify-center text-green-500 hover:bg-green-500 hover:text-white transition-all shadow-sm cursor-pointer"
                     >
-                      <Volume2 className="w-8 h-8" />
+                      <Volume2 className="w-7 h-7 sm:w-8 sm:h-8" />
                     </button>
-                    <p className="absolute bottom-6 text-[10px] text-slate-300 font-black uppercase tracking-wider">Nhấn "Hiện gợi ý" bên dưới để lật thẻ</p>
+                    <p className="absolute bottom-4 sm:bottom-6 text-[10px] text-slate-300 font-black uppercase tracking-wider">Nhấn "Hiện gợi ý" bên dưới để lật thẻ</p>
                   </div>
 
                   {/* Back Side */}
-                  <div className="absolute w-full h-full backface-hidden rotate-y-180 flex flex-col items-center justify-center text-center bg-[#002147] text-white p-8 overflow-y-auto rounded-[2.5rem]">
-                    <div className="space-y-4 w-full">
+                  <div className="absolute w-full h-full backface-hidden rotate-y-180 flex flex-col items-center justify-center text-center bg-[#002147] text-white p-6 sm:p-8 overflow-y-auto rounded-[2.5rem]">
+                    <div className="space-y-3 sm:space-y-4 w-full">
                       <div>
                         <span className="text-[9px] text-emerald-400 font-black uppercase tracking-widest block">Nghĩa tiếng Việt</span>
-                        <h2 className="text-2xl font-black text-emerald-400 mt-1">{words[currentIndex].meaningVi}</h2>
+                        <h2 className="text-xl sm:text-2xl font-black text-emerald-400 mt-1">{words[currentIndex].meaningVi}</h2>
                       </div>
-                      <div className="border-t border-white/10 pt-3">
-                        <span className="text-[9px] text-white/40 font-black uppercase tracking-widest block block">Định nghĩa (EN)</span>
-                        <p className="text-sm text-slate-200 mt-1 italic leading-relaxed">"{words[currentIndex].meaningEn}"</p>
+                      <div className="border-t border-white/10 pt-2 sm:pt-3">
+                        <span className="text-[9px] text-white/40 font-black uppercase tracking-widest block">Định nghĩa (EN)</span>
+                        <p className="text-xs sm:text-sm text-slate-200 mt-1 italic leading-relaxed">"{words[currentIndex].meaningEn}"</p>
                       </div>
                       {words[currentIndex].example && (
-                        <div className="border-t border-white/10 pt-3 text-left">
+                        <div className="border-t border-white/10 pt-2 sm:pt-3 text-left">
                           <span className="text-[9px] text-white/40 font-black uppercase tracking-widest block mb-1">Ví dụ minh họa</span>
                           <p className="text-xs text-white font-medium italic">"{words[currentIndex].example}"</p>
-                          {words[currentIndex].exampleVi && <p className="text-[11px] text-emerald-400/80 mt-0.5 italic">{words[currentIndex].exampleVi}</p>}
+                          {words[currentIndex].exampleVi && <p className="text-[10px] sm:text-[11px] text-emerald-400/80 mt-0.5 italic">{words[currentIndex].exampleVi}</p>}
                         </div>
                       )}
                     </div>
