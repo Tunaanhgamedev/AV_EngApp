@@ -27,9 +27,232 @@ export interface TOEICCategory {
 
 export const TOEIC_VOCAB_DATA: TOEICCategory[] = [
   {
+    id: "target300",
+    title: "Target 300+ (Mới Bắt Đầu)",
+    description: "Từ vựng sơ cấp nhất về các hoạt động đời thường, công sở cơ bản và đồ vật quen thuộc.",
+    difficulty: "Rất Dễ",
+    color: "from-teal-500 to-emerald-400",
+    lists: [
+      {
+        id: "target300_list1",
+        name: "List 1: Daily Activities",
+        description: "Các hoạt động quen thuộc diễn ra hàng ngày tại nơi làm việc.",
+        words: [
+          {
+            id: "t300_1",
+            word: "commute",
+            phonetic: "/kəˈmjuːt/",
+            wordType: "verb/noun",
+            meaningVi: "đi làm hàng ngày (bằng phương tiện công cộng)",
+            meaningEn: "travel some distance between one's home and place of work on a regular basis",
+            example: "She commutes to her office in downtown Hanoi by bus every morning.",
+            exampleVi: "Cô ấy đi làm đến văn phòng ở trung tâm Hà Nội bằng xe buýt mỗi sáng."
+          },
+          {
+            id: "t300_2",
+            word: "prepare",
+            phonetic: "/prɪˈpeər/",
+            wordType: "verb",
+            meaningVi: "chuẩn bị",
+            meaningEn: "make something ready for use or consideration",
+            example: "The assistant needs to prepare the room for the morning conference.",
+            exampleVi: "Trợ lý cần chuẩn bị phòng cho cuộc hội nghị buổi sáng."
+          },
+          {
+            id: "t300_3",
+            word: "arrive",
+            phonetic: "/əˈraɪv/",
+            wordType: "verb",
+            meaningVi: "đến nơi, tới nơi",
+            meaningEn: "reach a destination at the end of a journey or stage",
+            example: "The delivery truck is scheduled to arrive at the warehouse at 10 AM.",
+            exampleVi: "Xe tải giao hàng dự kiến sẽ đến kho vào lúc 10 giờ sáng."
+          },
+          {
+            id: "t300_4",
+            word: "departure",
+            phonetic: "/dɪˈpɑː.tʃər/",
+            wordType: "noun",
+            meaningVi: "sự khởi hành, sự xuất phát",
+            meaningEn: "the action of leaving, especially to start a journey",
+            example: "Passengers should check the screen for flight departure times.",
+            exampleVi: "Hành khách nên kiểm tra màn hình để biết thời gian khởi hành chuyến bay."
+          },
+          {
+            id: "t300_5",
+            word: "lunch",
+            phonetic: "/lʌntʃ/",
+            wordType: "noun/verb",
+            meaningVi: "bữa ăn trưa, ăn trưa",
+            meaningEn: "a meal eaten in the middle of the day",
+            example: "Our department usually has lunch together in the office cafeteria.",
+            exampleVi: "Bộ phận của chúng tôi thường ăn trưa cùng nhau ở căn tin văn phòng."
+          },
+          {
+            id: "t300_6",
+            word: "discuss",
+            phonetic: "/dɪˈskʌs/",
+            wordType: "verb",
+            meaningVi: "thảo luận, bàn bạc",
+            meaningEn: "talk about something with another person or group in order to reach a decision",
+            example: "We will discuss the new sales target during tomorrow's team meeting.",
+            exampleVi: "Chúng ta sẽ thảo luận về mục tiêu doanh số mới trong cuộc họp nhóm ngày mai."
+          },
+          {
+            id: "t300_7",
+            word: "email",
+            phonetic: "/ˈiː.meɪl/",
+            wordType: "noun/verb",
+            meaningVi: "thư điện tử, gửi email",
+            meaningEn: "send a message using the internet to another person",
+            example: "Please email me the final draft of the report by 5 PM today.",
+            exampleVi: "Vui lòng gửi email cho tôi bản thảo cuối cùng của báo cáo trước 5 giờ chiều nay."
+          },
+          {
+            id: "t300_8",
+            word: "client",
+            phonetic: "/ˈklaɪ.ənt/",
+            wordType: "noun",
+            meaningVi: "khách hàng (sử dụng dịch vụ)",
+            meaningEn: "a person or organization using the services of a professional person or company",
+            example: "The lawyer is preparing contracts for an important international client.",
+            exampleVi: "Luật sư đang chuẩn bị hợp đồng cho một khách hàng quốc tế quan trọng."
+          },
+          {
+            id: "t300_9",
+            word: "project",
+            phonetic: "/ˈprɒdʒ.ekt/",
+            wordType: "noun",
+            meaningVi: "dự án, đề án",
+            meaningEn: "an individual or collaborative enterprise that is carefully planned to achieve a particular aim",
+            example: "The construction project must be completed before the rainy season starts.",
+            exampleVi: "Dự án xây dựng phải được hoàn thành trước khi mùa mưa bắt đầu."
+          },
+          {
+            id: "t300_10",
+            word: "report",
+            phonetic: "/rɪˈpɔːt/",
+            wordType: "noun/verb",
+            meaningVi: "bản báo cáo, báo cáo",
+            meaningEn: "a spoken or written description of something that you have done or investigated",
+            example: "The accountant submitted the final financial report to the director.",
+            exampleVi: "Kế toán đã nộp bản báo cáo tài chính cuối cùng cho giám đốc."
+          }
+        ]
+      },
+      {
+        id: "target300_list2",
+        name: "List 2: Common Office Items",
+        description: "Các đồ vật, thiết bị văn phòng cơ bản thường gặp.",
+        words: [
+          {
+            id: "t300_11",
+            word: "desk",
+            phonetic: "/desk/",
+            wordType: "noun",
+            meaningVi: "bàn làm việc",
+            meaningEn: "a flat-topped piece of furniture at which one can write or work",
+            example: "He placed the telephone and some files on his wooden desk.",
+            exampleVi: "Anh ấy đặt điện thoại và một vài tệp tài liệu lên bàn làm việc bằng gỗ của mình."
+          },
+          {
+            id: "t300_12",
+            word: "computer",
+            phonetic: "/kəmˈpjuː.tər/",
+            wordType: "noun",
+            meaningVi: "máy tính",
+            meaningEn: "an electronic device for storing and processing data",
+            example: "Every employee is provided with a modern computer connected to the network.",
+            exampleVi: "Mỗi nhân viên được cung cấp một máy tính hiện đại kết nối với mạng."
+          },
+          {
+            id: "t300_13",
+            word: "phone",
+            phonetic: "/fəʊn/",
+            wordType: "noun",
+            meaningVi: "điện thoại",
+            meaningEn: "a device used to talk to someone who is in another place",
+            example: "She picked up the phone to answer the customer's call.",
+            exampleVi: "Cô ấy nhấc điện thoại lên để trả lời cuộc gọi của khách hàng."
+          },
+          {
+            id: "t300_14",
+            word: "scanner",
+            phonetic: "/ˈskæn.ər/",
+            wordType: "noun",
+            meaningVi: "máy quét, máy scan",
+            meaningEn: "a device for copying physical documents or pictures into digital format",
+            example: "Use the scanner in the copy room to upload these invoices.",
+            exampleVi: "Hãy sử dụng máy quét trong phòng sao chép để tải lên các hóa đơn này."
+          },
+          {
+            id: "t300_15",
+            word: "printer",
+            phonetic: "/ˈprɪn.tər/",
+            wordType: "noun",
+            meaningVi: "máy in",
+            meaningEn: "a machine that prints words or pictures from a computer onto paper",
+            example: "The printer is currently out of paper, so please refill it.",
+            exampleVi: "Máy in hiện đang hết giấy, vì vậy vui lòng nạp thêm."
+          },
+          {
+            id: "t300_16",
+            word: "document",
+            phonetic: "/ˈdɒk.jə.mənt/",
+            wordType: "noun",
+            meaningVi: "tài liệu, văn kiện",
+            meaningEn: "a written, printed, or electronic matter that provides information or evidence",
+            example: "She signed the official document and returned it to the lawyer.",
+            exampleVi: "Cô ấy đã ký tài liệu chính thức và gửi lại nó cho luật sư."
+          },
+          {
+            id: "t300_17",
+            word: "folder",
+            phonetic: "/ˈfəʊl.dər/",
+            wordType: "noun",
+            meaningVi: "thư mục, bìa đựng hồ sơ",
+            meaningEn: "a folding cover or holder for storing loose papers",
+            example: "The documents are organized neatly inside the blue folder.",
+            exampleVi: "Các tài liệu được sắp xếp gọn gàng bên trong bìa hồ sơ màu xanh."
+          },
+          {
+            id: "t300_18",
+            word: "calendar",
+            phonetic: "/ˈkæl.ən.dər/",
+            wordType: "noun",
+            meaningVi: "lịch, tờ lịch",
+            meaningEn: "a chart showing the days, weeks, and months of a particular year",
+            example: "Mark the meeting date clearly on your office calendar.",
+            exampleVi: "Hãy đánh dấu ngày họp rõ ràng trên lịch văn phòng của bạn."
+          },
+          {
+            id: "t300_19",
+            word: "keyboard",
+            phonetic: "/ˈkiː.bɔːd/",
+            wordType: "noun",
+            meaningVi: "bàn phím",
+            meaningEn: "a set of keys on a computer or typewriter used for typing",
+            example: "The employee typed the client list using the new wireless keyboard.",
+            exampleVi: "Nhân viên đã gõ danh sách khách hàng bằng bàn phím không dây mới."
+          },
+          {
+            id: "t300_20",
+            word: "envelope",
+            phonetic: "/ˈen.və.ləʊp/",
+            wordType: "noun",
+            meaningVi: "phong bì, phong thư",
+            meaningEn: "a flat paper container with a sealable flap, used to send letters",
+            example: "He put the signed contract into the envelope and sent it by post.",
+            exampleVi: "Anh ấy cho hợp đồng đã ký vào phong bì và gửi qua đường bưu điện."
+          }
+        ]
+      }
+    ]
+  },
+  {
     id: "target500",
     title: "Target 500+ (Cơ Bản)",
-    description: "Từ vựng thông dụng nhất về văn phòng, công việc hàng ngày và giao tiếp cơ bản.",
+    description: "Từ vựng thông dụng nhất về văn phòng, công việc hàng ngày, đặt chỗ du lịch và dịch vụ khách hàng.",
     difficulty: "Dễ",
     color: "from-blue-500 to-cyan-400",
     lists: [
@@ -150,7 +373,7 @@ export const TOEIC_VOCAB_DATA: TOEICCategory[] = [
             word: "luggage",
             phonetic: "/ˈlʌɡ.ɪdʒ/",
             wordType: "noun",
-            meaningVi: "hành lý (không đếm được)",
+            meaningVi: "hành lý",
             meaningEn: "suitcases or bags containing personal belongings for a journey",
             example: "Passengers are allowed to carry one piece of hand luggage onto the plane.",
             exampleVi: "Hành khách được phép mang một kiện hành lý xách tay lên máy bay."
@@ -246,13 +469,120 @@ export const TOEIC_VOCAB_DATA: TOEICCategory[] = [
             exampleVi: "Đại lý du lịch đã gửi cho chúng tôi lịch trình chi tiết đầy đủ cho chuyến lưu diễn châu Âu."
           }
         ]
+      },
+      {
+        id: "target500_list3",
+        name: "List 3: Customer Service",
+        description: "Từ vựng chuyên dùng trong bộ phận chăm sóc khách hàng.",
+        words: [
+          {
+            id: "t500_21",
+            word: "customer",
+            phonetic: "/ˈkʌs.tə.mər/",
+            wordType: "noun",
+            meaningVi: "khách hàng (mua hàng hóa)",
+            meaningEn: "a person or organization that buys goods or services from a store or business",
+            example: "We strive to ensure every customer is fully satisfied with their purchase.",
+            exampleVi: "Chúng tôi cố gắng đảm bảo mọi khách hàng đều hoàn toàn hài lòng với giao dịch mua hàng của họ."
+          },
+          {
+            id: "t500_22",
+            word: "complaint",
+            phonetic: "/kəmˈpleɪnt/",
+            wordType: "noun",
+            meaningVi: "sự khiếu nại, phàn nàn",
+            meaningEn: "a statement that something is unsatisfactory or unacceptable",
+            example: "The customer filed a formal complaint regarding the defective computer screen.",
+            exampleVi: "Khách hàng đã nộp một khiếu nại chính thức liên quan đến màn hình máy tính bị lỗi."
+          },
+          {
+            id: "t500_23",
+            word: "solve",
+            phonetic: "/sɒlv/",
+            wordType: "verb",
+            meaningVi: "giải quyết, xử lý",
+            meaningEn: "find an answer to, explanation for, or means of effectively dealing with a problem",
+            example: "Our support representatives are trained to solve technical issues quickly.",
+            exampleVi: "Các đại diện hỗ trợ của chúng tôi được đào tạo để giải quyết các sự cố kỹ thuật một cách nhanh chóng."
+          },
+          {
+            id: "t500_24",
+            word: "support",
+            phonetic: "/səˈpɔːt/",
+            wordType: "noun/verb",
+            meaningVi: "sự hỗ trợ, hỗ trợ",
+            meaningEn: "give assistance, approval, or comfort to someone",
+            example: "If you have questions, please contact our customer support desk.",
+            exampleVi: "Nếu bạn có thắc mắc, vui lòng liên hệ với bàn hỗ trợ khách hàng của chúng tôi."
+          },
+          {
+            id: "t500_25",
+            word: "polite",
+            phonetic: "/pəˈlaɪt/",
+            wordType: "adjective",
+            meaningVi: "lịch sự, lễ phép",
+            meaningEn: "having or showing behavior that is respectful and considerate of other people",
+            example: "The receptionist was very polite and answered all of our queries.",
+            exampleVi: "Nhân viên lễ tân rất lịch sự và đã trả lời tất cả các thắc mắc của chúng tôi."
+          },
+          {
+            id: "t500_26",
+            word: "feedback",
+            phonetic: "/ˈfiːd.bæk/",
+            wordType: "noun",
+            meaningVi: "ý kiến phản hồi",
+            meaningEn: "information about reactions to a product or a person's performance of a task",
+            example: "We value constructive feedback from our clients to improve our services.",
+            exampleVi: "Chúng tôi coi trọng phản hồi có tính xây dựng từ khách hàng để cải thiện dịch vụ của mình."
+          },
+          {
+            id: "t500_27",
+            word: "issue",
+            phonetic: "/ˈɪʃ.uː/",
+            wordType: "noun/verb",
+            meaningVi: "vấn đề, sự cố",
+            meaningEn: "an important topic or problem for debate or discussion",
+            example: "There is a network connection issue in the main office today.",
+            exampleVi: "Có một sự cố kết nối mạng tại văn phòng chính ngày hôm nay."
+          },
+          {
+            id: "t500_28",
+            word: "loyalty",
+            phonetic: "/ˈlɔɪ.əl.ti/",
+            wordType: "noun",
+            meaningVi: "lòng trung thành",
+            meaningEn: "the quality of being loyal to a brand, company, or cause",
+            example: "Our customer loyalty program offers discounts to frequent shoppers.",
+            exampleVi: "Chương trình tri ân khách hàng thân thiết của chúng tôi cung cấp giảm giá cho người mua sắm thường xuyên."
+          },
+          {
+            id: "t500_29",
+            word: "return",
+            phonetic: "/rɪˈtɜːn/",
+            wordType: "verb/noun",
+            meaningVi: "trả lại hàng hóa, sự quay lại",
+            meaningEn: "give, put, or send something back to a place or person",
+            example: "Customers can return undamaged goods within thirty days for a full refund.",
+            exampleVi: "Khách hàng có thể trả lại hàng hóa không bị hư hại trong vòng ba mươi ngày để được hoàn tiền đầy đủ."
+          },
+          {
+            id: "t500_30",
+            word: "satisfy",
+            phonetic: "/ˈsæt.ɪs.faɪ/",
+            wordType: "verb",
+            meaningVi: "làm hài lòng, đáp ứng",
+            meaningEn: "fulfill the expectations, needs, or desires of someone",
+            example: "The new design aims to satisfy the high demands of professional gamers.",
+            exampleVi: "Thiết kế mới nhằm đáp ứng yêu cầu cao của các game thủ chuyên nghiệp."
+          }
+        ]
       }
     ]
   },
   {
     id: "target700",
     title: "Target 700+ (Trung Cấp)",
-    description: "Từ vựng chuyên sâu về quản lý, tài chính, hợp đồng và dịch vụ khách hàng.",
+    description: "Từ vựng chuyên sâu về quản lý, đàm phán cuộc họp, chiến lược tiếp thị và phân tích doanh thu.",
     difficulty: "Trung bình",
     color: "from-indigo-500 to-blue-400",
     lists: [
@@ -362,14 +692,237 @@ export const TOEIC_VOCAB_DATA: TOEICCategory[] = [
             exampleVi: "Sau nhiều giờ thảo luận, cuối cùng họ đã đạt được sự thỏa hiệp."
           }
         ]
+      },
+      {
+        id: "target700_list2",
+        name: "List 2: Marketing & Sales",
+        description: "Các thuật ngữ quảng cáo, truyền thông sản phẩm và bán hàng chuyên nghiệp.",
+        words: [
+          {
+            id: "t700_11",
+            word: "advertise",
+            phonetic: "/ˈæd.və.taɪz/",
+            wordType: "verb",
+            meaningVi: "quảng cáo",
+            meaningEn: "describe or draw attention to a product, service, or event in a public medium in order to promote sales",
+            example: "We plan to advertise our new organic tea line on social media networks.",
+            exampleVi: "Chúng tôi lên kế hoạch quảng cáo dòng trà hữu cơ mới trên các mạng xã hội."
+          },
+          {
+            id: "t700_12",
+            word: "strategy",
+            phonetic: "/ˈstræt.ə.dʒi/",
+            wordType: "noun",
+            meaningVi: "chiến lược",
+            meaningEn: "a plan of action or policy designed to achieve a major or overall aim",
+            example: "The directors approved the long-term marketing strategy for East Asia.",
+            exampleVi: "Các giám đốc đã phê duyệt chiến lược tiếp thị dài hạn cho khu vực Đông Á."
+          },
+          {
+            id: "t700_13",
+            word: "campaign",
+            phonetic: "/kæmˈpeɪn/",
+            wordType: "noun/verb",
+            meaningVi: "chiến dịch",
+            meaningEn: "an organized course of action to achieve a goal, especially commercial or political",
+            example: "The email marketing campaign generated thousands of new leads.",
+            exampleVi: "Chiến dịch tiếp thị qua email đã tạo ra hàng ngàn khách hàng tiềm năng mới."
+          },
+          {
+            id: "t700_14",
+            word: "sponsor",
+            phonetic: "/ˈspɒn.sər/",
+            wordType: "verb/noun",
+            meaningVi: "tài trợ, nhà tài trợ",
+            meaningEn: "provide funds for a project, activity, or person, typically in return for advertising rights",
+            example: "Major sports brands decided to sponsor the national athletic games.",
+            exampleVi: "Các thương hiệu thể thao lớn đã quyết định tài trợ cho đại hội thể thao quốc gia."
+          },
+          {
+            id: "t700_15",
+            word: "demographic",
+            phonetic: "/ˌdem.əˈɡræf.ɪk/",
+            wordType: "noun/adjective",
+            meaningVi: "nhóm nhân khẩu học, phân khúc đối tượng",
+            meaningEn: "a particular sector of a population, identified by age, income, or other data",
+            example: "Our products target the young professional demographic aged 22 to 35.",
+            exampleVi: "Sản phẩm của chúng tôi hướng tới nhóm nhân khẩu học trẻ tuổi đi làm từ 22 đến 35 tuổi."
+          },
+          {
+            id: "t700_16",
+            word: "coupon",
+            phonetic: "/ˈkuː.pɒn/",
+            wordType: "noun",
+            meaningVi: "phiếu mua hàng, phiếu giảm giá",
+            meaningEn: "a voucher entitling the holder to a discount or to an exchange for goods",
+            example: "Present this discount coupon at the checkout counter to save twenty percent.",
+            exampleVi: "Hãy xuất trình phiếu giảm giá này tại quầy thanh toán để được giảm hai mươi phần trăm."
+          },
+          {
+            id: "t700_17",
+            word: "competition",
+            phonetic: "/ˌkɒm.pəˈtɪʃ.ən/",
+            wordType: "noun",
+            meaningVi: "sự cạnh tranh, cuộc thi đấu",
+            meaningEn: "the activity or condition of competing against others for resources or customers",
+            example: "Intense competition in the smartphone market leads to lower prices.",
+            exampleVi: "Sự cạnh tranh gay gắt trong thị trường điện thoại thông minh dẫn đến giá cả thấp hơn."
+          },
+          {
+            id: "t700_18",
+            word: "target",
+            phonetic: "/ˈtɑː.ɡɪt/",
+            wordType: "noun/verb",
+            meaningVi: "mục tiêu, hướng tới",
+            meaningEn: "a person, object, or goal selected as the aim of an attack or focus",
+            example: "The advertisement is carefully designed to target local homeowners.",
+            exampleVi: "Quảng cáo được thiết kế cẩn thận để hướng tới những chủ sở hữu nhà ở địa phương."
+          },
+          {
+            id: "t700_19",
+            word: "billboard",
+            phonetic: "/ˈbɪl.bɔːd/",
+            wordType: "noun",
+            meaningVi: "biển quảng cáo ngoài trời",
+            meaningEn: "a large outdoor board for displaying advertisements",
+            example: "A massive billboard promoting the film was installed along the highway.",
+            exampleVi: "Một biển quảng cáo ngoài trời khổng lồ quảng bá cho bộ phim đã được lắp đặt dọc theo đường cao tốc."
+          },
+          {
+            id: "t700_20",
+            word: "flyer",
+            phonetic: "/ˈflaɪ.ər/",
+            wordType: "noun",
+            meaningVi: "tờ rơi quảng cáo",
+            meaningEn: "a small paper leaflet advertising an event, product, or service",
+            example: "We distributed flyers in the neighborhood to advertise the supermarket's grand opening.",
+            exampleVi: "Chúng tôi đã phát tờ rơi ở khu lân cận để quảng cáo cho lễ khai trương siêu thị."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: "target800",
+    title: "Target 800+ (Khá Giỏi)",
+    description: "Từ vựng nâng cao chuyên sâu về tái cơ cấu doanh nghiệp, chuỗi cung ứng và phân tích tài chính phức tạp.",
+    difficulty: "Khó",
+    color: "from-orange-500 to-amber-500",
+    lists: [
+      {
+        id: "target800_list1",
+        name: "List 1: Business Operations & Management",
+        description: "Các thuật ngữ quản trị vận hành và cải tổ doanh nghiệp chuyên nghiệp.",
+        words: [
+          {
+            id: "t800_1",
+            word: "restructure",
+            phonetic: "/ˌriːˈstrʌk.tʃər/",
+            wordType: "verb",
+            meaningVi: "tái cơ cấu, cải tổ",
+            meaningEn: "organize key departments or operational frameworks of a company in a new way",
+            example: "To prevent bankruptcy, the board decided to restructure the entire corporation.",
+            exampleVi: "Để ngăn chặn sự phá sản, hội đồng quản trị đã quyết định tái cơ cấu toàn bộ tập đoàn."
+          },
+          {
+            id: "t800_2",
+            word: "implement",
+            phonetic: "/ˈɪm.plɪ.ment/",
+            wordType: "verb",
+            meaningVi: "triển khai thực hiện, thi hành",
+            meaningEn: "put a decision, plan, or agreement into effect",
+            example: "We need to implement the new data security protocol immediately.",
+            exampleVi: "Chúng ta cần triển khai giao thức bảo mật dữ liệu mới ngay lập tức."
+          },
+          {
+            id: "t800_3",
+            word: "streamline",
+            phonetic: "/ˈstriːm.laɪn/",
+            wordType: "verb",
+            meaningVi: "tối ưu hóa quy trình (cho gọn nhẹ, hiệu quả hơn)",
+            meaningEn: "make an organization or system more efficient by employing faster or simpler working methods",
+            example: "By using automation tools, the logistics firm was able to streamline its packing process.",
+            exampleVi: "Bằng cách sử dụng các công cụ tự động hóa, công ty hậu cần đã có thể tối ưu hóa quy trình đóng gói của mình."
+          },
+          {
+            id: "t800_4",
+            word: "evaluate",
+            phonetic: "/ɪˈvæl.ju.eɪt/",
+            wordType: "verb",
+            meaningVi: "đánh giá, ước lượng giá trị",
+            meaningEn: "form an idea of the amount, number, or value of something; assess",
+            example: "Supervisors will evaluate performance based on sales results and customer ratings.",
+            exampleVi: "Các giám sát viên sẽ đánh giá hiệu suất dựa trên kết quả bán hàng và đánh giá của khách hàng."
+          },
+          {
+            id: "t800_5",
+            word: "allocate",
+            phonetic: "/ˈæl.ə.keɪt/",
+            wordType: "verb",
+            meaningVi: "phân bổ, cấp phát (ngân sách, nguồn lực)",
+            meaningEn: "distribute resources or duties for a particular purpose",
+            example: "The manager will allocate the budget for the new marketing campaign tomorrow.",
+            exampleVi: "Quản lý sẽ phân bổ ngân sách cho chiến dịch tiếp thị mới vào ngày mai."
+          },
+          {
+            id: "t800_6",
+            word: "overhead",
+            phonetic: "/ˈəʊ.və.hed/",
+            wordType: "noun",
+            meaningVi: "chi phí vận hành thường xuyên (điện, nước, thuê mặt bằng...)",
+            meaningEn: "regular expenses involved in running a business, such as rent, utility bills, and salaries",
+            example: "Moving to a smaller office helped the startup reduce its monthly overhead significantly.",
+            exampleVi: "Chuyển sang một văn phòng nhỏ hơn đã giúp công ty khởi nghiệp giảm đáng kể chi phí vận hành hàng tháng."
+          },
+          {
+            id: "t800_7",
+            word: "subsidiary",
+            phonetic: "/səbˈsɪd.i.ə.ri/",
+            wordType: "noun",
+            meaningVi: "công ty con",
+            meaningEn: "a company controlled by a holding or parent company",
+            example: "The Japanese automotive manufacturer has a subsidiary branch in Vietnam.",
+            exampleVi: "Nhà sản xuất ô tô Nhật Bản có một chi nhánh công ty con tại Việt Nam."
+          },
+          {
+            id: "t800_8",
+            word: "liquidate",
+            phonetic: "/ˈlɪk.wɪ.deɪt/",
+            wordType: "verb",
+            meaningVi: "thanh lý (tài sản), giải thể (công ty)",
+            meaningEn: "wind up the affairs of a business by ascertaining liabilities and converting assets into cash",
+            example: "The bank was forced to liquidate the firm's assets to recover the unpaid loans.",
+            exampleVi: "Ngân hàng bị buộc phải thanh lý tài sản của công ty để thu hồi các khoản vay chưa trả."
+          },
+          {
+            id: "t800_9",
+            word: "downsize",
+            phonetic: "/ˈdaʊn.saɪz/",
+            wordType: "verb",
+            meaningVi: "cắt giảm quy mô nhân sự",
+            meaningEn: "make a company smaller by eliminating staff positions",
+            example: "Due to the economic recession, the tech firm planned to downsize its workforce by ten percent.",
+            exampleVi: "Do suy thoái kinh tế, công ty công nghệ có kế hoạch cắt giảm mười phần trăm lực lượng lao động."
+          },
+          {
+            id: "t800_10",
+            word: "optimize",
+            phonetic: "/ˈɒp.tɪ.maɪz/",
+            wordType: "verb",
+            meaningVi: "tối ưu hóa",
+            meaningEn: "make the best or most effective use of a situation or resource",
+            example: "The software update helps optimize system speed and battery usage.",
+            exampleVi: "Bản cập nhật phần mềm giúp tối ưu hóa tốc độ hệ thống và sử dụng pin."
+          }
+        ]
       }
     ]
   },
   {
     id: "target900",
     title: "Target 900+ (Nâng Cao)",
-    description: "Từ vựng cấp độ quản lý cao cấp, thuật ngữ pháp lý, sáp nhập và phân tích thị trường.",
-    difficulty: "Khó",
+    description: "Từ vựng cấp độ quản lý cao cấp, thuật ngữ pháp lý, các tình huống thâu tóm và rủi ro bất ngờ.",
+    difficulty: "Rất Khó",
     color: "from-purple-500 to-pink-400",
     lists: [
       {
@@ -392,7 +945,7 @@ export const TOEIC_VOCAB_DATA: TOEICCategory[] = [
             word: "contingency",
             phonetic: "/kənˈtɪn.dʒən.si/",
             wordType: "noun",
-            meaningVi: "sự cố bất ngờ, dự phòng",
+            meaningVi: "sự cố bất ngờ, kế hoạch dự phòng",
             meaningEn: "a future event or circumstance that is possible but cannot be predicted with certainty",
             example: "Every financial department must establish a contingency fund for emergency situations.",
             exampleVi: "Mỗi bộ phận tài chính phải thiết lập một quỹ dự phòng cho các tình huống khẩn cấp."
@@ -403,7 +956,7 @@ export const TOEIC_VOCAB_DATA: TOEICCategory[] = [
             phonetic: "/ˈɔː.dɪt/",
             wordType: "noun/verb",
             meaningVi: "kiểm toán, sự thanh tra tài chính",
-            meaningEn: "an official inspection of an individual's or organization's accounts, typically by an independent body",
+            meaningEn: "an official inspection of an organization's accounts, typically by an independent body",
             example: "The international consulting firm was hired to conduct an annual financial audit.",
             exampleVi: "Công ty tư vấn quốc tế đã được thuê để tiến hành một cuộc kiểm toán tài chính hàng năm."
           },
@@ -413,7 +966,7 @@ export const TOEIC_VOCAB_DATA: TOEICCategory[] = [
             phonetic: "/ˈfræn.tʃaɪz/",
             wordType: "noun",
             meaningVi: "nhượng quyền thương mại",
-            meaningEn: "an authorization granted by a government or company to an individual or group enabling them to carry out specified commercial activities",
+            meaningEn: "an authorization granted by a company to an individual enabling them to carry out commercial activities",
             example: "He plans to purchase a franchise of a popular fast-food restaurant chain.",
             exampleVi: "Anh ấy có kế hoạch mua nhượng quyền thương mại của một chuỗi nhà hàng thức ăn nhanh nổi tiếng."
           },
@@ -422,7 +975,7 @@ export const TOEIC_VOCAB_DATA: TOEICCategory[] = [
             word: "leverage",
             phonetic: "/ˈliː.vər.ɪdʒ/",
             wordType: "verb/noun",
-            meaningVi: "tận dụng, đòn bẩy",
+            meaningVi: "tận dụng, dùng làm đòn bẩy",
             meaningEn: "to use something to maximum advantage; or strategic financial debt tool",
             example: "We should leverage our brand reputation to capture the rural market.",
             exampleVi: "Chúng ta nên tận dụng danh tiếng thương hiệu của mình để chiếm lĩnh thị trường nông thôn."
@@ -443,7 +996,7 @@ export const TOEIC_VOCAB_DATA: TOEICCategory[] = [
             phonetic: "/ˈspek.jə.leɪt/",
             wordType: "verb",
             meaningVi: "đầu cơ, suy đoán tích trữ",
-            meaningEn: "to invest in stocks, property, or other ventures in the hope of gain but with the risk of loss",
+            meaningEn: "to invest in stocks or property in the hope of gain but with the risk of loss",
             example: "Financial analysts warn investors not to speculate heavily in cryptocurrency.",
             exampleVi: "Các nhà phân tích tài chính cảnh báo các nhà đầu tư không nên đầu cơ mạnh vào tiền điện tử."
           },
@@ -478,27 +1031,134 @@ export const TOEIC_VOCAB_DATA: TOEICCategory[] = [
             exampleVi: "Sự gia tăng lạm phát toàn cầu hiện nay là chưa từng có trong lịch sử gần đây."
           }
         ]
+      },
+      {
+        id: "target900_list2",
+        name: "List 2: Legal & Regulations",
+        description: "Thuật ngữ pháp lý doanh nghiệp, quy định luật pháp và giải quyết tranh chấp.",
+        words: [
+          {
+            id: "t900_11",
+            word: "regulation",
+            phonetic: "/ˌreɡ.jəˈleɪ.ʃən/",
+            wordType: "noun",
+            meaningVi: "quy định, điều lệ",
+            meaningEn: "a rule or directive made and maintained by an authority",
+            example: "New environmental regulations force car manufacturers to reduce exhaust emissions.",
+            exampleVi: "Các quy định môi trường mới buộc các nhà sản xuất ô tô phải giảm lượng khí thải."
+          },
+          {
+            id: "t900_12",
+            word: "liability",
+            phonetic: "/ˌlaɪ.əˈbɪl.ə.ti/",
+            wordType: "noun",
+            meaningVi: "trách nhiệm pháp lý, nghĩa vụ nợ",
+            meaningEn: "the state of being responsible for something, especially by law",
+            example: "The company accepted full financial liability for the accidental chemical spill.",
+            exampleVi: "Công ty đã chấp nhận hoàn toàn trách nhiệm pháp lý tài chính đối với vụ tràn hóa chất vô tình."
+          },
+          {
+            id: "t900_13",
+            word: "clause",
+            phonetic: "/klɔːz/",
+            wordType: "noun",
+            meaningVi: "điều khoản (trong hợp đồng)",
+            meaningEn: "a particular and separate article, stipulation, or provision in a treaty, bill, or contract",
+            example: "The penalty clause in the contract details fines for late project delivery.",
+            exampleVi: "Điều khoản phạt trong hợp đồng nêu chi tiết tiền phạt nếu bàn giao dự án trễ hạn."
+          },
+          {
+            id: "t900_14",
+            word: "lawsuit",
+            phonetic: "/ˈlɔː.suːt/",
+            wordType: "noun",
+            meaningVi: "vụ kiện tụng, vụ án",
+            meaningEn: "a claim or dispute brought to a court of law for adjudication",
+            example: "The former employee filed a lawsuit against the firm for unfair dismissal.",
+            exampleVi: "Cựu nhân viên đã đệ đơn kiện công ty vì tội sa thải không công bằng."
+          },
+          {
+            id: "t900_15",
+            word: "arbitration",
+            phonetic: "/ˌɑː.bɪˈtreɪ.ʃən/",
+            wordType: "noun",
+            meaningVi: "sự hòa giải, sự phân xử tranh chấp",
+            meaningEn: "the hearing and determining of a dispute by an impartial referee chosen by both parties",
+            example: "The two corporations agreed to resolve their dispute through international arbitration.",
+            exampleVi: "Hai tập đoàn đã đồng ý giải quyết tranh chấp của họ thông qua trọng tài quốc tế."
+          },
+          {
+            id: "t900_16",
+            word: "breach",
+            phonetic: "/briːtʃ/",
+            wordType: "verb/noun",
+            meaningVi: "sự vi phạm (hợp đồng, quy định)",
+            meaningEn: "an act of breaking or failing to observe a law, agreement, or code of conduct",
+            example: "Failing to deliver the materials on time is a clear breach of contract.",
+            exampleVi: "Không giao vật liệu đúng hạn là một sự vi phạm hợp đồng rõ ràng."
+          },
+          {
+            id: "t900_17",
+            word: "patent",
+            phonetic: "/ˈpeɪ.tənt/",
+            wordType: "noun/verb",
+            meaningVi: "bằng sáng chế, bằng độc quyền",
+            meaningEn: "a government authority or license conferring a right or title for a set period",
+            example: "The biotechnology firm filed a patent application for their newly developed vaccine.",
+            exampleVi: "Công ty công nghệ sinh học đã nộp đơn đăng ký bằng sáng chế cho loại vắc-xin mới phát triển của họ."
+          },
+          {
+            id: "t900_18",
+            word: "trademark",
+            phonetic: "/ˈtreɪd.mɑːk/",
+            wordType: "noun/verb",
+            meaningVi: "nhãn hiệu đã được bảo hộ độc quyền",
+            meaningEn: "a symbol, word, or words legally registered or established by use as representing a company",
+            example: "Our logo is a registered trademark and cannot be copied without permission.",
+            exampleVi: "Biểu trưng của chúng tôi là một nhãn hiệu đã được đăng ký và không được sao chép nếu không có sự cho phép."
+          },
+          {
+            id: "t900_19",
+            word: "jurisdiction",
+            phonetic: "/ˌdʒʊə.rɪsˈdɪk.ʃən/",
+            wordType: "noun",
+            meaningVi: "thẩm quyền pháp lý, quyền hạn xét xử",
+            meaningEn: "the official power to make legal decisions and judgments",
+            example: "This legal matter falls under the jurisdiction of the federal court.",
+            exampleVi: "Vấn đề pháp lý này thuộc thẩm quyền xét xử của tòa án liên bang."
+          },
+          {
+            id: "t900_20",
+            word: "compliance",
+            phonetic: "/kəmˈplaɪ.əns/",
+            wordType: "noun",
+            meaningVi: "sự tuân thủ đúng luật",
+            meaningEn: "the action or fact of complying with a wish or command, laws or regulations",
+            example: "The firm works closely with inspectors to ensure full compliance with waste treatment laws.",
+            exampleVi: "Công ty hợp tác chặt chẽ với các thanh tra viên để đảm bảo tuân thủ đầy đủ các luật xử lý chất thải."
+          }
+        ]
       }
     ]
   },
   {
     id: "part1_photos",
     title: "Part 1 (Miêu Tả Tranh)",
-    description: "Các hành động, tư thế và vị trí của người/vật thường xuyên xuất hiện nhất trong phần thi Tranh ảnh.",
+    description: "Hành động của người, tư thế và vị trí sắp xếp của vật thể xuất hiện nhiều nhất trong phần tranh ảnh.",
     difficulty: "Dễ",
     color: "from-emerald-500 to-teal-400",
     lists: [
       {
         id: "part1_list1",
         name: "List 1: Common Actions",
-        description: "Các động từ mô tả tư thế và hành động trong tranh.",
+        description: "Các động từ mô tả tư thế và hành động của nhân vật trong tranh.",
         words: [
           {
             id: "p1_1",
             word: "gesture",
             phonetic: "/ˈdʒes.tʃər/",
             wordType: "verb/noun",
-            meaningVi: "ra cử chỉ, điệu bộ",
+            meaningVi: "ra cử chỉ, điệu bộ bằng tay",
             meaningEn: "to make a movement with your hands or head to express an idea or feeling",
             example: "A speaker is gesturing with his hands in front of the audience.",
             exampleVi: "Một diễn giả đang ra cử chỉ bằng hai tay trước khán giả."
@@ -508,7 +1168,7 @@ export const TOEIC_VOCAB_DATA: TOEICCategory[] = [
             word: "admire",
             phonetic: "/ədˈmaɪər/",
             wordType: "verb",
-            meaningVi: "chiêm ngưỡng, nhìn ngắm",
+            meaningVi: "ngắm nhìn, chiêm ngưỡng",
             meaningEn: "to look at something with pleasure, appreciation, or respect",
             example: "A customer is admiring an artwork hanging on the gallery wall.",
             exampleVi: "Một khách hàng đang chiêm ngưỡng một bức tác phẩm nghệ thuật treo trên tường phòng trưng bày."
@@ -518,7 +1178,7 @@ export const TOEIC_VOCAB_DATA: TOEICCategory[] = [
             word: "adjust",
             phonetic: "/əˈdʒʌst/",
             wordType: "verb",
-            meaningVi: "điều chỉnh, sửa cho khớp",
+            meaningVi: "điều chỉnh, sửa cho vừa vặn",
             meaningEn: "to alter or move something slightly in order to achieve the desired fit or position",
             example: "The mechanic is adjusting a piece of machinery in the workshop.",
             exampleVi: "Người thợ cơ khí đang điều chỉnh một chi tiết máy móc trong xưởng làm việc."
@@ -528,7 +1188,7 @@ export const TOEIC_VOCAB_DATA: TOEICCategory[] = [
             word: "stack",
             phonetic: "/stæk/",
             wordType: "verb/noun",
-            meaningVi: "chất đống, xếp chồng lên nhau",
+            meaningVi: "xếp chồng lên nhau, chất đống",
             meaningEn: "to arrange objects in a neat pile, one on top of the other",
             example: "Wooden chairs are stacked in the corner of the conference room.",
             exampleVi: "Những chiếc ghế gỗ đang được xếp chồng lên nhau trong góc phòng hội nghị."
@@ -548,7 +1208,7 @@ export const TOEIC_VOCAB_DATA: TOEICCategory[] = [
             word: "assemble",
             phonetic: "/əˈsem.bəl/",
             wordType: "verb",
-            meaningVi: "lắp ráp, tụ tập",
+            meaningVi: "lắp ráp linh kiện",
             meaningEn: "to fit together the separate component parts of a machine or other object",
             example: "Workers are assembling electronic devices along the production line.",
             exampleVi: "Các công nhân đang lắp ráp các thiết bị điện tử dọc theo dây chuyền sản xuất."
@@ -558,7 +1218,7 @@ export const TOEIC_VOCAB_DATA: TOEICCategory[] = [
             word: "distribute",
             phonetic: "/dɪˈstrɪb.juːt/",
             wordType: "verb",
-            meaningVi: "phát, phân phát",
+            meaningVi: "phân phát tài liệu",
             meaningEn: "to hand out or share items among a group of people",
             example: "A clerk is distributing flyers to people on the pedestrian walk.",
             exampleVi: "Một nhân viên đang phát tờ rơi cho mọi người trên lối đi bộ."
@@ -568,7 +1228,7 @@ export const TOEIC_VOCAB_DATA: TOEICCategory[] = [
             word: "descend",
             phonetic: "/dɪˈsend/",
             wordType: "verb",
-            meaningVi: "đi xuống, đi xuống cầu thang",
+            meaningVi: "đi xuống, bước xuống (cầu thang)",
             meaningEn: "to move downward or fall, typically down stairs or a slope",
             example: "Passengers are descending the steps of the airplane.",
             exampleVi: "Hành khách đang đi xuống các bậc thềm của máy bay."
@@ -578,7 +1238,7 @@ export const TOEIC_VOCAB_DATA: TOEICCategory[] = [
             word: "overlook",
             phonetic: "/ˌəʊ.vəˈlʊk/",
             wordType: "verb",
-            meaningVi: "nhìn ra hướng, trông ra phía",
+            meaningVi: "trông ra phía, nhìn ra hướng",
             meaningEn: "to have a view of a place from above",
             example: "The office windows overlook a busy city harbor.",
             exampleVi: "Các cửa sổ văn phòng trông ra một bến cảng thành phố tấp nập."
@@ -588,10 +1248,233 @@ export const TOEIC_VOCAB_DATA: TOEICCategory[] = [
             word: "pavement",
             phonetic: "/ˈpeɪv.mənt/",
             wordType: "noun",
-            meaningVi: "vỉa hè, lề đường",
+            meaningVi: "vỉa hè, lề đường đi bộ",
             meaningEn: "a paved path for pedestrians at the side of a road",
             example: "A vendor has set up a small stand on the pavement.",
             exampleVi: "Một người bán hàng rong đã dựng một quầy hàng nhỏ trên vỉa hè."
+          }
+        ]
+      },
+      {
+        id: "part1_list2",
+        name: "List 2: Office & Outdoors",
+        description: "Các đồ vật và cảnh vật tĩnh vật xung quanh không gian làm việc ngoài trời.",
+        words: [
+          {
+            id: "p1_11",
+            word: "monitor",
+            phonetic: "/ˈmɒn.ɪ.tər/",
+            wordType: "noun/verb",
+            meaningVi: "màn hình máy tính",
+            meaningEn: "a screen which displays an image from a computer; or observe progress",
+            example: "Some monitors have been placed on desks side by side.",
+            exampleVi: "Một vài màn hình máy tính đã được đặt song song trên bàn."
+          },
+          {
+            id: "p1_12",
+            word: "whiteboard",
+            phonetic: "/ˈwaɪt.bɔːd/",
+            wordType: "noun",
+            meaningVi: "bảng viết bút lông màu trắng",
+            meaningEn: "a large board with a smooth white surface, used for writing with dry-erase markers",
+            example: "The speaker is writing notes on a whiteboard in the meeting room.",
+            exampleVi: "Người nói đang viết ghi chú trên bảng trắng trong phòng họp."
+          },
+          {
+            id: "p1_13",
+            word: "sidewalk",
+            phonetic: "/ˈsaɪd.wɔːk/",
+            wordType: "noun",
+            meaningVi: "vỉa hè đi bộ",
+            meaningEn: "a paved path for pedestrians at the side of a road (American English)",
+            example: "A row of trees has been planted along the sidewalk.",
+            exampleVi: "Một hàng cây đã được trồng dọc theo vỉa hè đi bộ."
+          },
+          {
+            id: "p1_14",
+            word: "staircase",
+            phonetic: "/ˈsteə.keɪs/",
+            wordType: "noun",
+            meaningVi: "cầu thang, lối cầu thang bộ",
+            meaningEn: "a set of stairs and its surrounding walls or structure",
+            example: "A metal handrail is fixed to the wall along the staircase.",
+            exampleVi: "Một lan can kim loại được gắn cố định vào tường dọc theo cầu thang."
+          },
+          {
+            id: "p1_15",
+            word: "patio",
+            phonetic: "/ˈpæt.i.əʊ/",
+            wordType: "noun",
+            meaningVi: "khoảng sân ngoài trời (kề bên nhà)",
+            meaningEn: "a paved outdoor area adjoining a house, used for dining or recreation",
+            example: "Several tables and chairs are set up on the outdoor patio.",
+            exampleVi: "Nhiều bàn ghế được thiết lập trên khoảng sân ngoài trời."
+          },
+          {
+            id: "p1_16",
+            word: "lawn",
+            phonetic: "/lɔːn/",
+            wordType: "noun",
+            meaningVi: "thảm cỏ, bãi cỏ",
+            meaningEn: "an area of short, regularly mown grass in the yard of a house or park",
+            example: "A worker is mowing the lawn near the office entrance.",
+            exampleVi: "Một công nhân đang cắt cỏ gần lối vào văn phòng."
+          },
+          {
+            id: "p1_17",
+            word: "vehicle",
+            phonetic: "/ˈvɪə.kəl/",
+            wordType: "noun",
+            meaningVi: "xe cộ, phương tiện giao thông",
+            meaningEn: "a thing used for transporting people or goods, especially on land",
+            example: "Some vehicles are parked along the curb of the street.",
+            exampleVi: "Một số phương tiện giao thông đang đỗ dọc theo mép đường."
+          },
+          {
+            id: "p1_18",
+            word: "pedestrian",
+            phonetic: "/pəˈdes.tri.ən/",
+            wordType: "noun/adjective",
+            meaningVi: "người đi bộ",
+            meaningEn: "a person walking along a road or in a developed area",
+            example: "Pedestrians are crossing the street at the designated crosswalk.",
+            exampleVi: "Người đi bộ đang băng qua đường tại vạch kẻ đường được quy định."
+          },
+          {
+            id: "p1_19",
+            word: "shelves",
+            phonetic: "/ʃelvz/",
+            wordType: "noun (plural)",
+            meaningVi: "kệ sách, các ngăn kệ đựng đồ",
+            meaningEn: "flat horizontal boards fixed to a wall or cabinet to store things",
+            example: "Goods have been arranged neatly on the wooden shelves.",
+            exampleVi: "Hàng hóa đã được sắp xếp gọn gàng trên các ngăn kệ gỗ."
+          },
+          {
+            id: "p1_20",
+            word: "wheelbarrow",
+            phonetic: "/ˈwiːl.bær.əʊ/",
+            wordType: "noun",
+            meaningVi: "xe rùa, xe cút kít (chở đất đá)",
+            meaningEn: "a small cart with a single wheel in front and handles behind, used for gardening or building works",
+            example: "The construction worker is pushing a wheelbarrow filled with dirt.",
+            exampleVi: "Công nhân xây dựng đang đẩy một chiếc xe rùa chứa đầy đất."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: "part2_qr",
+    title: "Part 2 (Hỏi Đáp Phản Xạ)",
+    description: "Từ vựng chỉ danh từ, chức danh và địa điểm giúp nghe nhanh câu hỏi Who, Where, When.",
+    difficulty: "Trung bình",
+    color: "from-pink-500 to-rose-450",
+    lists: [
+      {
+        id: "part2_list1",
+        name: "List 1: Who & Where Keywords",
+        description: "Các chức danh và phòng ban doanh nghiệp xuất hiện nhiều nhất.",
+        words: [
+          {
+            id: "p2_1",
+            word: "coordinator",
+            phonetic: "/kəʊˈɔː.dɪ.neɪ.tər/",
+            wordType: "noun",
+            meaningVi: "điều phối viên, người tổ chức",
+            meaningEn: "a person who organizes and integrates various elements of a project or activity",
+            example: "Please contact our event coordinator to confirm details of the dinner.",
+            exampleVi: "Vui lòng liên hệ với điều phối viên sự kiện của chúng tôi để xác nhận chi tiết bữa tối."
+          },
+          {
+            id: "p2_2",
+            word: "representative",
+            phonetic: "/ˌrep.rɪˈzen.tə.tɪv/",
+            wordType: "noun",
+            meaningVi: "người đại diện (bán hàng/chăm sóc khách hàng)",
+            meaningEn: "a person chosen or appointed to act or speak for another, client or firm",
+            example: "A customer service representative will help you solve this connection problem.",
+            exampleVi: "Một đại diện dịch vụ khách hàng sẽ giúp bạn giải quyết vấn đề kết nối này."
+          },
+          {
+            id: "p2_3",
+            word: "appointment",
+            phonetic: "/əˈpɔɪnt.mənt/",
+            wordType: "noun",
+            meaningVi: "cuộc hẹn (làm việc)",
+            meaningEn: "an arrangement to meet someone at a particular time and place",
+            example: "I need to make an appointment with the dental hygienist for next Monday.",
+            exampleVi: "Tôi cần đặt một cuộc hẹn với kỹ thuật viên vệ sinh răng miệng vào thứ Hai tới."
+          },
+          {
+            id: "p2_4",
+            word: "supervisor",
+            phonetic: "/ˈsuː.pə.vaɪ.zər/",
+            wordType: "noun",
+            meaningVi: "người giám sát, tổ trưởng",
+            meaningEn: "a person who stands over or directs workers or the execution of work",
+            example: "The supervisor must approve all overtime work hours in writing.",
+            exampleVi: "Người giám sát phải phê duyệt bằng văn bản cho tất cả số giờ làm việc tăng ca."
+          },
+          {
+            id: "p2_5",
+            word: "division",
+            phonetic: "/dɪˈvɪʒ.ən/",
+            wordType: "noun",
+            meaningVi: "phòng ban, bộ phận lớn (trong tập đoàn)",
+            meaningEn: "a major section or department of a large business organization",
+            example: "Our marketing division is launching the campaign across East Asia next month.",
+            exampleVi: "Bộ phận tiếp thị của chúng tôi đang triển khai chiến dịch khắp Đông Á vào tháng tới."
+          },
+          {
+            id: "p2_6",
+            word: "branch",
+            phonetic: "/brɑːntʃ/",
+            wordType: "noun",
+            meaningVi: "chi nhánh (ngân hàng, cửa hàng)",
+            meaningEn: "a conceptual division or localized office of a larger business",
+            example: "The bank is opening a new branch in downtown Da Nang next week.",
+            exampleVi: "Ngân hàng đang mở một chi nhánh mới ở trung tâm Đà Nẵng vào tuần tới."
+          },
+          {
+            id: "p2_7",
+            word: "executive",
+            phonetic: "/ɪɡˈzek.jə.tɪv/",
+            wordType: "noun/adjective",
+            meaningVi: "giám đốc điều hành, ủy viên ban quản trị",
+            meaningEn: "a person with senior managerial responsibility in a business organization",
+            example: "Senior executives gathered in the boardroom to discuss merger options.",
+            exampleVi: "Các giám đốc điều hành cấp cao đã tập trung tại phòng họp để thảo luận về các phương án sáp nhập."
+          },
+          {
+            id: "p2_8",
+            word: "headquarters",
+            phonetic: "/ˌhedˈkwɔː.təz/",
+            wordType: "noun",
+            meaningVi: "trụ sở chính",
+            meaningEn: "the main office or center of operations of a business organization",
+            example: "The technological company decided to move its headquarters from Tokyo to Seoul.",
+            exampleVi: "Công ty công nghệ đã quyết định chuyển trụ sở chính từ Tokyo sang Seoul."
+          },
+          {
+            id: "p2_9",
+            word: "assistant",
+            phonetic: "/əˈsɪs.tənt/",
+            wordType: "noun",
+            meaningVi: "trợ lý, người giúp việc",
+            meaningEn: "a person who helps or aids another, especially in a junior or subordinate capacity",
+            example: "The administrative assistant is copying some documents in the staff room.",
+            exampleVi: "Trợ lý hành chính đang sao chép một số tài liệu trong phòng nhân viên."
+          },
+          {
+            id: "p2_10",
+            word: "receptionist",
+            phonetic: "/rɪˈsep.ʃən.ɪst/",
+            wordType: "noun",
+            meaningVi: "nhân viên lễ tân",
+            meaningEn: "a person who greets visitors and answers phone calls at the entrance of a hotel or office",
+            example: "The receptionist asked me to fill out this registration form.",
+            exampleVi: "Nhân viên lễ tân yêu cầu tôi điền vào mẫu đăng ký này."
           }
         ]
       }
@@ -600,7 +1483,7 @@ export const TOEIC_VOCAB_DATA: TOEICCategory[] = [
   {
     id: "collocations",
     title: "Collocations (Cụm Từ Cố Định)",
-    description: "Các cụm động từ, giới từ cực kỳ phổ biến trong đề thi Part 5, 6 nhằm tăng tốc độ làm bài.",
+    description: "Động từ + giới từ, tính từ + giới từ cực kỳ phổ biến trong đề thi Part 5 giúp làm nhanh.",
     difficulty: "Trung bình",
     color: "from-amber-500 to-orange-400",
     lists: [
@@ -614,7 +1497,7 @@ export const TOEIC_VOCAB_DATA: TOEICCategory[] = [
             word: "comply with",
             phonetic: "/kəmˈplaɪ wɪð/",
             wordType: "phrase",
-            meaningVi: "tuân theo, tuân thủ",
+            meaningVi: "tuân theo, tuân thủ (luật lệ)",
             meaningEn: "to act in accordance with a wish, rule, or command",
             example: "All factory personnel must comply with the new safety regulations.",
             exampleVi: "Tất cả nhân viên nhà máy phải tuân thủ các quy định an toàn mới."
@@ -634,7 +1517,7 @@ export const TOEIC_VOCAB_DATA: TOEICCategory[] = [
             word: "depend on",
             phonetic: "/dɪˈpend ɒn/",
             wordType: "phrase",
-            meaningVi: "phụ thuộc vào",
+            meaningVi: "phụ thuộc vào, tùy thuộc",
             meaningEn: "to rely on or be controlled by someone or something",
             example: "Our marketing success depends on customer feedback.",
             exampleVi: "Sự thành công của chiến dịch tiếp thị phụ thuộc vào phản hồi của khách hàng."
@@ -654,7 +1537,7 @@ export const TOEIC_VOCAB_DATA: TOEICCategory[] = [
             word: "specialize in",
             phonetic: "/ˈspeʃ.əl.aɪz ɪn/",
             wordType: "phrase",
-            meaningVi: "chuyên về, chuyên môn hóa",
+            meaningVi: "chuyên về lĩnh vực gì",
             meaningEn: "to concentrate on and become an expert in a particular subject or skill",
             example: "Our accounting law firm specializes in tax audits for international corporations.",
             exampleVi: "Công ty luật kế toán của chúng tôi chuyên về kiểm toán thuế cho các tập đoàn quốc tế."
@@ -684,7 +1567,7 @@ export const TOEIC_VOCAB_DATA: TOEICCategory[] = [
             word: "focus on",
             phonetic: "/ˈfəʊ.kəs ɒn/",
             wordType: "phrase",
-            meaningVi: "tập trung vào",
+            meaningVi: "tập trung vào điều gì",
             meaningEn: "to pay particular attention to one thing",
             example: "The meeting will focus on improving productivity and reducing cost.",
             exampleVi: "Cuộc họp sẽ tập trung vào việc nâng cao năng suất và giảm chi phí."
@@ -694,20 +1577,127 @@ export const TOEIC_VOCAB_DATA: TOEICCategory[] = [
             word: "interfere with",
             phonetic: "/ˌɪn.təˈfɪər wɪð/",
             wordType: "phrase",
-            meaningVi: "can thiệp vào, cản trở",
+            meaningVi: "can thiệp vào, gây cản trở",
             meaningEn: "to prevent a process or activity from continuing smoothly",
             example: "Bad weather will interfere with the scheduled construction works.",
             exampleVi: "Thời tiết xấu sẽ cản trở các công trình xây dựng đã lên lịch trình."
           },
           {
             id: "c1_10",
-            word: "comply with",
-            phonetic: "/kəmˈplaɪ wɪð/",
+            word: "collaborate with",
+            phonetic: "/kəˈlæb.ə.reɪt wɪð/",
             wordType: "phrase",
-            meaningVi: "tuân thủ theo",
-            meaningEn: "to act in accordance with a rules or requirements",
-            example: "The restaurant failed to comply with hygiene standards.",
-            exampleVi: "Nhà hàng đã không tuân thủ các tiêu chuẩn vệ sinh."
+            meaningVi: "hợp tác làm việc cùng ai",
+            meaningEn: "to work jointly on a project or task with others",
+            example: "Our department must collaborate with designers to finalize the product.",
+            exampleVi: "Bộ phận của chúng tôi phải hợp tác với các nhà thiết kế để hoàn thiện sản phẩm."
+          }
+        ]
+      },
+      {
+        id: "colloc_list2",
+        name: "List 2: Adjective + Preposition",
+        description: "Các tính từ thường gặp đi kèm giới từ đặc trưng.",
+        words: [
+          {
+            id: "c1_11",
+            word: "responsible for",
+            phonetic: "/rɪˈspɒn.sə.bəl fɔːr/",
+            wordType: "phrase",
+            meaningVi: "chịu trách nhiệm cho việc gì",
+            meaningEn: "having a duty to be in charge of or look after something",
+            example: "The project manager is responsible for allocating final budget funds.",
+            exampleVi: "Quản lý dự án chịu trách nhiệm phân bổ nguồn ngân sách cuối cùng."
+          },
+          {
+            id: "c1_12",
+            word: "capable of",
+            phonetic: "/ˈkeɪ.pə.bəl ɒv/",
+            wordType: "phrase",
+            meaningVi: "có khả năng làm gì",
+            meaningEn: "having the ability, fitness, or quality necessary to do something",
+            example: "The new server hardware is capable of processing millions of queries per second.",
+            exampleVi: "Phần cứng máy chủ mới có khả năng xử lý hàng triệu truy vấn mỗi giây."
+          },
+          {
+            id: "c1_13",
+            word: "familiar with",
+            phonetic: "/fəˈmɪl.i.ər wɪð/",
+            wordType: "phrase",
+            meaningVi: "quen thuộc, am hiểu về cái gì",
+            meaningEn: "having a good knowledge or understanding of something",
+            example: "Are you familiar with the accounting software used in our department?",
+            exampleVi: "Bạn có quen thuộc với phần mềm kế toán được sử dụng trong bộ phận của chúng tôi không?"
+          },
+          {
+            id: "c1_14",
+            word: "interested in",
+            phonetic: "/ˈɪn.trəs.tɪd ɪn/",
+            wordType: "phrase",
+            meaningVi: "hứng thú, quan tâm đến việc gì",
+            meaningEn: "showing curiosity or concern about something; wanting to know more",
+            example: "Many candidates are interested in the senior marketing position.",
+            exampleVi: "Nhiều ứng viên quan tâm đến vị trí tiếp thị cấp cao."
+          },
+          {
+            id: "c1_15",
+            word: "satisfied with",
+            phonetic: "/ˈsæt.ɪs.faɪd wɪð/",
+            wordType: "phrase",
+            meaningVi: "hài lòng với cái gì",
+            meaningEn: "contented; pleased with the outcome of something",
+            example: "The management is extremely satisfied with the sales results of this quarter.",
+            exampleVi: "Ban quản lý vô cùng hài lòng với kết quả doanh số của quý này."
+          },
+          {
+            id: "c1_16",
+            word: "aware of",
+            phonetic: "/əˈweər ɒv/",
+            wordType: "phrase",
+            meaningVi: "nhận thức được, ý thức về điều gì",
+            meaningEn: "having knowledge or perception of a situation or fact",
+            example: "Staff must be fully aware of the evacuation routes during emergency drills.",
+            exampleVi: "Nhân viên phải ý thức đầy đủ về các lối thoát hiểm trong các cuộc diễn tập khẩn cấp."
+          },
+          {
+            id: "c1_17",
+            word: "eligible for",
+            phonetic: "/ˈel.ɪ.dʒə.bəl fɔːr/",
+            wordType: "phrase",
+            meaningVi: "đủ điều kiện cho cái gì",
+            meaningEn: "having the right to do or obtain something; satisfying the appropriate conditions",
+            example: "Full-time workers are eligible for paid sick leave and health benefits.",
+            exampleVi: "Công nhân làm việc toàn thời gian đủ điều kiện nhận thời gian nghỉ bệnh có lương và các lợi ích sức khỏe."
+          },
+          {
+            id: "c1_18",
+            word: "similar to",
+            phonetic: "/ˈsɪm.ɪ.lər tuː/",
+            wordType: "phrase",
+            meaningVi: "tương tự với cái gì",
+            meaningEn: "having a resemblance in appearance, character, or quantity",
+            example: "The interface of the new application is quite similar to our previous web app.",
+            exampleVi: "Giao diện của ứng dụng mới khá tương tự với ứng dụng web trước đây của chúng tôi."
+          },
+          {
+            id: "c1_19",
+            word: "different from",
+            phonetic: "/ˈdɪf.ər.ənt frɒm/",
+            wordType: "phrase",
+            meaningVi: "khác biệt với cái gì",
+            meaningEn: "not the same as another or each other; unlike",
+            example: "This year's promotional model is entirely different from the previous one.",
+            exampleVi: "Mẫu sản phẩm quảng cáo năm nay hoàn toàn khác biệt so với mẫu trước đó."
+          },
+          {
+            id: "c1_20",
+            word: "vital to",
+            phonetic: "/ˈvaɪ.təl tuː/",
+            wordType: "phrase",
+            meaningVi: "quan trọng, cốt yếu đối với cái gì",
+            meaningEn: "absolutely necessary or important; essential to something",
+            example: "Consistent market research is vital to the success of product branding.",
+            exampleVi: "Nghiên cứu thị trường nhất quán là điều cốt yếu đối với sự thành công của định vị thương hiệu sản phẩm."
           }
         ]
       }
