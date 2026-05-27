@@ -120,7 +120,7 @@ export default function TOEICPage() {
       <section className="premium-card p-1 rounded-3xl overflow-hidden shadow-2xl">
         <div className="bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-900 rounded-[22px] p-8 md:p-12 relative overflow-hidden">
           <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTM2IDM0djItSDI2di0yaDEwem0wLTRWMjhoLTEwdjJoMTB6bS0xNCA0aDJ2LTJoLTJ2MnptMC00aDJ2LTJoLTJ2MnoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-30" />
-          
+
           <div className="relative z-10 flex flex-col md:flex-row items-center gap-10">
             <div className="flex-1 space-y-6 text-center md:text-left">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-500/20 text-blue-300 rounded-full border border-blue-500/20">
@@ -222,7 +222,7 @@ export default function TOEICPage() {
             </div>
             <div className="space-y-1">
               <span className="text-[10px] font-black text-orange-600 bg-orange-100 px-2.5 py-0.5 rounded-full uppercase tracking-wider">MỚI RA MẮT</span>
-              <h2 className="text-xl font-black text-slate-800">Kho Từ Vựng TOEIC MinhTOEIC 5 Chiều</h2>
+              <h2 className="text-xl font-black text-slate-800">Kho Từ Vựng TOEIC 5 Chiều</h2>
               <p className="text-xs text-slate-500 font-semibold max-w-xl">
                 Khám phá kho từ vựng chia theo mục tiêu điểm số (500+, 700+, 900+), phần thi Part 1 và cụm collocations Part 5. Học sâu nhớ lâu thông qua 5 chế độ tương tác cao cấp.
               </p>
