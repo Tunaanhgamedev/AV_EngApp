@@ -155,15 +155,23 @@ export default function TOEICPage() {
               <div className="flex flex-wrap gap-4 justify-center md:justify-start pt-2">
                 <button
                   onClick={() => router.push('/toeic/test')}
-                  className="px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-400 text-white rounded-2xl font-black text-sm hover:opacity-90 transition-all shadow-xl shadow-blue-500/30 flex items-center gap-2 group"
+                  className="px-6 py-3.5 bg-gradient-to-r from-blue-500 to-cyan-400 text-white rounded-2xl font-black text-xs sm:text-sm hover:opacity-90 transition-all shadow-xl shadow-blue-500/30 flex items-center gap-2 group"
                 >
                   <Play className="w-5 h-5" />
                   THI THỬ FULL TEST
                   <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </button>
                 <button
+                  onClick={() => router.push('/toeic/vocabulary')}
+                  className="px-6 py-3.5 bg-gradient-to-r from-amber-500 to-orange-400 text-white rounded-2xl font-black text-xs sm:text-sm hover:opacity-90 transition-all shadow-xl shadow-amber-500/30 flex items-center gap-2 group"
+                >
+                  <BookOpen className="w-5 h-5" />
+                  TỪ VỰNG TRỌNG TÂM
+                  <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </button>
+                <button
                   onClick={() => document.getElementById('parts')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="px-8 py-4 bg-white/10 text-white border border-white/20 rounded-2xl font-black text-sm hover:bg-white/20 transition-all flex items-center gap-2 backdrop-blur"
+                  className="px-6 py-3.5 bg-white/10 text-white border border-white/20 rounded-2xl font-black text-xs sm:text-sm hover:bg-white/20 transition-all flex items-center gap-2 backdrop-blur"
                 >
                   <Sparkles className="w-5 h-5" />
                   LUYỆN TỪNG PART
@@ -202,6 +210,30 @@ export default function TOEICPage() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Vocabulary Feature Section */}
+      <section className="premium-card p-1 rounded-3xl overflow-hidden shadow-xl border border-slate-100 bg-gradient-to-r from-amber-50 to-orange-50">
+        <div className="p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-400 flex items-center justify-center shadow-lg shadow-orange-500/20 text-white flex-shrink-0">
+              <BookOpen className="w-7 h-7" />
+            </div>
+            <div className="space-y-1">
+              <span className="text-[10px] font-black text-orange-600 bg-orange-100 px-2.5 py-0.5 rounded-full uppercase tracking-wider">MỚI RA MẮT</span>
+              <h2 className="text-xl font-black text-slate-800">Kho Từ Vựng TOEIC MinhTOEIC 5 Chiều</h2>
+              <p className="text-xs text-slate-500 font-semibold max-w-xl">
+                Khám phá kho từ vựng chia theo mục tiêu điểm số (500+, 700+, 900+), phần thi Part 1 và cụm collocations Part 5. Học sâu nhớ lâu thông qua 5 chế độ tương tác cao cấp.
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={() => router.push('/toeic/vocabulary')}
+            className="w-full md:w-auto px-6 py-3.5 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl text-xs font-black uppercase tracking-widest transition-all active:scale-95 shadow-lg flex items-center justify-center gap-2 shrink-0 cursor-pointer"
+          >
+            Bắt đầu học ngay <ArrowRight className="w-4 h-4 text-orange-400" />
+          </button>
         </div>
       </section>
 
