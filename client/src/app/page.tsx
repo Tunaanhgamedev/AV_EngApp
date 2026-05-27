@@ -51,7 +51,7 @@ export default function Dashboard() {
         window.location.reload();
       }
     } catch (err) {
-      console.error('Failed to checkin:', err);
+      console.warn('Failed to checkin:', err);
     } finally {
       setCheckingIn(false);
     }
@@ -123,7 +123,7 @@ export default function Dashboard() {
         })
         .then(res => res.json())
         .then(data => setStats(data))
-        .catch(console.error);
+        .catch(err => console.warn("Failed to fetch vocabulary stats:", err?.message || err));
 
         // Fetch Review Status (uses dedicated API, not notebook)
         fetch(`${API_BASE}/vocabulary/daily-review-status`, {
@@ -134,7 +134,7 @@ export default function Dashboard() {
           setReviewDue(data.dueCount || 0);
           setNeedsReview(data.needsReminder || false);
         })
-        .catch(console.error);
+        .catch(err => console.warn("Failed to fetch daily review status:", err?.message || err));
 
         // Fetch Check-in Status
         fetch(`${API_BASE}/users/checkin-status`, {
@@ -142,7 +142,7 @@ export default function Dashboard() {
         })
         .then(res => res.json())
         .then(data => setCheckedIn(data.checkedIn))
-        .catch(console.error);
+        .catch(err => console.warn("Failed to fetch checkin status:", err?.message || err));
       });
     }
   }, [user, API_BASE]);

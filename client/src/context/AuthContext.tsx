@@ -63,8 +63,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const data = await response.json();
         setDbUser(data.user || data);
       }
-    } catch (error) {
-      console.error("Error fetching db user", error);
+    } catch (error: any) {
+      console.warn("Could not synchronize user with backend database. Server might be offline:", error?.message || error);
     }
   };
 
