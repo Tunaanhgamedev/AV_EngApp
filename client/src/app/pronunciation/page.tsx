@@ -228,68 +228,92 @@ const RELATIVE_TIME_WORDS = [
 const TOPIC_LESSONS = [
   {
     id: 'greetings',
-    title: 'Chào hỏi (Greetings)',
-    desc: 'Các mẫu câu chào hỏi thông dụng hàng ngày.',
+    title: 'Chào hỏi & Hỏi thăm (Greetings & Inquiries)',
+    desc: 'Các mẫu câu chào hỏi, hỏi thăm sức khỏe, công việc và cách phản hồi tự nhiên.',
     phrases: [
       { text: 'How is it going?', ipa: '/haʊ z ɪt ˈɡəʊ.ɪŋ/', vi: 'Dạo này thế nào rồi?' },
       { text: 'Long time no see', ipa: '/lɒŋ taɪm nəʊ siː/', vi: 'Lâu rồi không gặp' },
       { text: 'It is a pleasure to meet you', ipa: '/ɪt ɪz ə ˈpleʒ.ər tu miːt juː/', vi: 'Rất hân hạnh được gặp bạn' },
-      { text: 'Have a nice day', ipa: '/hæv ə naɪs deɪ/', vi: 'Chúc một ngày tốt lành' }
+      { text: 'Have a nice day', ipa: '/hæv ə naɪs deɪ/', vi: 'Chúc một ngày tốt lành' },
+      { text: 'How have you been lately?', ipa: '/haʊ hæv juː biːn ˈleɪt.li/', vi: 'Dạo này bạn khỏe không?' },
+      { text: 'I am doing well, thank you', ipa: '/aɪ æm ˈduː.ɪŋ wel θæŋk juː/', vi: 'Tôi khỏe, cảm ơn bạn' },
+      { text: 'Good morning, how can I help you?', ipa: '/ɡʊd ˈmɔː.nɪŋ haʊ kæn aɪ help juː/', vi: 'Chào buổi sáng, tôi có thể giúp gì cho bạn?' },
+      { text: 'It was nice talking to you', ipa: '/ɪt wɒz naɪs ˈtɔː.kɪŋ tu juː/', vi: 'Rất vui được trò chuyện với bạn' }
     ]
   },
   {
     id: 'declining',
-    title: 'Từ chối (Declining)',
-    desc: 'Cách từ chối lịch sự trong giao tiếp tiếng Anh.',
+    title: 'Từ chối lịch sự (Polite Declining)',
+    desc: 'Cách từ chối các lời mời, đề nghị hoặc yêu cầu một cách lịch sự, khéo léo.',
     phrases: [
       { text: 'I am afraid I cannot make it', ipa: '/aɪ æm əˈfreɪd aɪ ˈkæn.ɒt meɪk ɪt/', vi: 'Tôi e là tôi không tham gia được' },
       { text: 'I will have to pass this time', ipa: '/aɪ wɪl hæv tu pɑːs ðɪs taɪm/', vi: 'Lần này tôi xin phép bỏ qua vậy' },
       { text: 'Thank you, but I have other plans', ipa: '/θæŋk juː bʌt aɪ hæv ˈʌð.ər plænz/', vi: 'Cảm ơn, nhưng tôi có kế hoạch khác rồi' },
-      { text: 'I wish I could, but I am busy', ipa: '/aɪ wɪʃ aɪ kʊd bʌt aɪ æm ˈbɪz.i/', vi: 'Tôi ước tôi có thể, nhưng tôi bận mất rồi' }
+      { text: 'I wish I could, but I am busy', ipa: '/aɪ wɪʃ aɪ kʊd bʌt aɪ æm ˈbɪz.i/', vi: 'Tôi ước tôi có thể, nhưng tôi bận mất rồi' },
+      { text: 'I would love to, but I have a deadline', ipa: '/aɪ wʊd lʌv tuː bʌt aɪ hæv ə ˈded.laɪn/', vi: 'Tôi rất muốn, nhưng tôi có hạn chót công việc' },
+      { text: 'Unfortunately, I cannot accept this offer', ipa: '/ʌnˈfɔː.tʃən.ət.li aɪ ˈkæn.ɒt əkˈsept ðɪs ˈɒf.ər/', vi: 'Rất tiếc, tôi không thể nhận lời đề nghị này' },
+      { text: 'Maybe some other time', ipa: '/ˈmeɪ.bi sʌm ˈʌð.ər taɪm/', vi: 'Để khi khác nhé' },
+      { text: 'Thank you for asking, but I cannot', ipa: '/θæŋk juː fɔːr ˈɑːs.kɪŋ bʌt aɪ ˈkæn.ɒt/', vi: 'Cảm ơn bạn đã hỏi, nhưng tôi không thể' }
     ]
   },
   {
     id: 'appointments',
-    title: 'Cuộc hẹn (Appointments)',
-    desc: 'Lên lịch, sắp xếp và sửa đổi các cuộc hẹn.',
+    title: 'Hẹn gặp & Sắp xếp lịch (Appointments)',
+    desc: 'Hỏi về thời gian rảnh, lên lịch hẹn, xin phép trễ hoặc dời cuộc hẹn.',
     phrases: [
       { text: 'Are you free this weekend?', ipa: '/ɑːr juː friː ðɪs ˌwiːk.ˈend/', vi: 'Cuối tuần này bạn rảnh không?' },
       { text: 'Let us meet at seven PM', ipa: '/let ʌs miːt æt ˈsev.ən piː em/', vi: 'Chúng ta gặp nhau lúc 7h tối nhé' },
       { text: 'Can we reschedule our meeting?', ipa: '/kæn wiː ˌriːˈʃed.juːl ˈaʊ.ər ˈmiː.tɪŋ/', vi: 'Chúng ta có thể dời lịch họp được không?' },
-      { text: 'I look forward to seeing you', ipa: '/aɪ lʊk ˈfɔː.wəd tu ˈsiː.ɪŋ juː/', vi: 'Tôi rất mong chờ được gặp bạn' }
+      { text: 'I look forward to seeing you', ipa: '/aɪ lʊk ˈfɔː.wəd tu ˈsiː.ɪŋ juː/', vi: 'Tôi rất mong chờ được gặp bạn' },
+      { text: 'Does Monday work for you?', ipa: '/dʌz ˈmʌn.deɪ wɜːk fɔːr juː/', vi: 'Thứ Hai có tiện cho bạn không?' },
+      { text: 'I am sorry, I am running late', ipa: '/aɪ æm ˈsɒr.i aɪ æm ˈrʌn.ɪŋ leɪt/', vi: 'Tôi xin lỗi, tôi đang bị trễ' },
+      { text: 'Could we push it back to tomorrow?', ipa: '/kʊd wiː pʊʃ ɪt bæk tu təˈmɒr.əʊ/', vi: 'Chúng ta dời sang ngày mai được không?' },
+      { text: 'Please confirm if you can make it', ipa: '/pliːz kənˈfɜːm ɪf juː kæn meɪk ɪt/', vi: 'Vui lòng xác nhận nếu bạn có thể tham gia' }
     ]
   },
   {
     id: 'hotel',
-    title: 'Khách sạn (Hotel / Travel)',
-    desc: 'Giao tiếp khi đặt phòng, nhận phòng và yêu cầu dịch vụ.',
+    title: 'Khách sạn & Du lịch (Hotel & Travel)',
+    desc: 'Nhận phòng, yêu cầu dịch vụ, giải quyết các sự cố phát sinh ở khách sạn.',
     phrases: [
       { text: 'I would like to check in', ipa: '/aɪ wʊd laɪk tu tʃek ɪn/', vi: 'Tôi muốn làm thủ tục nhận phòng' },
-      { text: 'Is breakfast included?', ipa: '/ɪz ˈbrek.fəst ɪnˈkluː.dɪd/', vi: 'Có bao gồm bữa sáng không?' },
+      { text: 'Is breakfast included?', ipa: '/iːz ˈbrek.fəst ɪnˈkluː.dɪd/', vi: 'Có bao gồm bữa sáng không?' },
       { text: 'Could I have extra towels?', ipa: '/kʊd aɪ hæv ˈek.strə ˈtaʊ.əlz/', vi: 'Cho tôi xin thêm khăn tắm được không?' },
-      { text: 'What time is check out?', ipa: '/wɒt taɪm ɪz tʃek aʊt/', vi: 'Mấy giờ thì làm thủ tục trả phòng?' }
+      { text: 'What time is check out?', ipa: '/wɒt taɪm ɪz tʃek aʊt/', vi: 'Mấy giờ thì làm thủ tục trả phòng?' },
+      { text: 'My key card does not work', ipa: '/maɪ kiː kɑːd dʌz nɒt wɜːk/', vi: 'Thẻ từ khóa phòng của tôi không hoạt động' },
+      { text: 'The air conditioner is not cooling', ipa: '/ðə eə kənˈdɪʃ.ən.ər ɪz nɒt ˈkuː.lɪŋ/', vi: 'Điều hòa không mát' },
+      { text: 'Could you call a taxi for me?', ipa: '/kʊd juː kɔːl ə ˈtæk.si fɔː miː/', vi: 'Bạn gọi giúp tôi một chiếc taxi được không?' },
+      { text: 'Is there free Wi-Fi in the room?', ipa: '/ɪz ðeər friː ˈwaɪ.faɪ ɪn ðə ruːm/', vi: 'Trong phòng có Wi-Fi miễn phí không?' }
     ]
   },
   {
     id: 'daily',
-    title: 'Đời sống hàng ngày (Daily Life)',
-    desc: 'Các cụm từ quen thuộc dùng trong sinh hoạt thường nhật.',
+    title: 'Đời sống & Giao tiếp thường nhật (Daily Life)',
+    desc: 'Các tình huống mua sắm, ăn uống, hỏi đường và giao tiếp xã hội.',
     phrases: [
       { text: 'What are you doing today?', ipa: '/wɒt ɑːr juː ˈduː.ɪŋ təˈdeɪ/', vi: 'Hôm nay bạn làm gì?' },
       { text: 'I need to run some errands', ipa: '/aɪ niːd tu rʌn sʌm ˈer.əndz/', vi: 'Tôi cần đi giải quyết vài việc vặt' },
       { text: 'Let us grab a coffee', ipa: '/let ʌs ɡræb ə ˈkɒf.i/', vi: 'Đi uống cà phê đi' },
-      { text: 'I am running a bit late', ipa: '/aɪ æm ˈrʌn.ɪŋ ə bɪt leɪt/', vi: 'Tôi hơi trễ một chút' }
+      { text: 'I am running a bit late', ipa: '/aɪ æm ˈrʌn.ɪŋ ə bɪt leɪt/', vi: 'Tôi hơi trễ một chút' },
+      { text: 'How much does this cost?', ipa: '/haʊ mʌtʃ dʌz ðɪs kɒst/', vi: 'Cái này giá bao nhiêu?' },
+      { text: 'Could you tell me the way to the station?', ipa: '/kʊd juː tel miː ðə weɪ tu ðə ˈsteɪ.ʃən/', vi: 'Bạn chỉ đường giúp tôi đến nhà ga được không?' },
+      { text: 'Would you like some help?', ipa: '/wʊd juː laɪk sʌm help/', vi: 'Bạn có cần giúp đỡ không?' },
+      { text: 'Let us keep in touch', ipa: '/let ʌs kiːp ɪn tʌtʃ/', vi: 'Hãy giữ liên lạc nhé' }
     ]
   },
   {
     id: 'subjects',
-    title: 'Chuyên ngành / Môn học (Subjects)',
-    desc: 'Các từ vựng về ngành nghề học thuật và khoa học.',
+    title: 'Học thuật & Chuyên ngành (Academic & Specialized)',
+    desc: 'Các thuật ngữ, cụm từ chuyên môn dùng trong học tập và công việc.',
     phrases: [
       { text: 'Computer Science', ipa: '/kəmˈpjuː.tər ˈsaɪ.əns/', vi: 'Khoa học máy tính' },
       { text: 'Business Administration', ipa: '/ˈbɪz.nɪs ədˌmɪn.ɪˈstreɪ.ʃən/', vi: 'Quản trị kinh doanh' },
       { text: 'Artificial Intelligence', ipa: '/ˌɑː.tɪˈfɪʃ.əl ɪnˈtel.ɪ.dʒəns/', vi: 'Trí tuệ nhân tạo' },
-      { text: 'English Literature', ipa: '/ˈɪŋ.ɡlɪʃ ˈlɪt.rə.tʃər/', vi: 'Văn học Anh' }
+      { text: 'English Literature', ipa: '/ˈɪŋ.ɡlɪʃ ˈlɪt.rə.tʃər/', vi: 'Văn học Anh' },
+      { text: 'Software Engineering', ipa: '/ˈsɒft.weər ˌen.dʒɪˈnɪə.rɪŋ/', vi: 'Kỹ nghệ phần mềm / Công nghệ phần mềm' },
+      { text: 'Data Analytics', ipa: '/ˈdeɪ.tə ˌæn.əlˈɪt.ɪks/', vi: 'Phân tích dữ liệu' },
+      { text: 'Financial Management', ipa: '/faɪˈnæn.ʃəl ˈmæn.ɪdʒ.mənt/', vi: 'Quản lý tài chính' },
+      { text: 'Creative Writing', ipa: '/kriˈeɪ.tɪv ˈraɪ.tɪŋ/', vi: 'Viết sáng tạo' }
     ]
   }
 ];
@@ -397,14 +421,14 @@ function SpeechPracticeSection({ targetWord }: { targetWord: string }) {
   };
 
   return (
-    <div className="flex flex-col sm:flex-row items-center gap-4 p-4 bg-slate-800/30 border border-slate-700/50 rounded-2xl">
+    <div className="flex flex-col sm:flex-row items-center gap-4 p-4 bg-slate-50 border border-slate-100 rounded-2xl">
       <div className="flex-1 min-w-0 text-left">
-        <h4 className="text-xs font-black text-primary uppercase tracking-widest">Luyện phát âm AI</h4>
-        <p className="text-xs text-slate-400 mt-0.5 font-medium">Nhấp vào micro, đọc từ ví dụ <strong className="text-slate-200">"{targetWord}"</strong> để kiểm tra.</p>
+        <h4 className="text-xs font-black text-violet-600 uppercase tracking-widest">Luyện phát âm AI</h4>
+        <p className="text-xs text-slate-500 mt-0.5 font-medium">Nhấp vào micro, đọc từ ví dụ <strong className="text-slate-800">"{targetWord}"</strong> để kiểm tra.</p>
         
         {resultText && (
-          <p className="text-xs text-slate-200 mt-2 font-medium">
-            Bạn đã đọc: <span className="text-yellow-400 font-bold">"{resultText}"</span>
+          <p className="text-xs text-slate-800 mt-2 font-semibold">
+            Bạn đã đọc: <span className="text-violet-600 font-bold">"{resultText}"</span>
           </p>
         )}
 
@@ -412,18 +436,18 @@ function SpeechPracticeSection({ targetWord }: { targetWord: string }) {
           <div className="flex flex-wrap items-center gap-2 mt-1.5">
             <span className={cn(
               "text-[10px] font-black px-2.5 py-0.5 rounded-full",
-              accuracy === 100 ? "bg-emerald-500/20 text-emerald-400" : accuracy >= 80 ? "bg-blue-500/20 text-blue-400" : "bg-rose-500/20 text-rose-400"
+              accuracy === 100 ? "bg-emerald-100 text-emerald-700" : accuracy >= 80 ? "bg-blue-100 text-blue-700" : "bg-rose-100 text-rose-700"
             )}>
               Độ khớp: {accuracy}%
             </span>
-            <span className="text-xs font-bold text-slate-300">
+            <span className="text-xs font-bold text-slate-600">
               {accuracy === 100 ? 'Rất tuyệt vời! Phát âm hoàn hảo.' : accuracy >= 80 ? 'Khá tốt, gần chính xác!' : 'Chưa khớp lắm, hãy thử lại.'}
             </span>
           </div>
         )}
 
         {errorMessage && (
-          <p className="text-xs text-rose-400 mt-2 font-medium">⚠️ {errorMessage}</p>
+          <p className="text-xs text-rose-500 mt-2 font-medium">⚠️ {errorMessage}</p>
         )}
       </div>
 
@@ -431,10 +455,10 @@ function SpeechPracticeSection({ targetWord }: { targetWord: string }) {
         onClick={startListening}
         disabled={isRecording}
         className={cn(
-          "w-12 h-12 rounded-full flex items-center justify-center transition-all cursor-pointer shadow-lg shrink-0",
+          "w-11 h-11 rounded-full flex items-center justify-center transition-all cursor-pointer shadow-md shrink-0",
           isRecording 
             ? "bg-rose-600 text-white animate-pulse" 
-            : "bg-primary/20 text-primary border border-primary/30 hover:bg-primary/30 hover:text-white"
+            : "bg-violet-100 text-violet-600 border border-violet-200 hover:bg-violet-600 hover:text-white"
         )}
         title="Bấm để ghi âm"
       >
@@ -1667,14 +1691,17 @@ export default function PronunciationPage() {
                   key={t.id}
                   onClick={() => setSelectedTopic(t.id)}
                   className={cn(
-                    "flex-shrink-0 text-left p-4 rounded-2xl border-2 transition-all cursor-pointer w-64 lg:w-full",
+                    "flex-shrink-0 text-left p-4 rounded-2xl border-2 transition-all cursor-pointer w-64 lg:w-full relative overflow-hidden",
                     selectedTopic === t.id
-                      ? "border-violet-600 bg-violet-50/50 shadow-md"
+                      ? "border-violet-600 bg-violet-50/40 shadow-md shadow-violet-500/5"
                       : "border-slate-100 bg-white hover:border-slate-300 hover:shadow-sm"
                   )}
                 >
-                  <h4 className="font-black text-sm text-slate-800">{t.title}</h4>
-                  <p className="text-xs text-slate-500 mt-1 font-medium line-clamp-1">{t.desc}</p>
+                  {selectedTopic === t.id && (
+                    <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-violet-600 rounded-r-md" />
+                  )}
+                  <h4 className={cn("text-sm font-bold text-slate-800 transition-colors pl-1", selectedTopic === t.id && "text-violet-750 font-black")}>{t.title}</h4>
+                  <p className="text-xs text-slate-400 mt-1 pl-1 font-medium line-clamp-1">{t.desc}</p>
                 </button>
               ))}
             </div>
@@ -1695,7 +1722,7 @@ export default function PronunciationPage() {
                     {t.phrases.map((phrase, idx) => (
                       <div
                         key={idx}
-                        className="premium-card p-5 bg-white border border-slate-100 hover:shadow-lg transition-all flex flex-col justify-between"
+                        className="premium-card p-5 bg-white border border-slate-100 hover:border-violet-200 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between"
                       >
                         <div className="flex items-start justify-between gap-4 mb-4">
                           <div className="text-left">
