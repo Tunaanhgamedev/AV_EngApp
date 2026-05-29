@@ -227,3 +227,19 @@ model WordStressAnalysis {
   @@map("word_stress_analysis")
   @@index([word])
 }
+
+model TranslationCache {
+  id          String   @id @default(uuid())
+  sourceText  String   @map("source_text") @db.Text
+  sourceLang  String   @map("source_lang")
+  targetLang  String   @map("target_lang")
+  translation String   @db.Text
+  provider    String   @default("AI (Gemini)")
+  hitCount    Int      @default(1) @map("hit_count")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@unique([sourceText, sourceLang, targetLang])
+  @@map("translation_cache")
+  @@index([sourceText, sourceLang, targetLang])
+}

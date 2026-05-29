@@ -192,23 +192,61 @@ const generateLocalSpeakingFeedback = (transcript: string, targetText: string) =
   };
 };
 
-// AI Translate
+// AI Translate (with persistent DB cache for instant repeat translations)
 router.post('/translate', async (req, res) => {
   const { text, targetLang = 'Vietnamese' } = req.body;
   
   if (!text) return res.status(400).json({ error: 'Text is required' });
 
+  const cleanText = text.trim();
+  // Determine source language from target (simple toggle)
+  const sourceLang = targetLang === 'Vietnamese' ? 'English' : 'Vietnamese';
+
+  // ── Step 1: Check DB Cache ──────────────────────────────────────────────────
+  try {
+    const cached = await prisma.translationCache.findUnique({
+      where: {
+        sourceText_sourceLang_targetLang: {
+          sourceText: cleanText,
+          sourceLang,
+          targetLang
+        }
+      }
+    });
+
+    if (cached) {
+      console.log(`[Translate] ⚡ Cache HIT for "${cleanText.substring(0, 40)}..." (hits: ${cached.hitCount + 1})`);
+      // Increment hit count in background (fire-and-forget)
+      prisma.translationCache.update({
+        where: { id: cached.id },
+        data: { hitCount: { increment: 1 } }
+      }).catch(() => {});
+
+      return res.json({
+        translation: cached.translation,
+        provider: cached.provider,
+        cached: true
+      });
+    }
+  } catch (dbErr: any) {
+    console.warn('[Translate] DB cache lookup failed, proceeding to AI:', dbErr.message);
+  }
+
+  // ── Step 2: AI Translation (cache miss) ─────────────────────────────────────
   // Diagnostic: Check API Key
   if (!process.env.GEMINI_API_KEY) {
     console.error('[AI] CRITICAL: GEMINI_API_KEY is missing in .env');
     return res.status(500).json({ error: 'Server configuration error: Missing API Key' });
   }
 
+  let translation = '';
+  let provider = 'AI (Gemini)';
+
   try {
-    const prompt = `Translate exactly to ${targetLang}: "${text}". Provide ONLY the translation.`;
+    const prompt = `Translate exactly to ${targetLang}: "${cleanText}". Provide ONLY the translation.`;
     const translationText = await generateContentWithModelFallback(prompt);
-    const translation = translationText.trim();
-    return res.json({ translation, provider: 'AI (Gemini)' });
+    translation = translationText.trim();
+    provider = 'AI (Gemini)';
   } catch (error: any) {
     console.error('[AI] Gemini Failed, using fallback translator:', error.message);
     
@@ -216,40 +254,69 @@ router.post('/translate', async (req, res) => {
     try {
       const tLang = targetLang === 'Vietnamese' ? 'vi' : 'en';
       const sLang = targetLang === 'Vietnamese' ? 'en' : 'vi';
-      const googleUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sLang}&tl=${tLang}&dt=t&q=${encodeURIComponent(text)}`;
+      const googleUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sLang}&tl=${tLang}&dt=t&q=${encodeURIComponent(cleanText)}`;
       
       const gRes = await fetch(googleUrl);
       const gData = await gRes.json();
       if (gData && gData[0] && gData[0][0] && gData[0][0][0]) {
         console.log('[AI] Fallback Success: Google Translate');
-        return res.json({ 
-          translation: gData[0][0][0],
-          provider: 'AI (Backup)' 
-        });
+        translation = gData[0][0][0];
+        provider = 'AI (Backup)';
       }
     } catch (gError) {
       console.error('[AI] Google Fallback Failed:', gError);
     }
 
     // Fallback 2: MyMemory
-    try {
-      const targetCode = targetLang === 'Vietnamese' ? 'vi' : 'en';
-      const sourceCode = targetLang === 'Vietnamese' ? 'en' : 'vi';
-      const fallbackUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${sourceCode}|${targetCode}`;
-      const fallbackRes = await fetch(fallbackUrl);
-      const fallbackData = await fallbackRes.json();
-      if (fallbackData.responseData?.translatedText) {
-        return res.json({ 
-          translation: fallbackData.responseData.translatedText,
-          provider: 'Community (Fallback)'
-        });
+    if (!translation) {
+      try {
+        const targetCode = targetLang === 'Vietnamese' ? 'vi' : 'en';
+        const sourceCode = targetLang === 'Vietnamese' ? 'en' : 'vi';
+        const fallbackUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(cleanText)}&langpair=${sourceCode}|${targetCode}`;
+        const fallbackRes = await fetch(fallbackUrl);
+        const fallbackData = await fallbackRes.json();
+        if (fallbackData.responseData?.translatedText) {
+          translation = fallbackData.responseData.translatedText;
+          provider = 'Community (Fallback)';
+        }
+      } catch (mError) {
+        console.error('[AI] MyMemory Failed:', mError);
       }
-    } catch (mError) {
-      console.error('[AI] MyMemory Failed:', mError);
     }
 
-    res.status(500).json({ error: 'All translation services failed' });
+    if (!translation) {
+      return res.status(500).json({ error: 'All translation services failed' });
+    }
   }
+
+  // ── Step 3: Save to DB Cache (fire-and-forget) ──────────────────────────────
+  prisma.translationCache.upsert({
+    where: {
+      sourceText_sourceLang_targetLang: {
+        sourceText: cleanText,
+        sourceLang,
+        targetLang
+      }
+    },
+    update: {
+      translation,
+      provider,
+      hitCount: { increment: 1 }
+    },
+    create: {
+      sourceText: cleanText,
+      sourceLang,
+      targetLang,
+      translation,
+      provider
+    }
+  }).then(() => {
+    console.log(`[Translate] 💾 Cached translation for "${cleanText.substring(0, 40)}..."`);
+  }).catch((err: any) => {
+    console.warn('[Translate] Failed to cache translation:', err.message);
+  });
+
+  return res.json({ translation, provider, cached: false });
 });
 
 // AI Word Insight — for Notebook feature
@@ -689,7 +756,7 @@ router.post('/analyze-stress', async (req, res) => {
       // 1. Validate Primary Stress
       if (analysis.stressedSyllable) {
         const targetSyl = formatSyl(analysis.stressedSyllable);
-        const idx = finalizedAnalysis.syllables.findIndex(s => formatSyl(s) === targetSyl);
+        const idx = finalizedAnalysis.syllables.findIndex((s: string) => formatSyl(s) === targetSyl);
         if (idx !== -1) {
           console.log(`[AI Stress Validation] Matched primary stressed syllable "${analysis.stressedSyllable}" to index ${idx} for "${cleanWord}"`);
           finalizedAnalysis.stressedSyllableIndex = idx;
@@ -700,7 +767,7 @@ router.post('/analyze-stress', async (req, res) => {
       if (analysis.secondaryStressedSyllable) {
         const targetSyl = formatSyl(analysis.secondaryStressedSyllable);
         if (targetSyl && targetSyl !== 'none' && targetSyl !== 'null') {
-          const idx = finalizedAnalysis.syllables.findIndex(s => formatSyl(s) === targetSyl);
+          const idx = finalizedAnalysis.syllables.findIndex((s: string) => formatSyl(s) === targetSyl);
           if (idx !== -1) {
             console.log(`[AI Stress Validation] Matched secondary stressed syllable "${analysis.secondaryStressedSyllable}" to index ${idx} for "${cleanWord}"`);
             finalizedAnalysis.secondaryStressedSyllableIndex = idx;

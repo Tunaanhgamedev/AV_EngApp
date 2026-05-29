@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Languages, ArrowRightLeft, Copy, Volume2, Sparkles, RefreshCw,
-  Loader2, Trash2, Check, BookMarked, Plus, X, Tag, Info, AlertCircle
+  Loader2, Trash2, Check, BookMarked, Plus, X, Tag, Info, AlertCircle, Zap
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
@@ -119,6 +119,31 @@ function SaveToNotebookPanel({
 }
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
+const CACHE_KEY = 'engbot_translate_cache';
+const MAX_CACHE_ENTRIES = 500;
+
+function loadLocalCache(): Record<string, any> {
+  if (typeof window === 'undefined') return {};
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch { return {}; }
+}
+
+function saveLocalCache(cache: Record<string, any>) {
+  if (typeof window === 'undefined') return;
+  try {
+    // Evict oldest entries if cache is too large
+    const keys = Object.keys(cache);
+    if (keys.length > MAX_CACHE_ENTRIES) {
+      const sorted = keys.sort((a, b) => (cache[a]._ts || 0) - (cache[b]._ts || 0));
+      const toRemove = sorted.slice(0, keys.length - MAX_CACHE_ENTRIES);
+      toRemove.forEach(k => delete cache[k]);
+    }
+    localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
+  } catch { /* storage full, ignore */ }
+}
+
 export default function TranslatePage() {
   const [inputText, setInputText]           = useState('');
   const [translatedText, setTranslatedText] = useState('');
@@ -130,6 +155,12 @@ export default function TranslatePage() {
   const [cooldown, setCooldown]             = useState(0);
   const [showSavePanel, setShowSavePanel]   = useState(false);
   const [wordInsight, setWordInsight]       = useState<any>(null);
+  const [fromCache, setFromCache]           = useState(false);
+
+  // Load persistent cache on mount
+  useEffect(() => {
+    setCache(loadLocalCache());
+  }, []);
 
   useEffect(() => {
     if (cooldown > 0) {
@@ -143,9 +174,13 @@ export default function TranslatePage() {
     if (!text || isTranslating || cooldown > 0) return;
     
     const cacheKey = `${sourceLang}-${targetLang}-${text}`;
+    setFromCache(false);
+
+    // ── Client-side cache (instant, no network) ──
     if (cache[cacheKey]) {
       setTranslatedText(cache[cacheKey].translation);
-      setWordInsight(cache[cacheKey].insight);
+      setWordInsight(cache[cacheKey].insight || null);
+      setFromCache(true);
       return;
     }
 
@@ -166,8 +201,10 @@ export default function TranslatePage() {
         if (res.status === 429) setCooldown(30);
       } else {
         setTranslatedText(data.translation);
-        
+        if (data.cached) setFromCache(true);
+
         // Single word or short phrase insight ONLY for English source
+        let insight = null;
         const wordCount = text.split(/\s+/).length;
         if (wordCount <= 3 && sourceLang === 'English') {
           try {
@@ -175,11 +212,18 @@ export default function TranslatePage() {
               method: 'POST', headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ word: text }),
             });
-            const insight = await insightRes.json();
+            insight = await insightRes.json();
             setWordInsight(insight);
           } catch { /* ignore */ }
         }
-        setCache(prev => ({ ...prev, [cacheKey]: { translation: data.translation, insight: wordInsight } }));
+
+        // Save to persistent local cache
+        const newCache = {
+          ...cache,
+          [cacheKey]: { translation: data.translation, insight, _ts: Date.now() }
+        };
+        setCache(newCache);
+        saveLocalCache(newCache);
       }
     } catch { setTranslatedText('Lỗi kết nối máy chủ'); }
     finally { setIsTranslating(false); }
@@ -194,6 +238,7 @@ export default function TranslatePage() {
     setTranslatedText(inputText);
     setShowSavePanel(false);
     setWordInsight(null);
+    setFromCache(false);
   };
 
   const speak = (text: string, lang = 'en-US') => {
@@ -290,7 +335,7 @@ export default function TranslatePage() {
                 {isTranslating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
                 {isTranslating ? 'Đang dịch...' : 'Dịch Ngay'}
             </button>
-            <button onClick={() => { setInputText(''); setTranslatedText(''); setShowSavePanel(false); }} className="p-2.5 text-slate-300 hover:text-rose-500 transition-colors"><Trash2 className="w-5 h-5" /></button>
+            <button onClick={() => { setInputText(''); setTranslatedText(''); setShowSavePanel(false); setFromCache(false); }} className="p-2.5 text-slate-300 hover:text-rose-500 transition-colors"><Trash2 className="w-5 h-5" /></button>
           </div>
         </div>
 
@@ -304,6 +349,12 @@ export default function TranslatePage() {
               </div>
             ) : (
               <div className="space-y-6 animate-in fade-in duration-500">
+                {fromCache && hasResult && (
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-amber-600 rounded-full text-[10px] font-black uppercase tracking-widest border border-amber-200 animate-in zoom-in duration-300">
+                    <Zap className="w-3 h-3" />
+                    Trả lời tức thì
+                  </div>
+                )}
                 <div className="text-3xl font-black text-slate-800 leading-tight">
                   {translatedText || <span className="text-slate-200 font-medium italic">Kết quả dịch...</span>}
                 </div>
