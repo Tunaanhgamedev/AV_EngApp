@@ -205,6 +205,26 @@ const YEAR_RULES = [
   { example: '1808', read: 'eighteen oh-eight', ipa: '/ˌeɪ.tiːn oʊ ˈeɪt/', rule: 'Số hàng chục là 0: đọc oh + số hàng đơn vị' }
 ];
 
+const RELATIVE_TIME_WORDS = [
+  { term: 'today', ipa: '/təˈdeɪ/', vi: 'hôm nay', category: 'Ngày' },
+  { term: 'yesterday', ipa: '/ˈjes.tə.deɪ/', vi: 'hôm qua', category: 'Ngày' },
+  { term: 'tomorrow', ipa: '/təˈmɒr.əʊ/', vi: 'ngày mai', category: 'Ngày' },
+  { term: 'the day before yesterday', ipa: '/ðə deɪ bɪˌfɔː ˈjes.tə.deɪ/', vi: 'hôm kia', category: 'Ngày' },
+  { term: 'the day after tomorrow', ipa: '/ðə deɪ ˌɑːf.tə təˈmɒr.əʊ/', vi: 'ngày kia / ngày mốt', category: 'Ngày' },
+  { term: 'tonight', ipa: '/təˈnaɪt/', vi: 'tối nay', category: 'Ngày' },
+  { term: 'weekend', ipa: '/ˈwiːk.end/', vi: 'cuối tuần', category: 'Tuần' },
+  { term: 'weekday', ipa: '/ˈwiːk.deɪ/', vi: 'ngày thường (trong tuần)', category: 'Tuần' },
+  { term: 'this week', ipa: '/ðɪs wiːk/', vi: 'tuần này', category: 'Tuần' },
+  { term: 'last week', ipa: '/lɑːst wiːk/', vi: 'tuần trước', category: 'Tuần' },
+  { term: 'next week', ipa: '/nekst wiːk/', vi: 'tuần sau', category: 'Tuần' },
+  { term: 'this month', ipa: '/ðɪs mʌnθ/', vi: 'tháng này', category: 'Tháng' },
+  { term: 'last month', ipa: '/lɑːst mʌnθ/', vi: 'tháng trước', category: 'Tháng' },
+  { term: 'next month', ipa: '/nekst mʌnθ/', vi: 'tháng sau', category: 'Tháng' },
+  { term: 'this year', ipa: '/ðɪs jɪər/', vi: 'năm nay', category: 'Năm' },
+  { term: 'last year', ipa: '/lɑːst jɪər/', vi: 'năm ngoái', category: 'Năm' },
+  { term: 'next year', ipa: '/nekst jɪər/', vi: 'sang năm / năm sau', category: 'Năm' },
+];
+
 // ─── Countries & Nationalities Data ──────────────────────────────────────────
 import COUNTRIES_DATA from '@/data/countries';
 
@@ -382,7 +402,7 @@ export default function PronunciationPage() {
   const [selectedSound, setSelectedSound] = useState<any>(null);
 
   // New Datetime & Countries states
-  const [datetimeSection, setDatetimeSection] = useState<'days' | 'months' | 'years'>('days');
+  const [datetimeSection, setDatetimeSection] = useState<'days' | 'relative' | 'months' | 'years'>('days');
   const [countrySearch, setCountrySearch] = useState('');
   const [selectedRegion, setSelectedRegion] = useState<string>('All');
 
@@ -1325,6 +1345,7 @@ export default function PronunciationPage() {
           <div className="flex gap-2 overflow-x-auto pb-1">
             {[
               { id: 'days' as const, label: 'Thứ trong tuần' },
+              { id: 'relative' as const, label: 'Từ chỉ Ngày/Thời gian' },
               { id: 'months' as const, label: 'Tháng trong năm' },
               { id: 'years' as const, label: 'Cách đọc Năm' },
             ].map(s => (
@@ -1356,6 +1377,31 @@ export default function PronunciationPage() {
                   <span className="text-xs font-medium text-slate-500 border-t border-slate-100 w-full pt-1.5 mt-1">{d.vi}</span>
                   <div className="w-8 h-8 rounded-full bg-slate-100 group-hover:bg-violet-500 flex items-center justify-center transition-colors mt-1">
                     <Play className="w-3.5 h-3.5 fill-slate-400 text-slate-400 group-hover:fill-white group-hover:text-white transition-colors" />
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Relative time terms */}
+          {datetimeSection === 'relative' && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 animate-in fade-in duration-300">
+              {RELATIVE_TIME_WORDS.map((r, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => speak(r.term)}
+                  className="group premium-card p-5 flex flex-col justify-between hover:shadow-xl hover:-translate-y-0.5 transition-all border border-violet-100 bg-violet-50/10 cursor-pointer text-left h-full"
+                >
+                  <div className="flex items-center justify-between w-full mb-3">
+                    <span className="text-[9px] font-black text-violet-600 bg-violet-100/50 px-2 py-0.5 rounded-md uppercase tracking-widest">{r.category}</span>
+                    <div className="w-7 h-7 rounded-full bg-slate-100 group-hover:bg-violet-500 flex items-center justify-center transition-colors">
+                      <Play className="w-3 h-3 fill-slate-400 text-slate-400 group-hover:fill-white group-hover:text-white transition-colors" />
+                    </div>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-lg font-black text-slate-800 leading-tight group-hover:text-violet-600 transition-colors">{r.term}</p>
+                    <p className="text-xs font-mono text-slate-400 font-medium">{r.ipa}</p>
+                    <p className="text-xs text-slate-500 font-bold mt-1">({r.vi})</p>
                   </div>
                 </button>
               ))}
