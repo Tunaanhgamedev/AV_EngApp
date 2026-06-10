@@ -172,11 +172,14 @@ const S_RULES = [
 
 // ─── Nouns, Plurals & Articles Data ──────────────────────────────────────────
 const PLURAL_RULES = [
-  { rule: 'Thông thường (Thêm -s)', condition: 'Hầu hết danh từ đếm được số ít', examples: [{ word: 'book', plural: 'books', ipa: '/bʊks/', vi: 'sách' }, { word: 'cup', plural: 'cups', ipa: '/kʌps/', vi: 'cốc' }, { word: 'pen', plural: 'pens', ipa: '/penz/', vi: 'bút' }] },
-  { rule: 'Đuôi đặc biệt (Thêm -es)', condition: 'Danh từ kết thúc bằng -s, -ss, -sh, -ch, -x, -z', examples: [{ word: 'bus', plural: 'buses', ipa: '/ˈbʌs.ɪz/', vi: 'xe buýt' }, { word: 'watch', plural: 'watches', ipa: '/ˈwɒtʃ.ɪz/', vi: 'đồng hồ' }, { word: 'box', plural: 'boxes', ipa: '/ˈbɒk.sɪz/', vi: 'hộp' }] },
-  { rule: 'Đuôi -y preceded by consonant', condition: 'Đổi -y thành -i + es', examples: [{ word: 'baby', plural: 'babies', ipa: '/ˈbeɪ.biz/', vi: 'trẻ sơ sinh' }, { word: 'city', plural: 'cities', ipa: '/ˈsɪt.iz/', vi: 'thành phố' }] },
-  { rule: 'Đuôi -y preceded by vowel', condition: 'Giữ nguyên -y + s', examples: [{ word: 'boy', plural: 'boys', ipa: '/bɔɪz/', vi: 'cậu bé' }, { word: 'key', plural: 'keys', ipa: '/kiːz/', vi: 'chìa khóa' }] },
-  { rule: 'Đuôi -f/-fe', condition: 'Đổi -f/-fe thành -ves', examples: [{ word: 'knife', plural: 'knives', ipa: '/naɪvz/', vi: 'con dao' }, { word: 'leaf', plural: 'leaves', ipa: '/liːvz/', vi: 'chiếc lá' }] }
+  { rule: 'Thông thường (Thêm -s)', condition: 'Hầu hết danh từ đếm được số ít', examples: [{ word: 'book', plural: 'books', ipa: '/bʊks/', vi: 'sách' }, { word: 'cup', plural: 'cups', ipa: '/kʌps/', vi: 'cốc' }, { word: 'pen', plural: 'pens', ipa: '/penz/', vi: 'bút' }, { word: 'cat', plural: 'cats', ipa: '/kæts/', vi: 'con mèo' }, { word: 'dog', plural: 'dogs', ipa: '/dɒɡz/', vi: 'con chó' }] },
+  { rule: 'Đuôi đặc biệt (Thêm -es)', condition: 'Danh từ kết thúc bằng -s, -ss, -sh, -ch, -x, -z', examples: [{ word: 'bus', plural: 'buses', ipa: '/ˈbʌs.ɪz/', vi: 'xe buýt' }, { word: 'watch', plural: 'watches', ipa: '/ˈwɒtʃ.ɪz/', vi: 'đồng hồ' }, { word: 'box', plural: 'boxes', ipa: '/ˈbɒk.sɪz/', vi: 'hộp' }, { word: 'dish', plural: 'dishes', ipa: '/ˈdɪʃ.ɪz/', vi: 'cái đĩa' }, { word: 'glass', plural: 'glasses', ipa: '/ˈɡlɑːs.ɪz/', vi: 'cái ly' }] },
+  { rule: 'Đuôi -y (sau phụ âm)', condition: 'Đổi -y thành -i + es', examples: [{ word: 'baby', plural: 'babies', ipa: '/ˈbeɪ.biz/', vi: 'trẻ sơ sinh' }, { word: 'city', plural: 'cities', ipa: '/ˈsɪt.iz/', vi: 'thành phố' }, { word: 'story', plural: 'stories', ipa: '/ˈstɔːr.iz/', vi: 'câu chuyện' }, { word: 'family', plural: 'families', ipa: '/ˈfæm.əl.iz/', vi: 'gia đình' }] },
+  { rule: 'Đuôi -y (sau nguyên âm)', condition: 'Giữ nguyên -y + s', examples: [{ word: 'boy', plural: 'boys', ipa: '/bɔɪz/', vi: 'cậu bé' }, { word: 'key', plural: 'keys', ipa: '/kiːz/', vi: 'chìa khóa' }, { word: 'day', plural: 'days', ipa: '/deɪz/', vi: 'ngày' }, { word: 'toy', plural: 'toys', ipa: '/tɔɪz/', vi: 'đồ chơi' }] },
+  { rule: 'Đuôi -f/-fe → -ves', condition: 'Đổi -f/-fe thành -ves', examples: [{ word: 'knife', plural: 'knives', ipa: '/naɪvz/', vi: 'con dao' }, { word: 'leaf', plural: 'leaves', ipa: '/liːvz/', vi: 'chiếc lá' }, { word: 'wife', plural: 'wives', ipa: '/waɪvz/', vi: 'vợ' }, { word: 'wolf', plural: 'wolves', ipa: '/wʊlvz/', vi: 'con sói' }] },
+  { rule: 'Đuôi -o (thêm -es)', condition: 'Một số danh từ kết thúc bằng phụ âm + o', examples: [{ word: 'tomato', plural: 'tomatoes', ipa: '/təˈmɑː.təʊz/', vi: 'cà chua' }, { word: 'potato', plural: 'potatoes', ipa: '/pəˈteɪ.təʊz/', vi: 'khoai tây' }, { word: 'hero', plural: 'heroes', ipa: '/ˈhɪə.rəʊz/', vi: 'anh hùng' }] },
+  { rule: 'Đuôi -o (chỉ thêm -s)', condition: 'Ngoại lệ: từ mượn, âm nhạc, viết tắt', examples: [{ word: 'photo', plural: 'photos', ipa: '/ˈfəʊ.təʊz/', vi: 'ảnh' }, { word: 'piano', plural: 'pianos', ipa: '/piˈæn.əʊz/', vi: 'đàn piano' }, { word: 'video', plural: 'videos', ipa: '/ˈvɪd.i.əʊz/', vi: 'video' }, { word: 'radio', plural: 'radios', ipa: '/ˈreɪ.di.əʊz/', vi: 'đài' }] },
+  { rule: 'Ngoại lệ đuôi -f (chỉ +s)', condition: 'Một số từ đuôi -f KHÔNG đổi thành -ves', examples: [{ word: 'roof', plural: 'roofs', ipa: '/ruːfs/', vi: 'mái nhà' }, { word: 'chef', plural: 'chefs', ipa: '/ʃefs/', vi: 'đầu bếp' }, { word: 'cliff', plural: 'cliffs', ipa: '/klɪfs/', vi: 'vách đá' }, { word: 'belief', plural: 'beliefs', ipa: '/bɪˈliːfs/', vi: 'niềm tin' }] }
 ];
 
 const IRREGULAR_NOUNS = [
@@ -187,26 +190,72 @@ const IRREGULAR_NOUNS = [
   { singular: 'foot', plural: 'feet', ipaSingular: '/fʊt/', ipaPlural: '/fiːt/', vi: 'bàn chân' },
   { singular: 'mouse', plural: 'mice', ipaSingular: '/maʊs/', ipaPlural: '/maɪs/', vi: 'con chuột' },
   { singular: 'person', plural: 'people', ipaSingular: '/ˈpɜː.sən/', ipaPlural: '/ˈpiː.pl̩/', vi: 'người' },
+  { singular: 'goose', plural: 'geese', ipaSingular: '/ɡuːs/', ipaPlural: '/ɡiːs/', vi: 'con ngỗng' },
+  { singular: 'ox', plural: 'oxen', ipaSingular: '/ɒks/', ipaPlural: '/ˈɒk.sən/', vi: 'con bò đực' },
+  { singular: 'cactus', plural: 'cacti', ipaSingular: '/ˈkæk.təs/', ipaPlural: '/ˈkæk.taɪ/', vi: 'cây xương rồng' },
+  { singular: 'crisis', plural: 'crises', ipaSingular: '/ˈkraɪ.sɪs/', ipaPlural: '/ˈkraɪ.siːz/', vi: 'khủng hoảng' },
+  { singular: 'phenomenon', plural: 'phenomena', ipaSingular: '/fɪˈnɒm.ɪ.nən/', ipaPlural: '/fɪˈnɒm.ɪ.nə/', vi: 'hiện tượng' },
   { singular: 'sheep', plural: 'sheep', ipaSingular: '/ʃiːp/', ipaPlural: '/ʃiːp/', vi: 'con cừu' },
-  { singular: 'fish', plural: 'fish', ipaSingular: '/fɪʃ/', ipaPlural: '/fɪʃ/', vi: 'con cá' }
+  { singular: 'fish', plural: 'fish', ipaSingular: '/fɪʃ/', ipaPlural: '/fɪʃ/', vi: 'con cá' },
+  { singular: 'deer', plural: 'deer', ipaSingular: '/dɪər/', ipaPlural: '/dɪər/', vi: 'con hươu' },
+  { singular: 'aircraft', plural: 'aircraft', ipaSingular: '/ˈeə.krɑːft/', ipaPlural: '/ˈeə.krɑːft/', vi: 'máy bay' },
+  { singular: 'species', plural: 'species', ipaSingular: '/ˈspiː.ʃiːz/', ipaPlural: '/ˈspiː.ʃiːz/', vi: 'loài' },
+  { singular: 'series', plural: 'series', ipaSingular: '/ˈsɪə.riːz/', ipaPlural: '/ˈsɪə.riːz/', vi: 'chuỗi, bộ' }
 ];
 
 const UNCOUNTABLE_NOUNS = [
-  { term: 'water', ipa: '/ˈwɔː.tər/', vi: 'nước', measure: 'a glass of water', measureVi: 'một ly nước' },
-  { term: 'milk', ipa: '/mɪlk/', vi: 'sữa', measure: 'a carton of milk', measureVi: 'một hộp sữa' },
-  { term: 'coffee', ipa: '/ˈkɒf.i/', vi: 'cà phê', measure: 'a cup of coffee', measureVi: 'một tách cà phê' },
-  { term: 'bread', ipa: '/bred/', vi: 'bánh mì', measure: 'a slice of bread', measureVi: 'một lát bánh mì' },
-  { term: 'information', ipa: '/ˌɪn.fəˈmeɪ.ʃən/', vi: 'thông tin', measure: 'a piece of information', measureVi: 'một mẩu thông tin' },
-  { term: 'furniture', ipa: '/ˈfɜː.nɪ.tʃər/', vi: 'đồ nội thất', measure: 'a piece of furniture', measureVi: 'một món đồ nội thất' },
-  { term: 'money', ipa: '/ˈmʌn.i/', vi: 'tiền', measure: 'a sum of money', measureVi: 'một khoản tiền' },
-  { term: 'advice', ipa: '/ədˈvaɪs/', vi: 'lời khuyên', measure: 'a piece of advice', measureVi: 'một lời khuyên' }
+  // Chất lỏng (Liquids)
+  { term: 'water', ipa: '/ˈwɔː.tər/', vi: 'nước', measure: 'a glass of water', measureVi: 'một ly nước', category: 'liquid' },
+  { term: 'milk', ipa: '/mɪlk/', vi: 'sữa', measure: 'a carton of milk', measureVi: 'một hộp sữa', category: 'liquid' },
+  { term: 'coffee', ipa: '/ˈkɒf.i/', vi: 'cà phê', measure: 'a cup of coffee', measureVi: 'một tách cà phê', category: 'liquid' },
+  { term: 'tea', ipa: '/tiː/', vi: 'trà', measure: 'a cup of tea', measureVi: 'một tách trà', category: 'liquid' },
+  { term: 'juice', ipa: '/dʒuːs/', vi: 'nước ép', measure: 'a glass of juice', measureVi: 'một ly nước ép', category: 'liquid' },
+  { term: 'oil', ipa: '/ɔɪl/', vi: 'dầu', measure: 'a bottle of oil', measureVi: 'một chai dầu', category: 'liquid' },
+  { term: 'soup', ipa: '/suːp/', vi: 'canh/súp', measure: 'a bowl of soup', measureVi: 'một bát canh', category: 'liquid' },
+  // Chất hạt / Bột (Grains & Powders)
+  { term: 'rice', ipa: '/raɪs/', vi: 'gạo/cơm', measure: 'a bag of rice', measureVi: 'một bao gạo', category: 'grain' },
+  { term: 'sugar', ipa: '/ˈʃʊɡ.ər/', vi: 'đường', measure: 'a spoonful of sugar', measureVi: 'một thìa đường', category: 'grain' },
+  { term: 'salt', ipa: '/sɔːlt/', vi: 'muối', measure: 'a pinch of salt', measureVi: 'một nhúm muối', category: 'grain' },
+  { term: 'flour', ipa: '/flaʊər/', vi: 'bột mì', measure: 'a bag of flour', measureVi: 'một bao bột mì', category: 'grain' },
+  { term: 'sand', ipa: '/sænd/', vi: 'cát', measure: 'a grain of sand', measureVi: 'một hạt cát', category: 'grain' },
+  { term: 'pepper', ipa: '/ˈpep.ər/', vi: 'hạt tiêu', measure: 'a pinch of pepper', measureVi: 'một nhúm tiêu', category: 'grain' },
+  // Thịt & Thực phẩm (Meats & Food)
+  { term: 'meat', ipa: '/miːt/', vi: 'thịt', measure: 'a piece of meat', measureVi: 'một miếng thịt', category: 'meat' },
+  { term: 'beef', ipa: '/biːf/', vi: 'thịt bò', measure: 'a slice of beef', measureVi: 'một lát thịt bò', category: 'meat' },
+  { term: 'pork', ipa: '/pɔːk/', vi: 'thịt heo', measure: 'a piece of pork', measureVi: 'một miếng thịt heo', category: 'meat' },
+  { term: 'chicken', ipa: '/ˈtʃɪk.ɪn/', vi: 'thịt gà', measure: 'a piece of chicken', measureVi: 'một miếng gà', category: 'meat' },
+  { term: 'bread', ipa: '/bred/', vi: 'bánh mì', measure: 'a slice of bread', measureVi: 'một lát bánh mì', category: 'meat' },
+  { term: 'cheese', ipa: '/tʃiːz/', vi: 'phô mai', measure: 'a slice of cheese', measureVi: 'một lát phô mai', category: 'meat' },
+  { term: 'butter', ipa: '/ˈbʌt.ər/', vi: 'bơ', measure: 'a stick of butter', measureVi: 'một thanh bơ', category: 'meat' },
+  // Khái niệm trừu tượng (Abstract)
+  { term: 'information', ipa: '/ˌɪn.fəˈmeɪ.ʃən/', vi: 'thông tin', measure: 'a piece of information', measureVi: 'một mẩu thông tin', category: 'abstract' },
+  { term: 'advice', ipa: '/ədˈvaɪs/', vi: 'lời khuyên', measure: 'a piece of advice', measureVi: 'một lời khuyên', category: 'abstract' },
+  { term: 'knowledge', ipa: '/ˈnɒl.ɪdʒ/', vi: 'kiến thức', measure: 'a piece of knowledge', measureVi: 'một phần kiến thức', category: 'abstract' },
+  { term: 'news', ipa: '/njuːz/', vi: 'tin tức', measure: 'a piece of news', measureVi: 'một mẩu tin', category: 'abstract' },
+  { term: 'homework', ipa: '/ˈhəʊm.wɜːk/', vi: 'bài tập', measure: 'a piece of homework', measureVi: 'một bài tập', category: 'abstract' },
+  { term: 'music', ipa: '/ˈmjuː.zɪk/', vi: 'âm nhạc', measure: 'a piece of music', measureVi: 'một bản nhạc', category: 'abstract' },
+  { term: 'research', ipa: '/rɪˈsɜːtʃ/', vi: 'nghiên cứu', measure: 'a piece of research', measureVi: 'một nghiên cứu', category: 'abstract' },
+  // Đồ vật & Vật liệu (Materials & Objects)
+  { term: 'furniture', ipa: '/ˈfɜː.nɪ.tʃər/', vi: 'đồ nội thất', measure: 'a piece of furniture', measureVi: 'một món đồ nội thất', category: 'material' },
+  { term: 'luggage', ipa: '/ˈlʌɡ.ɪdʒ/', vi: 'hành lý', measure: 'a piece of luggage', measureVi: 'một kiện hành lý', category: 'material' },
+  { term: 'equipment', ipa: '/ɪˈkwɪp.mənt/', vi: 'thiết bị', measure: 'a piece of equipment', measureVi: 'một thiết bị', category: 'material' },
+  { term: 'money', ipa: '/ˈmʌn.i/', vi: 'tiền', measure: 'a sum of money', measureVi: 'một khoản tiền', category: 'material' },
+  { term: 'gold', ipa: '/ɡəʊld/', vi: 'vàng', measure: 'a bar of gold', measureVi: 'một thỏi vàng', category: 'material' },
+  { term: 'wood', ipa: '/wʊd/', vi: 'gỗ', measure: 'a piece of wood', measureVi: 'một miếng gỗ', category: 'material' },
+  { term: 'paper', ipa: '/ˈpeɪ.pər/', vi: 'giấy', measure: 'a sheet of paper', measureVi: 'một tờ giấy', category: 'material' },
+  // Hiện tượng tự nhiên & Khác (Nature & Others)
+  { term: 'weather', ipa: '/ˈweð.ər/', vi: 'thời tiết', measure: 'a spell of weather', measureVi: 'một đợt thời tiết', category: 'other' },
+  { term: 'traffic', ipa: '/ˈtræf.ɪk/', vi: 'giao thông', measure: 'a lot of traffic', measureVi: 'rất đông xe cộ', category: 'other' },
+  { term: 'electricity', ipa: '/ɪˌlek.ˈtrɪs.ə.ti/', vi: 'điện', measure: 'a unit of electricity', measureVi: 'một đơn vị điện', category: 'other' },
+  { term: 'air', ipa: '/eər/', vi: 'không khí', measure: 'a breath of air', measureVi: 'một hơi thở', category: 'other' },
 ];
 
 const ARTICLE_RULES = [
   { rule: 'Dùng "a"', condition: 'Trước từ bắt đầu bằng phụ âm (phát âm phụ âm)', examples: [{ word: 'a cat', ipa: '/ə kæt/' }, { word: 'a dog', ipa: '/ə dɒɡ/' }, { word: 'a house', ipa: '/ə haʊs/' }] },
-  { rule: 'Dùng "an"', condition: 'Trước từ bắt đầu bằng nguyên âm (phát âm nguyên âm)', examples: [{ word: 'an apple', ipa: '/ən ˈæp.l̩/' }, { word: 'an egg', ipa: '/ən eɡ/' }, { word: 'an orange', ipa: '/ən ˈɒr.ɪndʒ/' }] },
-  { rule: 'Ngoại lệ "h" câm (dùng an)', condition: 'Bắt đầu bằng chữ h nhưng âm h câm (phát âm nguyên âm tiếp theo)', examples: [{ word: 'an hour', ipa: '/ən ˈaʊ.ər/' }, { word: 'an honor', ipa: '/ən ˈɒn.ər/' }, { word: 'an honest man', ipa: '/ən ˈɒn.ɪst mæn/' }] },
-  { rule: 'Ngoại lệ chữ u/e phát âm /j/ (dùng a)', condition: 'Bắt đầu bằng nguyên âm chữ cái nhưng phát âm phụ âm /j/ hoặc /w/', examples: [{ word: 'a university', ipa: '/ə ˌjuː.nɪˈvɜː.sə.ti/' }, { word: 'a European', ipa: '/ə ˌjʊə.rəˈpiː.ən/' }, { word: 'a one-way street', ipa: '/ə wʌn weɪ striːt/' }] }
+  { rule: 'Dùng "an"', condition: 'Trước từ bắt đầu bằng nguyên âm (phát âm nguyên âm)', examples: [{ word: 'an apple', ipa: '/ən ˈæp.l̩/' }, { word: 'an egg', ipa: '/ən eɡ/' }, { word: 'an orange', ipa: '/ən ˈɒr.ɪndʒ/' }, { word: 'an umbrella', ipa: '/ən ʌmˈbrel.ə/' }, { word: 'an idea', ipa: '/ən aɪˈdɪə/' }] },
+  { rule: 'Ngoại lệ "h" câm (dùng an)', condition: 'Bắt đầu bằng chữ h nhưng âm h câm (phát âm nguyên âm tiếp theo)', examples: [{ word: 'an hour', ipa: '/ən ˈaʊ.ər/' }, { word: 'an honor', ipa: '/ən ˈɒn.ər/' }, { word: 'an honest man', ipa: '/ən ˈɒn.ɪst mæn/' }, { word: 'an heir', ipa: '/ən eər/' }] },
+  { rule: 'Ngoại lệ chữ u/e phát âm /j/ (dùng a)', condition: 'Bắt đầu bằng nguyên âm chữ cái nhưng phát âm phụ âm /j/ hoặc /w/', examples: [{ word: 'a university', ipa: '/ə ˌjuː.nɪˈvɜː.sə.ti/' }, { word: 'a European', ipa: '/ə ˌjʊə.rəˈpiː.ən/' }, { word: 'a one-way street', ipa: '/ə wʌn weɪ striːt/' }, { word: 'a useful tool', ipa: '/ə ˈjuːs.fəl tuːl/' }, { word: 'a uniform', ipa: '/ə ˈjuː.nɪ.fɔːm/' }] },
+  { rule: 'Viết tắt bắt đầu bằng nguyên âm (dùng an)', condition: 'Chữ viết tắt mà tên chữ cái đầu phát âm nguyên âm: F(/ef/), H(/eɪtʃ/), L(/el/), M(/em/), N(/en/), R(/ɑːr/), S(/es/), X(/eks/)', examples: [{ word: 'an FBI agent', ipa: '/ən ef.biː.aɪ/' }, { word: 'an HTML file', ipa: '/ən eɪtʃ.tiː.em.el/' }, { word: 'an SMS', ipa: '/ən es.em.es/' }] }
 ];
 
 // ─── Days, Months, Years Data ────────────────────────────────────────────────
@@ -623,6 +672,7 @@ export default function PronunciationPage() {
   const [chartSection, setChartSection] = useState<'vowels' | 'diphthongs' | 'consonants'>('vowels');
   const [numSection, setNumSection] = useState<'basic' | 'big' | 'combo' | 'ordinals'>('basic');
   const [nounSection, setNounSection] = useState<'rules' | 'irregular' | 'uncountable' | 'articles'>('rules');
+  const [uncountableCategory, setUncountableCategory] = useState<string>('all');
   const [selectedSound, setSelectedSound] = useState<any>(null);
 
   // New Datetime & Countries states
@@ -1705,8 +1755,35 @@ export default function PronunciationPage() {
               <div className="p-4 bg-amber-50 border border-amber-200 text-amber-800 rounded-2xl text-xs font-medium leading-relaxed text-left">
                 👉 <strong>Quy tắc quan trọng:</strong> Danh từ không đếm được (Uncountable Nouns) không có dạng số nhiều (không thêm -s/-es) và không thể dùng với <strong>a/an</strong> trực tiếp. Để đếm chúng, ta phải sử dụng các <strong>từ chỉ đo lường/đóng gói</strong> cụ thể đi kèm.
               </div>
+
+              {/* Category pills */}
+              <div className="flex flex-wrap gap-1.5 sm:gap-2 pb-1 no-scrollbar overflow-x-auto text-left">
+                {[
+                  { id: 'all', label: 'Tất cả' },
+                  { id: 'liquid', label: 'Chất lỏng (Liquids)' },
+                  { id: 'grain', label: 'Hạt & Bột (Grains & Powders)' },
+                  { id: 'meat', label: 'Thịt & Thực phẩm (Meats & Food)' },
+                  { id: 'abstract', label: 'Trừu tượng (Abstract)' },
+                  { id: 'material', label: 'Vật liệu (Materials)' },
+                  { id: 'other', label: 'Hiện tượng & Khác' },
+                ].map(cat => (
+                  <button
+                    key={cat.id}
+                    onClick={() => setUncountableCategory(cat.id)}
+                    className={cn(
+                      "px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer whitespace-nowrap",
+                      uncountableCategory === cat.id
+                        ? "bg-amber-600 text-white shadow-sm"
+                        : "bg-slate-100 text-slate-500 hover:bg-slate-200"
+                    )}
+                  >
+                    {cat.label}
+                  </button>
+                ))}
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {UNCOUNTABLE_NOUNS.map((noun, idx) => (
+                {UNCOUNTABLE_NOUNS.filter(noun => uncountableCategory === 'all' || noun.category === uncountableCategory).map((noun, idx) => (
                   <div key={idx} className="premium-card p-4 hover:shadow-md transition-all bg-white border border-slate-100 flex flex-col justify-between">
                     <div className="flex justify-between items-start text-left">
                       <div>
