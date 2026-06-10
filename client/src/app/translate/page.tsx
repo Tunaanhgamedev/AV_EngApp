@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
-  Languages, ArrowRightLeft, Copy, Volume2, Sparkles, RefreshCw,
+  Languages, ArrowRightLeft, Copy, Volume2, Sparkles,
   Loader2, Trash2, Check, BookMarked, Plus, X, Tag, Info, AlertCircle, Zap
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -120,10 +120,8 @@ function SaveToNotebookPanel({
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 const CACHE_KEY = 'engbot_translate_cache';
-const HISTORY_KEY = 'engbot_translate_history';
 const MAX_CACHE_ENTRIES = 500;
-const MAX_HISTORY = 20;
-const AUTO_TRANSLATE_DELAY = 800;
+const AUTO_TRANSLATE_DELAY = 400;
 
 function loadLocalCache(): Record<string, any> {
   if (typeof window === 'undefined') return {};
@@ -146,23 +144,12 @@ function saveLocalCache(cache: Record<string, any>) {
   } catch { /* storage full, ignore */ }
 }
 
-function loadHistory(): Array<{ source: string; result: string; sourceLang: string; targetLang: string; ts: number }> {
-  if (typeof window === 'undefined') return [];
-  try {
-    const raw = localStorage.getItem(HISTORY_KEY);
-    return raw ? JSON.parse(raw) : [];
-  } catch { return []; }
-}
-
-function saveHistory(history: any[]) {
-  if (typeof window === 'undefined') return;
-  try { localStorage.setItem(HISTORY_KEY, JSON.stringify(history.slice(0, MAX_HISTORY))); } catch { }
-}
-
 export default function TranslatePage() {
   const [inputText, setInputText] = useState('');
   const [translatedText, setTranslatedText] = useState('');
   const [isTranslating, setIsTranslating] = useState(false);
+  const [translationMode, setTranslationMode] = useState<'fast' | 'deep'>('deep');
+  const [isTyping, setIsTyping] = useState(false);
   const [sourceLang, setSourceLang] = useState('English');
   const [targetLang, setTargetLang] = useState('Vietnamese');
   const [copied, setCopied] = useState(false);
@@ -171,15 +158,15 @@ export default function TranslatePage() {
   const [showSavePanel, setShowSavePanel] = useState(false);
   const [wordInsight, setWordInsight] = useState<any>(null);
   const [fromCache, setFromCache] = useState(false);
-  const [history, setHistory] = useState<any[]>([]);
-  const debounceRef = useRef<NodeJS.Timeout | null>(null);
+
+  const fastDebounceRef = useRef<NodeJS.Timeout | null>(null);
+  const deepDebounceRef = useRef<NodeJS.Timeout | null>(null);
   const abortRef = useRef<AbortController | null>(null);
   const lastTranslatedRef = useRef('');
 
-  // Load persistent cache + history on mount
+  // Load persistent cache on mount
   useEffect(() => {
     setCache(loadLocalCache());
-    setHistory(loadHistory());
   }, []);
 
   useEffect(() => {
@@ -189,15 +176,17 @@ export default function TranslatePage() {
     }
   }, [cooldown]);
 
-  const doTranslate = useCallback(async (textToTranslate: string, sLang: string, tLang: string) => {
+  const doTranslate = useCallback(async (textToTranslate: string, sLang: string, tLang: string, mode: 'fast' | 'deep') => {
     const text = textToTranslate.trim();
     if (!text || cooldown > 0) return;
-    if (text === lastTranslatedRef.current) return;
+    
+    // In deep mode, we want to run even if the text matches lastTranslatedRef.current in fast mode (to fetch Gemini translation & word insights!)
+    if (mode === 'fast' && text === lastTranslatedRef.current) return;
+    if (mode === 'deep' && text === lastTranslatedRef.current && wordInsight) return;
 
     const cacheKey = `${sLang}-${tLang}-${text}`;
-    setFromCache(false);
-
-    // ── Client-side cache (instant, no network) ──
+    
+    // If cache has it, load instantly
     if (cache[cacheKey]) {
       setTranslatedText(cache[cacheKey].translation);
       setWordInsight(cache[cacheKey].insight || null);
@@ -212,77 +201,113 @@ export default function TranslatePage() {
     abortRef.current = controller;
 
     setIsTranslating(true);
-    setShowSavePanel(false);
-    setWordInsight(null);
+    setTranslationMode(mode);
+    if (mode === 'deep') {
+      setShowSavePanel(false);
+      setWordInsight(null);
+    }
 
     try {
       const res = await fetch(`${API_BASE}/ai/translate`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text, targetLang: tLang }),
+        body: JSON.stringify({ text, targetLang: tLang, mode }),
         signal: controller.signal,
       });
       const data = await res.json();
 
       if (!res.ok) {
-        setTranslatedText(data.error || 'Dịch thất bại');
-        if (res.status === 429) setCooldown(30);
+        if (mode === 'deep') {
+          setTranslatedText(data.error || 'Dịch thất bại');
+          if (res.status === 429) setCooldown(30);
+        }
       } else {
         setTranslatedText(data.translation);
         lastTranslatedRef.current = text;
         if (data.cached) setFromCache(true);
 
-        // Single word or short phrase insight ONLY for English source
+        // Fetch Word Insights ONLY in deep mode and ONLY for English source
         let insight = null;
-        const wordCount = text.split(/\s+/).length;
-        if (wordCount <= 3 && sLang === 'English') {
-          try {
-            const insightRes = await fetch(`${API_BASE}/ai/word-insight`, {
-              method: 'POST', headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ word: text }),
-              signal: controller.signal,
-            });
-            insight = await insightRes.json();
-            setWordInsight(insight);
-          } catch { /* ignore */ }
+        if (mode === 'deep') {
+          const wordCount = text.split(/\s+/).length;
+          if (wordCount <= 3 && sLang === 'English') {
+            try {
+              const insightRes = await fetch(`${API_BASE}/ai/word-insight`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ word: text }),
+                signal: controller.signal,
+              });
+              insight = await insightRes.json();
+              setWordInsight(insight);
+            } catch { /* ignore */ }
+          }
         }
 
-        // Save to persistent local cache
-        const newCache = {
-          ...cache,
-          [cacheKey]: { translation: data.translation, insight, _ts: Date.now() }
-        };
-        setCache(newCache);
-        saveLocalCache(newCache);
-
-        // Save to history (deduplicate)
-        const newHistory = [
-          { source: text, result: data.translation, sourceLang: sLang, targetLang: tLang, ts: Date.now() },
-          ...history.filter(h => h.source !== text || h.sourceLang !== sLang || h.targetLang !== tLang)
-        ].slice(0, MAX_HISTORY);
-        setHistory(newHistory);
-        saveHistory(newHistory);
+        // Save to persistent local cache if we have a valid translation
+        if (data.translation) {
+          const newCache = {
+            ...cache,
+            [cacheKey]: { 
+              translation: data.translation, 
+              insight: mode === 'deep' ? insight : (cache[cacheKey]?.insight || null), 
+              _ts: Date.now() 
+            }
+          };
+          setCache(newCache);
+          saveLocalCache(newCache);
+        }
       }
     } catch (err: any) {
-      if (err.name !== 'AbortError') setTranslatedText('Lỗi kết nối máy chủ');
+      if (err.name !== 'AbortError' && mode === 'deep') {
+        setTranslatedText('Lỗi kết nối máy chủ');
+      }
     }
     finally { setIsTranslating(false); }
-  }, [cache, cooldown, history]);
+  }, [cache, cooldown, wordInsight]);
 
   // ── Auto-translate on typing (debounced, like Google Translate) ──
   useEffect(() => {
-    if (debounceRef.current) clearTimeout(debounceRef.current);
     const text = inputText.trim();
     if (!text) {
       setTranslatedText('');
       setWordInsight(null);
       lastTranslatedRef.current = '';
+      setIsTyping(false);
       return;
     }
-    debounceRef.current = setTimeout(() => {
-      doTranslate(inputText, sourceLang, targetLang);
-    }, AUTO_TRANSLATE_DELAY);
-    return () => { if (debounceRef.current) clearTimeout(debounceRef.current); };
-  }, [inputText, sourceLang, targetLang]);
+
+    setIsTyping(true);
+
+    // ── Instant cache check (0ms delay for cached words) ──
+    const cacheKey = `${sourceLang}-${targetLang}-${text}`;
+    if (cache[cacheKey]) {
+      setTranslatedText(cache[cacheKey].translation);
+      setWordInsight(cache[cacheKey].insight || null);
+      setFromCache(true);
+      lastTranslatedRef.current = text;
+      setIsTyping(false);
+      return;
+    }
+
+    // ── Fast mode timer (200ms) ──
+    if (fastDebounceRef.current) clearTimeout(fastDebounceRef.current);
+    const endsWithSpace = inputText.endsWith(' ');
+    const fastDelay = endsWithSpace ? 0 : 200;
+    fastDebounceRef.current = setTimeout(() => {
+      doTranslate(inputText, sourceLang, targetLang, 'fast');
+    }, fastDelay);
+
+    // ── Deep mode timer (750ms) ──
+    if (deepDebounceRef.current) clearTimeout(deepDebounceRef.current);
+    deepDebounceRef.current = setTimeout(() => {
+      setIsTyping(false); // Finished typing
+      doTranslate(inputText, sourceLang, targetLang, 'deep');
+    }, 750);
+
+    return () => {
+      if (fastDebounceRef.current) clearTimeout(fastDebounceRef.current);
+      if (deepDebounceRef.current) clearTimeout(deepDebounceRef.current);
+    };
+  }, [inputText, sourceLang, targetLang, cache, doTranslate]);
 
   const swapLangs = () => {
     const s = sourceLang;
@@ -295,6 +320,10 @@ export default function TranslatePage() {
     setWordInsight(null);
     setFromCache(false);
     lastTranslatedRef.current = '';
+    // Trigger deep translation immediately for swapped text
+    if (translatedText.trim()) {
+      doTranslate(translatedText, t, s, 'deep');
+    }
   };
 
   const speak = (text: string, lang = 'en-US') => {
@@ -385,12 +414,29 @@ export default function TranslatePage() {
           <div className="px-6 py-4 flex items-center justify-between border-t border-slate-50 bg-slate-50/30">
             <div className="flex items-center gap-2">
               <button onClick={() => speak(inputText, sourceLang === 'English' ? 'en-US' : 'vi-VN')} disabled={!inputText.trim()} className="p-2 text-slate-400 hover:text-primary transition-all disabled:opacity-30"><Volume2 className="w-5 h-5" /></button>
-              {isTranslating && (
-                <span className="flex items-center gap-1.5 text-[10px] font-black text-primary uppercase tracking-widest animate-pulse">
-                  <Loader2 className="w-3.5 h-3.5 animate-spin" /> Đang dịch...
+              {isTyping && (
+                <span className="flex items-center gap-1.5 text-[10px] font-black text-indigo-500 uppercase tracking-widest animate-pulse">
+                  <span className="relative flex h-1.5 w-1.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-indigo-500"></span>
+                  </span>
+                  Đang viết...
                 </span>
               )}
-              {!isTranslating && inputText.trim() && fromCache && (
+              {!isTyping && isTranslating && (
+                <span className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest animate-pulse text-sky-500">
+                  {translationMode === 'fast' ? (
+                    <>
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" /> Dịch nhanh...
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="w-3.5 h-3.5 text-primary" /> Đang dịch sát nghĩa...
+                    </>
+                  )}
+                </span>
+              )}
+              {!isTyping && !isTranslating && inputText.trim() && fromCache && (
                 <span className="flex items-center gap-1 text-[10px] font-bold text-amber-500 uppercase tracking-widest">
                   <Zap className="w-3 h-3" /> Tức thì
                 </span>
@@ -483,31 +529,6 @@ export default function TranslatePage() {
           initialType={wordInsight?.wordTypes?.[0]?.type || (wordCount > 1 ? 'phrase' : '')}
           onClose={() => setShowSavePanel(false)}
         />
-      )}
-
-      {/* Translation History */}
-      {history.length > 0 && (
-        <div className="space-y-3 animate-in fade-in duration-500">
-          <div className="flex items-center justify-between">
-            <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
-              <RefreshCw className="w-3.5 h-3.5" /> Lịch sử dịch gần đây
-            </h3>
-            <button onClick={() => { setHistory([]); saveHistory([]); }} className="text-[10px] text-slate-300 hover:text-rose-500 font-bold transition-colors">Xoá lịch sử</button>
-          </div>
-          <div className="flex gap-2.5 overflow-x-auto pb-2">
-            {history.map((h, i) => (
-              <button
-                key={i}
-                onClick={() => { setSourceLang(h.sourceLang); setTargetLang(h.targetLang); setInputText(h.source); lastTranslatedRef.current = ''; }}
-                className="flex-shrink-0 premium-card p-3.5 bg-white hover:bg-slate-50 border border-slate-100 hover:border-primary/20 hover:shadow-md transition-all text-left max-w-[220px] cursor-pointer group"
-              >
-                <p className="text-xs font-black text-slate-700 truncate group-hover:text-primary transition-colors">{h.source}</p>
-                <p className="text-[11px] text-slate-400 truncate mt-0.5 font-medium">{h.result}</p>
-                <span className="text-[9px] text-slate-300 font-mono mt-1 block">{h.sourceLang.slice(0, 2)} → {h.targetLang.slice(0, 2)}</span>
-              </button>
-            ))}
-          </div>
-        </div>
       )}
     </div>
   );

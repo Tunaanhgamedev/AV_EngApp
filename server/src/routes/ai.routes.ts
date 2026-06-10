@@ -194,7 +194,7 @@ const generateLocalSpeakingFeedback = (transcript: string, targetText: string) =
 
 // AI Translate (with persistent DB cache for instant repeat translations)
 router.post('/translate', async (req, res) => {
-  const { text, targetLang = 'Vietnamese' } = req.body;
+  const { text, targetLang = 'Vietnamese', mode = 'deep' } = req.body;
   
   if (!text) return res.status(400).json({ error: 'Text is required' });
 
@@ -233,24 +233,11 @@ router.post('/translate', async (req, res) => {
   }
 
   // ── Step 2: AI Translation (cache miss) ─────────────────────────────────────
-  // Diagnostic: Check API Key
-  if (!process.env.GEMINI_API_KEY) {
-    console.error('[AI] CRITICAL: GEMINI_API_KEY is missing in .env');
-    return res.status(500).json({ error: 'Server configuration error: Missing API Key' });
-  }
-
   let translation = '';
   let provider = 'AI (Gemini)';
 
-  try {
-    const prompt = `Translate exactly to ${targetLang}: "${cleanText}". Provide ONLY the translation.`;
-    const translationText = await generateContentWithModelFallback(prompt);
-    translation = translationText.trim();
-    provider = 'AI (Gemini)';
-  } catch (error: any) {
-    console.error('[AI] Gemini Failed, using fallback translator:', error.message);
-    
-    // Fallback 1: Google Translate (Unofficial Fallback - Accurate for short phrases)
+  if (mode === 'fast') {
+    // Fast translation mode: bypass Gemini to provide immediate typing translation
     try {
       const tLang = targetLang === 'Vietnamese' ? 'vi' : 'en';
       const sLang = targetLang === 'Vietnamese' ? 'en' : 'vi';
@@ -258,35 +245,68 @@ router.post('/translate', async (req, res) => {
       
       const gRes = await fetch(googleUrl);
       const gData = await gRes.json();
-      if (gData && gData[0] && gData[0][0] && gData[0][0][0]) {
+      if (gData && gData[0] && Array.isArray(gData[0])) {
+        translation = gData[0].map((item: any) => (item && item[0] ? item[0] : '')).join('');
+        provider = 'AI (Fast)';
+      }
+    } catch (gError) {
+      console.error('[AI] Fast Google Translate fallback failed:', gError);
+    }
+  } else {
+    // Deep translation mode: try Gemini
+    if (!process.env.GEMINI_API_KEY) {
+      console.error('[AI] CRITICAL: GEMINI_API_KEY is missing in .env');
+      return res.status(500).json({ error: 'Server configuration error: Missing API Key' });
+    }
+
+    try {
+      const prompt = `Translate exactly to ${targetLang}: "${cleanText}". Provide ONLY the translation.`;
+      const translationText = await generateContentWithModelFallback(prompt);
+      translation = translationText.trim();
+      provider = 'AI (Gemini)';
+    } catch (error: any) {
+      console.error('[AI] Gemini Failed, using fallback translator:', error.message);
+    }
+  }
+    
+  // Fallback 1: Google Translate (Unofficial Fallback - Accurate for short phrases)
+  if (!translation) {
+    try {
+      const tLang = targetLang === 'Vietnamese' ? 'vi' : 'en';
+      const sLang = targetLang === 'Vietnamese' ? 'en' : 'vi';
+      const googleUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sLang}&tl=${tLang}&dt=t&q=${encodeURIComponent(cleanText)}`;
+      
+      const gRes = await fetch(googleUrl);
+      const gData = await gRes.json();
+      if (gData && gData[0] && Array.isArray(gData[0])) {
         console.log('[AI] Fallback Success: Google Translate');
-        translation = gData[0][0][0];
+        translation = gData[0].map((item: any) => (item && item[0] ? item[0] : '')).join('');
         provider = 'AI (Backup)';
       }
     } catch (gError) {
       console.error('[AI] Google Fallback Failed:', gError);
     }
+  }
 
-    // Fallback 2: MyMemory
-    if (!translation) {
-      try {
-        const targetCode = targetLang === 'Vietnamese' ? 'vi' : 'en';
-        const sourceCode = targetLang === 'Vietnamese' ? 'en' : 'vi';
-        const fallbackUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(cleanText)}&langpair=${sourceCode}|${targetCode}`;
-        const fallbackRes = await fetch(fallbackUrl);
-        const fallbackData = await fallbackRes.json();
-        if (fallbackData.responseData?.translatedText) {
-          translation = fallbackData.responseData.translatedText;
-          provider = 'Community (Fallback)';
-        }
-      } catch (mError) {
-        console.error('[AI] MyMemory Failed:', mError);
+  // Fallback 2: MyMemory
+  if (!translation) {
+    try {
+      const targetCode = targetLang === 'Vietnamese' ? 'vi' : 'en';
+      const sourceCode = targetLang === 'Vietnamese' ? 'en' : 'vi';
+      const fallbackUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(cleanText)}&langpair=${sourceCode}|${targetCode}`;
+      const fallbackRes = await fetch(fallbackUrl);
+      const fallbackData = await fallbackRes.json();
+      if (fallbackData.responseData?.translatedText) {
+        translation = fallbackData.responseData.translatedText;
+        provider = 'Community (Fallback)';
       }
+    } catch (mError) {
+      console.error('[AI] MyMemory Failed:', mError);
     }
+  }
 
-    if (!translation) {
-      return res.status(500).json({ error: 'All translation services failed' });
-    }
+  if (!translation) {
+    return res.status(500).json({ error: 'All translation services failed' });
   }
 
   // ── Step 3: Save to DB Cache (fire-and-forget) ──────────────────────────────
