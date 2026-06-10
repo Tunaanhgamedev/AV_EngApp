@@ -623,7 +623,7 @@ router.post('/notebook', authenticate, async (req: any, res) => {
       return res.status(400).json({ error: 'Word is required' });
     }
 
-    const normalizedWord = word.trim();
+    const normalizedWord = word.trim().toLowerCase();
     const wordCount = normalizedWord.split(/\s+/).filter(Boolean).length;
 
     if (wordCount > 1) {

@@ -53,12 +53,20 @@ async function main() {
   console.log('Seeding Oxford 3000 words...');
   
   for (const w of words) {
+    const lowerWord = w.word.toLowerCase();
     await prisma.vocabularyWord.upsert({
-      where: { id: w.word.toLowerCase() }, // Using lowercase word as a stable ID for seeding
-      update: {},
+      where: { word: lowerWord },
+      update: {
+        meaningEn: w.meaningEn,
+        meaningVi: w.meaningVi,
+        wordType: w.wordType,
+        cefrLevel: w.cefrLevel,
+        audioUs: w.audioUs,
+      },
       create: {
         ...w,
-        id: undefined // Let prisma generate UUID if not provided
+        id: undefined,
+        word: lowerWord
       }
     });
   }
