@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { 
+import {
   Languages, ArrowRightLeft, Copy, Volume2, Sparkles, RefreshCw,
   Loader2, Trash2, Check, BookMarked, Plus, X, Tag, Info, AlertCircle, Zap
 } from 'lucide-react';
@@ -11,10 +11,10 @@ import { useRouter } from 'next/navigation';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
-const WORD_TYPES = ['noun','verb','adjective','adverb','phrase','idiom','other'];
-const TYPE_LABELS: Record<string,string> = {
-  noun:'🔵 Danh từ', verb:'🔴 Động từ', adjective:'🟣 Tính từ',
-  adverb:'🟡 Trạng từ', phrase:'🟢 Cụm từ', idiom:'🩷 Thành ngữ', other:'⚪ Khác',
+const WORD_TYPES = ['noun', 'verb', 'adjective', 'adverb', 'phrase', 'idiom', 'other'];
+const TYPE_LABELS: Record<string, string> = {
+  noun: '🔵 Danh từ', verb: '🔴 Động từ', adjective: '🟣 Tính từ',
+  adverb: '🟡 Trạng từ', phrase: '🟢 Cụm từ', idiom: '🩷 Thành ngữ', other: '⚪ Khác',
 };
 
 // ─── Save to Notebook Panel ───────────────────────────────────────────────────
@@ -23,10 +23,10 @@ function SaveToNotebookPanel({
 }: { sourceText: string; translatedText: string; onClose: () => void; initialType?: string; isEnToVi?: boolean }) {
   const { user } = useAuth();
   const router = useRouter();
-  const [wordType, setWordType]   = useState(initialType);
-  const [editedVi, setEditedVi]   = useState(translatedText);
-  const [saving, setSaving]       = useState(false);
-  const [saved, setSaved]         = useState(false);
+  const [wordType, setWordType] = useState(initialType);
+  const [editedVi, setEditedVi] = useState(translatedText);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   const displayWord = isEnToVi ? sourceText.trim() : translatedText.trim();
   const displayMeaning = isEnToVi ? editedVi.trim() : sourceText.trim();
@@ -67,18 +67,18 @@ function SaveToNotebookPanel({
       <div className="p-6 space-y-5">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-4">
-             <div className="p-4 bg-white rounded-2xl border border-slate-100">
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Từ / Cụm từ (EN)</p>
-                <p className="text-lg font-black text-slate-800">{displayWord}</p>
-             </div>
-             <div>
-                <label className="flex items-center gap-1.5 text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2"><BookMarked className="w-3 h-3" /> Nghĩa (VI)</label>
-                <textarea
-                  value={displayMeaning} readOnly={!isEnToVi}
-                  onChange={e => setEditedVi(e.target.value)}
-                  rows={2} className={cn("w-full p-3 bg-white border-2 border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all", !isEnToVi && "bg-slate-50 cursor-not-allowed")}
-                />
-             </div>
+            <div className="p-4 bg-white rounded-2xl border border-slate-100">
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Từ / Cụm từ (EN)</p>
+              <p className="text-lg font-black text-slate-800">{displayWord}</p>
+            </div>
+            <div>
+              <label className="flex items-center gap-1.5 text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2"><BookMarked className="w-3 h-3" /> Nghĩa (VI)</label>
+              <textarea
+                value={displayMeaning} readOnly={!isEnToVi}
+                onChange={e => setEditedVi(e.target.value)}
+                rows={2} className={cn("w-full p-3 bg-white border-2 border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all", !isEnToVi && "bg-slate-50 cursor-not-allowed")}
+              />
+            </div>
           </div>
           <div>
             <label className="flex items-center gap-1.5 text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3"><Tag className="w-3 h-3" /> Loại từ</label>
@@ -97,21 +97,21 @@ function SaveToNotebookPanel({
         </div>
 
         <div className="flex items-center justify-end gap-3 pt-2 border-t border-slate-100">
-            <button onClick={onClose} className="px-4 py-2.5 text-slate-400 hover:text-slate-600 text-sm font-bold transition-colors">Bỏ qua</button>
-            {saved ? (
-              <div className="flex items-center gap-2 px-6 py-2.5 bg-green-50 text-green-700 rounded-xl font-bold text-sm border border-green-200 animate-in zoom-in duration-300">
-                <Check className="w-4 h-4" /> Đã lưu!
-              </div>
-            ) : (
-              <button onClick={handleSave} disabled={saving || !displayMeaning}
-                className={cn(
-                  "flex items-center gap-2 px-8 py-3 rounded-xl font-bold text-sm text-white transition-all shadow-lg",
-                  displayMeaning && !saving ? "bg-primary hover:bg-primary/90 shadow-primary/20 hover:scale-[1.01]" : "bg-slate-300 cursor-not-allowed"
-                )}>
-                {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
-                Xác nhận Lưu
-              </button>
-            )}
+          <button onClick={onClose} className="px-4 py-2.5 text-slate-400 hover:text-slate-600 text-sm font-bold transition-colors">Bỏ qua</button>
+          {saved ? (
+            <div className="flex items-center gap-2 px-6 py-2.5 bg-green-50 text-green-700 rounded-xl font-bold text-sm border border-green-200 animate-in zoom-in duration-300">
+              <Check className="w-4 h-4" /> Đã lưu!
+            </div>
+          ) : (
+            <button onClick={handleSave} disabled={saving || !displayMeaning}
+              className={cn(
+                "flex items-center gap-2 px-8 py-3 rounded-xl font-bold text-sm text-white transition-all shadow-lg",
+                displayMeaning && !saving ? "bg-primary hover:bg-primary/90 shadow-primary/20 hover:scale-[1.01]" : "bg-slate-300 cursor-not-allowed"
+              )}>
+              {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
+              Xác nhận Lưu
+            </button>
+          )}
         </div>
       </div>
     </div>
@@ -146,7 +146,7 @@ function saveLocalCache(cache: Record<string, any>) {
   } catch { /* storage full, ignore */ }
 }
 
-function loadHistory(): Array<{source: string; result: string; sourceLang: string; targetLang: string; ts: number}> {
+function loadHistory(): Array<{ source: string; result: string; sourceLang: string; targetLang: string; ts: number }> {
   if (typeof window === 'undefined') return [];
   try {
     const raw = localStorage.getItem(HISTORY_KEY);
@@ -156,22 +156,22 @@ function loadHistory(): Array<{source: string; result: string; sourceLang: strin
 
 function saveHistory(history: any[]) {
   if (typeof window === 'undefined') return;
-  try { localStorage.setItem(HISTORY_KEY, JSON.stringify(history.slice(0, MAX_HISTORY))); } catch {}
+  try { localStorage.setItem(HISTORY_KEY, JSON.stringify(history.slice(0, MAX_HISTORY))); } catch { }
 }
 
 export default function TranslatePage() {
-  const [inputText, setInputText]           = useState('');
+  const [inputText, setInputText] = useState('');
   const [translatedText, setTranslatedText] = useState('');
-  const [isTranslating, setIsTranslating]   = useState(false);
-  const [sourceLang, setSourceLang]         = useState('English');
-  const [targetLang, setTargetLang]         = useState('Vietnamese');
-  const [copied, setCopied]                 = useState(false);
-  const [cache, setCache]                   = useState<Record<string, any>>({});
-  const [cooldown, setCooldown]             = useState(0);
-  const [showSavePanel, setShowSavePanel]   = useState(false);
-  const [wordInsight, setWordInsight]       = useState<any>(null);
-  const [fromCache, setFromCache]           = useState(false);
-  const [history, setHistory]               = useState<any[]>([]);
+  const [isTranslating, setIsTranslating] = useState(false);
+  const [sourceLang, setSourceLang] = useState('English');
+  const [targetLang, setTargetLang] = useState('Vietnamese');
+  const [copied, setCopied] = useState(false);
+  const [cache, setCache] = useState<Record<string, any>>({});
+  const [cooldown, setCooldown] = useState(0);
+  const [showSavePanel, setShowSavePanel] = useState(false);
+  const [wordInsight, setWordInsight] = useState<any>(null);
+  const [fromCache, setFromCache] = useState(false);
+  const [history, setHistory] = useState<any[]>([]);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
   const abortRef = useRef<AbortController | null>(null);
   const lastTranslatedRef = useRef('');
@@ -222,7 +222,7 @@ export default function TranslatePage() {
         signal: controller.signal,
       });
       const data = await res.json();
-      
+
       if (!res.ok) {
         setTranslatedText(data.error || 'Dịch thất bại');
         if (res.status === 429) setCooldown(30);
@@ -311,7 +311,7 @@ export default function TranslatePage() {
 
     if (window.speechSynthesis) {
       const voices = window.speechSynthesis.getVoices();
-      
+
       // Fallback to Translate TTS if no voices are loaded/installed
       if (voices.length === 0) {
         playTranslateTTS();
@@ -319,18 +319,18 @@ export default function TranslatePage() {
       }
 
       const u = new SpeechSynthesisUtterance(text);
-      u.lang = lang; 
+      u.lang = lang;
       u.rate = 0.9;
-      
-      const preferredVoice = voices.find(v => v.lang === lang && v.name.includes('Google')) || 
-                             voices.find(v => v.lang === lang);
+
+      const preferredVoice = voices.find(v => v.lang === lang && v.name.includes('Google')) ||
+        voices.find(v => v.lang === lang);
       if (preferredVoice) u.voice = preferredVoice;
 
       u.onerror = (e) => {
         console.log("speechSynthesis error, playing Google Translate TTS:", e);
         playTranslateTTS();
       };
-      
+
       if (window.speechSynthesis.speaking) {
         window.speechSynthesis.cancel();
         setTimeout(() => {
@@ -345,7 +345,7 @@ export default function TranslatePage() {
   };
 
   const hasResult = translatedText && !translatedText.includes('Failed') && !translatedText.includes('thất bại') && !translatedText.includes('Lỗi');
-  
+
   // Logic: strictly only 1 word for notebook as per user request
   const wordCount = inputText.trim().split(/\s+/).length;
   const isPhraseOrSentence = wordCount >= 2 || inputText.trim().endsWith('.') || inputText.trim().endsWith('!');
@@ -418,46 +418,46 @@ export default function TranslatePage() {
               )}
               <div className="text-3xl font-black text-slate-800 leading-tight">
                 {translatedText || <span className="text-slate-200 font-medium italic">{isTranslating ? 'Đang dịch...' : 'Kết quả dịch...'}</span>}
-                </div>
-
-                {/* Insight ONLY for single word */}
-                {wordInsight && hasResult && sourceLang === 'English' && !isPhraseOrSentence && (
-                  <div className="p-5 bg-slate-50 rounded-2xl border border-slate-100 space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2 text-primary">
-                        <Info className="w-4 h-4" />
-                        <span className="text-[10px] font-black uppercase tracking-widest">Chi tiết từ vựng</span>
-                      </div>
-                      <span className="text-[10px] font-bold px-2 py-0.5 bg-blue-50 text-blue-600 rounded-full">{wordInsight.cefrLevel}</span>
-                    </div>
-                    <div className="flex flex-wrap gap-4">
-                      {wordInsight.wordTypes?.map((wt: any, i: number) => (
-                        <div key={i}>
-                          <span className="text-[10px] font-black text-slate-400 uppercase tracking-tighter">{wt.type}</span>
-                          <p className="text-sm text-slate-700 font-bold">{wt.meaningVi}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                
-                {/* Phrase/Sentence Warning */}
-                {isPhraseOrSentence && hasResult && (
-                  <div className="flex items-start gap-3 p-4 bg-slate-50 rounded-2xl border border-slate-100 text-slate-500">
-                    <Info className="w-5 h-5 flex-shrink-0 mt-0.5 text-primary" />
-                    <div className="text-xs font-medium">
-                      <p className="font-black uppercase tracking-widest text-[10px] mb-1">Dịch Cụm từ / Câu văn</p>
-                      Bạn đang dịch cụm từ hoặc câu. Hệ thống chỉ cho phép lưu **từ vựng đơn lẻ** vào Notebook để đảm bảo hiệu quả ôn tập.
-                    </div>
-                  </div>
-                )}
               </div>
+
+              {/* Insight ONLY for single word */}
+              {wordInsight && hasResult && sourceLang === 'English' && !isPhraseOrSentence && (
+                <div className="p-5 bg-slate-50 rounded-2xl border border-slate-100 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-primary">
+                      <Info className="w-4 h-4" />
+                      <span className="text-[10px] font-black uppercase tracking-widest">Chi tiết từ vựng</span>
+                    </div>
+                    <span className="text-[10px] font-bold px-2 py-0.5 bg-blue-50 text-blue-600 rounded-full">{wordInsight.cefrLevel}</span>
+                  </div>
+                  <div className="flex flex-wrap gap-4">
+                    {wordInsight.wordTypes?.map((wt: any, i: number) => (
+                      <div key={i}>
+                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-tighter">{wt.type}</span>
+                        <p className="text-sm text-slate-700 font-bold">{wt.meaningVi}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Phrase/Sentence Warning */}
+              {isPhraseOrSentence && hasResult && (
+                <div className="flex items-start gap-3 p-4 bg-slate-50 rounded-2xl border border-slate-100 text-slate-500">
+                  <Info className="w-5 h-5 flex-shrink-0 mt-0.5 text-primary" />
+                  <div className="text-xs font-medium">
+                    <p className="font-black uppercase tracking-widest text-[10px] mb-1">Dịch Cụm từ / Câu văn</p>
+                    Bạn đang dịch cụm từ hoặc câu. Hệ thống chỉ cho phép lưu "từ vựng đơn lẻ" vào Notebook để đảm bảo hiệu quả ôn tập.
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="p-6 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
             <div className="flex gap-2">
               <button onClick={() => speak(translatedText, targetLang === 'Vietnamese' ? 'vi-VN' : 'en-US')} className="p-2 text-slate-400 hover:text-primary transition-all"><Volume2 className="w-5 h-5" /></button>
-              <button onClick={() => { navigator.clipboard.writeText(translatedText); setCopied(true); setTimeout(()=>setCopied(false),2000); }} 
+              <button onClick={() => { navigator.clipboard.writeText(translatedText); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
                 className={cn("p-2 transition-all", copied ? "text-green-500" : "text-slate-400 hover:text-primary")}>
                 {copied ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
               </button>
@@ -503,7 +503,7 @@ export default function TranslatePage() {
               >
                 <p className="text-xs font-black text-slate-700 truncate group-hover:text-primary transition-colors">{h.source}</p>
                 <p className="text-[11px] text-slate-400 truncate mt-0.5 font-medium">{h.result}</p>
-                <span className="text-[9px] text-slate-300 font-mono mt-1 block">{h.sourceLang.slice(0,2)} → {h.targetLang.slice(0,2)}</span>
+                <span className="text-[9px] text-slate-300 font-mono mt-1 block">{h.sourceLang.slice(0, 2)} → {h.targetLang.slice(0, 2)}</span>
               </button>
             ))}
           </div>
