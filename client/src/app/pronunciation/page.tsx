@@ -170,6 +170,45 @@ const S_RULES = [
   { rule: 'Đọc /ɪz/', condition: 'Sau âm xì: /s/, /z/, /ʃ/, /ʒ/, /tʃ/, /dʒ/', examples: [{ word: 'buses', ipa: '/ˈbʌs.ɪz/' }, { word: 'watches', ipa: '/ˈwɒtʃ.ɪz/' }, { word: 'bridges', ipa: '/ˈbrɪdʒ.ɪz/' }] },
 ];
 
+// ─── Nouns, Plurals & Articles Data ──────────────────────────────────────────
+const PLURAL_RULES = [
+  { rule: 'Thông thường (Thêm -s)', condition: 'Hầu hết danh từ đếm được số ít', examples: [{ word: 'book', plural: 'books', ipa: '/bʊks/', vi: 'sách' }, { word: 'cup', plural: 'cups', ipa: '/kʌps/', vi: 'cốc' }, { word: 'pen', plural: 'pens', ipa: '/penz/', vi: 'bút' }] },
+  { rule: 'Đuôi đặc biệt (Thêm -es)', condition: 'Danh từ kết thúc bằng -s, -ss, -sh, -ch, -x, -z', examples: [{ word: 'bus', plural: 'buses', ipa: '/ˈbʌs.ɪz/', vi: 'xe buýt' }, { word: 'watch', plural: 'watches', ipa: '/ˈwɒtʃ.ɪz/', vi: 'đồng hồ' }, { word: 'box', plural: 'boxes', ipa: '/ˈbɒk.sɪz/', vi: 'hộp' }] },
+  { rule: 'Đuôi -y preceded by consonant', condition: 'Đổi -y thành -i + es', examples: [{ word: 'baby', plural: 'babies', ipa: '/ˈbeɪ.biz/', vi: 'trẻ sơ sinh' }, { word: 'city', plural: 'cities', ipa: '/ˈsɪt.iz/', vi: 'thành phố' }] },
+  { rule: 'Đuôi -y preceded by vowel', condition: 'Giữ nguyên -y + s', examples: [{ word: 'boy', plural: 'boys', ipa: '/bɔɪz/', vi: 'cậu bé' }, { word: 'key', plural: 'keys', ipa: '/kiːz/', vi: 'chìa khóa' }] },
+  { rule: 'Đuôi -f/-fe', condition: 'Đổi -f/-fe thành -ves', examples: [{ word: 'knife', plural: 'knives', ipa: '/naɪvz/', vi: 'con dao' }, { word: 'leaf', plural: 'leaves', ipa: '/liːvz/', vi: 'chiếc lá' }] }
+];
+
+const IRREGULAR_NOUNS = [
+  { singular: 'man', plural: 'men', ipaSingular: '/mæn/', ipaPlural: '/men/', vi: 'đàn ông' },
+  { singular: 'woman', plural: 'women', ipaSingular: '/ˈwʊm.ən/', ipaPlural: '/ˈwɪm.ɪn/', vi: 'phụ nữ' },
+  { singular: 'child', plural: 'children', ipaSingular: '/tʃaɪld/', ipaPlural: '/ˈtʃɪl.drən/', vi: 'trẻ em' },
+  { singular: 'tooth', plural: 'teeth', ipaSingular: '/tuːθ/', ipaPlural: '/tiːθ/', vi: 'răng' },
+  { singular: 'foot', plural: 'feet', ipaSingular: '/fʊt/', ipaPlural: '/fiːt/', vi: 'bàn chân' },
+  { singular: 'mouse', plural: 'mice', ipaSingular: '/maʊs/', ipaPlural: '/maɪs/', vi: 'con chuột' },
+  { singular: 'person', plural: 'people', ipaSingular: '/ˈpɜː.sən/', ipaPlural: '/ˈpiː.pl̩/', vi: 'người' },
+  { singular: 'sheep', plural: 'sheep', ipaSingular: '/ʃiːp/', ipaPlural: '/ʃiːp/', vi: 'con cừu' },
+  { singular: 'fish', plural: 'fish', ipaSingular: '/fɪʃ/', ipaPlural: '/fɪʃ/', vi: 'con cá' }
+];
+
+const UNCOUNTABLE_NOUNS = [
+  { term: 'water', ipa: '/ˈwɔː.tər/', vi: 'nước', measure: 'a glass of water', measureVi: 'một ly nước' },
+  { term: 'milk', ipa: '/mɪlk/', vi: 'sữa', measure: 'a carton of milk', measureVi: 'một hộp sữa' },
+  { term: 'coffee', ipa: '/ˈkɒf.i/', vi: 'cà phê', measure: 'a cup of coffee', measureVi: 'một tách cà phê' },
+  { term: 'bread', ipa: '/bred/', vi: 'bánh mì', measure: 'a slice of bread', measureVi: 'một lát bánh mì' },
+  { term: 'information', ipa: '/ˌɪn.fəˈmeɪ.ʃən/', vi: 'thông tin', measure: 'a piece of information', measureVi: 'một mẩu thông tin' },
+  { term: 'furniture', ipa: '/ˈfɜː.nɪ.tʃər/', vi: 'đồ nội thất', measure: 'a piece of furniture', measureVi: 'một món đồ nội thất' },
+  { term: 'money', ipa: '/ˈmʌn.i/', vi: 'tiền', measure: 'a sum of money', measureVi: 'một khoản tiền' },
+  { term: 'advice', ipa: '/ədˈvaɪs/', vi: 'lời khuyên', measure: 'a piece of advice', measureVi: 'một lời khuyên' }
+];
+
+const ARTICLE_RULES = [
+  { rule: 'Dùng "a"', condition: 'Trước từ bắt đầu bằng phụ âm (phát âm phụ âm)', examples: [{ word: 'a cat', ipa: '/ə kæt/' }, { word: 'a dog', ipa: '/ə dɒɡ/' }, { word: 'a house', ipa: '/ə haʊs/' }] },
+  { rule: 'Dùng "an"', condition: 'Trước từ bắt đầu bằng nguyên âm (phát âm nguyên âm)', examples: [{ word: 'an apple', ipa: '/ən ˈæp.l̩/' }, { word: 'an egg', ipa: '/ən eɡ/' }, { word: 'an orange', ipa: '/ən ˈɒr.ɪndʒ/' }] },
+  { rule: 'Ngoại lệ "h" câm (dùng an)', condition: 'Bắt đầu bằng chữ h nhưng âm h câm (phát âm nguyên âm tiếp theo)', examples: [{ word: 'an hour', ipa: '/ən ˈaʊ.ər/' }, { word: 'an honor', ipa: '/ən ˈɒn.ər/' }, { word: 'an honest man', ipa: '/ən ˈɒn.ɪst mæn/' }] },
+  { rule: 'Ngoại lệ chữ u/e phát âm /j/ (dùng a)', condition: 'Bắt đầu bằng nguyên âm chữ cái nhưng phát âm phụ âm /j/ hoặc /w/', examples: [{ word: 'a university', ipa: '/ə ˌjuː.nɪˈvɜː.sə.ti/' }, { word: 'a European', ipa: '/ə ˌjʊə.rəˈpiː.ən/' }, { word: 'a one-way street', ipa: '/ə wʌn weɪ striːt/' }] }
+];
+
 // ─── Days, Months, Years Data ────────────────────────────────────────────────
 const DAYS_OF_WEEK = [
   { day: 'Monday', abbreviation: 'Mon', ipa: '/ˈmʌn.deɪ/', vi: 'Thứ Hai' },
@@ -314,6 +353,96 @@ const TOPIC_LESSONS = [
       { text: 'Data Analytics', ipa: '/ˈdeɪ.tə ˌæn.əlˈɪt.ɪks/', vi: 'Phân tích dữ liệu' },
       { text: 'Financial Management', ipa: '/faɪˈnæn.ʃəl ˈmæn.ɪdʒ.mənt/', vi: 'Quản lý tài chính' },
       { text: 'Creative Writing', ipa: '/kriˈeɪ.tɪv ˈraɪ.tɪŋ/', vi: 'Viết sáng tạo' }
+    ]
+  },
+  {
+    id: 'appearance_personality',
+    title: 'Ngoại hình & Tính cách (Appearance & Personality)',
+    desc: 'Các mẫu câu hỏi và mô tả chi tiết về diện mạo bên ngoài và tính cách con người.',
+    phrases: [
+      { text: 'What does he look like?', ipa: '/wɒt dʌz hiː lʊk laɪk/', vi: 'Anh ấy trông như thế nào?' },
+      { text: 'She has long brown hair and blue eyes', ipa: '/ʃiː hæz lɒŋ braʊn heər ænd bluː aɪz/', vi: 'Cô ấy có mái tóc nâu dài và đôi mắt xanh.' },
+      { text: 'He is tall and well-built', ipa: '/hiː ɪz tɔːl ænd ˌwelˈbɪlt/', vi: 'Anh ấy cao và có thân hình cân đối.' },
+      { text: 'How would you describe her personality?', ipa: '/haʊ wʊd juː dɪˈskraɪb hɜː ˌpɜː.sənˈæl.ə.ti/', vi: 'Bạn mô tả tính cách cô ấy thế nào?' },
+      { text: 'He is very outgoing and has a good sense of humor', ipa: '/hiː ɪz ˈver.i ˈaʊt.ɡəʊ.ɪŋ ænd hæz ə ɡʊd sens ɒv ˈhjuː.mər/', vi: 'Anh ấy rất cởi mở và có khiếu hài hước.' },
+      { text: 'She is kind, patient, and extremely smart', ipa: '/ʃiː ɪz kaɪnd ˈpeɪ.ʃənt ænd ɪkˈstriːm.li smɑːt/', vi: 'Cô ấy tốt bụng, kiên nhẫn và vô cùng thông minh.' },
+      { text: 'What is your best friend like?', ipa: '/wɒt ɪz jɔː best frend laɪk/', vi: 'Người bạn thân nhất của bạn là người như thế nào?' },
+      { text: 'He is quiet and a bit shy at first', ipa: '/hiː ɪz ˈkwaɪ.ət ænd ə bɪt ʃaɪ æt fɜːst/', vi: 'Anh ấy trầm tính và hơi nhút nhát lúc đầu.' }
+    ]
+  },
+  {
+    id: 'contact_address',
+    title: 'Liên lạc & Địa chỉ (Contact & Address)',
+    desc: 'Cách hỏi và cung cấp số điện thoại, địa chỉ nhà, email và thông tin liên lạc cá nhân.',
+    phrases: [
+      { text: 'What is your phone number?', ipa: '/wɒt ɪz jɔː fəʊn ˈnʌm.bər/', vi: 'Số điện thoại của bạn là gì?' },
+      { text: 'Can I have your phone number, please?', ipa: '/kæn aɪ hæv jɔː fəʊn ˈnʌm.bər pliːz/', vi: 'Cho tôi xin số điện thoại của bạn được không?' },
+      { text: 'Where do you live?', ipa: '/weə duː juː lɪv/', vi: 'Bạn sống ở đâu?' },
+      { text: 'What is your current address?', ipa: '/wɒt ɪz jɔː ˈkʌr.ənt əˈdres/', vi: 'Địa chỉ hiện tại của bạn là gì?' },
+      { text: 'Could you spell your email address?', ipa: '/kʊd juː spel jɔː ˈiː.meɪl əˈdres/', vi: 'Bạn có thể đánh vần địa chỉ email không?' },
+      { text: 'I live at one-two-three Main Street', ipa: '/aɪ lɪv æt wʌn tuː θriː meɪn striːt/', vi: 'Tôi sống ở số 123 đường Main.' },
+      { text: 'Are you on social media?', ipa: '/ɑːr juː ɒn ˈsəʊ.ʃəl ˈmiː.di.ə/', vi: 'Bạn có dùng mạng xã hội không?' },
+      { text: 'Let me write down your contact details', ipa: '/let miː raɪt daʊn jɔː ˈkɒn.tækt ˈdiː.teɪlz/', vi: 'Để tôi ghi lại thông tin liên lạc của bạn.' }
+    ]
+  },
+  {
+    id: 'hobbies_free_time',
+    title: 'Sở thích & Thời gian rảnh (Hobbies & Free Time)',
+    desc: 'Cách hỏi thăm và chia sẻ về các hoạt động giải trí, sở thích cá nhân lúc rảnh rỗi.',
+    phrases: [
+      { text: 'What do you like doing in your free time?', ipa: '/wɒt duː juː laɪk ˈduː.ɪŋ ɪn jɔː friː taɪm/', vi: 'Bạn thích làm gì vào thời gian rảnh?' },
+      { text: 'I am really into listening to music', ipa: '/aɪ æm ˈrɪə.li ˈɪn.tuː ˈlɪs.ən.ɪŋ tu ˈmjuː.zɪk/', vi: 'Tôi rất thích nghe nhạc.' },
+      { text: 'How often do you go to the gym?', ipa: '/haʊ ˈɒf.ən duː juː ɡəʊ tu ðə dʒɪm/', vi: 'Bạn có thường xuyên đi tập gym không?' },
+      { text: 'I enjoy reading books and watching movies', ipa: '/aɪ ɪnˈdʒɔɪ ˈriː.dɪŋ bʊks ænd ˈwɒtʃ.ɪŋ ˈmuː.viz/', vi: 'Tôi thích đọc sách và xem phim.' },
+      { text: 'Are you interested in sports?', ipa: '/ɑːr juː ˈɪn.trəs.tɪd ɪn spɔːts/', vi: 'Bạn có quan tâm đến thể thao không?' },
+      { text: 'I love traveling to new places', ipa: '/aɪ lʌv ˈtræv.əl.ɪŋ tu njuː ˈpleɪ.sɪz/', vi: 'Tôi yêu thích đi du lịch đến những địa điểm mới.' },
+      { text: 'I like taking photos in my spare time', ipa: '/aɪ laɪk ˈteɪ.kɪŋ ˈfəʊ.təʊz ɪn maɪ speər taɪm/', vi: 'Tôi thích chụp ảnh lúc rảnh rỗi.' },
+      { text: 'How do you spend your weekends?', ipa: '/haʊ duː juː spend jɔː ˌwiːk.ˈendz/', vi: 'Bạn dành những ngày cuối tuần như thế nào?' }
+    ]
+  },
+  {
+    id: 'family_relationships',
+    title: 'Gia đình & Mối quan hệ (Family & Relationships)',
+    desc: 'Các mẫu câu hỏi thăm về thành viên gia đình, anh chị em và tình trạng mối quan hệ.',
+    phrases: [
+      { text: 'How many people are there in your family?', ipa: '/haʊ ˈmen.i ˈpiː.pəl ɑːr ðeər ɪn jɔː ˈfæm.əl.i/', vi: 'Gia đình bạn có bao nhiêu người?' },
+      { text: 'There are four of us in my family', ipa: '/ðeər ɑːr fɔːr ɒv ʌs ɪn maɪ ˈfæm.əl.i/', vi: 'Gia đình tôi có 4 người.' },
+      { text: 'Do you have any siblings?', ipa: '/duː juː hæv ˈen.i ˈsɪb.lɪŋz/', vi: 'Bạn có anh chị em ruột không?' },
+      { text: 'I have an elder sister and a younger brother', ipa: '/aɪ hæv ən ˈel.dər ˈsɪs.tər ænd ə ˈjʌŋ.gər ˈbrʌð.ər/', vi: 'Tôi có một chị gái và một em trai.' },
+      { text: 'Are you married or single?', ipa: '/ɑːr juː ˈmær.ɪd ɔː ˈsɪŋ.ɡəl/', vi: 'Bạn đã kết hôn hay còn độc thân?' },
+      { text: 'How long have you been together?', ipa: '/haʊ lɒŋ hæv juː biːn təˈɡeð.ər/', vi: 'Hai bạn đã ở bên nhau được bao lâu rồi?' },
+      { text: 'Do you live with your parents?', ipa: '/duː juː lɪv wɪð jɔː ˈpeə.rənts/', vi: 'Bạn có sống cùng bố mẹ không?' },
+      { text: 'We have a very close relationship', ipa: '/wiː hæv ə ˈver.i kləʊs rɪˈleɪ.ʃən.ʃɪp/', vi: 'Chúng tôi có mối quan hệ rất thân thiết.' }
+    ]
+  },
+  {
+    id: 'shopping_payment',
+    title: 'Mua sắm & Thanh toán (Shopping & Payment)',
+    desc: 'Giao tiếp khi chọn đồ, thử đồ, hỏi giá, mặc cả và thanh toán tại cửa hàng.',
+    phrases: [
+      { text: 'Can I try this on?', ipa: '/kæn aɪ traɪ ðɪs ɒn/', vi: 'Tôi có thể thử cái này được không?' },
+      { text: 'Where is the changing room?', ipa: '/weər ɪz ðə ˈtʃeɪn.dʒɪŋ ruːm/', vi: 'Phòng thử đồ ở đâu?' },
+      { text: 'Do you have this in a larger size?', ipa: '/duː juː hæv ðɪs ɪn ə lɑː.dʒər saɪz/', vi: 'Bạn có cái này size lớn hơn không?' },
+      { text: 'Do you accept credit cards?', ipa: '/duː juː əkˈsept ˈkred.ɪt kɑːdz/', vi: 'Cửa hàng có nhận thẻ tín dụng không?' },
+      { text: 'I would like to pay in cash', ipa: '/aɪ wʊd laɪk tu peɪ ɪn kæʃ/', vi: 'Tôi muốn thanh toán bằng tiền mặt.' },
+      { text: 'Could you give me a receipt, please?', ipa: '/kʊd juː ɡɪv miː ə rɪˈsiːt pliːz/', vi: 'Cho tôi xin hóa đơn được không?' },
+      { text: 'Is this item on sale?', ipa: '/ɪz ðɪs ˈaɪ.təm ɒn seɪl/', vi: 'Sản phẩm này có đang giảm giá không?' },
+      { text: 'What is the return policy?', ipa: '/wɒt ɪz ðə rɪˈtɜːn ˈpɒl.ə.si/', vi: 'Chính sách đổi trả hàng như thế nào?' }
+    ]
+  },
+  {
+    id: 'asking_directions',
+    title: 'Hỏi đường & Chỉ đường (Directions & Places)',
+    desc: 'Mẫu câu hỏi đường đi, xác định vị trí và hướng dẫn người khác.',
+    phrases: [
+      { text: 'Could you tell me the way to the bus station?', ipa: '/kʊd juː tel miː ðə weɪ tu ðə bʌs ˈsteɪ.ʃən/', vi: 'Bạn chỉ đường đến bến xe buýt được không?' },
+      { text: 'Is there a pharmacy near here?', ipa: '/ɪz ðeər ə ˈfɑː.mə.si nɪə hɪər/', vi: 'Gần đây có hiệu thuốc nào không?' },
+      { text: 'How far is it from here?', ipa: '/haʊ fɑːr ɪz ɪt frɒm hɪər/', vi: 'Từ đây đến đó bao xa?' },
+      { text: 'Go straight and turn left at the traffic lights', ipa: '/ɡəʊ streɪt ænd tɜːn left æt ðə ˈtræf.ɪk laɪts/', vi: 'Đi thẳng rồi rẽ trái ở đèn giao thông.' },
+      { text: 'It is on the right-hand side', ipa: '/ɪt ɪz ɒn ðə raɪt hænd saɪd/', vi: 'Nó nằm ở phía bên tay phải.' },
+      { text: 'You cannot miss it', ipa: '/juː ˈkæn.ɒt mɪs ɪt/', vi: 'Bạn không thể đi lạc đâu.' },
+      { text: 'Excuse me, I am lost', ipa: '/ɪkˈskjuːz miː aɪ æm lɒst/', vi: 'Xin lỗi, tôi đang bị lạc đường.' },
+      { text: 'Is this the correct way to the museum?', ipa: '/ɪz ðɪs ðə kəˈrekt weɪ tu ðə mjuːˈziː.əm/', vi: 'Đây có đúng đường đến bảo tàng không?' }
     ]
   }
 ];
@@ -489,10 +618,11 @@ function IPACell({ item, color, isActive, onClick }: { item: any; color: string;
 }
 
 export default function PronunciationPage() {
-  const [activeTab, setActiveTab] = useState<'alphabet' | 'chart' | 'stress' | 'pairs' | 'building' | 'numbers' | 'endings' | 'datetime' | 'countries' | 'topics'>('alphabet');
+  const [activeTab, setActiveTab] = useState<'alphabet' | 'chart' | 'stress' | 'pairs' | 'building' | 'numbers' | 'endings' | 'datetime' | 'countries' | 'topics' | 'nouns'>('alphabet');
   const [selectedTopic, setSelectedTopic] = useState<string>('greetings');
   const [chartSection, setChartSection] = useState<'vowels' | 'diphthongs' | 'consonants'>('vowels');
   const [numSection, setNumSection] = useState<'basic' | 'big' | 'combo' | 'ordinals'>('basic');
+  const [nounSection, setNounSection] = useState<'rules' | 'irregular' | 'uncountable' | 'articles'>('rules');
   const [selectedSound, setSelectedSound] = useState<any>(null);
 
   // New Datetime & Countries states
@@ -559,6 +689,7 @@ export default function PronunciationPage() {
     { id: 'countries' as const, label: 'Các Nước & Quốc Tịch', icon: Globe },
     { id: 'stress' as const, label: 'Quy Tắc Trọng Âm', icon: Target },
     { id: 'endings' as const, label: 'Đuôi -ed, -s/-es', icon: FileText },
+    { id: 'nouns' as const, label: 'Danh Từ & Số Nhiều', icon: Star },
     { id: 'pairs' as const, label: 'Cặp Tối Thiểu', icon: Mic },
     { id: 'building' as const, label: 'Nối Câu & Chữ', icon: Sparkles },
   ];
@@ -576,19 +707,19 @@ export default function PronunciationPage() {
       </header>
 
       {/* Tab Navigation */}
-      <div className="flex gap-2 overflow-x-auto pb-1">
+      <div className="flex flex-wrap gap-1.5 sm:gap-2">
         {tabs.map(tab => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={cn(
-              "flex items-center gap-2 px-5 py-3 rounded-xl font-bold text-sm whitespace-nowrap transition-all cursor-pointer",
+              "flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-3 rounded-lg sm:rounded-xl font-bold text-xs sm:text-sm whitespace-nowrap transition-all cursor-pointer",
               activeTab === tab.id
                 ? "bg-slate-900 text-white shadow-lg"
                 : "bg-white text-slate-500 border border-slate-200 hover:border-primary"
             )}
           >
-            <tab.icon className="w-4 h-4" />
+            <tab.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             {tab.label}
           </button>
         ))}
@@ -1209,6 +1340,60 @@ export default function PronunciationPage() {
                   </div>
                 </div>
               </div>
+
+              {/* Consonant to Consonant (Assimilation) */}
+              <div className="premium-card p-6 space-y-4 hover:shadow-lg transition-all bg-white border border-slate-200 rounded-[2rem]">
+                <h4 className="font-black text-slate-800 flex items-center gap-2">
+                  <span className="p-1.5 bg-amber-100 text-amber-600 rounded-lg text-xs">Phụ âm ➔ Phụ âm</span>
+                  Nối & Biến đổi phụ âm (Assimilation)
+                </h4>
+                <p className="text-xs text-slate-500 font-medium leading-relaxed">
+                  Khi hai phụ âm đứng cạnh nhau, âm cuối của từ trước có thể biến đổi hoặc hòa lẫn vào âm đầu của từ sau.
+                </p>
+                <div className="space-y-2">
+                  <div className="p-3 bg-slate-50 rounded-xl space-y-1">
+                    <p className="text-xs font-mono font-bold text-slate-700">meet you ➔ /t/ + /j/ ➔ "mee-tshu" (/miːtʃu/)</p>
+                    <div className="flex justify-between items-center text-[11px] text-slate-400 font-medium">
+                      <span>Rất vui được gặp bạn</span>
+                      <button onClick={() => speak("meet you")} className="text-purple-600 font-bold flex items-center gap-1 cursor-pointer">Nghe phát âm <Play className="w-2 h-2 fill-purple-600 text-purple-600" /></button>
+                    </div>
+                  </div>
+                  <div className="p-3 bg-slate-50 rounded-xl space-y-1">
+                    <p className="text-xs font-mono font-bold text-slate-700">would you ➔ /d/ + /j/ ➔ "wou-dju" (/ˈwʊdʒu/)</p>
+                    <div className="flex justify-between items-center text-[11px] text-slate-400 font-medium">
+                      <span>Bạn có muốn...</span>
+                      <button onClick={() => speak("would you")} className="text-purple-600 font-bold flex items-center gap-1 cursor-pointer">Nghe phát âm <Play className="w-2 h-2 fill-purple-600 text-purple-600" /></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Elision (Nuốt âm) */}
+              <div className="premium-card p-6 space-y-4 hover:shadow-lg transition-all bg-white border border-slate-200 rounded-[2rem]">
+                <h4 className="font-black text-slate-800 flex items-center gap-2">
+                  <span className="p-1.5 bg-rose-100 text-rose-600 rounded-lg text-xs">Nuốt âm (Elision)</span>
+                  Giản lược/Nuốt âm cuối
+                </h4>
+                <p className="text-xs text-slate-500 font-medium leading-relaxed">
+                  Âm yếu như **/t/** hoặc **/d/** ở cuối từ thường bị nuốt (không phát âm) khi từ tiếp theo bắt đầu bằng một phụ âm khác.
+                </p>
+                <div className="space-y-2">
+                  <div className="p-3 bg-slate-50 rounded-xl space-y-1">
+                    <p className="text-xs font-mono font-bold text-slate-700">next door ➔ nuốt âm /t/ ➔ "nex-door"</p>
+                    <div className="flex justify-between items-center text-[11px] text-slate-400 font-medium">
+                      <span>Nhà bên cạnh</span>
+                      <button onClick={() => speak("next door")} className="text-purple-600 font-bold flex items-center gap-1 cursor-pointer">Nghe phát âm <Play className="w-2 h-2 fill-purple-600 text-purple-600" /></button>
+                    </div>
+                  </div>
+                  <div className="p-3 bg-slate-50 rounded-xl space-y-1">
+                    <p className="text-xs font-mono font-bold text-slate-700">last night ➔ nuốt âm /t/ ➔ "las-night"</p>
+                    <div className="flex justify-between items-center text-[11px] text-slate-400 font-medium">
+                      <span>Tối hôm qua</span>
+                      <button onClick={() => speak("last night")} className="text-purple-600 font-bold flex items-center gap-1 cursor-pointer">Nghe phát âm <Play className="w-2 h-2 fill-purple-600 text-purple-600" /></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </section>
         </div>
@@ -1227,7 +1412,7 @@ export default function PronunciationPage() {
           </div>
 
           {/* Sub-tabs */}
-          <div className="flex gap-2 overflow-x-auto pb-1">
+          <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
             {[
               { id: 'basic' as const, label: 'Số 0–20 & Hàng Chục' },
               { id: 'big' as const, label: 'Trăm → Tỉ' },
@@ -1424,6 +1609,154 @@ export default function PronunciationPage() {
         </div>
       )}
 
+      {/* ════════════════════════════════════════════ NOUNS & ARTICLES ═══════════════ */}
+      {activeTab === 'nouns' && (
+        <div className="space-y-6 animate-in fade-in duration-500">
+          <div className="premium-card p-6 bg-gradient-to-r from-indigo-50 to-violet-50 border-indigo-200">
+            <h3 className="text-lg font-black text-indigo-800 flex items-center gap-2 mb-2">
+              <Star className="w-5 h-5 text-indigo-600" /> Quy Tắc Danh Từ: Số Ít, Số Nhiều & Mạo Từ
+            </h3>
+            <p className="text-sm text-indigo-700 leading-relaxed font-medium">
+              Học cách chuyển đổi danh từ số ít sang số nhiều, quy tắc thêm đuôi -s/-es, sử dụng mạo từ a/an chính xác và các danh từ không đếm được đặc trưng.
+            </p>
+          </div>
+
+          {/* Sub-tabs */}
+          <div className="flex flex-wrap gap-1.5 sm:gap-2 no-scrollbar">
+            {[
+              { id: 'rules' as const, label: 'Quy Tắc Số Nhiều (-s/-es)' },
+              { id: 'irregular' as const, label: 'Từ Đặc Biệt (Bất Quy Tắc)' },
+              { id: 'uncountable' as const, label: 'Danh Từ Không Đếm Được' },
+              { id: 'articles' as const, label: 'Mạo Từ A / AN' },
+            ].map(s => (
+              <button
+                key={s.id}
+                onClick={() => setNounSection(s.id)}
+                className={cn(
+                  "px-3 sm:px-4 py-2 rounded-xl text-[10px] sm:text-xs font-black uppercase tracking-widest transition-all whitespace-nowrap cursor-pointer",
+                  nounSection === s.id ? "bg-indigo-600 text-white shadow-md" : "bg-white text-slate-500 border border-slate-200 hover:bg-slate-50"
+                )}
+              >
+                {s.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Rules -s/-es */}
+          {nounSection === 'rules' && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {PLURAL_RULES.map((r, i) => (
+                <div key={i} className="premium-card p-6 hover:shadow-xl transition-all space-y-3 bg-white">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-black text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full">{r.rule}</span>
+                  </div>
+                  <p className="text-xs text-slate-500 font-bold">{r.condition}</p>
+                  <div className="space-y-2">
+                    {r.examples.map((ex, j) => (
+                      <div key={j} className="flex flex-col gap-1 p-3 bg-slate-50 rounded-xl">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs text-slate-400 font-semibold">{ex.word} (ít) ➔</span>
+                          <button onClick={() => speak(ex.plural)} className="group flex items-center gap-2 font-bold text-sm text-indigo-600 hover:underline">
+                            {ex.plural} <span className="text-[11px] font-mono text-slate-400">{ex.ipa}</span>
+                            <Play className="w-2.5 h-2.5 fill-indigo-600 text-indigo-600" />
+                          </button>
+                        </div>
+                        <p className="text-[10px] text-slate-400 font-medium">Ý nghĩa: {ex.vi}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Irregular Nouns */}
+          {nounSection === 'irregular' && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {IRREGULAR_NOUNS.map((noun, idx) => (
+                <div key={idx} className="premium-card p-4 hover:shadow-lg transition-all bg-white border border-slate-200 flex flex-col justify-between">
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center pb-2 border-b border-slate-100">
+                      <div className="flex flex-col">
+                        <span className="text-xs font-semibold text-slate-400">Số ít:</span>
+                        <button onClick={() => speak(noun.singular)} className="group flex items-center gap-1.5 font-bold text-sm text-slate-800 hover:text-indigo-600">
+                          {noun.singular} <span className="text-[10px] font-mono text-slate-400">{noun.ipaSingular}</span>
+                          <Play className="w-2.5 h-2.5 text-slate-400 group-hover:text-indigo-600" />
+                        </button>
+                      </div>
+                      <div className="flex flex-col items-end">
+                        <span className="text-xs font-semibold text-slate-400">Số nhiều:</span>
+                        <button onClick={() => speak(noun.plural)} className="group flex items-center gap-1.5 font-bold text-sm text-indigo-600 hover:underline">
+                          {noun.plural} <span className="text-[10px] font-mono text-slate-400">{noun.ipaPlural}</span>
+                          <Play className="w-2.5 h-2.5 fill-indigo-600 text-indigo-600" />
+                        </button>
+                      </div>
+                    </div>
+                    <p className="text-xs text-slate-500 font-medium text-center">Nghĩa: <span className="font-semibold text-slate-700">{noun.vi}</span></p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Uncountable Nouns */}
+          {nounSection === 'uncountable' && (
+            <div className="space-y-4">
+              <div className="p-4 bg-amber-50 border border-amber-200 text-amber-800 rounded-2xl text-xs font-medium leading-relaxed text-left">
+                👉 <strong>Quy tắc quan trọng:</strong> Danh từ không đếm được (Uncountable Nouns) không có dạng số nhiều (không thêm -s/-es) và không thể dùng với <strong>a/an</strong> trực tiếp. Để đếm chúng, ta phải sử dụng các <strong>từ chỉ đo lường/đóng gói</strong> cụ thể đi kèm.
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {UNCOUNTABLE_NOUNS.map((noun, idx) => (
+                  <div key={idx} className="premium-card p-4 hover:shadow-md transition-all bg-white border border-slate-100 flex flex-col justify-between">
+                    <div className="flex justify-between items-start text-left">
+                      <div>
+                        <button onClick={() => speak(noun.term)} className="group flex items-center gap-1.5 font-bold text-slate-800 hover:text-indigo-600">
+                          {noun.term} <span className="text-xs font-mono text-slate-400">{noun.ipa}</span>
+                          <Play className="w-2.5 h-2.5 text-slate-400 group-hover:text-indigo-600" />
+                        </button>
+                        <p className="text-xs text-slate-400 font-medium mt-1">Nghĩa: {noun.vi}</p>
+                      </div>
+                      <div className="bg-indigo-50 border border-indigo-100 p-2.5 rounded-xl text-right">
+                        <span className="text-[10px] font-semibold text-slate-400 block uppercase">Cụm từ đong đếm:</span>
+                        <button onClick={() => speak(noun.measure)} className="group flex items-center gap-1 font-bold text-xs text-indigo-700 hover:underline mt-0.5">
+                          {noun.measure} <Play className="w-2.5 h-2.5 fill-indigo-600 text-indigo-600 shrink-0" />
+                        </button>
+                        <span className="text-[10px] text-indigo-950 font-medium block mt-0.5">{noun.measureVi}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Articles A / AN */}
+          {nounSection === 'articles' && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {ARTICLE_RULES.map((r, i) => (
+                <div key={i} className="premium-card p-6 hover:shadow-xl transition-all space-y-3 bg-white text-left">
+                  <div className="flex items-center gap-2">
+                    <span className={cn("text-xs font-black px-3 py-1 rounded-full", i < 2 ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700")}>
+                      {r.rule}
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-500 font-bold leading-relaxed">{r.condition}</p>
+                  <div className="space-y-2">
+                    {r.examples.map((ex, j) => (
+                      <button key={j} onClick={() => speak(ex.word)} className="group w-full flex items-center justify-between p-3 bg-slate-50 rounded-xl hover:bg-indigo-50 transition-all cursor-pointer">
+                        <span className="font-bold text-sm text-slate-800">{ex.word}</span>
+                        <span className="text-xs font-mono text-slate-400">{ex.ipa}</span>
+                        <Play className="w-3 h-3 text-slate-300 group-hover:text-indigo-600" />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
       {/* ════════════════════════════════════════════ DATETIME ═══════════════════════ */}
       {activeTab === 'datetime' && (
         <div className="space-y-6 animate-in fade-in duration-500">
@@ -1437,7 +1770,7 @@ export default function PronunciationPage() {
           </div>
 
           {/* Sub-tabs */}
-          <div className="flex gap-2 overflow-x-auto pb-1">
+          <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
             {[
               { id: 'days' as const, label: 'Thứ trong tuần' },
               { id: 'relative' as const, label: 'Từ chỉ Ngày/Thời gian' },
@@ -1587,7 +1920,7 @@ export default function PronunciationPage() {
             </div>
 
             {/* Region Filter Buttons */}
-            <div className="flex gap-1.5 overflow-x-auto w-full sm:w-auto pb-1">
+            <div className="flex gap-1.5 overflow-x-auto w-full sm:w-auto pb-1 no-scrollbar">
               {['All', 'Asia', 'Middle East', 'Europe', 'Americas', 'Africa', 'Oceania'].map(reg => (
                 <button
                   key={reg}
@@ -1673,9 +2006,9 @@ export default function PronunciationPage() {
 
       {/* ════════════════════════════════════════════ COMMUNICATION TOPICS ═══════════ */}
       {activeTab === 'topics' && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 animate-in fade-in duration-500 text-left">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 animate-in fade-in duration-500 text-left">
           {/* Sidebar / Left Column: Topics List */}
-          <div className="lg:col-span-4 space-y-3">
+          <div className="md:col-span-4 space-y-3">
             <div className="premium-card p-5 bg-gradient-to-r from-violet-50 to-indigo-50 border-violet-100 mb-2">
               <h3 className="text-sm font-black text-violet-850 uppercase tracking-wider mb-1 flex items-center gap-1.5">
                 <MessageSquare className="w-4 h-4 text-violet-600" /> Học theo Chủ đề
@@ -1685,30 +2018,30 @@ export default function PronunciationPage() {
               </p>
             </div>
             
-            <div className="flex flex-row lg:flex-col overflow-x-auto lg:overflow-visible gap-2 pb-2 lg:pb-0">
+            <div className="flex flex-row md:flex-col overflow-x-auto md:overflow-visible gap-2 pb-2 md:pb-0 no-scrollbar">
               {TOPIC_LESSONS.map(t => (
                 <button
                   key={t.id}
                   onClick={() => setSelectedTopic(t.id)}
                   className={cn(
-                    "flex-shrink-0 text-left p-4 rounded-2xl border-2 transition-all cursor-pointer w-64 lg:w-full relative overflow-hidden",
+                    "flex-shrink-0 text-left p-2.5 md:p-4 rounded-xl md:rounded-2xl border-2 transition-all cursor-pointer w-auto md:w-full relative overflow-hidden",
                     selectedTopic === t.id
                       ? "border-violet-600 bg-violet-50/40 shadow-md shadow-violet-500/5"
                       : "border-slate-100 bg-white hover:border-slate-300 hover:shadow-sm"
                   )}
                 >
                   {selectedTopic === t.id && (
-                    <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-violet-600 rounded-r-md" />
+                    <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-violet-600 rounded-r-md hidden md:block" />
                   )}
-                  <h4 className={cn("text-sm font-bold text-slate-800 transition-colors pl-1", selectedTopic === t.id && "text-violet-750 font-black")}>{t.title}</h4>
-                  <p className="text-xs text-slate-400 mt-1 pl-1 font-medium line-clamp-1">{t.desc}</p>
+                  <h4 className={cn("text-xs md:text-sm font-bold text-slate-800 transition-colors pl-1 whitespace-nowrap md:whitespace-normal", selectedTopic === t.id && "text-violet-750 font-black")}>{t.title}</h4>
+                  <p className="text-xs text-slate-400 mt-1 pl-1 font-medium line-clamp-1 hidden md:block">{t.desc}</p>
                 </button>
               ))}
             </div>
           </div>
 
           {/* Right Column: Selected Topic's Phrases */}
-          <div className="lg:col-span-8 space-y-4">
+          <div className="md:col-span-8 space-y-4">
             {TOPIC_LESSONS.map(t => {
               if (t.id !== selectedTopic) return null;
               return (
