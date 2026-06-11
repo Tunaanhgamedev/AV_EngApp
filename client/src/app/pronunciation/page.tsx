@@ -46,17 +46,17 @@ const ALPHABET: AlphabetLetter[] = [
 // ─── IPA Data ──────────────────────────────────────────────────────────────────
 const VOWELS = [
   { ipa: 'iː', example: 'see', word: '/siː/', desc: 'Long "ee"', tts: 'ee', guide: 'Môi mở rộng sang hai bên như đang mỉm cười. Lưỡi nâng cao lên gần vòm họng. Phát âm âm "i" kéo dài.' },
-  { ipa: 'ɪ',  example: 'sit', word: '/sɪt/', desc: 'Short "i"', tts: 'ih', guide: 'Môi hơi mở rộng. Lưỡi đặt thấp hơn âm /iː/. Phát âm âm "i" ngắn, dứt khoát và thư giãn cơ miệng.' },
-  { ipa: 'e',  example: 'bed', word: '/bed/', desc: 'Short "e"', tts: 'eh', guide: 'Miệng mở rộng vừa phải theo chiều dọc (rộng hơn âm /ɪ/). Đầu lưỡi chạm nhẹ vào răng dưới. Phát âm âm "e" dứt khoát.' },
-  { ipa: 'æ',  example: 'cat', word: '/kæt/', desc: 'Flat "a"', tts: 'aa', guide: 'Mở to miệng hết cỡ theo cả chiều ngang và chiều dọc. Hạ lưỡi xuống thấp nhất chạm răng dưới. Phát âm lai giữa âm "a" và "e".' },
+  { ipa: 'ɪ', example: 'sit', word: '/sɪt/', desc: 'Short "i"', tts: 'ih', guide: 'Môi hơi mở rộng. Lưỡi đặt thấp hơn âm /iː/. Phát âm âm "i" ngắn, dứt khoát và thư giãn cơ miệng.' },
+  { ipa: 'e', example: 'bed', word: '/bed/', desc: 'Short "e"', tts: 'eh', guide: 'Miệng mở rộng vừa phải theo chiều dọc (rộng hơn âm /ɪ/). Đầu lưỡi chạm nhẹ vào răng dưới. Phát âm âm "e" dứt khoát.' },
+  { ipa: 'æ', example: 'cat', word: '/kæt/', desc: 'Flat "a"', tts: 'aa', guide: 'Mở to miệng hết cỡ theo cả chiều ngang và chiều dọc. Hạ lưỡi xuống thấp nhất chạm răng dưới. Phát âm lai giữa âm "a" và "e".' },
   { ipa: 'ɑː', example: 'car', word: '/kɑːr/', desc: 'Long "ah"', tts: 'ah', guide: 'Mở to miệng theo chiều dọc giống như lúc bác sĩ khám họng. Lưỡi hạ thấp xuống đáy miệng. Phát âm âm "a" kéo dài từ sâu trong cổ họng.' },
-  { ipa: 'ɒ',  example: 'hot', word: '/hɒt/', desc: 'Short "o"', tts: 'ah', guide: 'Mở miệng tròn vừa phải, môi hơi hướng ra ngoài. Lưỡi thụt nhẹ về phía sau. Phát âm âm "o" ngắn, dứt khoát.' },
+  { ipa: 'ɒ', example: 'hot', word: '/hɒt/', desc: 'Short "o"', tts: 'ah', guide: 'Mở miệng tròn vừa phải, môi hơi hướng ra ngoài. Lưỡi thụt nhẹ về phía sau. Phát âm âm "o" ngắn, dứt khoát.' },
   { ipa: 'ɔː', example: 'saw', word: '/sɔː/', desc: 'Long "aw"', tts: 'aw', guide: 'Tròn môi và khép môi lại một chút so với âm /ɒ/, môi hướng ra ngoài nhiều hơn. Lưỡi thụt về phía sau. Phát âm âm "o" kéo dài.' },
-  { ipa: 'ʊ',  example: 'put', word: '/pʊt/', desc: 'Short "oo"', tts: 'uu', guide: 'Môi tròn hơi đưa ra ngoài (giống như đang huýt sáo nhẹ). Lưỡi nâng cao về phía sau. Phát âm âm "u" ngắn, dứt khoát, cơ miệng thả lỏng.' },
+  { ipa: 'ʊ', example: 'put', word: '/pʊt/', desc: 'Short "oo"', tts: 'uu', guide: 'Môi tròn hơi đưa ra ngoài (giống như đang huýt sáo nhẹ). Lưỡi nâng cao về phía sau. Phát âm âm "u" ngắn, dứt khoát, cơ miệng thả lỏng.' },
   { ipa: 'uː', example: 'too', word: '/tuː/', desc: 'Long "oo"', tts: 'oo', guide: 'Chu môi tròn và nhỏ như đang huýt sáo. Lưỡi nâng cao về phía sau gần vòm họng. Phát âm âm "u" kéo dài từ khoang miệng.' },
-  { ipa: 'ʌ',  example: 'cup', word: '/kʌp/', desc: 'Short "uh"', tts: 'uh', guide: 'Miệng mở tự nhiên vừa phải. Lưỡi đặt ở giữa miệng hơi nâng lên. Phát âm âm "á" ngắn, dứt khoát, gần giống tiếng Việt.' },
+  { ipa: 'ʌ', example: 'cup', word: '/kʌp/', desc: 'Short "uh"', tts: 'uh', guide: 'Miệng mở tự nhiên vừa phải. Lưỡi đặt ở giữa miệng hơi nâng lên. Phát âm âm "á" ngắn, dứt khoát, gần giống tiếng Việt.' },
   { ipa: 'ɜː', example: 'bird', word: '/bɜːd/', desc: 'Long "ur"', tts: 'ur', guide: 'Miệng mở tự nhiên. Lưỡi nâng lên độ cao trung bình, hơi cong lưỡi về phía sau. Phát âm âm "ơ" kéo dài và hơi uốn lưỡi.' },
-  { ipa: 'ə',  example: 'about', word: '/əˈbaʊt/', desc: 'Schwa', tts: 'uh', guide: 'Miệng mở tự nhiên và thả lỏng hoàn toàn tất cả các cơ. Lưỡi đặt ở giữa miệng. Phát âm âm "ơ" rất ngắn và nhẹ.' },
+  { ipa: 'ə', example: 'about', word: '/əˈbaʊt/', desc: 'Schwa', tts: 'uh', guide: 'Miệng mở tự nhiên và thả lỏng hoàn toàn tất cả các cơ. Lưỡi đặt ở giữa miệng. Phát âm âm "ơ" rất ngắn và nhẹ.' },
 ];
 
 const DIPHTHONGS = [
@@ -512,7 +512,7 @@ const speak = (text: string, rate: number = 0.7) => {
 
   if (window.speechSynthesis) {
     const voices = window.speechSynthesis.getVoices();
-    
+
     // Fallback to Translate TTS if no voices are loaded/installed
     if (voices.length === 0) {
       playTranslateTTS();
@@ -529,7 +529,7 @@ const speak = (text: string, rate: number = 0.7) => {
       console.log("speechSynthesis error, playing Google Translate TTS:", e);
       playTranslateTTS();
     };
-    
+
     if (window.speechSynthesis.speaking) {
       window.speechSynthesis.cancel();
       setTimeout(() => {
@@ -552,7 +552,7 @@ function SpeechPracticeSection({ targetWord }: { targetWord: string }) {
 
   const startListening = () => {
     if (typeof window === 'undefined') return;
-    
+
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (!SpeechRecognition) {
       setErrorMessage('Trình duyệt không hỗ trợ nhận diện giọng nói (API Web Speech). Hãy dùng Chrome/Safari.');
@@ -603,7 +603,7 @@ function SpeechPracticeSection({ targetWord }: { targetWord: string }) {
       <div className="flex-1 min-w-0 text-left">
         <h4 className="text-xs font-black text-violet-600 uppercase tracking-widest">Luyện phát âm AI</h4>
         <p className="text-xs text-slate-500 mt-0.5 font-medium">Nhấp vào micro, đọc từ ví dụ <strong className="text-slate-800">"{targetWord}"</strong> để kiểm tra.</p>
-        
+
         {resultText && (
           <p className="text-xs text-slate-800 mt-2 font-semibold">
             Bạn đã đọc: <span className="text-violet-600 font-bold">"{resultText}"</span>
@@ -634,8 +634,8 @@ function SpeechPracticeSection({ targetWord }: { targetWord: string }) {
         disabled={isRecording}
         className={cn(
           "w-11 h-11 rounded-full flex items-center justify-center transition-all cursor-pointer shadow-md shrink-0",
-          isRecording 
-            ? "bg-rose-600 text-white animate-pulse" 
+          isRecording
+            ? "bg-rose-600 text-white animate-pulse"
             : "bg-violet-100 text-violet-600 border border-violet-200 hover:bg-violet-600 hover:text-white"
         )}
         title="Bấm để ghi âm"
@@ -689,7 +689,7 @@ export default function PronunciationPage() {
   const handleAnalyzeStress = async (wordToAnalyze?: string, bypassCache = false) => {
     const targetWord = wordToAnalyze || stressInput;
     if (!targetWord || targetWord.trim().length === 0) return;
-    
+
     setAnalyzingStress(true);
     setStressError('');
     try {
@@ -789,16 +789,16 @@ export default function PronunciationPage() {
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
             {ALPHABET.map((item) => (
-              <div 
+              <div
                 key={item.letter}
                 className="premium-card bg-white p-5 border border-slate-200 rounded-[2rem] flex flex-col items-center justify-between text-center relative overflow-hidden group hover:shadow-xl transition-all duration-300"
               >
                 <span className="text-4xl font-black text-slate-800 mb-2">{item.letter}</span>
-                
+
                 <div className="space-y-2 w-full">
                   <div>
                     <span className="text-[10px] text-slate-400 font-bold block uppercase tracking-wider font-sans">Tên chữ cái</span>
-                    <button 
+                    <button
                       onClick={() => speak(item.letter, 0.6)}
                       className="px-3 py-1 bg-blue-50 border border-blue-100 rounded-full text-blue-700 font-black text-xs hover:bg-blue-100 transition-all flex items-center gap-1 mx-auto cursor-pointer"
                     >
@@ -808,7 +808,7 @@ export default function PronunciationPage() {
 
                   <div className="border-t border-slate-100 pt-2">
                     <span className="text-[10px] text-slate-400 font-bold block uppercase tracking-wider font-sans">Âm vị (Phonics)</span>
-                    <button 
+                    <button
                       onClick={() => speak(item.example, 0.6)}
                       className="px-2 py-1 bg-emerald-50 border border-emerald-100 rounded-full text-emerald-700 font-bold text-[10px] hover:bg-emerald-100 transition-all flex items-center gap-1 mx-auto cursor-pointer"
                     >
@@ -860,10 +860,10 @@ export default function PronunciationPage() {
           {chartSection === 'vowels' && (
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
               {VOWELS.map(v => (
-                <IPACell 
-                  key={v.ipa} 
-                  item={v} 
-                  color="border-sky-200 bg-sky-50/50 hover:border-sky-400" 
+                <IPACell
+                  key={v.ipa}
+                  item={v}
+                  color="border-sky-200 bg-sky-50/50 hover:border-sky-400"
                   isActive={selectedSound?.ipa === v.ipa}
                   onClick={() => setSelectedSound(v)}
                 />
@@ -873,10 +873,10 @@ export default function PronunciationPage() {
           {chartSection === 'diphthongs' && (
             <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
               {DIPHTHONGS.map(d => (
-                <IPACell 
-                  key={d.ipa} 
-                  item={d} 
-                  color="border-violet-200 bg-violet-50/50 hover:border-violet-400" 
+                <IPACell
+                  key={d.ipa}
+                  item={d}
+                  color="border-violet-200 bg-violet-50/50 hover:border-violet-400"
                   isActive={selectedSound?.ipa === d.ipa}
                   onClick={() => setSelectedSound(d)}
                 />
@@ -886,10 +886,10 @@ export default function PronunciationPage() {
           {chartSection === 'consonants' && (
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
               {CONSONANTS.map(c => (
-                <IPACell 
-                  key={c.ipa} 
-                  item={c} 
-                  color="border-emerald-200 bg-emerald-50/50 hover:border-emerald-400" 
+                <IPACell
+                  key={c.ipa}
+                  item={c}
+                  color="border-emerald-200 bg-emerald-50/50 hover:border-emerald-400"
                   isActive={selectedSound?.ipa === c.ipa}
                   onClick={() => setSelectedSound(c)}
                 />
@@ -901,7 +901,7 @@ export default function PronunciationPage() {
           {selectedSound && (
             <div className="premium-card p-6 bg-gradient-to-br from-slate-900 to-slate-950 text-white border-slate-800 shadow-xl rounded-3xl mt-6 animate-in slide-in-from-bottom-3 duration-300">
               <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
-                
+
                 {/* Left Visual Area: Large IPA Circle & Hear Buttons */}
                 <div className="flex flex-col items-center gap-3 w-full sm:w-56 flex-shrink-0">
                   <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-primary to-blue-500 flex items-center justify-center border-4 border-slate-800 shadow-2xl relative">
@@ -918,7 +918,7 @@ export default function PronunciationPage() {
                     >
                       <Volume2 className="w-4 h-4 fill-white" /> Nghe âm riêng lẻ
                     </button>
-                    
+
                     <button
                       onClick={() => speak(selectedSound.example, 0.7)}
                       className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-bold text-xs rounded-xl active:scale-95 transition-all cursor-pointer"
@@ -1091,7 +1091,7 @@ export default function PronunciationPage() {
                               {isPrimary && <span className="absolute -left-2 text-2xl text-amber-300 font-mono">ˈ</span>}
                               {/* Secondary Stress Marker */}
                               {isSecondary && <span className="absolute -left-2 text-xl text-purple-300 font-mono">ˌ</span>}
-                              
+
                               <span>{syl}</span>
                             </button>
                           </div>
@@ -1262,7 +1262,7 @@ export default function PronunciationPage() {
               <span className="w-2.5 h-6 bg-purple-600 rounded-full"></span>
               <h3 className="text-xl font-black text-slate-800">I. Nối Chữ thành Từ (Word Building)</h3>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Phonics Blend */}
               <div className="premium-card p-6 space-y-3 hover:shadow-lg transition-all bg-white border border-slate-200 rounded-[2rem]">
@@ -2018,9 +2018,9 @@ export default function PronunciationPage() {
           {/* Grid of Countries */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {COUNTRIES_DATA.filter(c => {
-              const matchesSearch = c.country.toLowerCase().includes(countrySearch.toLowerCase()) || 
-                                    c.nationality.toLowerCase().includes(countrySearch.toLowerCase()) || 
-                                    c.vi.toLowerCase().includes(countrySearch.toLowerCase());
+              const matchesSearch = c.country.toLowerCase().includes(countrySearch.toLowerCase()) ||
+                c.nationality.toLowerCase().includes(countrySearch.toLowerCase()) ||
+                c.vi.toLowerCase().includes(countrySearch.toLowerCase());
               const matchesRegion = selectedRegion === 'All' || c.region === selectedRegion;
               return matchesSearch && matchesRegion;
             }).map((c, idx) => (
@@ -2068,16 +2068,16 @@ export default function PronunciationPage() {
 
           {/* Empty state */}
           {COUNTRIES_DATA.filter(c => {
-            const matchesSearch = c.country.toLowerCase().includes(countrySearch.toLowerCase()) || 
-                                  c.nationality.toLowerCase().includes(countrySearch.toLowerCase()) || 
-                                  c.vi.toLowerCase().includes(countrySearch.toLowerCase());
+            const matchesSearch = c.country.toLowerCase().includes(countrySearch.toLowerCase()) ||
+              c.nationality.toLowerCase().includes(countrySearch.toLowerCase()) ||
+              c.vi.toLowerCase().includes(countrySearch.toLowerCase());
             const matchesRegion = selectedRegion === 'All' || c.region === selectedRegion;
             return matchesSearch && matchesRegion;
           }).length === 0 && (
-            <div className="text-center py-12 premium-card bg-slate-50/50">
-              <p className="text-slate-400 font-medium text-sm">Không tìm thấy quốc gia phù hợp với từ khóa.</p>
-            </div>
-          )}
+              <div className="text-center py-12 premium-card bg-slate-50/50">
+                <p className="text-slate-400 font-medium text-sm">Không tìm thấy quốc gia phù hợp với từ khóa.</p>
+              </div>
+            )}
         </div>
       )}
 
@@ -2094,7 +2094,7 @@ export default function PronunciationPage() {
                 Chọn chủ đề bên dưới để luyện phát âm và thực hành nói các mẫu câu giao tiếp thông dụng.
               </p>
             </div>
-            
+
             <div className="flex flex-row md:flex-col overflow-x-auto md:overflow-visible gap-2 pb-2 md:pb-0 no-scrollbar">
               {TOPIC_LESSONS.map(t => (
                 <button
@@ -2141,7 +2141,7 @@ export default function PronunciationPage() {
                             <p className="text-xs font-mono text-slate-400 font-medium mt-1">{phrase.ipa}</p>
                             <p className="text-xs text-slate-500 font-bold mt-2">💡 {phrase.vi}</p>
                           </div>
-                          
+
                           <button
                             onClick={() => speak(phrase.text)}
                             className="w-9 h-9 rounded-full bg-slate-50 hover:bg-violet-500 text-slate-400 hover:text-white flex items-center justify-center transition-all cursor-pointer border border-slate-100 flex-shrink-0"
