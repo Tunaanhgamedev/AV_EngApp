@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Volume2, BookOpen, Sparkles, ChevronDown, Mic, Target, Star, Play, Info, ArrowRight, HelpCircle, Hash, FileText, Search, Loader2, Calendar, Globe, MessageSquare, Zap, Palette, Users } from 'lucide-react';
+import { Volume2, BookOpen, Sparkles, ChevronDown, Mic, Target, Star, Play, Info, ArrowRight, HelpCircle, Hash, FileText, Search, Loader2, Calendar, Globe, MessageSquare, Zap, Palette, Users, Clock, ChevronRight, Trophy, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { COMMON_VERBS, VERB_TYPES, COMMON_ADJECTIVES, ADJECTIVE_RULES, ADJECTIVE_TYPES, POSSESSIVE_TABLE, POSSESSIVE_RULES, ADJECTIVES_USE_CASES, ADJECTIVES_BODY_PARTS } from './grammarData';
+import { COMMON_VERBS, VERB_TYPES, COMMON_ADJECTIVES, ADJECTIVE_RULES, ADJECTIVE_TYPES, POSSESSIVE_TABLE, POSSESSIVE_RULES, ADJECTIVES_USE_CASES, ADJECTIVES_BODY_PARTS, FOUNDATION_TOPICS } from './grammarData';
 
 // ─── Alphabet & Phonics Data ──────────────────────────────────────────────────
 interface AlphabetLetter {
@@ -668,7 +668,13 @@ function IPACell({ item, color, isActive, onClick }: { item: any; color: string;
 }
 
 export default function PronunciationPage() {
-  const [activeTab, setActiveTab] = useState<'alphabet' | 'chart' | 'stress' | 'pairs' | 'building' | 'numbers' | 'endings' | 'datetime' | 'countries' | 'topics' | 'nouns' | 'verbs' | 'adjectives' | 'possessives'>('alphabet');
+  const [activeTab, setActiveTab] = useState<'alphabet' | 'chart' | 'stress' | 'pairs' | 'building' | 'numbers' | 'endings' | 'datetime' | 'countries' | 'topics' | 'nouns' | 'verbs' | 'adjectives' | 'possessives' | 'tenses'>('alphabet');
+  const [foundationTopicId, setFoundationTopicId] = useState<string>('pronouns');
+  const [currentQuizQuestions, setCurrentQuizQuestions] = useState<any[]>([]);
+  const [quizIndex, setQuizIndex] = useState<number>(0);
+  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+  const [quizFinished, setQuizFinished] = useState<boolean>(false);
+  const [score, setScore] = useState<number>(0);
   const [verbFilter, setVerbFilter] = useState<'all' | 'regular' | 'irregular'>('all');
   const [adjSection, setAdjSection] = useState<'list' | 'rules' | 'types' | 'cases' | 'body'>('list');
   const [possSection, setPossSection] = useState<'table' | 'rules'>('table');
@@ -734,6 +740,25 @@ export default function PronunciationPage() {
     }
   }, [chartSection]);
 
+  // Generate randomized shuffled quiz questions subset
+  const generateQuiz = () => {
+    const topic = FOUNDATION_TOPICS.find(t => t.id === foundationTopicId) || FOUNDATION_TOPICS[0];
+    if (topic && topic.content.quiz) {
+      const shuffled = [...topic.content.quiz].sort(() => Math.random() - 0.5);
+      setCurrentQuizQuestions(shuffled.slice(0, 5));
+    }
+    setQuizIndex(0);
+    setSelectedAnswer(null);
+    setQuizFinished(false);
+    setScore(0);
+  };
+
+  useEffect(() => {
+    if (activeTab === 'tenses') {
+      generateQuiz();
+    }
+  }, [foundationTopicId, activeTab]);
+
   const tabs = [
     { id: 'alphabet' as const, label: 'Bảng Chữ Cái & Phonics', icon: BookOpen },
     { id: 'chart' as const, label: 'Bảng Phiên Âm IPA', icon: Volume2 },
@@ -746,7 +771,8 @@ export default function PronunciationPage() {
     { id: 'nouns' as const, label: 'Danh Từ & Số Nhiều', icon: Star },
     { id: 'verbs' as const, label: 'Động Từ', icon: Zap },
     { id: 'adjectives' as const, label: 'Tính Từ', icon: Palette },
-    { id: 'possessives' as const, label: 'Đại Từ Sở Hữu', icon: Users },
+    { id: 'possessives' as const, label: 'Đại Từ & Sở Hữu', icon: Users },
+    { id: 'tenses' as const, label: 'Thì & Động Từ To Be', icon: Clock },
     { id: 'pairs' as const, label: 'Cặp Tối Thiểu', icon: Mic },
     { id: 'building' as const, label: 'Nối Câu & Chữ', icon: Sparkles },
   ];
@@ -2619,6 +2645,255 @@ export default function PronunciationPage() {
               ))}
             </div>
           )}
+        </div>
+      )}
+
+      {/* ════════════════════════════════════════════ TENSES (THÌ & TO BE) ═══════ */}
+      {activeTab === 'tenses' && (
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          
+          {/* Left Sidebar Menu: Select Grammar Topic */}
+          <div className="lg:col-span-4 flex flex-row lg:flex-col gap-3 overflow-x-auto lg:overflow-x-visible pb-3 lg:pb-0 scrollbar-thin scrollbar-thumb-slate-200">
+            {FOUNDATION_TOPICS.map((topic) => {
+              const TopicIcon = topic.icon === 'user' ? User : topic.icon === 'star' ? Star : Clock;
+              const isSelected = foundationTopicId === topic.id;
+              return (
+                <button
+                  key={topic.id}
+                  onClick={() => setFoundationTopicId(topic.id)}
+                  className={cn(
+                    "flex-shrink-0 lg:flex-shrink w-72 lg:w-full premium-card p-5 border text-left flex items-start gap-4 transition-all hover:-translate-y-0.5 cursor-pointer",
+                    isSelected 
+                      ? "bg-slate-900 border-slate-950 text-white shadow-lg" 
+                      : "bg-white border-slate-200/80 text-slate-700 hover:border-primary"
+                  )}
+                >
+                  <div className={cn(
+                    "w-10 h-10 rounded-xl flex items-center justify-center font-bold",
+                    isSelected ? "bg-white/10 text-white" : "bg-primary/10 text-primary"
+                  )}>
+                    <TopicIcon className="w-5 h-5" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className={cn("font-bold text-sm", isSelected ? "text-white" : "text-slate-800")}>
+                      {topic.title}
+                    </h3>
+                    <p className={cn("text-[11px] mt-0.5 leading-relaxed font-medium truncate", isSelected ? "text-slate-400" : "text-slate-500")}>
+                      {topic.desc}
+                    </p>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Right Main Panel: Display Theory, Examples & Interactive Quiz */}
+          <div className="lg:col-span-8 space-y-6">
+            
+            {/* Theory Card */}
+            {(() => {
+              const activeTopic = FOUNDATION_TOPICS.find(t => t.id === foundationTopicId) || FOUNDATION_TOPICS[0];
+              return (
+                <div className="premium-card p-6 md:p-8 bg-white border border-slate-200 rounded-[2rem] space-y-6">
+                  <div>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-primary bg-primary/10 px-3 py-1 rounded-full">Lý Thuyết & Cấu Trúc</span>
+                    <h2 className="text-2xl font-black text-slate-800 mt-2">{activeTopic.title}</h2>
+                    <p className="text-sm text-slate-500 font-medium leading-relaxed mt-2">{activeTopic.content.theory}</p>
+                  </div>
+
+                  {/* Render Dynamic Layout based on topic content type */}
+                  {activeTopic.id === 'pronouns' && activeTopic.content.table && (
+                    <div className="border border-slate-200/80 rounded-2xl overflow-hidden shadow-sm">
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-left border-collapse text-xs">
+                          <thead>
+                            <tr className="bg-slate-50 border-b border-slate-200">
+                              <th className="p-3.5 font-black text-slate-700">Đại Từ</th>
+                              <th className="p-3.5 font-black text-slate-700">Vai trò</th>
+                              <th className="p-3.5 font-black text-slate-700">Ý nghĩa</th>
+                              <th className="p-3.5 font-black text-slate-700 text-right">Ví dụ mẫu</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {activeTopic.content.table.map((row, i) => (
+                              <tr key={i} className="border-b border-slate-100 hover:bg-slate-50/50">
+                                <td className="p-3.5 font-mono font-black text-primary text-sm">{row.pronoun}</td>
+                                <td className="p-3.5 font-bold text-slate-500">{row.role}</td>
+                                <td className="p-3.5 font-medium text-slate-600">{row.meaning}</td>
+                                <td className="p-3.5 text-right">
+                                  <button
+                                    onClick={() => speak(row.example)}
+                                    className="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-50 border border-slate-200 rounded-lg text-[10px] font-bold text-slate-700 hover:bg-primary/5 hover:border-primary hover:text-primary transition-all cursor-pointer"
+                                  >
+                                    {row.example} <Volume2 className="w-3.5 h-3.5 text-slate-400" />
+                                  </button>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  )}
+
+                  {activeTopic.id === 'tobe' && activeTopic.content.forms && (
+                    <div className="space-y-4">
+                      {activeTopic.content.forms.map((form, i) => (
+                        <div key={i} className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                          <h4 className="text-xs font-black text-primary uppercase tracking-wider">{form.tense}</h4>
+                          <p className="text-xs font-bold text-slate-700">Công thức: <code className="bg-slate-200/80 px-1.5 py-0.5 rounded font-mono text-[11px]">{form.rules}</code></p>
+                          <div className="flex items-center justify-between border-t border-slate-200/40 pt-2 text-xs">
+                            <span className="text-slate-500 font-medium italic">Ví dụ: "{form.example}"</span>
+                            <button
+                              onClick={() => speak(form.example)}
+                              className="flex items-center gap-1 px-3 py-1 bg-white border border-slate-200 rounded-lg font-bold text-[10px] text-slate-600 hover:border-primary transition-all cursor-pointer"
+                            >
+                              Phát âm <Volume2 className="w-3 h-3 text-slate-400" />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {activeTopic.id === 'tenses' && activeTopic.content.tenses && (
+                    <div className="space-y-4">
+                      {activeTopic.content.tenses.map((tense, i) => (
+                        <div key={i} className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                          <h4 className="text-sm font-black text-slate-800">{tense.name}</h4>
+                          <p className="text-xs font-bold text-slate-600">Cấu trúc: <code className="bg-slate-200/80 px-1.5 py-0.5 rounded font-mono text-[11px]">{tense.formula}</code></p>
+                          <p className="text-xs text-slate-500 font-medium">Cách dùng: {tense.usage}</p>
+                          <div className="flex items-center justify-between border-t border-slate-200/40 pt-2 text-xs">
+                            <span className="text-slate-700 font-bold italic">Ví dụ: "{tense.example}"</span>
+                            <button
+                              onClick={() => speak(tense.example)}
+                              className="flex items-center gap-1 px-3 py-1 bg-white border border-slate-200 rounded-lg font-bold text-[10px] text-slate-600 hover:border-primary transition-all cursor-pointer"
+                            >
+                              Phát âm <Volume2 className="w-3 h-3 text-slate-400" />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
+
+            {/* Quiz / Practice Card */}
+            <div className="premium-card p-6 md:p-8 bg-white border border-slate-200 rounded-[2rem] space-y-6">
+              <div>
+                <span className="text-[10px] font-black uppercase tracking-widest text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">BÀI TẬP THỰC HÀNH</span>
+                <h2 className="text-xl font-black text-slate-800 mt-2">Trắc Nghiệm Khắc Cốt Ghi Tâm</h2>
+                <p className="text-xs text-slate-500 mt-1">Mỗi lượt ôn tập sẽ ngẫu nhiên chọn ra 5 câu hỏi từ kho đề để bạn luyện tập.</p>
+              </div>
+
+              {!quizFinished && currentQuizQuestions.length > 0 && currentQuizQuestions[quizIndex] ? (
+                <div className="space-y-6">
+                  {/* Progress info */}
+                  <div className="flex justify-between items-center text-xs text-slate-400 font-bold">
+                    <span>Câu {quizIndex + 1} / {currentQuizQuestions.length}</span>
+                    <span>Điểm số hiện tại: {score}</span>
+                  </div>
+
+                  {/* Question Box */}
+                  <div className="p-5 bg-slate-900 text-white rounded-2xl shadow-inner font-bold text-base leading-relaxed text-center relative overflow-hidden">
+                    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-primary/10 to-transparent pointer-events-none" />
+                    <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest block mb-2 font-mono">ĐIỀN TỪ CÒN THIẾU</span>
+                    "{currentQuizQuestions[quizIndex].question}"
+                  </div>
+
+                  {/* Choices Options Grid */}
+                  <div className="grid grid-cols-2 gap-3">
+                    {currentQuizQuestions[quizIndex].options.map((opt: string) => {
+                      const isCorrect = opt === currentQuizQuestions[quizIndex].answer;
+                      const isSelected = selectedAnswer === opt;
+                      const hasAnswered = selectedAnswer !== null;
+
+                      return (
+                        <button
+                          key={opt}
+                          onClick={() => {
+                            if (selectedAnswer !== null) return;
+                            setSelectedAnswer(opt);
+                            if (opt === currentQuizQuestions[quizIndex].answer) {
+                              setScore(prev => prev + 1);
+                            }
+                          }}
+                          disabled={hasAnswered}
+                          className={cn(
+                            "p-4 rounded-xl border-2 text-sm font-black text-center transition-all cursor-pointer select-none",
+                            hasAnswered
+                              ? isCorrect
+                                ? "bg-emerald-50 border-emerald-500 text-emerald-700"
+                                : isSelected
+                                  ? "bg-rose-50 border-rose-500 text-rose-700"
+                                  : "bg-white border-slate-200 text-slate-400"
+                              : "bg-white border-slate-200 text-slate-700 hover:border-primary hover:bg-primary/5 active:scale-95"
+                          )}
+                        >
+                          {opt}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Feedback and Explanation */}
+                  {selectedAnswer !== null && (
+                    <div className={cn(
+                      "p-4 rounded-2xl border animate-in slide-in-from-top-2 duration-300",
+                      selectedAnswer === currentQuizQuestions[quizIndex].answer
+                        ? "bg-emerald-50/50 border-emerald-200 text-emerald-800"
+                        : "bg-rose-50/50 border-rose-200 text-rose-800"
+                    )}>
+                      <h4 className="text-xs font-black uppercase tracking-widest flex items-center gap-1.5">
+                        {selectedAnswer === currentQuizQuestions[quizIndex].answer ? (
+                          <>🎉 Tuyệt vời! Bạn trả lời đúng.</>
+                        ) : (
+                          <>⚠️ Chưa chính xác rồi!</>
+                        )}
+                      </h4>
+                      <p className="text-xs font-medium mt-1 leading-relaxed">{currentQuizQuestions[quizIndex].explanation}</p>
+                      
+                      <button
+                        onClick={() => {
+                          setSelectedAnswer(null);
+                          if (quizIndex < currentQuizQuestions.length - 1) {
+                            setQuizIndex(prev => prev + 1);
+                          } else {
+                            setQuizFinished(true);
+                          }
+                        }}
+                        className="mt-3 w-full bg-slate-900 hover:bg-slate-800 text-white font-black text-xs uppercase tracking-wider py-2.5 rounded-xl active:scale-95 transition-all flex items-center justify-center gap-1 cursor-pointer"
+                      >
+                        Tiếp tục <ChevronRight className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                // Quiz Finish Scorecard
+                <div className="flex flex-col items-center justify-center text-center py-6 space-y-6 animate-in zoom-in-95 duration-500">
+                  <div className="w-24 h-24 bg-yellow-400 rounded-full flex items-center justify-center shadow-xl shadow-yellow-100">
+                    <Trophy className="w-12 h-12 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-black text-slate-800">Hoàn Thành Luyện Tập!</h3>
+                    <p className="text-sm text-slate-500 font-medium mt-1">Kết quả: bạn trả lời đúng <strong className="text-slate-800 font-black">{score}/{currentQuizQuestions.length}</strong> câu hỏi.</p>
+                  </div>
+                  <div className="flex gap-3 w-full">
+                    <button
+                      onClick={generateQuiz}
+                      className="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs uppercase tracking-widest rounded-xl transition-all active:scale-95 cursor-pointer"
+                    >
+                      Làm Lượt Mới (Random câu hỏi)
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+          </div>
         </div>
       )}
     </div>

@@ -212,3 +212,122 @@ export const POSSESSIVE_RULES = [
   { rule: 'Đại từ sở hữu (Possessive Pronouns)', desc: 'Đứng MỘT MÌNH thay thế cho "tính từ sở hữu + danh từ". Không đi kèm danh từ.', formula: 'Noun + be + Possessive Pronoun', examples: ['This is mine.', 'That phone is yours.', 'The car is his.', 'The bag is hers.'], exVi: 'Cái này là của tôi. Điện thoại đó là của bạn...' },
   { rule: 'Đại từ phản thân (Reflexive Pronouns)', desc: 'Dùng khi chủ ngữ và tân ngữ là cùng một người/vật. Nhấn mạnh "tự mình".', formula: 'Subject + Verb + Reflexive', examples: ['I taught myself.', 'She hurt herself.', 'They enjoyed themselves.'], exVi: 'Tôi tự dạy bản thân. Cô ấy tự làm đau mình. Họ tự vui chơi.' },
 ];
+
+// ─── English Foundation Grammar Data ──────────────────────────────────────────
+export const FOUNDATION_TOPICS = [
+  {
+    id: 'pronouns',
+    title: 'Subject Pronouns (Đại Từ Nhân Xưng)',
+    desc: 'Làm quen với đại từ đóng vai trò chủ ngữ và tân ngữ trong câu.',
+    icon: 'user',
+    color: 'border-sky-200 bg-sky-50 text-sky-800',
+    content: {
+      theory: 'Đại từ nhân xưng là từ dùng để đại diện cho một danh từ chỉ người hoặc vật để tránh lặp từ. Dưới đây là bảng phân loại cốt lõi và các ví dụ phát âm mẫu.',
+      table: [
+        { pronoun: 'I', role: 'Chủ ngữ (S)', meaning: 'Tôi, tớ, mình (Số ít, ngôi 1)', example: 'I study English every day.' },
+        { pronoun: 'me', role: 'Tân ngữ (O)', meaning: 'Tôi (đứng sau động từ)', example: 'She loves me.' },
+        { pronoun: 'You', role: 'Chủ ngữ / Tân ngữ', meaning: 'Bạn, các bạn (Ngôi 2)', example: 'You are a good friend.' },
+        { pronoun: 'We', role: 'Chủ ngữ (S)', meaning: 'Chúng tôi, chúng ta (Số nhiều, ngôi 1)', example: 'We study grammar.' },
+        { pronoun: 'us', role: 'Tân ngữ (O)', meaning: 'Chúng tôi (đứng sau động từ)', example: 'The teacher helps us.' },
+        { pronoun: 'They', role: 'Chủ ngữ (S)', meaning: 'Họ, chúng nó (Số nhiều, ngôi 3)', example: 'They speak English fluently.' },
+        { pronoun: 'He', role: 'Chủ ngữ (S)', meaning: 'Anh ấy, ông ấy (Số ít, ngôi 3 nam)', example: 'He works at a school.' },
+        { pronoun: 'him', role: 'Tân ngữ (O)', meaning: 'Anh ấy (đứng sau động từ)', example: 'I talk to him.' },
+        { pronoun: 'She', role: 'Chủ ngữ (S)', meaning: 'Cô ấy, bà ấy (Số ít, ngôi 3 nữ)', example: 'She is very smart.' },
+        { pronoun: 'her', role: 'Tân ngữ (O)', meaning: 'Cô ấy (đứng sau động từ)', example: 'Tell her the truth.' },
+        { pronoun: 'It', role: 'Chủ ngữ / Tân ngữ', meaning: 'Nó (Số ít, ngôi 3 vật/động vật)', example: 'It is a beautiful day.' },
+      ],
+      quiz: [
+        { question: '... is my sister. Her name is Lan.', options: ['He', 'She', 'They', 'It'], answer: 'She', explanation: 'Chủ ngữ chỉ nữ số ít ở đây là She.' },
+        { question: 'Nam and I are friends. ... learn English together.', options: ['We', 'They', 'You', 'I'], answer: 'We', explanation: '"Nam and I" tương đương với chúng tôi (We).' },
+        { question: 'Where is the book? ... is on the table.', options: ['He', 'She', 'It', 'We'], answer: 'It', explanation: '"The book" là vật số ít nên dùng It.' },
+        { question: 'Do you know that boy? I want to invite ... to the party.', options: ['he', 'him', 'she', 'us'], answer: 'him', explanation: 'Đứng sau động từ "invite" ta dùng tân ngữ chỉ nam số ít "him".' },
+        { question: 'My parents are retired. ... live in a small village.', options: ['We', 'They', 'You', 'He'], answer: 'They', explanation: 'Chủ ngữ chỉ số nhiều "parents" ở đây thay thế bằng They.' },
+        { question: 'This is my mother. I love ... very much.', options: ['she', 'her', 'it', 'me'], answer: 'her', explanation: 'Tân ngữ đứng sau động từ chỉ nữ số ít là her.' },
+        { question: 'John is a teacher. ... teaches English at high school.', options: ['He', 'Him', 'His', 'She'], answer: 'He', explanation: 'John là nam số ít, làm chủ ngữ trước động từ nên chọn He.' },
+        { question: 'Our cat is cute. ... likes playing with balls.', options: ['He', 'It', 'We', 'They'], answer: 'It', explanation: 'Thú cưng/động vật số ít ta dùng đại từ It.' },
+        { question: 'Can you help ...? I cannot lift this heavy box.', options: ['me', 'I', 'him', 'us'], answer: 'me', explanation: 'Tân ngữ chịu tác động của hành động "help" của người nói là me.' },
+        { question: 'We are hungry. Please give ... some bread.', options: ['us', 'we', 'them', 'me'], answer: 'us', explanation: 'Đứng sau động từ "give" cần tân ngữ. "We" biến thành tân ngữ "us".' },
+      ]
+    }
+  },
+  {
+    id: 'tobe',
+    title: 'Verb "To Be" (Động từ To Be)',
+    desc: 'Làm chủ động từ cốt lõi mang ý nghĩa: Thì, Là, Ở.',
+    icon: 'star',
+    color: 'border-amber-200 bg-amber-50 text-amber-800',
+    content: {
+      theory: 'Động từ "To Be" là động từ cơ bản nhất trong tiếng Anh. Ở thời hiện tại, nó có 3 dạng (am, is, are) chia theo chủ ngữ.',
+      forms: [
+        { tense: 'Hiện tại đơn (Present Simple)', rules: 'I + am | He / She / It / Danh từ số ít + is | You / We / They / Danh từ số nhiều + are', example: 'I am a student. She is busy. We are at home.' },
+        { tense: 'Quá khứ đơn (Past Simple)', rules: 'I / He / She / It / Danh từ số ít + was | You / We / They / Danh từ số nhiều + were', example: 'They were happy yesterday. He was tired.' },
+        { tense: 'Tương lai đơn (Future Simple)', rules: 'Tất cả các chủ ngữ + will be', example: 'It will be sunny tomorrow.' },
+      ],
+      quiz: [
+        { question: 'She ... a beautiful girl.', options: ['am', 'is', 'are', 'was'], answer: 'is', explanation: 'Chủ ngữ "She" đi với "is" ở thì hiện tại.' },
+        { question: 'They ... at the school yesterday.', options: ['are', 'was', 'were', 'be'], answer: 'were', explanation: '"yesterday" là quá khứ, chủ ngữ "They" đi với "were".' },
+        { question: 'I ... an English student.', options: ['am', 'is', 'are', 'be'], answer: 'am', explanation: 'Chủ ngữ "I" luôn đi với "am" ở hiện tại đơn.' },
+        { question: 'We ... in Hanoi next week.', options: ['are', 'was', 'were', 'will be'], answer: 'will be', explanation: '"next week" biểu thị tương lai, nên dùng "will be".' },
+        { question: 'You ... very kind to help me yesterday.', options: ['are', 'were', 'was', 'will be'], answer: 'were', explanation: '"yesterday" chỉ quá khứ, chủ ngữ "You" đi với "were".' },
+        { question: 'The weather ... nice today.', options: ['is', 'am', 'are', 'was'], answer: 'is', explanation: '"today" là hiện tại, "The weather" là danh từ không đếm được/số ít đi với "is".' },
+        { question: 'Last year, she ... only 20 years old. Now she ... 21.', options: ['is / was', 'was / is', 'were / is', 'will be / is'], answer: 'was / is', explanation: '"Last year" chia quá khứ (was), "Now" chia hiện tại (is).' },
+        { question: 'Where ... you born?', options: ['are', 'was', 'were', 'did'], answer: 'were', explanation: 'Cấu trúc hỏi sinh ra ở đâu dùng quá khứ đơn "were you born".' },
+        { question: 'I ... busy tomorrow, so I cannot visit you.', options: ['am', 'was', 'will be', 'be'], answer: 'will be', explanation: '"tomorrow" biểu thị tương lai, dùng "will be".' },
+        { question: 'These books ... mine. Do not take them.', options: ['is', 'are', 'was', 'be'], answer: 'are', explanation: '"These books" là danh từ số nhiều ở hiện tại, dùng "are".' },
+      ]
+    }
+  },
+  {
+    id: 'tenses',
+    title: 'Basic Tenses (5 Thì Cơ Bản)',
+    desc: 'Trọng tâm 5 thì cơ bản nhất giúp người mất gốc khôi phục nền tảng.',
+    icon: 'clock',
+    color: 'border-emerald-200 bg-emerald-50 text-emerald-800',
+    content: {
+      tenses: [
+        {
+          name: '1. Hiện tại đơn (Present Simple)',
+          formula: 'S + V(s/es) | S + am/is/are + ...',
+          usage: 'Diễn tả thói quen, hành động lặp đi lặp lại hoặc sự thật hiển nhiên.',
+          example: 'He walks to school every day.'
+        },
+        {
+          name: '2. Hiện tại tiếp diễn (Present Continuous)',
+          formula: 'S + am/is/are + V-ing',
+          usage: 'Diễn tả hành động đang diễn ra ngay tại thời điểm nói.',
+          example: 'I am learning English right now.'
+        },
+        {
+          name: '3. Quá khứ đơn (Past Simple)',
+          formula: 'S + V2/ed | S + was/were + ...',
+          usage: 'Diễn tả hành động đã xảy ra và kết thúc hoàn toàn trong quá khứ.',
+          example: 'They visited Hanoi last week.'
+        },
+        {
+          name: '4. Hiện tại hoàn thành (Present Perfect)',
+          formula: 'S + have/has + V3/ed',
+          usage: 'Diễn tả kinh nghiệm, trải nghiệm hoặc hành động bắt đầu ở quá khứ kéo dài tới hiện tại.',
+          example: 'She has lived here for three years.'
+        },
+        {
+          name: '5. Tương lai đơn (Future Simple)',
+          formula: 'S + will + V-inf',
+          usage: 'Diễn tả dự định đưa ra tức thời khi nói hoặc dự đoán tương lai.',
+          example: 'I will call you tonight.'
+        }
+      ],
+      quiz: [
+        { question: 'Every day, he ... up at 6 AM.', options: ['get', 'gets', 'getting', 'got'], answer: 'gets', explanation: '"Every day" chỉ thói quen hiện tại, chủ ngữ "he" số ít nên thêm s/es.' },
+        { question: 'Listen! The baby ... in the bedroom.', options: ['cries', 'cried', 'is crying', 'will cry'], answer: 'is crying', explanation: '"Listen!" báo hiệu hành động đang diễn ra nên dùng hiện tại tiếp diễn.' },
+        { question: 'We ... this movie last night.', options: ['watch', 'watched', 'watching', 'have watched'], answer: 'watched', explanation: '"last night" báo hiệu quá khứ đơn.' },
+        { question: 'I ... English since 2020.', options: ['learn', 'learnt', 'have learnt', 'am learning'], answer: 'have learnt', explanation: '"since 2020" chỉ thời gian kéo dài từ quá khứ đến nay, dùng hiện tại hoàn thành.' },
+        { question: 'Look! The train ... . Let\'s run!', options: ['comes', 'came', 'is coming', 'will come'], answer: 'is coming', explanation: '"Look!" báo hiệu hành động đang xảy ra trước mắt nên dùng hiện tại tiếp diễn.' },
+        { question: 'Next summer, we ... a trip to Da Nang.', options: ['take', 'took', 'will take', 'have taken'], answer: 'will take', explanation: '"Next summer" là trạng từ chỉ thời gian trong tương lai, dùng tương lai đơn "will take".' },
+        { question: 'Water ... at 100 degrees Celsius.', options: ['boil', 'boils', 'boiled', 'is boiling'], answer: 'boils', explanation: 'Đây là sự thật hiển nhiên, dùng hiện tại đơn và chia số ít cho Water.' },
+        { question: 'She ... her homework yet.', options: ['didn\'t finish', 'hasn\'t finished', 'doesn\'t finish', 'won\'t finish'], answer: 'hasn\'t finished', explanation: '"yet" báo hiệu câu phủ định của thì hiện tại hoàn thành (has not + V3/ed).' },
+        { question: 'Yesterday, I ... my keys at the office.', options: ['lose', 'lost', 'losing', 'have lost'], answer: 'lost', explanation: '"Yesterday" là trạng từ chỉ quá khứ đơn. Dạng quá khứ của lose là lost.' },
+        { question: 'They usually ... football on Sunday afternoons.', options: ['play', 'plays', 'played', 'playing'], answer: 'play', explanation: '"usually" chỉ thói quen hiện tại, chủ ngữ "They" số nhiều nên giữ nguyên động từ play.' },
+      ]
+    }
+  }
+];
