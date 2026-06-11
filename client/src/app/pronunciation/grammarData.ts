@@ -77,6 +77,125 @@ export const ADJECTIVE_TYPES = [
   { type: 'Interrogative (Nghi vấn)', desc: 'Dùng để hỏi về danh từ.', examples: ['which', 'what', 'whose'], vi: 'cái nào, cái gì, của ai' },
 ];
 
+// New data: Adjectives for People vs. Things / Other Cases
+export const ADJECTIVES_USE_CASES = {
+  peopleOnly: [
+    { word: 'kind', ipa: '/kaɪnd/', vi: 'tốt bụng', ex: 'She is a kind teacher.', exVi: 'Cô ấy là một giáo viên tốt bụng.' },
+    { word: 'generous', ipa: '/ˈdʒen.ər.əs/', vi: 'hào phóng', ex: 'He is very generous to friends.', exVi: 'Anh ấy rất hào phóng với bạn bè.' },
+    { word: 'stubborn', ipa: '/ˈstʌb.ən/', vi: 'bướng bỉnh, cứng đầu', ex: 'Why are you so stubborn?', exVi: 'Tại sao cậu lại bướng bỉnh thế?' },
+    { word: 'polite', ipa: '/pəˈlaɪt/', vi: 'lịch sự', ex: 'The boy is polite.', exVi: 'Cậu bé rất lịch sự.' },
+    { word: 'lazy', ipa: '/ˈleɪ.zi/', vi: 'lười biếng', ex: 'He is lazy and sleeps all day.', exVi: 'Nó lười biếng và ngủ cả ngày.' },
+    { word: 'smart', ipa: '/smɑːt/', vi: 'thông minh', ex: 'The smart student passed the exam.', exVi: 'Học sinh thông minh đã thi đỗ.' }
+  ],
+  thingsOnly: [
+    { word: 'spacious', ipa: '/ˈspeɪ.ʃəs/', vi: 'rộng rãi (không gian)', ex: 'This living room is spacious.', exVi: 'Phòng khách này thật rộng rãi.' },
+    { word: 'delicious', ipa: '/dɪˈlɪʃ.əs/', vi: 'ngon miệng (thức ăn)', ex: 'The cake is delicious.', exVi: 'Chiếc bánh này ngon tuyệt.' },
+    { word: 'modern', ipa: '/ˈmɒd.ən/', vi: 'hiện đại (công nghệ, thiết kế)', ex: 'They live in a modern building.', exVi: 'Họ sống trong một tòa nhà hiện đại.' },
+    { word: 'automatic', ipa: '/ˌɔː.təˈmæt.ɪk/', vi: 'tự động (máy móc)', ex: 'An automatic car is easy to drive.', exVi: 'Xe số tự động rất dễ lái.' },
+    { word: 'heavy', ipa: '/ˈhev.i/', vi: 'nặng (khối lượng)', ex: 'This box is too heavy to lift.', exVi: 'Cái hộp này quá nặng để nhấc lên.' },
+    { word: 'expensive', ipa: '/ɪkˈspen.sɪv/', vi: 'đắt tiền', ex: 'Gold is expensive.', exVi: 'Vàng thì đắt đỏ.' }
+  ],
+  edVsIng: [
+    { ed: 'bored', edVi: 'buồn chán (cảm xúc của người)', ing: 'boring', ingVi: 'tẻ nhạt (tính chất của vật/sự việc)', exEd: 'I am bored.', exEdVi: 'Tôi thấy buồn chán.', exIng: 'The movie is boring.', exIngVi: 'Bộ phim rất tẻ nhạt.' },
+    { ed: 'excited', edVi: 'hào hứng (cảm xúc của người)', ing: 'exciting', ingVi: 'thú vị, kích thích (tính chất vật)', exEd: 'We are excited about the trip.', exEdVi: 'Chúng tôi hào hứng về chuyến đi.', exIng: 'It is an exciting match.', exIngVi: 'Đó là một trận đấu kịch tính.' },
+    { ed: 'interested', edVi: 'quan tâm, thích thú (người)', ing: 'interesting', ingVi: 'thú vị, hay (vật/sự việc)', exEd: 'She is interested in history.', exEdVi: 'Cô ấy thích thú với lịch sử.', exIng: 'History is interesting.', exIngVi: 'Lịch sử rất thú vị.' },
+    { ed: 'tired', edVi: 'mệt mỏi (cảm xúc của người)', ing: 'tiring', ingVi: 'gây mệt mỏi (tính chất công việc)', exEd: 'I am tired after work.', exEdVi: 'Tôi thấy mệt mỏi sau giờ làm.', exIng: 'This job is tiring.', exIngVi: 'Công việc này thật mệt mỏi.' },
+    { ed: 'confused', edVi: 'bối rối, khó hiểu (người)', ing: 'confusing', ingVi: 'gây bối rối, rắc rối (vật)', exEd: 'He is confused by the map.', exEdVi: 'Anh ấy bị bối rối bởi bản đồ.', exIng: 'This map is confusing.', exIngVi: 'Tờ bản đồ này thật khó hiểu.' }
+  ]
+};
+
+// ─── Adjectives for Body Parts & Appearance (Tính từ tả bộ phận & ngoại hình) ────
+export const ADJECTIVES_BODY_PARTS = [
+  {
+    category: 'Mũi (Nose)',
+    desc: 'Lưu ý cách mô tả dáng mũi chuẩn xác trong tiếng Anh.',
+    items: [
+      { word: 'straight nose', ipa: '/streɪt nəʊz/', vi: 'mũi thẳng', note: 'Dùng "straight nose" thay vì nhầm thành "long nose" (mũi dài - giống Pinocchio)', ex: 'He has a straight nose.', exVi: 'Anh ấy có sống mũi thẳng.' },
+      { word: 'flat nose', ipa: '/flæt nəʊz/', vi: 'mũi tẹt', note: 'Đầu mũi thấp, bè.', ex: 'Many Asians have a flat nose.', exVi: 'Nhiều người châu Á có dáng mũi tẹt.' },
+      { word: 'pointed nose', ipa: '/ˈpɔɪn.tɪd nəʊz/', vi: 'mũi dọc dừa, mũi nhọn', note: 'Sống mũi cao, đầu mũi nhọn thanh thoát.', ex: 'She is famous for her pointed nose.', exVi: 'Cô ấy nổi tiếng với chiếc mũi dọc dừa.' },
+      { word: 'crooked nose', ipa: '/ˈkrʊk.ɪd nəʊz/', vi: 'mũi khoằm, mũi lệch', note: 'Mũi gồ ghề hoặc cong.', ex: 'The old boxer had a crooked nose.', exVi: 'Người võ sĩ già có chiếc mũi khoằm.' },
+      { word: 'snub nose', ipa: '/snʌb nəʊz/', vi: 'mũi hếch', note: 'Mũi hơi ngắn, đầu mũi hếch lên nhẹ.', ex: 'She has a cute snub nose.', exVi: 'Cô ấy có chiếc mũi hếch xinh xắn.' },
+      { word: 'hooked nose', ipa: '/hʊkt nəʊz/', vi: 'mũi khoằm diều hâu', note: 'Sống mũi nhô cao và cong quặp ở đầu.', ex: 'The villain has a hooked nose.', exVi: 'Nhân vật phản diện có chiếc mũi khoằm diều hâu.' }
+    ]
+  },
+  {
+    category: 'Tóc (Hair)',
+    desc: 'Tả kết cấu, kiểu dáng tóc.',
+    items: [
+      { word: 'curly hair', ipa: '/ˈkɜː.li heər/', vi: 'tóc xoăn', note: 'Xoăn tít hoặc xoăn lọn nhỏ.', ex: 'She has dark curly hair.', exVi: 'Cô ấy có mái tóc xoăn màu sẫm.' },
+      { word: 'straight hair', ipa: '/streɪt heər/', vi: 'tóc thẳng', note: 'Tóc tự nhiên thẳng suôn.', ex: 'I prefer straight hair.', exVi: 'Tôi thích tóc thẳng hơn.' },
+      { word: 'wavy hair', ipa: '/ˈweɪ.vi heər/', vi: 'tóc gợn sóng', note: 'Xoăn nhẹ nhàng như sóng biển.', ex: 'His wavy hair looks very natural.', exVi: 'Mái tóc gợn sóng của anh ấy trông rất tự nhiên.' },
+      { word: 'bald', ipa: '/bɔːld/', vi: 'hói, trọc đầu', note: 'Không có tóc hoặc ít tóc.', ex: 'He went bald in his thirties.', exVi: 'Anh ấy bị hói khi bước vào tuổi 30.' },
+      { word: 'spiky hair', ipa: '/ˈspaɪ.ki heər/', vi: 'tóc dựng đứng', note: 'Tóc vuốt dựng nhọn.', ex: 'He styles his spiky hair with gel.', exVi: 'Anh ấy vuốt dựng mái tóc bằng keo vuốt tóc.' },
+      { word: 'receding hairline', ipa: '/rɪˈsiː.dɪŋ ˈheə.laɪn/', vi: 'tóc hói chữ M', note: 'Tóc rụng thưa dần từ trán.', ex: 'He is worried about his receding hairline.', exVi: 'Anh ấy lo lắng về vầng trán hói chữ M của mình.' }
+    ]
+  },
+  {
+    category: 'Mắt (Eyes)',
+    desc: 'Mô tả hình dáng hoặc mí mắt.',
+    items: [
+      { word: 'double-lidded eyes', ipa: '/ˈdʌb.əl lɪd.ɪd aɪz/', vi: 'mắt hai mí', note: 'Mí mắt rõ nét.', ex: 'She has big double-lidded eyes.', exVi: 'Cô ấy có đôi mắt hai mí to tròn.' },
+      { word: 'single-lidded eyes', ipa: '/ˈsɪŋ.ɡəl lɪd.ɪd aɪz/', vi: 'mắt một mí', note: 'Mí mắt lót hoặc không có mí.', ex: 'Single-lidded eyes are beautiful too.', exVi: 'Mắt một mí cũng rất đẹp.' },
+      { word: 'almond-shaped eyes', ipa: '/ˈɑː.mənd ʃeɪpt aɪz/', vi: 'mắt hạnh nhân', note: 'Mắt có phần đuôi hơi xếch nhẹ.', ex: 'She has charming almond-shaped eyes.', exVi: 'Cô ấy có đôi mắt hạnh nhân quyến rũ.' },
+      { word: 'deep-set eyes', ipa: '/ˌdiːpˈset aɪz/', vi: 'mắt sâu hoắm', note: 'Hốc mắt sâu vào trong xương sọ.', ex: 'His deep-set eyes show intelligence.', exVi: 'Đôi mắt sâu của anh ấy thể hiện sự thông thái.' },
+      { word: 'bloodshot eyes', ipa: '/ˈblʌd.ʃɒt aɪz/', vi: 'mắt đỏ ngầu', note: 'Mắt đỏ do mệt mỏi hoặc vỡ mao mạch.', ex: 'You have bloodshot eyes from lack of sleep.', exVi: 'Mắt bạn đỏ ngầu vì thiếu ngủ đấy.' }
+    ]
+  },
+  {
+    category: 'Khuôn mặt (Face)',
+    desc: 'Mô tả hình dáng chung của khuôn mặt.',
+    items: [
+      { word: 'oval face', ipa: '/ˈəʊ.vəl feɪs/', vi: 'mặt trái xoan', note: 'Gương mặt cân đối, thon gọn.', ex: 'She has a beautiful oval face.', exVi: 'Cô ấy có khuôn mặt trái xoan rất đẹp.' },
+      { word: 'round face', ipa: '/raʊnd feɪs/', vi: 'mặt tròn', note: 'Gương mặt bầu bĩnh, dễ mến.', ex: 'The baby has a cute round face.', exVi: 'Em bé có khuôn mặt tròn đáng yêu.' },
+      { word: 'square face', ipa: '/skweər feɪs/', vi: 'mặt chữ điền', note: 'Gương mặt góc cạnh, vuông vức.', ex: 'He has a strong square face.', exVi: 'Anh ấy có khuôn mặt chữ điền nam tính.' },
+      { word: 'heart-shaped face', ipa: '/hɑːt ʃeɪpt feɪs/', vi: 'mặt hình trái tim', note: 'Trán rộng, cằm nhọn.', ex: 'An oval or heart-shaped face is elegant.', exVi: 'Khuôn mặt trái xoan hoặc trái tim trông rất thanh tú.' },
+      { word: 'freckled face', ipa: '/ˈfrek.əld feɪs/', vi: 'mặt đầy tàn nhang', note: 'Da mặt có nhiều đốm tàn nhang nhỏ.', ex: 'He has a friendly, freckled face.', exVi: 'Cậu ấy có khuôn mặt tàn nhang thân thiện.' }
+    ]
+  },
+  {
+    category: 'Thân hình (Body Shape & Height)',
+    desc: 'Mô tả vóc dáng, hình thể và chiều cao.',
+    items: [
+      { word: 'slim / slender', ipa: '/slɪm/ / /ˈslen.dər/', vi: 'mảnh mai, thon thả', note: 'Gầy nhưng đẹp và khỏe mạnh.', ex: 'She stays slim by practicing yoga.', exVi: 'Cô ấy giữ vóc dáng thon thả nhờ tập yoga.' },
+      { word: 'well-built', ipa: '/ˌwel ˈbɪlt/', vi: 'vạm vỡ, cơ bắp', note: 'Thân hình săn chắc, khỏe mạnh.', ex: 'The gym instructor is well-built.', exVi: 'Huấn luyện viên thể hình có thân hình rất vạm vỡ.' },
+      { word: 'plump / chubby', ipa: '/plʌmp/ / /ˈtʃʌb.i/', vi: 'đầy đặn / mũm mĩm', note: 'Hơi mập nhẹ nhưng đáng yêu.', ex: 'The child has chubby cheeks.', exVi: 'Đứa trẻ có đôi má phúng phính đáng yêu.' },
+      { word: 'stocky', ipa: '/ˈstɒk.i/', vi: 'chắc nịch, lùn mập', note: 'Thấp bé nhưng to ngang, rất chắc.', ex: 'He is a stocky man with broad shoulders.', exVi: 'Anh ấy là người đàn ông chắc nịch với bờ vai rộng.' },
+      { word: 'skinny / bony', ipa: '/ˈskɪn.i/ / /ˈbəʊ.ni/', vi: 'gầy gò, trơ xương', note: 'Gầy quá mức, thiếu sức sống.', ex: 'The cat was skinny when we found it.', exVi: 'Con mèo gầy trơ xương khi chúng tôi tìm thấy nó.' }
+    ]
+  },
+  {
+    category: 'Miệng & Môi & Răng (Mouth & Lips & Teeth)',
+    desc: 'Mô tả môi, miệng và khuôn răng.',
+    items: [
+      { word: 'full lips', ipa: '/fʊl lɪps/', vi: 'môi dày, đầy đặn', note: 'Môi cong đầy đặn, gợi cảm.', ex: 'She has beautiful full lips.', exVi: 'Cô ấy có đôi môi dày đầy đặn rất đẹp.' },
+      { word: 'thin lips', ipa: '/θɪn lɪps/', vi: 'môi mỏng', note: 'Môi hẹp dẹt.', ex: 'He spoke with tight, thin lips.', exVi: 'Anh ấy nói với đôi môi mỏng mím chặt.' },
+      { word: 'chapped lips', ipa: '/tʃæpt lɪps/', vi: 'môi nứt nẻ', note: 'Môi khô nứt do thời tiết lạnh hoặc thiếu nước.', ex: 'Apply balm on your chapped lips.', exVi: 'Hãy bôi son dưỡng lên đôi môi nứt nẻ của bạn.' },
+      { word: 'crooked teeth', ipa: '/ˈkrʊk.ɪd tiːθ/', vi: 'răng khấp khểnh', note: 'Răng lệch lạc, mọc không đều.', ex: 'Braces can align crooked teeth.', exVi: 'Niềng răng có thể chỉnh lại hàm răng khấp khểnh.' },
+      { word: 'gap-toothed', ipa: '/ɡæp tuːθt/', vi: 'răng thưa', note: 'Có khe hở giữa các răng cửa.', ex: 'She has a cute gap-toothed smile.', exVi: 'Cô ấy có nụ cười răng thưa rất đáng yêu.' }
+    ]
+  },
+  {
+    category: 'Da & Tai (Skin & Ears)',
+    desc: 'Mô tả màu sắc da và dáng tai.',
+    items: [
+      { word: 'tanned skin', ipa: '/tænd skɪn/', vi: 'da rám nắng', note: 'Màu da khỏe khoắn do phơi nắng.', ex: 'She returned with beautifully tanned skin.', exVi: 'Cô ấy trở về với làn da rám nắng tuyệt đẹp.' },
+      { word: 'pale skin', ipa: '/peɪl skɪn/', vi: 'da nhợt nhạt, xanh xao', note: 'Mất sắc tố hồng hào do ốm hoặc thiếu nắng.', ex: 'Her pale skin made her look tired.', exVi: 'Làn da xanh xao làm cô ấy trông mệt mỏi.' },
+      { word: 'fair skin', ipa: '/feər skɪn/', vi: 'da trắng hồng', note: 'Da sáng màu, mịn màng tự nhiên.', ex: 'Fair skin burns easily in the sun.', exVi: 'Làn da trắng hồng dễ bị cháy nắng dưới trời nắng gắt.' },
+      { word: 'lobed ears', ipa: '/ləʊbd ɪərz/', vi: 'tai có dái tai dày', note: 'Dái tai to tròn, phong thủy tốt.', ex: 'He has large lobed ears.', exVi: 'Anh ấy có đôi tai với phần dái tai dày.' }
+    ]
+  },
+  {
+    category: 'Tay & Chân (Hands & Legs)',
+    desc: 'Mô tả chi tiết chi trên và chi dưới.',
+    items: [
+      { word: 'rough hands', ipa: '/rʌf hændz/', vi: 'tay thô ráp', note: 'Da tay chai sạn do làm việc nặng.', ex: 'My father has rough hands from gardening.', exVi: 'Bố tôi có đôi tay thô ráp vì làm vườn.' },
+      { word: 'bow-legged', ipa: '/ˈbəʊˌleɡ.ɪd/', vi: 'chân vòng kiềng', note: 'Chân cong dạng hình cánh cung.', ex: 'He walks with a slightly bow-legged gait.', exVi: 'Anh ấy đi với dáng đi chân vòng kiềng nhẹ.' },
+      { word: 'slender fingers', ipa: '/ˈslen.dər ˈfɪŋ.ɡərz/', vi: 'ngón tay búp măng', note: 'Ngón tay dài, thon gọn, thanh tú.', ex: 'The pianist has slender fingers.', exVi: 'Người nghệ sĩ piano có những ngón tay búp măng thon dài.' }
+    ]
+  }
+];
+
+
 // ─── Possessive Pronouns (Đại từ sở hữu) ─────────────────────────────────────
 export const POSSESSIVE_TABLE = [
   { subject: 'I', object: 'me', possAdj: 'my', possPron: 'mine', reflexive: 'myself', ipa: '/maɪ/ → /maɪn/', vi: 'tôi', exAdj: 'This is my book.', exPron: 'This book is mine.', exAdjVi: 'Đây là quyển sách của tôi.', exPronVi: 'Quyển sách này là của tôi.' },
