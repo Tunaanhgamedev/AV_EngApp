@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Volume2, BookOpen, Sparkles, ChevronDown, Mic, Target, Star, Play, Info, ArrowRight, HelpCircle, Hash, FileText, Search, Loader2, Calendar, Globe, MessageSquare, Zap, Palette, Users, Clock, ChevronRight, Trophy, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { COMMON_VERBS, VERB_TYPES, COMMON_ADJECTIVES, ADJECTIVE_RULES, ADJECTIVE_TYPES, POSSESSIVE_TABLE, POSSESSIVE_RULES, ADJECTIVES_USE_CASES, ADJECTIVES_BODY_PARTS, FOUNDATION_TOPICS } from './grammarData';
+import { COMMON_VERBS, VERB_TYPES, COMMON_ADJECTIVES, ADJECTIVE_RULES, ADJECTIVE_TYPES, POSSESSIVE_TABLE, POSSESSIVE_RULES, ADJECTIVES_USE_CASES, ADJECTIVES_BODY_PARTS, FOUNDATION_TOPICS, MINIMAL_PAIRS } from './grammarData';
 
 // ─── Alphabet & Phonics Data ──────────────────────────────────────────────────
 interface AlphabetLetter {
@@ -106,14 +106,6 @@ const STRESS_RULES = [
   { rule: "Từ có đuôi -ity, -ety", pattern: "Nhấn âm thứ 3 từ cuối", examples: ["uniˈver.si.ty", "comˈmu.ni.ty", "soˈci.e.ty"] },
 ];
 
-const MINIMAL_PAIRS = [
-  { a: { word: "ship", ipa: "/ʃɪp/" }, b: { word: "sheep", ipa: "/ʃiːp/" }, focus: "ɪ vs iː" },
-  { a: { word: "bed", ipa: "/bed/" }, b: { word: "bad", ipa: "/bæd/" }, focus: "e vs æ" },
-  { a: { word: "thin", ipa: "/θɪn/" }, b: { word: "tin", ipa: "/tɪn/" }, focus: "θ vs t" },
-  { a: { word: "light", ipa: "/laɪt/" }, b: { word: "right", ipa: "/raɪt/" }, focus: "l vs r" },
-  { a: { word: "fan", ipa: "/fæn/" }, b: { word: "van", ipa: "/væn/" }, focus: "f vs v" },
-  { a: { word: "bat", ipa: "/bæt/" }, b: { word: "pat", ipa: "/pæt/" }, focus: "b vs p" },
-];
 
 // ─── Numbers Data ──────────────────────────────────────────────────────────────
 const NUMBERS_BASIC = [
@@ -494,6 +486,36 @@ const TOPIC_LESSONS = [
       { text: 'Excuse me, I am lost', ipa: '/ɪkˈskjuːz miː aɪ æm lɒst/', vi: 'Xin lỗi, tôi đang bị lạc đường.' },
       { text: 'Is this the correct way to the museum?', ipa: '/ɪz ðɪs ðə kəˈrekt weɪ tu ðə mjuːˈziː.əm/', vi: 'Đây có đúng đường đến bảo tàng không?' }
     ]
+  },
+  {
+    id: 'introducing_self',
+    title: 'Bản thân & Giới thiệu bản thân (Self & Introductions)',
+    desc: 'Các mẫu câu hỏi về bản thân, thông tin cá nhân và cách tự giới thiệu chi tiết, đầy đủ.',
+    phrases: [
+      { text: 'Can you tell me a little bit about yourself?', ipa: '/kæn juː tel miː ə ˈlɪt.əl bɪt əˈbaʊt jɔːˈself/', vi: 'Bạn có thể giới thiệu một chút về bản thân mình không?' },
+      { text: 'May I introduce myself?', ipa: '/meɪ aɪ ˌɪn.trəˈdʒuːs maɪˈself/', vi: 'Tôi xin phép được tự giới thiệu bản thân nhé.' },
+      { text: 'Let me introduce myself briefly', ipa: '/let miː ˌɪn.trəˈdʒuːs maɪˈself ˈbriːf.li/', vi: 'Để tôi tự giới thiệu ngắn gọn về bản thân.' },
+      { text: 'What is your name?', ipa: '/wɒt ɪz jɔː neɪm/', vi: 'Tên bạn là gì?' },
+      { text: 'My name is John Doe, but you can call me John', ipa: '/maɪ neɪm ɪz dʒɒn dəʊ bʌt juː kæn kɔːl miː dʒɒn/', vi: 'Tên tôi là John Doe, nhưng bạn có thể gọi tôi là John.' },
+      { text: 'How old are you?', ipa: '/haʊ əʊld ɑːr juː/', vi: 'Bạn bao nhiêu tuổi?' },
+      { text: 'I am twenty-five years old', ipa: '/aɪ æm ˈtwen.ti faɪv jɪəz əʊld/', vi: 'Tôi 25 tuổi.' },
+      { text: 'Where do you come from?', ipa: '/weə duː juː kʌm frɒm/', vi: 'Bạn từ đâu đến?' },
+      { text: 'I am from Hanoi, Vietnam', ipa: '/aɪ æm frɒm hæˈnɔɪ ˌvjetˈnæm/', vi: 'Tôi đến từ Hà Nội, Việt Nam.' },
+      { text: 'I was born and raised in Da Nang', ipa: '/aɪ wɒz bɔːn ænd reɪzd ɪn dɑː næŋ/', vi: 'Tôi sinh ra và lớn lên ở Đà Nẵng.' },
+      { text: 'What do you do for a living?', ipa: '/wɒt duː juː duː fɔːr ə ˈlɪv.ɪŋ/', vi: 'Bạn làm nghề gì để kiếm sống?' },
+      { text: 'I am a software engineer at a tech company', ipa: '/aɪ æm ə ˈsɒft.weər ˌen.dʒɪˈnɪər æt ə tek ˈkʌm.pə.ni/', vi: 'Tôi là kỹ sư phần mềm tại một công ty công nghệ.' },
+      { text: 'Where did you graduate from?', ipa: '/weə dɪd juː ˈɡrædʒ.u.eɪt frɒm/', vi: 'Bạn đã tốt nghiệp trường nào?' },
+      { text: 'I graduated from university with a degree in IT', ipa: '/aɪ ˈɡrædʒ.u.eɪ.tɪd frɒm ˌjuː.nɪˈvɜː.sə.ti wɪð ə dɪˈɡriː ɪn aɪ tiː/', vi: 'Tôi tốt nghiệp đại học chuyên ngành Công nghệ thông tin.' },
+      { text: 'What are your hobbies?', ipa: '/wɒt ɑːr jɔː ˈhɒb.iz/', vi: 'Sở thích của bạn là gì?' },
+      { text: 'In my free time, I love reading books and playing sports', ipa: '/ɪn maɪ friː taɪm aɪ lʌv ˈriː.dɪŋ bʊks ænd ˈpleɪ.ɪŋ spɔːts/', vi: 'Lúc rảnh rỗi, tôi thích đọc sách và chơi thể thao.' },
+      { text: 'How would you describe yourself?', ipa: '/haʊ wʊd juː dɪˈskraɪb jɔːˈself/', vi: 'Bạn tự nhận xét bản thân là người thế nào?' },
+      { text: 'I am an open-minded and hard-working person', ipa: '/aɪ æm ən ˈəʊ.pən ˈmaɪn.dɪd ænd hɑːd ˈwɜː.kɪŋ ˈpɜː.sən/', vi: 'Tôi là một người cởi mở và làm việc chăm chỉ.' },
+      { text: 'What is your goal in life?', ipa: '/wɒt ɪz jɔː ɡəʊl ɪn laɪf/', vi: 'Mục tiêu trong cuộc sống của bạn là gì?' },
+      { text: 'My dream is to travel around the world', ipa: '/maɪ driːm ɪz tu ˈtræv.əl əˈraʊnd ðə wɜːld/', vi: 'Ước mơ của tôi là được du lịch vòng quanh thế giới.' },
+      { text: 'What is your favorite food?', ipa: '/wɒt ɪz jɔː ˈfeɪ.vər.ɪt fuːd/', vi: 'Món ăn yêu thích của bạn là gì?' },
+      { text: 'I am currently living on my own in the city', ipa: '/aɪ æm ˈkʌr.ənt.li ˈlɪv.ɪŋ ɒn maɪ əʊn ɪn ðə ˈsɪt.i/', vi: 'Hiện tôi đang sống tự lập ở thành phố.' },
+      { text: 'Nice to meet you all today', ipa: '/naɪs tu miːt juː ɔːl təˈdeɪ/', vi: 'Rất vui được gặp gỡ tất cả mọi người ngày hôm nay.' }
+    ]
   }
 ];
 
@@ -689,6 +711,10 @@ export default function PronunciationPage() {
   const [datetimeSection, setDatetimeSection] = useState<'days' | 'relative' | 'months' | 'years'>('days');
   const [countrySearch, setCountrySearch] = useState('');
   const [selectedRegion, setSelectedRegion] = useState<string>('All');
+
+  // Minimal Pairs Filter States
+  const [pairTypeFilter, setPairTypeFilter] = useState<'all' | 'vowel' | 'consonant'>('all');
+  const [selectedFocusFilter, setSelectedFocusFilter] = useState<string>('all');
 
   // AI Stress Analyzer States
   const [stressInput, setStressInput] = useState('');
@@ -1231,51 +1257,150 @@ export default function PronunciationPage() {
       )}
 
       {/* ════════════════════════════════════════════ MINIMAL PAIRS ═══════════════ */}
-      {activeTab === 'pairs' && (
-        <div className="space-y-6">
-          <div className="premium-card p-6 bg-gradient-to-r from-rose-50 to-pink-50 border-rose-200">
-            <h3 className="text-lg font-black text-rose-800 flex items-center gap-2 mb-2">
-              <Target className="w-5 h-5 text-rose-500" /> Cặp Tối Thiểu (Minimal Pairs)
-            </h3>
-            <p className="text-sm text-rose-700 leading-relaxed font-medium">
-              Cặp tối thiểu là hai từ chỉ khác nhau ở một âm duy nhất. Luyện tập phân biệt các cặp này giúp bạn cải thiện khả năng nghe và phát âm.
-            </p>
-          </div>
+      {activeTab === 'pairs' && (() => {
+        const availableFocuses = Array.from(
+          new Set(
+            MINIMAL_PAIRS.filter(p => pairTypeFilter === 'all' || p.type === pairTypeFilter).map(p => p.focus)
+          )
+        );
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {MINIMAL_PAIRS.map((pair, i) => (
-              <div key={i} className="premium-card p-6 hover:shadow-xl transition-all">
-                <div className="text-center mb-4">
-                  <span className="text-[10px] font-black text-primary bg-primary/10 px-3 py-1 rounded-full uppercase tracking-widest">
-                    {pair.focus}
-                  </span>
-                </div>
-                <div className="flex items-center justify-center gap-4">
+        const filteredPairs = MINIMAL_PAIRS.filter(pair => {
+          const matchesType = pairTypeFilter === 'all' || pair.type === pairTypeFilter;
+          const matchesFocus = selectedFocusFilter === 'all' || pair.focus === selectedFocusFilter;
+          return matchesType && matchesFocus;
+        });
+
+        return (
+          <div className="space-y-6">
+            <div className="premium-card p-6 bg-gradient-to-r from-rose-50 to-pink-50 border-rose-200">
+              <h3 className="text-lg font-black text-rose-800 flex items-center gap-2 mb-2">
+                <Target className="w-5 h-5 text-rose-500" /> Cặp Tối Thiểu (Minimal Pairs)
+              </h3>
+              <p className="text-sm text-rose-700 leading-relaxed font-medium">
+                Cặp tối thiểu là hai từ chỉ khác nhau ở một âm duy nhất. Luyện tập phân biệt các cặp này giúp bạn cải thiện khả năng nghe và phát âm.
+              </p>
+            </div>
+
+            {/* Filter controls */}
+            <div className="space-y-4">
+              <div className="flex flex-wrap gap-2 bg-slate-100/80 p-1.5 rounded-2xl w-fit border border-slate-200/40">
+                <button
+                  onClick={() => { setPairTypeFilter('all'); setSelectedFocusFilter('all'); }}
+                  className={cn(
+                    "px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer",
+                    pairTypeFilter === 'all' ? "bg-white text-slate-800 shadow-sm" : "text-slate-500 hover:text-slate-800"
+                  )}
+                >
+                  Tất cả
+                </button>
+                <button
+                  onClick={() => { setPairTypeFilter('vowel'); setSelectedFocusFilter('all'); }}
+                  className={cn(
+                    "px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer",
+                    pairTypeFilter === 'vowel' ? "bg-white text-slate-800 shadow-sm" : "text-slate-500 hover:text-slate-800"
+                  )}
+                >
+                  Nguyên âm
+                </button>
+                <button
+                  onClick={() => { setPairTypeFilter('consonant'); setSelectedFocusFilter('all'); }}
+                  className={cn(
+                    "px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer",
+                    pairTypeFilter === 'consonant' ? "bg-white text-slate-800 shadow-sm" : "text-slate-500 hover:text-slate-800"
+                  )}
+                >
+                  Phụ âm
+                </button>
+              </div>
+
+              <div className="flex flex-col gap-2 p-4 bg-slate-50 rounded-[2rem] border border-slate-200/50">
+                <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Chọn cặp âm phân biệt:</span>
+                <div className="flex flex-wrap gap-2 max-h-36 overflow-y-auto pr-2">
                   <button
-                    onClick={() => speak(pair.a.word)}
-                    className="flex-1 flex flex-col items-center gap-2 p-5 rounded-2xl border-2 border-sky-200 bg-sky-50/50 hover:border-sky-400 hover:shadow-md transition-all group cursor-pointer"
+                    onClick={() => setSelectedFocusFilter('all')}
+                    className={cn(
+                      "px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer border",
+                      selectedFocusFilter === 'all'
+                        ? "bg-slate-900 border-slate-900 text-white shadow-sm"
+                        : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
+                    )}
                   >
-                    <span className="text-2xl font-black text-slate-800">{pair.a.word}</span>
-                    <span className="text-xs font-mono text-slate-400">{pair.a.ipa}</span>
-                    <Volume2 className="w-4 h-4 text-slate-300 group-hover:text-sky-500" />
+                    Tất cả âm ({availableFocuses.length})
                   </button>
-
-                  <div className="text-sm font-black text-slate-300">VS</div>
-
-                  <button
-                    onClick={() => speak(pair.b.word)}
-                    className="flex-1 flex flex-col items-center gap-2 p-5 rounded-2xl border-2 border-rose-200 bg-rose-50/50 hover:border-rose-400 hover:shadow-md transition-all group cursor-pointer"
-                  >
-                    <span className="text-2xl font-black text-slate-800">{pair.b.word}</span>
-                    <span className="text-xs font-mono text-slate-400">{pair.b.ipa}</span>
-                    <Volume2 className="w-4 h-4 text-slate-300 group-hover:text-rose-500" />
-                  </button>
+                  {availableFocuses.map(f => (
+                    <button
+                      key={f}
+                      onClick={() => setSelectedFocusFilter(f)}
+                      className={cn(
+                        "px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer border",
+                        selectedFocusFilter === f
+                          ? "bg-slate-900 border-slate-900 text-white shadow-sm"
+                          : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
+                      )}
+                    >
+                      {f}
+                    </button>
+                  ))}
                 </div>
               </div>
-            ))}
+            </div>
+
+            {/* Pairs Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {filteredPairs.map((pair, i) => (
+                <div key={i} className="premium-card p-5 hover:shadow-xl transition-all flex flex-col justify-between">
+                  <div>
+                    <div className="text-center mb-3">
+                      <span className="text-[9px] font-black text-rose-600 bg-rose-50 border border-rose-100 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                        {pair.focus}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-center gap-3">
+                      <button
+                        onClick={() => speak(pair.a.word)}
+                        className="flex-1 flex flex-col items-center gap-1.5 p-4 rounded-xl border border-sky-100 bg-sky-50/20 hover:bg-sky-50/50 hover:border-sky-300 hover:shadow-sm transition-all group cursor-pointer"
+                      >
+                        <span className="text-lg sm:text-xl font-black text-slate-800 leading-tight">{pair.a.word}</span>
+                        <span className="text-[10px] font-mono text-slate-400">{pair.a.ipa}</span>
+                        <span className="text-[10px] font-bold text-sky-600 bg-sky-50 px-1.5 py-0.5 rounded">{pair.a.vi}</span>
+                        <Volume2 className="w-3.5 h-3.5 text-slate-300 group-hover:text-sky-500 mt-1" />
+                      </button>
+
+                      <div className="text-xs font-black text-slate-300">VS</div>
+
+                      <button
+                        onClick={() => speak(pair.b.word)}
+                        className="flex-1 flex flex-col items-center gap-1.5 p-4 rounded-xl border border-rose-100 bg-rose-50/20 hover:bg-rose-50/50 hover:border-rose-300 hover:shadow-sm transition-all group cursor-pointer"
+                      >
+                        <span className="text-lg sm:text-xl font-black text-slate-800 leading-tight">{pair.b.word}</span>
+                        <span className="text-[10px] font-mono text-slate-400">{pair.b.ipa}</span>
+                        <span className="text-[10px] font-bold text-rose-600 bg-rose-50 px-1.5 py-0.5 rounded">{pair.b.vi}</span>
+                        <Volume2 className="w-3.5 h-3.5 text-slate-300 group-hover:text-rose-500 mt-1" />
+                      </button>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      speak(pair.a.word);
+                      setTimeout(() => speak(pair.b.word), 950);
+                    }}
+                    className="w-full mt-3 py-2 border border-slate-200/60 hover:border-slate-300 rounded-xl bg-slate-50 hover:bg-slate-100/80 flex items-center justify-center gap-1.5 text-[10px] font-black text-slate-500 hover:text-slate-700 transition-all cursor-pointer"
+                  >
+                    <Play className="w-3 h-3" /> Nghe Cả Cặp (A vs B)
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            {filteredPairs.length === 0 && (
+              <div className="text-center py-12 bg-slate-50 rounded-[2rem] border border-slate-200/50">
+                <span className="text-sm font-medium text-slate-400">Không tìm thấy cặp từ nào phù hợp với bộ lọc.</span>
+              </div>
+            )}
           </div>
-        </div>
-      )}
+        );
+      })()}
 
       {/* ════════════════════════════════════════════ WORD & SENTENCE BUILDING ═════ */}
       {activeTab === 'building' && (

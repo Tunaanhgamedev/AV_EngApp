@@ -331,3 +331,184 @@ export const FOUNDATION_TOPICS = [
     }
   }
 ];
+
+export const MINIMAL_PAIRS = [
+  // ─── 1. ɪ vs iː ───────────────────────────────────────
+  { type: 'vowel', focus: 'ɪ vs iː', a: { word: 'ship', ipa: '/ʃɪp/', vi: 'tàu thủy' }, b: { word: 'sheep', ipa: '/ʃiːp/', vi: 'con cừu' } },
+  { type: 'vowel', focus: 'ɪ vs iː', a: { word: 'sit', ipa: '/sɪt/', vi: 'ngồi' }, b: { word: 'seat', ipa: '/siːt/', vi: 'chỗ ngồi' } },
+  { type: 'vowel', focus: 'ɪ vs iː', a: { word: 'hit', ipa: '/hɪt/', vi: 'đánh' }, b: { word: 'heat', ipa: '/hiːt/', vi: 'sức nóng' } },
+  { type: 'vowel', focus: 'ɪ vs iː', a: { word: 'fit', ipa: '/fɪt/', vi: 'vừa vặn' }, b: { word: 'feet', ipa: '/fiːt/', vi: 'bàn chân' } },
+  { type: 'vowel', focus: 'ɪ vs iː', a: { word: 'slip', ipa: '/slɪp/', vi: 'trượt ngã' }, b: { word: 'sleep', ipa: '/sliːp/', vi: 'ngủ' } },
+  { type: 'vowel', focus: 'ɪ vs iː', a: { word: 'bin', ipa: '/bɪn/', vi: 'thùng rác' }, b: { word: 'bean', ipa: '/biːn/', vi: 'hạt đậu' } },
+  { type: 'vowel', focus: 'ɪ vs iː', a: { word: 'grin', ipa: '/ɡrɪn/', vi: 'cười nhoẻn' }, b: { word: 'green', ipa: '/ɡriːn/', vi: 'màu xanh lá' } },
+  { type: 'vowel', focus: 'ɪ vs iː', a: { word: 'lip', ipa: '/lɪp/', vi: 'môi' }, b: { word: 'leap', ipa: '/liːp/', vi: 'nhảy vọt' } },
+
+  // ─── 2. e vs æ ────────────────────────────────────────
+  { type: 'vowel', focus: 'e vs æ', a: { word: 'bed', ipa: '/bed/', vi: 'cái giường' }, b: { word: 'bad', ipa: '/bæd/', vi: 'tồi tệ' } },
+  { type: 'vowel', focus: 'e vs æ', a: { word: 'men', ipa: '/men/', vi: 'đàn ông (nhiều)' }, b: { word: 'man', ipa: '/mæn/', vi: 'đàn ông (ít)' } },
+  { type: 'vowel', focus: 'e vs æ', a: { word: 'pen', ipa: '/pen/', vi: 'bút mực' }, b: { word: 'pan', ipa: '/pæn/', vi: 'cái chảo' } },
+  { type: 'vowel', focus: 'e vs æ', a: { word: 'set', ipa: '/set/', vi: 'thiết lập' }, b: { word: 'sat', ipa: '/sæt/', vi: 'đã ngồi' } },
+  { type: 'vowel', focus: 'e vs æ', a: { word: 'met', ipa: '/met/', vi: 'đã gặp' }, b: { word: 'mat', ipa: '/mæt/', vi: 'tấm thảm' } },
+  { type: 'vowel', focus: 'e vs æ', a: { word: 'send', ipa: '/send/', vi: 'gửi đi' }, b: { word: 'sand', ipa: '/sænd/', vi: 'cát' } },
+  { type: 'vowel', focus: 'e vs æ', a: { word: 'bet', ipa: '/bet/', vi: 'cá cược' }, b: { word: 'bat', ipa: '/bæt/', vi: 'con dơi' } },
+
+  // ─── 3. æ vs ʌ ────────────────────────────────────────
+  { type: 'vowel', focus: 'æ vs ʌ', a: { word: 'cap', ipa: '/kæp/', vi: 'mũ lưỡi trai' }, b: { word: 'cup', ipa: '/kʌp/', vi: 'cái chén' } },
+  { type: 'vowel', focus: 'æ vs ʌ', a: { word: 'hat', ipa: '/hæt/', vi: 'mũ vành' }, b: { word: 'hut', ipa: '/hʌt/', vi: 'túp lều' } },
+  { type: 'vowel', focus: 'æ vs ʌ', a: { word: 'cat', ipa: '/kæt/', vi: 'con mèo' }, b: { word: 'cut', ipa: '/kʌt/', vi: 'cắt' } },
+  { type: 'vowel', focus: 'æ vs ʌ', a: { word: 'bag', ipa: '/bæɡ/', vi: 'túi xách' }, b: { word: 'bug', ipa: '/bʌɡ/', vi: 'con bọ' } },
+  { type: 'vowel', focus: 'æ vs ʌ', a: { word: 'ran', ipa: '/ræn/', vi: 'đã chạy' }, b: { word: 'run', ipa: '/rʌn/', vi: 'chạy' } },
+  { type: 'vowel', focus: 'æ vs ʌ', a: { word: 'fan', ipa: '/fæn/', vi: 'cái quạt' }, b: { word: 'fun', ipa: '/fʌn/', vi: 'niềm vui' } },
+  { type: 'vowel', focus: 'æ vs ʌ', a: { word: 'mad', ipa: '/mæd/', vi: 'điên rồ' }, b: { word: 'mud', ipa: '/mʌd/', vi: 'bùn đất' } },
+
+  // ─── 4. ʊ vs uː ────────────────────────────────────────
+  { type: 'vowel', focus: 'ʊ vs uː', a: { word: 'pull', ipa: '/pʊl/', vi: 'kéo' }, b: { word: 'pool', ipa: '/puːl/', vi: 'bể bơi' } },
+  { type: 'vowel', focus: 'ʊ vs uː', a: { word: 'full', ipa: '/fʊl/', vi: 'đầy' }, b: { word: 'fool', ipa: '/fuːl/', vi: 'kẻ ngốc' } },
+  { type: 'vowel', focus: 'ʊ vs uː', a: { word: 'look', ipa: '/lʊk/', vi: 'nhìn' }, b: { word: 'Luke', ipa: '/luːk/', vi: 'tên Luke' } },
+  { type: 'vowel', focus: 'ʊ vs uː', a: { word: 'soot', ipa: '/sʊt/', vi: 'bồ hóng' }, b: { word: 'suit', ipa: '/suːt/', vi: 'bộ suit' } },
+
+  // ─── 5. ʌ vs ɑː ────────────────────────────────────────
+  { type: 'vowel', focus: 'ʌ vs ɑː', a: { word: 'cup', ipa: '/kʌp/', vi: 'cái chén' }, b: { word: 'carp', ipa: '/kɑːp/', vi: 'cá chép' } },
+  { type: 'vowel', focus: 'ʌ vs ɑː', a: { word: 'cut', ipa: '/kʌt/', vi: 'cắt' }, b: { word: 'cart', ipa: '/kɑːt/', vi: 'xe đẩy hàng' } },
+  { type: 'vowel', focus: 'ʌ vs ɑː', a: { word: 'duck', ipa: '/dʌk/', vi: 'con vịt' }, b: { word: 'dark', ipa: '/dɑːk/', vi: 'tối tăm' } },
+  { type: 'vowel', focus: 'ʌ vs ɑː', a: { word: 'hut', ipa: '/hʌt/', vi: 'túp lều' }, b: { word: 'heart', ipa: '/hɑːt/', vi: 'trái tim' } },
+  { type: 'vowel', focus: 'ʌ vs ɑː', a: { word: 'bun', ipa: '/bʌn/', vi: 'bánh mì tròn' }, b: { word: 'barn', ipa: '/bɑːn/', vi: 'chuồng bò' } },
+  { type: 'vowel', focus: 'ʌ vs ɑː', a: { word: 'come', ipa: '/kʌm/', vi: 'đến' }, b: { word: 'calm', ipa: '/kɑːm/', vi: 'bình tĩnh' } },
+
+  // ─── 6. ɒ vs ɔː ────────────────────────────────────────
+  { type: 'vowel', focus: 'ɒ vs ɔː', a: { word: 'cot', ipa: '/kɒt/', vi: 'cũi em bé' }, b: { word: 'court', ipa: '/kɔːt/', vi: 'tòa án' } },
+  { type: 'vowel', focus: 'ɒ vs ɔː', a: { word: 'pot', ipa: '/pɒt/', vi: 'cái nồi' }, b: { word: 'port', ipa: '/pɔːt/', vi: 'cảng biển' } },
+  { type: 'vowel', focus: 'ɒ vs ɔː', a: { word: 'spot', ipa: '/spɒt/', vi: 'đốm tròn' }, b: { word: 'sport', ipa: '/spɔːt/', vi: 'thể thao' } },
+  { type: 'vowel', focus: 'ɒ vs ɔː', a: { word: 'shot', ipa: '/ʃɒt/', vi: 'cú sút/phát súng' }, b: { word: 'short', ipa: '/ʃɔːt/', vi: 'ngắn' } },
+  { type: 'vowel', focus: 'ɒ vs ɔː', a: { word: 'cod', ipa: '/kɒd/', vi: 'cá tuyết' }, b: { word: 'cord', ipa: '/kɔːd/', vi: 'dây cáp' } },
+  { type: 'vowel', focus: 'ɒ vs ɔː', a: { word: 'fox', ipa: '/fɒks/', vi: 'con cáo' }, b: { word: 'forks', ipa: '/fɔːks/', vi: 'những chiếc dĩa' } },
+
+  // ─── 7. ɔː vs ɜː ────────────────────────────────────────
+  { type: 'vowel', focus: 'ɔː vs ɜː', a: { word: 'warm', ipa: '/wɔːm/', vi: 'ấm áp' }, b: { word: 'worm', ipa: '/wɜːm/', vi: 'con giun' } },
+  { type: 'vowel', focus: 'ɔː vs ɜː', a: { word: 'board', ipa: '/bɔːd/', vi: 'tấm bảng' }, b: { word: 'bird', ipa: '/bɜːd/', vi: 'con chim' } },
+  { type: 'vowel', focus: 'ɔː vs ɜː', a: { word: 'pour', ipa: '/pɔː/', vi: 'rót nước' }, b: { word: 'purr', ipa: '/pɜː/', vi: 'mèo gừ gừ' } },
+  { type: 'vowel', focus: 'ɔː vs ɜː', a: { word: 'torn', ipa: '/tɔːn/', vi: 'bị rách' }, b: { word: 'turn', ipa: '/tɜːn/', vi: 'lượt/rẽ' } },
+  { type: 'vowel', focus: 'ɔː vs ɜː', a: { word: 'walk', ipa: '/wɔːk/', vi: 'đi bộ' }, b: { word: 'work', ipa: '/wɜːk/', vi: 'làm việc' } },
+  { type: 'vowel', focus: 'ɔː vs ɜː', a: { word: 'ward', ipa: '/wɔːd/', vi: 'phòng bệnh' }, b: { word: 'word', ipa: '/wɜːd/', vi: 'từ ngữ' } },
+
+  // ─── 8. θ vs t ────────────────────────────────────────
+  { type: 'consonant', focus: 'θ vs t', a: { word: 'thin', ipa: '/θɪn/', vi: 'gầy, mỏng' }, b: { word: 'tin', ipa: '/tɪn/', vi: 'hộp thiếc' } },
+  { type: 'consonant', focus: 'θ vs t', a: { word: 'three', ipa: '/θriː/', vi: 'số ba' }, b: { word: 'tree', ipa: '/triː/', vi: 'cái cây' } },
+  { type: 'consonant', focus: 'θ vs t', a: { word: 'thank', ipa: '/θæŋk/', vi: 'cảm ơn' }, b: { word: 'tank', ipa: '/tæŋk/', vi: 'xe tăng/bể chứa' } },
+  { type: 'consonant', focus: 'θ vs t', a: { word: 'path', ipa: '/pɑːθ/', vi: 'lối đi' }, b: { word: 'pat', ipa: '/pat/', vi: 'vỗ nhẹ' } },
+  { type: 'consonant', focus: 'θ vs t', a: { word: 'bath', ipa: '/bɑːθ/', vi: 'bồn tắm' }, b: { word: 'bat', ipa: '/bæt/', vi: 'con dơi' } },
+  { type: 'consonant', focus: 'θ vs t', a: { word: 'math', ipa: '/mæθ/', vi: 'toán học' }, b: { word: 'mat', ipa: '/mæt/', vi: 'tấm thảm' } },
+
+  // ─── 9. θ vs f ────────────────────────────────────────
+  { type: 'consonant', focus: 'θ vs f', a: { word: 'thin', ipa: '/θɪn/', vi: 'gầy' }, b: { word: 'fin', ipa: '/fɪn/', vi: 'vây cá' } },
+  { type: 'consonant', focus: 'θ vs f', a: { word: 'three', ipa: '/θriː/', vi: 'số ba' }, b: { word: 'free', ipa: '/friː/', vi: 'tự do/miễn phí' } },
+  { type: 'consonant', focus: 'θ vs f', a: { word: 'death', ipa: '/deθ/', vi: 'cái chết' }, b: { word: 'deaf', ipa: '/def/', vi: 'bị điếc' } },
+  { type: 'consonant', focus: 'θ vs f', a: { word: 'thirst', ipa: '/θɜːst/', vi: 'sự khát' }, b: { word: 'first', ipa: '/fɜːst/', vi: 'đầu tiên' } },
+  { type: 'consonant', focus: 'θ vs f', a: { word: 'thought', ipa: '/θɔːt/', vi: 'đã nghĩ' }, b: { word: 'fought', ipa: '/fɔːt/', vi: 'đã chiến đấu' } },
+
+  // ─── 10. ð vs d ───────────────────────────────────────
+  { type: 'consonant', focus: 'ð vs d', a: { word: 'then', ipa: '/ðen/', vi: 'sau đó' }, b: { word: 'den', ipa: '/den/', vi: 'hang thú' } },
+  { type: 'consonant', focus: 'ð vs d', a: { word: 'they', ipa: '/ðeɪ/', vi: 'họ' }, b: { word: 'day', ipa: '/deɪ/', vi: 'ngày' } },
+  { type: 'consonant', focus: 'ð vs d', a: { word: 'breathe', ipa: '/briːð/', vi: 'thở' }, b: { word: 'breed', ipa: '/briːd/', vi: 'sinh sản/giống' } },
+  { type: 'consonant', focus: 'ð vs d', a: { word: 'there', ipa: '/ðeə/', vi: 'ở đó' }, b: { word: 'dare', ipa: '/deə/', vi: 'dám' } },
+  { type: 'consonant', focus: 'ð vs d', a: { word: 'those', ipa: '/ðəʊz/', vi: 'những cái kia' }, b: { word: 'doze', ipa: '/dəʊz/', vi: 'ngủ gật' } },
+
+  // ─── 11. l vs r ───────────────────────────────────────
+  { type: 'consonant', focus: 'l vs r', a: { word: 'light', ipa: '/laɪt/', vi: 'ánh sáng' }, b: { word: 'right', ipa: '/raɪt/', vi: 'bên phải/đúng' } },
+  { type: 'consonant', focus: 'l vs r', a: { word: 'late', ipa: '/leɪt/', vi: 'trễ' }, b: { word: 'rate', ipa: '/reɪt/', vi: 'tỷ lệ' } },
+  { type: 'consonant', focus: 'l vs r', a: { word: 'glass', ipa: '/ɡlɑːs/', vi: 'ly thủy tinh' }, b: { word: 'grass', ipa: '/ɡrɑːs/', vi: 'cỏ' } },
+  { type: 'consonant', focus: 'l vs r', a: { word: 'long', ipa: '/lɒŋ/', vi: 'dài' }, b: { word: 'wrong', ipa: '/rɒŋ/', vi: 'sai' } },
+  { type: 'consonant', focus: 'l vs r', a: { word: 'fly', ipa: '/flaɪ/', vi: 'bay' }, b: { word: 'fry', ipa: '/fraɪ/', vi: 'chiên rán' } },
+  { type: 'consonant', focus: 'l vs r', a: { word: 'play', ipa: '/pleɪ/', vi: 'chơi' }, b: { word: 'pray', ipa: '/preɪ/', vi: 'cầu nguyện' } },
+  { type: 'consonant', focus: 'l vs r', a: { word: 'lead', ipa: '/liːd/', vi: 'dẫn dắt' }, b: { word: 'read', ipa: '/riːd/', vi: 'đọc' } },
+  { type: 'consonant', focus: 'l vs r', a: { word: 'lock', ipa: '/lɒk/', vi: 'khóa' }, b: { word: 'rock', ipa: '/rɒk/', vi: 'hòn đá' } },
+
+  // ─── 12. f vs v ───────────────────────────────────────
+  { type: 'consonant', focus: 'f vs v', a: { word: 'fan', ipa: '/fæn/', vi: 'cái quạt' }, b: { word: 'van', ipa: '/væn/', vi: 'xe tải nhỏ' } },
+  { type: 'consonant', focus: 'f vs v', a: { word: 'fat', ipa: '/fæt/', vi: 'béo' }, b: { word: 'vat', ipa: '/væt/', vi: 'thùng lớn' } },
+  { type: 'consonant', focus: 'f vs v', a: { word: 'safe', ipa: '/seɪf/', vi: 'an toàn' }, b: { word: 'save', ipa: '/seɪv/', vi: 'tiết kiệm/cứu' } },
+  { type: 'consonant', focus: 'f vs v', a: { word: 'leaf', ipa: '/liːf/', vi: 'lá cây' }, b: { word: 'leave', ipa: '/liːv/', vi: 'rời đi' } },
+  { type: 'consonant', focus: 'f vs v', a: { word: 'belief', ipa: '/bɪˈliːf/', vi: 'niềm tin' }, b: { word: 'believe', ipa: '/bɪˈliːv/', vi: 'tin tưởng' } },
+  { type: 'consonant', focus: 'f vs v', a: { word: 'fast', ipa: '/fɑːst/', vi: 'nhanh' }, b: { word: 'vast', ipa: '/vɑːst/', vi: 'bao la' } },
+  { type: 'consonant', focus: 'f vs v', a: { word: 'fine', ipa: '/faɪn/', vi: 'tốt/ổn' }, b: { word: 'vine', ipa: '/vaɪn/', vi: 'cây nho' } },
+
+  // ─── 13. b vs p ───────────────────────────────────────
+  { type: 'consonant', focus: 'b vs p', a: { word: 'bat', ipa: '/bæt/', vi: 'con dơi' }, b: { word: 'pat', ipa: '/pæt/', vi: 'vỗ nhẹ' } },
+  { type: 'consonant', focus: 'b vs p', a: { word: 'bin', ipa: '/bɪn/', vi: 'thùng rác' }, b: { word: 'pin', ipa: '/pɪn/', vi: 'cái ghim' } },
+  { type: 'consonant', focus: 'b vs p', a: { word: 'bill', ipa: '/bɪl/', vi: 'hóa đơn' }, b: { word: 'pill', ipa: '/pɪl/', vi: 'viên thuốc' } },
+  { type: 'consonant', focus: 'b vs p', a: { word: 'bay', ipa: '/beɪ/', vi: 'vịnh biển' }, b: { word: 'pay', ipa: '/peɪ/', vi: 'thanh toán' } },
+  { type: 'consonant', focus: 'b vs p', a: { word: 'big', ipa: '/bɪɡ/', vi: 'to lớn' }, b: { word: 'pig', ipa: '/pɪɡ/', vi: 'con heo' } },
+  { type: 'consonant', focus: 'b vs p', a: { word: 'bear', ipa: '/beə/', vi: 'con gấu' }, b: { word: 'pear', ipa: '/peə/', vi: 'quả lê' } },
+  { type: 'consonant', focus: 'b vs p', a: { word: 'beach', ipa: '/biːtʃ/', vi: 'bãi biển' }, b: { word: 'peach', ipa: '/piːtʃ/', vi: 'quả đào' } },
+
+  // ─── 14. s vs ʃ ───────────────────────────────────────
+  { type: 'consonant', focus: 's vs ʃ', a: { word: 'sea', ipa: '/siː/', vi: 'biển' }, b: { word: 'she', ipa: '/ʃiː/', vi: 'cô ấy' } },
+  { type: 'consonant', focus: 's vs ʃ', a: { word: 'sip', ipa: '/sɪp/', vi: 'nhấp môi' }, b: { word: 'ship', ipa: '/ʃɪp/', vi: 'tàu thủy' } },
+  { type: 'consonant', focus: 's vs ʃ', a: { word: 'sign', ipa: '/saɪn/', vi: 'biển hiệu' }, b: { word: 'shine', ipa: '/ʃaɪn/', vi: 'tỏa sáng' } },
+  { type: 'consonant', focus: 's vs ʃ', a: { word: 'seat', ipa: '/siːt/', vi: 'chỗ ngồi' }, b: { word: 'sheet', ipa: '/ʃiːt/', vi: 'tờ giấy/ga giường' } },
+  { type: 'consonant', focus: 's vs ʃ', a: { word: 'sore', ipa: '/sɔː/', vi: 'đau nhức' }, b: { word: 'shore', ipa: '/ʃɔː/', vi: 'bờ biển' } },
+  { type: 'consonant', focus: 's vs ʃ', a: { word: 'sue', ipa: '/suː/', vi: 'kiện tụng' }, b: { word: 'shoe', ipa: '/ʃuː/', vi: 'chiếc giày' } },
+  { type: 'consonant', focus: 's vs ʃ', a: { word: 'save', ipa: '/seɪv/', vi: 'cứu' }, b: { word: 'shave', ipa: '/ʃeɪv/', vi: 'cạo râu' } },
+  { type: 'consonant', focus: 's vs ʃ', a: { word: 'sort', ipa: '/sɔːt/', vi: 'phân loại' }, b: { word: 'short', ipa: '/ʃɔːt/', vi: 'ngắn' } },
+
+  // ─── 15. s vs z ───────────────────────────────────────
+  { type: 'consonant', focus: 's vs z', a: { word: 'sue', ipa: '/suː/', vi: 'kiện tụng' }, b: { word: 'zoo', ipa: '/zuː/', vi: 'sở thú' } },
+  { type: 'consonant', focus: 's vs z', a: { word: 'sip', ipa: '/sɪp/', vi: 'nhấp môi' }, b: { word: 'zip', ipa: '/zɪp/', vi: 'khóa kéo' } },
+  { type: 'consonant', focus: 's vs z', a: { word: 'bus', ipa: '/bʌs/', vi: 'xe buýt' }, b: { word: 'buzz', ipa: '/bʌz/', vi: 'tiếng vo ve' } },
+  { type: 'consonant', focus: 's vs z', a: { word: 'price', ipa: '/praɪs/', vi: 'giá cả' }, b: { word: 'prize', ipa: '/praɪz/', vi: 'giải thưởng' } },
+  { type: 'consonant', focus: 's vs z', a: { word: 'ice', ipa: '/aɪs/', vi: 'nước đá' }, b: { word: 'eyes', ipa: '/aɪz/', vi: 'đôi mắt' } },
+  { type: 'consonant', focus: 's vs z', a: { word: 'face', ipa: '/feɪs/', vi: 'gương mặt' }, b: { word: 'phase', ipa: '/feɪz/', vi: 'giai đoạn' } },
+  { type: 'consonant', focus: 's vs z', a: { word: 'place', ipa: '/pleɪs/', vi: 'nơi chốn' }, b: { word: 'plays', ipa: '/pleɪz/', vi: 'chơi/kịch' } },
+
+  // ─── 16. ʃ vs tʃ ──────────────────────────────────────
+  { type: 'consonant', focus: 'ʃ vs tʃ', a: { word: 'share', ipa: '/ʃeə/', vi: 'chia sẻ' }, b: { word: 'chair', ipa: '/tʃeə/', vi: 'cái ghế' } },
+  { type: 'consonant', focus: 'ʃ vs tʃ', a: { word: 'sheep', ipa: '/ʃiːp/', vi: 'con cừu' }, b: { word: 'cheap', ipa: '/tʃiːp/', vi: 'rẻ tiền' } },
+  { type: 'consonant', focus: 'ʃ vs tʃ', a: { word: 'shop', ipa: '/ʃɒp/', vi: 'cửa hàng' }, b: { word: 'chop', ipa: '/tʃɒp/', vi: 'chặt băm' } },
+  { type: 'consonant', focus: 'ʃ vs tʃ', a: { word: 'cash', ipa: '/kæʃ/', vi: 'tiền mặt' }, b: { word: 'catch', ipa: '/kætʃ/', vi: 'bắt lấy' } },
+  { type: 'consonant', focus: 'ʃ vs tʃ', a: { word: 'wash', ipa: '/wɒʃ/', vi: 'rửa' }, b: { word: 'watch', ipa: '/wɒtʃ/', vi: 'xem' } },
+  { type: 'consonant', focus: 'ʃ vs tʃ', a: { word: 'shoe', ipa: '/ʃuː/', vi: 'chiếc giày' }, b: { word: 'chew', ipa: '/tʃuː/', vi: 'nhai' } },
+  { type: 'consonant', focus: 'ʃ vs tʃ', a: { word: 'ship', ipa: '/ʃɪp/', vi: 'tàu thủy' }, b: { word: 'chip', ipa: '/tʃɪp/', vi: 'khoai tây chiên' } },
+
+  // ─── 17. dʒ vs tʃ ──────────────────────────────────────
+  { type: 'consonant', focus: 'dʒ vs tʃ', a: { word: 'joke', ipa: '/dʒəʊk/', vi: 'trò đùa' }, b: { word: 'choke', ipa: '/tʃəʊk/', vi: 'nghẹt thở' } },
+  { type: 'consonant', focus: 'dʒ vs tʃ', a: { word: 'jeep', ipa: '/dʒiːp/', vi: 'xe jeep' }, b: { word: 'cheap', ipa: '/tʃiːp/', vi: 'rẻ tiền' } },
+  { type: 'consonant', focus: 'dʒ vs tʃ', a: { word: 'surge', ipa: '/sɜːdʒ/', vi: 'dâng trào' }, b: { word: 'search', ipa: '/sɜːtʃ/', vi: 'tìm kiếm' } },
+  { type: 'consonant', focus: 'dʒ vs tʃ', a: { word: 'badge', ipa: '/bædʒ/', vi: 'huy hiệu' }, b: { word: 'batch', ipa: '/bætʃ/', vi: 'mẻ/khóa' } },
+  { type: 'consonant', focus: 'dʒ vs tʃ', a: { word: 'gin', ipa: '/dʒɪn/', vi: 'rượu gin' }, b: { word: 'chin', ipa: '/tʃɪn/', vi: 'cái cằm' } },
+  { type: 'consonant', focus: 'dʒ vs tʃ', a: { word: 'junk', ipa: '/dʒʌŋk/', vi: 'rác thải' }, b: { word: 'chunk', ipa: '/tʃʌŋk/', vi: 'mảng/khúc' } },
+
+  // ─── 18. w vs v ───────────────────────────────────────
+  { type: 'consonant', focus: 'w vs v', a: { word: 'wet', ipa: '/wet/', vi: 'ướt át' }, b: { word: 'vet', ipa: '/vet/', vi: 'bác sĩ thú y' } },
+  { type: 'consonant', focus: 'w vs v', a: { word: 'wine', ipa: '/waɪn/', vi: 'rượu vang' }, b: { word: 'vine', ipa: '/vaɪn/', vi: 'cây nho' } },
+  { type: 'consonant', focus: 'w vs v', a: { word: 'west', ipa: '/west/', vi: 'phương tây' }, b: { word: 'vest', ipa: '/vest/', vi: 'áo ghi lê' } },
+  { type: 'consonant', focus: 'w vs v', a: { word: 'wary', ipa: '/ˈweə.ri/', vi: 'thận trọng' }, b: { word: 'vary', ipa: '/ˈveə.ri/', vi: 'thay đổi' } },
+  { type: 'consonant', focus: 'w vs v', a: { word: 'whale', ipa: '/weɪl/', vi: 'cá voi' }, b: { word: 'vale', ipa: '/veɪl/', vi: 'thung lũng' } },
+  { type: 'consonant', focus: 'w vs v', a: { word: 'wheel', ipa: '/wiːl/', vi: 'bánh xe' }, b: { word: 'veal', ipa: '/viːl/', vi: 'thịt bê' } },
+  { type: 'consonant', focus: 'w vs v', a: { word: 'worse', ipa: '/wɜːs/', vi: 'tồi tệ hơn' }, b: { word: 'verse', ipa: '/vɜːs/', vi: 'vần thơ' } },
+
+  // ─── 19. n vs ŋ ───────────────────────────────────────
+  { type: 'consonant', focus: 'n vs ŋ', a: { word: 'thin', ipa: '/θɪn/', vi: 'mỏng' }, b: { word: 'thing', ipa: '/θɪŋ/', vi: 'đồ vật' } },
+  { type: 'consonant', focus: 'n vs ŋ', a: { word: 'sin', ipa: '/sɪn/', vi: 'tội lỗi' }, b: { word: 'sing', ipa: '/sɪŋ/', vi: 'hát' } },
+  { type: 'consonant', focus: 'n vs ŋ', a: { word: 'win', ipa: '/wɪn/', vi: 'chiến thắng' }, b: { word: 'wing', ipa: '/wɪŋ/', vi: 'cánh chim' } },
+  { type: 'consonant', focus: 'n vs ŋ', a: { word: 'ton', ipa: '/tʌn/', vi: 'tấn' }, b: { word: 'tongue', ipa: '/tʌŋ/', vi: 'cái lưỡi' } },
+  { type: 'consonant', focus: 'n vs ŋ', a: { word: 'run', ipa: '/rʌn/', vi: 'chạy' }, b: { word: 'rung', ipa: '/rʌŋ/', vi: 'nấc thang' } },
+  { type: 'consonant', focus: 'n vs ŋ', a: { word: 'ban', ipa: '/bæn/', vi: 'cấm' }, b: { word: 'bang', ipa: '/bæŋ/', vi: 'tiếng nổ lớn' } },
+  { type: 'consonant', focus: 'n vs ŋ', a: { word: 'pin', ipa: '/pɪn/', vi: 'cái ghim' }, b: { word: 'ping', ipa: '/pɪŋ/', vi: 'tiếng ping' } },
+
+  // ─── 20. g vs k ───────────────────────────────────────
+  { type: 'consonant', focus: 'g vs k', a: { word: 'goat', ipa: '/ɡəʊt/', vi: 'con dê' }, b: { word: 'coat', ipa: '/kəʊt/', vi: 'áo khoác' } },
+  { type: 'consonant', focus: 'g vs k', a: { word: 'bag', ipa: '/bæɡ/', vi: 'túi xách' }, b: { word: 'back', ipa: '/bæk/', vi: 'phần lưng' } },
+  { type: 'consonant', focus: 'g vs k', a: { word: 'pig', ipa: '/pɪɡ/', vi: 'con heo' }, b: { word: 'pick', ipa: '/pɪk/', vi: 'chọn' } },
+  { type: 'consonant', focus: 'g vs k', a: { word: 'gap', ipa: '/ɡæp/', vi: 'khoảng trống' }, b: { word: 'cap', ipa: '/kæp/', vi: 'mũ lưỡi trai' } },
+  { type: 'consonant', focus: 'g vs k', a: { word: 'game', ipa: '/ɡeɪm/', vi: 'trò chơi' }, b: { word: 'came', ipa: '/keɪm/', vi: 'đã đến' } },
+  { type: 'consonant', focus: 'g vs k', a: { word: 'gold', ipa: '/ɡəʊld/', vi: 'vàng' }, b: { word: 'cold', ipa: '/kəʊld/', vi: 'lạnh' } },
+  { type: 'consonant', focus: 'g vs k', a: { word: 'glass', ipa: '/ɡlɑːs/', vi: 'ly thủy tinh' }, b: { word: 'class', ipa: '/klɑːs/', vi: 'lớp học' } },
+
+  // ─── 21. h vs ø ───────────────────────────────────────
+  { type: 'consonant', focus: 'h vs ø', a: { word: 'hate', ipa: '/heɪt/', vi: 'ghét' }, b: { word: 'ate', ipa: '/et/', vi: 'đã ăn' } },
+  { type: 'consonant', focus: 'h vs ø', a: { word: 'hair', ipa: '/heə/', vi: 'tóc' }, b: { word: 'air', ipa: '/eə/', vi: 'không khí' } },
+  { type: 'consonant', focus: 'h vs ø', a: { word: 'hear', ipa: '/hɪə/', vi: 'nghe' }, b: { word: 'ear', ipa: '/ɪə/', vi: 'tai' } },
+  { type: 'consonant', focus: 'h vs ø', a: { word: 'heat', ipa: '/hiːt/', vi: 'nhiệt độ' }, b: { word: 'eat', ipa: '/iːt/', vi: 'ăn' } },
+  { type: 'consonant', focus: 'h vs ø', a: { word: 'hold', ipa: '/həʊld/', vi: 'cầm nắm' }, b: { word: 'old', ipa: '/əʊld/', vi: 'già/cũ' } },
+  { type: 'consonant', focus: 'h vs ø', a: { word: 'hill', ipa: '/hɪl/', vi: 'đồi' }, b: { word: 'ill', ipa: '/ɪl/', vi: 'ốm đau' } }
+];
