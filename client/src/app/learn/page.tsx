@@ -25,10 +25,15 @@ import {
   Shirt,
   Cat,
   Heart,
-  BookOpen
+  BookOpen,
+  Car,
+  Building2,
+  Cpu,
+  Landmark
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { cn } from '@/lib/utils';
+import { VOCABULARY_TOPICS } from './vocabularyData';
 
 interface Word {
   id: string;
@@ -220,254 +225,20 @@ const speak = (text: string) => {
   }
 };
 
-const VOCABULARY_TOPICS = [
-  {
-    id: 'people',
-    title: 'Con người & Tính cách (People & Personality)',
-    desc: 'Từ vựng miêu tả ngoại hình, phẩm chất và tính cách của con người.',
-    icon: User,
-    color: 'border-blue-200 bg-blue-50 text-blue-800 hover:border-blue-400',
-    beginner: [
-      { word: 'tall', phonetic: '/tɔːl/', wordType: 'adj', meaningEn: 'having a relatively great height', meaningVi: 'cao', example: 'He is tall and slim.', exampleVi: 'Anh ấy cao và mảnh khảnh.' },
-      { word: 'kind', phonetic: '/kaɪnd/', wordType: 'adj', meaningEn: 'helpful, friendly, and caring about others', meaningVi: 'tốt bụng', example: 'She is a kind teacher.', exampleVi: 'Cô ấy là một giáo viên tốt bụng.' },
-      { word: 'happy', phonetic: '/ˈhæp.i/', wordType: 'adj', meaningEn: 'feeling or showing pleasure or contentment', meaningVi: 'hạnh phúc, vui vẻ', example: 'They are very happy today.', exampleVi: 'Hôm nay họ rất vui vẻ.' },
-      { word: 'young', phonetic: '/jʌŋ/', wordType: 'adj', meaningEn: 'having lived or existed for only a short time', meaningVi: 'trẻ trung', example: 'She is young and energetic.', exampleVi: 'Cô ấy trẻ trung và tràn đầy năng lượng.' },
-      { word: 'smart', phonetic: '/smɑːt/', wordType: 'adj', meaningEn: 'intelligent or clever', meaningVi: 'thông minh', example: 'The student is very smart.', exampleVi: 'Người học sinh đó rất thông minh.' },
-      { word: 'quiet', phonetic: '/ˈkwaɪ.ət/', wordType: 'adj', meaningEn: 'making very little noise; silent', meaningVi: 'trầm tính, yên tĩnh', example: 'He is quiet and a bit shy.', exampleVi: 'Anh ấy trầm tính và hơi nhút nhát.' },
-      { word: 'friendly', phonetic: '/ˈfrend.li/', wordType: 'adj', meaningEn: 'behaving in a pleasant, kind way towards someone', meaningVi: 'thân thiện', example: 'The locals are friendly.', exampleVi: 'Người dân địa phương rất thân thiện.' },
-      { word: 'polite', phonetic: '/pəˈlaɪt/', wordType: 'adj', meaningEn: 'having good manners and respect for others', meaningVi: 'lịch sự, lễ phép', example: 'Always be polite to others.', exampleVi: 'Hãy luôn lịch sự với người khác.' },
-      { word: 'short', phonetic: '/ʃɔːt/', wordType: 'adj', meaningEn: 'having a small distance from the top to the bottom', meaningVi: 'lùn, thấp', example: 'He is short but very strong.', exampleVi: 'Anh ấy thấp nhưng rất khỏe.' },
-      { word: 'old', phonetic: '/əʊld/', wordType: 'adj', meaningEn: 'having lived or existed for a long time', meaningVi: 'già, lớn tuổi', example: 'My grandfather is old.', exampleVi: 'Ông tôi đã lớn tuổi rồi.' },
-      { word: 'sad', phonetic: '/sæd/', wordType: 'adj', meaningEn: 'showing or feeling sadness; unhappy', meaningVi: 'buồn bã', example: 'Why are you so sad?', exampleVi: 'Tại sao bạn lại buồn thế?' },
-      { word: 'brave', phonetic: '/breɪv/', wordType: 'adj', meaningEn: 'showing no fear in dangerous situations', meaningVi: 'dũng cảm', example: 'The brave boy saved the dog.', exampleVi: 'Cậu bé dũng cảm đã cứu chú chó.' },
-      { word: 'funny', phonetic: '/ˈfʌn.i/', wordType: 'adj', meaningEn: 'causing laughter or amusement; humorous', meaningVi: 'hài hước, vui nhộn', example: 'He tells funny stories.', exampleVi: 'Anh ấy kể những câu chuyện rất hài hước.' },
-      { word: 'honest', phonetic: '/ˈɒn.ɪst/', wordType: 'adj', meaningEn: 'telling the truth and not hiding the facts', meaningVi: 'thật thà, trung thực', example: 'Be honest with yourself.', exampleVi: 'Hãy trung thực với chính bản thân mình.' },
-      { word: 'lazy', phonetic: '/ˈleɪ.zi/', wordType: 'adj', meaningEn: 'not willing to work or use any effort', meaningVi: 'lười biếng', example: 'He is lazy and sleeps all day.', exampleVi: 'Cậu ta lười biếng và ngủ cả ngày.' }
-    ],
-    advanced: [
-      { word: 'outgoing', phonetic: '/ˈaʊt.ɡəʊ.ɪŋ/', wordType: 'adj', meaningEn: 'friendly and energetic and finding it easy to be with others', meaningVi: 'cởi mở, hướng ngoại', example: 'She is outgoing and loves parties.', exampleVi: 'Cô ấy hướng ngoại và yêu thích tiệc tùng.' },
-      { word: 'generous', phonetic: '/ˈdʒen.ər.əs/', wordType: 'adj', meaningEn: 'willing to give money, help, kindness, etc., more than is usual', meaningVi: 'hào phóng, rộng lượng', example: 'He is very generous with his money.', exampleVi: 'Anh ấy rất hào phóng tiền bạc.' },
-      { word: 'optimistic', phonetic: '/ˌɒp.tɪˈmɪs.tɪk/', wordType: 'adj', meaningEn: 'hoping or believing that good things will happen', meaningVi: 'lạc quan', example: 'Try to remain optimistic.', exampleVi: 'Hãy cố gắng duy trì sự lạc quan.' },
-      { word: 'considerate', phonetic: '/kənˈsɪd.ər.ət/', wordType: 'adj', meaningEn: 'kind and helpful, thinking of other people\'s feelings', meaningVi: 'chu đáo, ân cần', example: 'It was considerate of you to call.', exampleVi: 'Bạn thật chu đáo khi gọi điện hỏi thăm.' },
-      { word: 'stubborn', phonetic: '/ˈstʌb.ən/', wordType: 'adj', meaningEn: 'determined to do what you want and refusing to do anything else', meaningVi: 'bướng bỉnh, ương ngạnh', example: 'He is too stubborn to admit mistake.', exampleVi: 'Anh ấy quá bướng bỉnh không chịu nhận sai.' },
-      { word: 'ambitious', phonetic: '/æmˈbɪʃ.əs/', wordType: 'adj', meaningEn: 'having a strong wish to be successful, powerful, or rich', meaningVi: 'hoài bão, tham vọng', example: 'She is an ambitious young lawyer.', exampleVi: 'Cô ấy là một luật sư trẻ đầy hoài bão.' },
-      { word: 'trustworthy', phonetic: '/ˈtrʌstˌwɜː.ði/', wordType: 'adj', meaningEn: 'able to be trusted; reliable', meaningVi: 'đáng tin cậy', example: 'We need a trustworthy secretary.', exampleVi: 'Chúng tôi cần một thư ký đáng tin cậy.' },
-      { word: 'charismatic', phonetic: '/ˌkær.ɪzˈmæt.ɪk/', wordType: 'adj', meaningEn: 'used to describe a person who has charisma', meaningVi: 'lôi cuốn, uy tín', example: 'He is a charismatic leader.', exampleVi: 'Ông ấy là một nhà lãnh đạo đầy lôi cuốn.' },
-      { word: 'pessimistic', phonetic: '/ˌpes.ɪˈmɪs.tɪk/', wordType: 'adj', meaningEn: 'thinking that bad things are more likely to happen', meaningVi: 'bi quan', example: 'She has a pessimistic view of life.', exampleVi: 'Cô ấy có cái nhìn bi quan về cuộc sống.' },
-      { word: 'introverted', phonetic: '/ˈɪn.trə.vɜː.tɪd/', wordType: 'adj', meaningEn: 'shy, quiet, and preferring to spend time alone', meaningVi: 'hướng nội', example: 'Introverted people enjoy quiet times.', exampleVi: 'Người hướng nội thích những khoảng thời gian yên tĩnh.' },
-      { word: 'eccentric', phonetic: '/ɪkˈsen.trɪk/', wordType: 'adj', meaningEn: 'strange or unusual, sometimes in a humorous way', meaningVi: 'lập dị, kỳ lạ', example: 'The eccentric artist lives alone.', exampleVi: 'Người nghệ sĩ lập dị sống một mình.' },
-      { word: 'sympathetic', phonetic: '/ˌsɪm.pəˈθet.ɪk/', wordType: 'adj', meaningEn: 'showing that you understand and care about someone\'s problems', meaningVi: 'thông cảm, đồng cảm', example: 'She was sympathetic to his problems.', exampleVi: 'Cô ấy đã đồng cảm với những vấn đề của anh ấy.' },
-      { word: 'arrogant', phonetic: '/ˈær.ə.ɡənt/', wordType: 'adj', meaningEn: 'unpleasantly proud and behaving as if you are more important than others', meaningVi: 'kiêu ngạo, ngạo mạn', example: 'I found him extremely arrogant.', exampleVi: 'Tôi thấy anh ta vô cùng kiêu ngạo.' },
-      { word: 'compassionate', phonetic: '/kəmˈpæʃ.ən.ət/', wordType: 'adj', meaningEn: 'showing a strong feeling of sympathy and sadness for the suffering of others', meaningVi: 'nhân từ, giàu lòng trắc ẩn', example: 'She is a compassionate nurse.', exampleVi: 'Cô ấy là một y tá đầy lòng trắc ẩn.' },
-      { word: 'mischievous', phonetic: '/ˈmɪs.tʃɪ.vəs/', wordType: 'adj', meaningEn: 'behaving in a silly, active way, causing trouble but not serious damage', meaningVi: 'tinh nghịch, láu lỉnh', example: 'He had a mischievous smile on his face.', exampleVi: 'Anh ta nở một nụ cười tinh nghịch trên khuôn mặt.' }
-    ]
-  },
-  {
-    id: 'animals',
-    title: 'Động vật & Thú cưng (Animals & Pets)',
-    desc: 'Từ vựng về thế giới động vật, thú cưng gia đình và động vật hoang dã.',
-    icon: Cat,
-    color: 'border-emerald-200 bg-emerald-50 text-emerald-800 hover:border-emerald-400',
-    beginner: [
-      { word: 'dog', phonetic: '/dɒɡ/', wordType: 'noun', meaningEn: 'a common animal with four legs, kept as a pet or for work', meaningVi: 'con chó', example: 'I have a pet dog.', exampleVi: 'Tôi có một chú chó cưng.' },
-      { word: 'cat', phonetic: '/kæt/', wordType: 'noun', meaningEn: 'a small domesticated carnivorous mammal with soft fur', meaningVi: 'con mèo', example: 'The cat is sleeping.', exampleVi: 'Con mèo đang ngủ.' },
-      { word: 'bird', phonetic: '/bɜːd/', wordType: 'noun', meaningEn: 'a creature with feathers and wings, usually able to fly', meaningVi: 'con chim', example: 'Birds are singing.', exampleVi: 'Những chú chim đang hót.' },
-      { word: 'fish', phonetic: '/fɪʃ/', wordType: 'noun', meaningEn: 'an animal that lives in water and breathes through gills', meaningVi: 'con cá', example: 'Fish live in water.', exampleVi: 'Cá sống ở dưới nước.' },
-      { word: 'horse', phonetic: '/hɔːs/', wordType: 'noun', meaningEn: 'a large animal with four legs that people ride or use for pulling loads', meaningVi: 'con ngựa', example: 'He rides a white horse.', exampleVi: 'Anh ấy cưỡi một con ngựa trắng.' },
-      { word: 'rabbit', phonetic: '/ˈræb.ɪt/', wordType: 'noun', meaningEn: 'a small animal with long ears and soft fur that lives in holes', meaningVi: 'con thỏ', example: 'The rabbit runs fast.', exampleVi: 'Con thỏ chạy rất nhanh.' },
-      { word: 'monkey', phonetic: '/ˈmʌŋ.ki/', wordType: 'noun', meaningEn: 'a clever animal with a long tail that climbs trees', meaningVi: 'con khỉ', example: 'Monkeys eat bananas.', exampleVi: 'Những con khỉ ăn chuối.' },
-      { word: 'elephant', phonetic: '/ˈel.ɪ.fənt/', wordType: 'noun', meaningEn: 'a very large grey animal with big ears and a long trunk', meaningVi: 'con voi', example: 'The elephant has a trunk.', exampleVi: 'Con voi có một chiếc vòi.' },
-      { word: 'lion', phonetic: '/ˈlaɪ.ən/', wordType: 'noun', meaningEn: 'a large wild animal of the cat family, known as king of beasts', meaningVi: 'sư tử', example: 'The lion is the king of the jungle.', exampleVi: 'Sư tử là chúa tể của rừng xanh.' },
-      { word: 'tiger', phonetic: '/ˈtaɪ.ɡər/', wordType: 'noun', meaningEn: 'a large wild animal of the cat family with orange and black stripes', meaningVi: 'con hổ', example: 'Tigers have beautiful stripes.', exampleVi: 'Hổ có những đường vằn rất đẹp.' },
-      { word: 'bear', phonetic: '/beər/', wordType: 'noun', meaningEn: 'a large, strong wild mammal with a thick fur coat', meaningVi: 'con gấu', example: 'Bears love eating honey.', exampleVi: 'Gấu rất thích ăn mật ong.' },
-      { word: 'duck', phonetic: '/dʌk/', wordType: 'noun', meaningEn: 'a common water bird with webbed feet and a broad flat beak', meaningVi: 'con vịt', example: 'Ducks are swimming in the pond.', exampleVi: 'Đôi vịt đang bơi trong ao.' },
-      { word: 'pig', phonetic: '/pɪɡ/', wordType: 'noun', meaningEn: 'a pink or black farm animal with short legs and a flat nose', meaningVi: 'con lợn, con heo', example: 'Pigs are intelligent animals.', exampleVi: 'Lợn là loài động vật thông minh.' },
-      { word: 'sheep', phonetic: '/ʃiːp/', wordType: 'noun', meaningEn: 'a farm animal with thick wool, kept for its meat or wool', meaningVi: 'con cừu', example: 'The sheep are eating grass.', exampleVi: 'Đàn cừu đang gặm cỏ.' },
-      { word: 'mouse', phonetic: '/maʊs/', wordType: 'noun', meaningEn: 'a small mammal with a pointed snout and a long tail', meaningVi: 'con chuột', example: 'The cat is chasing a mouse.', exampleVi: 'Con mèo đang đuổi theo con chuột.' }
-    ],
-    advanced: [
-      { word: 'predator', phonetic: '/ˈpred.ə.tər/', wordType: 'noun', meaningEn: 'an animal that hunts, kills, and eats other animals', meaningVi: 'thú săn mồi, động vật ăn thịt', example: 'Lions are apex predators.', exampleVi: 'Sư tử là loài săn mồi đầu bảng.' },
-      { word: 'endangered', phonetic: '/ɪnˈdeɪn.dʒəd/', wordType: 'adj', meaningEn: 'animals or plants that may soon not exist because there are very few left', meaningVi: 'có nguy cơ tuyệt chủng', example: 'Pandas are endangered species.', exampleVi: 'Gấu trúc là loài động vật có nguy cơ tuyệt chủng.' },
-      { word: 'mammal', phonetic: '/ˈmæm.əl/', wordType: 'noun', meaningEn: 'a warm-blooded animal that has hair or fur and breathes air', meaningVi: 'động vật có vú', example: 'Whales are marine mammals.', exampleVi: 'Cá voi là động vật biển có vú.' },
-      { word: 'reptile', phonetic: '/ˈrep.taɪl/', wordType: 'noun', meaningEn: 'a cold-blooded animal whose body is covered with scales', meaningVi: 'loài bò sát', example: 'Snakes belong to reptiles.', exampleVi: 'Rắn thuộc nhóm bò sát.' },
-      { word: 'domesticated', phonetic: '/dəˈmes.tɪ.keɪ.tɪd/', wordType: 'adj', meaningEn: 'brought under human control in order to provide food or companionship', meaningVi: 'đã được thuần hóa', example: 'Dogs were domesticated early.', exampleVi: 'Chó đã được thuần hóa từ rất sớm.' },
-      { word: 'biodiversity', phonetic: '/ˌbaɪ.əʊ.daɪˈvɜː.sə.ti/', wordType: 'noun', meaningEn: 'the number and variety of plants and animals in a particular area', meaningVi: 'sự đa dạng sinh học', example: 'The jungle has high biodiversity.', exampleVi: 'Khu rừng nhiệt đới có tính đa dạng sinh học cao.' },
-      { word: 'migration', phonetic: '/maɪˈɡreɪ.ʃən/', wordType: 'noun', meaningEn: 'the travel of groups of animals to a new place seasonally', meaningVi: 'sự di cư', example: 'Bird migration is seasonal.', exampleVi: 'Sự di cư của chim diễn ra theo mùa.' },
-      { word: 'camouflage', phonetic: '/ˈkæm.ə.flɑːʒ/', wordType: 'noun/verb', meaningEn: 'the way that the color or shape of an animal helps it blend in', meaningVi: 'sự ngụy trang', example: 'Chameleons use camouflage.', exampleVi: 'Tắc kè hoa sử dụng sự ngụy trang.' },
-      { word: 'nocturnal', phonetic: '/nɒkˈtɜː.nəl/', wordType: 'adj', meaningEn: 'being active, flying, or feeding at night', meaningVi: 'hoạt động về đêm', example: 'Bats are nocturnal creatures.', exampleVi: 'Dơi là sinh vật hoạt động về đêm.' },
-      { word: 'herbivore', phonetic: '/ˈhɜː.bɪ.vɔːr/', wordType: 'noun', meaningEn: 'an animal that eats only plants', meaningVi: 'động vật ăn cỏ', example: 'Elephants are large herbivores.', exampleVi: 'Voi là loài động vật ăn cỏ lớn.' },
-      { word: 'carnivore', phonetic: '/ˈkɑː.nɪ.vɔːr/', wordType: 'noun', meaningEn: 'an animal that eats meat from other animals', meaningVi: 'động vật ăn thịt', example: 'Lions and tigers are carnivores.', exampleVi: 'Sư tử và hổ là động vật ăn thịt.' },
-      { word: 'habitat', phonetic: '/ˈhæb.ɪ.tæt/', wordType: 'noun', meaningEn: 'the natural environment in which an animal or plant usually lives', meaningVi: 'môi trường sống', example: 'Deforestation destroys animal habitats.', exampleVi: 'Phá rừng làm hủy hoại môi trường sống của động vật.' },
-      { word: 'extinction', phonetic: '/ɪkˈstɪŋk.ʃən/', wordType: 'noun', meaningEn: 'a situation in which a plant or animal stops existing completely', meaningVi: 'sự tuyệt chủng', example: 'The dinosaurs faced extinction.', exampleVi: 'Khủng long đã đối mặt với sự tuyệt chủng.' },
-      { word: 'hibernate', phonetic: '/ˈhaɪ.bə.neɪt/', wordType: 'verb', meaningEn: 'to spend the winter asleep or in an inactive state', meaningVi: 'ngủ đông', example: 'Bears hibernate during winter.', exampleVi: 'Gấu ngủ đông suốt mùa đông.' },
-      { word: 'aquatic', phonetic: '/əˈkwæt.ɪk/', wordType: 'adj', meaningEn: 'living or growing in, happening in, or connected with water', meaningVi: 'sống ở dưới nước', example: 'Dolphins are aquatic mammals.', exampleVi: 'Cá heo là động vật có vú sống dưới nước.' }
-    ]
-  },
-  {
-    id: 'jobs',
-    title: 'Việc làm & Nghề nghiệp (Jobs & Occupations)',
-    desc: 'Từ vựng về các vị trí công việc, hoạt động công sở và cơ hội nghề nghiệp.',
-    icon: Briefcase,
-    color: 'border-amber-200 bg-amber-50 text-amber-800 hover:border-amber-400',
-    beginner: [
-      { word: 'teacher', phonetic: '/ˈtiː.tʃər/', wordType: 'noun', meaningEn: 'someone whose job is to teach in a school or college', meaningVi: 'giáo viên', example: 'She is a high school teacher.', exampleVi: 'Cô ấy là giáo viên cấp ba.' },
-      { word: 'doctor', phonetic: '/ˈdɒk.tər/', wordType: 'noun', meaningEn: 'a person with a medical degree whose job is to treat sick people', meaningVi: 'bác sĩ', example: 'The doctor examined the child.', exampleVi: 'Bác sĩ đã khám cho đứa trẻ.' },
-      { word: 'nurse', phonetic: '/nɜːs/', wordType: 'noun', meaningEn: 'a person whose job is to care for people who are ill or injured', meaningVi: 'y tá', example: 'The nurse works at the clinic.', exampleVi: 'Y tá làm việc tại phòng khám.' },
-      { word: 'police officer', phonetic: '/pəˈliːs ˌɒf.ɪ.sər/', wordType: 'noun', meaningEn: 'a member of the police force', meaningVi: 'nhân viên cảnh sát', example: 'A police officer stopped the car.', exampleVi: 'Một cảnh sát đã chặn chiếc xe lại.' },
-      { word: 'chef', phonetic: '/ʃef/', wordType: 'noun', meaningEn: 'a skilled and trained cook who works in a hotel or restaurant', meaningVi: 'đầu bếp trưởng', example: 'The chef prepared a steak.', exampleVi: 'Đầu bếp đã chuẩn bị món bít tết.' },
-      { word: 'driver', phonetic: '/ˈdraɪ.vər/', wordType: 'noun', meaningEn: 'someone who drives a vehicle', meaningVi: 'tài xế, người lái xe', example: 'Our taxi driver was very nice.', exampleVi: 'Tài xế taxi của chúng tôi rất tốt bụng.' },
-      { word: 'farmer', phonetic: '/ˈfɑː.mər/', wordType: 'noun', meaningEn: 'someone who owns or manages a farm', meaningVi: 'nông dân', example: 'The farmer grows vegetables.', exampleVi: 'Người nông dân trồng rau củ.' },
-      { word: 'student', phonetic: '/ˈstjuː.dənt/', wordType: 'noun', meaningEn: 'a person who is learning at a college or university', meaningVi: 'học sinh, sinh viên', example: 'He is a college student.', exampleVi: 'Cậu ấy là một sinh viên đại học.' },
-      { word: 'singer', phonetic: '/ˈsɪŋ.ər/', wordType: 'noun', meaningEn: 'a person who sings, especially professionally', meaningVi: 'ca sĩ', example: 'She is a famous pop singer.', exampleVi: 'Cô ấy là một ca sĩ nhạc pop nổi tiếng.' },
-      { word: 'writer', phonetic: '/ˈraɪ.tər/', wordType: 'noun', meaningEn: 'a person who writes books, stories, or articles', meaningVi: 'nhà văn', example: 'He wants to be a writer.', exampleVi: 'Anh ấy muốn trở thành một nhà văn.' },
-      { word: 'baker', phonetic: '/ˈbəɪ.kər/', wordType: 'noun', meaningEn: 'a person who bakes and sells bread, cakes, etc.', meaningVi: 'thợ làm bánh', example: 'The baker makes fresh bread.', exampleVi: 'Thợ làm bánh làm ra bánh mì tươi.' },
-      { word: 'actor', phonetic: '/ˈæk.tər/', wordType: 'noun', meaningEn: 'someone who performs in a play, movie, or television show', meaningVi: 'diễn viên', example: 'He is a talented young actor.', exampleVi: 'Anh ấy là một diễn viên trẻ tài năng.' },
-      { word: 'artist', phonetic: '/ˈɑː.tɪst/', wordType: 'noun', meaningEn: 'someone who paints, draws, or makes sculptures', meaningVi: 'họa sĩ, nghệ sĩ', example: 'She is a talented landscape artist.', exampleVi: 'Cô ấy là một họa sĩ vẽ phong cảnh tài năng.' },
-      { word: 'dentist', phonetic: '/ˈden.tɪst/', wordType: 'noun', meaningEn: 'a person whose job is to care for people\'s teeth', meaningVi: 'nha sĩ', example: 'I need to visit the dentist.', exampleVi: 'Tôi cần phải đi khám nha sĩ.' },
-      { word: 'pilot', phonetic: '/ˈpaɪ.lət/', wordType: 'noun', meaningEn: 'a person who flies an aircraft', meaningVi: 'phi công', example: 'The pilot flew the plane safely.', exampleVi: 'Phi công đã lái máy bay an toàn.' }
-    ],
-    advanced: [
-      { word: 'entrepreneur', phonetic: '/ˌɒn.trə.prəˈnɜːr/', wordType: 'noun', meaningEn: 'someone who starts their own business with financial risk', meaningVi: 'nhà khởi nghiệp, doanh nhân', example: 'She is a successful entrepreneur.', exampleVi: 'Cô ấy là một nhà khởi nghiệp thành công.' },
-      { word: 'consultant', phonetic: '/kənˈsʌl.tənt/', wordType: 'noun', meaningEn: 'a person who provides expert advice professionally', meaningVi: 'cố vấn, tư vấn viên', example: 'He works as a financial consultant.', exampleVi: 'Anh ấy làm việc với tư cách là cố vấn tài chính.' },
-      { word: 'journalist', phonetic: '/ˈdʒɜː.nə.lɪst/', wordType: 'noun', meaningEn: 'a person who writes for newspapers, magazines, or news websites', meaningVi: 'nhà báo, phóng viên', example: 'The journalist wrote the article.', exampleVi: 'Nhà báo đã viết bài báo đó.' },
-      { word: 'architect', phonetic: '/ˈɑː.kɪ.tekt/', wordType: 'noun', meaningEn: 'a person who designs buildings and supervises construction', meaningVi: 'kiến trúc sư', example: 'An architect designed the bridge.', exampleVi: 'Một kiến trúc sư đã thiết kế cây cầu.' },
-      { word: 'accountant', phonetic: '/əˈkaʊn.tənt/', wordType: 'noun', meaningEn: 'someone whose job is to keep or inspect financial accounts', meaningVi: 'kế toán viên', example: 'The accountant checked the taxes.', exampleVi: 'Nhân viên kế toán đã kiểm tra các khoản thuế.' },
-      { word: 'colleague', phonetic: '/ˈkɒl.iːɡ/', wordType: 'noun', meaningEn: 'one of a group of people who work together', meaningVi: 'đồng nghiệp', example: 'I get along with my colleagues.', exampleVi: 'Tôi hòa đồng với các đồng nghiệp của mình.' },
-      { word: 'promotion', phonetic: '/prəˈməʊ.ʃən/', wordType: 'noun', meaningEn: 'the act of raising someone to a higher position or rank', meaningVi: 'sự thăng chức', example: 'He received a promotion today.', exampleVi: 'Anh ấy đã được thăng chức ngày hôm nay.' },
-      { word: 'redundancy', phonetic: '/rɪˈdʌn.dən.si/', wordType: 'noun', meaningEn: 'a situation where someone loses job because they are no longer needed', meaningVi: 'sự sa thải, cắt giảm nhân sự', example: 'Many faced redundancy during the crisis.', exampleVi: 'Nhiều người phải đối mặt với việc bị sa thải trong đợt khủng hoảng.' },
-      { word: 'headhunter', phonetic: '/ˈhedˌhʌn.tər/', wordType: 'noun', meaningEn: 'a recruiter of important personnel for businesses', meaningVi: 'người săn đầu người', example: 'The company hired a headhunter.', exampleVi: 'Công ty đã thuê một chuyên gia săn đầu người.' },
-      { word: 'resignation', phonetic: '/ˌrez.ɪɡˈneɪ.ʃən/', wordType: 'noun', meaningEn: 'an act of retiring or giving up a position', meaningVi: 'sự từ chức, đơn từ chức', example: 'He handed in his resignation.', exampleVi: 'Anh ấy đã nộp đơn xin từ chức.' },
-      { word: 'apprentice', phonetic: '/əˈpren.tɪs/', wordType: 'noun', meaningEn: 'a person learning a trade from a skilled employer', meaningVi: 'người học việc, thực tập sinh', example: 'She works as an apprentice chef.', exampleVi: 'Cô ấy làm việc với tư cách là đầu bếp học việc.' },
-      { word: 'freelancer', phonetic: '/ˈfriː.lɑːn.sər/', wordType: 'noun', meaningEn: 'a person who is self-employed and not committed to one employer', meaningVi: 'người làm việc tự do', example: 'He works as a web design freelancer.', exampleVi: 'Anh ấy làm việc như một freelancer thiết kế web.' },
-      { word: 'subsidy', phonetic: '/ˈsʌb.sɪ.di/', wordType: 'noun', meaningEn: 'a sum of money granted by the government to assist an industry', meaningVi: 'tiền trợ cấp', example: 'The government provides agricultural subsidies.', exampleVi: 'Chính phủ cung cấp tiền trợ cấp nông nghiệp.' },
-      { word: 'pension', phonetic: '/ˈpen.ʃən/', wordType: 'noun', meaningEn: 'a regular payment made by the government during retirement', meaningVi: 'tiền lương hưu', example: 'He lives on his monthly pension.', exampleVi: 'Ông ấy sống bằng tiền lương hưu hàng tháng.' },
-      { word: 'overtime', phonetic: '/ˈəʊ.və.taɪm/', wordType: 'noun/adv', meaningEn: 'time worked in addition to one\'s standard working hours', meaningVi: 'làm thêm giờ, tăng ca', example: 'I had to work overtime yesterday.', exampleVi: 'Tôi đã phải làm thêm giờ vào ngày hôm qua.' }
-    ]
-  },
-  {
-    id: 'school',
-    title: 'Trường học & Học tập (School & Education)',
-    desc: 'Từ vựng về môn học, đồ dùng học tập, kỳ thi và môi trường học thuật.',
-    icon: BookOpen,
-    color: 'border-violet-200 bg-violet-50 text-violet-850 hover:border-violet-400',
-    beginner: [
-      { word: 'book', phonetic: '/bʊk/', wordType: 'noun', meaningEn: 'a written or printed work consisting of pages bound together', meaningVi: 'quyển sách', example: 'Read this book today.', exampleVi: 'Hãy đọc quyển sách này hôm nay.' },
-      { word: 'class', phonetic: '/klɑːs/', wordType: 'noun', meaningEn: 'a group of students who are taught together', meaningVi: 'lớp học', example: 'The class starts at nine.', exampleVi: 'Lớp học bắt đầu lúc 9 giờ.' },
-      { word: 'lesson', phonetic: '/ˈles.ən/', wordType: 'noun', meaningEn: 'a period of time in which pupils are taught a subject', meaningVi: 'bài học', example: 'We have an English lesson.', exampleVi: 'Chúng tôi có một bài học tiếng Anh.' },
-      { word: 'homework', phonetic: '/ˈhəʊm.wɜːk/', wordType: 'noun', meaningEn: 'study that is given to school pupils to do at home', meaningVi: 'bài tập về nhà', example: 'Did you finish your homework?', exampleVi: 'Bạn đã làm xong bài tập về nhà chưa?' },
-      { word: 'pencil', phonetic: '/ˈpen.səl/', wordType: 'noun', meaningEn: 'a thin wooden stick used for writing or drawing', meaningVi: 'bút chì', example: 'Write the draft with a pencil.', exampleVi: 'Hãy viết bản nháp bằng bút chì.' },
-      { word: 'library', phonetic: '/ˈlaɪ.brər.i/', wordType: 'noun', meaningEn: 'a building containing books that can be borrowed', meaningVi: 'thư viện', example: 'I study in the library.', exampleVi: 'Tôi tự học trong thư viện.' },
-      { word: 'desk', phonetic: '/desk/', wordType: 'noun', meaningEn: 'a table that you sit at to write or work', meaningVi: 'bàn học, bàn làm việc', example: 'Put your books on the desk.', exampleVi: 'Đặt sách của bạn lên bàn học.' },
-      { word: 'pen', phonetic: '/pen/', wordType: 'noun', meaningEn: 'an instrument for writing or drawing with ink', meaningVi: 'bút bi, bút mực', example: 'Write your name with a blue pen.', exampleVi: 'Hãy viết tên bạn bằng một cây bút bi xanh.' },
-      { word: 'ruler', phonetic: '/ˈruː.lər/', wordType: 'noun', meaningEn: 'a straight strip used to measure distances or draw straight lines', meaningVi: 'thước kẻ', example: 'Use a ruler to draw lines.', exampleVi: 'Hãy sử dụng thước kẻ để vẽ các đường thẳng.' },
-      { word: 'paper', phonetic: '/ˈpeɪ.pər/', wordType: 'noun', meaningEn: 'material manufactured in thin sheets, used for writing on', meaningVi: 'tờ giấy, giấy', example: 'I need a sheet of paper.', exampleVi: 'Tôi cần một tờ giấy.' },
-      { word: 'exam', phonetic: '/ɪɡˈzæm/', wordType: 'noun', meaningEn: 'a formal test of a person\'s knowledge or proficiency', meaningVi: 'kỳ thi', example: 'He passed the final exam.', exampleVi: 'Cậu ấy đã vượt qua kỳ thi cuối kỳ.' },
-      { word: 'board', phonetic: '/bɔːd/', wordType: 'noun', meaningEn: 'a flat surface used for writing on with chalk or markers', meaningVi: 'cái bảng', example: 'Look at the board, please.', exampleVi: 'Làm ơn hãy nhìn lên bảng.' },
-      { word: 'grade', phonetic: '/ɡreɪd/', wordType: 'noun', meaningEn: 'a mark indicating the quality of a student\'s work', meaningVi: 'điểm số, lớp học', example: 'She got a high grade in math.', exampleVi: 'Cô ấy đạt điểm cao môn toán.' },
-      { word: 'eraser', phonetic: '/ɪˈreɪ.zər/', wordType: 'noun', meaningEn: 'an object used to rub out ink or pencil marks', meaningVi: 'cục tẩy, cục gôm', example: 'Can I borrow your eraser?', exampleVi: 'Tôi có thể mượn cục tẩy của bạn không?' },
-      { word: 'schoolbag', phonetic: '/ˈskuːl.bæɡ/', wordType: 'noun', meaningEn: 'a bag used by children for carrying books and school equipment', meaningVi: 'cặp học sinh, ba lô học sinh', example: 'Put the books in your schoolbag.', exampleVi: 'Hãy bỏ sách vào cặp học sinh của em.' }
-    ],
-    advanced: [
-      { word: 'scholarship', phonetic: '/ˈskɒl.ə.ʃɪp/', wordType: 'noun', meaningEn: 'money given to pay for the studies of a person with ability', meaningVi: 'học bổng', example: 'She won a full scholarship.', exampleVi: 'Cô ấy đã giành được một học bổng toàn phần.' },
-      { word: 'curriculum', phonetic: '/kəˈrɪk.jə.ləm/', wordType: 'noun', meaningEn: 'the subjects studying in a school or college', meaningVi: 'chương trình giảng dạy', example: 'The school updated its curriculum.', exampleVi: 'Nhà trường đã cập nhật chương trình giảng dạy của mình.' },
-      { word: 'graduation', phonetic: '/ˌɡrædʒ.uˈeɪ.ʃən/', wordType: 'noun', meaningEn: 'the finishing of a degree course and receiving a certificate', meaningVi: 'sự tốt nghiệp, lễ tốt nghiệp', example: 'Graduation ceremony is next week.', exampleVi: 'Lễ tốt nghiệp sẽ diễn ra vào tuần tới.' },
-      { word: 'plagiarism', phonetic: '/ˈpleɪ.dʒər.ɪ.zəm/', wordType: 'noun', meaningEn: 'taking someone else\'s work and passing it off as one\'s own', meaningVi: 'sự đạo văn', example: 'Plagiarism is strictly prohibited.', exampleVi: 'Hành vi đạo văn bị cấm nghiêm ngặt.' },
-      { word: 'tuition', phonetic: '/tʃuːˈɪʃ.ən/', wordType: 'noun', meaningEn: 'the money paid for being taught in a college', meaningVi: 'học phí', example: 'University tuition is rising.', exampleVi: 'Học phí đại học đang ngày càng tăng.' },
-      { word: 'assignment', phonetic: '/əˈsaɪn.mənt/', wordType: 'noun', meaningEn: 'a piece of work given to someone in their course of study', meaningVi: 'bài tập lớn, nhiệm vụ', example: 'Submit the assignment by Friday.', exampleVi: 'Nộp bài tập lớn trước thứ Sáu.' },
-      { word: 'lecture', phonetic: '/ˈlek.tʃər/', wordType: 'noun', meaningEn: 'a formal talk on a subject given to students', meaningVi: 'bài giảng đại học', example: 'The professor gave an interesting lecture.', exampleVi: 'Giáo sư đã đưa ra một bài giảng rất thú vị.' },
-      { word: 'semester', phonetic: '/sɪˈmes.tər/', wordType: 'noun', meaningEn: 'one of the two periods into which a year is divided at college', meaningVi: 'học kỳ', example: 'This is the final semester.', exampleVi: 'Đây là học kỳ cuối cùng.' },
-      { word: 'syllabus', phonetic: '/ˈsɪl.ə.bəs/', wordType: 'noun', meaningEn: 'an outline of the subjects in a course of study', meaningVi: 'đề cương môn học', example: 'Check the syllabus for exam dates.', exampleVi: 'Hãy kiểm tra đề cương môn học để biết ngày thi.' },
-      { word: 'pedagogy', phonetic: '/ˈped.ə.ɡɒdʒ.i/', wordType: 'noun', meaningEn: 'the method and practice of teaching', meaningVi: 'sư phạm học, phương pháp dạy học', example: 'They study modern educational pedagogy.', exampleVi: 'Họ nghiên cứu về phương pháp sư phạm giáo dục hiện đại.' },
-      { word: 'intellectual', phonetic: '/ˌɪn.təlˈek.tʃu.əl/', wordType: 'adj', meaningEn: 'relating to the intellect and rational thinking', meaningVi: 'trí tuệ, thuộc trí thức', example: 'Chess is an intellectual game.', exampleVi: 'Cờ vua là một trò chơi trí tuệ.' },
-      { word: 'doctorate', phonetic: '/ˈdɒk.tər.ət/', wordType: 'noun', meaningEn: 'the highest degree that is given by a university', meaningVi: 'học vị tiến sĩ', example: 'He earned his doctorate in physics.', exampleVi: 'Anh ấy đã nhận bằng tiến sĩ vật lý.' },
-      { word: 'alumni', phonetic: '/əˈlʌm.naɪ/', wordType: 'noun pl', meaningEn: 'former students or graduates of a school or college', meaningVi: 'cựu học sinh, cựu sinh viên', example: 'The university welcomes back alumni.', exampleVi: 'Trường đại học chào đón các cựu sinh viên trở lại.' },
-      { word: 'literacy', phonetic: '/ˈlɪt.ər.ə.si/', wordType: 'noun', meaningEn: 'the ability to read and write', meaningVi: 'trình độ biết chữ, sự biết chữ', example: 'Adult literacy rates are improving.', exampleVi: 'Tỷ lệ biết chữ ở người lớn đang được cải thiện.' },
-      { word: 'discipline', phonetic: '/ˈdɪs.ə.plɪn/', wordType: 'noun', meaningEn: 'the practice of training people to obey rules', meaningVi: 'kỷ luật, ngành học', example: 'School discipline is very strict.', exampleVi: 'Kỷ luật trường học rất nghiêm khắc.' }
-    ]
-  },
-  {
-    id: 'clothes',
-    title: 'Trang phục & Thời trang (Clothes & Fashion)',
-    desc: 'Từ vựng về các loại quần áo, phụ kiện thời trang và phong cách ăn mặc.',
-    icon: Shirt,
-    color: 'border-rose-200 bg-rose-50 text-rose-800 hover:border-rose-400',
-    beginner: [
-      { word: 'shirt', phonetic: '/ʃɜːt/', wordType: 'noun', meaningEn: 'a collar-bearing shirt or lightweight top', meaningVi: 'áo sơ mi', example: 'He wore a white shirt.', exampleVi: 'Anh ấy đã mặc một chiếc áo sơ mi trắng.' },
-      { word: 'pants', phonetic: '/pænts/', wordType: 'noun', meaningEn: 'trousers', meaningVi: 'quần dài', example: 'These pants are too long.', exampleVi: 'Chiếc quần dài này quá dài.' },
-      { word: 'shoes', phonetic: '/ʃuːz/', wordType: 'noun', meaningEn: 'coverings for the feet, typically made of leather', meaningVi: 'giày, đôi giày', example: 'Take off your shoes.', exampleVi: 'Hãy cởi giày của bạn ra.' },
-      { word: 'dress', phonetic: '/dres/', wordType: 'noun', meaningEn: 'a one-piece garment for a woman or girl', meaningVi: 'váy liền', example: 'She wore a red dress.', exampleVi: 'Cô ấy đã mặc một chiếc váy đỏ.' },
-      { word: 'hat', phonetic: '/hæt/', wordType: 'noun', meaningEn: 'a covering for the head', meaningVi: 'mũ, nón', example: 'Put on your hat.', exampleVi: 'Đội mũ vào đi.' },
-      { word: 'jacket', phonetic: '/ˈdʒæk.ɪt/', wordType: 'noun', meaningEn: 'a short coat', meaningVi: 'áo khoác ngắn', example: 'It is cold, wear a jacket.', exampleVi: 'Trời lạnh đấy, hãy mặc áo khoác.' },
-      { word: 'socks', phonetic: '/sɒks/', wordType: 'noun', meaningEn: 'coverings for the feet, worn inside shoes', meaningVi: 'tất, vớ', example: 'My socks are wet.', exampleVi: 'Tất của tôi bị ướt rồi.' },
-      { word: 'coat', phonetic: '/kəʊt/', wordType: 'noun', meaningEn: 'an outer piece of clothing with sleeves, worn to keep warm', meaningVi: 'áo khoác dài, măng tô', example: 'A heavy coat for winter.', exampleVi: 'Một chiếc áo khoác dày cho mùa đông.' },
-      { word: 'skirt', phonetic: '/skɜːt/', wordType: 'noun', meaningEn: 'a garment fastened around the waist and hanging down around the legs', meaningVi: 'chân váy', example: 'She wore a long black skirt.', exampleVi: 'Cô ấy đã mặc một chiếc chân váy đen dài.' },
-      { word: 'jeans', phonetic: '/dʒiːnz/', wordType: 'noun', meaningEn: 'trousers made of denim, a strong cotton fabric', meaningVi: 'quần bò, quần jeans', example: 'He loves wearing blue jeans.', exampleVi: 'Anh ấy thích mặc quần jeans xanh.' },
-      { word: 'tie', phonetic: '/taɪ/', wordType: 'noun', meaningEn: 'a strip of fabric worn around the collar and tied in front', meaningVi: 'cà vạt', example: 'He wore a red tie to the wedding.', exampleVi: 'Anh ấy đã thắt cà vạt đỏ đi đám cưới.' },
-      { word: 'belt', phonetic: '/belt/', wordType: 'noun', meaningEn: 'a band of leather worn around the waist to support clothes', meaningVi: 'thắt lưng, dây nịt', example: 'Your belt matches your shoes.', exampleVi: 'Thắt lưng của bạn rất hợp với đôi giày.' },
-      { word: 'boot', phonetic: '/buːt/', wordType: 'noun', meaningEn: 'a sturdy item of footwear covering the foot and the ankle', meaningVi: 'đôi ủng, giày cao cổ', example: 'Heavy boots for hiking.', exampleVi: 'Đôi giày cao cổ dày để đi leo núi.' },
-      { word: 'glove', phonetic: '/ɡlʌv/', wordType: 'noun', meaningEn: 'a covering for the hand with individual sheaths for each finger', meaningVi: 'găng tay, bao tay', example: 'Wear gloves in the winter.', exampleVi: 'Hãy đeo găng tay vào mùa đông.' },
-      { word: 'scarf', phonetic: '/skɑːf/', wordType: 'noun', meaningEn: 'a length of fabric worn around the neck or shoulders', meaningVi: 'khăn quàng cổ', example: 'She wrapped a woolen scarf around her neck.', exampleVi: 'Cô ấy quấn một chiếc khăn len quanh cổ.' }
-    ],
-    advanced: [
-      { word: 'outfit', phonetic: '/ˈaʊt.fɪt/', wordType: 'noun', meaningEn: 'a set of clothes worn for a particular occasion', meaningVi: 'bộ đồ, trang phục', example: 'That is a beautiful outfit.', exampleVi: 'Đó thật sự là một bộ trang phục đẹp.' },
-      { word: 'fabric', phonetic: '/ˈfæb.rɪk/', wordType: 'noun', meaningEn: 'cloth or material for making clothes', meaningVi: 'chất liệu vải', example: 'This fabric is soft and light.', exampleVi: 'Chất liệu vải này mềm mại và nhẹ nhàng.' },
-      { word: 'accessory', phonetic: '/ækˈses.ər.i/', wordType: 'noun', meaningEn: 'something added to clothing that has a decorative purpose', meaningVi: 'phụ kiện thời trang', example: 'Hats and belts are accessories.', exampleVi: 'Mũ và thắt lưng là các phụ kiện thời trang.' },
-      { word: 'wardrobe', phonetic: '/ˈwɔː.drəʊb/', wordType: 'noun', meaningEn: 'a person\'s entire collection of clothes', meaningVi: 'tủ quần áo, kho quần áo', example: 'I need to clean my wardrobe.', exampleVi: 'Tôi cần dọn dẹp lại tủ quần áo của mình.' },
-      { word: 'tailored', phonetic: '/ˈteɪ.ləd/', wordType: 'adj', meaningEn: 'made to fit the individual buyer, or well-fitted', meaningVi: 'may đo riêng, vừa vặn', example: 'A tailored suit fits best.', exampleVi: 'Một bộ vest được may đo riêng là vừa vặn nhất.' },
-      { word: 'casual', phonetic: '/ˈkæʒ.ju.əl/', wordType: 'adj', meaningEn: 'informal and comfortable clothes worn for everyday activities', meaningVi: 'bình thường, thường phục', example: 'Casual wear is allowed.', exampleVi: 'Quần áo thường nhật được cho phép.' },
-      { word: 'formal', phonetic: '/ˈfɔː.məl/', wordType: 'adj', meaningEn: 'clothes suitable for official or serious occasions', meaningVi: 'trang trọng, lịch sự', example: 'Formal attire is required.', exampleVi: 'Trang phục lịch sự là bắt buộc.' },
-      { word: 'vintage', phonetic: '/ˈvɪn.tɪdʒ/', wordType: 'adj', meaningEn: 'high quality clothes from a previous era', meaningVi: 'cổ điển, thời trang vintage', example: 'She loves vintage fashion.', exampleVi: 'Cô ấy yêu thích phong cách thời trang cổ điển.' },
-      { word: 'flamboyant', phonetic: '/flæmˈbɔɪ.ənt/', wordType: 'adj', meaningEn: 'bright, colorful, and very noticeable', meaningVi: 'sặc sỡ, rực rỡ, chói lọi', example: 'He wears flamboyant clothes.', exampleVi: 'Anh ấy mặc những bộ trang phục sặc sỡ.' },
-      { word: 'monochrome', phonetic: '/ˈmɒn.ə.krəʊm/', wordType: 'adj', meaningEn: 'using only one color or shades of one color', meaningVi: 'đơn sắc', example: 'She prefers monochrome designs.', exampleVi: 'Cô ấy thích các thiết kế đơn sắc.' },
-      { word: 'haute couture', phonetic: '/ˌəʊt kuːˈtjʊər/', wordType: 'noun', meaningEn: 'high-fashion designing and dressmaking', meaningVi: 'thời trang cao cấp', example: 'Paris is famous for haute couture.', exampleVi: 'Paris nổi tiếng với thời trang cao cấp.' },
-      { word: 'symmetrical', phonetic: '/sɪˈme.trɪ.kəl/', wordType: 'adj', meaningEn: 'having two parts that match each other exactly', meaningVi: 'đối xứng', example: 'The dress has a symmetrical design.', exampleVi: 'Chiếc váy có thiết kế đối xứng.' },
-      { word: 'runway', phonetic: '/ˈrun.weɪ/', wordType: 'noun', meaningEn: 'the stage that models walk along to show off clothes', meaningVi: 'sàn diễn thời trang', example: 'Models walked down the runway.', exampleVi: 'Các người mẫu sải bước trên sàn diễn thời trang.' },
-      { word: 'counterfeit', phonetic: '/ˈkaʊn.tə.fɪt/', wordType: 'adj/noun', meaningEn: 'made in exact imitation of something valuable to deceive', meaningVi: 'hàng giả, hàng nhái', example: 'Beware of counterfeit luxury bags.', exampleVi: 'Hãy cẩn thận với những chiếc túi xách sang trọng giả.' },
-      { word: 'fabrication', phonetic: '/ˌfæb.rɪˈkeɪ.ʃən/', wordType: 'noun', meaningEn: 'the action or process of manufacturing a fabric', meaningVi: 'sự chế tạo, chất lượng vải dệt', example: 'High-quality fabrication process.', exampleVi: 'Quy trình dệt chế tạo chất lượng cao.' }
-    ]
-  },
-  {
-    id: 'objects',
-    title: 'Đồ dùng & Thiết bị (Household Items & Objects)',
-    desc: 'Từ vựng về các đồ dùng trong nhà, thiết bị gia dụng và vật dụng quanh ta.',
-    icon: Home,
-    color: 'border-cyan-200 bg-cyan-50 text-cyan-800 hover:border-cyan-400',
-    beginner: [
-      { word: 'table', phonetic: '/ˈteɪ.bəl/', wordType: 'noun', meaningEn: 'a piece of furniture with a flat top and legs, used for eating or writing', meaningVi: 'bàn, chiếc bàn', example: 'Put it on the table.', exampleVi: 'Đặt nó ở trên bàn.' },
-      { word: 'chair', phonetic: '/tʃeər/', wordType: 'noun', meaningEn: 'a seat for one person, with a back and four legs', meaningVi: 'ghế, chiếc ghế', example: 'Sit down on the chair.', exampleVi: 'Ngồi xuống chiếc ghế này đi.' },
-      { word: 'bed', phonetic: '/bed/', wordType: 'noun', meaningEn: 'a piece of furniture that you sleep on', meaningVi: 'giường, chiếc giường', example: 'Time to go to bed.', exampleVi: 'Đến lúc đi ngủ rồi.' },
-      { word: 'lamp', phonetic: '/læmp/', wordType: 'noun', meaningEn: 'a device for giving light', meaningVi: 'đèn, chiếc đèn', example: 'Turn on the desk lamp.', exampleVi: 'Bật chiếc đèn bàn học lên.' },
-      { word: 'clock', phonetic: '/klɒk/', wordType: 'noun', meaningEn: 'a device for measuring and showing time, not worn', meaningVi: 'đồng hồ treo tường', example: 'The clock shows noon.', exampleVi: 'Đồng hồ chỉ đúng giữa trưa.' },
-      { word: 'mirror', phonetic: '/ˈmɪr.ər/', wordType: 'noun', meaningEn: 'a piece of glass in which you can see yourself', meaningVi: 'gương, chiếc gương', example: 'Look at yourself in the mirror.', exampleVi: 'Hãy nhìn mình vào trong gương.' },
-      { word: 'door', phonetic: '/dɔːr/', wordType: 'noun', meaningEn: 'the large flat thing that closes the entrance to a room', meaningVi: 'cửa, cánh cửa', example: 'Close the front door.', exampleVi: 'Đóng cánh cửa trước lại.' },
-      { word: 'key', phonetic: '/kiː/', wordType: 'noun', meaningEn: 'a metal object used to open or lock a door', meaningVi: 'chìa khóa', example: 'I lost my house key.', exampleVi: 'Tôi đã làm mất chìa khóa nhà.' },
-      { word: 'window', phonetic: '/ˈwɪn.dəʊ/', wordType: 'noun', meaningEn: 'an opening in the wall of a building to let in light or air', meaningVi: 'cửa sổ', example: 'Open the window for fresh air.', exampleVi: 'Hãy mở cửa sổ để đón không khí trong lành.' },
-      { word: 'phone', phonetic: '/fəʊn/', wordType: 'noun', meaningEn: 'a device used for long-distance communication', meaningVi: 'điện thoại', example: 'Answer the phone, please.', exampleVi: 'Làm ơn trả lời điện thoại.' },
-      { word: 'cup', phonetic: '/kʌp/', wordType: 'noun', meaningEn: 'a small bowl-shaped container for drinking from', meaningVi: 'cái chén, tách', example: 'He drank a cup of hot tea.', exampleVi: 'Anh ấy uống một tách trà nóng.' },
-      { word: 'plate', phonetic: '/pleɪt/', wordType: 'noun', meaningEn: 'a flat dish, typically circular, from which food is eaten', meaningVi: 'cái đĩa', example: 'Put the food on a plate.', exampleVi: 'Hãy bày thức ăn lên đĩa.' },
-      { word: 'spoon', phonetic: '/spuːn/', wordType: 'noun', meaningEn: 'an implement consisting of a small shallow bowl with a handle', meaningVi: 'cái thìa, muỗng', example: 'Eat soup with a spoon.', exampleVi: 'Ăn súp bằng một chiếc thìa.' },
-      { word: 'fork', phonetic: '/fɔːk/', wordType: 'noun', meaningEn: 'an implement with two or more prongs used for lifting food', meaningVi: 'cái nĩa', example: 'Use a fork to eat salad.', exampleVi: 'Dùng nĩa để ăn món salad.' },
-      { word: 'knife', phonetic: '/naɪf/', wordType: 'noun', meaningEn: 'an instrument with a blade and a handle, used for cutting', meaningVi: 'con dao', example: 'Be careful with that sharp knife.', exampleVi: 'Hãy cẩn thận với con dao sắc đó.' }
-    ],
-    advanced: [
-      { word: 'appliance', phonetic: '/əˈplaɪ.əns/', wordType: 'noun', meaningEn: 'a device, machine, or piece of equipment used in the home', meaningVi: 'thiết bị gia dụng', example: 'Kitchen appliances are expensive.', exampleVi: 'Các thiết bị gia dụng nhà bếp rất đắt tiền.' },
-      { word: 'refrigerator', phonetic: '/rɪˈfrɪdʒ.ə.reɪ.tər/', wordType: 'noun', meaningEn: 'an appliance which keeps food cold to preserve it', meaningVi: 'tủ lạnh', example: 'Keep milk in the refrigerator.', exampleVi: 'Hãy giữ sữa trong tủ lạnh.' },
-      { word: 'vacuum cleaner', phonetic: '/ˈvæk.juːm ˌkliː.nər/', wordType: 'noun', meaningEn: 'a machine that cleans floors by suction', meaningVi: 'máy hút bụi', example: 'This vacuum cleaner is quiet.', exampleVi: 'Chiếc máy hút bụi này chạy rất êm.' },
-      { word: 'thermostat', phonetic: '/ˈθɜː.mə.stæt/', wordType: 'noun', meaningEn: 'a device that controls the temperature of a room', meaningVi: 'bộ điều nhiệt', example: 'Adjust the thermostat to cool.', exampleVi: 'Hãy điều chỉnh bộ điều nhiệt sang làm mát.' },
-      { word: 'cabinet', phonetic: '/ˈkæb.ɪ.nət/', wordType: 'noun', meaningEn: 'a piece of furniture with shelves and doors for storage', meaningVi: 'ngăn tủ, tủ chứa đồ', example: 'Glasses are in the cabinet.', exampleVi: 'Những chiếc ly nằm trong tủ.' },
-      { word: 'cutlery', phonetic: '/ˈkʌt.lər.i/', wordType: 'noun', meaningEn: 'knives, forks, and spoons used for eating food', meaningVi: 'bộ dụng cụ ăn (dao, muỗng, nĩa)', example: 'Polish the silver cutlery.', exampleVi: 'Hãy đánh bóng bộ dụng cụ ăn bằng bạc.' },
-      { word: 'fragile', phonetic: '/ˈfrædʒ.aɪl/', wordType: 'adj', meaningEn: 'easily broken or damaged', meaningVi: 'dễ vỡ, mỏng manh', example: 'Handle these fragile items carefully.', exampleVi: 'Cầm nắm những vật dễ vỡ này cẩn thận.' },
-      { word: 'utensil', phonetic: '/juːˈten.sɪl/', wordType: 'noun', meaningEn: 'a tool with a particular use, especially in kitchen', meaningVi: 'dụng cụ, đồ dùng nhà bếp', example: 'Kitchen utensils are on the shelf.', exampleVi: 'Các dụng cụ nhà bếp nằm trên kệ.' },
-      { word: 'dishwasher', phonetic: '/ˈdɪʃˌwɒʃ.ər/', wordType: 'noun', meaningEn: 'a machine for washing dishes automatically', meaningVi: 'máy rửa bát, máy rửa chén', example: 'Put the dirty dishes in the dishwasher.', exampleVi: 'Hãy cho bát đĩa bẩn vào máy rửa bát.' },
-      { word: 'humidifier', phonetic: '/hjuːˈmɪd.ɪ.faɪ.ər/', wordType: 'noun', meaningEn: 'a device for keeping the atmosphere moist in a room', meaningVi: 'máy tạo ẩm, máy phun sương', example: 'Use a humidifier in dry weather.', exampleVi: 'Sử dụng máy tạo ẩm trong thời tiết khô hanh.' },
-      { word: 'upholstery', phonetic: '/ʌpˈhəʊl.stər.i/', wordType: 'noun', meaningEn: 'soft, padded textile covering that is fixed to furniture', meaningVi: 'lớp vải bọc nệm', example: 'The sofa upholstery is worn out.', exampleVi: 'Lớp bọc nệm của sofa đã bị sờn mòn.' },
-      { word: 'microwave', phonetic: '/ˈmaɪ.krə.weɪv/', noun: 'noun', meaningEn: 'an oven that uses microwaves to cook or heat food', meaningVi: 'lò vi sóng', example: 'Warm up the pizza in the microwave.', exampleVi: 'Hãy hâm nóng pizza bằng lò vi sóng.' },
-      { word: 'detergent', phonetic: '/dɪˈtɜː.dʒənt/', wordType: 'noun', meaningEn: 'a water-soluble cleansing agent which combines with impurities', meaningVi: 'chất tẩy rửa, bột giặt', example: 'Use mild detergent for wool.', exampleVi: 'Sử dụng chất tẩy rửa nhẹ cho len.' },
-      { word: 'combustible', phonetic: '/kəmˈbʌs.tə.bəl/', wordType: 'adj', meaningEn: 'able to catch fire and burn easily', meaningVi: 'dễ cháy, chất dễ cháy', example: 'Keep combustibles away from fire.', exampleVi: 'Giữ các chất dễ cháy xa nguồn lửa.' },
-      { word: 'heirloom', phonetic: '/ˈeə.luːm/', wordType: 'noun', meaningEn: 'a valuable object that has belonged to a family for generations', meaningVi: 'vật gia truyền', example: 'This clock is a family heirloom.', exampleVi: 'Chiếc đồng hồ này là vật gia truyền của gia đình.' }
-    ]
-  }
-];
+// Icon mapping for vocabulary topics (data imported from vocabularyData.ts)
+const TOPIC_ICONS: Record<string, any> = {
+  people: User,
+  animals: Cat,
+  jobs: Briefcase,
+  school: BookOpen,
+  clothes: Shirt,
+  objects: Home,
+  house: Landmark,
+  vehicles: Car,
+  company: Building2,
+  it: Cpu,
+};
+
 
 export default function LearnPage() {
   const { user } = useAuth();
@@ -976,7 +747,7 @@ export default function LearnPage() {
           ) : loading ? (
             <div className="flex flex-col items-center justify-center min-h-[40vh] space-y-4">
               <Loader2 className="w-10 h-10 text-[#002147] animate-spin" />
-              <p className="text-slate-400 font-bold uppercase tracking-widest text-[10px] animate-pulse">Đang tải từ mới...</p>
+              <p className="text-slate-400 font-bold uppercase tracking-widest text-xs animate-pulse">Đang tải từ mới...</p>
             </div>
           ) : words.length === 0 ? (
             <div className="flex flex-col items-center justify-center min-h-[40vh] text-center space-y-6">
@@ -1012,7 +783,7 @@ export default function LearnPage() {
             </div>
           ) : (
             // Flashcard content
-            <div className="max-w-2xl mx-auto space-y-6 animate-in fade-in duration-500">
+            <div className="max-w-3xl mx-auto space-y-6 animate-in fade-in duration-500">
               <div className="flex items-center justify-between">
                 <button 
                   onClick={() => setSelectedLevel(null)}
@@ -1021,26 +792,26 @@ export default function LearnPage() {
                   <ChevronLeft className="w-4 h-4" /> Chọn Cấp Độ
                 </button>
                 <div className="flex items-center gap-3">
-                  <span className="px-2.5 py-0.5 bg-green-50 border border-green-100 text-[10px] font-black text-green-700 rounded-full">{selectedLevel}</span>
-                  <span className="text-xs font-black text-slate-400">{currentIndex + 1}/{words.length}</span>
+                  <span className="px-2.5 py-0.5 bg-green-50 border border-green-100 text-xs font-bold text-green-700 rounded-full">{selectedLevel}</span>
+                  <span className="text-xs font-bold text-slate-400">{currentIndex + 1}/{words.length}</span>
                 </div>
               </div>
 
               {/* Word Flashcard */}
-              <div className="perspective-1000 w-full h-[320px] xs:h-[360px] sm:h-[420px] md:h-[450px]">
+              <div className="perspective-1000 w-full h-[280px] xs:h-[320px] sm:h-[360px] md:h-[400px] landscape:h-[260px] landscape:sm:h-[300px]">
                 <div className={cn(
                   "relative w-full h-full preserve-3d transition-transform duration-500 border border-slate-200/80 rounded-[2.5rem] shadow-xl",
                   showHint ? "rotate-y-180" : ""
                 )}>
                   {/* Front Side */}
                   <div className="absolute w-full h-full backface-hidden flex flex-col items-center justify-center text-center bg-white p-6 sm:p-8 rounded-[2.5rem]">
-                    <span className="px-3 py-1 bg-green-100 text-green-700 text-[9px] font-black rounded-full uppercase tracking-wider mb-3">
+                    <span className="px-3 py-1 bg-green-100 text-green-700 text-[11px] sm:text-xs font-bold rounded-full uppercase tracking-wider mb-3">
                       {words[currentIndex].cefrLevel}
                     </span>
-                    <h1 className="text-4xl sm:text-5xl font-black text-slate-800 tracking-tight mb-1 sm:mb-2">{words[currentIndex].word}</h1>
+                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-800 tracking-tight mb-1 sm:mb-2">{words[currentIndex].word}</h1>
                     <div className="flex items-center gap-2">
-                      <span className="text-base sm:text-lg font-serif text-slate-400">{words[currentIndex].phonetic}</span>
-                      <span className="text-xs font-bold text-rose-500 font-sans italic">({words[currentIndex].wordType})</span>
+                      <span className="text-sm sm:text-base font-serif text-slate-400">{words[currentIndex].phonetic}</span>
+                      <span className="text-xs sm:text-sm font-semibold text-rose-500 font-sans italic">({words[currentIndex].wordType})</span>
                     </div>
                     <button 
                       onClick={playPronunciation}
@@ -1048,25 +819,25 @@ export default function LearnPage() {
                     >
                       <Volume2 className="w-7 h-7 sm:w-8 sm:h-8" />
                     </button>
-                    <p className="absolute bottom-4 sm:bottom-6 text-[10px] text-slate-300 font-black uppercase tracking-wider">Nhấn "Hiện gợi ý" bên dưới để lật thẻ</p>
+                    <p className="absolute bottom-4 sm:bottom-6 text-xs text-slate-400 font-bold uppercase tracking-wider">Nhấn "Hiện gợi ý" bên dưới để lật thẻ</p>
                   </div>
 
                   {/* Back Side */}
                   <div className="absolute w-full h-full backface-hidden rotate-y-180 flex flex-col items-center justify-center text-center bg-[#002147] text-white p-6 sm:p-8 overflow-y-auto rounded-[2.5rem]">
                     <div className="space-y-3 sm:space-y-4 w-full">
                       <div>
-                        <span className="text-[9px] text-emerald-400 font-black uppercase tracking-widest block">Nghĩa tiếng Việt</span>
-                        <h2 className="text-xl sm:text-2xl font-black text-emerald-400 mt-1">{words[currentIndex].meaningVi}</h2>
+                        <span className="text-[11px] sm:text-xs text-emerald-400 font-bold uppercase tracking-widest block">Nghĩa tiếng Việt</span>
+                        <h2 className="text-lg sm:text-xl font-bold text-emerald-400 mt-1">{words[currentIndex].meaningVi}</h2>
                       </div>
                       <div className="border-t border-white/10 pt-2 sm:pt-3">
-                        <span className="text-[9px] text-white/40 font-black uppercase tracking-widest block">Định nghĩa (EN)</span>
+                        <span className="text-[11px] sm:text-xs text-white/40 font-bold uppercase tracking-widest block">Định nghĩa (EN)</span>
                         <p className="text-xs sm:text-sm text-slate-200 mt-1 italic leading-relaxed">"{words[currentIndex].meaningEn}"</p>
                       </div>
                       {words[currentIndex].example && (
                         <div className="border-t border-white/10 pt-2 sm:pt-3 text-left">
-                          <span className="text-[9px] text-white/40 font-black uppercase tracking-widest block mb-1">Ví dụ minh họa</span>
-                          <p className="text-xs text-white font-medium italic">"{words[currentIndex].example}"</p>
-                          {words[currentIndex].exampleVi && <p className="text-[10px] sm:text-[11px] text-emerald-400/80 mt-0.5 italic">{words[currentIndex].exampleVi}</p>}
+                          <span className="text-[11px] sm:text-xs text-white/40 font-bold uppercase tracking-widest block mb-1">Ví dụ minh họa</span>
+                          <p className="text-xs sm:text-sm text-white font-medium italic">"{words[currentIndex].example}"</p>
+                          {words[currentIndex].exampleVi && <p className="text-xs text-emerald-400/80 mt-0.5 italic">{words[currentIndex].exampleVi}</p>}
                         </div>
                       )}
                     </div>
@@ -1081,7 +852,7 @@ export default function LearnPage() {
                   className="flex flex-col items-center gap-1.5 py-4 bg-slate-50 border border-slate-200 rounded-2xl hover:bg-rose-50 hover:border-rose-200 group transition-all cursor-pointer"
                 >
                   <XCircle className="w-6 h-6 text-rose-500" />
-                  <span className="text-[9px] font-black text-rose-500 uppercase tracking-widest">Đang Học</span>
+                  <span className="text-[10px] sm:text-xs font-bold text-rose-500 uppercase tracking-wider">Đang Học</span>
                 </button>
 
                 <button 
@@ -1089,7 +860,7 @@ export default function LearnPage() {
                   className="flex flex-col items-center gap-1.5 py-4 bg-slate-50 border border-slate-200 rounded-2xl hover:bg-amber-50 hover:border-amber-200 group transition-all cursor-pointer"
                 >
                   <Lightbulb className="w-6 h-6 text-amber-500" />
-                  <span className="text-[9px] font-black text-amber-500 uppercase tracking-widest">{showHint ? 'Ẩn gợi ý' : 'Hiện gợi ý'}</span>
+                  <span className="text-[10px] sm:text-xs font-bold text-amber-500 uppercase tracking-wider">{showHint ? 'Ẩn gợi ý' : 'Hiện gợi ý'}</span>
                 </button>
 
                 <button 
@@ -1097,7 +868,7 @@ export default function LearnPage() {
                   className="flex flex-col items-center gap-1.5 py-4 bg-slate-50 border border-slate-200 rounded-2xl hover:bg-green-50 hover:border-green-200 group transition-all cursor-pointer"
                 >
                   <CheckCircle2 className="w-6 h-6 text-green-500" />
-                  <span className="text-[9px] font-black text-green-500 uppercase tracking-widest">Đã Thuộc</span>
+                  <span className="text-[10px] sm:text-xs font-bold text-green-500 uppercase tracking-wider">Đã Thuộc</span>
                 </button>
               </div>
             </div>
@@ -1123,7 +894,7 @@ export default function LearnPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {VOCABULARY_TOPICS.map(topic => {
-                  const TopicIcon = topic.icon;
+                  const TopicIcon = TOPIC_ICONS[topic.id] || BookOpen;
                   return (
                     <button
                       key={topic.id}
@@ -1144,16 +915,16 @@ export default function LearnPage() {
                           <TopicIcon className="w-6 h-6" />
                         </div>
                         <div className="flex gap-1.5">
-                          <span className="text-[9px] font-black text-emerald-600 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-full">{topic.beginner.length} từ cơ bản</span>
-                          <span className="text-[9px] font-black text-violet-600 bg-violet-50 border border-violet-100 px-2 py-0.5 rounded-full">{topic.advanced.length} từ nâng cao</span>
+                          <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-full">{topic.beginner.length} từ cơ bản</span>
+                          <span className="text-[10px] font-bold text-violet-600 bg-violet-50 border border-violet-100 px-2 py-0.5 rounded-full">{topic.advanced.length} từ nâng cao</span>
                         </div>
                       </div>
                       <div>
-                        <h3 className="font-black text-lg text-slate-800">{topic.title}</h3>
-                        <p className="text-xs text-slate-500 mt-1.5 leading-relaxed font-medium">{topic.desc}</p>
+                        <h3 className="font-bold text-base sm:text-lg text-slate-800">{topic.title}</h3>
+                        <p className="text-xs sm:text-sm text-slate-500 mt-1.5 leading-relaxed font-medium">{topic.desc}</p>
                       </div>
                       <div className="flex items-center justify-between w-full pt-3 border-t border-slate-100">
-                        <span className="text-[11px] font-bold text-slate-400">{topic.beginner.length + topic.advanced.length} từ vựng</span>
+                        <span className="text-xs font-bold text-slate-400">{topic.beginner.length + topic.advanced.length} từ vựng</span>
                         <span className="text-xs font-black text-slate-800 group-hover:translate-x-1 transition-transform flex items-center gap-0.5">
                           Bắt đầu học <ChevronRight className="w-3.5 h-3.5" />
                         </span>
@@ -1214,7 +985,7 @@ export default function LearnPage() {
             </div>
           ) : (
             /* ── Topic Study View ── */
-            <div className="max-w-4xl mx-auto space-y-6 animate-in fade-in duration-500">
+            <div className="max-w-5xl mx-auto space-y-6 animate-in fade-in duration-500">
               {/* Top bar: Back + Topic info + Level switcher */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
@@ -1283,10 +1054,10 @@ export default function LearnPage() {
               </div>
 
               {activeVocabWords[vocabIndex] && (
-                <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 sm:gap-6 items-start">
                   {/* Flashcard (3 cols) */}
-                  <div className="lg:col-span-3">
-                    <div className="perspective-1000 w-full h-[320px] xs:h-[360px] sm:h-[400px]">
+                  <div className="sm:col-span-3">
+                    <div className="perspective-1000 w-full h-[280px] xs:h-[320px] sm:h-[340px] md:h-[380px] landscape:h-[250px] landscape:sm:h-[280px]">
                       <div className={cn(
                         "relative w-full h-full preserve-3d transition-transform duration-500 border border-slate-200/80 rounded-[2.5rem] shadow-xl",
                         showVocabHint ? "rotate-y-180" : ""
@@ -1294,15 +1065,15 @@ export default function LearnPage() {
                         {/* Front */}
                         <div className="absolute w-full h-full backface-hidden flex flex-col items-center justify-center text-center bg-white p-6 sm:p-8 rounded-[2.5rem]">
                           <span className={cn(
-                            "px-3 py-1 text-[9px] font-black rounded-full uppercase tracking-wider mb-3",
+                            "px-3 py-1 text-[11px] sm:text-xs font-bold rounded-full uppercase tracking-wider mb-3",
                             vocabLevel === 'beginner' ? "bg-emerald-100 text-emerald-700" : "bg-violet-100 text-violet-700"
                           )}>
                             {vocabLevel === 'beginner' ? '🌱 Beginner' : '🚀 Advanced'}
                           </span>
-                          <h1 className="text-4xl sm:text-5xl font-black text-slate-800 tracking-tight mb-1 sm:mb-2">{activeVocabWords[vocabIndex].word}</h1>
+                          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-800 tracking-tight mb-1 sm:mb-2">{activeVocabWords[vocabIndex].word}</h1>
                           <div className="flex items-center gap-2">
-                            <span className="text-base sm:text-lg font-serif text-slate-400">{activeVocabWords[vocabIndex].phonetic}</span>
-                            <span className="text-xs font-bold text-rose-500 font-sans italic">({activeVocabWords[vocabIndex].wordType})</span>
+                            <span className="text-sm sm:text-base font-serif text-slate-400">{activeVocabWords[vocabIndex].phonetic}</span>
+                            <span className="text-xs sm:text-sm font-semibold text-rose-500 font-sans italic">({activeVocabWords[vocabIndex].wordType})</span>
                           </div>
                           <button
                             onClick={() => speak(activeVocabWords[vocabIndex].word)}
@@ -1310,24 +1081,24 @@ export default function LearnPage() {
                           >
                             <Volume2 className="w-7 h-7 sm:w-8 sm:h-8" />
                           </button>
-                          <p className="absolute bottom-4 sm:bottom-6 text-[10px] text-slate-300 font-black uppercase tracking-wider">Nhấn &quot;Lật thẻ&quot; bên dưới để xem nghĩa</p>
+                          <p className="absolute bottom-4 sm:bottom-6 text-xs text-slate-400 font-bold uppercase tracking-wider">Nhấn &quot;Lật thẻ&quot; bên dưới để xem nghĩa</p>
                         </div>
 
                         {/* Back */}
                         <div className="absolute w-full h-full backface-hidden rotate-y-180 flex flex-col items-center justify-center text-center bg-slate-900 text-white p-6 sm:p-8 overflow-y-auto rounded-[2.5rem]">
                           <div className="space-y-3 sm:space-y-4 w-full">
                             <div>
-                              <span className="text-[9px] text-emerald-400 font-black uppercase tracking-widest block">Nghĩa tiếng Việt</span>
-                              <h2 className="text-xl sm:text-2xl font-black text-emerald-400 mt-1">{activeVocabWords[vocabIndex].meaningVi}</h2>
+                              <span className="text-[11px] sm:text-xs text-emerald-400 font-bold uppercase tracking-widest block">Nghĩa tiếng Việt</span>
+                              <h2 className="text-lg sm:text-xl font-bold text-emerald-400 mt-1">{activeVocabWords[vocabIndex].meaningVi}</h2>
                             </div>
                             <div className="border-t border-white/10 pt-2 sm:pt-3">
-                              <span className="text-[9px] text-white/40 font-black uppercase tracking-widest block">Định nghĩa (EN)</span>
+                              <span className="text-[11px] sm:text-xs text-white/40 font-bold uppercase tracking-widest block">Định nghĩa (EN)</span>
                               <p className="text-xs sm:text-sm text-slate-200 mt-1 italic leading-relaxed">&quot;{activeVocabWords[vocabIndex].meaningEn}&quot;</p>
                             </div>
                             <div className="border-t border-white/10 pt-2 sm:pt-3 text-left">
-                              <span className="text-[9px] text-white/40 font-black uppercase tracking-widest block mb-1">Ví dụ minh họa</span>
+                              <span className="text-[11px] sm:text-xs text-white/40 font-bold uppercase tracking-widest block mb-1">Ví dụ minh họa</span>
                               <p className="text-xs text-white font-medium italic">&quot;{activeVocabWords[vocabIndex].example}&quot;</p>
-                              <p className="text-[10px] sm:text-[11px] text-emerald-400/80 mt-0.5 italic">{activeVocabWords[vocabIndex].exampleVi}</p>
+                              <p className="text-xs text-emerald-400/80 mt-0.5 italic">{activeVocabWords[vocabIndex].exampleVi}</p>
                             </div>
                             <button
                               onClick={() => speak(activeVocabWords[vocabIndex].example)}
@@ -1354,7 +1125,7 @@ export default function LearnPage() {
                         className="flex flex-col items-center gap-1.5 py-4 bg-slate-50 border border-slate-200 rounded-2xl hover:bg-rose-50 hover:border-rose-200 transition-all cursor-pointer"
                       >
                         <XCircle className="w-6 h-6 text-rose-500" />
-                        <span className="text-[9px] font-black text-rose-500 uppercase tracking-widest">Đang Học</span>
+                        <span className="text-[10px] sm:text-xs font-bold text-rose-500 uppercase tracking-wider">Đang Học</span>
                       </button>
 
                       <button
@@ -1362,7 +1133,7 @@ export default function LearnPage() {
                         className="flex flex-col items-center gap-1.5 py-4 bg-slate-50 border border-slate-200 rounded-2xl hover:bg-amber-50 hover:border-amber-200 transition-all cursor-pointer"
                       >
                         <Lightbulb className="w-6 h-6 text-amber-500" />
-                        <span className="text-[9px] font-black text-amber-500 uppercase tracking-widest">{showVocabHint ? 'Ẩn nghĩa' : 'Lật thẻ'}</span>
+                        <span className="text-[10px] sm:text-xs font-bold text-amber-500 uppercase tracking-wider">{showVocabHint ? 'Ẩn nghĩa' : 'Lật thẻ'}</span>
                       </button>
 
                       <button
@@ -1377,18 +1148,18 @@ export default function LearnPage() {
                         className="flex flex-col items-center gap-1.5 py-4 bg-slate-50 border border-slate-200 rounded-2xl hover:bg-green-50 hover:border-green-200 transition-all cursor-pointer"
                       >
                         <CheckCircle2 className="w-6 h-6 text-green-500" />
-                        <span className="text-[9px] font-black text-green-500 uppercase tracking-widest">Đã Thuộc</span>
+                        <span className="text-[10px] sm:text-xs font-bold text-green-500 uppercase tracking-wider">Đã Thuộc</span>
                       </button>
                     </div>
                   </div>
 
                   {/* Word List Sidebar (2 cols) */}
-                  <div className="lg:col-span-2">
+                  <div className="sm:col-span-2">
                     <div className="premium-card p-4 bg-white border border-slate-200 rounded-[1.5rem] space-y-3 max-h-[520px] overflow-y-auto">
                       <div className="flex items-center justify-between">
-                        <h4 className="text-xs font-black text-slate-700 uppercase tracking-wider">Danh sách từ vựng</h4>
+                        <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider">Danh sách từ vựng</h4>
                         <span className={cn(
-                          "text-[9px] font-black px-2 py-0.5 rounded-full",
+                          "text-[10px] sm:text-xs font-bold px-2.5 py-1 rounded-full",
                           vocabLevel === 'beginner' ? "bg-emerald-50 text-emerald-600" : "bg-violet-50 text-violet-600"
                         )}>
                           {vocabLevel === 'beginner' ? 'Cơ bản' : 'Nâng cao'}
@@ -1410,14 +1181,14 @@ export default function LearnPage() {
                             )}
                           >
                             <span className={cn(
-                              "w-7 h-7 rounded-lg flex items-center justify-center text-[10px] font-black flex-shrink-0",
+                              "w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0",
                               idx === vocabIndex ? "bg-white/10 text-white" : "bg-slate-50 text-slate-400"
                             )}>
                               {idx + 1}
                             </span>
                             <div className="flex-1 min-w-0">
-                              <p className={cn("text-sm font-black truncate", idx === vocabIndex ? "text-white" : "text-slate-800")}>{w.word}</p>
-                              <p className={cn("text-[10px] font-medium truncate", idx === vocabIndex ? "text-slate-400" : "text-slate-500")}>{w.meaningVi}</p>
+                              <p className={cn("text-sm font-bold truncate", idx === vocabIndex ? "text-white" : "text-slate-800")}>{w.word}</p>
+                              <p className={cn("text-xs font-medium truncate", idx === vocabIndex ? "text-slate-400" : "text-slate-500")}>{w.meaningVi}</p>
                             </div>
                             <button
                               onClick={(e) => {

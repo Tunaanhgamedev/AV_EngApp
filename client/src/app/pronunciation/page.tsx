@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Volume2, BookOpen, Sparkles, ChevronDown, Mic, Target, Star, Play, Info, ArrowRight, HelpCircle, Hash, FileText, Search, Loader2, Calendar, Globe, MessageSquare } from 'lucide-react';
+import { Volume2, BookOpen, Sparkles, ChevronDown, Mic, Target, Star, Play, Info, ArrowRight, HelpCircle, Hash, FileText, Search, Loader2, Calendar, Globe, MessageSquare, Zap, Palette, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { COMMON_VERBS, VERB_TYPES, COMMON_ADJECTIVES, ADJECTIVE_RULES, ADJECTIVE_TYPES, POSSESSIVE_TABLE, POSSESSIVE_RULES } from './grammarData';
 
 // ─── Alphabet & Phonics Data ──────────────────────────────────────────────────
 interface AlphabetLetter {
@@ -667,7 +668,10 @@ function IPACell({ item, color, isActive, onClick }: { item: any; color: string;
 }
 
 export default function PronunciationPage() {
-  const [activeTab, setActiveTab] = useState<'alphabet' | 'chart' | 'stress' | 'pairs' | 'building' | 'numbers' | 'endings' | 'datetime' | 'countries' | 'topics' | 'nouns'>('alphabet');
+  const [activeTab, setActiveTab] = useState<'alphabet' | 'chart' | 'stress' | 'pairs' | 'building' | 'numbers' | 'endings' | 'datetime' | 'countries' | 'topics' | 'nouns' | 'verbs' | 'adjectives' | 'possessives'>('alphabet');
+  const [verbFilter, setVerbFilter] = useState<'all' | 'regular' | 'irregular'>('all');
+  const [adjSection, setAdjSection] = useState<'list' | 'rules' | 'types'>('list');
+  const [possSection, setPossSection] = useState<'table' | 'rules'>('table');
   const [selectedTopic, setSelectedTopic] = useState<string>('greetings');
   const [chartSection, setChartSection] = useState<'vowels' | 'diphthongs' | 'consonants'>('vowels');
   const [numSection, setNumSection] = useState<'basic' | 'big' | 'combo' | 'ordinals'>('basic');
@@ -740,6 +744,9 @@ export default function PronunciationPage() {
     { id: 'stress' as const, label: 'Quy Tắc Trọng Âm', icon: Target },
     { id: 'endings' as const, label: 'Đuôi -ed, -s/-es', icon: FileText },
     { id: 'nouns' as const, label: 'Danh Từ & Số Nhiều', icon: Star },
+    { id: 'verbs' as const, label: 'Động Từ', icon: Zap },
+    { id: 'adjectives' as const, label: 'Tính Từ', icon: Palette },
+    { id: 'possessives' as const, label: 'Đại Từ Sở Hữu', icon: Users },
     { id: 'pairs' as const, label: 'Cặp Tối Thiểu', icon: Mic },
     { id: 'building' as const, label: 'Nối Câu & Chữ', icon: Sparkles },
   ];
@@ -2162,6 +2169,287 @@ export default function PronunciationPage() {
               );
             })}
           </div>
+        </div>
+      )}
+
+      {/* ════════════════════════════════════════════ VERBS (ĐỘNG TỪ) ═══════════ */}
+      {activeTab === 'verbs' && (
+        <div className="space-y-6">
+          <div className="premium-card p-5 sm:p-6 bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200">
+            <h3 className="text-lg font-black text-amber-800 flex items-center gap-2 mb-2">
+              <Zap className="w-5 h-5 text-amber-600" /> Động Từ Tiếng Anh (English Verbs)
+            </h3>
+            <p className="text-sm text-amber-700 leading-relaxed font-medium">
+              Động từ là từ loại diễn tả <strong>hành động</strong> hoặc <strong>trạng thái</strong>. Bảng dưới gồm các động từ phổ biến nhất với 3 thể: V1 (nguyên thể), V2 (quá khứ), V3 (quá khứ phân từ).
+            </p>
+          </div>
+
+          {/* Verb Types */}
+          <div className="premium-card p-5 bg-white border border-slate-200 rounded-[1.5rem]">
+            <h4 className="text-sm font-black text-slate-700 uppercase tracking-wider mb-4">Phân loại động từ</h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {VERB_TYPES.map((vt, i) => (
+                <div key={i} className="p-4 rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-100 space-y-2">
+                  <h5 className="text-sm font-black text-amber-800">{vt.type}</h5>
+                  <p className="text-xs text-slate-600 font-medium">{vt.desc}</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {vt.examples.map((ex, j) => (
+                      <button key={j} onClick={() => speak(ex)} className="text-xs px-2.5 py-1 rounded-full bg-white border border-amber-200 text-amber-700 font-bold hover:bg-amber-500 hover:text-white transition-all cursor-pointer">
+                        {ex}
+                      </button>
+                    ))}
+                  </div>
+                  <p className="text-[10px] text-slate-400 font-medium italic">{vt.vi}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Filter */}
+          <div className="flex flex-wrap gap-2">
+            {(['all', 'irregular', 'regular'] as const).map(f => (
+              <button key={f} onClick={() => setVerbFilter(f)} className={cn("px-4 py-2 rounded-xl font-bold text-xs transition-all cursor-pointer", verbFilter === f ? "bg-amber-600 text-white shadow-lg" : "bg-white text-slate-500 border border-slate-200 hover:border-amber-400")}>
+                {f === 'all' ? 'Tất cả' : f === 'irregular' ? 'Bất quy tắc' : 'Có quy tắc'}
+              </button>
+            ))}
+          </div>
+
+          {/* Verb Table */}
+          <div className="premium-card bg-white border border-slate-200 rounded-[1.5rem] overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="bg-slate-50 border-b border-slate-200">
+                    <th className="text-left px-3 sm:px-4 py-3 font-black text-slate-600 text-xs uppercase tracking-wider">V1 (Base)</th>
+                    <th className="text-left px-3 sm:px-4 py-3 font-black text-slate-600 text-xs uppercase tracking-wider">V2 (Past)</th>
+                    <th className="text-left px-3 sm:px-4 py-3 font-black text-slate-600 text-xs uppercase tracking-wider">V3 (P.P.)</th>
+                    <th className="text-left px-3 sm:px-4 py-3 font-black text-slate-600 text-xs uppercase tracking-wider hidden sm:table-cell">IPA</th>
+                    <th className="text-left px-3 sm:px-4 py-3 font-black text-slate-600 text-xs uppercase tracking-wider">Nghĩa</th>
+                    <th className="text-center px-2 py-3 font-black text-slate-600 text-xs uppercase tracking-wider">🔊</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {COMMON_VERBS.filter(v => verbFilter === 'all' || v.type === verbFilter).map((v, i) => (
+                    <tr key={i} className="border-b border-slate-100 hover:bg-amber-50/50 transition-colors">
+                      <td className="px-3 sm:px-4 py-3 font-black text-slate-800">{v.verb}</td>
+                      <td className="px-3 sm:px-4 py-3 font-semibold text-orange-700">{v.v2}</td>
+                      <td className="px-3 sm:px-4 py-3 font-semibold text-amber-700">{v.v3}</td>
+                      <td className="px-3 sm:px-4 py-3 text-slate-400 font-mono text-xs hidden sm:table-cell">{v.ipa}</td>
+                      <td className="px-3 sm:px-4 py-3 text-slate-600 font-medium text-xs">{v.vi}</td>
+                      <td className="px-2 py-3 text-center">
+                        <button onClick={() => speak(v.verb)} className="w-8 h-8 rounded-full bg-amber-50 hover:bg-amber-500 text-amber-500 hover:text-white flex items-center justify-center transition-all cursor-pointer mx-auto border border-amber-100">
+                          <Volume2 className="w-3.5 h-3.5" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ════════════════════════════════════════════ ADJECTIVES (TÍNH TỪ) ═══════ */}
+      {activeTab === 'adjectives' && (
+        <div className="space-y-6">
+          <div className="premium-card p-5 sm:p-6 bg-gradient-to-r from-pink-50 to-rose-50 border-pink-200">
+            <h3 className="text-lg font-black text-pink-800 flex items-center gap-2 mb-2">
+              <Palette className="w-5 h-5 text-pink-600" /> Tính Từ Tiếng Anh (English Adjectives)
+            </h3>
+            <p className="text-sm text-pink-700 leading-relaxed font-medium">
+              Tính từ dùng để <strong>mô tả đặc điểm</strong> của danh từ. Tính từ có 3 cấp độ: <strong>Nguyên cấp</strong> (Positive), <strong>So sánh hơn</strong> (Comparative), và <strong>So sánh nhất</strong> (Superlative).
+            </p>
+          </div>
+
+          {/* Sub-navigation */}
+          <div className="flex flex-wrap gap-2">
+            {([{ id: 'list' as const, label: 'Bảng tính từ' }, { id: 'rules' as const, label: 'Quy tắc so sánh' }, { id: 'types' as const, label: 'Phân loại' }]).map(s => (
+              <button key={s.id} onClick={() => setAdjSection(s.id)} className={cn("px-4 py-2 rounded-xl font-bold text-xs transition-all cursor-pointer", adjSection === s.id ? "bg-pink-600 text-white shadow-lg" : "bg-white text-slate-500 border border-slate-200 hover:border-pink-400")}>
+                {s.label}
+              </button>
+            ))}
+          </div>
+
+          {adjSection === 'list' && (
+            <div className="premium-card bg-white border border-slate-200 rounded-[1.5rem] overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="bg-slate-50 border-b border-slate-200">
+                      <th className="text-left px-3 sm:px-4 py-3 font-black text-slate-600 text-xs uppercase tracking-wider">Nguyên cấp</th>
+                      <th className="text-left px-3 sm:px-4 py-3 font-black text-slate-600 text-xs uppercase tracking-wider">So sánh hơn</th>
+                      <th className="text-left px-3 sm:px-4 py-3 font-black text-slate-600 text-xs uppercase tracking-wider">So sánh nhất</th>
+                      <th className="text-left px-3 sm:px-4 py-3 font-black text-slate-600 text-xs uppercase tracking-wider hidden sm:table-cell">Quy tắc</th>
+                      <th className="text-left px-3 sm:px-4 py-3 font-black text-slate-600 text-xs uppercase tracking-wider">Nghĩa</th>
+                      <th className="text-center px-2 py-3 font-black text-slate-600 text-xs uppercase tracking-wider">🔊</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {COMMON_ADJECTIVES.map((adj, i) => (
+                      <tr key={i} className="border-b border-slate-100 hover:bg-pink-50/50 transition-colors">
+                        <td className="px-3 sm:px-4 py-3 font-black text-slate-800">{adj.word}</td>
+                        <td className="px-3 sm:px-4 py-3 font-semibold text-pink-700">{adj.comparative}</td>
+                        <td className="px-3 sm:px-4 py-3 font-semibold text-rose-700">{adj.superlative}</td>
+                        <td className="px-3 sm:px-4 py-3 text-slate-400 text-xs hidden sm:table-cell">{adj.rule}</td>
+                        <td className="px-3 sm:px-4 py-3 text-slate-600 font-medium text-xs">{adj.vi}</td>
+                        <td className="px-2 py-3 text-center">
+                          <button onClick={() => speak(adj.word)} className="w-8 h-8 rounded-full bg-pink-50 hover:bg-pink-500 text-pink-500 hover:text-white flex items-center justify-center transition-all cursor-pointer mx-auto border border-pink-100">
+                            <Volume2 className="w-3.5 h-3.5" />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {adjSection === 'rules' && (
+            <div className="space-y-4">
+              {ADJECTIVE_RULES.map((r, i) => (
+                <div key={i} className="premium-card p-5 bg-white border border-slate-200 rounded-[1.5rem] space-y-3">
+                  <h4 className="text-sm font-black text-pink-800 flex items-center gap-2">
+                    <span className="w-7 h-7 rounded-full bg-pink-100 text-pink-600 text-xs font-black flex items-center justify-center">{i + 1}</span>
+                    {r.rule}
+                  </h4>
+                  <p className="text-xs text-slate-600 font-medium bg-pink-50 rounded-xl px-3 py-2">{r.examples}</p>
+                  <p className="text-xs text-slate-400 italic font-medium">💡 {r.note}</p>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {adjSection === 'types' && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {ADJECTIVE_TYPES.map((at, i) => (
+                <div key={i} className="premium-card p-4 bg-white border border-slate-200 rounded-[1.5rem] space-y-2">
+                  <h5 className="text-sm font-black text-pink-800">{at.type}</h5>
+                  <p className="text-xs text-slate-600 font-medium">{at.desc}</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {at.examples.map((ex, j) => (
+                      <span key={j} className="text-xs px-2.5 py-1 rounded-full bg-pink-50 border border-pink-100 text-pink-700 font-bold">{ex}</span>
+                    ))}
+                  </div>
+                  <p className="text-[10px] text-slate-400 font-medium italic">{at.vi}</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ════════════════════════════════════════════ POSSESSIVES (ĐẠI TỪ SỞ HỮU) ══ */}
+      {activeTab === 'possessives' && (
+        <div className="space-y-6">
+          <div className="premium-card p-5 sm:p-6 bg-gradient-to-r from-teal-50 to-cyan-50 border-teal-200">
+            <h3 className="text-lg font-black text-teal-800 flex items-center gap-2 mb-2">
+              <Users className="w-5 h-5 text-teal-600" /> Đại Từ Sở Hữu (Possessive Pronouns)
+            </h3>
+            <p className="text-sm text-teal-700 leading-relaxed font-medium">
+              Hệ thống đại từ sở hữu gồm 3 loại chính: <strong>Tính từ sở hữu</strong> (my, your...), <strong>Đại từ sở hữu</strong> (mine, yours...) và <strong>Đại từ phản thân</strong> (myself, yourself...).
+            </p>
+          </div>
+
+          {/* Sub-navigation */}
+          <div className="flex flex-wrap gap-2">
+            {([{ id: 'table' as const, label: 'Bảng tổng hợp' }, { id: 'rules' as const, label: 'Quy tắc sử dụng' }]).map(s => (
+              <button key={s.id} onClick={() => setPossSection(s.id)} className={cn("px-4 py-2 rounded-xl font-bold text-xs transition-all cursor-pointer", possSection === s.id ? "bg-teal-600 text-white shadow-lg" : "bg-white text-slate-500 border border-slate-200 hover:border-teal-400")}>
+                {s.label}
+              </button>
+            ))}
+          </div>
+
+          {possSection === 'table' && (
+            <div className="space-y-4">
+              {/* Comprehensive Table */}
+              <div className="premium-card bg-white border border-slate-200 rounded-[1.5rem] overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="bg-slate-50 border-b border-slate-200">
+                        <th className="text-left px-3 py-3 font-black text-slate-600 text-xs uppercase tracking-wider">Chủ ngữ</th>
+                        <th className="text-left px-3 py-3 font-black text-slate-600 text-xs uppercase tracking-wider">Tân ngữ</th>
+                        <th className="text-left px-3 py-3 font-black text-teal-600 text-xs uppercase tracking-wider bg-teal-50">TT sở hữu</th>
+                        <th className="text-left px-3 py-3 font-black text-cyan-600 text-xs uppercase tracking-wider bg-cyan-50">ĐT sở hữu</th>
+                        <th className="text-left px-3 py-3 font-black text-slate-600 text-xs uppercase tracking-wider hidden sm:table-cell">Phản thân</th>
+                        <th className="text-center px-2 py-3 font-black text-slate-600 text-xs uppercase tracking-wider">🔊</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {POSSESSIVE_TABLE.map((row, i) => (
+                        <tr key={i} className="border-b border-slate-100 hover:bg-teal-50/50 transition-colors">
+                          <td className="px-3 py-3 font-black text-slate-800">{row.subject}</td>
+                          <td className="px-3 py-3 font-semibold text-slate-600">{row.object}</td>
+                          <td className="px-3 py-3 font-black text-teal-700 bg-teal-50/30">{row.possAdj}</td>
+                          <td className="px-3 py-3 font-black text-cyan-700 bg-cyan-50/30">{row.possPron}</td>
+                          <td className="px-3 py-3 font-semibold text-slate-500 hidden sm:table-cell">{row.reflexive}</td>
+                          <td className="px-2 py-3 text-center">
+                            <button onClick={() => speak(`${row.possAdj}, ${row.possPron}`)} className="w-8 h-8 rounded-full bg-teal-50 hover:bg-teal-500 text-teal-500 hover:text-white flex items-center justify-center transition-all cursor-pointer mx-auto border border-teal-100">
+                              <Volume2 className="w-3.5 h-3.5" />
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* Example Cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {POSSESSIVE_TABLE.filter(r => r.possPron !== '(không dùng)').map((row, i) => (
+                  <div key={i} className="premium-card p-4 bg-white border border-slate-200 rounded-[1.5rem] space-y-3">
+                    <div className="flex items-center gap-2">
+                      <span className="w-8 h-8 rounded-full bg-teal-100 text-teal-700 font-black text-sm flex items-center justify-center">{row.subject}</span>
+                      <span className="text-xs font-bold text-slate-500">{row.vi}</span>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="bg-teal-50 rounded-xl p-3 border border-teal-100">
+                        <p className="text-xs font-black text-teal-700 uppercase tracking-wider mb-1">Tính từ sở hữu ({row.possAdj})</p>
+                        <p className="text-sm font-bold text-slate-800">{row.exAdj}</p>
+                        <p className="text-xs text-slate-500 mt-1">{row.exAdjVi}</p>
+                      </div>
+                      <div className="bg-cyan-50 rounded-xl p-3 border border-cyan-100">
+                        <p className="text-xs font-black text-cyan-700 uppercase tracking-wider mb-1">Đại từ sở hữu ({row.possPron})</p>
+                        <p className="text-sm font-bold text-slate-800">{row.exPron}</p>
+                        <p className="text-xs text-slate-500 mt-1">{row.exPronVi}</p>
+                      </div>
+                    </div>
+                    <button onClick={() => speak(`${row.exAdj} ${row.exPron}`)} className="w-full py-2 rounded-xl bg-slate-50 hover:bg-teal-500 text-slate-400 hover:text-white text-xs font-bold transition-all cursor-pointer border border-slate-100 flex items-center justify-center gap-1.5">
+                      <Volume2 className="w-3.5 h-3.5" /> Nghe ví dụ
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {possSection === 'rules' && (
+            <div className="space-y-4">
+              {POSSESSIVE_RULES.map((r, i) => (
+                <div key={i} className="premium-card p-5 bg-white border border-slate-200 rounded-[1.5rem] space-y-3">
+                  <h4 className="text-sm font-black text-teal-800 flex items-center gap-2">
+                    <span className="w-7 h-7 rounded-full bg-teal-100 text-teal-600 text-xs font-black flex items-center justify-center">{i + 1}</span>
+                    {r.rule}
+                  </h4>
+                  <p className="text-xs text-slate-600 font-medium">{r.desc}</p>
+                  <div className="bg-teal-50 rounded-xl p-3 border border-teal-100">
+                    <p className="text-xs font-mono text-teal-700 font-bold">{r.formula}</p>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {r.examples.map((ex, j) => (
+                      <button key={j} onClick={() => speak(ex)} className="text-xs px-2.5 py-1 rounded-full bg-white border border-teal-200 text-teal-700 font-bold hover:bg-teal-500 hover:text-white transition-all cursor-pointer">
+                        {ex}
+                      </button>
+                    ))}
+                  </div>
+                  <p className="text-[10px] text-slate-400 italic font-medium">💡 {r.exVi}</p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>
