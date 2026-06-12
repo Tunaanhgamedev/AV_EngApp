@@ -153,20 +153,21 @@ export default function TranslatePage() {
   const [sourceLang, setSourceLang] = useState('English');
   const [targetLang, setTargetLang] = useState('Vietnamese');
   const [copied, setCopied] = useState(false);
-  const [cache, setCache] = useState<Record<string, any>>({});
   const [cooldown, setCooldown] = useState(0);
   const [showSavePanel, setShowSavePanel] = useState(false);
   const [wordInsight, setWordInsight] = useState<any>(null);
   const [fromCache, setFromCache] = useState(false);
 
+  const cacheRef = useRef<Record<string, any>>({});
   const fastDebounceRef = useRef<NodeJS.Timeout | null>(null);
   const deepDebounceRef = useRef<NodeJS.Timeout | null>(null);
   const abortRef = useRef<AbortController | null>(null);
   const lastTranslatedRef = useRef('');
+  const lastTranslatedModeRef = useRef<'fast' | 'deep' | null>(null);
 
   // Load persistent cache on mount
   useEffect(() => {
-    setCache(loadLocalCache());
+    cacheRef.current = loadLocalCache();
   }, []);
 
   useEffect(() => {
@@ -180,18 +181,17 @@ export default function TranslatePage() {
     const text = textToTranslate.trim();
     if (!text || cooldown > 0) return;
     
-    // In deep mode, we want to run even if the text matches lastTranslatedRef.current in fast mode (to fetch Gemini translation & word insights!)
-    if (mode === 'fast' && text === lastTranslatedRef.current) return;
-    if (mode === 'deep' && text === lastTranslatedRef.current && wordInsight) return;
+    if (text === lastTranslatedRef.current && mode === lastTranslatedModeRef.current) return;
 
     const cacheKey = `${sLang}-${tLang}-${text}`;
     
     // If cache has it, load instantly
-    if (cache[cacheKey]) {
-      setTranslatedText(cache[cacheKey].translation);
-      setWordInsight(cache[cacheKey].insight || null);
+    if (cacheRef.current[cacheKey]) {
+      setTranslatedText(cacheRef.current[cacheKey].translation);
+      setWordInsight(cacheRef.current[cacheKey].insight || null);
       setFromCache(true);
       lastTranslatedRef.current = text;
+      lastTranslatedModeRef.current = mode;
       return;
     }
 
@@ -223,6 +223,7 @@ export default function TranslatePage() {
       } else {
         setTranslatedText(data.translation);
         lastTranslatedRef.current = text;
+        lastTranslatedModeRef.current = mode;
         if (data.cached) setFromCache(true);
 
         // Fetch Word Insights ONLY in deep mode and ONLY for English source
@@ -244,16 +245,12 @@ export default function TranslatePage() {
 
         // Save to persistent local cache if we have a valid translation
         if (data.translation) {
-          const newCache = {
-            ...cache,
-            [cacheKey]: { 
-              translation: data.translation, 
-              insight: mode === 'deep' ? insight : (cache[cacheKey]?.insight || null), 
-              _ts: Date.now() 
-            }
+          cacheRef.current[cacheKey] = { 
+            translation: data.translation, 
+            insight: mode === 'deep' ? insight : (cacheRef.current[cacheKey]?.insight || null), 
+            _ts: Date.now() 
           };
-          setCache(newCache);
-          saveLocalCache(newCache);
+          saveLocalCache(cacheRef.current);
         }
       }
     } catch (err: any) {
@@ -262,7 +259,7 @@ export default function TranslatePage() {
       }
     }
     finally { setIsTranslating(false); }
-  }, [cache, cooldown, wordInsight]);
+  }, [cooldown]);
 
   // ── Auto-translate on typing (debounced, like Google Translate) ──
   useEffect(() => {
@@ -271,6 +268,7 @@ export default function TranslatePage() {
       setTranslatedText('');
       setWordInsight(null);
       lastTranslatedRef.current = '';
+      lastTranslatedModeRef.current = null;
       setIsTyping(false);
       return;
     }
@@ -279,35 +277,34 @@ export default function TranslatePage() {
 
     // ── Instant cache check (0ms delay for cached words) ──
     const cacheKey = `${sourceLang}-${targetLang}-${text}`;
-    if (cache[cacheKey]) {
-      setTranslatedText(cache[cacheKey].translation);
-      setWordInsight(cache[cacheKey].insight || null);
+    if (cacheRef.current[cacheKey]) {
+      setTranslatedText(cacheRef.current[cacheKey].translation);
+      setWordInsight(cacheRef.current[cacheKey].insight || null);
       setFromCache(true);
       lastTranslatedRef.current = text;
+      lastTranslatedModeRef.current = 'deep';
       setIsTyping(false);
       return;
     }
 
-    // ── Fast mode timer (200ms) ──
+    // ── Fast mode timer (300ms debounce to avoid hammering on spaces) ──
     if (fastDebounceRef.current) clearTimeout(fastDebounceRef.current);
-    const endsWithSpace = inputText.endsWith(' ');
-    const fastDelay = endsWithSpace ? 0 : 200;
     fastDebounceRef.current = setTimeout(() => {
       doTranslate(inputText, sourceLang, targetLang, 'fast');
-    }, fastDelay);
+    }, 300);
 
-    // ── Deep mode timer (750ms) ──
+    // ── Deep mode timer (800ms debounce) ──
     if (deepDebounceRef.current) clearTimeout(deepDebounceRef.current);
     deepDebounceRef.current = setTimeout(() => {
       setIsTyping(false); // Finished typing
       doTranslate(inputText, sourceLang, targetLang, 'deep');
-    }, 750);
+    }, 800);
 
     return () => {
       if (fastDebounceRef.current) clearTimeout(fastDebounceRef.current);
       if (deepDebounceRef.current) clearTimeout(deepDebounceRef.current);
     };
-  }, [inputText, sourceLang, targetLang, cache, doTranslate]);
+  }, [inputText, sourceLang, targetLang, doTranslate]);
 
   const swapLangs = () => {
     const s = sourceLang;
@@ -320,6 +317,7 @@ export default function TranslatePage() {
     setWordInsight(null);
     setFromCache(false);
     lastTranslatedRef.current = '';
+    lastTranslatedModeRef.current = null;
     // Trigger deep translation immediately for swapped text
     if (translatedText.trim()) {
       doTranslate(translatedText, t, s, 'deep');
@@ -402,16 +400,16 @@ export default function TranslatePage() {
       </div>
 
       {/* Main Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 w-full">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8 w-full">
         {/* Input */}
-        <div className="premium-card p-0 flex flex-col relative border-2 border-transparent focus-within:border-primary/20 transition-all duration-500 shadow-xl min-h-[220px] lg:h-[380px]">
+        <div className="premium-card p-0 flex flex-col relative border-2 border-transparent focus-within:border-primary/20 transition-all duration-500 shadow-xl min-h-[220px] sm:h-[320px] md:h-[380px]">
           <textarea
-            className="flex-1 p-6 md:p-8 bg-transparent border-none focus:ring-0 text-xl md:text-2xl font-medium resize-none placeholder:text-slate-200 focus:outline-none min-h-[160px] lg:min-h-0"
+            className="flex-1 p-4 sm:p-6 md:p-8 bg-transparent border-none focus:ring-0 text-xl md:text-2xl font-medium resize-none text-slate-800 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none min-h-[160px] sm:min-h-0"
             placeholder={sourceLang === 'English' ? "Type to translate..." : "Nhập để dịch tự động..."}
             value={inputText}
             onChange={e => { setInputText(e.target.value); setShowSavePanel(false); }}
           />
-          <div className="px-6 py-4 flex items-center justify-between border-t border-slate-50 bg-slate-50/30">
+          <div className="px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between border-t border-slate-100 dark:border-slate-800 bg-slate-50/30">
             <div className="flex items-center gap-2">
               <button onClick={() => speak(inputText, sourceLang === 'English' ? 'en-US' : 'vi-VN')} disabled={!inputText.trim()} className="p-2 text-slate-400 hover:text-primary transition-all disabled:opacity-30"><Volume2 className="w-5 h-5" /></button>
               {isTyping && (
@@ -443,44 +441,44 @@ export default function TranslatePage() {
               )}
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-[10px] text-slate-300 font-mono">{inputText.length}</span>
-              <button onClick={() => { setInputText(''); setTranslatedText(''); setShowSavePanel(false); setFromCache(false); setWordInsight(null); lastTranslatedRef.current = ''; }} disabled={!inputText} className="p-2 text-slate-300 hover:text-rose-500 transition-colors disabled:opacity-30"><Trash2 className="w-4 h-4" /></button>
+              <span className="text-[10px] text-slate-400 dark:text-slate-500 font-mono">{inputText.length}</span>
+              <button onClick={() => { setInputText(''); setTranslatedText(''); setShowSavePanel(false); setFromCache(false); setWordInsight(null); lastTranslatedRef.current = ''; }} disabled={!inputText} className="p-2 text-slate-400 dark:text-slate-500 hover:text-rose-500 dark:hover:text-rose-400 transition-colors disabled:opacity-30"><Trash2 className="w-4 h-4" /></button>
             </div>
           </div>
         </div>
 
         {/* Output */}
-        <div className="premium-card p-0 flex flex-col bg-white border-primary/5 shadow-2xl relative min-h-[220px] lg:h-[380px]">
+        <div className="premium-card p-0 flex flex-col relative border-2 border-transparent transition-all duration-500 shadow-xl min-h-[220px] sm:h-[320px] md:h-[380px]">
           {isTranslating && (
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-indigo-500 to-primary animate-pulse rounded-t-2xl" />
           )}
-          <div className="flex-1 p-6 md:p-8 overflow-y-auto">
+          <div className="flex-1 p-4 sm:p-6 md:p-8 overflow-y-auto overflow-x-hidden">
             <div className="space-y-6 animate-in fade-in duration-500">
               {fromCache && hasResult && (
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-amber-600 rounded-full text-[10px] font-black uppercase tracking-widest border border-amber-200 animate-in zoom-in duration-300">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400 rounded-full text-[10px] font-black uppercase tracking-widest border border-amber-200 dark:border-amber-900/50 animate-in zoom-in duration-300">
                   <Zap className="w-3 h-3" />
                   Trả lời tức thì
                 </div>
               )}
-              <div className="text-3xl font-black text-slate-800 leading-tight">
-                {translatedText || <span className="text-slate-200 font-medium italic">{isTranslating ? 'Đang dịch...' : 'Kết quả dịch...'}</span>}
+              <div className="text-xl sm:text-2xl md:text-3xl font-black text-slate-800 dark:text-slate-100 leading-tight break-words">
+                {translatedText || <span className="text-slate-300 dark:text-slate-600 font-medium italic">{isTranslating ? 'Đang dịch...' : 'Kết quả dịch...'}</span>}
               </div>
 
               {/* Insight ONLY for single word */}
               {wordInsight && hasResult && sourceLang === 'English' && !isPhraseOrSentence && (
-                <div className="p-5 bg-slate-50 rounded-2xl border border-slate-100 space-y-4">
+                <div className="p-5 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-slate-800 space-y-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 text-primary">
                       <Info className="w-4 h-4" />
                       <span className="text-[10px] font-black uppercase tracking-widest">Chi tiết từ vựng</span>
                     </div>
-                    <span className="text-[10px] font-bold px-2 py-0.5 bg-blue-50 text-blue-600 rounded-full">{wordInsight.cefrLevel}</span>
+                    <span className="text-[10px] font-bold px-2 py-0.5 bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 rounded-full">{wordInsight.cefrLevel}</span>
                   </div>
                   <div className="flex flex-wrap gap-4">
                     {wordInsight.wordTypes?.map((wt: any, i: number) => (
                       <div key={i}>
-                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-tighter">{wt.type}</span>
-                        <p className="text-sm text-slate-700 font-bold">{wt.meaningVi}</p>
+                        <span className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-tighter">{wt.type}</span>
+                        <p className="text-sm text-slate-700 dark:text-slate-300 font-bold">{wt.meaningVi}</p>
                       </div>
                     ))}
                   </div>
@@ -489,7 +487,7 @@ export default function TranslatePage() {
 
               {/* Phrase/Sentence Warning */}
               {isPhraseOrSentence && hasResult && (
-                <div className="flex items-start gap-3 p-4 bg-slate-50 rounded-2xl border border-slate-100 text-slate-500">
+                <div className="flex items-start gap-3 p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-slate-800 text-slate-500 dark:text-slate-400">
                   <Info className="w-5 h-5 flex-shrink-0 mt-0.5 text-primary" />
                   <div className="text-xs font-medium">
                     <p className="font-black uppercase tracking-widest text-[10px] mb-1">Dịch Cụm từ / Câu văn</p>
@@ -500,18 +498,18 @@ export default function TranslatePage() {
             </div>
           </div>
 
-          <div className="p-6 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+          <div className="p-4 sm:p-6 bg-slate-50 dark:bg-slate-900/30 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
             <div className="flex gap-2">
-              <button onClick={() => speak(translatedText, targetLang === 'Vietnamese' ? 'vi-VN' : 'en-US')} className="p-2 text-slate-400 hover:text-primary transition-all"><Volume2 className="w-5 h-5" /></button>
+              <button onClick={() => speak(translatedText, targetLang === 'Vietnamese' ? 'vi-VN' : 'en-US')} className="p-2 text-slate-400 dark:text-slate-500 hover:text-primary transition-all"><Volume2 className="w-5 h-5" /></button>
               <button onClick={() => { navigator.clipboard.writeText(translatedText); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
-                className={cn("p-2 transition-all", copied ? "text-green-500" : "text-slate-400 hover:text-primary")}>
+                className={cn("p-2 transition-all", copied ? "text-green-500" : "text-slate-400 dark:text-slate-500 hover:text-primary")}>
                 {copied ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
               </button>
             </div>
             {canSaveToNotebook && (
               <button onClick={() => setShowSavePanel(!showSavePanel)}
                 className={cn("flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all shadow-md",
-                  showSavePanel ? "bg-primary text-white" : "bg-white text-slate-600 hover:text-primary"
+                  showSavePanel ? "bg-primary text-white" : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white"
                 )}>
                 <BookMarked className="w-4 h-4" /> {showSavePanel ? 'Hủy' : 'Lưu từ vựng'}
               </button>
