@@ -29,7 +29,14 @@ import {
   Car,
   Building2,
   Cpu,
-  Landmark
+  Landmark,
+  Utensils,
+  Compass,
+  Cloud,
+  Coins,
+  Palette,
+  Scale,
+  ShoppingBag
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { cn } from '@/lib/utils';
@@ -120,6 +127,16 @@ const TOPIC_ICONS: Record<string, any> = {
   vehicles: Car,
   company: Building2,
   it: Cpu,
+  food: Utensils,
+  health: Heart,
+  travel: Compass,
+  sports: Trophy,
+  weather: Cloud,
+  money: Coins,
+  art_media: Palette,
+  science_tech: Cpu,
+  society_law: Scale,
+  shopping: ShoppingBag,
 };
 
 
@@ -647,9 +664,9 @@ export default function LearnPage() {
               </div>
 
               {activeVocabWords[vocabIndex] && (
-                <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 sm:gap-6 items-start">
+                <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 lg:gap-6 items-start">
                   {/* Flashcard (3 cols) */}
-                  <div className="sm:col-span-3">
+                  <div className="lg:col-span-3">
                     <div className="perspective-1000 w-full h-[280px] xs:h-[320px] sm:h-[340px] md:h-[380px] landscape:h-[250px] landscape:sm:h-[280px]">
                       <div className={cn(
                         "relative w-full h-full preserve-3d transition-transform duration-500 border border-slate-200/80 rounded-[2.5rem] shadow-xl",
@@ -747,7 +764,7 @@ export default function LearnPage() {
                   </div>
 
                   {/* Word List Sidebar (2 cols) */}
-                  <div className="sm:col-span-2">
+                  <div className="lg:col-span-2">
                     <div className="premium-card p-4 bg-white border border-slate-200 rounded-[1.5rem] space-y-3 max-h-[520px] overflow-y-auto">
                       <div className="flex items-center justify-between">
                         <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider">Danh sách từ vựng</h4>
@@ -760,14 +777,23 @@ export default function LearnPage() {
                       </div>
                       <div className="space-y-1.5">
                         {activeVocabWords.map((w, idx) => (
-                          <button
+                          <div
                             key={w.word}
+                            role="button"
+                            tabIndex={0}
                             onClick={() => {
                               setVocabIndex(idx);
                               setShowVocabHint(false);
                             }}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                setVocabIndex(idx);
+                                setShowVocabHint(false);
+                              }
+                            }}
                             className={cn(
-                              "w-full flex items-center gap-3 p-3 rounded-xl border text-left transition-all cursor-pointer group",
+                              "w-full flex items-center gap-3 p-3 rounded-xl border text-left transition-all cursor-pointer group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400",
                               idx === vocabIndex
                                 ? "bg-slate-900 border-slate-950 text-white shadow-md"
                                 : "bg-white border-slate-100 hover:border-slate-300 text-slate-700"
@@ -797,7 +823,7 @@ export default function LearnPage() {
                             >
                               <Volume2 className="w-3.5 h-3.5" />
                             </button>
-                          </button>
+                          </div>
                         ))}
                       </div>
                     </div>

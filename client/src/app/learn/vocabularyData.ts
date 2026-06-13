@@ -17,7 +17,9 @@ export interface VocabTopic {
   advanced: VocabWord[];
 }
 
-export const VOCABULARY_TOPICS: VocabTopic[] = [
+import { ADDITIONAL_VOCABULARY_TOPICS } from './additionalVocabularyData';
+
+const ORIGINAL_VOCABULARY_TOPICS: VocabTopic[] = [
   {
     "id": "people",
     "title": "Con người & Tính cách (People & Personality)",
@@ -4618,4 +4620,9 @@ export const VOCABULARY_TOPICS: VocabTopic[] = [
       }
     ]
   }
+];
+
+export const VOCABULARY_TOPICS: VocabTopic[] = [
+  ...ORIGINAL_VOCABULARY_TOPICS,
+  ...ADDITIONAL_VOCABULARY_TOPICS
 ];
