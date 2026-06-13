@@ -195,6 +195,74 @@ export default function LearnPage() {
     fetchNewWords();
   }, [user, selectedLevel]);
 
+  // On-demand and background enrichment for words in study session
+  useEffect(() => {
+    let timer: NodeJS.Timeout | null = null;
+
+    const enrichCurrentAndNext = async () => {
+      if (activeMode !== 'vocabulary' || words.length === 0) return;
+      
+      // Helper to enrich a word by index
+      const enrichAtIndex = async (idx: number) => {
+        if (idx < 0 || idx >= words.length) return false;
+        const wObj = words[idx];
+        const needsEn = !wObj.meaningVi || wObj.meaningVi === wObj.word;
+        if (!needsEn) return false;
+        
+        try {
+          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/vocabulary/search?word=${wObj.word}`);
+          if (res.ok) {
+            const data = await res.json();
+            if (data.word) {
+              setWords(prev => {
+                const updated = [...prev];
+                if (updated[idx] && updated[idx].word === wObj.word) {
+                  updated[idx] = {
+                    ...updated[idx],
+                    meaningVi: data.word.meaningVi,
+                    meaningEn: data.word.meaningEn || updated[idx].meaningEn,
+                    phonetic: data.word.phonetic || updated[idx].phonetic,
+                    wordType: data.word.wordType || updated[idx].wordType,
+                    example: data.word.example || updated[idx].example,
+                    exampleVi: data.word.exampleVi || updated[idx].exampleVi
+                  };
+                }
+                return updated;
+              });
+              return true;
+            }
+          }
+        } catch (e) {
+          console.error("Pre-enrich failed for index", idx, e);
+        }
+        return false;
+      };
+
+      // 1. Enrich current word first (high priority)
+      const currentWordObj = words[currentIndex];
+      if (currentWordObj && (!currentWordObj.meaningVi || currentWordObj.meaningVi === currentWordObj.word)) {
+        await enrichAtIndex(currentIndex);
+      }
+      
+      // 2. Pre-enrich next word in the background (low priority)
+      const nextIndex = currentIndex + 1;
+      if (nextIndex < words.length) {
+        const nextWordObj = words[nextIndex];
+        if (nextWordObj && (!nextWordObj.meaningVi || nextWordObj.meaningVi === nextWordObj.word)) {
+          timer = setTimeout(() => {
+            enrichAtIndex(nextIndex);
+          }, 800);
+        }
+      }
+    };
+
+    enrichCurrentAndNext();
+
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [currentIndex, words.length, activeMode]);
+
   const playPronunciation = () => {
     const word = words[currentIndex];
     if (!word) return;
@@ -434,23 +502,30 @@ export default function LearnPage() {
 
                   {/* Back Side */}
                   <div className="absolute w-full h-full backface-hidden rotate-y-180 flex flex-col items-center justify-center text-center bg-[#002147] text-white p-6 sm:p-8 overflow-y-auto rounded-[2.5rem]">
-                    <div className="space-y-3 sm:space-y-4 w-full">
-                      <div>
-                        <span className="text-[11px] sm:text-xs text-emerald-400 font-bold uppercase tracking-widest block">Nghĩa tiếng Việt</span>
-                        <h2 className="text-lg sm:text-xl font-bold text-emerald-400 mt-1">{words[currentIndex].meaningVi}</h2>
+                    {(!words[currentIndex].meaningVi || words[currentIndex].meaningVi === words[currentIndex].word) ? (
+                      <div className="flex flex-col items-center justify-center space-y-4 w-full">
+                        <Loader2 className="w-8 h-8 text-emerald-400 animate-spin" />
+                        <p className="text-xs text-slate-300 font-bold uppercase tracking-widest animate-pulse">Đang dịch & phân tích từ...</p>
                       </div>
-                      <div className="border-t border-white/10 pt-2 sm:pt-3">
-                        <span className="text-[11px] sm:text-xs text-white/40 font-bold uppercase tracking-widest block">Định nghĩa (EN)</span>
-                        <p className="text-xs sm:text-sm text-slate-200 mt-1 italic leading-relaxed">"{words[currentIndex].meaningEn}"</p>
-                      </div>
-                      {words[currentIndex].example && (
-                        <div className="border-t border-white/10 pt-2 sm:pt-3 text-left">
-                          <span className="text-[11px] sm:text-xs text-white/40 font-bold uppercase tracking-widest block mb-1">Ví dụ minh họa</span>
-                          <p className="text-xs sm:text-sm text-white font-medium italic">"{words[currentIndex].example}"</p>
-                          {words[currentIndex].exampleVi && <p className="text-xs text-emerald-400/80 mt-0.5 italic">{words[currentIndex].exampleVi}</p>}
+                    ) : (
+                      <div className="space-y-3 sm:space-y-4 w-full">
+                        <div>
+                          <span className="text-[11px] sm:text-xs text-emerald-400 font-bold uppercase tracking-widest block">Nghĩa tiếng Việt</span>
+                          <h2 className="text-lg sm:text-xl font-bold text-emerald-400 mt-1">{words[currentIndex].meaningVi}</h2>
                         </div>
-                      )}
-                    </div>
+                        <div className="border-t border-white/10 pt-2 sm:pt-3">
+                          <span className="text-[11px] sm:text-xs text-white/40 font-bold uppercase tracking-widest block">Định nghĩa (EN)</span>
+                          <p className="text-xs sm:text-sm text-slate-200 mt-1 italic leading-relaxed">"{words[currentIndex].meaningEn}"</p>
+                        </div>
+                        {words[currentIndex].example && (
+                          <div className="border-t border-white/10 pt-2 sm:pt-3 text-left">
+                            <span className="text-[11px] sm:text-xs text-white/40 font-bold uppercase tracking-widest block mb-1">Ví dụ minh họa</span>
+                            <p className="text-xs sm:text-sm text-white font-medium italic">"{words[currentIndex].example}"</p>
+                            {words[currentIndex].exampleVi && <p className="text-xs text-emerald-400/80 mt-0.5 italic">{words[currentIndex].exampleVi}</p>}
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

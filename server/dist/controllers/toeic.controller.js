@@ -22,8 +22,8 @@ const generatePractice = async (req, res) => {
 };
 exports.generatePractice = generatePractice;
 const submitPractice = async (req, res) => {
-    const { userId, part, correctCount, totalQuestions, details } = req.body;
-    if (!userId || isNaN(part) || isNaN(correctCount) || isNaN(totalQuestions)) {
+    const { userId, part, correctCount, totalQuestions, details, listeningScore, readingScore, totalScore } = req.body;
+    if (!userId || isNaN(correctCount) || isNaN(totalQuestions)) {
         return res.status(400).json({ error: 'Missing required parameters' });
     }
     try {
@@ -31,15 +31,17 @@ const submitPractice = async (req, res) => {
         const history = await prisma_1.default.toeicPracticeHistory.create({
             data: {
                 userId,
-                part,
-                correctCount,
-                totalQuestions,
-                totalScore: Math.round((correctCount / totalQuestions) * 990),
-                details: JSON.stringify(details || {})
+                part: part !== undefined && part !== null ? Number(part) : null,
+                correctCount: Number(correctCount),
+                totalQuestions: Number(totalQuestions),
+                listeningScore: listeningScore !== undefined ? Number(listeningScore) : null,
+                readingScore: readingScore !== undefined ? Number(readingScore) : null,
+                totalScore: totalScore !== undefined ? Number(totalScore) : Math.round((correctCount / totalQuestions) * 990),
+                details: typeof details === 'string' ? details : JSON.stringify(details || {})
             }
         });
         // 2. Reward user with XP
-        const xpReward = correctCount * 10; // 10 XP per correct answer
+        const xpReward = part !== undefined && part !== null ? correctCount * 10 : 200; // 200 XP for completing full test
         await prisma_1.default.user.update({
             where: { id: userId },
             data: {

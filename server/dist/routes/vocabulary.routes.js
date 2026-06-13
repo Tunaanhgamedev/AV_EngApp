@@ -92,55 +92,44 @@ router.get('/learn-new', auth_middleware_1.authenticate, async (req, res) => {
          ORDER BY RANDOM()
          LIMIT $1`, Number(limit));
         }
-        // On-the-fly enrichment (Sequential with automatic dictionary fallback)
-        const enrichedWords = [];
-        for (const word of finalWords) {
-            const needsEnrichment = !word.meaningVi || !word.usage || !word.example || !word.exampleVi || !word.phonetic || word.meaningVi === word.word || (word.meaningVi && word.meaningVi.startsWith('từ "'));
-            if (needsEnrichment) {
-                console.log(`Lazy-enriching: ${word.word} (missing: ${[!word.meaningVi && 'meaningVi', !word.usage && 'usage', !word.example && 'example', !word.exampleVi && 'exampleVi', !word.phonetic && 'phonetic'].filter(Boolean).join(', ')})...`);
-                let aiData = null;
-                try {
-                    aiData = await gemini_service_1.GeminiService.enrichWordData(word.word);
-                }
-                catch (err) {
-                    console.error(`Enrichment failed for ${word.word}:`, err);
-                }
-                if (aiData) {
-                    // Update DB in background
-                    prisma_1.default.vocabularyWord.update({
-                        where: { id: word.id },
-                        data: {
-                            phonetic: aiData.phonetic,
-                            meaningEn: aiData.meaningEn,
-                            meaningVi: aiData.meaningVi,
-                            wordType: aiData.wordType,
-                            cefrLevel: aiData.cefrLevel,
-                            usage: aiData.usage,
-                            example: aiData.example,
-                            exampleVi: aiData.exampleVi,
-                            audioUs: aiData.audioUs || null,
-                            audioUk: aiData.audioUk || null
+        // Send response IMMEDIATELY (no blocking!)
+        res.json({ words: finalWords });
+        // Background enrichment: fire-and-forget
+        const incompleteWords = finalWords.filter((w) => !w.meaningVi || w.meaningVi === w.word || !w.phonetic || !w.usage || !w.example || !w.exampleVi);
+        if (incompleteWords.length > 0) {
+            (async () => {
+                const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+                let enrichCount = 0;
+                for (const w of incompleteWords) {
+                    try {
+                        if (enrichCount > 0)
+                            await delay(1500); // Rate limit buffer
+                        console.log(`[BG Learn Enrich] ${w.word}`);
+                        const aiData = await gemini_service_1.GeminiService.enrichWordData(w.word);
+                        if (aiData) {
+                            enrichCount++;
+                            await pool.query(`UPDATE vocabulary_words SET 
+                  meaning_vi = COALESCE(NULLIF($2, ''), meaning_vi),
+                  meaning_en = COALESCE(NULLIF($3, ''), meaning_en),
+                  phonetic = COALESCE(NULLIF($4, ''), phonetic),
+                  word_type = COALESCE(NULLIF($5, ''), word_type),
+                  usage = COALESCE(NULLIF($6, ''), usage),
+                  example = COALESCE(NULLIF($7, ''), example),
+                  example_vi = COALESCE(NULLIF($8, ''), example_vi),
+                  cefr_level = CASE WHEN cefr_level IN ('Custom', 'OXFORD3000', '') OR cefr_level IS NULL THEN $9 ELSE cefr_level END
+                WHERE id = $1`, [w.id, aiData.meaningVi, aiData.meaningEn, aiData.phonetic, aiData.wordType, aiData.usage, aiData.example, aiData.exampleVi, aiData.cefrLevel || w.cefrLevel || 'B1']);
                         }
-                    }).catch((err) => console.error(`Failed to update DB for ${word.word}:`, err));
-                    enrichedWords.push({
-                        ...word,
-                        phonetic: aiData.phonetic,
-                        meaningEn: aiData.meaningEn,
-                        meaningVi: aiData.meaningVi,
-                        wordType: aiData.wordType,
-                        cefrLevel: aiData.cefrLevel,
-                        usage: aiData.usage,
-                        example: aiData.example,
-                        exampleVi: aiData.exampleVi,
-                        audioUs: aiData.audioUs || word.audioUs,
-                        audioUk: aiData.audioUk || word.audioUk
-                    });
-                    continue;
+                    }
+                    catch (err) {
+                        if (err?.message?.includes('429'))
+                            break;
+                        console.error(`[BG Learn Enrich] Failed ${w.word}:`, err.message);
+                    }
                 }
-            }
-            enrichedWords.push(word);
+                if (enrichCount > 0)
+                    console.log(`[BG Learn Enrich] Done: ${enrichCount} words`);
+            })().catch(() => { });
         }
-        res.json({ words: enrichedWords });
     }
     catch (error) {
         console.error('Error in learn-new:', error);
@@ -227,7 +216,43 @@ router.get('/search', async (req, res) => {
         if (result.rows.length === 0) {
             return res.status(404).json({ error: 'Word not found' });
         }
-        res.json({ word: result.rows[0] });
+        const matchedWord = result.rows[0];
+        const needsEnrichment = !matchedWord.meaningVi || matchedWord.meaningVi === matchedWord.word || !matchedWord.phonetic || !matchedWord.usage || !matchedWord.example || !matchedWord.exampleVi;
+        if (needsEnrichment) {
+            try {
+                console.log(`[Search-On-Demand Enrich] Enriching word: ${matchedWord.word}`);
+                const aiData = await gemini_service_1.GeminiService.enrichWordData(matchedWord.word);
+                if (aiData) {
+                    await pool.query(`UPDATE vocabulary_words SET 
+              meaning_vi = COALESCE(NULLIF($2, ''), meaning_vi),
+              meaning_en = COALESCE(NULLIF($3, ''), meaning_en),
+              phonetic = COALESCE(NULLIF($4, ''), phonetic),
+              word_type = COALESCE(NULLIF($5, ''), word_type),
+              usage = COALESCE(NULLIF($6, ''), usage),
+              example = COALESCE(NULLIF($7, ''), example),
+              example_vi = COALESCE(NULLIF($8, ''), example_vi),
+              cefr_level = CASE WHEN cefr_level IN ('Custom', 'OXFORD3000', '') OR cefr_level IS NULL THEN $9 ELSE cefr_level END
+            WHERE id = $1`, [matchedWord.id, aiData.meaningVi, aiData.meaningEn, aiData.phonetic, aiData.wordType, aiData.usage, aiData.example, aiData.exampleVi, aiData.cefrLevel || matchedWord.cefrLevel || 'B1']);
+                    return res.json({
+                        word: {
+                            ...matchedWord,
+                            meaningVi: aiData.meaningVi || matchedWord.meaningVi,
+                            meaningEn: aiData.meaningEn || matchedWord.meaningEn,
+                            phonetic: aiData.phonetic || matchedWord.phonetic,
+                            wordType: aiData.wordType || matchedWord.wordType,
+                            usage: aiData.usage || matchedWord.usage,
+                            example: aiData.example || matchedWord.example,
+                            exampleVi: aiData.exampleVi || matchedWord.exampleVi,
+                            cefrLevel: aiData.cefrLevel || matchedWord.cefrLevel
+                        }
+                    });
+                }
+            }
+            catch (err) {
+                console.error(`[Search-On-Demand Enrich] Failed:`, err.message);
+            }
+        }
+        res.json({ word: matchedWord });
     }
     catch (error) {
         console.error('Search error:', error.message);
@@ -265,7 +290,7 @@ router.get('/wordlist', async (req, res) => {
         // Background enrichment: fire-and-forget AFTER response is sent
         const shouldEnrich = enrich !== 'false';
         if (shouldEnrich && words.length > 0) {
-            const incompleteWords = words.filter((w) => !w.meaningVi || w.meaningVi === w.word || (w.meaningVi && w.meaningVi.startsWith('từ "')) || !w.phonetic || !w.usage || !w.wordType || w.wordType === '-').slice(0, 2); // Max 2 per background run
+            const incompleteWords = words.filter((w) => !w.meaningVi || w.meaningVi === w.word || !w.phonetic || !w.usage || !w.wordType || w.wordType === '-').slice(0, 2); // Max 2 per background run
             if (incompleteWords.length > 0) {
                 // Run in background — does NOT block the response
                 (async () => {
@@ -340,8 +365,7 @@ router.post('/enrich-batch', async (req, res) => {
        WHERE meaning_vi IS NULL 
           OR meaning_vi = '' 
           OR meaning_vi = word 
-          OR meaning_vi LIKE 'từ "%'
-          OR phonetic IS NULL  
+          OR phonetic IS NULL 
           OR phonetic = '' 
           OR word_type IS NULL 
           OR word_type = '' 
@@ -353,7 +377,7 @@ router.post('/enrich-batch', async (req, res) => {
         if (incomplete.length === 0) {
             // Also count remaining
             const { rows: countRows } = await pool.query(`SELECT COUNT(*)::int as remaining FROM vocabulary_words 
-         WHERE meaning_vi IS NULL OR meaning_vi = '' OR meaning_vi = word OR meaning_vi LIKE 'từ "%'
+         WHERE meaning_vi IS NULL OR meaning_vi = '' OR meaning_vi = word 
             OR phonetic IS NULL OR phonetic = '' 
             OR word_type IS NULL OR word_type = '' OR word_type = '-'
             OR usage IS NULL OR usage = ''`);
@@ -433,13 +457,13 @@ router.post('/bulk-translate', async (req, res) => {
         const levelFilter = level ? `AND (cefr_level = '${level}' OR cefr_level = 'OXFORD3000' OR cefr_level = 'Custom')` : '';
         const { rows: untranslated } = await pool.query(`SELECT id, word, cefr_level as "cefrLevel"
        FROM vocabulary_words 
-       WHERE (meaning_vi IS NULL OR meaning_vi = '' OR meaning_vi = word OR meaning_vi LIKE 'từ "%')
+       WHERE (meaning_vi IS NULL OR meaning_vi = '' OR meaning_vi = word)
        ${levelFilter}
        ORDER BY word ASC
        LIMIT $1`, [batchSize]);
         if (untranslated.length === 0) {
             const { rows: cnt } = await pool.query(`SELECT COUNT(*)::int as remaining FROM vocabulary_words 
-         WHERE meaning_vi IS NULL OR meaning_vi = '' OR meaning_vi = word OR meaning_vi LIKE 'từ "%'`);
+         WHERE meaning_vi IS NULL OR meaning_vi = '' OR meaning_vi = word`);
             return res.json({
                 success: true,
                 translated: 0,
@@ -489,7 +513,7 @@ router.post('/bulk-translate', async (req, res) => {
         }
         // Count remaining
         const { rows: countRows } = await pool.query(`SELECT COUNT(*)::int as remaining FROM vocabulary_words 
-       WHERE meaning_vi IS NULL OR meaning_vi = '' OR meaning_vi = word OR meaning_vi LIKE 'từ "%'`);
+       WHERE meaning_vi IS NULL OR meaning_vi = '' OR meaning_vi = word`);
         console.log(`[Bulk Translate] Done: ${translated}/${untranslated.length} translated, ${countRows[0].remaining} remaining`);
         res.json({
             success: true,
@@ -531,7 +555,7 @@ router.post('/notebook', auth_middleware_1.authenticate, async (req, res) => {
         if (!word || !word.trim()) {
             return res.status(400).json({ error: 'Word is required' });
         }
-        const normalizedWord = word.trim();
+        const normalizedWord = word.trim().toLowerCase();
         const wordCount = normalizedWord.split(/\s+/).filter(Boolean).length;
         if (wordCount > 1) {
             return res.status(400).json({

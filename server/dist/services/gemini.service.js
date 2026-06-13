@@ -493,12 +493,81 @@ ${wordList}
             const response = await result.response;
             const text = response.text();
             const jsonStr = text.replace(/```json|```/g, "").trim();
-            return JSON.parse(jsonStr);
+            const parsed = JSON.parse(jsonStr);
+            // Validate: ensure enough words got a real meaningVi
+            if (Array.isArray(parsed)) {
+                const validCount = parsed.filter((r) => r?.word && r?.meaningVi && r.meaningVi.trim().toLowerCase() !== r.word.trim().toLowerCase()).length;
+                if (validCount >= words.length * 0.5) {
+                    return parsed;
+                }
+            }
+            console.warn(`[Bulk Translate] Gemini returned incomplete data. Using free fallback.`);
+            return await GeminiService.bulkTranslateFallback(words);
         }
         catch (error) {
-            console.error(`EngBot Bulk Translate Error:`, error.message || error);
-            return null;
+            console.error(`EngBot Bulk Translate Error, switching to free Google Translate fallback:`, error.message || error);
+            return await GeminiService.bulkTranslateFallback(words);
         }
+    }
+    /**
+     * Free Google Translate fallback for bulk translation (no API key required)
+     */
+    static async bulkTranslateFallback(words) {
+        const results = [];
+        const translateText = async (text) => {
+            try {
+                const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=vi&dt=t&q=${encodeURIComponent(text)}`);
+                if (res.ok) {
+                    const data = await res.json();
+                    return data[0]?.map((x) => x[0]).join('').trim() || '';
+                }
+            }
+            catch (e) { }
+            return '';
+        };
+        for (const word of words) {
+            try {
+                let phonetic = '', meaningEn = '', wordType = 'n', example = '';
+                try {
+                    const dictRes = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word)}`);
+                    if (dictRes.ok) {
+                        const dictData = await dictRes.json();
+                        if (dictData?.[0]) {
+                            const entry = dictData[0];
+                            phonetic = entry.phonetic || entry.phonetics?.find((p) => p.text)?.text || '';
+                            if (entry.meanings?.[0]) {
+                                wordType = entry.meanings[0].partOfSpeech || 'n';
+                                meaningEn = entry.meanings[0].definitions?.[0]?.definition || '';
+                                for (const m of entry.meanings) {
+                                    for (const d of m.definitions) {
+                                        if (d.example) {
+                                            example = d.example;
+                                            break;
+                                        }
+                                    }
+                                    if (example)
+                                        break;
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (e) { }
+                if (!meaningEn)
+                    meaningEn = `The English word "${word}".`;
+                if (!example)
+                    example = `We should study the meaning of the word "${word}".`;
+                const meaningVi = await translateText(word) || `từ "${word}"`;
+                const exampleVi = await translateText(example) || '';
+                results.push({ word, phonetic, meaningEn, meaningVi, wordType, cefrLevel: 'B1', usage: 'Sử dụng phổ biến trong giao tiếp hàng ngày.', example, exampleVi });
+            }
+            catch (err) {
+                console.error(`[Bulk Translate Fallback] Failed for "${word}":`, err.message);
+                results.push({ word, phonetic: '', meaningEn: '', meaningVi: await translateText(word) || word, wordType: 'n', cefrLevel: 'B1', usage: '', example: '', exampleVi: '' });
+            }
+        }
+        console.log(`[Bulk Translate Fallback] Completed: ${results.length}/${words.length} words translated via free API.`);
+        return results;
     }
     /**
      * Generate TOEIC Practice Questions using Gemini

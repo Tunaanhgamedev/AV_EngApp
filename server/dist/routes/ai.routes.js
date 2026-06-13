@@ -163,61 +163,143 @@ const generateLocalSpeakingFeedback = (transcript, targetText) => {
         mispronounced
     };
 };
-// AI Translate
+// AI Translate (with persistent DB cache for instant repeat translations)
 router.post('/translate', async (req, res) => {
-    const { text, targetLang = 'Vietnamese' } = req.body;
+    const { text, targetLang = 'Vietnamese', mode = 'deep' } = req.body;
     if (!text)
         return res.status(400).json({ error: 'Text is required' });
-    // Diagnostic: Check API Key
-    if (!process.env.GEMINI_API_KEY) {
-        console.error('[AI] CRITICAL: GEMINI_API_KEY is missing in .env');
-        return res.status(500).json({ error: 'Server configuration error: Missing API Key' });
-    }
+    const cleanText = text.trim();
+    // Determine source language from target (simple toggle)
+    const sourceLang = targetLang === 'Vietnamese' ? 'English' : 'Vietnamese';
+    // ── Step 1: Check DB Cache ──────────────────────────────────────────────────
     try {
-        const prompt = `Translate exactly to ${targetLang}: "${text}". Provide ONLY the translation.`;
-        const translationText = await generateContentWithModelFallback(prompt);
-        const translation = translationText.trim();
-        return res.json({ translation, provider: 'AI (Gemini)' });
+        const cached = await prisma_1.default.translationCache.findUnique({
+            where: {
+                sourceText_sourceLang_targetLang: {
+                    sourceText: cleanText,
+                    sourceLang,
+                    targetLang
+                }
+            }
+        });
+        if (cached) {
+            console.log(`[Translate] ⚡ Cache HIT for "${cleanText.substring(0, 40)}..." (hits: ${cached.hitCount + 1})`);
+            // Increment hit count in background (fire-and-forget)
+            prisma_1.default.translationCache.update({
+                where: { id: cached.id },
+                data: { hitCount: { increment: 1 } }
+            }).catch(() => { });
+            return res.json({
+                translation: cached.translation,
+                provider: cached.provider,
+                cached: true
+            });
+        }
     }
-    catch (error) {
-        console.error('[AI] Gemini Failed, using fallback translator:', error.message);
-        // Fallback 1: Google Translate (Unofficial Fallback - Accurate for short phrases)
+    catch (dbErr) {
+        console.warn('[Translate] DB cache lookup failed, proceeding to AI:', dbErr.message);
+    }
+    // ── Step 2: AI Translation (cache miss) ─────────────────────────────────────
+    let translation = '';
+    let provider = 'AI (Gemini)';
+    if (mode === 'fast') {
+        // Fast translation mode: bypass Gemini to provide immediate typing translation
         try {
             const tLang = targetLang === 'Vietnamese' ? 'vi' : 'en';
             const sLang = targetLang === 'Vietnamese' ? 'en' : 'vi';
-            const googleUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sLang}&tl=${tLang}&dt=t&q=${encodeURIComponent(text)}`;
+            const googleUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sLang}&tl=${tLang}&dt=t&q=${encodeURIComponent(cleanText)}`;
             const gRes = await fetch(googleUrl);
             const gData = await gRes.json();
-            if (gData && gData[0] && gData[0][0] && gData[0][0][0]) {
+            if (gData && gData[0] && Array.isArray(gData[0])) {
+                translation = gData[0].map((item) => (item && item[0] ? item[0] : '')).join('');
+                provider = 'AI (Fast)';
+            }
+        }
+        catch (gError) {
+            console.error('[AI] Fast Google Translate fallback failed:', gError);
+        }
+    }
+    else {
+        // Deep translation mode: try Gemini
+        if (!process.env.GEMINI_API_KEY) {
+            console.error('[AI] CRITICAL: GEMINI_API_KEY is missing in .env');
+            return res.status(500).json({ error: 'Server configuration error: Missing API Key' });
+        }
+        try {
+            const prompt = `Translate exactly to ${targetLang}: "${cleanText}". Provide ONLY the translation.`;
+            const translationText = await generateContentWithModelFallback(prompt);
+            translation = translationText.trim();
+            provider = 'AI (Gemini)';
+        }
+        catch (error) {
+            console.error('[AI] Gemini Failed, using fallback translator:', error.message);
+        }
+    }
+    // Fallback 1: Google Translate (Unofficial Fallback - Accurate for short phrases)
+    if (!translation) {
+        try {
+            const tLang = targetLang === 'Vietnamese' ? 'vi' : 'en';
+            const sLang = targetLang === 'Vietnamese' ? 'en' : 'vi';
+            const googleUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sLang}&tl=${tLang}&dt=t&q=${encodeURIComponent(cleanText)}`;
+            const gRes = await fetch(googleUrl);
+            const gData = await gRes.json();
+            if (gData && gData[0] && Array.isArray(gData[0])) {
                 console.log('[AI] Fallback Success: Google Translate');
-                return res.json({
-                    translation: gData[0][0][0],
-                    provider: 'AI (Backup)'
-                });
+                translation = gData[0].map((item) => (item && item[0] ? item[0] : '')).join('');
+                provider = 'AI (Backup)';
             }
         }
         catch (gError) {
             console.error('[AI] Google Fallback Failed:', gError);
         }
-        // Fallback 2: MyMemory
+    }
+    // Fallback 2: MyMemory
+    if (!translation) {
         try {
             const targetCode = targetLang === 'Vietnamese' ? 'vi' : 'en';
             const sourceCode = targetLang === 'Vietnamese' ? 'en' : 'vi';
-            const fallbackUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${sourceCode}|${targetCode}`;
+            const fallbackUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(cleanText)}&langpair=${sourceCode}|${targetCode}`;
             const fallbackRes = await fetch(fallbackUrl);
             const fallbackData = await fallbackRes.json();
             if (fallbackData.responseData?.translatedText) {
-                return res.json({
-                    translation: fallbackData.responseData.translatedText,
-                    provider: 'Community (Fallback)'
-                });
+                translation = fallbackData.responseData.translatedText;
+                provider = 'Community (Fallback)';
             }
         }
         catch (mError) {
             console.error('[AI] MyMemory Failed:', mError);
         }
-        res.status(500).json({ error: 'All translation services failed' });
     }
+    if (!translation) {
+        return res.status(500).json({ error: 'All translation services failed' });
+    }
+    // ── Step 3: Save to DB Cache (fire-and-forget) ──────────────────────────────
+    prisma_1.default.translationCache.upsert({
+        where: {
+            sourceText_sourceLang_targetLang: {
+                sourceText: cleanText,
+                sourceLang,
+                targetLang
+            }
+        },
+        update: {
+            translation,
+            provider,
+            hitCount: { increment: 1 }
+        },
+        create: {
+            sourceText: cleanText,
+            sourceLang,
+            targetLang,
+            translation,
+            provider
+        }
+    }).then(() => {
+        console.log(`[Translate] 💾 Cached translation for "${cleanText.substring(0, 40)}..."`);
+    }).catch((err) => {
+        console.warn('[Translate] Failed to cache translation:', err.message);
+    });
+    return res.json({ translation, provider, cached: false });
 });
 // AI Word Insight — for Notebook feature
 router.post('/word-insight', async (req, res) => {
@@ -301,6 +383,65 @@ router.post('/analyze-speaking', async (req, res) => {
         // Bulletproof: Never crash speaking analyzer, use intelligent localized matching feedback!
         const localFeedback = generateLocalSpeakingFeedback(transcript, targetText);
         return res.json(localFeedback);
+    }
+});
+// AI IELTS Essay & Speaking Response Evaluation
+router.post('/analyze-ielts-constructive', async (req, res) => {
+    const { skill, questionText, userAnswer } = req.body;
+    if (!skill || !questionText || !userAnswer) {
+        return res.status(400).json({ error: 'Skill, questionText, and userAnswer are required' });
+    }
+    try {
+        const prompt = `
+      You are an official certified IELTS examiner. Evaluate this student response for the given IELTS ${skill} test.
+      
+      IELTS Skill: ${skill.toUpperCase()}
+      Exam Prompt: "${questionText}"
+      Student Submission: "${userAnswer}"
+      
+      Grade the response strictly according to the official IELTS criteria:
+      - For Writing: Task Achievement, Coherence & Cohesion, Lexical Resource, Grammatical Range & Accuracy.
+      - For Speaking: Fluency & Coherence, Lexical Resource, Grammatical Range & Accuracy, Pronunciation.
+      
+      Provide a Band Score (a float from 1.0 to 9.0 in increments of 0.5) and a highly detailed critique in Vietnamese, highlighting strengths, grammar errors to correct, and suggestions for advanced vocabulary.
+      
+      Return ONLY raw JSON format:
+      {
+        "bandScore": <number e.g. 6.5>,
+        "feedback": "Detailed evaluation, corrections, and improvement tips in Vietnamese."
+      }
+    `;
+        const text = await generateContentWithModelFallback(prompt);
+        const result = safeParseJSON(text);
+        // Validate band score is between 1.0 and 9.0 and a multiple of 0.5
+        let score = parseFloat(result.bandScore || 6.0);
+        if (isNaN(score) || score < 1.0 || score > 9.0) {
+            score = 6.0;
+        }
+        // Round to nearest 0.5
+        score = Math.round(score * 2) / 2;
+        return res.json({
+            bandScore: score,
+            feedback: result.feedback || 'Bài làm tốt, có ý thức bám sát đề bài. Hãy trau dồi cấu trúc câu phức tạp hơn.'
+        });
+    }
+    catch (error) {
+        console.error('[AI] IELTS evaluation error, using localized heuristic:', error.message);
+        // Heuristic fallback score based on word count
+        const words = userAnswer.trim().split(/\s+/).filter(Boolean).length;
+        let score = 5.0;
+        if (words > 250)
+            score = 7.0;
+        else if (words > 150)
+            score = 6.5;
+        else if (words > 80)
+            score = 6.0;
+        else if (words > 40)
+            score = 5.5;
+        return res.json({
+            bandScore: score,
+            feedback: `[Giáo viên AI Fallback] Bài làm của bạn dài ${words} từ. Bố cục rõ ràng, ý kiến có dẫn chứng cơ bản. Bạn nên cải thiện tính trôi chảy và sử dụng thêm các cụm từ nối (linking words) nâng cao để nâng band score.`
+        });
     }
 });
 // AI Mouth Shape & Pronunciation Articulation Analysis
@@ -478,49 +619,78 @@ router.post('/analyze-stress', async (req, res) => {
             console.log(`[AI] Bypassing DB cache (force re-analyze) for: "${cleanWord}"`);
         }
         console.log(`[AI] Analyzing word stress via AI/heuristic for: "${cleanWord}"`);
+        // ── Step A: Fetch authoritative IPA from Free Dictionary API ──
+        let dictPhonetic = '';
+        try {
+            const dictRes = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(cleanWord)}`);
+            if (dictRes.ok) {
+                const dictData = await dictRes.json();
+                if (dictData?.[0]) {
+                    dictPhonetic = dictData[0].phonetic || dictData[0].phonetics?.find((p) => p.text)?.text || '';
+                }
+            }
+        }
+        catch (e) {
+            console.log(`[AI] Dictionary API phonetic fetch failed for "${cleanWord}"`);
+        }
         let analysis;
         try {
+            const dictHint = dictPhonetic ? `\nREFERENCE IPA from dictionary (use this to verify your answer): ${dictPhonetic}` : '';
             const prompt = `
         You are EngBot (AI English Pronunciation & Phonology Expert).
         Analyze the word stress (trọng âm) for the English word: "${cleanWord}"
+        ${dictHint}
 
-        Follow these steps strictly to ensure the analysis is 100% correct:
-        1. Break the word into written lowercase syllables. For example:
-           - "communication" -> ["com", "mu", "ni", "ca", "tion"]
-           - "happy" -> ["hap", "py"]
-           - "education" -> ["ed", "u", "ca", "tion"]
-           - "develop" -> ["de", "vel", "op"]
-           Do NOT use IPA characters in the "syllables" array; use the original written English letters.
+        FOLLOW THESE STEPS VERY CAREFULLY — accuracy is critical:
 
-        2. Identify the IPA phonetic transcription showing primary stress (ˈ) and secondary stress (ˌ).
-           For example:
-           - "communication" -> /kəˌmjuː.nɪˈkeɪ.ʃən/
-           - "develop" -> /dɪˈvel.əp/
+        STEP 1: Write out the STANDARD IPA phonetic transcription with stress marks (ˈ for primary, ˌ for secondary).
+        Use an authoritative pronunciation source. Examples:
+        - "communication" → /kəˌmjuː.nɪˈkeɪ.ʃən/
+        - "develop" → /dɪˈvel.əp/
+        - "beautiful" → /ˈbjuː.tɪ.fəl/
+        - "important" → /ɪmˈpɔːr.tənt/
+        - "photograph" → /ˈfoʊ.tə.ɡræf/
+        - "photography" → /fəˈtɒɡ.rə.fi/
+        - "particular" → /pərˈtɪk.jə.lər/
+        - "university" → /ˌjuː.nɪˈvɜːr.sə.ti/
+        - "comfortable" → /ˈkʌmf.tə.bəl/
+        - "interesting" → /ˈɪn.trəs.tɪŋ/
+        - "vocabulary" → /voʊˈkæb.jə.ler.i/
+        - "necessary" → /ˈnes.ə.ser.i/
+        - "economic" → /ˌiː.kəˈnɒm.ɪk/
 
-        3. Find the EXACT 0-based index of the primary stressed syllable inside your "syllables" array.
-           - For "communication": the primary stress is on "ca", which is index 3 of ["com", "mu", "ni", "ca", "tion"]. So "stressedSyllableIndex" MUST be 3.
-           - For "develop": the primary stress is on "vel", which is index 1 of ["de", "vel", "op"]. So "stressedSyllableIndex" MUST be 1.
-           Double check: syllables[stressedSyllableIndex] MUST contain the primary stressed sound!
+        STEP 2: Split the word into WRITTEN English syllables (not IPA). Rules:
+        - Each syllable must contain exactly one vowel sound
+        - Use the original English spelling
+        - Examples: "communication" → ["com","mu","ni","ca","tion"], "important" → ["im","por","tant"]
 
-        4. Find the EXACT 0-based index of the secondary stressed syllable inside your "syllables" array (use -1 if none).
-           - For "communication": secondary stress is on "mu", which is index 1. So "secondaryStressedSyllableIndex" MUST be 1.
-           - For "develop": there is no secondary stress. So "secondaryStressedSyllableIndex" MUST be -1.
+        STEP 3: Find which syllable receives the PRIMARY stress (ˈ) from Step 1.
+        Map it to the 0-based index in the syllables array from Step 2.
+        DOUBLE CHECK: The syllable at that index MUST correspond to the IPA syllable with ˈ before it.
 
-        5. Provide a detailed explanation in Vietnamese of the stress rule applied (ruleExplanation) and a tip for Vietnamese speakers on how to accent it (pronunciationGuide).
-        6. Suggest 2-3 similar words with their IPA.
+        STEP 4: Find which syllable (if any) receives SECONDARY stress (ˌ) from Step 1.
+        Use -1 if there is no secondary stress.
 
-        Provide the analysis in JSON format (do not include markdown wrapper, return raw json):
+        STEP 5: Verify your answer one more time:
+        - Read the IPA transcription
+        - Find where ˈ appears
+        - Count which syllable in your array matches
+        - If there's a mismatch, CORRECT your stressedSyllableIndex
+
+        Respond ONLY with raw JSON (no markdown, no explanation outside JSON):
         {
           "word": "${cleanWord}",
-          "phonetic": "IPA pronunciation showing stress marks, e.g. /kəˌmjuː.nɪˈkeɪ.ʃən/",
-          "syllables": ["com", "mu", "ni", "ca", "tion"],
-          "stressedSyllableIndex": 3,
-          "secondaryStressedSyllableIndex": 1,
-          "ruleExplanation": "Chi tiết quy tắc trọng âm bằng tiếng Việt",
-          "pronunciationGuide": "Hướng dẫn đọc nhấn giọng chi tiết bằng tiếng Việt",
+          "phonetic": "Full IPA with stress marks",
+          "syllables": ["syl1", "syl2", ...],
+          "stressedSyllable": "Name of the primary stressed syllable from the syllables list (e.g. 'ca' or 'por')",
+          "stressedSyllableIndex": <0-based index of primary stressed syllable>,
+          "secondaryStressedSyllable": "Name of the secondary stressed syllable (e.g. 'mu' or 'none')",
+          "secondaryStressedSyllableIndex": <0-based index or -1>,
+          "ruleExplanation": "Giải thích quy tắc trọng âm bằng tiếng Việt, chi tiết và dễ hiểu",
+          "pronunciationGuide": "Hướng dẫn cách đọc nhấn giọng cho người Việt",
           "similarWords": [
-            { "word": "education", "phonetic": "/ˌed.jʊˈkeɪ.ʃən/" },
-            { "word": "relation", "phonetic": "/rɪˈleɪ.ʃən/" }
+            { "word": "example1", "phonetic": "/IPA/" },
+            { "word": "example2", "phonetic": "/IPA/" }
           ]
         }
       `;
@@ -534,7 +704,7 @@ router.post('/analyze-stress', async (req, res) => {
         // Ensure all response keys exist and have proper default fallbacks
         const finalizedAnalysis = {
             word: cleanWord,
-            phonetic: analysis.phonetic || `/${cleanWord}/`,
+            phonetic: analysis.phonetic || dictPhonetic || `/${cleanWord}/`,
             syllables: analysis.syllables || [cleanWord],
             stressedSyllableIndex: analysis.stressedSyllableIndex !== undefined ? Number(analysis.stressedSyllableIndex) : 0,
             secondaryStressedSyllableIndex: analysis.secondaryStressedSyllableIndex !== undefined ? Number(analysis.secondaryStressedSyllableIndex) : -1,
@@ -542,7 +712,38 @@ router.post('/analyze-stress', async (req, res) => {
             pronunciationGuide: analysis.pronunciationGuide || 'Đọc từ tự nhiên.',
             similarWords: analysis.similarWords || []
         };
-        // Post-processing boundary check
+        // ── Step B: String-based Syllable Stress Validation ──
+        const formatSyl = (s) => s.toLowerCase().replace(/[^a-z]/g, '').trim();
+        if (finalizedAnalysis.syllables.length > 1) {
+            // 1. Validate Primary Stress
+            if (analysis.stressedSyllable) {
+                const targetSyl = formatSyl(analysis.stressedSyllable);
+                const idx = finalizedAnalysis.syllables.findIndex((s) => formatSyl(s) === targetSyl);
+                if (idx !== -1) {
+                    console.log(`[AI Stress Validation] Matched primary stressed syllable "${analysis.stressedSyllable}" to index ${idx} for "${cleanWord}"`);
+                    finalizedAnalysis.stressedSyllableIndex = idx;
+                }
+            }
+            // 2. Validate Secondary Stress
+            if (analysis.secondaryStressedSyllable) {
+                const targetSyl = formatSyl(analysis.secondaryStressedSyllable);
+                if (targetSyl && targetSyl !== 'none' && targetSyl !== 'null') {
+                    const idx = finalizedAnalysis.syllables.findIndex((s) => formatSyl(s) === targetSyl);
+                    if (idx !== -1) {
+                        console.log(`[AI Stress Validation] Matched secondary stressed syllable "${analysis.secondaryStressedSyllable}" to index ${idx} for "${cleanWord}"`);
+                        finalizedAnalysis.secondaryStressedSyllableIndex = idx;
+                    }
+                }
+                else {
+                    finalizedAnalysis.secondaryStressedSyllableIndex = -1;
+                }
+            }
+        }
+        // Use dictionary IPA if available and AI returned a generic one
+        if (dictPhonetic && (!finalizedAnalysis.phonetic || finalizedAnalysis.phonetic === `/${cleanWord}/`)) {
+            finalizedAnalysis.phonetic = dictPhonetic;
+        }
+        // Boundary check
         const sylLength = finalizedAnalysis.syllables.length;
         if (finalizedAnalysis.stressedSyllableIndex < 0 || finalizedAnalysis.stressedSyllableIndex >= sylLength) {
             finalizedAnalysis.stressedSyllableIndex = 0;
