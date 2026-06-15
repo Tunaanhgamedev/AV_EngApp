@@ -22,6 +22,7 @@ import { cn } from '@/lib/utils';
 import { sendMessage } from '@/services/chat.service';
 import { useAuth } from '@/context/AuthContext';
 import Link from 'next/link';
+import { Markdown } from '@/components/Markdown';
 
 const SCENARIOS = [
   { 
@@ -274,9 +275,11 @@ export default function ChatPage() {
                     </p>
                     
                     {msg.feedback && (
-                      <div className="p-3 bg-blue-50 border border-blue-100 rounded-2xl text-xs text-blue-700 flex items-start gap-2">
-                        <Info className="w-4 h-4 flex-shrink-0" />
-                        <p>{msg.feedback}</p>
+                      <div className="p-3 bg-blue-50 border border-blue-100 rounded-2xl text-xs text-blue-700 flex items-start gap-2 w-full max-w-full overflow-hidden">
+                        <Info className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                        <div className="flex-1 min-w-0">
+                          <Markdown content={msg.feedback} />
+                        </div>
                       </div>
                     )}
                   </div>
