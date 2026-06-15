@@ -47,7 +47,7 @@ Learn Vocabulary • AI Chat • Speaking • Journal • Gamification
 ![Node.js](https://img.shields.io/badge/Node.js-20-green?logo=node.js)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Supabase-blue?logo=postgresql)
 ![Firebase](https://img.shields.io/badge/Firebase-Auth-orange?logo=firebase)
-![OpenAI](https://img.shields.io/badge/OpenAI-AI-red?logo=openai)
+![Gemini](https://img.shields.io/badge/Gemini-AI-blue?logo=googlegemini)
 ![Render](https://img.shields.io/badge/Deploy-Render-purple?logo=render)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
@@ -240,7 +240,7 @@ npm install
 ### Backend
 
 ```bash
-cd server
+cd ../server
 npm install
 ```
 
@@ -251,7 +251,7 @@ npm install
 ## Frontend `.env.local`
 
 ```env
-NEXT_PUBLIC_API_URL=
+NEXT_PUBLIC_API_URL=http://localhost:5000/api
 NEXT_PUBLIC_FIREBASE_API_KEY=
 NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=
 NEXT_PUBLIC_FIREBASE_PROJECT_ID=
@@ -265,19 +265,23 @@ NEXT_PUBLIC_FIREBASE_APP_ID=
 ## Backend `.env`
 
 ```env
+PORT=5000
+NODE_ENV=development
 DATABASE_URL=
-GEMINIAI_API_KEY=
+DIRECT_URL=
+GEMINI_API_KEY=
 JWT_SECRET=
-FIREBASE_PROJECT_ID=
-FIREBASE_CLIENT_EMAIL=
-FIREBASE_PRIVATE_KEY=
 ```
+
+> [!NOTE]
+> Firebase Admin SDK is initialized using the `firebase-service-account.json` file placed directly in the `server/` directory.
 
 ---
 
 # 🗄️ Database Setup
 
 ```bash
+cd server
 npx prisma migrate dev
 npx prisma db seed
 ```
@@ -289,12 +293,14 @@ npx prisma db seed
 ## Backend
 
 ```bash
+cd server
 npm run dev
 ```
 
 ## Frontend
 
 ```bash
+cd client
 npm run dev
 ```
 
