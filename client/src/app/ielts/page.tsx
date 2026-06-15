@@ -405,13 +405,7 @@ export default function IELTSPage() {
 
   const [knowledgeTab, setKnowledgeTab] = useState<string>('methods');
   const [knowledgeSearch, setKnowledgeSearch] = useState<string>('');
-  const [checkedPlanItems, setCheckedPlanItems] = useState<string[]>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('ielts_checked_plan_items');
-      return saved ? JSON.parse(saved) : [];
-    }
-    return [];
-  });
+  const [checkedPlanItems, setCheckedPlanItems] = useState<string[]>([]);
 
   const togglePlanItem = (itemId: string) => {
     const next = checkedPlanItems.includes(itemId)
@@ -432,12 +426,7 @@ export default function IELTSPage() {
   const [vocabSearch, setVocabSearch] = useState<string>('');
 
   const [selectedPlatform, setSelectedPlatform] = useState<string>('study4');
-  const [notes, setNotes] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('ielts_practice_notes') || '';
-    }
-    return '';
-  });
+  const [notes, setNotes] = useState<string>('');
   
   // Timer States
   const [timeLeft, setTimeLeft] = useState<number>(3600); // 1 hour default
@@ -447,13 +436,35 @@ export default function IELTSPage() {
   // Vocabulary States
   const [vocabWord, setVocabWord] = useState('');
   const [vocabMeaning, setVocabMeaning] = useState('');
-  const [vocabList, setVocabList] = useState<{ word: string; meaning: string }[]>(() => {
+  const [vocabList, setVocabList] = useState<{ word: string; meaning: string }[]>([]);
+
+  // Hydrate states from localStorage after client-side mount
+  React.useEffect(() => {
     if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('ielts_vocab_list');
-      return saved ? JSON.parse(saved) : [];
+      const savedPlan = localStorage.getItem('ielts_checked_plan_items');
+      if (savedPlan) {
+        try {
+          setCheckedPlanItems(JSON.parse(savedPlan));
+        } catch (e) {
+          console.error(e);
+        }
+      }
+      
+      const savedNotes = localStorage.getItem('ielts_practice_notes');
+      if (savedNotes) {
+        setNotes(savedNotes);
+      }
+
+      const savedVocab = localStorage.getItem('ielts_vocab_list');
+      if (savedVocab) {
+        try {
+          setVocabList(JSON.parse(savedVocab));
+        } catch (e) {
+          console.error(e);
+        }
+      }
     }
-    return [];
-  });
+  }, []);
 
   const addVocabFromLibrary = (word: string, meaning: string) => {
     if (vocabList.some(item => item.word.toLowerCase() === word.toLowerCase())) {
