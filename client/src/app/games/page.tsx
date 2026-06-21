@@ -993,7 +993,7 @@ const IMAGE_GUESS_POOL = [
     word: 'COMPUTER',
     vi: 'Máy tính',
     hint: 'Thiết bị điện tử dùng để xử lý dữ liệu, làm việc và giải trí.',
-    imageUrl: 'https://images.unsplash.com/photo-1547082299-de196ea013d6?w=600&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&auto=format&fit=crop'
   },
   {
     word: 'GUITAR',
@@ -1035,7 +1035,7 @@ const IMAGE_GUESS_POOL = [
     word: 'UMBRELLA',
     vi: 'Cây dù / ô',
     hint: 'Vật dụng hình vòm che mưa che nắng cầm tay.',
-    imageUrl: 'https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=600&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1534483509719-8b42218cf905?w=600&auto=format&fit=crop'
   },
   {
     word: 'CLOCK',
@@ -1047,7 +1047,7 @@ const IMAGE_GUESS_POOL = [
     word: 'SUN',
     vi: 'Mặt trời',
     hint: 'Quả cầu lửa khổng lồ ở trung tâm hệ hành tinh của chúng ta.',
-    imageUrl: 'https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?w=600&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1532693322450-2cb5c511067d?w=600&auto=format&fit=crop'
   },
   {
     word: 'STRAWBERRY',
@@ -1065,7 +1065,7 @@ const IMAGE_GUESS_POOL = [
     word: 'BUTTERFLY',
     vi: 'Con bướm',
     hint: 'Loài côn trùng có đôi cánh rực rỡ sắc màu bay lượn hút mật hoa.',
-    imageUrl: 'https://images.unsplash.com/photo-1506869640319-fe1a24fd76dc?w=600&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1452570053594-1b985d6ea890?w=600&auto=format&fit=crop'
   },
   {
     word: 'LION',
@@ -1095,7 +1095,7 @@ const IMAGE_GUESS_POOL = [
     word: 'HELICOPTER',
     vi: 'Máy bay trực thăng',
     hint: 'Phương tiện bay có cánh quạt lớn phía trên đỉnh để cất cánh thẳng đứng.',
-    imageUrl: 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?w=600&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1557818673-effec50525e1?w=600&auto=format&fit=crop'
   },
   {
     word: 'MOTORCYCLE',
@@ -1113,7 +1113,7 @@ const IMAGE_GUESS_POOL = [
     word: 'SHIP',
     vi: 'Tàu thủy',
     hint: 'Phương tiện đường thủy cỡ lớn chuyên chở hàng hóa trên đại dương.',
-    imageUrl: 'https://images.unsplash.com/photo-1505705694340-019e1e335916?w=600&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&auto=format&fit=crop'
   },
   {
     word: 'CAMERA',
@@ -1125,13 +1125,13 @@ const IMAGE_GUESS_POOL = [
     word: 'TELEPHONE',
     vi: 'Điện thoại',
     hint: 'Thiết bị viễn thông dùng để liên lạc đàm thoại từ xa.',
-    imageUrl: 'https://images.unsplash.com/photo-1520923642038-b4a53cb3a419?w=600&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&auto=format&fit=crop'
   },
   {
     word: 'TELEVISION',
     vi: 'Tivi / máy vô tuyến',
     hint: 'Thiết bị màn hình lớn trình chiếu các kênh truyền hình giải trí.',
-    imageUrl: 'https://images.unsplash.com/photo-1593305841991-05c297ba4575?w=600&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1593784991095-a205069470b6?w=600&auto=format&fit=crop'
   },
   {
     word: 'PIANO',
@@ -1161,7 +1161,7 @@ const IMAGE_GUESS_POOL = [
     word: 'STAR',
     vi: 'Ngôi sao',
     hint: 'Thiên thể phát sáng lấp lánh trên bầu trời đêm xa xôi.',
-    imageUrl: 'https://images.unsplash.com/photo-1502134249126-9f3755a50d78?w=600&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?w=600&auto=format&fit=crop'
   },
   {
     word: 'FLOWER',
@@ -1203,13 +1203,13 @@ const IMAGE_GUESS_POOL = [
     word: 'DESERT',
     vi: 'Sa mạc',
     hint: 'Vùng đất khô cằn toàn cát hoang vu, lượng mưa rất thấp.',
-    imageUrl: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=600&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=600&auto=format&fit=crop'
   },
   {
     word: 'BALLOON',
     vi: 'Khinh khí cầu',
     hint: 'Quả bóng lớn chứa đầy khí nóng bay lơ lửng trên không trung.',
-    imageUrl: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=600&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1507608616759-54f48f0af0ee?w=600&auto=format&fit=crop'
   },
   {
     word: 'CANDLE',
@@ -1221,7 +1221,7 @@ const IMAGE_GUESS_POOL = [
     word: 'ICECREAM',
     vi: 'Kem',
     hint: 'Món tráng miệng đông lạnh ngọt ngào mát lạnh mùa hè.',
-    imageUrl: 'https://images.unsplash.com/photo-1501443710935-77b61d318a09?w=600&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?w=600&auto=format&fit=crop'
   },
   {
     word: 'CAKE',
@@ -1239,7 +1239,7 @@ const IMAGE_GUESS_POOL = [
     word: 'CHEESE',
     vi: 'Phô mai',
     hint: 'Thực phẩm làm từ sữa cô đặc có màu vàng ngậy béo.',
-    imageUrl: 'https://images.unsplash.com/photo-1486299267070-83823f5448dd?w=600&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1552767059-ce182ead6c1b?w=600&auto=format&fit=crop'
   },
   {
     word: 'MILK',
@@ -1257,7 +1257,7 @@ const IMAGE_GUESS_POOL = [
     word: 'JUICE',
     vi: 'Nước ép trái cây',
     hint: 'Nước vắt ra từ các loại hoa quả tươi ngon.',
-    imageUrl: 'https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?w=600&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1534353473418-4cfa6c56fd38?w=600&auto=format&fit=crop'
   },
   {
     word: 'PINEAPPLE',
@@ -1317,7 +1317,97 @@ const IMAGE_GUESS_POOL = [
     word: 'ONION',
     vi: 'Củ hành tây',
     hint: 'Củ có nhiều lớp vỏ đồng tâm bóc ra gây cay xè mắt.',
-    imageUrl: 'https://images.unsplash.com/photo-1508747703725-719ae257c84a?w=600&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1587049693270-f10438b84ffc?w=600&auto=format&fit=crop'
+  },
+  {
+    word: 'BOOK',
+    vi: 'Cuốn sách',
+    hint: 'Tập hợp các trang giấy in chữ được đóng lại thành cuốn để đọc.',
+    imageUrl: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=600&auto=format&fit=crop'
+  },
+  {
+    word: 'CHAIR',
+    vi: 'Cái ghế',
+    hint: 'Đồ nội thất dùng để ngồi, thường có bốn chân và tựa lưng.',
+    imageUrl: 'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=600&auto=format&fit=crop'
+  },
+  {
+    word: 'HOUSE',
+    vi: 'Ngôi nhà',
+    hint: 'Công trình xây dựng có mái và tường để con người sinh sống.',
+    imageUrl: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&auto=format&fit=crop'
+  },
+  {
+    word: 'EGG',
+    vi: 'Quả trứng',
+    hint: 'Vật thể hình bầu dục do chim hoặc gia cầm đẻ ra, có vỏ cứng bên ngoài.',
+    imageUrl: 'https://images.unsplash.com/photo-1582722472251-89cd64940096?w=600&auto=format&fit=crop'
+  },
+  {
+    word: 'FISH',
+    vi: 'Con cá',
+    hint: 'Động vật có xương sống, sống dưới nước và thở bằng mang.',
+    imageUrl: 'https://images.unsplash.com/photo-1522069169874-c58ec4b76be5?w=600&auto=format&fit=crop'
+  },
+  {
+    word: 'BIRD',
+    vi: 'Con chim',
+    hint: 'Động vật có lông vũ, có mỏ và hầu hết có thể bay được.',
+    imageUrl: 'https://images.unsplash.com/photo-1444464666168-49d633b86797?w=600&auto=format&fit=crop'
+  },
+  {
+    word: 'SHOES',
+    vi: 'Đôi giày',
+    hint: 'Vật dụng bằng da hoặc vải đeo vào chân để bảo vệ và làm đẹp.',
+    imageUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&auto=format&fit=crop'
+  },
+  {
+    word: 'HAT',
+    vi: 'Cái mũ',
+    hint: 'Vật dụng đội lên đầu để che nắng mưa hoặc làm thời trang.',
+    imageUrl: 'https://images.unsplash.com/photo-1533055640609-24b498dfd74c?w=600&auto=format&fit=crop'
+  },
+  {
+    word: 'WATCH',
+    vi: 'Đồng hồ đeo tay',
+    hint: 'Thiết bị nhỏ gọn đeo ở cổ tay dùng để xem giờ.',
+    imageUrl: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop'
+  },
+  {
+    word: 'BACKPACK',
+    vi: 'Ba lô',
+    hint: 'Túi đựng đồ có hai quai đeo trên vai khi di chuyển.',
+    imageUrl: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&auto=format&fit=crop'
+  },
+  {
+    word: 'DOLPHIN',
+    vi: 'Cá heo',
+    hint: 'Động vật có vú sống dưới đại dương, nổi tiếng thông minh và thân thiện.',
+    imageUrl: 'https://images.unsplash.com/photo-1607172088861-12c8b849e7d9?w=600&auto=format&fit=crop'
+  },
+  {
+    word: 'ROSE',
+    vi: 'Hoa hồng',
+    hint: 'Loài hoa biểu tượng của tình yêu, có gai trên thân và hương thơm quyến rũ.',
+    imageUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=600&auto=format&fit=crop'
+  },
+  {
+    word: 'MANGO',
+    vi: 'Quả xoài',
+    hint: 'Trái cây nhiệt đới vỏ vàng hoặc xanh, ruột vàng mọng ngọt có hạt lớn ở giữa.',
+    imageUrl: 'https://images.unsplash.com/photo-1553279768-865429fa0078?w=600&auto=format&fit=crop'
+  },
+  {
+    word: 'RABBIT',
+    vi: 'Con thỏ',
+    hint: 'Động vật nhỏ tai dài, đuôi ngắn thích nhảy và ăn cà rốt.',
+    imageUrl: 'https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?w=600&auto=format&fit=crop'
+  },
+  {
+    word: 'PENCIL',
+    vi: 'Bút chì',
+    hint: 'Dụng cụ viết hoặc vẽ làm bằng lõi than chì bọc gỗ bên ngoài.',
+    imageUrl: 'https://images.unsplash.com/photo-1519750783826-e2420f4d687c?w=600&auto=format&fit=crop'
   }
 ];
 
@@ -1333,7 +1423,7 @@ function ImageGuessGame({ onClose, awardXp }: { onClose: () => void; awardXp?: (
   const [imgLoading, setImgLoading] = useState(true);
 
   const initGame = useCallback(() => {
-    const selected = shuffle(IMAGE_GUESS_POOL).slice(0, 5);
+    const selected = shuffle(IMAGE_GUESS_POOL).slice(0, 8);
     setList(selected);
     setIdx(0);
     setScore(0);
@@ -1491,7 +1581,7 @@ function ImageGuessGame({ onClose, awardXp }: { onClose: () => void; awardXp?: (
                     )}
                   />
                   <div className="absolute top-3 left-3 px-3 py-1 bg-black/60 backdrop-blur-md rounded-full text-white text-[10px] font-black uppercase tracking-widest">
-                    Round {idx + 1}/5
+                    Round {idx + 1}/{list.length}
                   </div>
                 </div>
 
