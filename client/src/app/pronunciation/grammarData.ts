@@ -512,3 +512,149 @@ export const MINIMAL_PAIRS = [
   { type: 'consonant', focus: 'h vs ø', a: { word: 'hold', ipa: '/həʊld/', vi: 'cầm nắm' }, b: { word: 'old', ipa: '/əʊld/', vi: 'già/cũ' } },
   { type: 'consonant', focus: 'h vs ø', a: { word: 'hill', ipa: '/hɪl/', vi: 'đồi' }, b: { word: 'ill', ipa: '/ɪl/', vi: 'ốm đau' } }
 ];
+
+// ─── Extended Verb Data (Động từ mở rộng) ──────────────────────────────────────
+export const ACTION_VERBS = [
+  { word: 'run', ipa: '/rʌn/', vi: 'chạy', ex: 'She runs every morning.', exVi: 'Cô ấy chạy bộ mỗi buổi sáng.', type: 'action' },
+  { word: 'dance', ipa: '/dɑːns/', vi: 'nhảy múa', ex: 'They danced at the party.', exVi: 'Họ đã nhảy múa ở bữa tiệc.', type: 'action' },
+  { word: 'write', ipa: '/raɪt/', vi: 'viết', ex: 'He is writing a letter.', exVi: 'Anh ấy đang viết một lá thư.', type: 'action' },
+  { word: 'speak', ipa: '/spiːk/', vi: 'nói', ex: 'Can you speak English?', exVi: 'Bạn có thể nói tiếng Anh không?', type: 'action' },
+  { word: 'cook', ipa: '/kʊk/', vi: 'nấu ăn', ex: 'My dad cooks dinner.', exVi: 'Bố tôi nấu bữa tối.', type: 'action' },
+  { word: 'build', ipa: '/bɪld/', vi: 'xây dựng', ex: 'They are building a house.', exVi: 'Họ đang xây một ngôi nhà.', type: 'action' },
+  { word: 'jump', ipa: '/dʒʌmp/', vi: 'nhảy', ex: 'The cat jumped over the wall.', exVi: 'Con mèo đã nhảy qua bức tường.', type: 'action' },
+  { word: 'paint', ipa: '/peɪnt/', vi: 'sơn/vẽ', ex: 'She paints beautiful pictures.', exVi: 'Cô ấy vẽ những bức tranh rất đẹp.', type: 'action' }
+];
+
+export const THINKING_VERBS = [
+  { word: 'know', ipa: '/nəʊ/', vi: 'biết', ex: 'I know the answer.', exVi: 'Tôi biết câu trả lời.', note: 'Không dùng: "I am knowing the answer."' },
+  { word: 'believe', ipa: '/bɪˈliːv/', vi: 'tin tưởng', ex: 'She believes in ghosts.', exVi: 'Cô ấy tin vào ma quỷ.', note: 'Không dùng: "She is believing in ghosts."' },
+  { word: 'understand', ipa: '/ˌʌn.dəˈstænd/', vi: 'hiểu', ex: 'Do you understand?', exVi: 'Bạn có hiểu không?', note: 'Không dùng: "Are you understanding?"' },
+  { word: 'remember', ipa: '/rɪˈmem.bər/', vi: 'nhớ', ex: 'I remember your face.', exVi: 'Tôi nhớ khuôn mặt của bạn.', note: 'Không dùng: "I am remembering you."' },
+  { word: 'forget', ipa: '/fəˈɡet/', vi: 'quên', ex: 'Don\'t forget your keys.', exVi: 'Đừng quên chìa khóa của bạn.', note: 'Không dùng: "I am forgetting the keys."' },
+  { word: 'prefer', ipa: '/prɪˈfɜːr/', vi: 'thích hơn', ex: 'I prefer tea to coffee.', exVi: 'Tôi thích trà hơn cà phê.', note: 'Không dùng: "I am preferring tea."' },
+  { word: 'mean', ipa: '/miːn/', vi: 'có nghĩa là', ex: 'What does this word mean?', exVi: 'Từ này có nghĩa là gì?', note: 'Không dùng: "What is this word meaning?"' },
+  { word: 'agree', ipa: '/əˈɡriː/', vi: 'đồng ý', ex: 'We agree with the plan.', exVi: 'Chúng tôi đồng ý với kế hoạch.', note: 'Không dùng: "We are agreeing with you."' }
+];
+
+export const CONJUGATION_RULES = [
+  {
+    title: '1. Thêm -s / -es (Hiện tại đơn - Ngôi 3 số ít: He, She, It)',
+    rules: [
+      { cond: 'Quy tắc chung', rule: 'Thêm -s vào sau động từ', ex: 'work → works, play → plays' },
+      { cond: 'Tận cùng bằng: -ch, -sh, -s, -x, -z, -o', rule: 'Thêm -es', ex: 'watch → watches, wash → washes, go → goes, fix → fixes' },
+      { cond: 'Tận cùng bằng Phụ âm + -y', rule: 'Đổi -y thành -i rồi thêm -es', ex: 'study → studies, fly → flies, try → tries' },
+      { cond: 'Tận cùng bằng Nguyên âm + -y', rule: 'Chỉ thêm -s', ex: 'play → plays, buy → buys, enjoy → enjoys' }
+    ]
+  },
+  {
+    title: '2. Thêm -ed (Quá khứ đơn - Động từ có quy tắc)',
+    rules: [
+      { cond: 'Quy tắc chung', rule: 'Thêm -ed vào sau động từ', ex: 'work → worked, play → played' },
+      { cond: 'Tận cùng bằng -e', rule: 'Chỉ thêm -d', ex: 'live → lived, dance → danced, agree → agreed' },
+      { cond: 'Tận cùng bằng Phụ âm + -y', rule: 'Đổi -y thành -i rồi thêm -ed', ex: 'study → studied, cry → cried, copy → copied' },
+      { cond: 'Tận cùng bằng 1 nguyên âm + 1 phụ âm (1 âm tiết)', rule: 'Gấp đôi phụ âm cuối trước khi thêm -ed', ex: 'stop → stopped, plan → planned, hop → hopped' }
+    ]
+  },
+  {
+    title: '3. Thêm -ing (Hiện tại phân từ - Các thì tiếp diễn)',
+    rules: [
+      { cond: 'Quy tắc chung', rule: 'Thêm -ing vào sau động từ', ex: 'read → reading, watch → watching' },
+      { cond: 'Tận cùng bằng -e câm', rule: 'Bỏ -e rồi thêm -ing', ex: 'write → writing, take → taking, dance → dancing' },
+      { cond: 'Tận cùng bằng -ie', rule: 'Đổi -ie thành -y rồi thêm -ing', ex: 'die → dying, lie → lying, tie → tying' },
+      { cond: 'Tận cùng bằng 1 nguyên âm + 1 phụ âm (1 âm tiết)', rule: 'Gấp đôi phụ âm cuối rồi thêm -ing', ex: 'run → running, sit → sitting, swim → swimming' }
+    ]
+  }
+];
+
+export const CONJUGATION_MODELS = {
+  regular: {
+    verb: 'work',
+    vi: 'làm việc (Có quy tắc)',
+    tenses: [
+      { tense: 'Present Simple', i: 'work', he: 'works', they: 'work' },
+      { tense: 'Present Continuous', i: 'am working', he: 'is working', they: 'are working' },
+      { tense: 'Past Simple', i: 'worked', he: 'worked', they: 'worked' },
+      { tense: 'Present Perfect', i: 'have worked', he: 'has worked', they: 'have worked' },
+      { tense: 'Future Simple', i: 'will work', he: 'will work', they: 'will work' }
+    ]
+  },
+  irregular: {
+    verb: 'go',
+    vi: 'đi (Bất quy tắc)',
+    tenses: [
+      { tense: 'Present Simple', i: 'go', he: 'goes', they: 'go' },
+      { tense: 'Present Continuous', i: 'am going', he: 'is going', they: 'are going' },
+      { tense: 'Past Simple', i: 'went', he: 'went', they: 'went' },
+      { tense: 'Present Perfect', i: 'have gone', he: 'has gone', they: 'have gone' },
+      { tense: 'Future Simple', i: 'will go', he: 'will go', they: 'will go' }
+    ]
+  },
+  thinking: {
+    verb: 'think',
+    vi: 'suy nghĩ (ĐT Trạng thái/Tư duy)',
+    tenses: [
+      { tense: 'Present Simple', i: 'think', he: 'thinks', they: 'think' },
+      { tense: 'Present Continuous', note: '⚠️ Thường không dùng dạng Continuous trừ khi diễn tả hành động đang cân nhắc một quyết định cụ thể.' },
+      { tense: 'Past Simple', i: 'thought', he: 'thought', they: 'thought' },
+      { tense: 'Present Perfect', i: 'have thought', he: 'has thought', they: 'have thought' },
+      { tense: 'Future Simple', i: 'will think', he: 'will think', they: 'will think' }
+    ]
+  }
+};
+
+export const VERB_QUIZ_QUESTIONS = [
+  {
+    question: 'Choose the correct action verb: "The athlete ... fast on the track."',
+    options: ['knows', 'runs', 'believes', 'understands'],
+    answer: 'runs',
+    explanation: '"runs" (chạy) là động từ chỉ hành động (action verb) phù hợp nhất với chủ ngữ "athlete" (vận động viên).'
+  },
+  {
+    question: 'Which of the following is a thinking verb (stative verb)?',
+    options: ['dance', 'jump', 'understand', 'kick'],
+    answer: 'understand',
+    explanation: '"understand" (hiểu) là động từ tư duy/trạng thái (thinking/stative verb), dùng để diễn tả nhận thức.'
+  },
+  {
+    question: 'How do you conjugate "study" for the subject "She" in Present Simple?',
+    options: ['studys', 'studies', 'study', 'studying'],
+    answer: 'studies',
+    explanation: 'Với chủ ngữ ngôi thứ 3 số ít "She", động từ "study" tận cùng là phụ âm "d" + "y" đổi "y" thành "i" rồi thêm "es" → "studies".'
+  },
+  {
+    question: 'Complete the sentence: "I ... your phone number now."',
+    options: ['am remembering', 'remember', 'remembered', 'will be remembering'],
+    answer: 'remember',
+    explanation: '"remember" là động từ tư duy (thinking verb), không dùng ở thì tiếp diễn (continuous) ngay cả khi có "now".'
+  },
+  {
+    question: 'What is the past tense (V2) of the irregular action verb "go"?',
+    options: ['went', 'gone', 'goed', 'goes'],
+    answer: 'went',
+    explanation: 'Quá khứ đơn (V2) của động từ bất quy tắc "go" là "went".'
+  },
+  {
+    question: 'Conjugate "write" into Present Continuous for "He":',
+    options: ['He writes', 'He is writing', 'He is writeing', 'He writing'],
+    answer: 'He is writing',
+    explanation: 'Thì hiện tại tiếp diễn của "write" là "am/is/are + writing". Tận cùng bằng "e" câm nên bỏ "e" rồi thêm "-ing".'
+  },
+  {
+    question: 'Which sentence is grammatically INCORRECT?',
+    options: [
+      'I am thinking about my future.',
+      'I am knowing the answer.',
+      'I understand the lesson.',
+      'She prefers tea to coffee.'
+    ],
+    answer: 'I am knowing the answer.',
+    explanation: '"know" là động từ chỉ trạng thái tư duy (thinking verb), không dùng ở dạng tiếp diễn "am knowing". Câu đúng là "I know the answer".'
+  },
+  {
+    question: 'Choose the correct form of "fix" for He/She/It in the Present Simple:',
+    options: ['fixs', 'fixes', 'fixxed', 'fixing'],
+    answer: 'fixes',
+    explanation: 'Động từ tận cùng bằng "-x" khi chia ở ngôi thứ 3 số ít sẽ thêm "-es" → "fixes".'
+  }
+];
+

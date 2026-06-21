@@ -987,7 +987,7 @@ const IMAGE_GUESS_POOL = [
     word: 'ELEPHANT',
     vi: 'Con voi',
     hint: 'Động vật trên cạn khổng lồ có tai to và một chiếc vòi dài.',
-    imageUrl: 'https://images.unsplash.com/photo-1557050543-4b5f4e07ea49?w=600&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?w=600&auto=format&fit=crop'
   },
   {
     word: 'COMPUTER',
@@ -1035,7 +1035,7 @@ const IMAGE_GUESS_POOL = [
     word: 'UMBRELLA',
     vi: 'Cây dù / ô',
     hint: 'Vật dụng hình vòm che mưa che nắng cầm tay.',
-    imageUrl: 'https://images.unsplash.com/photo-1534483509719-8b42218cf905?w=600&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1522441815192-d9f04eb0615c?w=600&auto=format&fit=crop'
   },
   {
     word: 'CLOCK',
@@ -1047,7 +1047,7 @@ const IMAGE_GUESS_POOL = [
     word: 'SUN',
     vi: 'Mặt trời',
     hint: 'Quả cầu lửa khổng lồ ở trung tâm hệ hành tinh của chúng ta.',
-    imageUrl: 'https://images.unsplash.com/photo-1532693322450-2cb5c511067d?w=600&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1538370965046-79c0d6907d47?w=600&auto=format&fit=crop'
   },
   {
     word: 'STRAWBERRY',
@@ -1065,7 +1065,7 @@ const IMAGE_GUESS_POOL = [
     word: 'BUTTERFLY',
     vi: 'Con bướm',
     hint: 'Loài côn trùng có đôi cánh rực rỡ sắc màu bay lượn hút mật hoa.',
-    imageUrl: 'https://images.unsplash.com/photo-1452570053594-1b985d6ea890?w=600&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1506869640319-fe1a24fd76dc?w=600&auto=format&fit=crop'
   },
   {
     word: 'LION',
@@ -1125,7 +1125,7 @@ const IMAGE_GUESS_POOL = [
     word: 'TELEPHONE',
     vi: 'Điện thoại',
     hint: 'Thiết bị viễn thông dùng để liên lạc đàm thoại từ xa.',
-    imageUrl: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1523961131990-5ea7c61b2107?w=600&auto=format&fit=crop'
   },
   {
     word: 'TELEVISION',
@@ -1149,7 +1149,7 @@ const IMAGE_GUESS_POOL = [
     word: 'RAINBOW',
     vi: 'Cầu vồng',
     hint: 'Dải màu sắc hình cung xuất hiện trên bầu trời sau cơn mưa nắng.',
-    imageUrl: 'https://images.unsplash.com/photo-1508624217470-5ef0f947d5be?w=600&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop'
   },
   {
     word: 'MOON',
@@ -1287,7 +1287,7 @@ const IMAGE_GUESS_POOL = [
     word: 'PEACH',
     vi: 'Quả đào',
     hint: 'Trái cây vỏ mịn lông tơ màu hồng cam phấn ngọt lịm.',
-    imageUrl: 'https://images.unsplash.com/photo-1595124253363-c596636b907f?w=600&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1611080626919-7cf5a9dbab5b?w=600&auto=format&fit=crop'
   },
   {
     word: 'RICE',
@@ -1317,7 +1317,7 @@ const IMAGE_GUESS_POOL = [
     word: 'ONION',
     vi: 'Củ hành tây',
     hint: 'Củ có nhiều lớp vỏ đồng tâm bóc ra gây cay xè mắt.',
-    imageUrl: 'https://images.unsplash.com/photo-1587049693270-f10438b84ffc?w=600&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1508747703725-719ae257c84a?w=600&auto=format&fit=crop'
   },
   {
     word: 'BOOK',
@@ -1341,7 +1341,7 @@ const IMAGE_GUESS_POOL = [
     word: 'EGG',
     vi: 'Quả trứng',
     hint: 'Vật thể hình bầu dục do chim hoặc gia cầm đẻ ra, có vỏ cứng bên ngoài.',
-    imageUrl: 'https://images.unsplash.com/photo-1582722472251-89cd64940096?w=600&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1506976785307-8732e854ad03?w=600&auto=format&fit=crop'
   },
   {
     word: 'FISH',
@@ -1383,7 +1383,7 @@ const IMAGE_GUESS_POOL = [
     word: 'DOLPHIN',
     vi: 'Cá heo',
     hint: 'Động vật có vú sống dưới đại dương, nổi tiếng thông minh và thân thiện.',
-    imageUrl: 'https://images.unsplash.com/photo-1607172088861-12c8b849e7d9?w=600&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1570481662006-a3a1374699e8?w=600&auto=format&fit=crop'
   },
   {
     word: 'ROSE',
@@ -1407,7 +1407,7 @@ const IMAGE_GUESS_POOL = [
     word: 'PENCIL',
     vi: 'Bút chì',
     hint: 'Dụng cụ viết hoặc vẽ làm bằng lõi than chì bọc gỗ bên ngoài.',
-    imageUrl: 'https://images.unsplash.com/photo-1519750783826-e2420f4d687c?w=600&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=600&auto=format&fit=crop'
   }
 ];
 
