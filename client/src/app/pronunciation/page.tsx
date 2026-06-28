@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Volume2, BookOpen, Sparkles, ChevronDown, Mic, Target, Star, Play, Info, ArrowRight, HelpCircle, Hash, FileText, Search, Loader2, Calendar, Globe, MessageSquare, Zap, Palette, Users, Clock, ChevronRight, Trophy, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { COMMON_VERBS, VERB_TYPES, COMMON_ADJECTIVES, ADJECTIVE_RULES, ADJECTIVE_TYPES, POSSESSIVE_TABLE, POSSESSIVE_RULES, ADJECTIVES_USE_CASES, ADJECTIVES_BODY_PARTS, FOUNDATION_TOPICS, MINIMAL_PAIRS, ACTION_VERBS, THINKING_VERBS, CONJUGATION_RULES, CONJUGATION_MODELS, VERB_QUIZ_QUESTIONS, STATIVE_CATEGORIES, DUAL_NATURE_VERBS } from './grammarData';
+import { COMMON_VERBS, VERB_TYPES, COMMON_ADJECTIVES, ADJECTIVE_RULES, ADJECTIVE_TYPES, POSSESSIVE_TABLE, POSSESSIVE_RULES, ADJECTIVES_USE_CASES, ADJECTIVES_BODY_PARTS, FOUNDATION_TOPICS, MINIMAL_PAIRS, ACTION_VERBS, THINKING_VERBS, CONJUGATION_RULES, CONJUGATION_MODELS, VERB_QUIZ_QUESTIONS, STATIVE_CATEGORIES, DUAL_NATURE_VERBS, VERB_FILL_IN_QUESTIONS } from './grammarData';
 
 // ─── Alphabet & Phonics Data ──────────────────────────────────────────────────
 interface AlphabetLetter {
@@ -780,6 +780,184 @@ function conjugateVerb(verb: string, subject: string, tense: string) {
   return { positive, negative, question, explanation, isStativeWarning };
 }
 
+function analyzeUserVerb(input: string, baseVerb: string = 'go') {
+  const cleanInput = input.trim().toLowerCase();
+  const base = baseVerb.trim().toLowerCase();
+
+  // Find the verb details from COMMON_VERBS to get V1, V2, V3 if available
+  const verbEntry = COMMON_VERBS.find(v => v.verb.toLowerCase() === base);
+  const v1 = base;
+  const v2 = verbEntry ? verbEntry.v2.toLowerCase() : '';
+  const v3 = verbEntry ? verbEntry.v3.toLowerCase() : '';
+
+  let detectedForm = '';
+  let tenseDescription = '';
+  let matchClues = '';
+  let formula = '';
+
+  // Standard suffix check
+  const isVing = cleanInput === base + 'ing' || 
+                 (base.endsWith('e') && cleanInput === base.slice(0, -1) + 'ing') || 
+                 (base.endsWith('y') && cleanInput === base.slice(0, -1) + 'ying') || 
+                 cleanInput.endsWith('ing');
+  const isVes = cleanInput === base + 's' || 
+                cleanInput === base + 'es' || 
+                (base.endsWith('y') && cleanInput === base.slice(0, -1) + 'ies');
+
+  if (cleanInput === v1) {
+    detectedForm = 'V1 (Bare Infinitive / Nguyên mẫu)';
+    tenseDescription = 'Hình thái nguyên mẫu của động từ (infinitive form) chưa qua biến đổi.';
+    matchClues = 'Thường xuất hiện trong các câu hỏi có chủ ngữ số nhiều (I, you, we, they) ở thì Hiện tại đơn, sau các trợ động từ phủ định (don\'t, doesn\'t, didn\'t), động từ khuyết thiếu (should, can, must...), hoặc dùng trong cấu trúc To-infinitive (to + V1).';
+    formula = 'Subject + V1  hoặc  modal + V1  hoặc  to + V1';
+  } else if (v2 && cleanInput === v2) {
+    detectedForm = 'V2 (Past Simple / Quá khứ đơn)';
+    tenseDescription = 'Hình thái quá khứ đơn của động từ, dùng để mô tả một sự kiện đã kết thúc trong quá khứ.';
+    matchClues = 'Thường xuất hiện trong các câu hỏi chứa trạng từ thời gian quá khứ rõ ràng như: yesterday, ago, last night, last year, in + năm quá khứ (ví dụ: in 2015), hoặc mệnh đề bắt đầu bằng "when I was...".';
+    formula = 'Subject + V2';
+  } else if (v3 && cleanInput === v3) {
+    detectedForm = 'V3 (Past Participle / Phân từ hai)';
+    tenseDescription = 'Hình thái phân từ hai của động từ, dùng trong các cấu trúc hoàn thành hoặc bị động.';
+    matchClues = 'Xuất hiện trong câu hỏi có trợ động từ hoàn thành (have, has, had) để tạo thành thì hoàn thành (Hiện tại/Quá khứ hoàn thành), hoặc đứng sau động từ "to be" trong câu bị động (Passive Voice).';
+    formula = 'have/has/had + V3  hoặc  be + V3 (Bị động)';
+  } else if (isVing) {
+    detectedForm = 'V-ing (Present Participle / Gerund)';
+    tenseDescription = 'Hình thái thêm đuôi -ing để chỉ hành động tiếp diễn hoặc đóng vai trò danh động từ.';
+    matchClues = 'Xuất hiện sau động từ "to be" (am, is, are, was, were) trong các thì tiếp diễn, hoặc làm tân ngữ sau giới từ và động từ chỉ cảm xúc/sở thích (enjoy, avoid, love, like, practice...).';
+    formula = 'be + V-ing  hoặc  preposition/verb + V-ing';
+  } else if (isVes) {
+    detectedForm = 'V1 + -s/-es (Thì Hiện tại đơn chia theo ngôi thứ 3 số ít)';
+    tenseDescription = 'Hình thái động từ thêm đuôi -s hoặc -es để chia cho chủ ngữ số ít ở hiện tại.';
+    matchClues = 'Chỉ xuất hiện trong thì Hiện tại đơn khi chủ ngữ của câu hỏi là ngôi thứ ba số ít như: He, She, It, một người (John, Mary), hoặc một vật số ít.';
+    formula = 'He/She/It + V-s/-es';
+  } else if (cleanInput.startsWith('have ') || cleanInput.startsWith('has ') || cleanInput.startsWith('had ')) {
+    detectedForm = 'Perfect Aspect (Dạng hoàn thành ghép)';
+    tenseDescription = 'Dạng động từ ghép gồm trợ động từ hoàn thành + V3.';
+    matchClues = 'Thường khớp với các câu hỏi về thì Hiện tại hoàn thành hoặc Quá khứ hoàn thành.';
+    formula = 'have/has/had + V3';
+  } else if (cleanInput.startsWith('am ') || cleanInput.startsWith('is ') || cleanInput.startsWith('are ') || cleanInput.startsWith('was ') || cleanInput.startsWith('were ')) {
+    detectedForm = 'Continuous Aspect (Dạng tiếp diễn ghép)';
+    tenseDescription = 'Dạng động từ ghép gồm động từ to be + V-ing.';
+    matchClues = 'Thường khớp với các câu hỏi về thì Hiện tại tiếp diễn hoặc Quá khứ tiếp diễn.';
+    formula = 'be + V-ing';
+  } else {
+    detectedForm = 'Hình thái tự do / Khác';
+    tenseDescription = 'Không khớp chính xác với bất kỳ hình thái biến đổi độc lập nào (V1, V2, V3, V-ing, V-s/es) của động từ gốc.';
+    matchClues = 'Vui lòng kiểm tra xem bạn có viết sai chính tả hoặc thêm các từ phụ trợ khác không.';
+    formula = 'Chưa xác định';
+  }
+
+  return { detectedForm, tenseDescription, matchClues, formula };
+}
+
+function predictVerbFormFromClue(clue: string, verb: string = 'eat') {
+  const v = verb.trim().toLowerCase();
+  const verbEntry = COMMON_VERBS.find(x => x.verb.toLowerCase() === v);
+  const v1 = v;
+  const v2 = verbEntry ? verbEntry.v2.toLowerCase() : v + 'ed';
+  const v3 = verbEntry ? verbEntry.v3.toLowerCase() : v + 'ed';
+  const vIng = v.endsWith('e') ? v.slice(0, -1) + 'ing' : v.endsWith('y') ? v.slice(0, -1) + 'ying' : v + 'ing'; // simple fallback
+  const vS = v.endsWith('y') ? v.slice(0, -1) + 'ies' : v.endsWith('o') || v.endsWith('ch') || v.endsWith('sh') || v.endsWith('x') || v.endsWith('s') ? v + 'es' : v + 's';
+
+  let predictedForm = '';
+  let predictedAnswer = '';
+  let ruleName = '';
+  let explanation = '';
+  let sampleSentence = '';
+
+  switch (clue) {
+    case 'yesterday':
+    case 'ago':
+    case 'last_week':
+    case 'in_past_year':
+      predictedForm = 'V2 (Past Simple / Quá khứ đơn)';
+      predictedAnswer = v2;
+      ruleName = 'Thì Quá khứ đơn (Past Simple)';
+      explanation = 'Trạng từ chỉ thời gian quá khứ xác định (yesterday, ago, last...) yêu cầu động từ chia ở dạng Quá khứ V2. Nếu là động từ bất quy tắc, sử dụng cột thứ 2. Nếu là động từ có quy tắc, thêm -ed.';
+      sampleSentence = `I ${v2} dinner ${clue === 'in_past_year' ? 'in 2020' : clue === 'last_week' ? 'last week' : clue === 'ago' ? 'two days ago' : 'yesterday'}.`;
+      break;
+    case 'since':
+    case 'for':
+    case 'already':
+    case 'yet':
+    case 'so_far':
+      predictedForm = 'Present Perfect (Hiện tại hoàn thành: have/has + V3)';
+      predictedAnswer = `have/has ${v3}`;
+      ruleName = 'Thì Hiện tại hoàn thành (Present Perfect)';
+      explanation = 'Các từ chỉ mốc/khoảng thời gian kéo dài (since, for) hoặc hoàn thành hành động (already, yet, so far) báo hiệu thì Hiện tại hoàn thành. Ta dùng have/has + V3.';
+      sampleSentence = `We have ${v3} this book ${clue === 'since' ? 'since yesterday' : clue === 'for' ? 'for a week' : 'already'}.`;
+      break;
+    case 'now':
+    case 'at_the_moment':
+    case 'look_listen':
+      predictedForm = 'Present Continuous (Hiện tại tiếp diễn: am/is/are + V-ing)';
+      predictedAnswer = `am/is/are ${vIng}`;
+      ruleName = 'Thì Hiện tại tiếp diễn (Present Continuous)';
+      explanation = 'Các cụm từ chỉ thời gian hiện tại tiếp diễn (now, at the moment) hoặc từ gây chú ý (Look!, Listen!) yêu cầu chia động từ ở thì tiếp diễn: am/is/are + V-ing.';
+      sampleSentence = `Look! They are ${vIng} / She is ${vIng} right now.`;
+      break;
+    case 'tomorrow':
+    case 'next_week':
+      predictedForm = 'Future Simple (Tương lai đơn: will + V1)';
+      predictedAnswer = `will ${v1}`;
+      ruleName = 'Thì Tương lai đơn (Future Simple)';
+      explanation = 'Trạng từ chỉ tương lai (tomorrow, next...) báo hiệu thì Tương lai đơn. Cấu trúc chia là trợ động từ will + động từ nguyên mẫu (V1).';
+      sampleSentence = `I will ${v1} it ${clue === 'tomorrow' ? 'tomorrow' : 'next week'}.`;
+      break;
+    case 'always':
+    case 'usually':
+    case 'everyday':
+      predictedForm = 'Present Simple (Hiện tại đơn: V1 hoặc V1 + -s/-es)';
+      predictedAnswer = `Chủ ngữ số nhiều: ${v1} | Chủ ngữ số ít: ${vS}`;
+      ruleName = 'Thì Hiện tại đơn (Present Simple)';
+      explanation = 'Trạng từ tần suất chỉ thói quen, chu kỳ (always, usually, everyday) báo hiệu thì Hiện tại đơn. Chia V1 với chủ ngữ số nhiều (I, you, we, they) và V-s/es với chủ ngữ số ít (he, she, it).';
+      sampleSentence = `He always ${vS} early, but they usually ${v1} late.`;
+      break;
+    case 'by_the_time':
+      predictedForm = 'Past Perfect (Quá khứ hoàn thành: had + V3)';
+      predictedAnswer = `had ${v3}`;
+      ruleName = 'Thì Quá khứ hoàn thành (Past Perfect)';
+      explanation = 'Cấu trúc "By the time + Past Simple" chỉ một hành động đã hoàn tất trước một mốc thời gian quá khứ khác, yêu cầu động từ chính chia ở thì Quá khứ hoàn thành: had + V3.';
+      sampleSentence = `By the time they arrived, we had already ${v3}.`;
+      break;
+    case 'while':
+      predictedForm = 'Past Continuous (Quá khứ tiếp diễn: was/were + V-ing)';
+      predictedAnswer = `was/were ${vIng}`;
+      ruleName = 'Thì Quá khứ tiếp diễn (Past Continuous)';
+      explanation = 'Trạng từ "while" thường diễn tả một hành động đang diễn ra kéo dài trong quá khứ làm nền cho hành động khác. Ta chia: was/were + V-ing.';
+      sampleSentence = `While she was ${vIng}, it started to rain.`;
+      break;
+    case 'modal_verbs':
+      predictedForm = 'Bare Infinitive (Nguyên mẫu không "to": V1)';
+      predictedAnswer = v1;
+      ruleName = 'Động từ nguyên mẫu sau Động từ khuyết thiếu (Modal Verbs)';
+      explanation = 'Sau các động từ khuyết thiếu như should, can, must, could, will, would, may, might..., động từ luôn giữ ở dạng nguyên mẫu không chia (V1).';
+      sampleSentence = `You should ${v1} some water now.`;
+      break;
+    case 'to_infinitive_verbs':
+      predictedForm = 'To-Infinitive (Động từ nguyên mẫu có "to": to + V1)';
+      predictedAnswer = `to ${v1}`;
+      ruleName = 'Động từ nguyên mẫu có "to" (To-Infinitive)';
+      explanation = 'Sau một số động từ chỉ ý định, ước muốn như decide, want, hope, plan, refuse, agree, manage..., động từ đi kèm sau đó phải ở dạng to-Infinitive.';
+      sampleSentence = `They decided to ${v1} out tonight.`;
+      break;
+    case 'gerund_verbs':
+      predictedForm = 'Gerund (Danh động từ: V-ing)';
+      predictedAnswer = vIng;
+      ruleName = 'Danh động từ (Gerund - V-ing) sau động từ chỉ định';
+      explanation = 'Sau các động từ chỉ sở thích/ghét hoặc tránh né như enjoy, avoid, dislike, finish, mind, practice..., động từ đi kèm sau đó phải ở dạng V-ing.';
+      sampleSentence = `She enjoys ${vIng} here.`;
+      break;
+    default:
+      predictedForm = 'Không xác định';
+      predictedAnswer = v1;
+      ruleName = 'Chưa xác định quy tắc';
+      explanation = 'Hãy cung cấp một trạng từ hoặc dấu hiệu thời gian hợp lệ.';
+      sampleSentence = '';
+  }
+
+  return { predictedForm, predictedAnswer, ruleName, explanation, sampleSentence };
+}
+
 export default function PronunciationPage() {
   const [activeTab, setActiveTab] = useState<'alphabet' | 'chart' | 'stress' | 'pairs' | 'building' | 'numbers' | 'endings' | 'datetime' | 'countries' | 'topics' | 'nouns' | 'verbs' | 'adjectives' | 'possessives' | 'tenses'>('alphabet');
   const [foundationTopicId, setFoundationTopicId] = useState<string>('pronouns');
@@ -800,6 +978,25 @@ export default function PronunciationPage() {
   const [verbQuizFinished, setVerbQuizFinished] = useState(false);
   const [verbQuizList, setVerbQuizList] = useState<any[]>([]);
 
+  // Verb sub-modes and additional interactive states
+  const [practiceMode, setPracticeMode] = useState<'quiz' | 'fill-in' | 'analyzer' | 'predictor'>('quiz');
+  
+  // Fill-in states
+  const [fillInIndex, setFillInIndex] = useState(0);
+  const [fillInUserAnswer, setFillInUserAnswer] = useState('');
+  const [fillInFeedback, setFillInFeedback] = useState<{ isCorrect: boolean; detectedForm: string; clueUsed: string; msg: string } | null>(null);
+  const [fillInScore, setFillInScore] = useState(0);
+  const [fillInList, setFillInList] = useState<any[]>([]);
+  const [fillInFinished, setFillInFinished] = useState(false);
+
+  // Analyzer states
+  const [analyzerUserAnswer, setAnalyzerUserAnswer] = useState('');
+  const [analyzerTargetVerb, setAnalyzerTargetVerb] = useState('go');
+
+  // Predictor states
+  const [predictorClue, setPredictorClue] = useState('yesterday');
+  const [predictorVerb, setPredictorVerb] = useState('eat');
+
   useEffect(() => {
     if (activeTab === 'verbs' && verbSection === 'practice') {
       const shuffled = [...VERB_QUIZ_QUESTIONS].sort(() => Math.random() - 0.5);
@@ -808,6 +1005,14 @@ export default function PronunciationPage() {
       setVerbSelectedAnswer(null);
       setVerbQuizScore(0);
       setVerbQuizFinished(false);
+
+      const shuffledFillIn = [...VERB_FILL_IN_QUESTIONS].sort(() => Math.random() - 0.5);
+      setFillInList(shuffledFillIn.slice(0, 10));
+      setFillInIndex(0);
+      setFillInUserAnswer('');
+      setFillInFeedback(null);
+      setFillInScore(0);
+      setFillInFinished(false);
     }
   }, [activeTab, verbSection]);
   const [adjSection, setAdjSection] = useState<'list' | 'rules' | 'types' | 'cases' | 'body'>('list');
@@ -2960,120 +3165,561 @@ export default function PronunciationPage() {
 
           {/* SECTION 5: PRACTICE INTERACTIVE QUIZ */}
           {verbSection === 'practice' && (
-            <div className="premium-card p-6 bg-white border border-slate-200 rounded-[1.5rem] space-y-6">
-              <div>
-                <span className="text-[10px] font-black uppercase tracking-widest text-amber-600 bg-amber-50 px-3 py-1 rounded-full border border-amber-100">LUYỆN TẬP ĐỘNG TỪ</span>
-                <h2 className="text-xl font-black text-slate-800 mt-2">Trắc Nghiệm Chia Động Từ</h2>
-                <p className="text-xs text-slate-500 mt-1">Luyện tập phân biệt động từ Hành động, Tư duy, và các dạng chia thì chuẩn xác.</p>
-              </div>
-
-              {!verbQuizFinished && verbQuizList.length > 0 && verbQuizList[verbQuizIndex] ? (
-                <div className="space-y-6">
-                  {/* Progress Info */}
-                  <div className="flex justify-between items-center text-xs text-slate-400 font-bold">
-                    <span>Câu {verbQuizIndex + 1} / {verbQuizList.length}</span>
-                    <span>Điểm: {verbQuizScore}</span>
-                  </div>
-
-                  {/* Question Box */}
-                  <div className="p-5 bg-amber-900 text-white rounded-2xl shadow-inner font-bold text-base leading-relaxed text-center relative overflow-hidden">
-                    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-amber-500/10 to-transparent pointer-events-none" />
-                    <span className="text-[10px] text-amber-300 font-black uppercase tracking-widest block mb-2 font-mono">BÀI TẬP</span>
-                    "{verbQuizList[verbQuizIndex].question}"
-                  </div>
-
-                  {/* Options Grid */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {verbQuizList[verbQuizIndex].options.map((opt: string) => {
-                      const isCorrect = opt === verbQuizList[verbQuizIndex].answer;
-                      const isSelected = verbSelectedAnswer === opt;
-                      const hasAnswered = verbSelectedAnswer !== null;
-
-                      return (
-                        <button
-                          key={opt}
-                          disabled={hasAnswered}
-                          onClick={() => {
-                            if (verbSelectedAnswer !== null) return;
-                            setVerbSelectedAnswer(opt);
-                            if (opt === verbQuizList[verbQuizIndex].answer) {
-                              setVerbQuizScore(prev => prev + 1);
-                            }
-                          }}
-                          className={cn(
-                            "p-4 rounded-xl border-2 text-sm font-black text-center transition-all cursor-pointer select-none",
-                            hasAnswered
-                              ? isCorrect
-                                ? "bg-emerald-55 border-emerald-500 text-emerald-700 font-black"
-                                : isSelected
-                                  ? "bg-rose-55 border-rose-500 text-rose-700 font-black"
-                                  : "bg-white border-slate-200 text-slate-400 font-bold"
-                              : "bg-white border-slate-200 text-slate-700 hover:border-amber-500 hover:bg-amber-50/30 active:scale-95 font-bold"
-                          )}
-                        >
-                          {opt}
-                        </button>
-                      );
-                    })}
-                  </div>
-
-                  {/* Feedback Explanation */}
-                  {verbSelectedAnswer !== null && (
-                    <div
+            <div className="space-y-6">
+              {/* Mode Selection Tabs */}
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
+                {[
+                  { id: 'quiz' as const, label: 'Trắc Nghiệm', icon: HelpCircle, desc: 'Luyện 30 câu hỏi chia thì' },
+                  { id: 'fill-in' as const, label: 'Tự Luận & Sửa Lỗi', icon: FileText, desc: 'Gõ đáp án tự luận trực quan' },
+                  { id: 'analyzer' as const, label: 'AI Verb Analyzer', icon: Search, desc: 'Phân tích hình thái từ nhập' },
+                  { id: 'predictor' as const, label: 'AI Clue Predictor', icon: Sparkles, desc: 'Dự đoán từ dấu hiệu câu hỏi' }
+                ].map(m => {
+                  const Icon = m.icon;
+                  return (
+                    <button
+                      key={m.id}
+                      onClick={() => setPracticeMode(m.id)}
                       className={cn(
-                        "p-4 rounded-2xl border animate-in slide-in-from-top-2 duration-300",
-                        verbSelectedAnswer === verbQuizList[verbQuizIndex].answer
-                          ? "bg-emerald-50/50 border-emerald-200 text-emerald-800"
-                          : "bg-rose-50/50 border-rose-200 text-rose-800"
+                        "p-3.5 rounded-[1.25rem] font-black text-xs transition-all flex flex-col items-center justify-center text-center gap-1.5 cursor-pointer border-2 active:scale-98 select-none",
+                        practiceMode === m.id
+                          ? "bg-amber-600 border-amber-600 text-white shadow-lg shadow-amber-600/10"
+                          : "bg-white border-slate-100 text-slate-500 hover:border-amber-400 hover:text-amber-600 hover:bg-amber-50/20"
                       )}
                     >
-                      <h4 className="text-xs font-black uppercase tracking-widest flex items-center gap-1.5">
-                        {verbSelectedAnswer === verbQuizList[verbQuizIndex].answer ? (
-                          <>🎉 Quá tuyệt vời! Trả lời chính xác.</>
-                        ) : (
-                          <>⚠️ Cần chú ý quy tắc rồi!</>
-                        )}
-                      </h4>
-                      <p className="text-xs font-medium mt-1 leading-relaxed">{verbQuizList[verbQuizIndex].explanation}</p>
+                      <Icon className="w-5 h-5" />
+                      <span className="font-extrabold">{m.label}</span>
+                      <span className={cn("text-[9px] font-semibold mt-0.5", practiceMode === m.id ? "text-amber-100" : "text-slate-400")}>{m.desc}</span>
+                    </button>
+                  );
+                })}
+              </div>
 
+              {/* Mode 1: Multiple Choice Quiz */}
+              {practiceMode === 'quiz' && (
+                <div className="premium-card p-6 bg-white border border-slate-200 rounded-[1.5rem] space-y-6">
+                  <div>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-amber-600 bg-amber-50 px-3 py-1 rounded-full border border-amber-100">TRẮC NGHIỆM</span>
+                    <h2 className="text-xl font-black text-slate-800 mt-2">Trắc Nghiệm Chia Động Từ</h2>
+                    <p className="text-xs text-slate-500 mt-1">Luyện tập nhận diện thì và hình thái chia động từ thông qua bộ câu hỏi trắc nghiệm (30 câu).</p>
+                  </div>
+
+                  {!verbQuizFinished && verbQuizList.length > 0 && verbQuizList[verbQuizIndex] ? (
+                    <div className="space-y-6">
+                      <div className="flex justify-between items-center text-xs text-slate-400 font-bold">
+                        <span>Câu {verbQuizIndex + 1} / {verbQuizList.length}</span>
+                        <span>Điểm: {verbQuizScore}</span>
+                      </div>
+
+                      <div className="p-5 bg-amber-900 text-white rounded-2xl shadow-inner font-bold text-base leading-relaxed text-center relative overflow-hidden">
+                        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-amber-500/10 to-transparent pointer-events-none" />
+                        <span className="text-[10px] text-amber-300 font-black uppercase tracking-widest block mb-2 font-mono">BÀI TẬP</span>
+                        "{verbQuizList[verbQuizIndex].question}"
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {verbQuizList[verbQuizIndex].options.map((opt: string) => {
+                          const isCorrect = opt === verbQuizList[verbQuizIndex].answer;
+                          const isSelected = verbSelectedAnswer === opt;
+                          const hasAnswered = verbSelectedAnswer !== null;
+
+                          return (
+                            <button
+                              key={opt}
+                              disabled={hasAnswered}
+                              onClick={() => {
+                                if (verbSelectedAnswer !== null) return;
+                                setVerbSelectedAnswer(opt);
+                                if (opt === verbQuizList[verbQuizIndex].answer) {
+                                  setVerbQuizScore(prev => prev + 1);
+                                }
+                              }}
+                              className={cn(
+                                "p-4 rounded-xl border-2 text-sm font-black text-center transition-all cursor-pointer select-none",
+                                hasAnswered
+                                  ? isCorrect
+                                    ? "bg-emerald-50 border-emerald-500 text-emerald-700 font-black"
+                                    : isSelected
+                                      ? "bg-rose-50 border-rose-500 text-rose-700 font-black"
+                                      : "bg-white border-slate-200 text-slate-400 font-bold"
+                                  : "bg-white border-slate-200 text-slate-700 hover:border-amber-500 hover:bg-amber-50/30 active:scale-95 font-bold"
+                              )}
+                            >
+                              {opt}
+                            </button>
+                          );
+                        })}
+                      </div>
+
+                      {verbSelectedAnswer !== null && (
+                        <div
+                          className={cn(
+                            "p-4 rounded-2xl border animate-in slide-in-from-top-2 duration-300",
+                            verbSelectedAnswer === verbQuizList[verbQuizIndex].answer
+                              ? "bg-emerald-50/50 border-emerald-200 text-emerald-800"
+                              : "bg-rose-50/50 border-rose-200 text-rose-800"
+                          )}
+                        >
+                          <h4 className="text-xs font-black uppercase tracking-widest flex items-center gap-1.5">
+                            {verbSelectedAnswer === verbQuizList[verbQuizIndex].answer ? (
+                              <>🎉 Quá tuyệt vời! Trả lời chính xác.</>
+                            ) : (
+                              <>⚠️ Cần chú ý quy tắc rồi!</>
+                            )}
+                          </h4>
+                          <p className="text-xs font-medium mt-1 leading-relaxed">{verbQuizList[verbQuizIndex].explanation}</p>
+
+                          <button
+                            onClick={() => {
+                              setVerbSelectedAnswer(null);
+                              if (verbQuizIndex < verbQuizList.length - 1) {
+                                setVerbQuizIndex(prev => prev + 1);
+                              } else {
+                                setVerbQuizFinished(true);
+                              }
+                            }}
+                            className="mt-3 w-full bg-slate-900 hover:bg-slate-800 text-white font-black text-xs uppercase tracking-wider py-2.5 rounded-xl active:scale-95 transition-all flex items-center justify-center gap-1 cursor-pointer"
+                          >
+                            Tiếp tục <ChevronRight className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="text-center py-8 space-y-4">
+                      <div className="w-20 h-20 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center mx-auto border border-amber-100 shadow-md">
+                        <Trophy className="w-10 h-10" />
+                      </div>
+                      <div className="space-y-1">
+                        <h3 className="text-lg font-black text-slate-850">Hoàn Thành Thử Thách Trắc Nghiệm!</h3>
+                        <p className="text-xs text-slate-400 font-bold">Điểm của bạn: <span className="text-amber-600 font-black text-sm">{verbQuizScore}</span> / {verbQuizList.length}</p>
+                      </div>
                       <button
                         onClick={() => {
+                          const shuffled = [...VERB_QUIZ_QUESTIONS].sort(() => Math.random() - 0.5);
+                          setVerbQuizList(shuffled.slice(0, 10));
+                          setVerbQuizIndex(0);
                           setVerbSelectedAnswer(null);
-                          if (verbQuizIndex < verbQuizList.length - 1) {
-                            setVerbQuizIndex(prev => prev + 1);
-                          } else {
-                            setVerbQuizFinished(true);
-                          }
+                          setVerbQuizScore(0);
+                          setVerbQuizFinished(false);
                         }}
-                        className="mt-3 w-full bg-slate-900 hover:bg-slate-800 text-white font-black text-xs uppercase tracking-wider py-2.5 rounded-xl active:scale-95 transition-all flex items-center justify-center gap-1 cursor-pointer"
+                        className="px-6 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-black text-xs uppercase tracking-widest rounded-xl transition-all cursor-pointer"
                       >
-                        Tiếp tục <ChevronRight className="w-3.5 h-3.5" />
+                        Luyện tập lại
                       </button>
                     </div>
                   )}
                 </div>
-              ) : (
-                <div className="text-center py-8 space-y-4">
-                  <div className="w-20 h-20 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center mx-auto border border-amber-100 shadow-md">
-                    <Trophy className="w-10 h-10" />
+              )}
+
+              {/* Mode 2: Fill-in / Write-in Quiz */}
+              {practiceMode === 'fill-in' && (
+                <div className="premium-card p-6 bg-white border border-slate-200 rounded-[1.5rem] space-y-6">
+                  <div>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-orange-600 bg-orange-50 px-3 py-1 rounded-full border border-orange-100">TỰ LUẬN & PHÂN TÍCH</span>
+                    <h2 className="text-xl font-black text-slate-800 mt-2">Gõ Câu Trả Lời & Phân Tích Lỗi Sai</h2>
+                    <p className="text-xs text-slate-500 mt-1">Học chủ động bằng cách tự gõ câu trả lời. Hệ thống AI sẽ phân tích hình thái từ bạn nhập để sửa lỗi chi tiết.</p>
                   </div>
-                  <div className="space-y-1">
-                    <h3 className="text-lg font-black text-slate-850">Hoàn Thành Thử Thách Động Từ!</h3>
-                    <p className="text-xs text-slate-400 font-bold">Điểm của bạn: <span className="text-amber-600 font-black text-sm">{verbQuizScore}</span> / {verbQuizList.length}</p>
+
+                  {!fillInFinished && fillInList.length > 0 && fillInList[fillInIndex] ? (
+                    <div className="space-y-6">
+                      <div className="flex justify-between items-center text-xs text-slate-400 font-bold">
+                        <span>Câu {fillInIndex + 1} / {fillInList.length}</span>
+                        <span>Điểm: {fillInScore}</span>
+                      </div>
+
+                      {/* Question Block */}
+                      <div className="p-5 bg-orange-900 text-white rounded-2xl shadow-inner font-bold text-base leading-relaxed text-center relative overflow-hidden">
+                        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-orange-500/10 to-transparent pointer-events-none" />
+                        <span className="text-[10px] text-orange-300 font-black uppercase tracking-widest block mb-2 font-mono">ĐIỀN DẠNG ĐÚNG CỦA ĐỘNG TỪ TRONG NGOẶC</span>
+                        "{fillInList[fillInIndex].sentence}"
+                      </div>
+
+                      {/* Input Form */}
+                      <form
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          if (fillInFeedback !== null || !fillInUserAnswer.trim()) return;
+
+                          const q = fillInList[fillInIndex];
+                          const cleanedInput = fillInUserAnswer.trim().toLowerCase();
+                          const isCorrect = q.correctAnswers.some((ans: string) => ans.trim().toLowerCase() === cleanedInput);
+
+                          const analysis = analyzeUserVerb(fillInUserAnswer, q.verb);
+                          
+                          setFillInFeedback({
+                            isCorrect,
+                            detectedForm: analysis.detectedForm,
+                            clueUsed: q.clue,
+                            msg: isCorrect 
+                              ? `Tuyệt vời! Bạn đã chia chính xác động từ "${q.verb}" ở dạng ${q.expectedForm} thành "${cleanedInput}".`
+                              : `Chưa chính xác. Dấu hiệu trong câu là "${q.clue}" yêu cầu động từ phải chia ở dạng ${q.expectedForm} (ví dụ: "${q.correctAnswers.join(' hoặc ')}"). Bạn đã nhập từ "${fillInUserAnswer}" ở dạng "${analysis.detectedForm}".`
+                          });
+
+                          if (isCorrect) {
+                            setFillInScore(prev => prev + 1);
+                          }
+                        }}
+                        className="space-y-3"
+                      >
+                        <div className="space-y-1">
+                          <label className="text-[10px] font-black text-slate-400 uppercase tracking-wider block">Gõ câu trả lời của bạn vào đây:</label>
+                          <input
+                            type="text"
+                            value={fillInUserAnswer}
+                            disabled={fillInFeedback !== null}
+                            onChange={(e) => setFillInUserAnswer(e.target.value)}
+                            placeholder={`Gõ từ thích hợp để điền vào chỗ trống (Ví dụ: ${fillInList[fillInIndex].verb === 'go' ? 'went' : 'written'})...`}
+                            className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm font-bold text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20 disabled:bg-slate-50 disabled:text-slate-500"
+                          />
+                        </div>
+                        {fillInFeedback === null && (
+                          <button
+                            type="submit"
+                            disabled={!fillInUserAnswer.trim()}
+                            className="w-full py-3 bg-orange-600 hover:bg-orange-700 disabled:bg-slate-200 disabled:text-slate-400 text-white font-black text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer active:scale-95"
+                          >
+                            Kiểm tra kết quả
+                          </button>
+                        )}
+                      </form>
+
+                      {/* feedback card */}
+                      {fillInFeedback !== null && (
+                        <div
+                          className={cn(
+                            "p-4 rounded-2xl border animate-in slide-in-from-top-2 duration-300 space-y-3",
+                            fillInFeedback.isCorrect
+                              ? "bg-emerald-50/50 border-emerald-200 text-emerald-800"
+                              : "bg-rose-50/50 border-rose-200 text-rose-800"
+                          )}
+                        >
+                          <h4 className="text-xs font-black uppercase tracking-widest flex items-center gap-1.5">
+                            {fillInFeedback.isCorrect ? (
+                              <>🎉 Câu trả lời hoàn hảo!</>
+                            ) : (
+                              <>⚠️ Phân tích câu trả lời của bạn</>
+                            )}
+                          </h4>
+                          
+                          <div className="space-y-2">
+                            <p className="text-xs font-semibold leading-relaxed">{fillInFeedback.msg}</p>
+                            
+                            <div className="p-3 bg-white/70 border border-slate-200/40 rounded-xl space-y-1.5 text-slate-700">
+                              <p className="text-[11px] font-bold">
+                                🔑 <span className="text-slate-400">Dấu hiệu nhận biết:</span> {fillInList[fillInIndex].clue}
+                              </p>
+                              <p className="text-[11px] font-bold">
+                                📅 <span className="text-slate-400">Dạng đúng dự kiến:</span> <span className="text-orange-600">{fillInList[fillInIndex].expectedForm}</span>
+                              </p>
+                              <p className="text-[11px] font-semibold text-slate-550 italic leading-relaxed">
+                                {fillInList[fillInIndex].explanation}
+                              </p>
+                            </div>
+                          </div>
+
+                          <button
+                            onClick={() => {
+                              setFillInFeedback(null);
+                              setFillInUserAnswer('');
+                              if (fillInIndex < fillInList.length - 1) {
+                                setFillInIndex(prev => prev + 1);
+                              } else {
+                                setFillInFinished(true);
+                              }
+                            }}
+                            className="w-full bg-slate-900 hover:bg-slate-800 text-white font-black text-xs uppercase tracking-wider py-2.5 rounded-xl active:scale-95 transition-all flex items-center justify-center gap-1 cursor-pointer"
+                          >
+                            Tiếp tục <ChevronRight className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="text-center py-8 space-y-4">
+                      <div className="w-20 h-20 bg-orange-50 text-orange-500 rounded-full flex items-center justify-center mx-auto border border-orange-100 shadow-md">
+                        <Trophy className="w-10 h-10" />
+                      </div>
+                      <div className="space-y-1">
+                        <h3 className="text-lg font-black text-slate-850">Hoàn Thành Thử Thách Tự Luận!</h3>
+                        <p className="text-xs text-slate-400 font-bold">Điểm của bạn: <span className="text-orange-600 font-black text-sm">{fillInScore}</span> / {fillInList.length}</p>
+                      </div>
+                      <button
+                        onClick={() => {
+                          const shuffledFillIn = [...VERB_FILL_IN_QUESTIONS].sort(() => Math.random() - 0.5);
+                          setFillInList(shuffledFillIn.slice(0, 10));
+                          setFillInIndex(0);
+                          setFillInUserAnswer('');
+                          setFillInFeedback(null);
+                          setFillInScore(0);
+                          setFillInFinished(false);
+                        }}
+                        className="px-6 py-2.5 bg-orange-600 hover:bg-orange-700 text-white font-black text-xs uppercase tracking-widest rounded-xl transition-all cursor-pointer"
+                      >
+                        Luyện tập lại
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Mode 3: AI Verb Form Analyzer */}
+              {practiceMode === 'analyzer' && (
+                <div className="premium-card p-6 bg-white border border-slate-200 rounded-[1.5rem] space-y-6">
+                  <div>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-sky-600 bg-sky-50 px-3 py-1 rounded-full border border-sky-100">AI VERB ANALYZER</span>
+                    <h2 className="text-xl font-black text-slate-800 mt-2">Bộ Phân Tích Hình Thái Động Từ</h2>
+                    <p className="text-xs text-slate-500 mt-1">Gõ một dạng chia động từ bất kỳ của động từ gốc. AI sẽ nhận dạng hình thái của từ đó và chỉ ra dạng câu hỏi tương thích.</p>
                   </div>
-                  <button
-                    onClick={() => {
-                      const shuffled = [...VERB_QUIZ_QUESTIONS].sort(() => Math.random() - 0.5);
-                      setVerbQuizList(shuffled.slice(0, 10));
-                      setVerbQuizIndex(0);
-                      setVerbSelectedAnswer(null);
-                      setVerbQuizScore(0);
-                      setVerbQuizFinished(false);
-                    }}
-                    className="px-6 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-black text-xs uppercase tracking-widest rounded-xl transition-all cursor-pointer"
-                  >
-                    Luyện tập lại
-                  </button>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Control Panel */}
+                    <div className="space-y-4">
+                      {/* Select Verb */}
+                      <div className="space-y-1.5">
+                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-wider block">1. Chọn Động Từ Gốc (Infinitive)</label>
+                        <select
+                          value={analyzerTargetVerb}
+                          onChange={(e) => setAnalyzerTargetVerb(e.target.value)}
+                          className="w-full p-3 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-500/20"
+                        >
+                          {[
+                            { val: 'go', lbl: 'go (đi - V2: went, V3: gone)' },
+                            { val: 'write', lbl: 'write (viết - V2: wrote, V3: written)' },
+                            { val: 'do', lbl: 'do (làm - V2: did, V3: done)' },
+                            { val: 'run', lbl: 'run (chạy - V2: ran, V3: run)' },
+                            { val: 'study', lbl: 'study (học - V2: studied, V3: studied)' },
+                            { val: 'eat', lbl: 'eat (ăn - V2: ate, V3: eaten)' },
+                            { val: 'speak', lbl: 'speak (nói - V2: spoke, V3: spoken)' },
+                            { val: 'swim', lbl: 'swim (bơi - V2: swam, V3: swum)' },
+                            { val: 'sleep', lbl: 'sleep (ngủ - V2: slept, V3: slept)' },
+                            { val: 'drink', lbl: 'drink (uống - V2: drank, V3: drunk)' },
+                            { val: 'fly', lbl: 'fly (bay - V2: flew, V3: flown)' }
+                          ].map(item => (
+                            <option key={item.val} value={item.val}>{item.lbl}</option>
+                          ))}
+                        </select>
+                      </div>
+
+                      {/* Type Verb form */}
+                      <div className="space-y-1.5">
+                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-wider block">2. Gõ từ chia bạn muốn phân tích:</label>
+                        <input
+                          type="text"
+                          value={analyzerUserAnswer}
+                          onChange={(e) => setAnalyzerUserAnswer(e.target.value)}
+                          placeholder={`Gõ dạng chia của "${analyzerTargetVerb}" (Ví dụ: ${analyzerTargetVerb === 'go' ? 'went, going, goes' : 'wrote, writing'})...`}
+                          className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm font-bold text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500/20"
+                        />
+                      </div>
+
+                      {/* Common forms buttons */}
+                      <div className="space-y-1.5">
+                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-wider block">Gợi ý nhanh cho từ "{analyzerTargetVerb}":</label>
+                        <div className="flex flex-wrap gap-1.5">
+                          {(() => {
+                            const v = analyzerTargetVerb;
+                            const entry = COMMON_VERBS.find(x => x.verb.toLowerCase() === v);
+                            const options = [
+                              { label: 'V1', val: v },
+                              { label: 'V2', val: entry ? entry.v2 : v + 'ed' },
+                              { label: 'V3', val: entry ? entry.v3 : v + 'ed' },
+                              { label: 'V-ing', val: v.endsWith('e') ? v.slice(0, -1) + 'ing' : v.endsWith('y') ? v.slice(0, -1) + 'ying' : v + 'ing' },
+                              { label: 'V-s/es', val: v.endsWith('y') ? v.slice(0, -1) + 'ies' : v + 's' }
+                            ];
+                            return options.map(opt => (
+                              <button
+                                key={opt.label}
+                                onClick={() => setAnalyzerUserAnswer(opt.val)}
+                                className="px-2.5 py-1.5 bg-slate-50 border border-slate-200 hover:border-sky-500 hover:bg-sky-50/50 rounded-lg text-[10px] font-bold text-slate-600 transition-all cursor-pointer"
+                              >
+                                {opt.label}: <strong>{opt.val}</strong>
+                              </button>
+                            ));
+                          })()}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Result Panel */}
+                    <div className="p-5 bg-slate-50/50 border border-slate-200 rounded-2xl space-y-4">
+                      <div className="border-b border-slate-200 pb-2">
+                        <span className="text-[10px] font-black text-slate-400 tracking-widest">KẾT QUẢ PHÂN TÍCH CHIA TỪ</span>
+                        <h4 className="text-sm font-black text-slate-800 mt-1">AI Morphological Diagnosis</h4>
+                      </div>
+
+                      {analyzerUserAnswer.trim() ? (
+                        (() => {
+                          const res = analyzeUserVerb(analyzerUserAnswer, analyzerTargetVerb);
+                          return (
+                            <div className="space-y-4 animate-in fade-in duration-300">
+                              <div className="p-3 bg-sky-50 border border-sky-100 rounded-xl">
+                                <span className="text-[10px] font-mono text-sky-800 font-bold uppercase block">HÌNH THÁI XÁC ĐỊNH (FORM DETECTED)</span>
+                                <span className="text-sm font-black text-sky-900 mt-0.5 block">{res.detectedForm}</span>
+                              </div>
+
+                              <div className="space-y-1.5 text-xs">
+                                <p className="font-bold text-slate-800 flex items-center gap-1.5">
+                                  <span>📖</span> <span className="text-slate-400 font-medium">Bản chất ngữ pháp:</span>
+                                </p>
+                                <p className="text-slate-650 font-semibold leading-relaxed pl-5">{res.tenseDescription}</p>
+                              </div>
+
+                              <div className="space-y-1.5 text-xs">
+                                <p className="font-bold text-slate-800 flex items-center gap-1.5">
+                                  <span>🔑</span> <span className="text-slate-400 font-medium">Khớp với dạng câu hỏi chứa dấu hiệu:</span>
+                                </p>
+                                <p className="text-slate-650 font-semibold leading-relaxed pl-5">{res.matchClues}</p>
+                              </div>
+
+                              <div className="space-y-1.5 text-xs">
+                                <p className="font-bold text-slate-800 flex items-center gap-1.5">
+                                  <span>🧬</span> <span className="text-slate-400 font-medium">Công thức cơ bản:</span>
+                                </p>
+                                <code className="block p-2 bg-slate-900 text-amber-400 font-mono text-[10px] rounded-lg select-all pl-3">
+                                  {res.formula}
+                                </code>
+                              </div>
+                            </div>
+                          );
+                        })()
+                      ) : (
+                        <div className="text-center py-10 text-slate-400 flex flex-col items-center justify-center space-y-2">
+                          <Search className="w-8 h-8 text-slate-300 stroke-[1.5]" />
+                          <p className="text-xs font-medium">Hãy gõ một dạng động từ hoặc bấm các gợi ý nhanh bên trái để bắt đầu phân tích.</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Mode 4: AI Question Clue Predictor */}
+              {practiceMode === 'predictor' && (
+                <div className="premium-card p-6 bg-white border border-slate-200 rounded-[1.5rem] space-y-6">
+                  <div>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-amber-600 bg-amber-50 px-3 py-1 rounded-full border border-amber-100">AI PREDICTOR TOOL</span>
+                    <h2 className="text-xl font-black text-slate-800 mt-2">Dự Đoán Đáp Án Từ Câu Hỏi</h2>
+                    <p className="text-xs text-slate-500 mt-1">Chọn trạng ngữ hoặc cấu trúc ngữ pháp trong câu hỏi để đoán chính xác hình thái động từ (V1, V2, V3, V-ing) cần chia.</p>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Control Panel */}
+                    <div className="space-y-4">
+                      {/* Select Clue */}
+                      <div className="space-y-1.5">
+                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-wider block">1. Chọn Dấu Hiệu/Cụm Từ trong Câu Hỏi</label>
+                        <select
+                          value={predictorClue}
+                          onChange={(e) => setPredictorClue(e.target.value)}
+                          className="w-full p-3 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-amber-500/20"
+                        >
+                          <optgroup label="Thì Quá khứ">
+                            <option value="yesterday">yesterday (hôm qua)</option>
+                            <option value="ago">... ago (cách đây...)</option>
+                            <option value="last_week">last week / last month</option>
+                            <option value="in_past_year">in + năm quá khứ (ví dụ: in 1995)</option>
+                            <option value="by_the_time">by the time + Past Simple (trước mốc quá khứ)</option>
+                            <option value="while">while (trong khi - hành động đang xảy ra)</option>
+                          </optgroup>
+                          <optgroup label="Thì Hiện tại hoàn thành">
+                            <option value="since">since + mốc thời gian</option>
+                            <option value="for">for + khoảng thời gian</option>
+                            <option value="already">already (đã... rồi)</option>
+                            <option value="yet">yet (chưa - câu phủ định/nghi vấn)</option>
+                            <option value="so_far">so far / up to now (cho đến nay)</option>
+                          </optgroup>
+                          <optgroup label="Thì Hiện tại tiếp diễn">
+                            <option value="now">now / right now (bây giờ)</option>
+                            <option value="at_the_moment">at the moment</option>
+                            <option value="look_listen">Look! / Listen! (Từ cảm thán gây chú ý)</option>
+                          </optgroup>
+                          <optgroup label="Thì Tương lai">
+                            <option value="tomorrow">tomorrow (ngày mai)</option>
+                            <option value="next_week">next week / next year</option>
+                          </optgroup>
+                          <optgroup label="Thì Hiện tại đơn">
+                            <option value="always">always / usually / often (Trạng từ tần suất)</option>
+                            <option value="everyday">every day / every week</option>
+                          </optgroup>
+                          <optgroup label="Cấu trúc Động từ đặc biệt">
+                            <option value="modal_verbs">modal verbs (should, can, must...)</option>
+                            <option value="to_infinitive_verbs">decide / want / plan (yêu cầu to + V1)</option>
+                            <option value="gerund_verbs">enjoy / avoid / practice (yêu cầu V-ing)</option>
+                          </optgroup>
+                        </select>
+                      </div>
+
+                      {/* Select Verb to Preview */}
+                      <div className="space-y-1.5">
+                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-wider block">2. Chọn Động Từ Muốn Chia Thử</label>
+                        <div className="grid grid-cols-3 gap-1.5">
+                          {['eat', 'write', 'go', 'swim', 'sleep', 'do'].map(v => (
+                            <button
+                              key={v}
+                              type="button"
+                              onClick={() => setPredictorVerb(v)}
+                              className={cn(
+                                "py-2 rounded-xl text-xs font-black transition-all border cursor-pointer",
+                                predictorVerb === v
+                                  ? "bg-amber-600 border-amber-600 text-white"
+                                  : "bg-slate-50 border-slate-200 text-slate-700 hover:border-amber-400"
+                              )}
+                            >
+                              {v}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Result Panel */}
+                    <div className="p-5 bg-amber-50/20 border border-amber-200/50 rounded-2xl space-y-4">
+                      <div className="border-b border-slate-200 pb-2">
+                        <span className="text-[10px] font-black text-amber-600 uppercase tracking-widest">DỰ ĐOÁN HÌNH THÁI CHIA ĐÚNG</span>
+                        <h4 className="text-sm font-black text-slate-800 mt-1">AI Prediction Output</h4>
+                      </div>
+
+                      {(() => {
+                        const res = predictVerbFormFromClue(predictorClue, predictorVerb);
+                        return (
+                          <div className="space-y-4 animate-in fade-in duration-300">
+                            {/* Expected Form */}
+                            <div className="p-3 bg-amber-50 border border-amber-250 rounded-xl">
+                              <span className="text-[10px] font-mono text-amber-800 font-bold uppercase block">HÌNH THÁI CẦN CHIA (EXPECTED FORM)</span>
+                              <span className="text-sm font-black text-amber-900 mt-0.5 block">{res.predictedForm}</span>
+                            </div>
+
+                            {/* Sample Answer */}
+                            <div className="space-y-1">
+                              <span className="text-[10px] font-black text-slate-400 uppercase block">ĐÁP ÁN DỰ ĐOÁN CHO TỪ "{predictorVerb.toUpperCase()}":</span>
+                              <p className="text-base font-black text-slate-800 flex items-center gap-2">
+                                <span className="px-2 py-0.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded text-xs">ANSWER</span>
+                                <span className="text-emerald-700">{res.predictedAnswer}</span>
+                              </p>
+                            </div>
+
+                            {/* Grammar Rule */}
+                            <div className="space-y-1 text-xs">
+                              <p className="font-bold text-slate-805 flex items-center gap-1">
+                                <span>📚</span> <span className="text-slate-400 font-medium">Quy tắc ngữ pháp:</span>
+                              </p>
+                              <p className="text-slate-650 font-semibold leading-relaxed pl-5">{res.explanation}</p>
+                            </div>
+
+                            {/* Contextual Example */}
+                            <div className="space-y-1 text-xs">
+                              <p className="font-bold text-slate-805 flex items-center gap-1">
+                                <span>💡</span> <span className="text-slate-400 font-medium">Ví dụ minh họa cụ thể:</span>
+                              </p>
+                              <p className="text-slate-705 font-bold leading-relaxed pl-5 italic select-all font-serif">
+                                "{res.sampleSentence}"
+                              </p>
+                            </div>
+                          </div>
+                        );
+                      })()}
+                    </div>
+                  </div>
                 </div>
               )}
             </div>

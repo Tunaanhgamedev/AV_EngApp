@@ -958,6 +958,179 @@ export const VERB_QUIZ_QUESTIONS = [
     options: ['She speaks not', 'She don\'t speak', 'She doesn\'t speaks', 'She doesn\'t speak'],
     answer: 'She doesn\'t speak',
     explanation: 'Thể phủ định thì hiện tại đơn của ngôi thứ 3 số ít (He, She, It) có dạng: "doesn\'t + V1 (nguyên mẫu)" -> "doesn\'t speak".'
+  },
+  {
+    question: 'Identify the correct V3 (Past Participle) of "fly":',
+    options: ['flew', 'flown', 'flying', 'flys'],
+    answer: 'flown',
+    explanation: 'Động từ "fly" có ba hình thái cột chia là: V1: fly, V2: flew, V3: flown.'
+  },
+  {
+    question: 'Choose the correct verb: "Look! The birds ... in the sky."',
+    options: ['fly', 'are flying', 'flew', 'have flown'],
+    answer: 'are flying',
+    explanation: 'Từ cảm thán "Look!" báo hiệu hành động đang diễn ra ngay lúc nói, do đó động từ được chia ở thì Hiện tại tiếp diễn: "are flying" (chủ ngữ số nhiều).'
+  },
+  {
+    question: 'Which time clue typically predicts a Past Simple (V2) verb form?',
+    options: ['since yesterday', 'tomorrow morning', 'yesterday morning', 'already'],
+    answer: 'yesterday morning',
+    explanation: '"yesterday morning" chỉ thời gian đã chấm dứt hoàn toàn trong quá khứ, là dấu hiệu tiêu biểu của thì Quá khứ đơn (V2).'
+  },
+  {
+    question: 'Complete the sentence: "We ... each other since we were children."',
+    options: ['have known', 'know', 'are knowing', 'had known'],
+    answer: 'have known',
+    explanation: '"since" kết hợp với "know" (động từ trạng thái chỉ nhận thức) yêu cầu chia ở thì Hiện tại hoàn thành (have known). Không dùng dạng tiếp diễn "are knowing".'
+  },
+  {
+    question: 'Complete the sentence: "By the time the movie started, we ... our popcorn."',
+    options: ['ate', 'have eaten', 'had eaten', 'were eating'],
+    answer: 'had eaten',
+    explanation: 'Hành động ăn bắp rang xảy ra trước hành động phim bắt đầu (đã chia ở quá khứ đơn "started"), do đó hành động xảy ra trước phải chia ở thì Quá khứ hoàn thành (had eaten).'
+  },
+  {
+    question: 'What verb form must follow the modal verb "should"?',
+    options: ['Bare Infinitive (V1)', 'To-Infinitive (to + V1)', 'Gerund (V-ing)', 'Past Participle (V3)'],
+    answer: 'Bare Infinitive (V1)',
+    explanation: 'Sau tất cả các động từ khuyết thiếu (modal verbs) như should, can, must, could, may, might..., ta dùng động từ nguyên mẫu không "to" (V1).'
+  },
+  {
+    question: 'Complete the sentence: "I am busy right now. I ... an email to my boss."',
+    options: ['write', 'am writing', 'wrote', 'have written'],
+    answer: 'am writing',
+    explanation: 'Cụm từ "right now" chỉ hành động đang diễn ra tại thời điểm nói, động từ chia ở thì Hiện tại tiếp diễn "am writing".'
+  },
+  {
+    question: 'Choose the correct past participle (V3) form of the irregular verb "write":',
+    options: ['wrote', 'written', 'writed', 'writing'],
+    answer: 'written',
+    explanation: 'Động từ bất quy tắc "write" có 3 thể chia: V1: write, V2: wrote, V3: written.'
+  },
+  {
+    question: 'Which of the following stative verbs CANNOT be used in the progressive (-ing) form to express possession?',
+    options: ['have', 'see', 'think', 'belong'],
+    answer: 'belong',
+    explanation: '"belong" chỉ trạng thái thuộc quyền sở hữu cố định, tuyệt đối không bao giờ được dùng ở dạng tiếp diễn (-ing) trong bất kỳ ngữ cảnh nào.'
+  },
+  {
+    question: 'Complete the sentence: "While I ... in the park, it started to rain."',
+    options: ['walked', 'was walking', 'am walking', 'had walked'],
+    answer: 'was walking',
+    explanation: 'Hành động đi bộ đang diễn ra (chia Quá khứ tiếp diễn "was walking") thì có hành động khác đột ngột xen vào (chia Quá khứ đơn "started").'
+  },
+  {
+    question: 'What is the correct conjugation of "swim" in the Past Simple (V2)?',
+    options: ['swimed', 'swam', 'swum', 'swimming'],
+    answer: 'swam',
+    explanation: 'Động từ "swim" là động từ bất quy tắc, biến đổi ở V2 thành "swam" và V3 thành "swum".'
+  },
+  {
+    question: 'Predict the verb form: In "She wants to ... English," the verb following "to" must be in:',
+    options: ['Infinitive (V1)', 'V-ing', 'V2 (Past)', 'V3 (Participle)'],
+    answer: 'Infinitive (V1)',
+    explanation: 'Cấu trúc "want + to-infinitive" yêu cầu động từ đi sau "to" ở dạng nguyên mẫu (V1).'
+  },
+  {
+    question: 'Choose the correct V2 (Past Simple) and V3 (Past Participle) of the irregular verb "shrink":',
+    options: ['shrinked / shrinked', 'shrank / shrunk', 'shrunked / shrunked', 'shrunk / shrank'],
+    answer: 'shrank / shrunk',
+    explanation: 'Động từ bất quy tắc "shrink" (co lại, thu nhỏ) có ba cột chia là: V1: shrink, V2: shrank, V3: shrunk.'
+  },
+  {
+    question: 'Complete the sentence: "If it rains tomorrow, we ... the football match."',
+    options: ['cancelled', 'will cancel', 'would cancel', 'cancel'],
+    answer: 'will cancel',
+    explanation: 'Đây là câu điều kiện loại 1 (Conditional Type 1) chỉ sự việc có thể xảy ra ở tương lai, mệnh đề chính chia ở thì Tương lai đơn: "will + V1" -> "will cancel".'
+  },
+  {
+    question: 'What is the past participle (V3) of the irregular verb "run"?',
+    options: ['ran', 'runed', 'run', 'running'],
+    answer: 'run',
+    explanation: 'Động từ "run" có dạng cột 1 và cột 3 giống nhau: V1: run, V2: ran, V3: run.'
+  }
+];
+
+export const VERB_FILL_IN_QUESTIONS = [
+  {
+    sentence: "She _______ (go) to school yesterday morning.",
+    verb: "go",
+    correctAnswers: ["went"],
+    clue: "yesterday morning",
+    expectedForm: "V2 (Past Simple)",
+    explanation: "Trạng từ 'yesterday morning' chỉ thời gian trong quá khứ xác định, yêu cầu động từ chia ở thì Quá khứ đơn (V2). Động từ 'go' là bất quy tắc, cột 2 là 'went'."
+  },
+  {
+    sentence: "I have already _______ (write) three emails today.",
+    verb: "write",
+    correctAnswers: ["written"],
+    clue: "have already",
+    expectedForm: "V3 (Past Participle)",
+    explanation: "Từ 'already' kết hợp với trợ động từ 'have' báo hiệu thì Hiện tại hoàn thành, cần động từ ở dạng quá khứ phân từ V3. Cột 3 của 'write' là 'written'."
+  },
+  {
+    sentence: "Look! The baby is _______ (sleep) peacefully.",
+    verb: "sleep",
+    correctAnswers: ["sleeping"],
+    clue: "Look! / is",
+    expectedForm: "V-ing (Present Participle)",
+    explanation: "Từ cảm thán 'Look!' và trợ động từ 'is' báo hiệu hành động đang diễn ra (Hiện tại tiếp diễn), động từ cần chia ở dạng V-ing: 'sleeping'."
+  },
+  {
+    sentence: "He _______ (study) English every single day.",
+    verb: "study",
+    correctAnswers: ["studies"],
+    clue: "every single day",
+    expectedForm: "V1 + -s/-es",
+    explanation: "Trạng từ 'every day' chỉ thói quen lặp đi lặp lại ở hiện tại (Hiện tại đơn). Chủ ngữ 'He' (ngôi thứ 3 số ít) yêu cầu động từ đổi 'y' thành 'i' rồi thêm 'es' thành 'studies'."
+  },
+  {
+    sentence: "By the time we arrived, they had _______ (eat) all the cake.",
+    verb: "eat",
+    correctAnswers: ["eaten"],
+    clue: "had / By the time we arrived",
+    expectedForm: "V3 (Past Participle)",
+    explanation: "Cấu trúc 'By the time + Past Simple' kết hợp với trợ động từ 'had' chỉ hành động xảy ra và hoàn thành trước hành động khác trong quá khứ (Quá khứ hoàn thành), động từ chính chia ở V3: 'eaten'."
+  },
+  {
+    sentence: "You must _______ (speak) English in this class.",
+    verb: "speak",
+    correctAnswers: ["speak"],
+    clue: "must",
+    expectedForm: "V1 (Bare Infinitive)",
+    explanation: "Sau động từ khiếm khuyết 'must', động từ chính luôn giữ ở dạng nguyên mẫu không chia (V1): 'speak'."
+  },
+  {
+    sentence: "We decided _______ (buy) a new house next year.",
+    verb: "buy",
+    correctAnswers: ["to buy"],
+    clue: "decided",
+    expectedForm: "To-Infinitive (to + V1)",
+    explanation: "Động từ 'decide' (quyết định) yêu cầu động từ theo sau nó ở dạng nguyên mẫu có 'to' (To-Infinitive) -> 'to buy'."
+  },
+  {
+    sentence: "She enjoys _______ (read) romantic novels in her free time.",
+    verb: "read",
+    correctAnswers: ["reading"],
+    clue: "enjoys",
+    expectedForm: "Gerund (V-ing)",
+    explanation: "Sau động từ chỉ sở thích 'enjoy', động từ đi kèm đóng vai trò danh động từ chia ở dạng V-ing: 'reading'."
+  },
+  {
+    sentence: "My father _______ (work) in this factory for 20 years before he retired.",
+    verb: "work",
+    correctAnswers: ["had worked", "had been working"],
+    clue: "for 20 years before he retired",
+    expectedForm: "Past Perfect / Past Perfect Continuous",
+    explanation: "Hành động làm việc xảy ra liên tục trong 20 năm và kết thúc trước mốc quá khứ 'before he retired', chia ở Quá khứ hoàn thành (had worked) hoặc Quá khứ hoàn thành tiếp diễn (had been working)."
+  },
+  {
+    sentence: "If she _______ (have) free time tomorrow, she will go shopping.",
+    verb: "have",
+    correctAnswers: ["has"],
+    clue: "If ... tomorrow / will go",
+    expectedForm: "Present Simple (for singular subject)",
+    explanation: "Trong câu điều kiện loại 1 (Conditional Type 1), mệnh đề chứa 'If' chia ở thì Hiện tại đơn. Chủ ngữ 'she' số ít nên 'have' biến đổi thành 'has'."
   }
 ];
 
