@@ -1,21 +1,9 @@
 import type { Metadata } from "next";
-import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import { MusicProvider } from "@/context/MusicContext";
 import { MusicWidget } from "@/components/MusicWidget";
 import { LayoutWrapper } from "@/components/LayoutWrapper";
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-});
-
-const poppins = Poppins({
-  variable: "--font-poppins",
-  weight: ["400", "500", "600", "700"],
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "AVEngApp | AI-Powered English Learning",
@@ -30,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full" suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${poppins.variable} antialiased flex min-h-full bg-background`}
+        className="antialiased flex min-h-full bg-background font-sans"
         suppressHydrationWarning
       >
         <AuthProvider>

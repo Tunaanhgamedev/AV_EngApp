@@ -161,12 +161,12 @@ export default function SettingsPage() {
     <div className="max-w-4xl mx-auto space-y-8 py-6 animate-in fade-in duration-700">
       {/* Header */}
       <header className="flex items-center gap-3">
-        <div className="p-3 bg-indigo-100 rounded-2xl text-indigo-600">
+        <div className="p-3 bg-indigo-100 dark:bg-indigo-900/40 rounded-2xl text-indigo-600 dark:text-indigo-400">
           <SettingsIcon className="w-8 h-8" />
         </div>
         <div>
-          <h1 className="text-3xl font-black text-slate-800">Cài Đặt Hệ Thống</h1>
-          <p className="text-slate-500 font-medium">Tùy biến học tập, trợ lý AI, âm thanh và cấu hình tài khoản cá nhân của bạn.</p>
+          <h1 className="text-3xl font-black text-slate-800 dark:text-slate-100">Cài Đặt Hệ Thống</h1>
+          <p className="text-slate-500 dark:text-slate-400 font-medium">Tùy biến học tập, trợ lý AI, âm thanh và cấu hình tài khoản cá nhân của bạn.</p>
         </div>
       </header>
 
@@ -204,42 +204,42 @@ export default function SettingsPage() {
           )}
 
           {/* Section 1: User Profile Settings */}
-          <section className="premium-card p-8 space-y-6 bg-white border border-slate-100">
-            <h2 className="text-xl font-bold flex items-center gap-2 text-slate-800 border-b border-slate-50 pb-4">
+          <section className="premium-card p-8 space-y-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
+            <h2 className="text-xl font-bold flex items-center gap-2 text-slate-800 dark:text-slate-100 border-b border-slate-50 dark:border-slate-800 pb-4">
               <User className="w-5 h-5 text-indigo-500" /> Thông Tin Học Viên
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-xs font-black text-slate-400 uppercase tracking-wider block">Tên hiển thị</label>
+                <label className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider block">Tên hiển thị</label>
                 <input 
                   type="text" 
                   value={displayName} 
                   onChange={(e) => setDisplayName(e.target.value)} 
                   required
                   placeholder="Nhập tên hiển thị mới..."
-                  className="w-full p-4 rounded-xl border border-slate-200 focus:outline-none focus:border-primary font-bold text-sm text-slate-700 transition-all"
+                  className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:outline-none focus:border-primary font-bold text-sm text-slate-700 dark:text-slate-200 transition-all"
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-black text-slate-400 uppercase tracking-wider block">Địa chỉ Email (Định danh)</label>
+                <label className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider block">Địa chỉ Email (Định danh)</label>
                 <input 
                   type="email" 
                   value={user.email || ''} 
                   disabled
-                  className="w-full p-4 rounded-xl border border-slate-100 bg-slate-50 font-bold text-sm text-slate-400 cursor-not-allowed"
+                  className="w-full p-4 rounded-xl border border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 font-bold text-sm text-slate-400 dark:text-slate-500 cursor-not-allowed"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
               <div className="space-y-2">
-                <label className="text-xs font-black text-slate-400 uppercase tracking-wider block">Mục tiêu ôn luyện</label>
+                <label className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider block">Mục tiêu ôn luyện</label>
                 <select 
                   value={examTarget} 
                   onChange={(e) => setExamTarget(e.target.value)}
-                  className="w-full p-4 rounded-xl border border-slate-200 font-bold text-sm text-slate-700 focus:border-primary transition-all cursor-pointer"
+                  className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 font-bold text-sm text-slate-700 dark:text-slate-200 focus:border-primary transition-all cursor-pointer"
                 >
                   <option value="toeic">Chứng chỉ TOEIC</option>
                   <option value="ielts">Chứng chỉ IELTS</option>
@@ -248,11 +248,11 @@ export default function SettingsPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-black text-slate-400 uppercase tracking-wider block">Điểm số mục tiêu</label>
+                <label className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider block">Điểm số mục tiêu</label>
                 <select 
                   value={targetScore} 
                   onChange={(e) => setTargetScore(e.target.value)}
-                  className="w-full p-4 rounded-xl border border-slate-200 font-bold text-sm text-slate-700 focus:border-primary transition-all cursor-pointer"
+                  className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 font-bold text-sm text-slate-700 dark:text-slate-200 focus:border-primary transition-all cursor-pointer"
                 >
                   {examTarget === 'toeic' ? (
                     <>
@@ -279,11 +279,11 @@ export default function SettingsPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-black text-slate-400 uppercase tracking-wider block">Thời gian tự học hàng ngày</label>
+                <label className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider block">Thời gian tự học hàng ngày</label>
                 <select 
                   value={dailyGoal} 
                   onChange={(e) => setDailyGoal(e.target.value)}
-                  className="w-full p-4 rounded-xl border border-slate-200 font-bold text-sm text-slate-700 focus:border-primary transition-all cursor-pointer"
+                  className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 font-bold text-sm text-slate-700 dark:text-slate-200 focus:border-primary transition-all cursor-pointer"
                 >
                   <option value="15">15 phút / ngày (Thư giãn)</option>
                   <option value="30">30 phút / ngày (Tiêu chuẩn)</option>
@@ -295,17 +295,17 @@ export default function SettingsPage() {
           </section>
 
           {/* Section 2: AI & Assistant settings */}
-          <section className="premium-card p-8 space-y-6 bg-white border border-slate-100">
-            <h2 className="text-xl font-bold flex items-center gap-2 text-slate-800 border-b border-slate-50 pb-4">
+          <section className="premium-card p-8 space-y-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
+            <h2 className="text-xl font-bold flex items-center gap-2 text-slate-800 dark:text-slate-100 border-b border-slate-50 dark:border-slate-800 pb-4">
               <Sliders className="w-5 h-5 text-emerald-500" /> Trợ Lý Ảo & Phương Tiện
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 divide-y md:divide-y-0 md:divide-x divide-slate-100">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 divide-y md:divide-y-0 md:divide-x divide-slate-100 dark:divide-slate-800">
               <div className="space-y-5 pr-0 md:pr-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="text-sm font-bold text-slate-800">Hiệu ứng âm thanh</h4>
-                    <p className="text-xs text-slate-400">Phát âm thanh chúc mừng khi trả lời đúng.</p>
+                    <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200">Hiệu ứng âm thanh</h4>
+                    <p className="text-xs text-slate-400 dark:text-slate-500">Phát âm thanh chúc mừng khi trả lời đúng.</p>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input 
@@ -320,8 +320,8 @@ export default function SettingsPage() {
 
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="text-sm font-bold text-slate-800">Tự động phát phát âm</h4>
-                    <p className="text-xs text-slate-400">Tự động đọc to từ vựng tiếng Anh khi chọn.</p>
+                    <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200">Tự động phát phát âm</h4>
+                    <p className="text-xs text-slate-400 dark:text-slate-500">Tự động đọc to từ vựng tiếng Anh khi chọn.</p>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input 
@@ -337,7 +337,7 @@ export default function SettingsPage() {
 
               <div className="space-y-5 pt-5 md:pt-0 pl-0 md:pl-6">
                 <div className="space-y-2">
-                  <label className="text-xs font-black text-slate-400 uppercase tracking-wider block">Giọng phát âm trợ lý</label>
+                  <label className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider block">Giọng phát âm trợ lý</label>
                   <div className="grid grid-cols-2 gap-3">
                     {['female', 'male'].map(gender => (
                       <button
@@ -348,7 +348,7 @@ export default function SettingsPage() {
                           "py-3 border-2 rounded-xl text-xs font-black transition-all cursor-pointer capitalize",
                           speechGender === gender 
                             ? "bg-primary border-primary text-white shadow-md shadow-primary/10" 
-                            : "border-slate-100 hover:border-slate-200 text-slate-600 bg-white"
+                            : "border-slate-100 dark:border-slate-700 hover:border-slate-200 dark:hover:border-slate-600 text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800"
                         )}
                       >
                         Giọng {gender === 'female' ? 'Nữ (Female)' : 'Nam (Male)'}
@@ -358,7 +358,7 @@ export default function SettingsPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-xs font-black text-slate-400 uppercase tracking-wider block">Mức độ chi tiết giải thích AI</label>
+                  <label className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider block">Mức độ chi tiết giải thích AI</label>
                   <div className="grid grid-cols-2 gap-3">
                     {[
                       { val: 'simple', label: 'Ngắn gọn' },
@@ -372,7 +372,7 @@ export default function SettingsPage() {
                           "py-3 border-2 rounded-xl text-xs font-black transition-all cursor-pointer",
                           aiFeedbackDetail === opt.val
                             ? "bg-primary border-primary text-white shadow-md shadow-primary/10" 
-                            : "border-slate-100 hover:border-slate-200 text-slate-600 bg-white"
+                            : "border-slate-100 dark:border-slate-700 hover:border-slate-200 dark:hover:border-slate-600 text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800"
                         )}
                       >
                         {opt.label}
@@ -385,16 +385,16 @@ export default function SettingsPage() {
           </section>
 
           {/* Section 3: Notifications & Sound */}
-          <section className="premium-card p-8 space-y-6 bg-white border border-slate-100">
-            <h2 className="text-xl font-bold flex items-center gap-2 text-slate-800 border-b border-slate-50 pb-4">
+          <section className="premium-card p-8 space-y-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
+            <h2 className="text-xl font-bold flex items-center gap-2 text-slate-800 dark:text-slate-100 border-b border-slate-50 dark:border-slate-800 pb-4">
               <Bell className="w-5 h-5 text-orange-500" /> Thông Báo & Liên Lạc
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl">
+              <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl">
                 <div>
-                  <h4 className="text-sm font-bold text-slate-800">Email nhắc nhở hàng ngày</h4>
-                  <p className="text-xs text-slate-400">Giữ chuỗi ngày học streak liên tục cùng các bài học mới.</p>
+                  <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200">Email nhắc nhở hàng ngày</h4>
+                  <p className="text-xs text-slate-400 dark:text-slate-500">Giữ chuỗi ngày học streak liên tục cùng các bài học mới.</p>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input 
@@ -407,10 +407,10 @@ export default function SettingsPage() {
                 </label>
               </div>
 
-              <div className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl">
+              <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl">
                 <div>
-                  <h4 className="text-sm font-bold text-slate-800">Báo cáo học tập tuần</h4>
-                  <p className="text-xs text-slate-400">Nhận thống kê và đánh giá chuyên sâu vào sáng Thứ Hai.</p>
+                  <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200">Báo cáo học tập tuần</h4>
+                  <p className="text-xs text-slate-400 dark:text-slate-500">Nhận thống kê và đánh giá chuyên sâu vào sáng Thứ Hai.</p>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input 
@@ -426,14 +426,14 @@ export default function SettingsPage() {
           </section>
 
           {/* Section 4: Display & Style settings */}
-          <section className="premium-card p-8 space-y-6 bg-white border border-slate-100">
-            <h2 className="text-xl font-bold flex items-center gap-2 text-slate-800 border-b border-slate-50 pb-4">
+          <section className="premium-card p-8 space-y-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
+            <h2 className="text-xl font-bold flex items-center gap-2 text-slate-800 dark:text-slate-100 border-b border-slate-50 dark:border-slate-800 pb-4">
               <Eye className="w-5 h-5 text-indigo-500" /> Giao Diện & Thể Hiện
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-xs font-black text-slate-400 uppercase tracking-wider block">Chủ đề hiển thị</label>
+                <label className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider block">Chủ đề hiển thị</label>
                 <div className="grid grid-cols-2 gap-3">
                   {[
                     { val: 'light', label: '☀️ Chế độ sáng' },
@@ -442,12 +442,21 @@ export default function SettingsPage() {
                     <button
                       type="button"
                       key={theme.val}
-                      onClick={() => setThemeMode(theme.val)}
+                      onClick={() => {
+                        setThemeMode(theme.val);
+                        if (theme.val === 'dark') {
+                          document.documentElement.classList.add('dark');
+                          document.documentElement.classList.remove('light');
+                        } else {
+                          document.documentElement.classList.add('light');
+                          document.documentElement.classList.remove('dark');
+                        }
+                      }}
                       className={cn(
                         "py-3.5 border-2 rounded-xl text-xs font-black transition-all cursor-pointer",
                         themeMode === theme.val
                           ? "bg-slate-900 border-slate-950 text-white shadow-lg" 
-                          : "border-slate-100 hover:border-slate-200 text-slate-600 bg-white"
+                          : "border-slate-100 dark:border-slate-700 hover:border-slate-200 dark:hover:border-slate-600 text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800"
                       )}
                     >
                       {theme.label}
@@ -457,7 +466,7 @@ export default function SettingsPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-black text-slate-400 uppercase tracking-wider block">Cỡ chữ văn bản</label>
+                <label className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider block">Cỡ chữ văn bản</label>
                 <div className="grid grid-cols-3 gap-3">
                   {[
                     { val: 'small', label: 'Nhỏ' },
@@ -467,12 +476,16 @@ export default function SettingsPage() {
                     <button
                       type="button"
                       key={font.val}
-                      onClick={() => setBaseFontSize(font.val)}
+                      onClick={() => {
+                        setBaseFontSize(font.val);
+                        document.documentElement.classList.remove('theme-font-small', 'theme-font-medium', 'theme-font-large');
+                        document.documentElement.classList.add(`theme-font-${font.val}`);
+                      }}
                       className={cn(
                         "py-3.5 border-2 rounded-xl text-xs font-black transition-all cursor-pointer",
                         baseFontSize === font.val
                           ? "bg-primary border-primary text-white shadow-md shadow-primary/10" 
-                          : "border-slate-100 hover:border-slate-200 text-slate-600 bg-white"
+                          : "border-slate-100 dark:border-slate-700 hover:border-slate-200 dark:hover:border-slate-600 text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800"
                       )}
                     >
                       {font.label}
