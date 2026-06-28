@@ -203,12 +203,12 @@ router.get('/search', async (req, res) => {
         if (!word)
             return res.status(400).json({ error: 'Search term is required' });
         // Step 1: Try exact match first
-        let result = await pool.query(`SELECT id, word, phonetic, meaning_en as "meaningEn", meaning_vi as "meaningVi", word_type as "wordType", cefr_level as "cefrLevel", audio_us as "audioUs", additional_examples as "additionalExamples", synonyms, antonyms, usage, example, example_vi as "exampleVi"
+        let result = await pool.query(`SELECT id, word, phonetic, meaning_en as "meaningEn", meaning_vi as "meaningVi", word_type as "wordType", cefr_level as "cefrLevel", audio_us as "audioUs", audio_uk as "audioUk", usage, example, example_vi as "exampleVi"
        FROM vocabulary_words 
        WHERE LOWER(word) = LOWER($1) LIMIT 1`, [word]);
         // Step 2: If no exact match, try prefix match (fuzzy)
         if (result.rows.length === 0) {
-            result = await pool.query(`SELECT id, word, phonetic, meaning_en as "meaningEn", meaning_vi as "meaningVi", word_type as "wordType", cefr_level as "cefrLevel", audio_us as "audioUs", additional_examples as "additionalExamples", synonyms, antonyms, usage, example, example_vi as "exampleVi"
+            result = await pool.query(`SELECT id, word, phonetic, meaning_en as "meaningEn", meaning_vi as "meaningVi", word_type as "wordType", cefr_level as "cefrLevel", audio_us as "audioUs", audio_uk as "audioUk", usage, example, example_vi as "exampleVi"
          FROM vocabulary_words 
          WHERE word ILIKE $1 
          ORDER BY LENGTH(word) ASC LIMIT 1`, [`${word}%`]);

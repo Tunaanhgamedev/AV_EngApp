@@ -24,7 +24,7 @@ const generateWithRetry = async (model, prompt, retries = 1) => {
 };
 // Extremely Robust Fallback Model Chain to handle any rate limits, permissions or region-blocks!
 const generateContentWithModelFallback = async (prompt, retries = 1) => {
-    const models = ["gemini-2.0-flash", "gemini-1.5-flash", "gemini-flash-latest", "gemini-pro"];
+    const models = ["gemini-flash-latest", "gemini-2.0-flash", "gemini-1.5-flash", "gemini-pro"];
     let lastError = null;
     for (const modelName of models) {
         try {
@@ -226,7 +226,20 @@ router.post('/translate', async (req, res) => {
             return res.status(500).json({ error: 'Server configuration error: Missing API Key' });
         }
         try {
-            const prompt = `Translate exactly to ${targetLang}: "${cleanText}". Provide ONLY the translation.`;
+            const prompt = `You are a professional, high-fidelity AI translator. Translate the following text from ${sourceLang} to ${targetLang}.
+
+Input text to translate:
+"""
+${cleanText}
+"""
+
+Instructions:
+1. Translate the text with absolute precision, matching the style, tone (formal/informal), context, and linguistic nuances.
+2. For long sentences, ensure the phrasing flows naturally and idiomatically in ${targetLang}. Avoid literal word-for-word translations if they sound unnatural.
+3. For idioms, slang, metaphors, or culturally specific terms, find the closest natural equivalent in ${targetLang} instead of translating literally.
+4. Maintain the exact formatting of the source text, including paragraph breaks, line breaks, punctuation, and bullet points.
+5. If the input text is a single word or short phrase, translate it to its most accurate primary equivalent in ${targetLang}.
+6. Respond ONLY with the translated text. Do NOT include any intro/outro remarks, surrounding quotes, or explanations.`;
             const translationText = await generateContentWithModelFallback(prompt);
             translation = translationText.trim();
             provider = 'AI (Gemini)';
@@ -300,6 +313,229 @@ router.post('/translate', async (req, res) => {
         console.warn('[Translate] Failed to cache translation:', err.message);
     });
     return res.json({ translation, provider, cached: false });
+});
+// AI Translation Explanation & Pedagogical Breakdown
+router.post('/explain-translation', async (req, res) => {
+    const { text, translation, targetLang = 'Vietnamese' } = req.body;
+    if (!text || !translation) {
+        return res.status(400).json({ error: 'Text and translation are required' });
+    }
+    const sourceLang = targetLang === 'Vietnamese' ? 'English' : 'Vietnamese';
+    const prompt = `You are an expert bilingual linguist and language tutor. Analyze the following translation:
+Original Text (${sourceLang}): "${text}"
+Translated Text (${targetLang}): "${translation}"
+
+Provide a detailed analysis to help language learners understand the translation choices, grammar patterns, and key vocabulary.
+Return the response as a raw JSON object matching the following structure exactly. Do not wrap in markdown block (do NOT use \`\`\`json):
+{
+  "alternatives": [
+    "alternative translation 1 in ${targetLang}",
+    "alternative translation 2 in ${targetLang}"
+  ],
+  "grammarPoints": [
+    { "pattern": "grammar structure name", "explanation": "how it applies here, in Vietnamese" }
+  ],
+  "vocabularyBreakdown": [
+    { "word": "word or phrase from the original", "phonetic": "IPA pronunciation", "pos": "part of speech", "meaning": "meaning in the target language", "context": "explanation of its usage in this context" }
+  ],
+  "speakingTips": "Rhythm, intonation, linking sounds (nối âm), or sentence stress tips in Vietnamese for reading this sentence aloud."
+}`;
+    try {
+        const aiResponse = await generateContentWithModelFallback(prompt);
+        const data = safeParseJSON(aiResponse);
+        return res.json(data);
+    }
+    catch (err) {
+        console.error('[AI] explain-translation error, using local fallback:', err.message);
+        // ── Smart Fallback Mechanism ─────────────────────────────────────────────
+        try {
+            // 1. Generate alternative translations using Google Translate variations
+            const alternatives = [];
+            const tLang = targetLang === 'Vietnamese' ? 'vi' : 'en';
+            const sLang = targetLang === 'Vietnamese' ? 'en' : 'vi';
+            // Try fetching Google Translate for a high-quality second opinion
+            try {
+                const googleUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sLang}&tl=${tLang}&dt=t&q=${encodeURIComponent(text)}`;
+                const gRes = await fetch(googleUrl);
+                const gData = await gRes.json();
+                if (gData && gData[0] && Array.isArray(gData[0])) {
+                    const alternateResult = gData[0].map((item) => (item && item[0] ? item[0] : '')).join('').trim();
+                    if (alternateResult && alternateResult.toLowerCase() !== translation.toLowerCase()) {
+                        alternatives.push(alternateResult);
+                    }
+                }
+            }
+            catch (gErr) {
+                console.warn('[AI Fallback] Failed to fetch alternative translation:', gErr);
+            }
+            // Add a fallback option if none found or to guarantee at least one alternative
+            if (alternatives.length === 0) {
+                alternatives.push(translation);
+            }
+            // 2. Grammar Point Detection (Rule-based parsing)
+            const grammarPoints = [];
+            const lowerText = text.toLowerCase();
+            if (lowerText.includes('want to') || lowerText.includes('wants to') || lowerText.includes('wanted to')) {
+                grammarPoints.push({
+                    pattern: 'want to + V-inf',
+                    explanation: 'Diễn tả mong muốn hoặc dự định làm một việc gì đó.'
+                });
+            }
+            if (lowerText.includes('used to')) {
+                grammarPoints.push({
+                    pattern: 'used to + V-inf',
+                    explanation: 'Diễn tả một thói quen hoặc trạng thái từng xảy ra thường xuyên trong quá khứ nhưng nay không còn nữa.'
+                });
+            }
+            if (lowerText.includes('have to') || lowerText.includes('has to') || lowerText.includes('had to')) {
+                grammarPoints.push({
+                    pattern: 'have to + V-inf',
+                    explanation: 'Diễn tả sự bắt buộc phải làm điều gì đó (thường do yếu tố khách quan từ bên ngoài).'
+                });
+            }
+            if (lowerText.includes('be going to') || lowerText.includes('is going to') || lowerText.includes('are going to') || lowerText.includes('am going to')) {
+                grammarPoints.push({
+                    pattern: 'be going to + V-inf',
+                    explanation: 'Dùng để diễn tả một dự định đã lên kế hoạch sẵn hoặc một dự đoán chắc chắn dựa trên bằng chứng hiện tại.'
+                });
+            }
+            if (lowerText.includes('look forward to')) {
+                grammarPoints.push({
+                    pattern: 'look forward to + V-ing',
+                    explanation: 'Diễn tả sự mong đợi, trông chờ một sự việc nào đó xảy ra với tâm trạng hân hoan.'
+                });
+            }
+            if (lowerText.includes('because') || lowerText.includes('since') || lowerText.includes('as ')) {
+                grammarPoints.push({
+                    pattern: 'Mệnh đề trạng ngữ chỉ nguyên nhân',
+                    explanation: 'Dùng các liên từ chỉ nguyên nhân để giải thích lý do cho hành động ở mệnh đề chính.'
+                });
+            }
+            if (lowerText.includes('although') || lowerText.includes('even though') || lowerText.includes('though')) {
+                grammarPoints.push({
+                    pattern: 'Mệnh đề trạng ngữ chỉ sự nhượng bộ',
+                    explanation: 'Dùng để kết nối hai vế câu mang tính chất tương phản hoặc trái ngược nghĩa.'
+                });
+            }
+            if (lowerText.includes('so that') || lowerText.includes('in order to')) {
+                grammarPoints.push({
+                    pattern: 'Cấu trúc chỉ mục đích',
+                    explanation: 'Dùng để liên kết câu chỉ ra mục đích của hành động được nhắc đến ở vế trước.'
+                });
+            }
+            if (lowerText.includes('prefer')) {
+                grammarPoints.push({
+                    pattern: 'Cấu trúc prefer (Thích hơn)',
+                    explanation: 'Dùng để diễn tả sở thích chung hoặc thích một việc gì đó hơn việc khác.'
+                });
+            }
+            if (lowerText.includes('wish')) {
+                grammarPoints.push({
+                    pattern: 'Câu ước với wish',
+                    explanation: 'Dùng để diễn tả mong ước, nguyện vọng về một điều không có thật hoặc khó xảy ra ở hiện tại/quá khứ.'
+                });
+            }
+            // Default general grammar point if none matched
+            if (grammarPoints.length === 0) {
+                grammarPoints.push({
+                    pattern: 'Cấu trúc câu khẳng định / phủ định',
+                    explanation: 'Sự phối hợp chặt chẽ giữa Chủ ngữ (Subject) và Động từ chia theo thì (Tense) để truyền tải trọn vẹn thông điệp ngữ nghĩa.'
+                });
+            }
+            // 3. Smart Vocabulary Breakdown using Free Dictionary API and Google Translate
+            // Get unique keywords (filter out very common grammatical particles)
+            const stopwords = new Set([
+                'a', 'an', 'the', 'is', 'are', 'am', 'was', 'were', 'be', 'been', 'being',
+                'of', 'to', 'in', 'on', 'at', 'for', 'with', 'by', 'about', 'as', 'into',
+                'through', 'during', 'before', 'after', 'under', 'over', 'between', 'among',
+                'and', 'but', 'or', 'nor', 'so', 'yet', 'for', 'this', 'that', 'these', 'those',
+                'i', 'you', 'he', 'she', 'it', 'we', 'they', 'my', 'your', 'his', 'her', 'its',
+                'our', 'their', 'me', 'him', 'them', 'us'
+            ]);
+            const words = text
+                .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, "")
+                .split(/\s+/)
+                .map((w) => w.trim())
+                .filter((w) => w.length > 1);
+            const uniqueWords = Array.from(new Set(words));
+            const keyWords = uniqueWords.filter(w => !stopwords.has(w.toLowerCase())).slice(0, 5);
+            // If no key words remain after filtering, just take the first 3 words
+            const finalWords = keyWords.length > 0 ? keyWords : uniqueWords.slice(0, 3);
+            const vocabularyBreakdown = [];
+            for (const word of finalWords) {
+                let phonetic = `/${word}/`;
+                let pos = 'word';
+                let meaningEn = '';
+                let meaningVi = '';
+                try {
+                    // Query dictionary API
+                    const dictRes = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word)}`);
+                    if (dictRes.ok) {
+                        const dictData = await dictRes.json();
+                        if (dictData && dictData[0]) {
+                            const entry = dictData[0];
+                            phonetic = entry.phonetic || entry.phonetics?.find((p) => p.text)?.text || phonetic;
+                            if (entry.meanings && entry.meanings[0]) {
+                                pos = entry.meanings[0].partOfSpeech || 'word';
+                                meaningEn = entry.meanings[0].definitions?.[0]?.definition || '';
+                            }
+                        }
+                    }
+                }
+                catch (dictErr) {
+                    console.warn(`[AI Fallback] Failed to fetch dictionary entry for "${word}":`, dictErr);
+                }
+                // Translate the word or its definition to Vietnamese
+                try {
+                    const queryText = meaningEn ? meaningEn : word;
+                    const transUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=vi&dt=t&q=${encodeURIComponent(queryText)}`;
+                    const transRes = await fetch(transUrl);
+                    const transData = await transRes.json();
+                    if (transData && transData[0] && Array.isArray(transData[0])) {
+                        const translatedResult = transData[0].map((item) => (item && item[0] ? item[0] : '')).join('').trim();
+                        meaningVi = translatedResult;
+                    }
+                }
+                catch (transErr) {
+                    meaningVi = `Từ vựng trong câu: ${word}`;
+                }
+                vocabularyBreakdown.push({
+                    word,
+                    phonetic,
+                    pos,
+                    meaning: meaningVi || `Nghĩa của từ: ${word}`,
+                    context: meaningEn ? `Định nghĩa tiếng Anh: ${meaningEn}` : 'Thành phần cấu tạo nên câu.'
+                });
+            }
+            // 4. Speaking Tips
+            let speakingTips = 'Hãy chú ý ngắt nghỉ đúng chỗ ở các dấu câu để nói tự nhiên hơn.';
+            if (text.includes(',')) {
+                speakingTips = 'Câu có chứa dấu phẩy. Hãy chú ý xuống giọng nhẹ và ngắt hơi khoảng 0.5 giây tại dấu phẩy để tạo nhịp điệu tự nhiên cho câu nói.';
+            }
+            else if (text.endsWith('?')) {
+                speakingTips = 'Đây là câu hỏi. Đối với câu hỏi lựa chọn hoặc câu hỏi Yes/No, bạn nên lên giọng ở cuối câu. Đối với câu hỏi bắt đầu bằng từ nghi vấn (Wh-questions), hãy xuống giọng ở cuối câu.';
+            }
+            else {
+                speakingTips = 'Hãy phát âm rõ ràng phụ âm cuối (ending sounds) của các từ và chú ý nối âm (linking sound) khi từ trước kết thúc bằng phụ âm và từ sau bắt đầu bằng nguyên âm.';
+            }
+            return res.json({
+                alternatives,
+                grammarPoints,
+                vocabularyBreakdown,
+                speakingTips
+            });
+        }
+        catch (fallbackErr) {
+            console.error('[AI Fallback] Failed to generate smart fallback:', fallbackErr.message);
+            // Absolute final fallback to ensure server never crashes
+            return res.json({
+                alternatives: [translation],
+                grammarPoints: [{ pattern: 'Cấu trúc câu tự nhiên', explanation: 'Câu được dịch một cách tự nhiên và trôi chảy theo ngữ cảnh.' }],
+                vocabularyBreakdown: [{ word: 'Sentence', phonetic: '/ˈsentəns/', pos: 'noun', meaning: 'Câu văn', context: 'Đơn vị ngữ pháp cấu thành.' }],
+                speakingTips: 'Hãy luyện tập đọc to cả câu nhiều lần để tăng sự tự tin và trôi chảy.'
+            });
+        }
+    }
 });
 // AI Word Insight — for Notebook feature
 router.post('/word-insight', async (req, res) => {

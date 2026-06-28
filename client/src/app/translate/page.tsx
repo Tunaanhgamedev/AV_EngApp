@@ -157,8 +157,12 @@ export default function TranslatePage() {
   const [showSavePanel, setShowSavePanel] = useState(false);
   const [wordInsight, setWordInsight] = useState<any>(null);
   const [fromCache, setFromCache] = useState(false);
+  const [explaining, setExplaining] = useState(false);
+  const [explanation, setExplanation] = useState<any>(null);
+  const [showExplanation, setShowExplanation] = useState(false);
 
   const cacheRef = useRef<Record<string, any>>({});
+  const explanationCacheRef = useRef<Record<string, any>>({});
   const fastDebounceRef = useRef<NodeJS.Timeout | null>(null);
   const deepDebounceRef = useRef<NodeJS.Timeout | null>(null);
   const abortRef = useRef<AbortController | null>(null);
@@ -306,6 +310,46 @@ export default function TranslatePage() {
     };
   }, [inputText, sourceLang, targetLang, doTranslate]);
 
+  const fetchExplanation = async () => {
+    if (!inputText.trim() || !translatedText.trim()) return;
+    if (showExplanation) {
+      setShowExplanation(false);
+      return;
+    }
+
+    const cacheKey = `${sourceLang}-${targetLang}-${inputText.trim()}`;
+    if (explanationCacheRef.current[cacheKey]) {
+      setExplanation(explanationCacheRef.current[cacheKey]);
+      setShowExplanation(true);
+      return;
+    }
+
+    setExplaining(true);
+    setShowExplanation(true);
+    try {
+      const res = await fetch(`${API_BASE}/ai/explain-translation`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          text: inputText,
+          translation: translatedText,
+          targetLang
+        })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setExplanation(data);
+        explanationCacheRef.current[cacheKey] = data;
+      } else {
+        setExplanation(null);
+      }
+    } catch {
+      setExplanation(null);
+    } finally {
+      setExplaining(false);
+    }
+  };
+
   const swapLangs = () => {
     const s = sourceLang;
     const t = targetLang;
@@ -316,6 +360,8 @@ export default function TranslatePage() {
     setShowSavePanel(false);
     setWordInsight(null);
     setFromCache(false);
+    setShowExplanation(false);
+    setExplanation(null);
     lastTranslatedRef.current = '';
     lastTranslatedModeRef.current = null;
     // Trigger deep translation immediately for swapped text
@@ -407,7 +453,12 @@ export default function TranslatePage() {
             className="flex-1 p-4 sm:p-6 md:p-8 bg-transparent border-none focus:ring-0 text-xl md:text-2xl font-medium resize-none text-slate-800 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none min-h-[160px] sm:min-h-0"
             placeholder={sourceLang === 'English' ? "Type to translate..." : "Nhập để dịch tự động..."}
             value={inputText}
-            onChange={e => { setInputText(e.target.value); setShowSavePanel(false); }}
+            onChange={e => { 
+              setInputText(e.target.value); 
+              setShowSavePanel(false); 
+              setShowExplanation(false);
+              setExplanation(null);
+            }}
           />
           <div className="px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between border-t border-slate-100 dark:border-slate-800 bg-slate-50/30">
             <div className="flex items-center gap-2">
@@ -442,7 +493,16 @@ export default function TranslatePage() {
             </div>
             <div className="flex items-center gap-2">
               <span className="text-[10px] text-slate-400 dark:text-slate-500 font-mono">{inputText.length}</span>
-              <button onClick={() => { setInputText(''); setTranslatedText(''); setShowSavePanel(false); setFromCache(false); setWordInsight(null); lastTranslatedRef.current = ''; }} disabled={!inputText} className="p-2 text-slate-400 dark:text-slate-500 hover:text-rose-500 dark:hover:text-rose-400 transition-colors disabled:opacity-30"><Trash2 className="w-4 h-4" /></button>
+              <button onClick={() => { 
+                setInputText(''); 
+                setTranslatedText(''); 
+                setShowSavePanel(false); 
+                setFromCache(false); 
+                setWordInsight(null); 
+                setShowExplanation(false);
+                setExplanation(null);
+                lastTranslatedRef.current = ''; 
+              }} disabled={!inputText} className="p-2 text-slate-400 dark:text-slate-500 hover:text-rose-500 dark:hover:text-rose-400 transition-colors disabled:opacity-30"><Trash2 className="w-4 h-4" /></button>
             </div>
           </div>
         </div>
@@ -514,6 +574,18 @@ export default function TranslatePage() {
                 <BookMarked className="w-4 h-4" /> {showSavePanel ? 'Hủy' : 'Lưu từ vựng'}
               </button>
             )}
+            {hasResult && isPhraseOrSentence && (
+              <button onClick={fetchExplanation} disabled={explaining}
+                className={cn(
+                  "flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black transition-all shadow-md border-2",
+                  showExplanation 
+                    ? "bg-indigo-600 border-indigo-600 text-white" 
+                    : "bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 border-indigo-100 dark:border-indigo-950 hover:bg-indigo-50/50 dark:hover:bg-indigo-950/20"
+                )}>
+                {explaining ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
+                {showExplanation ? 'Đóng giải thích' : 'Giải thích câu (AI)'}
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -527,6 +599,107 @@ export default function TranslatePage() {
           initialType={wordInsight?.wordTypes?.[0]?.type || (wordCount > 1 ? 'phrase' : '')}
           onClose={() => setShowSavePanel(false)}
         />
+      )}
+
+      {/* AI Explanation Panel */}
+      {showExplanation && (
+        <div className="premium-card border-2 border-indigo-200/50 dark:border-indigo-800/40 bg-gradient-to-br from-indigo-50/30 to-slate-50/50 dark:from-slate-900/30 dark:to-slate-900/50 animate-in slide-in-from-bottom-6 duration-500 overflow-hidden shadow-2xl p-6 space-y-6">
+          <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-gradient-to-br from-indigo-500 to-primary rounded-xl text-white shadow-md shadow-indigo-500/10">
+                <Sparkles className="w-5 h-5 animate-pulse" />
+              </div>
+              <div>
+                <h3 className="font-black text-slate-800 dark:text-slate-100 text-sm md:text-base tracking-tight">AI Explanation & Breakdown</h3>
+                <p className="text-xs text-slate-400 dark:text-slate-500 font-medium">Phân tích cấu trúc ngữ pháp và từ vựng của câu</p>
+              </div>
+            </div>
+            <button onClick={() => setShowExplanation(false)} className="p-1.5 text-slate-300 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all"><X className="w-4 h-4" /></button>
+          </div>
+
+          {explaining ? (
+            <div className="flex flex-col items-center justify-center py-12 space-y-4">
+              <Loader2 className="w-8 h-8 text-primary animate-spin" />
+              <div className="text-center space-y-1">
+                <p className="text-sm font-bold text-slate-600 dark:text-slate-300">Đang phân tích chi tiết câu...</p>
+                <p className="text-xs text-slate-400">Đội ngũ giáo viên AI của EngBot đang bóc tách ngữ nghĩa câu văn</p>
+              </div>
+            </div>
+          ) : explanation ? (
+            <div className="space-y-6">
+              {/* Alternatives */}
+              {explanation.alternatives && explanation.alternatives.length > 0 && (
+                <div className="space-y-2">
+                  <h4 className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+                    <ArrowRightLeft className="w-3 h-3 text-indigo-500" /> Cách dịch khác (Alternatives)
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {explanation.alternatives.map((alt: string, i: number) => (
+                      <div key={i} className="p-3 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-300 hover:border-indigo-300 dark:hover:border-indigo-900 transition-all duration-300">
+                        {alt}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Grammar Points */}
+              {explanation.grammarPoints && explanation.grammarPoints.length > 0 && (
+                <div className="space-y-3">
+                  <h4 className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+                    <Sparkles className="w-3 h-3 text-indigo-500" /> Điểm ngữ pháp chính (Grammar)
+                  </h4>
+                  <div className="space-y-2">
+                    {explanation.grammarPoints.map((gp: any, i: number) => (
+                      <div key={i} className="p-4 bg-white/70 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800 rounded-xl space-y-1">
+                        <span className="text-xs font-black text-indigo-600 dark:text-indigo-400">{gp.pattern}</span>
+                        <p className="text-xs text-slate-600 dark:text-slate-300 font-medium leading-relaxed">{gp.explanation}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Vocabulary Breakdown */}
+              {explanation.vocabularyBreakdown && explanation.vocabularyBreakdown.length > 0 && (
+                <div className="space-y-3">
+                  <h4 className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+                    <BookMarked className="w-3 h-3 text-indigo-500" /> Bóc tách từ vựng quan trọng (Vocabulary)
+                  </h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {explanation.vocabularyBreakdown.map((vb: any, i: number) => (
+                      <div key={i} className="p-4 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 rounded-xl space-y-2 hover:shadow-md transition-all duration-300 flex flex-col justify-between">
+                        <div className="space-y-1">
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm font-black text-slate-800 dark:text-slate-100">{vb.word}</span>
+                            <span className="text-[9px] font-bold px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 rounded uppercase">{vb.pos}</span>
+                          </div>
+                          {vb.phonetic && <span className="text-[11px] font-medium text-slate-400 font-mono block">{vb.phonetic}</span>}
+                          <p className="text-xs font-bold text-primary">{vb.meaning}</p>
+                          {vb.context && <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium mt-1 leading-relaxed">{vb.context}</p>}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Pronunciation & Speaking Tips */}
+              {explanation.speakingTips && (
+                <div className="space-y-2 p-4 bg-indigo-50/50 dark:bg-indigo-950/20 border border-indigo-100/50 dark:border-indigo-900/30 rounded-xl">
+                  <h4 className="text-[10px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-wider flex items-center gap-1.5 mb-1.5">
+                    <Volume2 className="w-3.5 h-3.5" /> Hướng dẫn phát âm tự nhiên (Speaking Tips)
+                  </h4>
+                  <p className="text-xs text-slate-700 dark:text-slate-300 font-medium leading-relaxed">{explanation.speakingTips}</p>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 p-4 bg-rose-50 dark:bg-rose-950/20 border border-rose-100 dark:border-rose-900/30 text-rose-600 dark:text-rose-400 rounded-xl text-xs font-medium">
+              <AlertCircle className="w-4 h-4" /> Không thể kết nối tới dịch vụ phân tích. Hãy thử lại sau.
+            </div>
+          )}
+        </div>
       )}
     </div>
   );
