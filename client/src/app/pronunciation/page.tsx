@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Volume2, BookOpen, Sparkles, ChevronDown, Mic, Target, Star, Play, Info, ArrowRight, HelpCircle, Hash, FileText, Search, Loader2, Calendar, Globe, MessageSquare, Zap, Palette, Users, Clock, ChevronRight, Trophy, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { COMMON_VERBS, VERB_TYPES, COMMON_ADJECTIVES, ADJECTIVE_RULES, ADJECTIVE_TYPES, POSSESSIVE_TABLE, POSSESSIVE_RULES, ADJECTIVES_USE_CASES, ADJECTIVES_BODY_PARTS, FOUNDATION_TOPICS, MINIMAL_PAIRS, ACTION_VERBS, THINKING_VERBS, CONJUGATION_RULES, CONJUGATION_MODELS, VERB_QUIZ_QUESTIONS } from './grammarData';
+import { COMMON_VERBS, VERB_TYPES, COMMON_ADJECTIVES, ADJECTIVE_RULES, ADJECTIVE_TYPES, POSSESSIVE_TABLE, POSSESSIVE_RULES, ADJECTIVES_USE_CASES, ADJECTIVES_BODY_PARTS, FOUNDATION_TOPICS, MINIMAL_PAIRS, ACTION_VERBS, THINKING_VERBS, CONJUGATION_RULES, CONJUGATION_MODELS, VERB_QUIZ_QUESTIONS, STATIVE_CATEGORIES, DUAL_NATURE_VERBS } from './grammarData';
 
 // ─── Alphabet & Phonics Data ──────────────────────────────────────────────────
 interface AlphabetLetter {
@@ -689,6 +689,97 @@ function IPACell({ item, color, isActive, onClick }: { item: any; color: string;
   );
 }
 
+// ─── Verb Conjugation Helper ──────────────────────────────────────────────────
+function conjugateVerb(verb: string, subject: string, tense: string) {
+  const sub = subject.trim();
+  const is3rdSingular = ['He', 'She', 'It'].includes(sub);
+  const is1stSingular = sub === 'I';
+
+  const verbForms: Record<string, { v1: string; v2: string; v3: string; ving: string; vs: string; vi: string }> = {
+    be: { v1: 'be', v2: 'was/were', v3: 'been', ving: 'being', vs: 'is', vi: 'thì, là, ở' },
+    have: { v1: 'have', v2: 'had', v3: 'had', ving: 'having', vs: 'has', vi: 'có' },
+    do: { v1: 'do', v2: 'did', v3: 'done', ving: 'doing', vs: 'does', vi: 'làm' },
+    go: { v1: 'go', v2: 'went', v3: 'gone', ving: 'going', vs: 'goes', vi: 'đi' },
+    make: { v1: 'make', v2: 'made', v3: 'made', ving: 'making', vs: 'makes', vi: 'chế tạo, làm ra' },
+    know: { v1: 'know', v2: 'knew', v3: 'known', ving: 'knowing', vs: 'knows', vi: 'biết' },
+    think: { v1: 'think', v2: 'thought', v3: 'thought', ving: 'thinking', vs: 'thinks', vi: 'nghĩ' },
+    see: { v1: 'see', v2: 'saw', v3: 'seen', ving: 'seeing', vs: 'sees', vi: 'nhìn thấy' },
+    run: { v1: 'run', v2: 'ran', v3: 'run', ving: 'running', vs: 'runs', vi: 'chạy' },
+    speak: { v1: 'speak', v2: 'spoke', v3: 'spoken', ving: 'speaking', vs: 'speaks', vi: 'nói' },
+    work: { v1: 'work', v2: 'worked', v3: 'worked', ving: 'working', vs: 'works', vi: 'làm việc' },
+    play: { v1: 'play', v2: 'played', v3: 'played', ving: 'playing', vs: 'plays', vi: 'chơi' },
+    study: { v1: 'study', v2: 'studied', v3: 'studied', ving: 'studying', vs: 'studies', vi: 'học tập' },
+    write: { v1: 'write', v2: 'wrote', v3: 'written', ving: 'writing', vs: 'writes', vi: 'viết' },
+    eat: { v1: 'eat', v2: 'ate', v3: 'eaten', ving: 'eating', vs: 'eats', vi: 'ăn' },
+    drink: { v1: 'drink', v2: 'drank', v3: 'drunk', ving: 'drinking', vs: 'drinks', vi: 'uống' }
+  };
+
+  const info = verbForms[verb] || { v1: verb, v2: verb + 'ed', v3: verb + 'ed', ving: verb + 'ing', vs: verb + 's', vi: '' };
+
+  let positive = '';
+  let negative = '';
+  let question = '';
+  let explanation = '';
+  let isStativeWarning = false;
+
+  const stativeVerbs = ['know', 'believe', 'understand', 'remember', 'forget', 'prefer', 'mean', 'agree', 'see', 'have', 'think'];
+  if (stativeVerbs.includes(verb) && tense === 'Present Continuous') {
+    isStativeWarning = true;
+  }
+
+  if (tense === 'Present Simple') {
+    if (verb === 'be') {
+      const beForm = is1stSingular ? 'am' : is3rdSingular ? 'is' : 'are';
+      positive = `${sub} ${beForm}.`;
+      negative = `${sub} ${beForm} not.`;
+      question = `${beForm.charAt(0).toUpperCase() + beForm.slice(1)} ${sub.toLowerCase()}?`;
+      explanation = `Thì Hiện tại đơn với động từ "to be". Với chủ ngữ "${sub}", dạng chia là "${beForm}".`;
+    } else {
+      const vForm = is3rdSingular ? info.vs : info.v1;
+      const aux = is3rdSingular ? 'does' : 'do';
+      positive = `${sub} ${vForm}.`;
+      negative = `${sub} ${aux} not ${info.v1}.`;
+      question = `${aux.charAt(0).toUpperCase() + aux.slice(1)} ${sub.toLowerCase()} ${info.v1}?`;
+      explanation = `Thì Hiện tại đơn với động từ thường. Với ngôi thứ ba số ít (He/She/It), thêm "-s/-es" vào động từ và dùng trợ động từ "does" trong câu phủ định/nghi vấn.`;
+    }
+  } else if (tense === 'Present Continuous') {
+    const beForm = is1stSingular ? 'am' : is3rdSingular ? 'is' : 'are';
+    positive = `${sub} ${beForm} ${info.ving}.`;
+    negative = `${sub} ${beForm} not ${info.ving}.`;
+    question = `${beForm.charAt(0).toUpperCase() + beForm.slice(1)} ${sub.toLowerCase()} ${info.ving}?`;
+    explanation = `Thì Hiện tại tiếp diễn: S + am/is/are + V-ing. Diễn tả hành động đang xảy ra tại thời điểm nói.`;
+    if (isStativeWarning) {
+      explanation += `\n⚠️ Cảnh báo: "${verb}" là động từ trạng thái (stative verb), thường không dùng ở dạng tiếp diễn trong giao tiếp chuẩn trừ khi mang nghĩa đặc biệt (như đang cân nhắc, ngẫm nghĩ).`;
+    }
+  } else if (tense === 'Past Simple') {
+    if (verb === 'be') {
+      const wasWere = (is1stSingular || is3rdSingular) ? 'was' : 'were';
+      positive = `${sub} ${wasWere}.`;
+      negative = `${sub} ${wasWere} not.`;
+      question = `${wasWere.charAt(0).toUpperCase() + wasWere.slice(1)} ${sub.toLowerCase()}?`;
+      explanation = `Thì Quá khứ đơn với động từ "to be". Chủ ngữ số ít (I/He/She/It) chia là "was", chủ ngữ số nhiều/ngôi thứ 2 chia là "were".`;
+    } else {
+      positive = `${sub} ${info.v2}.`;
+      negative = `${sub} did not ${info.v1}.`;
+      question = `Did ${sub.toLowerCase()} ${info.v1}?`;
+      explanation = `Thì Quá khứ đơn với động từ thường: Khẳng định dùng dạng V2 (${info.v2}). Phủ định và nghi vấn dùng trợ động từ "did" đưa động từ về nguyên mẫu V1 (${info.v1}).`;
+    }
+  } else if (tense === 'Present Perfect') {
+    const aux = is3rdSingular ? 'has' : 'have';
+    positive = `${sub} ${aux} ${info.v3}.`;
+    negative = `${sub} ${aux} not ${info.v3}.`;
+    question = `${aux.charAt(0).toUpperCase() + aux.slice(1)} ${sub.toLowerCase()} ${info.v3}?`;
+    explanation = `Thì Hiện tại hoàn thành: S + have/has + V3 (Past Participle). Dùng khi nói về trải nghiệm hoặc hành động vừa xảy ra có ảnh hưởng đến hiện tại.`;
+  } else if (tense === 'Future Simple') {
+    positive = `${sub} will ${info.v1}.`;
+    negative = `${sub} will not ${info.v1}.`;
+    question = `Will ${sub.toLowerCase()} ${info.v1}?`;
+    explanation = `Thì Tương lai đơn: S + will + V1 (nguyên mẫu). Diễn tả quyết định tức thời hoặc dự đoán tương lai.`;
+  }
+
+  return { positive, negative, question, explanation, isStativeWarning };
+}
+
 export default function PronunciationPage() {
   const [activeTab, setActiveTab] = useState<'alphabet' | 'chart' | 'stress' | 'pairs' | 'building' | 'numbers' | 'endings' | 'datetime' | 'countries' | 'topics' | 'nouns' | 'verbs' | 'adjectives' | 'possessives' | 'tenses'>('alphabet');
   const [foundationTopicId, setFoundationTopicId] = useState<string>('pronouns');
@@ -698,7 +789,11 @@ export default function PronunciationPage() {
   const [quizFinished, setQuizFinished] = useState<boolean>(false);
   const [score, setScore] = useState<number>(0);
   const [verbFilter, setVerbFilter] = useState<'all' | 'regular' | 'irregular'>('all');
-  const [verbSection, setVerbSection] = useState<'list' | 'types' | 'conjugation' | 'practice'>('list');
+  const [verbSearchQuery, setVerbSearchQuery] = useState<string>('');
+  const [verbSection, setVerbSection] = useState<'list' | 'types' | 'playground' | 'conjugation' | 'practice'>('list');
+  const [playgroundVerb, setPlaygroundVerb] = useState<string>('work');
+  const [playgroundSubject, setPlaygroundSubject] = useState<string>('I');
+  const [playgroundTense, setPlaygroundTense] = useState<string>('Present Simple');
   const [verbQuizIndex, setVerbQuizIndex] = useState(0);
   const [verbSelectedAnswer, setVerbSelectedAnswer] = useState<string | null>(null);
   const [verbQuizScore, setVerbQuizScore] = useState(0);
@@ -708,7 +803,7 @@ export default function PronunciationPage() {
   useEffect(() => {
     if (activeTab === 'verbs' && verbSection === 'practice') {
       const shuffled = [...VERB_QUIZ_QUESTIONS].sort(() => Math.random() - 0.5);
-      setVerbQuizList(shuffled.slice(0, 5));
+      setVerbQuizList(shuffled.slice(0, 10));
       setVerbQuizIndex(0);
       setVerbSelectedAnswer(null);
       setVerbQuizScore(0);
@@ -2349,7 +2444,7 @@ export default function PronunciationPage() {
               <Zap className="w-5 h-5 text-amber-600" /> Hệ Thống Động Từ Toàn Diện (English Verbs System)
             </h3>
             <p className="text-xs sm:text-sm text-amber-800 leading-relaxed font-medium">
-              Động từ là linh hồn của câu, diễn tả hành động hoặc trạng thái. Trải nghiệm hệ thống học động từ tích hợp đầy đủ từ phân loại, quy tắc chia thì đến luyện tập tương tác.
+              Động từ là linh hồn của câu, diễn tả hành động hoặc trạng thái. Trải nghiệm hệ thống học động từ tích hợp đầy đủ từ phân loại, quy tắc chia thì đến sân chơi tương tác và luyện tập.
             </p>
           </div>
 
@@ -2358,6 +2453,7 @@ export default function PronunciationPage() {
             {[
               { id: 'list' as const, label: 'Bảng động từ 3 thể' },
               { id: 'types' as const, label: 'Phân loại: Action & Thinking' },
+              { id: 'playground' as const, label: 'Sân chơi chia động từ (Playground)' },
               { id: 'conjugation' as const, label: 'Quy tắc chia động từ' },
               { id: 'practice' as const, label: 'Luyện tập chia động từ' }
             ].map(s => (
@@ -2380,8 +2476,8 @@ export default function PronunciationPage() {
           {verbSection === 'list' && (
             <div className="space-y-4">
               {/* Filter and Search */}
-              <div className="flex flex-wrap gap-2 justify-between items-center bg-white p-4 border border-slate-200 rounded-2xl">
-                <div className="flex gap-2">
+              <div className="flex flex-wrap gap-3 justify-between items-center bg-white p-4 border border-slate-200 rounded-2xl">
+                <div className="flex flex-wrap gap-2 items-center">
                   {(['all', 'irregular', 'regular'] as const).map(f => (
                     <button
                       key={f}
@@ -2397,8 +2493,25 @@ export default function PronunciationPage() {
                     </button>
                   ))}
                 </div>
+
+                {/* Search box */}
+                <div className="relative w-full sm:w-64">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                  <input
+                    type="text"
+                    value={verbSearchQuery}
+                    onChange={(e) => setVerbSearchQuery(e.target.value)}
+                    placeholder="Tìm kiếm động từ (Ví dụ: go, think)..."
+                    className="w-full pl-9 pr-4 py-2 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-amber-500/25 placeholder-slate-400 text-slate-800"
+                  />
+                </div>
+
                 <div className="text-xs text-slate-400 font-bold">
-                  Số lượng: {COMMON_VERBS.filter(v => verbFilter === 'all' || v.type === verbFilter).length} từ
+                  Số lượng: {COMMON_VERBS.filter(v => {
+                    const matchesFilter = verbFilter === 'all' || v.type === verbFilter;
+                    const matchesSearch = v.verb.toLowerCase().includes(verbSearchQuery.toLowerCase()) || v.vi.toLowerCase().includes(verbSearchQuery.toLowerCase());
+                    return matchesFilter && matchesSearch;
+                  }).length} từ
                 </div>
               </div>
 
@@ -2408,16 +2521,20 @@ export default function PronunciationPage() {
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="bg-slate-50 border-b border-slate-200">
-                        <th className="text-left px-3 sm:px-4 py-3 font-black text-slate-600 text-xs uppercase tracking-wider">V1 (Base)</th>
-                        <th className="text-left px-3 sm:px-4 py-3 font-black text-slate-600 text-xs uppercase tracking-wider">V2 (Past)</th>
-                        <th className="text-left px-3 sm:px-4 py-3 font-black text-slate-600 text-xs uppercase tracking-wider">V3 (P.P.)</th>
-                        <th className="text-left px-3 sm:px-4 py-3 font-black text-slate-600 text-xs uppercase tracking-wider hidden sm:table-cell">IPA</th>
-                        <th className="text-left px-3 sm:px-4 py-3 font-black text-slate-600 text-xs uppercase tracking-wider">Nghĩa</th>
-                        <th className="text-center px-2 py-3 font-black text-slate-600 text-xs uppercase tracking-wider">Nghe</th>
+                        <th className="text-left px-3 sm:px-4 py-3 font-black text-slate-600 text-xs uppercase tracking-wider font-sans">V1 (Base)</th>
+                        <th className="text-left px-3 sm:px-4 py-3 font-black text-slate-600 text-xs uppercase tracking-wider font-sans">V2 (Past)</th>
+                        <th className="text-left px-3 sm:px-4 py-3 font-black text-slate-600 text-xs uppercase tracking-wider font-sans">V3 (P.P.)</th>
+                        <th className="text-left px-3 sm:px-4 py-3 font-black text-slate-600 text-xs uppercase tracking-wider font-sans hidden sm:table-cell">IPA</th>
+                        <th className="text-left px-3 sm:px-4 py-3 font-black text-slate-600 text-xs uppercase tracking-wider font-sans">Nghĩa</th>
+                        <th className="text-center px-2 py-3 font-black text-slate-600 text-xs uppercase tracking-wider font-sans">Nghe</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {COMMON_VERBS.filter(v => verbFilter === 'all' || v.type === verbFilter).map((v, i) => (
+                      {COMMON_VERBS.filter(v => {
+                        const matchesFilter = verbFilter === 'all' || v.type === verbFilter;
+                        const matchesSearch = v.verb.toLowerCase().includes(verbSearchQuery.toLowerCase()) || v.vi.toLowerCase().includes(verbSearchQuery.toLowerCase());
+                        return matchesFilter && matchesSearch;
+                      }).map((v, i) => (
                         <tr key={i} className="border-b border-slate-100 hover:bg-amber-50/30 transition-colors">
                           <td className="px-3 sm:px-4 py-3 font-black text-slate-800">{v.verb}</td>
                           <td className="px-3 sm:px-4 py-3 font-semibold text-orange-700">{v.v2}</td>
@@ -2427,7 +2544,7 @@ export default function PronunciationPage() {
                           <td className="px-2 py-3 text-center">
                             <button
                               onClick={() => speak(v.verb)}
-                              className="w-8 h-8 rounded-full bg-amber-50 hover:bg-amber-500 text-amber-500 hover:text-white flex items-center justify-center transition-all cursor-pointer mx-auto border border-amber-100"
+                              className="w-8 h-8 rounded-full bg-amber-55 hover:bg-amber-500 text-amber-500 hover:text-white flex items-center justify-center transition-all cursor-pointer mx-auto border border-amber-100"
                             >
                               <Volume2 className="w-3.5 h-3.5" />
                             </button>
@@ -2446,12 +2563,12 @@ export default function PronunciationPage() {
             <div className="space-y-6">
               {/* Dynamic vs. Stative / Action vs. Thinking Explanation */}
               <div className="premium-card p-5 bg-white border border-slate-200 rounded-[1.5rem] space-y-4">
-                <h4 className="text-sm font-black text-amber-800 uppercase tracking-wider border-b border-slate-100 pb-3 flex items-center gap-2">
+                <h4 className="text-sm font-black text-amber-805 uppercase tracking-wider border-b border-slate-100 pb-3 flex items-center gap-2">
                   <span>🧠 Action Verbs vs. Thinking (Stative) Verbs</span>
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="p-4 bg-amber-50/50 rounded-2xl border border-amber-100 space-y-2">
-                    <h5 className="text-xs font-black text-amber-800 uppercase tracking-widest">🏃‍♂️ Động từ Hành động (Action / Dynamic)</h5>
+                    <h5 className="text-xs font-black text-amber-800 uppercase tracking-widest flex items-center gap-1"><Zap className="w-3.5 h-3.5" /> Động từ Hành động (Action / Dynamic)</h5>
                     <p className="text-xs text-slate-600 font-semibold leading-relaxed">
                       Diễn tả hành động thể chất hoặc tinh thần có thể nhìn thấy, đo lường hoặc thực hiện trong một khoảng thời gian cụ thể.
                     </p>
@@ -2460,7 +2577,7 @@ export default function PronunciationPage() {
                     </p>
                   </div>
                   <div className="p-4 bg-orange-50/50 rounded-2xl border border-orange-100 space-y-2">
-                    <h5 className="text-xs font-black text-orange-850 uppercase tracking-widest">💭 Động từ Tư duy & Trạng thái (Thinking / Stative)</h5>
+                    <h5 className="text-xs font-black text-orange-850 uppercase tracking-widest flex items-center gap-1"><BookOpen className="w-3.5 h-3.5" /> Động từ Tư duy & Trạng thái (Thinking / Stative)</h5>
                     <p className="text-xs text-slate-600 font-semibold leading-relaxed">
                       Diễn tả trạng thái nhận thức, cảm xúc, suy nghĩ hoặc mối quan hệ sở hữu.
                     </p>
@@ -2472,7 +2589,7 @@ export default function PronunciationPage() {
               </div>
 
               {/* Side-by-side Grid lists */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Action Verbs List */}
                 <div className="premium-card p-5 bg-white border border-slate-200 rounded-[1.5rem] space-y-4">
                   <h4 className="text-sm font-black text-amber-800 flex items-center gap-2 border-b border-slate-100 pb-3">
@@ -2483,7 +2600,7 @@ export default function PronunciationPage() {
                       <div key={i} className="p-3 bg-amber-50/40 rounded-xl border border-amber-100/50 flex items-center justify-between gap-3">
                         <div className="space-y-1">
                           <div className="flex flex-wrap items-center gap-2">
-                            <span className="text-xs font-black text-amber-800">{v.word}</span>
+                            <span className="text-xs font-black text-amber-850">{v.word}</span>
                             <span className="text-[10px] text-slate-400 font-mono font-bold">{v.ipa}</span>
                             <span className="text-[10px] bg-amber-100 text-amber-900 px-1.5 py-0.5 rounded font-black">{v.vi}</span>
                           </div>
@@ -2501,33 +2618,80 @@ export default function PronunciationPage() {
                   </div>
                 </div>
 
-                {/* Thinking Verbs List */}
+                {/* Stative Categories (Accordion/Grid style) */}
                 <div className="premium-card p-5 bg-white border border-slate-200 rounded-[1.5rem] space-y-4">
                   <h4 className="text-sm font-black text-orange-850 flex items-center gap-2 border-b border-slate-100 pb-3">
-                    💭 Ví Dụ Động Từ Tư Duy (Thinking Verbs)
+                    💭 Phân Loại Động Từ Trạng Thái (Stative Verbs)
                   </h4>
-                  <div className="space-y-3">
-                    {THINKING_VERBS.map((v, i) => (
-                      <div key={i} className="p-3 bg-orange-50/40 rounded-xl border border-orange-100/50 flex items-center justify-between gap-3">
-                        <div className="space-y-1">
-                          <div className="flex flex-wrap items-center gap-2">
-                            <span className="text-xs font-black text-orange-850">{v.word}</span>
-                            <span className="text-[10px] text-slate-400 font-mono font-bold">{v.ipa}</span>
-                            <span className="text-[10px] bg-orange-100 text-orange-900 px-1.5 py-0.5 rounded font-black">{v.vi}</span>
-                          </div>
-                          <p className="text-xs text-slate-600 font-medium italic">"{v.ex}"</p>
-                          <p className="text-[10px] text-slate-400 font-bold">💡 {v.exVi}</p>
-                          <p className="text-[10px] text-rose-500 font-semibold italic">{v.note}</p>
+                  <p className="text-xs text-slate-400 font-semibold leading-relaxed">
+                    Động từ trạng thái được chia làm 4 nhóm chính. Tránh dùng dạng tiếp diễn cho các nhóm này:
+                  </p>
+                  <div className="space-y-4">
+                    {STATIVE_CATEGORIES.map((cat, idx) => (
+                      <div key={idx} className="space-y-2 border border-slate-100 rounded-2xl p-3 bg-orange-50/10">
+                        <h5 className="text-xs font-black text-orange-950 flex items-center gap-1.5 border-b border-orange-100/30 pb-1">
+                          {cat.title}
+                        </h5>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                          {cat.verbs.map((v, vidx) => (
+                            <div
+                              key={vidx}
+                              onClick={() => speak(v.word + ". " + v.ex)}
+                              className="p-2 bg-white border border-slate-100 hover:border-orange-300 hover:bg-orange-50/20 rounded-xl transition-all cursor-pointer flex flex-col justify-between gap-1 group"
+                            >
+                              <div className="flex items-center justify-between">
+                                <span className="text-xs font-black text-orange-900">{v.word}</span>
+                                <Volume2 className="w-3.5 h-3.5 text-slate-400 group-hover:text-orange-500 transition-colors" />
+                              </div>
+                              <span className="text-[10px] text-slate-400 font-bold">{v.ipa}</span>
+                              <span className="text-[9px] bg-orange-50 text-orange-800 px-1 py-0.5 rounded font-black self-start">{v.vi}</span>
+                              <span className="text-[9px] text-slate-400 italic font-medium mt-1 truncate">"{v.ex}"</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Dual-Nature Verbs */}
+              <div className="premium-card p-5 bg-white border border-slate-200 rounded-[1.5rem] space-y-4">
+                <h4 className="text-sm font-black text-slate-700 uppercase tracking-wider border-b border-slate-100 pb-3 flex items-center gap-2">
+                  <span>🌓 Động Từ Mang Hai Bản Chất (Stative & Dynamic Dual Nature)</span>
+                </h4>
+                <p className="text-xs text-slate-500 font-semibold leading-relaxed">
+                  Một số động từ thay đổi nghĩa hoàn toàn khi được chuyển từ trạng thái tĩnh (Stative) sang động (Dynamic). Xem so sánh chi tiết:
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {DUAL_NATURE_VERBS.map((dv, idx) => (
+                    <div key={idx} className="p-4 rounded-2xl border border-slate-200 bg-slate-50/50 space-y-3 hover:border-amber-400 transition-colors">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm font-black text-amber-700 uppercase">{dv.verb}</span>
+                          <span className="text-[11px] text-slate-400 font-mono font-bold">{dv.ipa}</span>
                         </div>
                         <button
-                          onClick={() => speak(v.word + ". " + v.ex)}
-                          className="w-8 h-8 rounded-full bg-white border border-orange-200 hover:bg-orange-500 text-orange-500 hover:text-white flex items-center justify-center flex-shrink-0 cursor-pointer transition-all"
+                          onClick={() => speak(dv.verb + ". " + dv.stativeUsage + ". " + dv.dynamicUsage)}
+                          className="w-7 h-7 rounded-full bg-white border border-slate-200 text-slate-450 hover:text-amber-500 hover:border-amber-500 flex items-center justify-center cursor-pointer transition-colors"
                         >
                           <Volume2 className="w-3.5 h-3.5" />
                         </button>
                       </div>
-                    ))}
-                  </div>
+                      <div className="space-y-2 text-xs">
+                        <div className="p-2.5 bg-white border border-slate-100 rounded-xl space-y-1">
+                          <p className="font-black text-slate-400 uppercase tracking-widest text-[8px]">🔒 Nghĩa Tĩnh (Stative)</p>
+                          <p className="font-bold text-slate-805">"{dv.stativeUsage}"</p>
+                          <p className="text-slate-500 font-medium">{dv.stativeVi}</p>
+                        </div>
+                        <div className="p-2.5 bg-amber-50/30 border border-amber-100 rounded-xl space-y-1">
+                          <p className="font-black text-amber-700 uppercase tracking-widest text-[8px]">⚡ Nghĩa Động (Dynamic)</p>
+                          <p className="font-bold text-slate-805">"{dv.dynamicUsage}"</p>
+                          <p className="text-amber-700 font-semibold">{dv.dynamicVi}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
 
@@ -2554,7 +2718,158 @@ export default function PronunciationPage() {
             </div>
           )}
 
-          {/* SECTION 3: CONJUGATION RULES & MODELS */}
+          {/* SECTION 3: CONJUGATION PLAYGROUND */}
+          {verbSection === 'playground' && (
+            <div className="premium-card p-5 sm:p-6 bg-white border border-slate-200 rounded-[1.5rem] space-y-6">
+              <div>
+                <span className="text-[10px] font-black uppercase tracking-widest text-amber-600 bg-amber-50 px-3 py-1 rounded-full border border-amber-100">PLAYGROUND</span>
+                <h2 className="text-xl font-black text-slate-805 mt-2">Sân chơi chia động từ tương tác</h2>
+                <p className="text-xs text-slate-500 mt-1">Chọn Động từ, Chủ ngữ và Thì để xem dạng chia tương tương ứng ở các thể Khẳng định, Phủ định và Nghi vấn.</p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                {/* Select Verb */}
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-wider block">1. Chọn Động Từ</label>
+                  <select
+                    value={playgroundVerb}
+                    onChange={(e) => setPlaygroundVerb(e.target.value)}
+                    className="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-amber-500/25"
+                  >
+                    {[
+                      { val: 'be', lbl: 'be (thì, là, ở)' },
+                      { val: 'have', lbl: 'have (có)' },
+                      { val: 'do', lbl: 'do (làm)' },
+                      { val: 'go', lbl: 'go (đi)' },
+                      { val: 'make', lbl: 'make (làm, tạo)' },
+                      { val: 'know', lbl: 'know (biết - Stative)' },
+                      { val: 'think', lbl: 'think (nghĩ - Stative/Dynamic)' },
+                      { val: 'see', lbl: 'see (nhìn thấy - Stative/Dynamic)' },
+                      { val: 'run', lbl: 'run (chạy)' },
+                      { val: 'speak', lbl: 'speak (nói)' },
+                      { val: 'work', lbl: 'work (làm việc)' },
+                      { val: 'play', lbl: 'play (chơi)' },
+                      { val: 'study', lbl: 'study (học)' },
+                      { val: 'write', lbl: 'write (viết)' },
+                      { val: 'eat', lbl: 'eat (ăn)' },
+                      { val: 'drink', lbl: 'drink (uống)' }
+                    ].map(item => (
+                      <option key={item.val} value={item.val}>{item.lbl}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Select Subject */}
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-wider block">2. Chọn Chủ Ngữ</label>
+                  <select
+                    value={playgroundSubject}
+                    onChange={(e) => setPlaygroundSubject(e.target.value)}
+                    className="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-amber-500/25"
+                  >
+                    {['I', 'You', 'He', 'She', 'It', 'We', 'They'].map(sub => (
+                      <option key={sub} value={sub}>{sub} (Ngôi {sub === 'I' ? '1 số ít' : ['He', 'She', 'It'].includes(sub) ? '3 số ít' : ['We', 'They'].includes(sub) ? 'số nhiều' : '2'})</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Select Tense */}
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-wider block">3. Chọn Thì (Tense)</label>
+                  <select
+                    value={playgroundTense}
+                    onChange={(e) => setPlaygroundTense(e.target.value)}
+                    className="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-amber-500/25"
+                  >
+                    {[
+                      'Present Simple',
+                      'Present Continuous',
+                      'Past Simple',
+                      'Present Perfect',
+                      'Future Simple'
+                    ].map(t => (
+                      <option key={t} value={t}>{t === 'Present Simple' ? 'Present Simple (Hiện tại đơn)' : t === 'Present Continuous' ? 'Present Continuous (Hiện tại tiếp diễn)' : t === 'Past Simple' ? 'Past Simple (Quá khứ đơn)' : t === 'Present Perfect' ? 'Present Perfect (Hiện tại hoàn thành)' : 'Future Simple (Tương lai đơn)'}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {/* Conjugation results */}
+              {(() => {
+                const res = conjugateVerb(playgroundVerb, playgroundSubject, playgroundTense);
+                return (
+                  <div className="space-y-4 pt-2">
+                    {/* Stative warning if any */}
+                    {res.isStativeWarning && (
+                      <div className="p-4 bg-rose-50 border border-rose-100 rounded-2xl flex items-start gap-2.5 text-rose-800 text-xs font-semibold">
+                        <Info className="w-4 h-4 text-rose-500 flex-shrink-0 mt-0.5" />
+                        <p className="leading-relaxed">
+                          ⚠️ Cảnh báo Động từ Trạng thái: <strong>"{playgroundVerb}"</strong> là động từ mô tả trạng thái nhận thức hoặc cảm giác. Trong tiếng Anh chuẩn, ta rất hiếm khi sử dụng ở thể tiếp diễn (Continuous) trừ những ngữ cảnh đặc biệt chỉ hành động tạm thời hoặc chuyển đổi trạng thái.
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Positive, Negative, Question Cards */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {/* Positive Card */}
+                      <div className="p-4 bg-emerald-50/40 border border-emerald-100/50 rounded-2xl space-y-2 flex flex-col justify-between">
+                        <div>
+                          <span className="text-[10px] font-black text-emerald-700 bg-emerald-105 px-2.5 py-0.5 rounded-full uppercase tracking-wider">(+) Khẳng Định</span>
+                          <p className="text-base sm:text-lg font-black text-slate-800 mt-2 select-all">"{res.positive}"</p>
+                        </div>
+                        <button
+                          onClick={() => speak(res.positive)}
+                          className="mt-3 flex items-center justify-center gap-1.5 px-3 py-1.5 bg-white border border-emerald-200 hover:bg-emerald-500 hover:text-white text-emerald-700 rounded-xl text-xs font-bold transition-all cursor-pointer self-start"
+                        >
+                          <Volume2 className="w-3.5 h-3.5" /> Nghe phát âm
+                        </button>
+                      </div>
+
+                      {/* Negative Card */}
+                      <div className="p-4 bg-rose-50/40 border border-rose-100/50 rounded-2xl space-y-2 flex flex-col justify-between">
+                        <div>
+                          <span className="text-[10px] font-black text-rose-700 bg-rose-105 px-2.5 py-0.5 rounded-full uppercase tracking-wider">(-) Phủ Định</span>
+                          <p className="text-base sm:text-lg font-black text-slate-800 mt-2 select-all">"{res.negative}"</p>
+                        </div>
+                        <button
+                          onClick={() => speak(res.negative)}
+                          className="mt-3 flex items-center justify-center gap-1.5 px-3 py-1.5 bg-white border border-rose-200 hover:bg-rose-500 hover:text-white text-rose-700 rounded-xl text-xs font-bold transition-all cursor-pointer self-start"
+                        >
+                          <Volume2 className="w-3.5 h-3.5" /> Nghe phát âm
+                        </button>
+                      </div>
+
+                      {/* Question Card */}
+                      <div className="p-4 bg-sky-50/40 border border-sky-100/50 rounded-2xl space-y-2 flex flex-col justify-between">
+                        <div>
+                          <span className="text-[10px] font-black text-sky-700 bg-sky-105 px-2.5 py-0.5 rounded-full uppercase tracking-wider">(?) Nghi Vấn</span>
+                          <p className="text-base sm:text-lg font-black text-slate-805 mt-2 select-all">"{res.question}"</p>
+                        </div>
+                        <button
+                          onClick={() => speak(res.question)}
+                          className="mt-3 flex items-center justify-center gap-1.5 px-3 py-1.5 bg-white border border-sky-200 hover:bg-sky-500 hover:text-white text-sky-700 rounded-xl text-xs font-bold transition-all cursor-pointer self-start"
+                        >
+                          <Volume2 className="w-3.5 h-3.5" /> Nghe phát âm
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Explanation */}
+                    <div className="p-4 bg-slate-50 border border-slate-100 rounded-2xl space-y-1.5">
+                      <h4 className="text-xs font-black text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                        <Info className="w-4 h-4 text-amber-500" /> Giải thích chi tiết:
+                      </h4>
+                      <p className="text-xs text-slate-650 font-semibold leading-relaxed whitespace-pre-line">
+                        {res.explanation}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })()}
+            </div>
+          )}
+
+          {/* SECTION 4: CONJUGATION RULES & MODELS */}
           {verbSection === 'conjugation' && (
             <div className="space-y-6">
               {/* Spelling Rules Cards */}
@@ -2627,7 +2942,7 @@ export default function PronunciationPage() {
                         <div key={idx} className="p-2.5 bg-slate-50 rounded-lg text-xs space-y-1 border border-slate-100">
                           <p className="font-black text-slate-700 text-[10px] uppercase tracking-wider">{t.tense}</p>
                           {t.note ? (
-                            <p className="text-[10px] text-rose-500 font-bold leading-normal">{t.note}</p>
+                            <p className="text-[10px] text-rose-505 font-black leading-normal">{t.note}</p>
                           ) : (
                             <>
                               <p className="text-slate-500 font-medium">I / They: <span className="font-bold text-slate-800">{t.i}</span></p>
@@ -2643,7 +2958,7 @@ export default function PronunciationPage() {
             </div>
           )}
 
-          {/* SECTION 4: PRACTICE INTERACTIVE QUIZ */}
+          {/* SECTION 5: PRACTICE INTERACTIVE QUIZ */}
           {verbSection === 'practice' && (
             <div className="premium-card p-6 bg-white border border-slate-200 rounded-[1.5rem] space-y-6">
               <div>
@@ -2689,11 +3004,11 @@ export default function PronunciationPage() {
                             "p-4 rounded-xl border-2 text-sm font-black text-center transition-all cursor-pointer select-none",
                             hasAnswered
                               ? isCorrect
-                                ? "bg-emerald-50 border-emerald-500 text-emerald-700"
+                                ? "bg-emerald-55 border-emerald-500 text-emerald-700 font-black"
                                 : isSelected
-                                  ? "bg-rose-50 border-rose-500 text-rose-700"
-                                  : "bg-white border-slate-200 text-slate-400"
-                              : "bg-white border-slate-200 text-slate-700 hover:border-amber-500 hover:bg-amber-50/30 active:scale-95"
+                                  ? "bg-rose-55 border-rose-500 text-rose-700 font-black"
+                                  : "bg-white border-slate-200 text-slate-400 font-bold"
+                              : "bg-white border-slate-200 text-slate-700 hover:border-amber-500 hover:bg-amber-50/30 active:scale-95 font-bold"
                           )}
                         >
                           {opt}
@@ -2749,7 +3064,7 @@ export default function PronunciationPage() {
                   <button
                     onClick={() => {
                       const shuffled = [...VERB_QUIZ_QUESTIONS].sort(() => Math.random() - 0.5);
-                      setVerbQuizList(shuffled.slice(0, 5));
+                      setVerbQuizList(shuffled.slice(0, 10));
                       setVerbQuizIndex(0);
                       setVerbSelectedAnswer(null);
                       setVerbQuizScore(0);

@@ -20,16 +20,113 @@ export const COMMON_VERBS = [
   { verb: 'eat', v2: 'ate', v3: 'eaten', ipa: '/iːt/', vi: 'ăn', type: 'irregular', example: 'We eat lunch at noon.' },
   { verb: 'drink', v2: 'drank', v3: 'drunk', ipa: '/drɪŋk/', vi: 'uống', type: 'irregular', example: 'Drink some water.' },
   { verb: 'run', v2: 'ran', v3: 'run', ipa: '/rʌn/', vi: 'chạy', type: 'irregular', example: 'He runs every morning.' },
+  { verb: 'speak', v2: 'spoke', v3: 'spoken', ipa: '/spiːk/', vi: 'nói', type: 'irregular', example: 'She speaks English.' },
+  { verb: 'buy', v2: 'bought', v3: 'bought', ipa: '/baɪ/', vi: 'mua', type: 'irregular', example: 'I bought a new phone.' },
+  { verb: 'teach', v2: 'taught', v3: 'taught', ipa: '/tiːtʃ/', vi: 'dạy học', type: 'irregular', example: 'He teaches math.' },
+  { verb: 'learn', v2: 'learnt/learned', v3: 'learnt/learned', ipa: '/lɜːn/', vi: 'học', type: 'irregular', example: 'I learn new words daily.' },
+  { verb: 'sleep', v2: 'slept', v3: 'slept', ipa: '/sliːp/', vi: 'ngủ', type: 'irregular', example: 'The baby sleeps well.' },
+  { verb: 'arise', v2: 'arose', v3: 'arisen', ipa: '/əˈraɪz/', vi: 'nảy sinh, phát sinh', type: 'irregular', example: 'New problems arose.' },
+  { verb: 'awake', v2: 'awoke', v3: 'awoken', ipa: '/əˈweɪk/', vi: 'đánh thức, tỉnh giấc', type: 'irregular', example: 'I awoke at dawn.' },
+  { verb: 'beat', v2: 'beat', v3: 'beaten', ipa: '/biːt/', vi: 'đập, đánh bại', type: 'irregular', example: 'We beat the other team.' },
+  { verb: 'become', v2: 'became', v3: 'become', ipa: '/bɪˈkʌm/', vi: 'trở nên', type: 'irregular', example: 'She became a doctor.' },
+  { verb: 'begin', v2: 'began', v3: 'begun', ipa: '/bɪˈɡɪn/', vi: 'bắt đầu', type: 'irregular', example: 'The class began at 8.' },
+  { verb: 'bend', v2: 'bent', v3: 'bent', ipa: '/bend/', vi: 'uốn cong, cúi xuống', type: 'irregular', example: 'He bent the metal rod.' },
+  { verb: 'bet', v2: 'bet', v3: 'bet', ipa: '/bet/', vi: 'cá cược', type: 'irregular', example: 'I bet ten dollars on it.' },
+  { verb: 'bite', v2: 'bit', v3: 'bitten', ipa: '/baɪt/', vi: 'cắn', type: 'irregular', example: 'The dog bit the stranger.' },
+  { verb: 'bleed', v2: 'bled', v3: 'bled', ipa: '/bliːd/', vi: 'chảy máu', type: 'irregular', example: 'His finger is bleeding.' },
+  { verb: 'blow', v2: 'blew', v3: 'blown', ipa: '/bləʊ/', vi: 'thổi', type: 'irregular', example: 'The wind blew hard.' },
+  { verb: 'break', v2: 'broke', v3: 'broken', ipa: '/breɪk/', vi: 'làm vỡ, gãy', type: 'irregular', example: 'He broke the glass vase.' },
+  { verb: 'bring', v2: 'brought', v3: 'brought', ipa: '/brɪŋ/', vi: 'mang lại, mang theo', type: 'irregular', example: 'Please bring me some water.' },
+  { verb: 'build', v2: 'built', v3: 'built', ipa: '/bɪld/', vi: 'xây dựng', type: 'irregular', example: 'They built a new house.' },
+  { verb: 'burn', v2: 'burnt/burned', v3: 'burnt/burned', ipa: '/bɜːn/', vi: 'đốt, cháy', type: 'irregular', example: 'The wood burned quickly.' },
+  { verb: 'burst', v2: 'burst', v3: 'burst', ipa: '/bɜːst/', vi: 'nổ tung, bùng phát', type: 'irregular', example: 'The balloon burst.' },
+  { verb: 'catch', v2: 'caught', v3: 'caught', ipa: '/kætʃ/', vi: 'bắt lấy, đuổi kịp', type: 'irregular', example: 'Catch the ball!' },
+  { verb: 'choose', v2: 'chose', v3: 'chosen', ipa: '/tʃuːz/', vi: 'chọn lựa', type: 'irregular', example: 'Choose your favorite color.' },
+  { verb: 'cling', v2: 'clung', v3: 'clung', ipa: '/klɪŋ/', vi: 'bám lấy, dính chặt', type: 'irregular', example: 'The child clung to her mother.' },
+  { verb: 'cost', v2: 'cost', v3: 'cost', ipa: '/kɒst/', vi: 'trị giá, tốn kém', type: 'irregular', example: 'The book costs ten dollars.' },
+  { verb: 'creep', v2: 'crept', v3: 'crept', ipa: '/kriːp/', vi: 'bò, trườn, len lỏi', type: 'irregular', example: 'A cat crept silently.' },
+  { verb: 'cut', v2: 'cut', v3: 'cut', ipa: '/kʌt/', vi: 'cắt', type: 'irregular', example: 'She cut the paper.' },
+  { verb: 'deal', v2: 'dealt', v3: 'dealt', ipa: '/diːl/', vi: 'giao dịch, giải quyết', type: 'irregular', example: 'We dealt with the problem.' },
+  { verb: 'dig', v2: 'dug', v3: 'dug', ipa: '/dɪɡ/', vi: 'đào', type: 'irregular', example: 'He dug a deep hole.' },
+  { verb: 'draw', v2: 'drew', v3: 'drawn', ipa: '/drɔː/', vi: 'vẽ, thu hút', type: 'irregular', example: 'She drew a landscape.' },
+  { verb: 'dream', v2: 'dreamt/dreamed', v3: 'dreamt/dreamed', ipa: '/driːm/', vi: 'mơ thấy', type: 'irregular', example: 'I dreamed of you.' },
+  { verb: 'drive', v2: 'drove', v3: 'driven', ipa: '/draɪv/', vi: 'lái xe', type: 'irregular', example: 'He drives to work.' },
+  { verb: 'fall', v2: 'fell', v3: 'fallen', ipa: '/fɔːl/', vi: 'rơi, ngã', type: 'irregular', example: 'The leaves fell down.' },
+  { verb: 'feed', v2: 'fed', v3: 'fed', ipa: '/fiːd/', vi: 'cho ăn', type: 'irregular', example: 'Feed the dog.' },
+  { verb: 'feel', v2: 'felt', v3: 'felt', ipa: '/fiːl/', vi: 'cảm thấy', type: 'irregular', example: 'I feel happy today.' },
+  { verb: 'fight', v2: 'fought', v3: 'fought', ipa: '/faɪt/', vi: 'chiến đấu, cãi nhau', type: 'irregular', example: 'They fought for freedom.' },
+  { verb: 'flee', v2: 'fled', v3: 'fled', ipa: '/fliː/', vi: 'chạy trốn, lánh nạn', type: 'irregular', example: 'The enemy fled.' },
+  { verb: 'fly', v2: 'flew', v3: 'flown', ipa: '/flaɪ/', vi: 'bay', type: 'irregular', example: 'Birds fly south.' },
+  { verb: 'forget', v2: 'forgot', v3: 'forgotten', ipa: '/fəˈɡet/', vi: 'quên', type: 'irregular', example: 'Don\'t forget your keys.' },
+  { verb: 'forgive', v2: 'forgave', v3: 'forgiven', ipa: '/fəˈɡɪv/', vi: 'tha thứ', type: 'irregular', example: 'Forgive me for my mistakes.' },
+  { verb: 'freeze', v2: 'froze', v3: 'frozen', ipa: '/friːz/', vi: 'đóng băng, đông cứng', type: 'irregular', example: 'Water freezes at zero degrees.' },
+  { verb: 'grow', v2: 'grew', v3: 'grown', ipa: '/ɡrəʊ/', vi: 'mọc, phát triển', type: 'irregular', example: 'Plants grow fast in summer.' },
+  { verb: 'hang', v2: 'hung', v3: 'hung', ipa: '/hæŋ/', vi: 'treo, móc', type: 'irregular', example: 'Hang your coat here.' },
+  { verb: 'hear', v2: 'heard', v3: 'heard', ipa: '/hɪər/', vi: 'nghe thấy', type: 'irregular', example: 'Did you hear that sound?' },
+  { verb: 'hide', v2: 'hid', v3: 'hidden', ipa: '/haɪd/', vi: 'trốn, giấu', type: 'irregular', example: 'Hide behind the tree.' },
+  { verb: 'hit', v2: 'hit', v3: 'hit', ipa: '/hɪt/', vi: 'đánh, va chạm', type: 'irregular', example: 'The ball hit the window.' },
+  { verb: 'hold', v2: 'held', v3: 'held', ipa: '/həʊld/', vi: 'cầm, nắm, tổ chức', type: 'irregular', example: 'Hold my hand.' },
+  { verb: 'hurt', v2: 'hurt', v3: 'hurt', ipa: '/hɜːt/', vi: 'làm đau, tổn thương', type: 'irregular', example: 'My shoulder hurts.' },
+  { verb: 'keep', v2: 'kept', v3: 'kept', ipa: '/kiːp/', vi: 'giữ, tiếp tục', type: 'irregular', example: 'Keep going straight.' },
+  { verb: 'kneel', v2: 'knelt', v3: 'knelt', ipa: '/niːl/', vi: 'quỳ gối', type: 'irregular', example: 'He knelt on one knee.' },
+  { verb: 'lay', v2: 'laid', v3: 'laid', ipa: '/leɪ/', vi: 'đặt, để, đẻ trứng', type: 'irregular', example: 'Lay the map on the table.' },
+  { verb: 'lead', v2: 'led', v3: 'led', ipa: '/liːd/', vi: 'dẫn dắt, lãnh đạo', type: 'irregular', example: 'She led us through the forest.' },
+  { verb: 'lean', v2: 'leant/leaned', v3: 'leant/leaned', ipa: '/liːn/', vi: 'tựa, tựa vào', type: 'irregular', example: 'Don\'t lean against the wall.' },
+  { verb: 'leap', v2: 'leapt/leaped', v3: 'leapt/leaped', ipa: '/liːp/', vi: 'nhảy vọt, nhảy qua', type: 'irregular', example: 'Look before you leap.' },
+  { verb: 'leave', v2: 'left', v3: 'left', ipa: '/liːv/', vi: 'rời đi, bỏ lại', type: 'irregular', example: 'I left early.' },
+  { verb: 'lend', v2: 'lent', v3: 'lent', ipa: '/lend/', vi: 'cho mượn', type: 'irregular', example: 'Will you lend me a pen?' },
+  { verb: 'let', v2: 'let', v3: 'let', ipa: '/let/', vi: 'cho phép, để cho', type: 'irregular', example: 'Let me do this.' },
+  { verb: 'lie', v2: 'lay', v3: 'lain', ipa: '/laɪ/', vi: 'nằm', type: 'irregular', example: 'Lie down on the bed.' },
+  { verb: 'light', v2: 'lit/lighted', v3: 'lit/lighted', ipa: '/laɪt/', vi: 'thắp sáng, thắp đèn', type: 'irregular', example: 'She lit the candle.' },
+  { verb: 'lose', v2: 'lost', v3: 'lost', ipa: '/luːz/', vi: 'mất, lạc, thua', type: 'irregular', example: 'I lost my keys.' },
+  { verb: 'meet', v2: 'met', v3: 'met', ipa: '/miːt/', vi: 'gặp gỡ', type: 'irregular', example: 'Nice to meet you.' },
+  { verb: 'pay', v2: 'paid', v3: 'paid', ipa: '/peɪ/', vi: 'thanh toán, trả tiền', type: 'irregular', example: 'Pay at the counter.' },
+  { verb: 'put', v2: 'put', v3: 'put', ipa: '/pʊt/', vi: 'đặt, để', type: 'irregular', example: 'Put the book down.' },
+  { verb: 'ride', v2: 'rode', v3: 'ridden', ipa: '/raɪd/', vi: 'cưỡi (ngựa), lái (xe)', type: 'irregular', example: 'Ride a bicycle.' },
+  { verb: 'ring', v2: 'rang', v3: 'rung', ipa: '/rɪŋ/', vi: 'reo, rung chuông', type: 'irregular', example: 'The phone rang.' },
+  { verb: 'rise', v2: 'rose', v3: 'risen', ipa: '/raɪz/', vi: 'mọc lên, tăng lên', type: 'irregular', example: 'The sun rises.' },
+  { verb: 'sell', v2: 'sold', v3: 'sold', ipa: '/sel/', vi: 'bán', type: 'irregular', example: 'We sell organic fruits.' },
+  { verb: 'send', v2: 'sent', v3: 'sent', ipa: '/send/', vi: 'gửi', type: 'irregular', example: 'Send an email.' },
+  { verb: 'set', v2: 'set', v3: 'set', ipa: '/set/', vi: 'thiết lập, cài đặt', type: 'irregular', example: 'Set the timer.' },
+  { verb: 'shake', v2: 'shook', v3: 'shaken', ipa: '/ʃeɪk/', vi: 'rung lắc, bắt tay', type: 'irregular', example: 'Shake hands with him.' },
+  { verb: 'shine', v2: 'shone', v3: 'shone', ipa: '/ʃaɪn/', vi: 'chiếu sáng, tỏa sáng', type: 'irregular', example: 'The stars shine.' },
+  { verb: 'shoot', v2: 'shot', v3: 'shot', ipa: '/ʃuːt/', vi: 'bắn', type: 'irregular', example: 'Don\'t shoot.' },
+  { verb: 'show', v2: 'showed', v3: 'shown/showed', ipa: '/ʃəʊ/', vi: 'trình diễn, cho xem', type: 'irregular', example: 'Show me the way.' },
+  { verb: 'shrink', v2: 'shrank', v3: 'shrunk', ipa: '/ʃrɪŋk/', vi: 'co lại, rút lại', type: 'irregular', example: 'The shirt shrank after washing.' },
+  { verb: 'shut', v2: 'shut', v3: 'shut', ipa: '/ʃʌt/', vi: 'đóng lại', type: 'irregular', example: 'Shut the window.' },
+  { verb: 'sing', v2: 'sang', v3: 'sung', ipa: '/sɪŋ/', vi: 'hát', type: 'irregular', example: 'Sing a song.' },
+  { verb: 'sink', v2: 'sank', v3: 'sunk', ipa: '/sɪŋk/', vi: 'chìm, đắm', type: 'irregular', example: 'The ship sank.' },
+  { verb: 'sit', v2: 'sat', v3: 'sat', ipa: '/sɪt/', vi: 'ngồi', type: 'irregular', example: 'Sit on the chair.' },
+  { verb: 'slide', v2: 'slid', v3: 'slid', ipa: '/slaɪd/', vi: 'trượt, lướt', type: 'irregular', example: 'Slide down the hill.' },
+  { verb: 'smell', v2: 'smelt/smelled', v3: 'smelt/smelled', ipa: '/smel/', vi: 'ngửi, có mùi', type: 'irregular', example: 'The soup smells delicious.' },
+  { verb: 'spend', v2: 'spent', v3: 'spent', ipa: '/spend/', vi: 'tiêu sài, dành thời gian', type: 'irregular', example: 'Spend money wisely.' },
+  { verb: 'spit', v2: 'spit/spat', v3: 'spit/spat', ipa: '/spɪt/', vi: 'khạc, nhổ', type: 'irregular', example: 'Do not spit.' },
+  { verb: 'split', v2: 'split', v3: 'split', ipa: '/splɪt/', vi: 'chia đôi, nứt ra', type: 'irregular', example: 'They split the prize.' },
+  { verb: 'spoil', v2: 'spoilt/spoiled', v3: 'spoilt/spoiled', ipa: '/spɔɪl/', vi: 'làm hỏng, chiều hư', type: 'irregular', example: 'Spoiled milk.' },
+  { verb: 'spread', v2: 'spread', v3: 'spread', ipa: '/spred/', vi: 'lan truyền, trải rộng', type: 'irregular', example: 'Spread the butter on bread.' },
+  { verb: 'stand', v2: 'stood', v3: 'stood', ipa: '/stænd/', vi: 'đứng', type: 'irregular', example: 'Stand up, please.' },
+  { verb: 'steal', v2: 'stole', v3: 'stolen', ipa: '/stiːl/', vi: 'ăn cắp, trộm', type: 'irregular', example: 'Someone stole my bike.' },
+  { verb: 'stick', v2: 'stuck', v3: 'stuck', ipa: '/stɪk/', vi: 'dính, dán, đâm', type: 'irregular', example: 'The stamp stuck to the envelope.' },
+  { verb: 'sting', v2: 'stung', v3: 'stung', ipa: '/stɪŋ/', vi: 'châm, chích, đốt', type: 'irregular', example: 'A bee stung my arm.' },
+  { verb: 'strike', v2: 'struck', v3: 'struck/stricken', ipa: '/straɪk/', vi: 'đánh, bãi công, điểm giờ', type: 'irregular', example: 'The clock struck twelve.' },
+  { verb: 'swear', v2: 'swore', v3: 'sworn', ipa: '/sweər/', vi: 'thề, chửi thề', type: 'irregular', example: 'I swear it is true.' },
+  { verb: 'sweep', v2: 'swept', v3: 'swept', ipa: '/swiːp/', vi: 'quét dọn', type: 'irregular', example: 'Sweep the floor.' },
+  { verb: 'swim', v2: 'swam', v3: 'swum', ipa: '/swɪm/', vi: 'bơi', type: 'irregular', example: 'Swim in the pool.' },
+  { verb: 'swing', v2: 'swung', v3: 'swung', ipa: '/swɪŋ/', vi: 'đu đưa, đung đưa', type: 'irregular', example: 'The children swing.' },
+  { verb: 'tear', v2: 'tore', v3: 'torn', ipa: '/teər/', vi: 'xé rách', type: 'irregular', example: 'Don\'t tear the page.' },
+  { verb: 'throw', v2: 'threw', v3: 'thrown', ipa: '/θrəʊ/', vi: 'ném, quăng', type: 'irregular', example: 'Throw the ball.' },
+  { verb: 'understand', v2: 'understood', v3: 'understood', ipa: '/ˌʌn.dəˈstænd/', vi: 'hiểu', type: 'irregular', example: 'I understand.' },
+  { verb: 'upset', v2: 'upset', v3: 'upset', ipa: '/ʌpˈset/', vi: 'làm đổ, bối rối', type: 'irregular', example: 'The news upset her.' },
+  { verb: 'wake', v2: 'woke', v3: 'woken', ipa: '/weɪk/', vi: 'tỉnh giấc, đánh thức', type: 'irregular', example: 'Wake up!' },
+  { verb: 'wear', v2: 'wore', v3: 'worn', ipa: '/weər/', vi: 'mặc, mang, đeo', type: 'irregular', example: 'She wears a watch.' },
+  { verb: 'win', v2: 'won', v3: 'won', ipa: '/wɪn/', vi: 'chiến thắng', type: 'irregular', example: 'We won the match.' },
+  { verb: 'withdraw', v2: 'withdrew', v3: 'withdrawn', ipa: '/wɪðˈdrɔː/', vi: 'rút tiền, rút lui', type: 'irregular', example: 'Withdraw cash from ATM.' },
+  // Regular verbs
   { verb: 'play', v2: 'played', v3: 'played', ipa: '/pleɪ/', vi: 'chơi', type: 'regular', example: 'The kids play outside.' },
   { verb: 'work', v2: 'worked', v3: 'worked', ipa: '/wɜːk/', vi: 'làm việc', type: 'regular', example: 'I work from home.' },
   { verb: 'live', v2: 'lived', v3: 'lived', ipa: '/lɪv/', vi: 'sống', type: 'regular', example: 'We live in Hanoi.' },
   { verb: 'study', v2: 'studied', v3: 'studied', ipa: '/ˈstʌd.i/', vi: 'học', type: 'regular', example: 'She studies hard.' },
   { verb: 'listen', v2: 'listened', v3: 'listened', ipa: '/ˈlɪs.ən/', vi: 'nghe', type: 'regular', example: 'Listen to music.' },
-  { verb: 'speak', v2: 'spoke', v3: 'spoken', ipa: '/spiːk/', vi: 'nói', type: 'irregular', example: 'She speaks English.' },
-  { verb: 'buy', v2: 'bought', v3: 'bought', ipa: '/baɪ/', vi: 'mua', type: 'irregular', example: 'I bought a new phone.' },
-  { verb: 'teach', v2: 'taught', v3: 'taught', ipa: '/tiːtʃ/', vi: 'dạy', type: 'irregular', example: 'He teaches math.' },
-  { verb: 'learn', v2: 'learnt/learned', v3: 'learnt/learned', ipa: '/lɜːn/', vi: 'học', type: 'irregular', example: 'I learn new words daily.' },
-  { verb: 'sleep', v2: 'slept', v3: 'slept', ipa: '/sliːp/', vi: 'ngủ', type: 'irregular', example: 'The baby sleeps well.' },
 ];
 
 export const VERB_TYPES = [
@@ -655,6 +752,161 @@ export const VERB_QUIZ_QUESTIONS = [
     options: ['fixs', 'fixes', 'fixxed', 'fixing'],
     answer: 'fixes',
     explanation: 'Động từ tận cùng bằng "-x" khi chia ở ngôi thứ 3 số ít sẽ thêm "-es" → "fixes".'
+  },
+  {
+    question: 'Which of the following sentences uses a stative verb in a dynamic sense correctly?',
+    options: ['He is having a sports car.', 'She is loving chocolate.', 'They are having lunch.', 'We are knowing the truth.'],
+    answer: 'They are having lunch.',
+    explanation: '"have" khi có nghĩa là ăn uống hoặc trải nghiệm thì được dùng ở dạng tiếp diễn, còn mang nghĩa sở hữu thì không.'
+  },
+  {
+    question: 'Choose the correct sentence:',
+    options: ['I am thinking you are right.', 'I think you are right.', 'I thoughting you were right.', 'I am think you are right.'],
+    answer: 'I think you are right.',
+    explanation: 'Khi diễn tả ý kiến/quan điểm cá nhân (opinion), "think" đóng vai trò là động từ trạng thái (stative verb) nên chỉ chia ở thì đơn, không dùng thì tiếp diễn.'
+  },
+  {
+    question: 'How do you conjugate "run" into Present Continuous for "We"?',
+    options: ['We running', 'We are runing', 'We are running', 'We is running'],
+    answer: 'We are running',
+    explanation: '"run" tận cùng bằng 1 nguyên âm + 1 phụ âm, và là từ 1 âm tiết, nên ta gấp đôi phụ âm cuối trước khi thêm "-ing" thành "running".'
+  },
+  {
+    question: 'What is the past tense (V2) of the regular verb "dance"?',
+    options: ['danced', 'danceed', 'danct', 'dancing'],
+    answer: 'danced',
+    explanation: 'Động từ "dance" tận cùng bằng "e" nên chỉ cần thêm "-d" để chuyển sang dạng quá khứ quá khứ đơn.'
+  },
+  {
+    question: 'Choose the correct irregular conjugation of V3 (Past Participle) for "go":',
+    options: ['went', 'gone', 'goes', 'going'],
+    answer: 'gone',
+    explanation: 'Động từ bất quy tắc "go" có ba cột chia là: V1: go, V2: went, V3: gone.'
+  },
+  {
+    question: 'Identify the type of verb "be" in: "He is a doctor."',
+    options: ['Action Verb', 'Linking Verb', 'Modal Verb', 'Phrasal Verb'],
+    answer: 'Linking Verb',
+    explanation: 'Trong câu này, động từ tobe "is" làm động từ nối (Linking verb) liên kết chủ ngữ "He" với danh từ bổ ngữ "doctor".'
+  },
+  {
+    question: 'What is the correct negative conjugation of "speak" for "She" in the Present Simple?',
+    options: ['She speaks not', 'She don\'t speak', 'She doesn\'t speaks', 'She doesn\'t speak'],
+    answer: 'She doesn\'t speak',
+    explanation: 'Thể phủ định thì hiện tại đơn của ngôi thứ 3 số ít (He, She, It) có dạng: "doesn\'t + V1 (nguyên mẫu)" -> "doesn\'t speak".'
   }
 ];
+
+export const STATIVE_CATEGORIES = [
+  {
+    title: "🧠 Trạng thái tinh thần / Suy nghĩ / Niềm tin (Mental States)",
+    verbs: [
+      { word: "know", ipa: "/nəʊ/", vi: "biết", ex: "I know the answer.", exVi: "Tôi biết câu trả lời." },
+      { word: "believe", ipa: "/bɪˈliːv/", vi: "tin tưởng", ex: "She believes in ghosts.", exVi: "Cô ấy tin vào ma quỷ." },
+      { word: "understand", ipa: "/ˌʌn.dəˈstænd/", vi: "hiểu", ex: "Do you understand?", exVi: "Bạn có hiểu không?" },
+      { word: "remember", ipa: "/rɪˈmem.bər/", vi: "nhớ", ex: "I remember your face.", exVi: "Tôi nhớ khuôn mặt của bạn." },
+      { word: "forget", ipa: "/fəˈɡet/", vi: "quên", ex: "Don't forget your keys.", exVi: "Đừng quên chìa khóa của bạn." },
+      { word: "agree", ipa: "/əˈɡriː/", vi: "đồng ý", ex: "We agree with the plan.", exVi: "Chúng tôi đồng ý với kế hoạch." },
+      { word: "disagree", ipa: "/ˌdɪs.əˈɡriː/", vi: "không đồng ý", ex: "I disagree with you.", exVi: "Tôi không đồng ý với bạn." },
+      { word: "realize", ipa: "/ˈrɪə.laɪz/", vi: "nhận ra", ex: "I realize my mistake.", exVi: "Tôi nhận ra lỗi sai của mình." },
+      { word: "suppose", ipa: "/səˈpəʊz/", vi: "cho là, giả sử", ex: "I suppose it's true.", exVi: "Tôi cho là điều đó đúng." },
+      { word: "doubt", ipa: "/daʊt/", vi: "nghi ngờ", ex: "I doubt his honesty.", exVi: "Tôi nghi ngờ sự trung thực của anh ấy." }
+    ]
+  },
+  {
+    title: "❤️ Cảm xúc / Cảm giác / Mong muốn (Emotions & Feelings)",
+    verbs: [
+      { word: "love", ipa: "/lʌv/", vi: "yêu thích", ex: "She loves chocolate.", exVi: "Cô ấy cực kỳ thích sô-cô-la." },
+      { word: "hate", ipa: "/heɪt/", vi: "ghét", ex: "I hate cold weather.", exVi: "Tôi ghét thời tiết lạnh." },
+      { word: "like", ipa: "/laɪk/", vi: "thích", ex: "They like playing tennis.", exVi: "Họ thích chơi quần vợt." },
+      { word: "dislike", ipa: "/dɪsˈlaɪk/", vi: "không thích", ex: "He dislikes spicy food.", exVi: "Anh ấy không thích đồ ăn cay." },
+      { word: "prefer", ipa: "/prɪˈfɜːr/", vi: "thích hơn", ex: "I prefer tea to coffee.", exVi: "Tôi thích trà hơn cà phê." },
+      { word: "want", ipa: "/wɒnt/", vi: "muốn", ex: "I want a new job.", exVi: "Tôi muốn một công việc mới." },
+      { word: "need", ipa: "/niːd/", vi: "cần", ex: "We need some water.", exVi: "Chúng tôi cần một ít nước." },
+      { word: "wish", ipa: "/wɪʃ/", vi: "ước, mong", ex: "I wish you were here.", exVi: "Ước gì bạn ở đây." }
+    ]
+  },
+  {
+    title: "👃 Giác quan / Nhận thức trực quan (Senses & Perception)",
+    verbs: [
+      { word: "see", ipa: "/siː/", vi: "nhìn thấy", ex: "I see a bird in the tree.", exVi: "Tôi thấy một chú chim trên cây." },
+      { word: "hear", ipa: "/hɪər/", vi: "nghe thấy", ex: "Did you hear that sound?", exVi: "Cậu có nghe thấy tiếng động đó không?" },
+      { word: "smell", ipa: "/smel/", vi: "có mùi", ex: "The soup smells good.", exVi: "Món súp này có mùi rất thơm." },
+      { word: "taste", ipa: "/teɪst/", vi: "có vị", ex: "This grape tastes sour.", exVi: "Quả nho này có vị chua." },
+      { word: "feel", ipa: "/fiːl/", vi: "cảm thấy (trạng thái)", ex: "The silk feels soft.", exVi: "Tấm lụa này có cảm giác mềm mại." },
+      { word: "sound", ipa: "/saʊnd/", vi: "nghe có vẻ", ex: "That sounds like a great idea.", exVi: "Nghe có vẻ là một ý kiến hay đấy." }
+    ]
+  },
+  {
+    title: "📦 Sở hữu / Đo lường / Trạng thái (Possession & Measurement)",
+    verbs: [
+      { word: "have", ipa: "/hæv/", vi: "có (sở hữu)", ex: "He has a big car.", exVi: "Anh ấy có một chiếc ô tô lớn." },
+      { word: "belong", ipa: "/bɪˈlɒŋ/", vi: "thuộc về", ex: "This book belongs to me.", exVi: "Quyển sách này thuộc về tôi." },
+      { word: "own", ipa: "/əʊn/", vi: "sở hữu", ex: "They own a beautiful restaurant.", exVi: "Họ sở hữu một nhà hàng đẹp." },
+      { word: "cost", ipa: "/kɒst/", vi: "trị giá, tốn tiền", ex: "The ticket costs ten dollars.", exVi: "Chiếc vé trị giá mười đô la." },
+      { word: "weigh", ipa: "/weɪ/", vi: "nặng (khối lượng)", ex: "This package weighs two kilograms.", exVi: "Bưu kiện này nặng hai ki-lô-gam." },
+      { word: "contain", ipa: "/kənˈteɪn/", vi: "chứa đựng", ex: "The bottle contains juice.", exVi: "Cái chai chứa nước ép." }
+    ]
+  }
+];
+
+export const DUAL_NATURE_VERBS = [
+  {
+    verb: "think",
+    ipa: "/θɪŋk/",
+    stativeUsage: "I think she is smart.",
+    stativeVi: "Tôi tin/cho rằng cô ấy thông minh (bày tỏ quan điểm cá nhân).",
+    dynamicUsage: "I am thinking about the exam.",
+    dynamicVi: "Tôi đang suy nghĩ/cân nhắc về kỳ thi (hành động suy nghĩ đang diễn ra)."
+  },
+  {
+    verb: "have",
+    ipa: "/hæv/",
+    stativeUsage: "They have a beautiful garden.",
+    stativeVi: "Họ sở hữu một khu vườn đẹp (chỉ quyền sở hữu).",
+    dynamicUsage: "She is having a shower / having dinner.",
+    dynamicVi: "Cô ấy đang tắm / đang ăn tối (chỉ hành động ăn uống, trải nghiệm)."
+  },
+  {
+    verb: "see",
+    ipa: "/siː/",
+    stativeUsage: "I see what you mean.",
+    stativeVi: "Tôi hiểu những gì bạn đang nói (chỉ sự nhận thức/hiểu biết).",
+    dynamicUsage: "The doctor is seeing a patient / seeing a movie.",
+    dynamicVi: "Bác sĩ đang khám bệnh / hẹn hò / xem phim."
+  },
+  {
+    verb: "taste",
+    ipa: "/teɪst/",
+    stativeUsage: "The soup tastes delicious.",
+    stativeVi: "Món súp này có vị ngon (trạng thái của món ăn).",
+    dynamicUsage: "The chef is tasting the sauce.",
+    dynamicVi: "Đầu bếp đang nếm thử nước sốt (hành động nếm thử)."
+  },
+  {
+    verb: "smell",
+    ipa: "/smel/",
+    stativeUsage: "The flowers smell sweet.",
+    stativeVi: "Những bông hoa có mùi ngọt ngào (trạng thái của hoa).",
+    dynamicUsage: "The dog is smelling the food.",
+    dynamicVi: "Con chó đang ngửi thức ăn (hành động ngửi)."
+  },
+  {
+    verb: "look",
+    ipa: "/lʊk/",
+    stativeUsage: "You look beautiful today.",
+    stativeVi: "Hôm nay bạn trông thật đẹp (chỉ vẻ ngoài, diện mạo).",
+    dynamicUsage: "They are looking at the whiteboard.",
+    dynamicVi: "Họ đang nhìn lên bảng viết (hành động nhìn hướng mắt)."
+  },
+  {
+    verb: "feel",
+    ipa: "/fiːl/",
+    stativeUsage: "This blanket feels very soft.",
+    stativeVi: "Chiếc chăn này có cảm giác rất mềm (chất liệu/đặc điểm của vật).",
+    dynamicUsage: "How are you feeling today? I am feeling better.",
+    dynamicVi: "Sức khỏe cậu thế nào? Tôi thấy khỏe hơn (trạng thái sức khỏe tạm thời)."
+  }
+];
+
 
