@@ -31,6 +31,7 @@ export default function RootLayout({
     <html lang="en" className="h-full" suppressHydrationWarning>
       <body
         className={`${inter.variable} ${poppins.variable} antialiased flex min-h-full bg-background`}
+        suppressHydrationWarning
       >
         <AuthProvider>
           <MusicProvider>
