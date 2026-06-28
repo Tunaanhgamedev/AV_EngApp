@@ -15,12 +15,18 @@
 
 <br/>
 
+## 🔗 Live Application Web Link
+### 🌍 👉 [https://va-eng-tunamoi.vercel.app/](https://va-eng-tunamoi.vercel.app/) 👈
+
+<br/>
+
 <p align="center">
-  <a href="#-core-features">Core Features</a> •
-  <a href="#-system-architecture">System Architecture</a> •
+  <a href="#-live-application-web-link">Live App</a> •
+  <a href="#-cross-device--platform-compatibility">Device Compatibility</a> •
+  <a href="#-detailed-web-features">Web Features</a> •
+  <a href="#-system-architecture">Architecture</a> •
   <a href="#-rest-api-documentation">API Specification</a> •
   <a href="#-optimizations--best-practices">Optimizations</a> •
-  <a href="#-directory-structure">Structure</a> •
   <a href="#-installation--setup">Quick Start</a>
 </p>
 
@@ -30,25 +36,55 @@
 
 ## 📖 Executive Summary
 
-**Nebula AI English** is a full-stack, responsive English learning platform combining cognitive science (Spaced Repetition System) with Generative AI (Google Gemini) and gamification structures. The platform adapts to various screen dimensions—from mobile screens to large desktop monitors—while maintaining a high-fidelity visual experience using glassmorphic styling, custom CSS transition hooks, and low-latency API integration.
+**Nebula AI English** is a full-stack, responsive English learning platform combining cognitive science (Spaced Repetition System) with Generative AI (Google Gemini) and gamification structures. The platform adapts dynamically to various screen dimensions—from mobile screens to large desktop monitors—while maintaining a high-fidelity visual experience using glassmorphic styling, custom CSS transition hooks, and low-latency API integration.
 
 ---
 
-## 🌟 Core Features
+## 📱 Cross-Device & Platform Compatibility
 
-### 1. 🤖 Generative AI Copilots
-* **AI Translation & Deep Explainer:** High-accuracy English-to-Vietnamese translation coupled with an automated grammar, context, and pronunciation analyzer.
-* **AI Coach Roleplays:** Interactive speech and writing practice with multiple simulated personas (e.g., job interviewer, hotel concierge) leveraging context histories.
-* **Smart Writing Journal:** Real-time grammatical evaluation of student essays, offering score breakdowns (grammar, vocabulary, fluency) and natural phrasing suggestions.
+Nebula AI English is built to be a modern **Progressive-first web application**. It has been tested and styled to provide an optimal experience across the following form factors:
 
-### 2. 📚 Academic & Exam Preparation
-* **TOEIC Practice Suite:** Generator supporting TOEIC Parts 1-7 with automatic transcript visualization, context-based answer keys, and explanations.
-* **IELTS Skill Builder:** Tailored prompts and evaluation sheets for Listening, Reading, Writing, and Speaking skills, using dynamic AI templates.
-* **Oxford Spaced Repetition (SRS):** An interactive flashcard engine utilizing memory decay algorithms to schedule optimal vocabulary reviews.
+| Device Category | Target Viewports | Adaptive Layout Mechanics | Convenient Features |
+| :--- | :--- | :--- | :--- |
+| 💻 **Laptops / Desktops** | `>= 1024px` | Side-by-side split columns, full visible navigation sidebar, hover states with CSS transitions. | Large text entry areas, keyboard shortcut friendly. |
+| 📟 **iPads / Tablets** | `768px - 1023px` | Collapsed compact sidebar, grid containers reflow to fit width, tag groups scroll horizontally. | Tap-to-close side sheets, gesture-friendly navigation drawer. |
+| 📱 **Smartphones / Mobile** | `< 768px` | Vertical stacking on all panels, single-column translation, overlay navigation drawers. | Sticky bottom bars, `44x44px` minimum touch targets, touch-optimized flashcard swipes. |
 
-### 3. 🎮 Gamification & Widgets
-* **XP & Leaderboard System:** Compete in real-time with global students, tracking check-ins and streaks.
-* **Integrated Music Console:** Study helper widget with play/pause capabilities and selected concentration soundtracks.
+---
+
+## 💻 Detailed Web Features
+
+The platform offers a comprehensive set of modules tailored for self-paced studying and testing:
+
+### 1. 🤖 AI Translation & Sentence Explainer (`/translate`)
+* **Precision Translation:** Dual-mode translation (Fast translation / Deep translation with AI contextual matching).
+* **AI Explanation Panel:** One-click sentence analysis using Gemini AI:
+  * **Grammar Breakdown:** Extracts and highlights primary grammatical patterns used in the source text.
+  * **Vocabulary Parsing:** Deconstructs words, detailing part of speech, phonetic transcription, and Vietnamese meanings.
+  * **Alternatives:** Generates alternative ways to phrase the sentence.
+  * **Speaking Tips:** Phonetic and stress advice to sound natural.
+* **Instant Save:** Tap to directly save a word or idiom to the review notebook.
+
+### 2. 🗣️ AI Conversational Coach (`/chat`)
+* **Persona Roleplay:** Practice talking to a tech recruiter, customer service agent, or tourist guide.
+* **Intelligent Feedback:** After every conversation message, the AI tutor provides pedagogical corrections in Vietnamese on spelling, syntax, and phrasing.
+
+### 3. 📝 Writing Journal Analysis (`/journal`)
+* **Correction Engine:** Paste or write your English diary/journal.
+* **Scoring Dashboard:** AI scores your grammar, vocabulary, and fluency out of 100.
+* **Interactive Corrections:** Shows inline errors with detailed explanations of why it was corrected.
+
+### 4. 📝 Practice Exams (TOEIC & IELTS)
+* **TOEIC Mock Parts 1-7 (`/toeic`):** Generates questions with text/audio contexts (visualizing photographs for Part 1, conversation scripts for Part 3/4, reading texts for Part 6/7) and provides answer keys with syntax explanations.
+* **IELTS Prep Hub (`/ielts`):** Supports Listening (scripts), Reading (300-word academic articles), Writing (Task 1 & 2 outlines), and Speaking (Cue card prompts).
+
+### 5. 🧠 Spaced Repetition Vocabulary (`/learn` & `/review`)
+* **Active Recall Flashcards:** Learn new Oxford wordlists.
+* **SRS Scheduling:** Automatically flags cards for review based on user recall difficulty, helping move vocabulary to long-term memory.
+
+### 6. 🎮 Gamification & Music Companion
+* **Global Leaderboards (`/leaderboard`):** Real-time ranking based on XP accumulated through study activities.
+* **Ambient Music Widget:** Select and play focus soundtracks right inside the dashboard sidebar.
 
 ---
 
@@ -147,7 +183,7 @@ AV_EngApp/
     │   ├── config/              # Server configs & firebase setup
     │   ├── controllers/         # API request logic handlers
     │   ├── middleware/          # JWT tokens & role validation
-    │   ├── routes/              # Express endpoint routing
+    │   ├── routes/              # Express routing config
     │   └── services/            # Gemini API & Spaced Repetition algorithms
     └── package.json
 ```
