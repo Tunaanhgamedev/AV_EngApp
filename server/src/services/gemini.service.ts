@@ -470,6 +470,62 @@ Chỉ trả về JSON thuần túy, không chứa ký tự hay wrapper markdown 
             "- **E - Example (Ví dụ)**: Đưa ra ví dụ cụ thể để minh họa.\n" +
             "- **P - Point (Khẳng định lại)**: Nhắc lại quan điểm chính một lần nữa để kết luận.\n\n" +
             "*Mẹo: Hãy luyện tập áp dụng PREP cho các câu hỏi giao tiếp hàng ngày để rèn phản xạ mạch lạc!*";
+        } else if (cleanInput.includes("pronunciation") || cleanInput.includes("phát âm") || cleanInput.includes("ipa") || cleanInput.includes("speaking") || cleanInput.includes("accent")) {
+          aiMessage = "Mastering English pronunciation and speaking is all about muscle memory and understanding phonetic rules! Let me share the core blueprint for perfect pronunciation.";
+          translation = "Làm chủ phát âm và nói tiếng Anh hoàn toàn là về trí nhớ cơ bắp và hiểu các quy tắc ngữ âm! Hãy để tôi chia sẻ kế hoạch cốt lõi để có phát âm hoàn hảo.";
+          tutorFeedback = "**🗣️ HƯỚNG DẪN LUYỆN PHÁT ÂM TIẾNG ANH CHUẨN (IPA & SPEAKING)**\n\n" +
+            "### 1. Bảng Ký tự Ngữ âm Quốc tế (IPA)\n" +
+            "- Bao gồm **44 âm** (20 nguyên âm và 24 phụ âm).\n" +
+            "- **Mẹo học**: Học cách đặt vị trí lưỡi, răng, và cách phát hơi (VD: âm vô thanh /p, t, k/ vs hữu thanh /b, d, g/).\n\n" +
+            "### 2. Trọng âm từ (Word Stress)\n" +
+            "- **Quy tắc vàng**: Mỗi từ tiếng Anh có trọng âm rõ ràng. Âm được nhấn sẽ dài hơn, to hơn và cao hơn.\n" +
+            "  - Danh từ/Tính từ 2 âm tiết: Thường nhấn âm 1. (VD: *'record (N)*, *'present (Adj)*)\n  - Động từ 2 âm tiết: Thường nhấn âm 2. (VD: *re'cord (V)*, *pre'sent (V)*)\n\n" +
+            "### 3. Ngữ điệu câu (Intonation)\n" +
+            "- **Falling Intonation (Xuống giọng ở cuối)**: Dùng cho câu trần thuật hoặc câu hỏi Wh-.\n" +
+            "- **Rising Intonation (Lên giọng ở cuối)**: Dùng cho câu hỏi Yes/No.";
+        } else if (cleanInput.includes("vocabulary") || cleanInput.includes("từ vựng") || cleanInput.includes("learn word") || cleanInput.includes("học từ")) {
+          aiMessage = "Learning vocabulary effectively requires active recall and learning in context, not just memorizing lists. Let me show you the scientific way to learn!";
+          translation = "Học từ vựng hiệu quả đòi hỏi sự chủ động gợi nhớ và học trong ngữ cảnh, không chỉ là ghi nhớ các danh sách. Hãy để tôi chỉ cho bạn cách học khoa học!";
+          tutorFeedback = "**🧠 PHƯƠNG PHÁP HỌC TỪ VỰNG KHOA HỌC & HIỆU QUẢ**\n\n" +
+            "### 1. Học qua Cụm từ (Collocations)\n" +
+            "- Đừng học từ đơn lẻ. Hãy học từ đi kèm. (VD: Thay vì học *decision*, hãy học *make a decision*).\n\n" +
+            "### 2. Sử dụng Lặp lại ngắt quãng (Spaced Repetition)\n" +
+            "- Ôn tập từ vựng theo chu kỳ tăng dần: 1 ngày $\\rightarrow$ 3 ngày $\\rightarrow$ 7 ngày $\\rightarrow$ 30 ngày để chuyển từ vựng vào trí nhớ dài hạn (Long-term memory).\n\n" +
+            "### 3. Gợi nhớ chủ động (Active Recall)\n" +
+            "- Tự đặt câu hỏi hoặc dùng Flashcard để ép não bộ chủ động nhớ lại nghĩa của từ thay vì chỉ đọc đi đọc lại.";
+        } else if (cleanInput.includes("preposition") || cleanInput.includes("giới từ") || cleanInput.includes("in on at")) {
+          aiMessage = "Prepositions of Time and Place (In, On, At) can be easily visualized using the triangle rule. Let me explain it to you!";
+          translation = "Giới từ chỉ thời gian và nơi chốn (In, On, At) có thể dễ dàng hình dung bằng quy tắc hình tam giác. Hãy để tôi giải thích cho bạn!";
+          tutorFeedback = "**📐 QUY TẮC TAM GIÁC: SỬ DỤNG GIỚI TỪ IN - ON - AT**\n\n" +
+            "Hãy tưởng tượng một hình tam giác ngược (Đỉnh rộng ở trên &rarr; Đáy nhọn ở dưới):\n\n" +
+            "### 🟩 IN (Trên cùng - Rộng lớn / Chung chung)\n" +
+            "- **Thời gian**: Thế kỷ, năm, tháng, mùa, buổi trong ngày. (VD: *in 2026*, *in July*, *in the morning*)\n" +
+            "- **Địa điểm**: Quốc gia, thành phố, không gian khép kín. (VD: *in Vietnam*, *in London*, *in a room*)\n\n" +
+            "### 🟨 ON (Giữa - Cụ thể vừa phải)\n" +
+            "- **Thời gian**: Ngày cụ thể, thứ trong tuần, ngày lễ có từ 'day'. (VD: *on Monday*, *on July 4th*, *on Christmas Day*)\n" +
+            "- **Địa điểm**: Tên đường, bề mặt phẳng, phương tiện công cộng. (VD: *on Nguyen Hue street*, *on the table*, *on a bus*)\n\n" +
+            "### 🟥 AT (Dưới cùng - Cực kỳ cụ thể / Điểm xác định)\n" +
+            "- **Thời gian**: Giờ giấc cụ thể, thời điểm chính xác. (VD: *at 9 AM*, *at midnight*, *at the moment*)\n" +
+            "- **Địa điểm**: Địa chỉ nhà cụ thể, một vị trí xác định. (VD: *at 123 Main Street*, *at the bus stop*, *at school*)";
+        } else if (cleanInput.includes("mistake") || cleanInput.includes("lỗi") || cleanInput.includes("vietnamese mistake") || cleanInput.includes("lỗi sai")) {
+          aiMessage = "Every language learner makes mistakes, and identifying them is the best way to improve! Let's examine the most common mistakes Vietnamese speakers make in English.";
+          translation = "Mọi người học ngôn ngữ đều mắc lỗi, và xác định chúng là cách tốt nhất để cải thiện! Hãy cùng xem xét những lỗi phổ biến nhất mà người Việt hay mắc phải trong tiếng Anh.";
+          tutorFeedback = "**⚠️ CÁC LỖI NGỮ PHÁP & PHÁT ÂM NGƯỜI VIỆT HAY MẮC PHẢI**\n\n" +
+            "### 1. Thiếu âm đuôi (Ending Sounds)\n" +
+            "- **Mô tả**: Hay bỏ quên âm /s/, /z/, /t/, /d/, /k/, /g/ ở cuối từ.\n" +
+            "- **Ví dụ**: Nói *like* thành *lai*, *five* thành *fai*.\n" +
+            "- **Khắc phục**: Tập trung phát âm rõ ràng âm gió và âm bật ở cuối từ.\n\n" +
+            "### 2. Thiếu mạo từ \"a/an/the\"\n" +
+            "- **Mô tả**: Bỏ qua mạo từ trước danh từ số ít đếm được.\n" +
+            "- **Ví dụ**: *I am engineer* ❌ $\\rightarrow$ Sửa: *I am **an** engineer* ✅.\n\n" +
+            "### 3. Hòa hợp chủ ngữ - động từ (Subject-Verb Agreement)\n" +
+            "- **Mô tả**: Quên thêm 's/es' ở thì hiện tại đơn khi chủ ngữ là ngôi thứ 3 số ít (He/She/It).\n" +
+            "- **Ví dụ**: *She like reading* ❌ $\\rightarrow$ Sửa: *She **likes** reading* ✅.\n\n" +
+            "### 4. Nhầm lẫn giữa Say / Tell / Speak / Talk\n" +
+            "- **Say**: Nói ra một lời/cụm từ (VD: *say hello*).\n" +
+            "- **Tell**: Kể/bảo với AI ĐÓ (luôn có tân ngữ chỉ người đi sau: *tell me, tell him*).\n" +
+            "- **Speak**: Nói một ngôn ngữ hoặc phát biểu trang trọng (VD: *speak English*).\n" +
+            "- **Talk**: Trò chuyện qua lại với ai (VD: *talk to a friend*).";
         } else if (cleanInput.includes("tag question") || cleanInput.includes("câu hỏi đuôi")) {
           aiMessage = "Great question! Tag questions are short questions added at the end of a sentence. For example: 'You like coffee, don't you?' Let me explain the rules!";
           translation = "Câu hỏi hay! Câu hỏi đuôi là câu hỏi ngắn thêm vào cuối câu. Ví dụ: 'You like coffee, don't you?' Hãy để tôi giải thích các quy tắc!";
