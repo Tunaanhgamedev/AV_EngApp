@@ -347,18 +347,27 @@ Chỉ trả về JSON thuần túy, không chứa ký tự hay wrapper markdown 
         offlineCorrections.push({ error: "I am student", fix: "I am a student", explanation: "Cần thêm mạo từ 'a' trước danh từ số ít chỉ nghề nghiệp/vai trò." });
       }
 
-      // Adjective/Adverb confusion (e.g., "run quick", "drive slow", "speak fluent", "speak good")
-      if (cleanInput.includes("run quick")) {
-        offlineCorrections.push({ error: "run quick", fix: "run quickly", explanation: "Cần dùng trạng từ (quickly) để bổ nghĩa cho động từ thường (run), không dùng tính từ (quick)." });
+      // Prepositions with parts of the day (e.g., "on morning", "in morning", "at morning", "in night")
+      if (cleanInput.includes("on morning")) {
+        offlineCorrections.push({ error: "on morning", fix: "in the morning", explanation: "Giới từ đi với buổi trong ngày (morning) phải là 'in' và cần thêm mạo từ 'the': 'in the morning'." });
       }
-      if (cleanInput.includes("drive slow")) {
-        offlineCorrections.push({ error: "drive slow", fix: "drive slowly", explanation: "Cần dùng trạng từ (slowly) để bổ nghĩa cho động từ thường (drive), không dùng tính từ (slow)." });
+      if (cleanInput.includes("on afternoon")) {
+        offlineCorrections.push({ error: "on afternoon", fix: "in the afternoon", explanation: "Giới từ đi với buổi trong ngày (afternoon) phải là 'in' và cần thêm mạo từ 'the': 'in the afternoon'." });
       }
-      if (cleanInput.includes("speak fluent")) {
-        offlineCorrections.push({ error: "speak fluent", fix: "speak fluently", explanation: "Cần dùng trạng từ (fluently) để bổ nghĩa cho động từ thường (speak), không dùng tính từ (fluent)." });
+      if (cleanInput.includes("on evening")) {
+        offlineCorrections.push({ error: "on evening", fix: "in the evening", explanation: "Giới từ đi với buổi trong ngày (evening) phải là 'in' và cần thêm mạo từ 'the': 'in the evening'." });
       }
-      if (cleanInput.includes("speak good")) {
-        offlineCorrections.push({ error: "speak good", fix: "speak well", explanation: "Trạng từ bổ nghĩa cho động từ 'speak' phải là 'well', không dùng tính từ 'good'." });
+      if (cleanInput.includes("in morning") && !cleanInput.includes("in the morning")) {
+        offlineCorrections.push({ error: "in morning", fix: "in the morning", explanation: "Thiếu mạo từ 'the' trước danh từ 'morning': 'in the morning'." });
+      }
+      if (cleanInput.includes("in afternoon") && !cleanInput.includes("in the afternoon")) {
+        offlineCorrections.push({ error: "in afternoon", fix: "in the afternoon", explanation: "Thiếu mạo từ 'the' trước danh từ 'afternoon': 'in the afternoon'." });
+      }
+      if (cleanInput.includes("in evening") && !cleanInput.includes("in the evening")) {
+        offlineCorrections.push({ error: "in evening", fix: "in the evening", explanation: "Thiếu mạo từ 'the' trước danh từ 'evening': 'in the evening'." });
+      }
+      if (cleanInput.includes("in night") || cleanInput.includes("on night")) {
+        offlineCorrections.push({ error: cleanInput.includes("in night") ? "in night" : "on night", fix: "at night", explanation: "Đi với buổi tối muộn 'night' ta dùng giới từ 'at' và không dùng mạo từ 'the': 'at night'." });
       }
 
       let correctionsHeader = "";
@@ -592,10 +601,30 @@ Chỉ trả về JSON thuần túy, không chứa ký tự hay wrapper markdown 
           aiMessage = "The Present Perfect tense is one of the most useful tenses in English! It connects the past to the present. Have you used it before?";
           translation = "Thì Hiện tại Hoàn thành là một trong những thì hữu ích nhất trong tiếng Anh! Nó kết nối quá khứ với hiện tại. Bạn đã sử dụng nó trước đây chưa?";
           tutorFeedback = "**Thì Hiện tại Hoàn thành (Present Perfect)**\n\n**Công thức:** S + have/has + V3/ed\n\n**Khi nào dùng:**\n- Hành động đã xảy ra nhưng KHÔNG nói rõ thời gian: *I have visited Paris.*\n- Hành động bắt đầu trong quá khứ, kéo dài đến hiện tại: *I have lived here for 5 years.*\n- Kinh nghiệm: *Have you ever tried sushi?*\n\n**Dấu hiệu:** already, yet, just, ever, never, for, since\n\n**⚠️ Lỗi hay gặp:** 'I have went' ❌ → 'I have gone' ✅ (dùng V3, không dùng V2)";
-        } else if (cleanInput.includes("tense") || cleanInput.includes("thì") || cleanInput.includes("grammar") || cleanInput.includes("ngữ pháp")) {
-          aiMessage = "Grammar is the backbone of any language! Which grammar topic would you like to explore? Tenses, prepositions, articles, or something else?";
-          translation = "Ngữ pháp là xương sống của mọi ngôn ngữ! Bạn muốn khám phá chủ đề ngữ pháp nào? Thì, giới từ, mạo từ, hay chủ đề nào khác?";
-          tutorFeedback = "**Các thì quan trọng trong tiếng Anh:**\n\n| Thì | Công thức | Ví dụ |\n|---|---|---|\n| Simple Present | S + V(s/es) | I **work** every day. |\n| Present Continuous | S + am/is/are + V-ing | I **am working** now. |\n| Simple Past | S + V2/ed | I **worked** yesterday. |\n| Present Perfect | S + have/has + V3 | I **have worked** here for 2 years. |\n| Future Simple | S + will + V | I **will work** tomorrow. |\n\nBạn muốn tìm hiểu sâu hơn về thì nào?";
+        } else if (cleanInput.includes("tense") || cleanInput.includes("thì") || cleanInput.includes("grammar") || cleanInput.includes("ngữ pháp") || cleanInput.includes("5 thì")) {
+          aiMessage = "Mastering the 5 main English tenses is key to daily communication! Let me show you how to ask questions and construct answers in these 5 vital tenses.";
+          translation = "Làm chủ 5 thì tiếng Anh chính là chìa khóa giao tiếp hàng ngày! Hãy để tôi hướng dẫn bạn cách đặt câu hỏi và xây dựng câu trả lời trong 5 thì quan trọng này.";
+          tutorFeedback = "**📚 CẨM NANG HỎI & TRẢ LỜI TRONG 5 THÌ TIẾNG ANH THÔNG DỤNG**\n\n" +
+            "### 1. Thì Hiện tại Đơn (Simple Present) - Thói quen, sự thật hiển nhiên\n" +
+            "- **Câu hỏi**: *What do you do for a living?* (Bạn làm công việc gì?)\n" +
+            "- **Câu trả lời**: *I work as a software engineer.* (Tôi làm công việc kỹ sư phần mềm.)\n" +
+            "- **Mẹo**: Nhớ thêm 's/es' khi nói về ngôi thứ ba số ít (He/She/It).\n\n" +
+            "### 2. Thì Hiện tại Tiếp diễn (Present Continuous) - Hành động đang diễn ra\n" +
+            "- **Câu hỏi**: *What are you doing right now?* (Hiện tại bạn đang làm gì thế?)\n" +
+            "- **Câu trả lời**: *I am practicing speaking English.* (Tôi đang luyện nói tiếng Anh.)\n" +
+            "- **Mẹo**: Luôn cần đủ cấu trúc: **S + am/is/are + V-ing**.\n\n" +
+            "### 3. Thì Quá khứ Đơn (Simple Past) - Sự việc đã chấm dứt trong quá khứ\n" +
+            "- **Câu hỏi**: *Where did you go yesterday?* (Hôm qua bạn đã đi đâu?)\n" +
+            "- **Câu trả lời**: *I went to the coffee shop with my friends.* (Tôi đã đi quán cà phê với bạn bè.)\n" +
+            "- **Mẹo**: Sử dụng động từ cột 2 (V2) hoặc thêm '-ed'. Nhớ mượn trợ động từ 'did' cho câu hỏi.\n\n" +
+            "### 4. Thì Hiện tại Hoàn thành (Present Perfect) - Trải nghiệm, kết nối quá khứ và hiện tại\n" +
+            "- **Câu hỏi**: *Have you ever visited Hanoi?* (Bạn đã từng ghé thăm Hà Nội chưa?)\n" +
+            "- **Câu trả lời**: *Yes, I have visited Hanoi twice.* (Rồi, tôi đã từng ghé thăm Hà Nội hai lần.)\n" +
+            "- **Mẹo**: Sử dụng cấu trúc **S + have/has + V3/ed**.\n\n" +
+            "### 5. Thì Tương lai Đơn (Future Simple) - Kế hoạch tự phát, dự đoán\n" +
+            "- **Câu hỏi**: *Will you travel next weekend?* (Cuối tuần tới bạn sẽ đi du lịch chứ?)\n" +
+            "- **Câu trả lời**: *No, I will stay at home to study.* (Không, tôi sẽ ở nhà để học bài.)\n" +
+            "- **Mẹo**: Sử dụng **S + will + V-bare**.";
         } else if (cleanInput.includes("how are you") || cleanInput.includes("how do you do")) {
           aiMessage = "I'm doing great, thank you for asking! How about you? Is there anything specific you'd like to practice today?";
           translation = "Tôi rất khỏe, cảm ơn bạn đã hỏi! Còn bạn thì sao? Hôm nay bạn muốn luyện tập điều gì cụ thể không?";
