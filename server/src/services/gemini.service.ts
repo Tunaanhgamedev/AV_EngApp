@@ -268,9 +268,32 @@ Chỉ trả về JSON thuần túy, không chứa ký tự hay wrapper markdown 
 
       // Offline linguistic error detector
       let offlineCorrections: { error: string, fix: string, explanation: string }[] = [];
-      if (cleanInput.includes("want go")) {
+      
+      // Generic pattern for "want + verb" without "to" (e.g., "want watch", "want go", "want eat")
+      const wantVerbMatch = cleanInput.match(/\bwant\s+(go|watch|eat|do|play|buy|learn|study|speak|read|write|see|have|be|make|get|run|sleep|talk|say|tell|use|work|try|find|take|give|drink)\b/);
+      if (wantVerbMatch) {
+        const verb = wantVerbMatch[1];
+        offlineCorrections.push({ 
+          error: `want ${verb}`, 
+          fix: `want to ${verb}`, 
+          explanation: `Động từ 'want' yêu cầu động từ theo sau phải ở dạng 'to-infinitive' (to + V).` 
+        });
+      } else if (cleanInput.includes("want go")) {
         offlineCorrections.push({ error: "want go", fix: "want to go", explanation: "Động từ 'want' yêu cầu động từ theo sau ở dạng 'to-infinitive' (to + V)." });
       }
+
+      // Generic pattern for modals with "to" (e.g., "should to go", "can to watch", "must to do")
+      const modalToMatch = cleanInput.match(/\b(should|must|can|could|would|will|may|might)\s+to\s+([a-z]+)\b/);
+      if (modalToMatch) {
+        const modal = modalToMatch[1];
+        const verb = modalToMatch[2];
+        offlineCorrections.push({
+          error: `${modal} to ${verb}`,
+          fix: `${modal} ${verb}`,
+          explanation: `Sau động từ khuyết thiếu '${modal}' phải dùng động từ nguyên thể không 'to' (V-bare).`
+        });
+      }
+
       if (cleanInput.includes("very like")) {
         offlineCorrections.push({ error: "very like", fix: "really like / like ... very much", explanation: "Không dùng 'very' đứng trực tiếp trước động từ thường." });
       }
