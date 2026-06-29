@@ -282,6 +282,43 @@ Chỉ trả về JSON thuần túy, không chứa ký tự hay wrapper markdown 
         offlineCorrections.push({ error: "want go", fix: "want to go", explanation: "Động từ 'want' yêu cầu động từ theo sau ở dạng 'to-infinitive' (to + V)." });
       }
 
+      // Adjective/Adverb confusion (e.g., "run quick", "drive slow", "speak fluent", "speak good")
+      const speakFluentMatch = cleanInput.match(/\bspeak(s)?\s+([a-zA-Z]+\s+)?fluent\b/);
+      if (speakFluentMatch) {
+        offlineCorrections.push({ 
+          error: speakFluentMatch[0], 
+          fix: speakFluentMatch[0].replace("fluent", "fluently"), 
+          explanation: "Cần dùng trạng từ (fluently) để bổ nghĩa cho động từ thường (speak), không dùng tính từ (fluent)." 
+        });
+      }
+
+      const driveSlowMatch = cleanInput.match(/\bdrive(s)?\s+([a-zA-Z]+\s+)?slow\b/);
+      if (driveSlowMatch) {
+        offlineCorrections.push({ 
+          error: driveSlowMatch[0], 
+          fix: driveSlowMatch[0].replace("slow", "slowly"), 
+          explanation: "Cần dùng trạng từ (slowly) để bổ nghĩa cho động từ thường (drive), không dùng tính từ (slow)." 
+        });
+      }
+
+      const runQuickMatch = cleanInput.match(/\brun(s)?\s+([a-zA-Z]+\s+)?quick\b/);
+      if (runQuickMatch) {
+        offlineCorrections.push({ 
+          error: runQuickMatch[0], 
+          fix: runQuickMatch[0].replace("quick", "quickly"), 
+          explanation: "Cần dùng trạng từ (quickly) để bổ nghĩa cho động từ thường (run), không dùng tính từ (quick)." 
+        });
+      }
+
+      const speakGoodMatch = cleanInput.match(/\bspeak(s)?\s+([a-zA-Z]+\s+)?good\b/);
+      if (speakGoodMatch) {
+        offlineCorrections.push({ 
+          error: speakGoodMatch[0], 
+          fix: speakGoodMatch[0].replace("good", "well"), 
+          explanation: "Trạng từ bổ nghĩa cho động từ 'speak' phải là 'well', không dùng tính từ 'good'." 
+        });
+      }
+
       // Generic pattern for modals with "to" (e.g., "should to go", "can to watch", "must to do")
       const modalToMatch = cleanInput.match(/\b(should|must|can|could|would|will|may|might)\s+to\s+([a-z]+)\b/);
       if (modalToMatch) {
@@ -310,6 +347,20 @@ Chỉ trả về JSON thuần túy, không chứa ký tự hay wrapper markdown 
         offlineCorrections.push({ error: "I am student", fix: "I am a student", explanation: "Cần thêm mạo từ 'a' trước danh từ số ít chỉ nghề nghiệp/vai trò." });
       }
 
+      // Adjective/Adverb confusion (e.g., "run quick", "drive slow", "speak fluent", "speak good")
+      if (cleanInput.includes("run quick")) {
+        offlineCorrections.push({ error: "run quick", fix: "run quickly", explanation: "Cần dùng trạng từ (quickly) để bổ nghĩa cho động từ thường (run), không dùng tính từ (quick)." });
+      }
+      if (cleanInput.includes("drive slow")) {
+        offlineCorrections.push({ error: "drive slow", fix: "drive slowly", explanation: "Cần dùng trạng từ (slowly) để bổ nghĩa cho động từ thường (drive), không dùng tính từ (slow)." });
+      }
+      if (cleanInput.includes("speak fluent")) {
+        offlineCorrections.push({ error: "speak fluent", fix: "speak fluently", explanation: "Cần dùng trạng từ (fluently) để bổ nghĩa cho động từ thường (speak), không dùng tính từ (fluent)." });
+      }
+      if (cleanInput.includes("speak good")) {
+        offlineCorrections.push({ error: "speak good", fix: "speak well", explanation: "Trạng từ bổ nghĩa cho động từ 'speak' phải là 'well', không dùng tính từ 'good'." });
+      }
+
       let correctionsHeader = "";
       if (offlineCorrections.length > 0) {
         correctionsHeader = "**⚠️ Phát hiện lỗi ngữ pháp trong câu của bạn:**\n\n| Lỗi sai | Sửa lại | Giải thích chi tiết |\n|---|---|---|\n" +
@@ -332,6 +383,52 @@ Chỉ trả về JSON thuần túy, không chứa ký tự hay wrapper markdown 
         } else if (cleanInput.includes("how to say") || cleanInput.includes("làm sao để") || cleanInput.includes("dịch") || cleanInput.includes("translate")) {
           aiMessage = "That is a great question! Let's translate and practice that expression. Try saying: 'I would like to practice English daily.'";
           translation = "Đó là một câu hỏi tuyệt vời! Hãy cùng dịch và luyện tập biểu đạt đó. Thử nói: 'I would like to practice English daily.'";
+          tutorFeedback = "Khi muốn hỏi cách nói một cụm từ tiếng Việt sang tiếng Anh, bạn có thể dùng cấu trúc: 'How do you say [cụm từ] in English?' hoặc 'What is the English word for [cụm từ]?'.";
+        } else if (cleanInput.includes("adjective") || cleanInput.includes("adverb") || cleanInput.includes("tính từ") || cleanInput.includes("trạng từ")) {
+          aiMessage = "Adjectives and adverbs are essential for descriptive English! Let me explain the difference between them, where to place them, and how to avoid mistakes.";
+          translation = "Tính từ và trạng từ là những phần thiết yếu để mô tả trong tiếng Anh! Hãy để tôi giải thích sự khác biệt giữa chúng, vị trí đặt và cách tránh lỗi sai.";
+          tutorFeedback = "**📚 SO SÁNH TÍNH TỪ (ADJECTIVES) & TRẠNG TỪ (ADVERBS)**\n\n" +
+            "| Đặc trưng | Tính từ (Adjective - Adj) | Trạng từ (Adverb - Adv) |\n" +
+            "|---|---|---|\n" +
+            "| **Chức năng** | Bổ nghĩa cho **Danh từ** hoặc Đại từ | Bổ nghĩa cho **Động từ thường**, Tính từ, hoặc Trạng từ khác |\n" +
+            "| **Vị trí** | 1. Trước danh từ (VD: *a **beautiful** day*)\n2. Sau Linking verb (VD: *She **is** happy*, *It **looks** good*) | 1. Sau động từ thường (VD: *run **quickly***)\n2. Trước tính từ (VD: *She is **extremely** smart*)\n3. Đầu/cuối câu |\n" +
+            "| **Dấu hiệu** | Thường là từ gốc hoặc tận cùng bằng: *-ful, -less, -ive, -ous, -ish, -able* | Thường kết thúc bằng **Adj + -ly** (VD: *slowly, beautifully*). *Ngoại lệ: hard, fast, early, well* |\n\n" +
+            "**⚠️ LỖI HAY GẶP CỦA NGƯỜI VIỆT:**\n" +
+            "- **Lỗi 1 (Sai vị trí Adj):** Nói *\"I have a car red\"* ❌ $\\rightarrow$ Sửa: *\"I have a **red** car\"* ✅ (Adj đứng trước danh từ).\n" +
+            "- **Lỗi 2 (Dùng Adj thay vì Adv cho động từ thường):** Nói *\"She speaks English fluent\"* ❌ $\\rightarrow$ Sửa: *\"She speaks English **fluently**\"* ✅ (cần trạng từ bổ nghĩa cho động từ thường *speak*).\n" +
+            "- **Lỗi 3 (Từ đặc biệt):** Nói *\"study hardly\"* ❌ (nghĩa là hầu như không học) $\\rightarrow$ Sửa: *\"study **hard**\"* ✅ (chăm chỉ).";
+        } else if (cleanInput.includes("noun") || cleanInput.includes("danh từ") || cleanInput.includes("verb") || cleanInput.includes("động từ")) {
+          aiMessage = "Nouns and verbs are the core elements of any sentence structure. Let's study how to use them correctly!";
+          translation = "Danh từ và động từ là những yếu tố cốt lõi của cấu trúc câu. Hãy cùng học cách sử dụng chúng một cách chính xác!";
+          tutorFeedback = "**📚 DANH TỪ (NOUNS) & ĐỘNG TỪ (VERBS) TRONG TIẾNG ANH**\n\n" +
+            "### 1. Danh từ (Nouns - N)\n" +
+            "- **Chức năng**: Chỉ người, vật, sự việc, địa điểm, ý tưởng. Làm Chủ ngữ (S) hoặc Tân ngữ (O).\n" +
+            "- **Phân loại quan trọng**:\n" +
+            "  - **Danh từ đếm được (Countable Nouns)**: Có dạng số ít/số nhiều. *Phải có mạo từ (a/an/the) hoặc số lượng đi kèm ở số ít*. (VD: *a book, books*).\n" +
+            "  - **Danh từ không đếm được (Uncountable Nouns)**: Không có dạng số nhiều, đi với động từ số ít. (VD: *water, information, homework* - KHÔNG dùng *homeworks*).\n\n" +
+            "### 2. Động từ (Verbs - V)\n" +
+            "- **Chức năng**: Diễn tả hành động (action verb - *run, code*) hoặc trạng thái/liên kết (state/linking verb - *be, seem, feel*).\n" +
+            "- **Đặc điểm**: Phải chia theo **thì** (tenses) và hòa hợp với **chủ ngữ** (VD: *He works* - số ít, *They work* - số nhiều).\n\n" +
+            "**⚠️ LỖI HAY GẶP CỦA NGƯỜI VIỆT:**\n" +
+            "- **Lỗi 1 (Thiếu mạo từ):** Nói *\"I am developer\"* ❌ $\\rightarrow$ Sửa: *\"I am **a** developer\"* ✅.\n" +
+            "- **Lỗi 2 (Sử dụng số nhiều cho danh từ không đếm được):** Nói *\"She gave me many advices\"* ❌ $\\rightarrow$ Sửa: *\"She gave me a lot of **advice**\"* ✅.\n" +
+            "- **Lỗi 3 (Dùng động từ hành động như linking verb):** Nói *\"It smells deliciously\"* ❌ $\\rightarrow$ Sửa: *\"It smells **delicious**\"* ✅ (sau linking verb dùng Adj, không dùng Adv).";
+        } else if (cleanInput.includes("từ loại") || cleanInput.includes("parts of speech") || cleanInput.includes("word form")) {
+          aiMessage = "Mastering the Parts of Speech is the first step to building correct sentences in English. Let me show you the full overview!";
+          translation = "Làm chủ Từ loại là bước đầu tiên để xây dựng các câu chính xác trong tiếng Anh. Hãy để tôi chỉ cho bạn cái nhìn tổng quan đầy đủ!";
+          tutorFeedback = "**📚 8 TỪ LOẠI CHÍNH TRONG TIẾNG ANH (PARTS OF SPEECH)**\n\n" +
+            "Mỗi từ trong câu đảm nhận một vai trò ngữ pháp cụ thể. Dưới đây là bảng tổng quan:\n\n" +
+            "| Từ loại | Viết tắt | Chức năng | Ví dụ |\n" +
+            "|---|---|---|---|\n" +
+            "| **Danh từ (Noun)** | N | Chỉ người, vật, nơi chốn, ý tưởng | *student, office, happiness*\n*He lives in **London**.* |\n" +
+            "| **Đại từ (Pronoun)** | Pro | Thay thế cho danh từ để tránh lặp | *I, you, he, she, they, it*\n*She likes **him**.* |\n" +
+            "| **Động từ (Verb)** | V | Diễn tả hành động hoặc trạng thái | *run, design, create, be, seem*\n*We **coded** the web.* |\n" +
+            "| **Tính từ (Adjective)** | Adj | Mô tả hoặc bổ nghĩa cho danh từ | *beautiful, clean, smart, fast*\n*It is a **modular** code.* |\n" +
+            "| **Trạng từ (Adverb)** | Adv | Bổ nghĩa cho động từ, tính từ, trạng từ | *quickly, fluently, very, daily*\n*He codes **efficiently**.* |\n" +
+            "| **Giới từ (Preposition)** | Prep | Chỉ mối quan hệ không gian/thời gian | *in, on, at, under, behind, of*\n*Put it **on** the table.* |\n" +
+            "| **Liên từ (Conjunction)** | Conj | Nối từ, cụm từ, hoặc mệnh đề | *and, but, or, because, although*\n*Simple **but** premium.* |\n" +
+            "| **Thán từ (Interjection)** | Inter | Biểu lộ cảm xúc mạnh mẽ | *oh, wow, oops, ouch*\n***Wow**, that looks great!* |\n\n" +
+            "**💡 Mẹo ghi nhớ:** Khi học từ vựng mới, hãy học theo **Word Family** (Gia đình từ) của từ đó. Ví dụ: *create* (V) $\\rightarrow$ *creation* (N) $\rightarrow$ *creative* (Adj) $\rightarrow$ *creatively* (Adv).";
         } else if (cleanInput.includes("6 main english question types") || cleanInput.includes("question types") || cleanInput.includes("dạng câu hỏi")) {
           aiMessage = "I would be happy to explain English question types! There are 6 main structures: Yes/No, Wh- Information, Tag Questions, Negative Questions, Indirect/Embedded, and Hypothetical/Conditional. Let me show you how they work!";
           translation = "Tôi rất vui được giải thích các dạng câu hỏi tiếng Anh! Có 6 cấu trúc chính: Yes/No, Wh- Thông tin, Câu hỏi đuôi, Câu hỏi phủ định, Gián tiếp/Lồng ghép, và Giả định/Điều kiện. Hãy để tôi chỉ cho bạn cách chúng hoạt động!";
