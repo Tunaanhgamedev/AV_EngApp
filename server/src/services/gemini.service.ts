@@ -372,6 +372,44 @@ Chỉ trả về JSON thuần túy, không chứa ký tự hay wrapper markdown 
           aiMessage = "Hello! I'm EngBot, your AI English Coach. I'm so excited to chat with you today! What topic would you like to discuss?";
           translation = "Xin chào! Tôi là EngBot, Huấn luyện viên tiếng Anh AI của bạn. Tôi rất vui được trò chuyện với bạn hôm nay! Bạn muốn thảo luận về chủ đề gì?";
           tutorFeedback = "Chúc mừng! Câu chào hỏi của bạn rất tự nhiên. Mẹo nhỏ: Bạn cũng có thể dùng 'How are you doing?' hoặc 'Good to see you!' để mở đầu cuộc trò chuyện nhé.";
+        } else if (cleanInput.includes("how old") || cleanInput.includes("your age") || cleanInput.includes("bao nhiêu tuổi") || cleanInput.includes("tuổi của bạn")) {
+          aiMessage = "I don't have a biological age since I am an AI, but I was created recently to be your dedicated English Coach! How old are you?";
+          translation = "Tôi không có tuổi sinh học vì tôi là một AI, nhưng tôi được tạo ra gần đây để làm Huấn luyện viên tiếng Anh tận tâm của bạn! Bạn bao nhiêu tuổi?";
+          tutorFeedback = "**🎂 CÁCH HỎI & TRẢ LỜI VỀ TUỔI TRONG TIẾNG ANH:**\n\n" +
+            "- Câu hỏi thông dụng: *How old are you?*\n" +
+            "- Trả lời: *I am [Number] years old* hoặc ngắn gọn *I am [Number]* (VD: \"I am 20 years old\").\n\n" +
+            "**⚠️ Lỗi hay gặp:** Nói *\"I have 20 years old\"* ❌ (do dịch word-by-word từ tiếng Việt) $\\rightarrow$ Sửa: *\"I **am** 20 years old\"* ✅.";
+        } else if (cleanInput.includes("your name") || cleanInput.includes("who are you") || cleanInput.includes("tên của bạn") || cleanInput.includes("tên bạn là gì") || cleanInput.includes("bạn là ai")) {
+          aiMessage = "I am EngBot, your AI English Coach! I am here to help you practice speaking, correct your grammar, and boost your vocabulary.";
+          translation = "Tôi là EngBot, Huấn luyện viên tiếng Anh AI của bạn! Tôi ở đây để giúp bạn luyện nói, sửa lỗi ngữ pháp và nâng cao vốn từ vựng.";
+          tutorFeedback = "**📛 CÁCH GIỚI THIỆU TÊN & VAI TRÒ TRONG TIẾNG ANH:**\n\n" +
+            "- Để giới thiệu tên: *My name is [Name]* hoặc *I am [Name]* (VD: \"My name is EngBot\").\n" +
+            "- Để hỏi tên người khác lịch sự: *May I have your name, please?* hoặc *What is your name?*.\n" +
+            "- Sau khi biết tên: *Nice to meet you!* (Rất vui được gặp bạn!).";
+        } else if (cleanInput.includes("where are you from") || cleanInput.includes("where do you live") || cleanInput.includes("bạn từ đâu") || cleanInput.includes("sống ở đâu")) {
+          aiMessage = "I live in the digital cloud, so I am everywhere you need me! But I am designed to help learners all over Vietnam. Where are you from?";
+          translation = "Tôi sống trên đám mây kỹ thuật số, vì vậy tôi ở mọi nơi bạn cần! Nhưng tôi được thiết kế để giúp đỡ người học trên khắp Việt Nam. Bạn từ đâu đến?";
+          tutorFeedback = "**🌍 CÁCH NÓI VỀ QUÊ QUÁN & NƠI SỐNG:**\n\n" +
+            "- Hỏi quê quán: *Where are you from?* hoặc *Where do you come from?*.\n" +
+            "- Trả lời quê quán: *I am from [Place]* hoặc *I come from [Place]* (VD: \"I am from Da Nang\").\n" +
+            "- Hỏi nơi sống hiện tại: *Where do you live?*.\n" +
+            "- Trả lời nơi sống: *I live in [City]* (VD: \"I live in Hanoi\").\n\n" +
+            "**⚠️ Lỗi hay gặp:** Nói *\"I come from in Da Nang\"* ❌ $\\rightarrow$ Sửa: *\"I come from Da Nang\"* ✅ (không dùng giới từ 'in' ngay sau 'come from').";
+        } else if (cleanInput.includes("what can you do") || cleanInput.includes("help me") || cleanInput.includes("bạn làm được gì") || cleanInput.includes("giúp tôi")) {
+          aiMessage = "I can help you practice English conversations, correct grammatical errors in real time, translate words or phrases, and explain complex grammar rules!";
+          translation = "Tôi có thể giúp bạn luyện hội thoại tiếng Anh, sửa lỗi ngữ pháp ngay lập tức, dịch từ hoặc cụm từ, và giải thích các quy tắc ngữ pháp phức tạp!";
+          tutorFeedback = "**🛠️ CÁCH YÊU CẦU GIÚP ĐỠ LỊCH SỰ TRONG TIẾNG ANH:**\n\n" +
+            "- *Could you help me with [something], please?* (Bạn có thể giúp tôi việc... không?).\n" +
+            "- *Could you explain this grammar rule to me?* (Bạn có thể giải thích quy tắc ngữ pháp này cho tôi không?).\n" +
+            "- *How do you pronounce this word?* (Từ này phát âm thế nào?).";
+        } else if (cleanInput.includes("hobby") || cleanInput.includes("what do you like") || cleanInput.includes("sở thích")) {
+          aiMessage = "My favorite hobby is reading English books and chatting with amazing learners like you! What do you like to do in your free time?";
+          translation = "Sở thích lớn nhất của tôi là đọc sách tiếng Anh và trò chuyện với những học viên tuyệt vời như bạn! Bạn thích làm gì vào thời gian rảnh rỗi?";
+          tutorFeedback = "**🎨 CÁCH NÓI VỀ SỞ THÍCH TRONG TIẾNG ANH:**\n\n" +
+            "- Câu hỏi: *What is your hobby?* hoặc *What do you like to do in your free time?*.\n" +
+            "- Trả lời bằng động từ thêm -ing: *I like/love/enjoy + V-ing* (VD: \"I enjoy reading books\").\n" +
+            "- Trả lời bằng danh từ: *My hobby is [Activity]* (VD: \"My hobby is photography\").\n\n" +
+            "**⚠️ Lỗi hay gặp:** Nói *\"I like play soccer\"* ❌ $\\rightarrow$ Sửa: *\"I like **playing** soccer\"* hoặc *\"I like **to play** soccer\"* ✅.";
         } else if (cleanInput.includes("weather")) {
           aiMessage = "The weather is a wonderful topic! It's currently lovely here. How is the weather in your city today?";
           translation = "Thời tiết là một chủ đề tuyệt vời! Hiện tại ở đây thời tiết rất đẹp. Thời tiết ở thành phố của bạn hôm nay thế nào?";
