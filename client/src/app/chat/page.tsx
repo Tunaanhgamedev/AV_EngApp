@@ -1,22 +1,11 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { 
-  MessageSquare, 
-  Send, 
-  User as UserIcon, 
-  Bot, 
-  Sparkles, 
-  RotateCcw, 
-  Info,
-  ChevronLeft,
-  Coffee,
-  Briefcase,
-  Plane,
-  ShoppingBag,
-  Mic,
-  Loader2,
-  LogIn
+  MessageSquare, Send, User as UserIcon, Bot, Sparkles, RotateCcw, 
+  ChevronLeft, Coffee, Briefcase, Plane, ShoppingBag, Mic, MicOff,
+  Loader2, LogIn, Zap, BookOpen, Languages, PenTool, GraduationCap,
+  Lightbulb, History, X, Trash2, Plus
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { sendMessage } from '@/services/chat.service';
@@ -24,118 +13,182 @@ import { useAuth } from '@/context/AuthContext';
 import Link from 'next/link';
 import { Markdown } from '@/components/Markdown';
 
-const SCENARIOS = [
+interface ChatMessage {
+  role: 'user' | 'assistant';
+  content: string;
+  translation?: string;
+  feedback?: string;
+  timestamp?: number;
+}
+
+interface Scenario {
+  id: string;
+  title: string;
+  titleVi: string;
+  icon: any;
+  persona: string;
+  scenario: string;
+  color: string;
+}
+
+const SCENARIOS: Scenario[] = [
   { 
-    id: 'free_chat', 
-    title: 'Free Chat with EngBot', 
-    icon: MessageSquare, 
+    id: 'free_chat', title: 'Free Chat', titleVi: 'Trò chuyện tự do',
+    icon: MessageSquare, color: 'from-blue-500 to-indigo-600',
     persona: 'EngBot, a supportive AI English Coach and conversational tutor.',
     scenario: 'Trò chuyện tự do với EngBot. Bạn có thể nói về bất kỳ chủ đề nào, hỏi ngữ pháp, nhờ dịch thuật, hoặc tập phản xạ tiếng Anh.'
   },
   { 
-    id: 'coffee_shop', 
-    title: 'Ordering Coffee', 
-    icon: Coffee, 
+    id: 'coffee_shop', title: 'Ordering Coffee', titleVi: 'Gọi cà phê',
+    icon: Coffee, color: 'from-amber-500 to-orange-600',
     persona: 'A friendly barista at a busy Starbucks in New York.',
     scenario: 'You want to order a medium latte with almond milk and a blueberry muffin.'
   },
   { 
-    id: 'job_interview', 
-    title: 'Job Interview', 
-    icon: Briefcase, 
+    id: 'job_interview', title: 'Job Interview', titleVi: 'Phỏng vấn xin việc',
+    icon: Briefcase, color: 'from-emerald-500 to-teal-600',
     persona: 'A professional HR manager at a tech company.',
     scenario: 'You are applying for a Junior Web Developer position. Discuss your skills.'
   },
   { 
-    id: 'airport', 
-    title: 'Check-in Desk', 
-    icon: Plane, 
+    id: 'airport', title: 'Check-in Desk', titleVi: 'Quầy check-in sân bay',
+    icon: Plane, color: 'from-sky-500 to-cyan-600',
     persona: 'An airline staff member at the airport.',
     scenario: 'You are checking in for your flight to London, but your bag is overweight.'
   },
   { 
-    id: 'shopping', 
-    title: 'Returns Desk', 
-    icon: ShoppingBag, 
+    id: 'shopping', title: 'Returns Desk', titleVi: 'Quầy trả đồ',
+    icon: ShoppingBag, color: 'from-rose-500 to-pink-600',
     persona: 'A store clerk at a clothing store.',
     scenario: 'You bought a shirt yesterday but it has a small hole. You want a refund.'
   }
 ];
 
+const QUICK_ACTIONS = [
+  { label: 'Sửa ngữ pháp', prompt: 'Please correct my grammar in this sentence: ', icon: PenTool },
+  { label: 'Dịch câu', prompt: 'How do you say this in English: ', icon: Languages },
+  { label: 'Hỏi dạng câu hỏi', prompt: 'Explain the 6 main English Question Types (Yes/No, Wh-, Tag, Negative, Indirect, Hypothetical) and how to master them.', icon: GraduationCap },
+  { label: 'Câu hỏi phủ định', prompt: 'How do I answer negative questions correctly (e.g., "Aren\'t you coming?") without making mistakes?', icon: BookOpen },
+  { label: 'Khung trả lời STAR/PREP', prompt: 'Give me an example of how to structure an answer using the STAR or PREP framework.', icon: Sparkles },
+  { label: 'Gợi ý chủ đề', prompt: 'Suggest an interesting topic to practice English about ', icon: Lightbulb },
+];
+
 export default function ChatPage() {
   const { user } = useAuth();
-  const [selectedScenario, setSelectedScenario] = useState<any>(null);
-  const [messages, setMessages] = useState<any[]>([]);
+  const [selectedScenario, setSelectedScenario] = useState<Scenario | null>(null);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
+  const [savedSessions, setSavedSessions] = useState<{id: string; title: string; date: string; messages: ChatMessage[]}[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const recognitionRef = useRef<any>(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
+  // Load saved sessions from localStorage
   useEffect(() => {
-    scrollToBottom();
-  }, [messages, isTyping]);
+    try {
+      const saved = localStorage.getItem('engbot_chat_sessions');
+      if (saved) setSavedSessions(JSON.parse(saved));
+    } catch {}
+  }, []);
+
+  const scrollToBottom = useCallback(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, []);
+
+  useEffect(() => { scrollToBottom(); }, [messages, isTyping, scrollToBottom]);
+
+  // Voice recognition setup
+  const toggleVoiceInput = useCallback(() => {
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+      alert('Trình duyệt không hỗ trợ nhận diện giọng nói. Hãy dùng Chrome hoặc Edge.');
+      return;
+    }
+
+    if (isListening && recognitionRef.current) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+      return;
+    }
+
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.interimResults = true;
+    recognition.continuous = false;
+
+    recognition.onresult = (event: any) => {
+      const transcript = Array.from(event.results).map((r: any) => r[0].transcript).join('');
+      setInput(transcript);
+    };
+    recognition.onend = () => setIsListening(false);
+    recognition.onerror = () => setIsListening(false);
+
+    recognitionRef.current = recognition;
+    recognition.start();
+    setIsListening(true);
+  }, [isListening]);
+
+  // Save current session
+  const saveCurrentSession = useCallback(() => {
+    if (!selectedScenario || messages.length < 2) return;
+    const session = {
+      id: `session-${Date.now()}`,
+      title: selectedScenario.title,
+      date: new Date().toLocaleDateString('vi-VN'),
+      messages: messages.slice(0, 20) // Keep last 20 messages
+    };
+    const updated = [session, ...savedSessions].slice(0, 10);
+    setSavedSessions(updated);
+    try { localStorage.setItem('engbot_chat_sessions', JSON.stringify(updated)); } catch {}
+  }, [selectedScenario, messages, savedSessions]);
 
   if (!user) {
     return (
-      <div className="flex flex-col items-center justify-center h-[70vh] space-y-6 text-center animate-in fade-in duration-700">
-        <div className="w-20 h-20 bg-primary/10 rounded-3xl flex items-center justify-center text-primary">
+      <div className="flex flex-col items-center justify-center h-[70vh] space-y-6 text-center animate-in fade-in duration-700 px-4">
+        <div className="w-20 h-20 bg-primary/10 dark:bg-primary/20 rounded-3xl flex items-center justify-center text-primary">
           <MessageSquare className="w-10 h-10" />
         </div>
         <div className="space-y-2">
-          <h1 className="text-3xl font-bold">Sign In to Chat</h1>
-          <p className="text-slate-500 max-w-sm mx-auto">
-            Log in to save your conversation history and get personalized feedback from EngBot.
+          <h1 className="text-3xl font-bold text-slate-800 dark:text-slate-100">Đăng Nhập để Chat</h1>
+          <p className="text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
+            Đăng nhập để lưu lịch sử hội thoại và nhận phản hồi cá nhân hóa từ EngBot.
           </p>
         </div>
-        <Link 
-          href="/login"
-          className="flex items-center gap-2 px-8 py-3 bg-slate-900 text-white rounded-xl font-bold hover:bg-slate-800 transition-all shadow-lg"
-        >
-          <LogIn className="w-5 h-5" />
-          Sign In with Google
+        <Link href="/login" className="flex items-center gap-2 px-8 py-3 bg-slate-900 dark:bg-white dark:text-slate-900 text-white rounded-xl font-bold hover:opacity-90 transition-all shadow-lg cursor-pointer">
+          <LogIn className="w-5 h-5" /> Đăng nhập với Google
         </Link>
       </div>
     );
   }
 
-  const handleStartScenario = (scenario: any) => {
+  const handleStartScenario = (scenario: Scenario) => {
     setSelectedScenario(scenario);
+    const name = user?.displayName?.split(' ')[0] || '';
     const content = scenario.id === 'free_chat'
-      ? `Hello ${user?.displayName?.split(' ')[0] || ''}! I'm EngBot, your AI English Coach. We can chat about anything you like! You can type in English or Vietnamese, ask me questions, or practice translating. How are you doing today?`
-      : `Hello ${user?.displayName?.split(' ')[0] || ''}! I'm your ${scenario.title} partner. ${scenario.scenario}. How can I help you today?`;
+      ? `Hello ${name}! I'm EngBot, your AI English Coach. We can chat about anything you like! You can type in English or Vietnamese, ask me questions, or practice translating. How are you doing today?`
+      : `Hello ${name}! I'm your ${scenario.title} partner. ${scenario.scenario}. How can I help you today?`;
     const translation = scenario.id === 'free_chat'
-      ? `Chào ${user?.displayName?.split(' ')[0] || ''}! Tôi là EngBot, Huấn luyện viên tiếng Anh AI của bạn. Chúng ta có thể trò chuyện tự do về bất cứ chủ đề nào bạn thích! Bạn có thể gõ bằng tiếng Anh hoặc tiếng Việt, đặt câu hỏi cho tôi hoặc luyện dịch. Hôm nay bạn thế nào?`
-      : `Chào ${user?.displayName?.split(' ')[0] || ''}! Tôi là đối tác luyện tập ${scenario.title} của bạn. ${scenario.scenario}. Tôi có thể giúp gì cho bạn hôm nay?`;
-
-    setMessages([
-      { 
-        role: 'assistant', 
-        content,
-        translation
-      }
-    ]);
+      ? `Chào ${name}! Tôi là EngBot, Huấn luyện viên tiếng Anh AI của bạn. Chúng ta có thể trò chuyện tự do về bất cứ chủ đề nào! Hôm nay bạn thế nào?`
+      : `Chào ${name}! Tôi là đối tác luyện tập ${scenario.titleVi} của bạn. ${scenario.scenario}. Tôi có thể giúp gì cho bạn?`;
+    setMessages([{ role: 'assistant', content, translation, timestamp: Date.now() }]);
   };
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim() || isTyping) return;
+    if (!input.trim() || isTyping || !selectedScenario) return;
 
     const userMessage = input.trim();
     setInput('');
-    
-    const newMessages = [...messages, { role: 'user', content: userMessage }];
+
+    const newMessages: ChatMessage[] = [...messages, { role: 'user', content: userMessage, timestamp: Date.now() }];
     setMessages(newMessages);
     setIsTyping(true);
 
     try {
-      const apiHistory = newMessages.map(m => ({
-        role: m.role,
-        content: m.content
-      }));
-
+      const apiHistory = newMessages.map(m => ({ role: m.role, content: m.content }));
       const token = await user.getIdToken();
       const result = await sendMessage({
         userId: user.uid,
@@ -144,53 +197,111 @@ export default function ChatPage() {
         persona: selectedScenario.persona,
         scenario: selectedScenario.scenario,
         history: apiHistory.slice(0, -1)
-      }, token); // Pass the token for authentication
+      }, token);
 
-      setMessages([
-        ...newMessages,
-        { 
-          role: 'assistant', 
-          content: result.aiMessage,
-          translation: result.translation,
-          feedback: result.tutorFeedback
-        }
-      ]);
-    } catch (error) {
-      console.error(error);
-      alert('Failed to get response from EngBot.');
+      setMessages([...newMessages, { 
+        role: 'assistant', content: result.aiMessage,
+        translation: result.translation, feedback: result.tutorFeedback,
+        timestamp: Date.now()
+      }]);
+    } catch {
+      setMessages([...newMessages, {
+        role: 'assistant', content: "I'm sorry, I'm having trouble connecting right now. Please try again in a moment!",
+        translation: "Xin lỗi, tôi đang gặp sự cố kết nối. Vui lòng thử lại sau!",
+        timestamp: Date.now()
+      }]);
     } finally {
       setIsTyping(false);
     }
   };
 
+  const handleQuickAction = (prompt: string) => {
+    setInput(prompt);
+    inputRef.current?.focus();
+  };
+
+  const handleNewChat = () => {
+    saveCurrentSession();
+    setSelectedScenario(null);
+    setMessages([]);
+  };
+
+  // ─── Scenario Selection Screen ───
   if (!selectedScenario) {
     return (
-      <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in duration-700">
-        <header className="text-center space-y-4">
-          <div className="inline-flex p-3 bg-primary/10 rounded-2xl text-primary mb-2">
+      <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in duration-700 px-2 sm:px-0">
+        <header className="text-center space-y-4 pt-2">
+          <div className="inline-flex p-3 bg-gradient-to-br from-primary/20 to-indigo-500/20 dark:from-primary/30 dark:to-indigo-500/30 rounded-2xl text-primary mb-2">
             <Sparkles className="w-8 h-8" />
           </div>
-          <h1 className="text-4xl font-bold tracking-tight">Roleplay with <span className="gradient-text">EngBot</span></h1>
-          <p className="text-slate-500 max-w-lg mx-auto font-medium">
-            Choose a real-world scenario and practice your English speaking skills with our AI mentor.
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-800 dark:text-slate-100">
+            Luyện tập với <span className="gradient-text">EngBot</span>
+          </h1>
+          <p className="text-slate-500 dark:text-slate-400 max-w-lg mx-auto font-medium text-sm sm:text-base">
+            Chọn tình huống thực tế và luyện kỹ năng giao tiếp tiếng Anh với trợ lý AI.
           </p>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-8">
+        {/* History button */}
+        {savedSessions.length > 0 && (
+          <div className="flex justify-center">
+            <button
+              onClick={() => setShowHistory(!showHistory)}
+              className="flex items-center gap-2 px-4 py-2 text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors cursor-pointer"
+            >
+              <History className="w-4 h-4" />
+              {showHistory ? 'Ẩn lịch sử' : `Lịch sử (${savedSessions.length})`}
+            </button>
+          </div>
+        )}
+
+        {/* Saved sessions */}
+        {showHistory && savedSessions.length > 0 && (
+          <div className="space-y-2 animate-in fade-in duration-300">
+            {savedSessions.map((s) => (
+              <div key={s.id} className="premium-card p-3 sm:p-4 flex items-center justify-between gap-3">
+                <div className="min-w-0 flex-1">
+                  <p className="font-bold text-sm text-slate-700 dark:text-slate-200 truncate">{s.title}</p>
+                  <p className="text-xs text-slate-400">{s.date} • {s.messages.length} tin nhắn</p>
+                </div>
+                <button
+                  onClick={() => {
+                    const sc = SCENARIOS.find(x => x.title === s.title);
+                    if (sc) { setSelectedScenario(sc); setMessages(s.messages); }
+                  }}
+                  className="px-3 py-1.5 text-xs font-bold text-primary hover:bg-primary/10 rounded-lg transition-colors cursor-pointer flex-shrink-0"
+                >
+                  Tiếp tục
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Scenario grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 pt-4">
           {SCENARIOS.map((scenario) => {
             const Icon = scenario.icon;
             return (
               <button
                 key={scenario.id}
                 onClick={() => handleStartScenario(scenario)}
-                className="premium-card p-6 text-left group hover:border-primary/40 transition-all flex items-start gap-4"
+                className={cn(
+                  "premium-card p-5 sm:p-6 text-left group hover:shadow-lg transition-all cursor-pointer",
+                  "flex items-start gap-3 sm:gap-4 active:scale-[0.98]",
+                  scenario.id === 'free_chat' && "sm:col-span-2"
+                )}
               >
-                <div className="p-3 bg-slate-50 rounded-xl group-hover:bg-primary/10 group-hover:text-primary transition-colors">
-                  <Icon className="w-6 h-6" />
+                <div className={cn(
+                  "p-2.5 sm:p-3 rounded-xl bg-gradient-to-br text-white shadow-md flex-shrink-0",
+                  scenario.color
+                )}>
+                  <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
                 </div>
-                <div>
-                  <h3 className="font-bold text-lg mb-1">{scenario.title}</h3>
-                  <p className="text-sm text-slate-500 leading-relaxed">{scenario.scenario}</p>
+                <div className="min-w-0">
+                  <h3 className="font-bold text-base sm:text-lg mb-0.5 text-slate-800 dark:text-slate-100">{scenario.title}</h3>
+                  <p className="text-xs text-slate-400 font-medium mb-1">{scenario.titleVi}</p>
+                  <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed line-clamp-2">{scenario.scenario}</p>
                 </div>
               </button>
             );
@@ -200,86 +311,92 @@ export default function ChatPage() {
     );
   }
 
+  // ─── Chat Interface ───
   return (
-    <div className="h-[calc(100vh-8rem)] flex flex-col max-w-6xl mx-auto animate-in slide-in-from-bottom-4 duration-500">
-      <header className="flex items-center justify-between p-4 border-b border-slate-100 bg-white/50 backdrop-blur-md rounded-t-3xl">
-        <div className="flex items-center gap-4">
+    <div className="h-[calc(100vh-6rem)] lg:h-[calc(100vh-4rem)] flex flex-col max-w-5xl mx-auto animate-in slide-in-from-bottom-4 duration-500">
+      {/* Header */}
+      <header className="flex items-center justify-between px-3 sm:px-5 py-3 border-b border-slate-100 dark:border-slate-800 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl rounded-t-2xl sm:rounded-t-3xl">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
           <button 
-            onClick={() => setSelectedScenario(null)}
-            className="p-2 hover:bg-slate-100 rounded-full transition-colors"
+            onClick={handleNewChat}
+            className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors cursor-pointer flex-shrink-0"
+            aria-label="Back to scenarios"
           >
-            <ChevronLeft className="w-5 h-5" />
+            <ChevronLeft className="w-5 h-5 text-slate-600 dark:text-slate-300" />
           </button>
-          <div>
-            <h2 className="font-bold">{selectedScenario.title}</h2>
-            <p className="text-[10px] font-medium text-slate-400 uppercase tracking-widest flex items-center gap-1">
+          <div className={cn("w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br flex items-center justify-center text-white shadow-md flex-shrink-0", selectedScenario.color)}>
+            <selectedScenario.icon className="w-4 h-4 sm:w-5 sm:h-5" />
+          </div>
+          <div className="min-w-0">
+            <h2 className="font-bold text-sm sm:text-base text-slate-800 dark:text-slate-100 truncate">{selectedScenario.title}</h2>
+            <p className="text-[10px] font-medium text-slate-400 dark:text-slate-500 uppercase tracking-widest flex items-center gap-1">
               <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
-              Live with EngBot
+              EngBot Online
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-3">
-          <button className="p-2 text-slate-400 hover:text-primary transition-colors">
-            <RotateCcw className="w-5 h-5" />
+        <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+          <button onClick={() => { saveCurrentSession(); setMessages([]); handleStartScenario(selectedScenario); }}
+            className="p-2 text-slate-400 hover:text-primary dark:hover:text-primary transition-colors cursor-pointer" aria-label="Reset chat">
+            <RotateCcw className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
-          <button className="p-2 text-slate-400 hover:text-primary transition-colors">
-            <Info className="w-5 h-5" />
+          <button onClick={handleNewChat}
+            className="p-2 text-slate-400 hover:text-primary dark:hover:text-primary transition-colors cursor-pointer" aria-label="New chat">
+            <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
         </div>
       </header>
 
-      <div className="flex-1 overflow-y-auto p-6 space-y-6 scrollbar-hide">
+      {/* Messages */}
+      <div className="flex-1 overflow-y-auto px-3 sm:px-5 py-4 space-y-4 sm:space-y-5 no-scrollbar">
         {messages.map((msg, idx) => (
-          <div 
-            key={idx} 
-            className={cn(
-              "flex w-full animate-in fade-in slide-in-from-bottom-2 duration-300",
-              msg.role === 'user' ? "justify-end" : "justify-start"
-            )}
-          >
-            <div className={cn(
-              "flex gap-3 max-w-[80%]",
-              msg.role === 'user' ? "flex-row-reverse" : "flex-row"
-            )}>
+          <div key={idx} className={cn(
+            "flex w-full animate-in fade-in slide-in-from-bottom-2 duration-300",
+            msg.role === 'user' ? "justify-end" : "justify-start"
+          )}>
+            <div className={cn("flex gap-2 sm:gap-3", msg.role === 'user' ? "flex-row-reverse max-w-[90%] sm:max-w-[80%]" : "flex-row max-w-[95%] sm:max-w-[85%]")}>
+              {/* Avatar */}
               <div className={cn(
-                "w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-sm overflow-hidden",
-                msg.role === 'user' ? "bg-slate-900 text-white" : "bg-primary text-white"
+                "w-8 h-8 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl flex items-center justify-center flex-shrink-0 shadow-sm overflow-hidden",
+                msg.role === 'user' ? "bg-slate-900 dark:bg-slate-700 text-white" : "bg-gradient-to-br from-primary to-indigo-600 text-white"
               )}>
                 {msg.role === 'user' ? (
-                  user.photoURL ? <img src={user.photoURL} alt="User" /> : <UserIcon className="w-5 h-5" />
+                  user.photoURL ? <img src={user.photoURL} alt="User" className="w-full h-full object-cover" /> : <UserIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                 ) : (
-                  <Bot className="w-5 h-5" />
+                  <Bot className="w-4 h-4 sm:w-5 sm:h-5" />
                 )}
               </div>
-              <div className="space-y-2">
+
+              {/* Content */}
+              <div className="space-y-1.5 min-w-0 flex-1">
                 {msg.role === 'assistant' && (
                   <span className="text-[10px] font-bold text-primary uppercase tracking-widest px-1">EngBot</span>
                 )}
                 <div className={cn(
-                  "p-4 rounded-3xl shadow-sm leading-relaxed",
+                  "p-3 sm:p-4 rounded-2xl sm:rounded-3xl shadow-sm leading-relaxed text-sm sm:text-base break-words",
                   msg.role === 'user' 
-                    ? "bg-slate-900 text-white rounded-tr-none" 
-                    : "bg-white border border-slate-100 rounded-tl-none"
+                    ? "bg-slate-900 dark:bg-slate-700 text-white rounded-tr-sm sm:rounded-tr-none" 
+                    : "bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-tl-sm sm:rounded-tl-none"
                 )}>
                   {msg.content}
                 </div>
                 
+                {/* Translation & Feedback */}
                 {msg.role === 'assistant' && (
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2 px-3 py-1 bg-slate-50 border border-slate-100 rounded-full w-fit">
-                      <Sparkles className="w-3 h-3 text-primary" />
-                      <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Translation</span>
-                    </div>
-                    <p className="text-xs text-slate-400 italic px-1">
-                      {msg.translation}
-                    </p>
-                    
-                    {msg.feedback && (
-                      <div className="p-3 bg-blue-50 border border-blue-100 rounded-2xl text-xs text-blue-700 flex items-start gap-2 w-full max-w-full overflow-hidden">
-                        <Info className="w-4 h-4 flex-shrink-0 mt-0.5" />
-                        <div className="flex-1 min-w-0">
-                          <Markdown content={msg.feedback} />
+                  <div className="space-y-1.5 sm:space-y-2">
+                    {msg.translation && (
+                      <>
+                        <div className="flex items-center gap-1.5 px-2 py-0.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700 rounded-full w-fit">
+                          <Sparkles className="w-3 h-3 text-primary" />
+                          <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Bản dịch</span>
                         </div>
+                        <p className="text-xs text-slate-400 dark:text-slate-500 italic px-1">{msg.translation}</p>
+                      </>
+                    )}
+                    {msg.feedback && (
+                      <div className="p-2.5 sm:p-3 bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900/50 rounded-xl sm:rounded-2xl text-xs text-blue-700 dark:text-blue-300 flex items-start gap-2 w-full overflow-hidden">
+                        <Zap className="w-4 h-4 flex-shrink-0 mt-0.5 text-blue-500" />
+                        <div className="flex-1 min-w-0 overflow-x-auto"><Markdown content={msg.feedback} /></div>
                       </div>
                     )}
                   </div>
@@ -288,16 +405,18 @@ export default function ChatPage() {
             </div>
           </div>
         ))}
+
+        {/* Typing indicator */}
         {isTyping && (
-          <div className="flex justify-start animate-pulse">
-            <div className="flex gap-3 max-w-[80%]">
-              <div className="w-10 h-10 rounded-2xl bg-primary text-white flex items-center justify-center flex-shrink-0">
-                <Bot className="w-5 h-5" />
+          <div className="flex justify-start animate-in fade-in duration-300">
+            <div className="flex gap-2 sm:gap-3">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-gradient-to-br from-primary to-indigo-600 text-white flex items-center justify-center flex-shrink-0">
+                <Bot className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
-              <div className="p-4 bg-white border border-slate-100 rounded-3xl rounded-tl-none flex gap-1 items-center">
-                <span className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce" />
-                <span className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce [animation-delay:0.2s]" />
-                <span className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce [animation-delay:0.4s]" />
+              <div className="p-3 sm:p-4 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl sm:rounded-3xl rounded-tl-sm sm:rounded-tl-none flex gap-1.5 items-center">
+                <span className="w-2 h-2 bg-primary/40 rounded-full animate-bounce" />
+                <span className="w-2 h-2 bg-primary/40 rounded-full animate-bounce [animation-delay:0.15s]" />
+                <span className="w-2 h-2 bg-primary/40 rounded-full animate-bounce [animation-delay:0.3s]" />
               </div>
             </div>
           </div>
@@ -305,33 +424,56 @@ export default function ChatPage() {
         <div ref={messagesEndRef} />
       </div>
 
-      <footer className="p-6 bg-white/50 backdrop-blur-md rounded-b-3xl border-t border-slate-100">
-        <form onSubmit={handleSendMessage} className="relative flex items-center gap-3">
-          <div className="flex-1 relative group">
+      {/* Quick Actions (only show when few messages) */}
+      {messages.length <= 2 && selectedScenario.id === 'free_chat' && (
+        <div className="px-3 sm:px-5 pb-2 overflow-x-auto no-scrollbar">
+          <div className="flex gap-2 w-max">
+            {QUICK_ACTIONS.map((action) => (
+              <button key={action.label} onClick={() => handleQuickAction(action.prompt)}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-full text-xs font-bold text-slate-600 dark:text-slate-300 hover:border-primary/40 hover:text-primary transition-all cursor-pointer whitespace-nowrap active:scale-95">
+                <action.icon className="w-3 h-3" /> {action.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Input Footer */}
+      <footer className="px-3 sm:px-5 py-3 sm:py-4 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl rounded-b-2xl sm:rounded-b-3xl border-t border-slate-100 dark:border-slate-800">
+        <form onSubmit={handleSendMessage} className="relative flex items-center gap-2 sm:gap-3">
+          <div className="flex-1 relative">
             <input 
+              ref={inputRef}
               type="text" 
-              placeholder="Type your message..." 
-              className="w-full h-14 pl-6 pr-14 bg-white border-2 border-slate-100 rounded-2xl shadow-sm focus:border-primary focus:ring-0 transition-all font-medium"
+              placeholder="Nhập tin nhắn tiếng Anh hoặc tiếng Việt..." 
+              className="w-full h-11 sm:h-14 pl-4 sm:pl-5 pr-12 sm:pr-14 bg-white dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 rounded-xl sm:rounded-2xl shadow-sm focus:border-primary focus:ring-0 focus:outline-none transition-all font-medium text-sm sm:text-base text-slate-700 dark:text-slate-200 placeholder:text-slate-400"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               disabled={isTyping}
+              aria-label="Chat message input"
             />
             <button 
               type="button"
-              className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-slate-300 hover:text-primary transition-colors"
+              onClick={toggleVoiceInput}
+              className={cn(
+                "absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 p-2 rounded-lg transition-all cursor-pointer",
+                isListening ? "text-red-500 bg-red-50 dark:bg-red-950/30 animate-pulse" : "text-slate-300 dark:text-slate-500 hover:text-primary"
+              )}
+              aria-label={isListening ? "Stop recording" : "Start voice input"}
             >
-              <Mic className="w-6 h-6" />
+              {isListening ? <MicOff className="w-5 h-5 sm:w-6 sm:h-6" /> : <Mic className="w-5 h-5 sm:w-6 sm:h-6" />}
             </button>
           </div>
           <button 
             type="submit"
             disabled={!input.trim() || isTyping}
             className={cn(
-              "w-14 h-14 flex items-center justify-center bg-primary text-white rounded-2xl shadow-lg shadow-primary/20 hover:opacity-90 transition-all",
+              "w-11 h-11 sm:w-14 sm:h-14 flex items-center justify-center bg-gradient-to-br from-primary to-indigo-600 text-white rounded-xl sm:rounded-2xl shadow-lg shadow-primary/20 hover:opacity-90 transition-all cursor-pointer flex-shrink-0",
               (!input.trim() || isTyping) && "opacity-50 cursor-not-allowed"
             )}
+            aria-label="Send message"
           >
-            {isTyping ? <Loader2 className="w-6 h-6 animate-spin" /> : <Send className="w-6 h-6" />}
+            {isTyping ? <Loader2 className="w-5 h-5 sm:w-6 sm:h-6 animate-spin" /> : <Send className="w-5 h-5 sm:w-6 sm:h-6" />}
           </button>
         </form>
       </footer>

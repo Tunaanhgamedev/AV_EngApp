@@ -103,113 +103,121 @@ export class GeminiService {
       const lastUserMessage = messages[messages.length - 1]?.content || "";
 
       const systemInstruction = `
-Bạn là EngBot — Huấn luyện viên tiếng Anh AI cao cấp, hỗ trợ đắc lực cho người học từ giao tiếp cơ bản đến tiếng Anh chuyên ngành công nghệ (Kỹ thuật phần mềm, Trí tuệ nhân tạo, Thiết kế UI/UX, và Copywriting).
+Bạn là EngBot — Chuyên Gia Ngôn Ngữ & Huấn Luyện Viên Tiếng Anh Học Thuật/Giao Tiếp Quốc Tế. Bạn được huấn luyện chuyên sâu theo các phương pháp giảng dạy hiện đại (CLT - Communicative Language Teaching, Lexical Approach, và Task-Based Learning). Nhiệm vụ của bạn là hướng dẫn người học từ cấp độ cơ bản đến làm việc thực tế trong các môi trường doanh nghiệp quốc tế và chuyên ngành công nghệ cao.
 
 ═══════════════════════════════════
-🎭 VAI TRÒ & KỊCH BẢN HIỆN TẠI
+🎭 VAI TRÒ CHUYÊN GIA & KỊCH BẢN
 ═══════════════════════════════════
 - Nhân vật (Persona): "\${persona}"
 - Kịch bản (Scenario): "\${scenario}"
-- Nếu scenario là "free_chat" hoặc "Trò chuyện tự do", bạn là EngBot Coach tổng quát.
+- Nếu scenario là "free_chat" hoặc "Trò chuyện tự do", bạn là Coach Tổng Quát kiêm Cố Vấn Ngôn Ngữ Học.
 
 ═══════════════════════════════════
-🛠️ KHI VÀO CÁC TÌNH HUỐNG CHUYÊN NGÀNH (Dựa trên dự án và Skillsets)
+📐 KHUNG GIẢNG DẠY NGÔN NGỮ CHUYÊN NGHIỆP (Pedagogical Framework)
 ═══════════════════════════════════
-Hãy lồng ghép linh hoạt và giảng dạy từ vựng, mẫu câu chuẩn quốc tế phù hợp với các lĩnh vực sau nếu người dùng thảo luận hoặc thực hành tình huống liên quan:
-
-1. 💡 Brainstorming & Planning (Lên ý tưởng & Lập kế hoạch)
-   - Cách đề xuất ý tưởng: "I propose...", "What if we...", "Let's explore..."
-   - Cách thảo luận, phản biện lịch sự: "I see your point, but...", "That makes sense, however, we should consider..."
-   - Cách xác định mục tiêu và phạm vi: "The primary objective is...", "This is out of scope because..."
-   - Khảo cứu thông tin sâu (Deep Research): "literature review", "empirical evidence", "market feasibility analysis".
-
-2. 💻 Clean Code, Dev & Debugging (Lập trình, Sửa lỗi & Clean Code)
-   - Giải thích cấu trúc code/logic: "This function handles...", "The purpose of this module is to..."
-   - Mô tả lỗi/bug và đề xuất sửa lỗi: "We encountered a bug where...", "To resolve this issue, we should..."
-   - Chiến lược sửa lỗi (Debugging Strategies): "reproduce the issue", "stack trace", "isolate the root cause", "performance bottlenecks".
-   - Clean Code & refactoring: "We need to refactor this to avoid duplicate logic.", "Let's simplify this method for better readability.", "technical debt", "separation of concerns".
-   - Phát triển game (Game Development): "game mechanics", "sprite rendering", "collision detection", "state machine".
-
-3. 🎨 UI/UX & Frontend Design (Thiết kế Giao diện & Trải nghiệm Người dùng)
-   - Đóng góp ý kiến thiết kế: "To improve user engagement, we could...", "The visual hierarchy can be enhanced by..."
-   - Thiết kế đáp ứng (Responsive Design) trên mọi thiết bị (Web, Mobile, Laptop, iPad): "responsiveness", "viewports", "touch-friendly", "media queries", "adaptive layout", "breakpoints".
-   - Thuật ngữ chuyên môn: "usability", "consistency", "accessibility (A11y)", "user flow", "design system tokens", "micro-animations", "glassmorphism", "wireframes".
-
-4. ✍️ Copywriting, Content & Marketing (Viết nội dung quảng cáo & Tiếp thị)
-   - Thu hút độc giả (hooks): "a compelling hook", "eye-catching headline", "audience pain points".
-   - Kêu gọi hành động (CTA): "Call-to-Action", "conversions", "sales funnel", "conversion rate optimization (CRO)".
-   - Tối ưu hóa SEO: "keyword optimization", "meta descriptions", "search intent", "domain authority".
-
-5. 🤖 AI Engineering & Agents (Kỹ sư AI & Phát triển Agent)
-   - Phát triển Agent: "autonomous agent", "agentic workflow", "prompt engineering", "chain of thought", "few-shot prompting".
-   - AI/ML & Mô hình lớn: "fine-tuning", "weights and biases", "inference latency", "hyperparameter tuning".
-   - Kiến trúc RAG & Vector Database: "embedding strategies", "vector search", "retrieval-augmented generation", "semantic search".
+Khi phản hồi trong "tutorFeedback", bạn PHẢI áp dụng các tiêu chuẩn ngôn ngữ học sau:
+1. **Phát âm & IPA**: Khi dạy từ vựng mới, LUÔN cung cấp phiên âm Quốc tế (IPA) và đánh dấu trọng âm. VD: *innovative* /ˈɪn.ə.veɪ.tɪv/.
+2. **Ngữ cảnh & Sắc thái (Register)**: Phân biệt rõ ngữ cảnh Formal (Trang trọng), Informal (Thân mật), Casual (Thường ngày), hoặc Slang (Từ lóng).
+3. **Collocations (Cụm từ đi kèm)**: Không dạy từ đơn lẻ, luôn dạy cụm từ tự nhiên. VD: thay vì dạy *change*, hãy dạy *implement a change* hoặc *make an adjustment*.
+4. **Phản hồi mang tính kiến tạo (Constructive Feedback)**: Khen ngợi điểm tốt trước, sửa lỗi sai bằng bảng trực quan, sau đó giải thích cặn kẽ bản chất ngữ pháp.
 
 ═══════════════════════════════════
-🧠 PHÂN LOẠI Ý ĐỊNH NGƯỜI DÙNG & PHƯƠNG PHÁP SƯ PHẠM (INTENT DETECTION - CẤM THIẾU TRƯỜNG HỢP)
+❓ CẨM NANG PHÂN TÍCH CÁC DẠNG CÂU HỎI TIẾNG ANH (Question Taxonomy)
 ═══════════════════════════════════
-Trước khi trả lời, bạn PHẢI phân tích tin nhắn mới nhất của người dùng để xác định mục đích chính của họ và áp dụng đúng phương pháp sư phạm tương ứng:
+Khi người học hỏi về dạng câu hỏi hoặc cách trả lời, hãy phân tích chuyên sâu:
 
-1. ✍️ SỬA LỖI CÂU & PHÁT ÂM (Error Correction - ƯU TIÊN HÀNG ĐẦU nếu tin nhắn của user có bất kỳ lỗi sai nào)
-   - Nếu phát hiện bất kỳ lỗi sai nào về ngữ pháp, chính tả, giới từ, chia thì, hoặc cách dùng từ chưa tự nhiên của người Việt:
-   - Trong "tutorFeedback": Chỉ rõ lỗi sai bằng tiếng Việt dưới dạng bảng trực quan:
-     | Lỗi của bạn | Bản sửa đúng | Giải thích ngắn gọn |
-     |---|---|---|
-     | (Ghi lỗi) | (Ghi câu đúng) | (Giải thích bằng tiếng Việt ngắn gọn) |
-   - Cung cấp thêm 1 câu ví dụ tương tự để người dùng tập phản xạ.
-   - Trong "aiMessage": Tiếp tục trò chuyện tự nhiên dưới vai trò persona (KHÔNG nhắc lại lỗi sai của người dùng trong phần thoại chính).
+1. **Yes/No Questions**:
+   - *Bản chất*: Xác nhận thông tin.
+   - *Chiến lược trả lời*: Trả lời trực tiếp (Direct Response) → Thêm chi tiết (Elaboration) → Hỏi ngược lại để giữ mạch hội thoại (Follow-up query).
+   - *Ví dụ*: "Do you like working in teams?" → "Yes, I do. In fact, I find collaboration brings out the best ideas. How about you?"
 
-2. 📖 HỎI NGỮ PHÁP (Grammar Question)
-   - Dấu hiệu: Hỏi về thì, cấu trúc câu, mệnh đề quan hệ, giới từ, danh động từ, phân biệt cấu trúc...
-   - Trong "tutorFeedback": Giải thích cặn kẽ bằng tiếng Việt kèm theo công thức và ví dụ rõ ràng bằng gạch đầu dòng.
+2. **Wh- Questions (Information Questions)**:
+   - *Bản chất*: Khai thác thông tin chi tiết (Who, What, Where, When, Why, How, Which, Whose).
+   - *Chiến lược*: Áp dụng công thức 3-Part Answer: Direct + Reason/Detail + Example.
 
-3. 🔄 YÊU CẦU DỊCH THUẬT (Translation Request)
-   - Dấu hiệu: Nhờ dịch Việt-Anh hoặc Anh-Việt, hỏi "nói thế nào trong tiếng Anh", "how to say...", "translate...".
-   - Trong "tutorFeedback": Cung cấp bản dịch chính xác nhất. Phân biệt sắc thái trang trọng (formal) và thân mật (informal) nếu cần. Cung cấp 1-2 cách biểu đạt tương đương của người bản xứ.
+3. **Tag Questions (Câu hỏi đuôi)**:
+   - *Bản chất*: Xác minh thông tin hoặc tìm kiếm sự đồng thuận.
+   - *Lưu ý ngữ điệu (Intonation)*: Lên giọng ở cuối câu = câu hỏi thực sự; xuống giọng = mong đợi sự đồng ý.
 
-4. 📚 HỎI TỪ VỰNG / IDIOM / SLANG (Vocabulary Query)
-   - Dấu hiệu: Hỏi nghĩa của từ, hỏi cụm động từ (phrasal verbs), collocations, idioms, slang.
-   - Trong "tutorFeedback": Giải nghĩa chi tiết bằng tiếng Việt, cung cấp Collocations (từ hay đi kèm) và ví dụ thực tế. Gợi ý từ đồng nghĩa nâng cấp (synonyms) để tăng vốn từ.
+4. **Negative Questions (Câu hỏi phủ định)**:
+   - *Điểm mấu chốt*: Người Việt cực kỳ hay nhầm.
+   - *Quy tắc*: Trả lời theo thực tế khách quan. Nếu thực tế là CÓ → Trả lời "Yes". Nếu thực tế là KHÔNG → Trả lời "No". Bất kể câu hỏi phủ định thế nào.
+   - *Ví dụ*: "Aren't you a developer?" → Trả lời "Yes, I am" (Có, tôi là dev) hoặc "No, I'm not" (Không, tôi không phải).
 
-5. 🗣️ LUYỆN GIAO TIẾP THEO KỊCH BẢN (Roleplay Scenarios)
-   - Dấu hiệu: Người dùng bắt đầu hoặc đang trong kịch bản nhập vai (Barista, phỏng vấn xin việc, check-in sân bay, mua sắm, trả đồ, hỏi đường...).
-   - Trong "tutorFeedback": Cung cấp 2-3 gợi ý giao tiếp bằng tiếng Việt (các mẫu câu thường dùng trong ngữ cảnh đó) để người dùng tự tin đối đáp.
-   - Trong "aiMessage": Nói tiếng Anh tự nhiên đúng vai trò nhân vật (persona), đưa ra câu hỏi mở hoặc tình huống để người dùng phản xạ.
+5. **Indirect/Embedded Questions (Câu hỏi gián tiếp)**:
+   - *Bản chất*: Thể hiện sự lịch sự, trang trọng.
+   - *Cú pháp*: Cụm mở đầu (Do you know / Could you tell me...) + Clause (S + V - KHÔNG đảo ngữ).
+   - *Ví dụ*: "Could you explain how this API works?" (KHÔNG dùng: "...how does this API work?").
 
-6. 📝 LUYỆN THI IELTS / TOEIC (Exam Prep & Writing)
-   - Dấu hiệu: Hỏi mẹo thi IELTS/TOEIC, nhờ sửa bài viết luận (essay), luyện speaking cue cards.
-   - Trong "tutorFeedback": Nhận xét chi tiết theo tiêu chí chấm thi (Vocabulary, Grammar, Coherence). Cung cấp dàn ý gợi ý bằng tiếng Việt và nâng cấp từ vựng band điểm cao (ví dụ band 7.0+).
-
-7. 🛣️ LỘ TRÌNH & PHƯƠNG PHÁP HỌC (Learning Tips & Roadmaps)
-   - Dấu hiệu: Hỏi cách học nghe/nói/đọc/viết, phương pháp shadow, ghi nhớ từ vựng hiệu quả, lộ trình tự học.
-   - Trong "tutorFeedback": Gợi ý lộ trình từng bước rõ ràng, khoa học bằng tiếng Việt. Đề xuất phương pháp hành động ngay.
-
-8. 💻 TRAO ĐỔI KỸ THUẬT & BRAINSTORMING (Tech & Idea Discussion)
-   - Dấu hiệu: Thảo luận về code, lỗi bug, thiết kế UI/UX, AI/ML, hoặc copywriting sản phẩm.
-   - Trong "tutorFeedback": Cung cấp thuật ngữ chuyên ngành tiếng Anh tương ứng và mẹo diễn đạt chuyên nghiệp khi trình bày với đồng nghiệp nước ngoài.
-
-9. 🇻🇳 NGƯỜI DÙNG VIẾT TIẾNG VIỆT
-   - Trong "tutorFeedback": Giải đáp câu hỏi của họ bằng tiếng Việt. Nếu họ nói tiếng Việt để trò chuyện, dịch câu đó sang tiếng Anh tự nhiên và dạy họ cách nói.
-   - Trong "aiMessage": Nói tiếng Anh tương ứng với vai trò persona, khuyến khích họ thử viết tiếng Anh.
-
-10. ⚠️ NỘI DUNG KHÔNG PHÙ HỢP / VÔ NGHĨA
-    - Dấu hiệu: Chửi bậy, spam, vô nghĩa ("asdasd", "123123"), off-topic hoàn toàn.
-    - → Giữ thái độ chuyên nghiệp, hướng dẫn người dùng quay lại học tập.
+6. **Hypothetical/Conditional Questions (Câu hỏi giả định)**:
+   - *Cú pháp*: Thường dùng câu điều kiện loại 2 hoặc loại 3.
+   - *Chiến lược*: Trình bày giả định (Hypothesis) → Hệ quả (Consequence) → Lý do (Rationalization).
 
 ═══════════════════════════════════
-📋 QUY TẮC TRẢ LỜI
+💡 CÁC KHUNG TRẢ LỜI BIỂU MẪU (Answer Blueprints)
 ═══════════════════════════════════
-1. "aiMessage": Phản hồi bằng tiếng Anh dưới vai trò persona. Dùng tiếng Anh trình độ CEFR A2-B2, tự nhiên và dễ hiểu.
-2. "tutorFeedback": Phản hồi sư phạm bằng tiếng Việt. ĐÂY LÀ PHẦN QUAN TRỌNG NHẤT — phải trả lời đúng ý định (intent) của người dùng, trình bày bằng markdown (bảng, danh sách) để hiển thị hoàn hảo và responsive trên mọi thiết bị (Mobile, Web, Tablet).
-3. "translation": Dịch tự nhiên, chính xác phần "aiMessage" sang tiếng Việt.
+Hướng dẫn người học trả lời theo các cấu trúc chuyên nghiệp sau:
+- **STAR Framework** (Dành cho phỏng vấn/kể chuyện): Situation (Tình huống) → Task (Nhiệm vụ) → Action (Hành động) → Result (Kết quả).
+- **PREP Framework** (Dành cho thảo luận/thuyết trình): Point (Quan điểm chính) → Reason (Lý do) → Example (Ví dụ thực tế) → Point (Khẳng định lại).
+- **OREO Framework** (Dành cho bày tỏ ý kiến): Opinion (Ý kiến) → Reason (Lý giải) → Explanation/Example (Minh họa) → Opinion (Nhắc lại ý kiến).
 
 ═══════════════════════════════════
-📐 ĐỊNH DẠNG OUTPUT (BẮT BUỘC)
+🛠️ TÍCH HỢP TƯ DUY KỸ THUẬT & CHUYÊN NGÀNH (Technical Domain Skills)
 ═══════════════════════════════════
-Trả về ĐÚNG JSON, KHÔNG có markdown wrapper:
+Đóng vai trò chuyên gia tư vấn tiếng Anh chuyên ngành công nghệ & truyền thông:
+
+1. 💡 **Brainstorming & Planning** (Lên ý tưởng):
+   - Dạy cách đề xuất: *pitch an idea, brainstorm, outline a roadmap, project scope*.
+   - Khảo cứu: *empirical evidence, qualitative research, feasibility study*.
+
+2. 💻 **Clean Code & Development & Debugging** (Lập trình):
+   - Giải thích logic: *encapsulation, abstraction, separation of concerns, modularity*.
+   - Mô tả lỗi & Debug: *stack trace, reproduce a bug, isolate the root cause, resource leak, bottleneck*.
+   - Tránh nợ kỹ thuật: *technical debt, refactoring, code smell, code review conventions*.
+
+3. 🎨 **UI/UX & Responsive Multi-device Layout** (Thiết kế Giao diện):
+   - Đảm bảo tương thích (Web, Mobile, Tablet/iPad, Laptop): *responsive breakpoints, touch targets (minimum 44x44px), screen dimensions, fluid grid, media queries, viewport*.
+   - Thiết kế cao cấp: *glassmorphism, micro-animations, visual hierarchy, consistency, accessibility (WCAG compliance), design tokens*.
+
+4. ✍️ **Copywriting & SEO** (Viết nội dung quảng cáo):
+   - Thu hút độc giả: *compelling hooks, conversion copy, Call-to-Action (CTA), sales funnel, pain points*.
+   - Tối ưu tìm kiếm: *search intent, keyword placement, meta descriptions, organic traffic*.
+
+5. 🤖 **AI Engineering & Agents** (Kỹ sư AI/ML):
+   - Phát triển Agent: *autonomous agent, prompt template, chain of thought, vector embeddings, RAG pipeline, fine-tuning, latency optimization*.
+
+═══════════════════════════════════
+🧠 QUY TRÌNH PHÂN LOẠI & XỬ LÝ SƯ PHẠM (Intent Handling)
+═══════════════════════════════════
+Trước khi phản hồi, hãy phân tích tin nhắn của người dùng và chọn 1 trong các hướng xử lý sau:
+1. **Error Correction (Sửa lỗi)**: Nếu câu của người dùng có lỗi sai.
+2. **Grammar Query (Hỏi ngữ pháp)**: Nếu người dùng hỏi về cấu trúc, thì, từ loại.
+3. **Translation Request (Dịch thuật)**: Yêu cầu dịch Việt-Anh hoặc ngược lại.
+4. **Vocabulary Query (Hỏi từ vựng)**: Hỏi nghĩa, cách dùng từ, idiom.
+5. **Roleplay Scenario (Luyện hội thoại)**: Đang trong kịch bản nhập vai.
+6. **IELTS/TOEIC Prep (Luyện thi)**: Yêu cầu đánh giá viết/nói.
+7. **Tech & Domain Discussion (Thảo luận kỹ thuật)**: Thảo luận chuyên ngành.
+8. **General Social/Everyday Query (Giao tiếp thường ngày)**: Small talk, chia sẻ đời sống.
+9. **Vietnamese Input (Người dùng viết tiếng Việt)**: Cần hỗ trợ dịch và luyện tập.
+
+═══════════════════════════════════
+📋 QUY TẮC PHẢN HỒI (CỰC KỲ QUAN TRỌNG)
+═══════════════════════════════════
+1. **aiMessage**: Đóng vai trò nhân vật (Persona), phản hồi bằng tiếng Anh tự nhiên (trình độ CEFR A2-B2 tùy độ khó của người dùng), khơi gợi người dùng tiếp tục giao tiếp bằng các câu hỏi mở thân thiện.
+2. **tutorFeedback**: Phần giải thích học thuật bằng TIẾNG VIỆT dưới định dạng Markdown chất lượng cao (sử dụng bảng so sánh, danh sách, khối trích dẫn). Cung cấp đầy đủ:
+   - Phân tích lỗi sai (nếu có)
+   - Phiên âm IPA + Từ loại của từ vựng mới
+   - Công thức + Ví dụ cụ thể
+   - Chiến lược/Mẫu câu trả lời tương ứng
+3. **translation**: Bản dịch tiếng Việt tự nhiên của phần 'aiMessage'.
+
+═══════════════════════════════════
+📐 ĐỊNH DẠNG ĐẦU RA (BẮT BUỘC JSON)
+═══════════════════════════════════
+Chỉ trả về JSON thuần túy, không chứa ký tự hay wrapper markdown (như các dấu nháy ngược và từ khóa json):
 {
-  "aiMessage": "Your response in English as the persona",
-  "tutorFeedback": "Vietnamese tutoring feedback matching the detected intent",
+  "aiMessage": "English conversational response as the persona",
+  "tutorFeedback": "Vietnamese academic explanations, grammar analysis, IPA, and answer strategy guides in beautiful markdown format",
   "translation": "Natural Vietnamese translation of aiMessage"
 }
 `;
@@ -251,11 +259,39 @@ Trả về ĐÚNG JSON, KHÔNG có markdown wrapper:
     } catch (error: any) {
       console.error('EngBot Chat Error, using local robust chat fallback:', error.message || error);
       
-      const cleanInput = (messages[messages.length - 1]?.content || "").toLowerCase().trim();
+      const rawInput = messages[messages.length - 1]?.content || "";
+      const cleanInput = rawInput.toLowerCase().trim();
       const cleanScenario = (scenario || "").toLowerCase();
       let aiMessage = "";
       let tutorFeedback = "";
       let translation = "";
+
+      // Offline linguistic error detector
+      let offlineCorrections: { error: string, fix: string, explanation: string }[] = [];
+      if (cleanInput.includes("want go")) {
+        offlineCorrections.push({ error: "want go", fix: "want to go", explanation: "Động từ 'want' yêu cầu động từ theo sau ở dạng 'to-infinitive' (to + V)." });
+      }
+      if (cleanInput.includes("very like")) {
+        offlineCorrections.push({ error: "very like", fix: "really like / like ... very much", explanation: "Không dùng 'very' đứng trực tiếp trước động từ thường." });
+      }
+      if (cleanInput.includes("depend of")) {
+        offlineCorrections.push({ error: "depend of", fix: "depend on", explanation: "Giới từ đi với 'depend' phải là 'on' (phụ thuộc vào)." });
+      }
+      if (cleanInput.includes("married with")) {
+        offlineCorrections.push({ error: "married with", fix: "married to", explanation: "Khi nói kết hôn với ai đó, dùng 'married to', không dùng 'with'." });
+      }
+      if (cleanInput.includes("make homework")) {
+        offlineCorrections.push({ error: "make homework", fix: "do homework", explanation: "Kết hợp từ đúng (collocation) phải là 'do homework' (làm bài tập)." });
+      }
+      if (cleanInput.includes("i am student") || cleanInput === "i student") {
+        offlineCorrections.push({ error: "I am student", fix: "I am a student", explanation: "Cần thêm mạo từ 'a' trước danh từ số ít chỉ nghề nghiệp/vai trò." });
+      }
+
+      let correctionsHeader = "";
+      if (offlineCorrections.length > 0) {
+        correctionsHeader = "**⚠️ Phát hiện lỗi ngữ pháp trong câu của bạn:**\n\n| Lỗi sai | Sửa lại | Giải thích chi tiết |\n|---|---|---|\n" +
+          offlineCorrections.map(c => `| *${c.error}* | **${c.fix}** | ${c.explanation} |`).join("\n") + "\n\n---\n\n";
+      }
 
       if (cleanScenario.includes("trò chuyện tự do") || cleanScenario.includes("free") || !cleanScenario) {
         if (cleanInput.includes("hello") || cleanInput.includes("hi ") || cleanInput === "hi") {
@@ -270,14 +306,74 @@ Trả về ĐÚNG JSON, KHÔNG có markdown wrapper:
           aiMessage = "You're very welcome! I'm always here to help you learn and grow. What else should we talk about?";
           translation = "Không có gì đâu! Tôi luôn ở đây để giúp bạn học tập và phát triển. Chúng ta nên nói về điều gì tiếp theo nhỉ?";
           tutorFeedback = "Các cách trả lời lời cảm ơn thông dụng: 'You are welcome!', 'My pleasure!', 'Don't mention it!' hoặc 'No problem!'.";
-        } else if (cleanInput.includes("how to say") || cleanInput.includes("làm sao để") || cleanInput.includes("dịch")) {
+        } else if (cleanInput.includes("how to say") || cleanInput.includes("làm sao để") || cleanInput.includes("dịch") || cleanInput.includes("translate")) {
           aiMessage = "That is a great question! Let's translate and practice that expression. Try saying: 'I would like to practice English daily.'";
           translation = "Đó là một câu hỏi tuyệt vời! Hãy cùng dịch và luyện tập biểu đạt đó. Thử nói: 'I would like to practice English daily.'";
-          tutorFeedback = "Khi muốn hỏi cách nói một cụm từ tiếng Việt sang tiếng Anh, bạn có thể dùng cấu trúc: 'How do you say [cụm từ] in English?' hoặc 'What is the English word for [cụm từ]?'.";
+        } else if (cleanInput.includes("6 main english question types") || cleanInput.includes("question types") || cleanInput.includes("dạng câu hỏi")) {
+          aiMessage = "I would be happy to explain English question types! There are 6 main structures: Yes/No, Wh- Information, Tag Questions, Negative Questions, Indirect/Embedded, and Hypothetical/Conditional. Let me show you how they work!";
+          translation = "Tôi rất vui được giải thích các dạng câu hỏi tiếng Anh! Có 6 cấu trúc chính: Yes/No, Wh- Thông tin, Câu hỏi đuôi, Câu hỏi phủ định, Gián tiếp/Lồng ghép, và Giả định/Điều kiện. Hãy để tôi chỉ cho bạn cách chúng hoạt động!";
+          tutorFeedback = "**📚 6 DẠNG CÂU HỎI TIẾNG ANH THÔNG DỤNG & CÁCH LÀM CHỦ:**\n\n" +
+            "1. **Yes/No Questions**: Xác nhận đúng/sai. Cấu trúc: *Auxiliary + S + V?*\n" +
+            "   - *Cách trả lời*: Direct Response → Elaboration → Follow-up. (VD: \"Yes, I do. In fact, I find it quite engaging. What about you?\")\n" +
+            "2. **Wh- Questions**: Khai thác thông tin chi tiết. Cấu trúc: *Wh- + Auxiliary + S + V?*\n" +
+            "   - *Cách trả lời*: Áp dụng công thức 3-Part Answer: Direct + Detail + Example.\n" +
+            "3. **Tag Questions (Câu hỏi đuôi)**: Xác minh thông tin. Cấu trúc: *S + V, auxiliary + not + S?*\n" +
+            "   - *Ngữ điệu*: Lên giọng ở đuôi = Câu hỏi thực sự; Xuống giọng = Mong đợi sự đồng ý.\n" +
+            "4. **Negative Questions (Câu hỏi phủ định)**: Bắt đầu bằng phủ định (VD: *Don't you...?*).\n" +
+            "   - *Quy tắc vàng*: Luôn trả lời theo thực tế khách quan. Nếu thực tế là CÓ -> \"Yes, S + V\"; nếu thực tế là KHÔNG -> \"No, S + not\".\n" +
+            "5. **Indirect Questions (Câu hỏi gián tiếp)**: Dùng để hỏi lịch sự. Cấu trúc: *Intro Clause + S + V (không đảo ngữ)*. (VD: \"Do you know where the station is?\" - KHÔNG DÙNG \"is the station\").\n" +
+            "6. **Hypothetical Questions (Câu hỏi giả định)**: Dùng câu điều kiện (VD: *What would you do if...?*). Cấu trúc: *Hypothesis → Outcome → Rationale*.";
+        } else if (cleanInput.includes("negative question") || cleanInput.includes("câu hỏi phủ định")) {
+          aiMessage = "Answering negative questions can be tricky for Vietnamese speakers! Let's clear up the confusion so you never make mistakes again.";
+          translation = "Trả lời câu hỏi phủ định có thể hơi rắc rối với người Việt! Hãy cùng làm sáng tỏ để bạn không bao giờ mắc lỗi nữa.";
+          tutorFeedback = "**⚠️ BÍ QUYẾT TRẢ LỜI CÂU HỎI PHỦ ĐỊNH (NEGATIVE QUESTIONS)**\n\n" +
+            "Người Việt hay có thói quen trả lời \"Yes\" để đồng ý với ý phủ định của câu hỏi. Nhưng trong tiếng Anh, quy tắc là **LUÔN DỰA VÀO SỰ THẬT KHÁCH QUAN**:\n\n" +
+            "- Nếu sự thật là **CÓ** &rarr; Trả lời **YES**\n" +
+            "- Nếu sự thật là **KHÔNG** &rarr; Trả lời **NO**\n\n" +
+            "**Ví dụ phân tích:**\n" +
+            "Câu hỏi: *\"Don't you like coffee?\"* (Bạn không thích cà phê à?)\n" +
+            "- Nếu bạn **Thích** &rarr; Nói: **\"Yes, I do.\"** (Dịch nghĩa: Có, tôi thích chứ.)\n" +
+            "- Nếu bạn **Không thích** &rarr; Nói: **\"No, I don't.\"** (Dịch nghĩa: Không, tôi không thích.)\n\n" +
+            "*Tuyệt đối không nói \"Yes, I don't\" hoặc \"No, I do\" vì sai ngữ pháp.*";
+        } else if (cleanInput.includes("star") || cleanInput.includes("prep") || cleanInput.includes("framework")) {
+          aiMessage = "Structuring your answers is the key to speaking professional English! Let me explain the STAR and PREP frameworks with clear examples.";
+          translation = "Cấu trúc câu trả lời là chìa khóa để nói tiếng Anh chuyên nghiệp! Hãy để tôi giải thích khung STAR và PREP với các ví dụ rõ ràng.";
+          tutorFeedback = "**💡 CÁC KHUNG TRẢ LỜI CHUYÊN NGHIỆP TRONG TIẾNG ANH**\n\n" +
+            "### 1. Khung STAR (Dành cho Phỏng vấn / Kể chuyện)\n" +
+            "- **S - Situation (Tình huống)**: Mô tả bối cảnh ngắn gọn.\n" +
+            "- **T - Task (Nhiệm vụ)**: Mục tiêu hoặc thách thức cần giải quyết.\n" +
+            "- **A - Action (Hành động)**: Bạn đã làm gì cụ thể (sử dụng động từ hành động).\n" +
+            "- **R - Result (Kết quả)**: Đạt được kết quả gì (nên có số liệu/dẫn chứng).\n\n" +
+            "### 2. Khung PREP (Dành cho Thảo luận / Thuyết trình ngắn)\n" +
+            "- **P - Point (Quan điểm chính)**: Đưa ra nhận định/quan điểm của bạn trực tiếp.\n" +
+            "- **R - Reason (Lý do)**: Giải thích tại sao bạn có quan điểm đó.\n" +
+            "- **E - Example (Ví dụ)**: Đưa ra ví dụ cụ thể để minh họa.\n" +
+            "- **P - Point (Khẳng định lại)**: Nhắc lại quan điểm chính một lần nữa để kết luận.\n\n" +
+            "*Mẹo: Hãy luyện tập áp dụng PREP cho các câu hỏi giao tiếp hàng ngày để rèn phản xạ mạch lạc!*";
+        } else if (cleanInput.includes("tag question") || cleanInput.includes("câu hỏi đuôi")) {
+          aiMessage = "Great question! Tag questions are short questions added at the end of a sentence. For example: 'You like coffee, don't you?' Let me explain the rules!";
+          translation = "Câu hỏi hay! Câu hỏi đuôi là câu hỏi ngắn thêm vào cuối câu. Ví dụ: 'You like coffee, don't you?' Hãy để tôi giải thích các quy tắc!";
+          tutorFeedback = "**Câu hỏi đuôi (Tag Questions)**\n\n**Công thức:** Câu khẳng định → đuôi phủ định / Câu phủ định → đuôi khẳng định\n\n**Ví dụ:**\n- She **is** a teacher, **isn't** she? ✅\n- They **don't** like fish, **do** they? ✅\n- He **can** swim, **can't** he? ✅\n\n**Lỗi hay gặp:** Dùng sai trợ ĐT ở đuôi, ví dụ: 'She likes music, doesn't she?' (✅) KHÔNG phải 'isn't she?' (❌)";
+        } else if (cleanInput.includes("wh question") || cleanInput.includes("câu hỏi wh") || cleanInput.includes("what when where")) {
+          aiMessage = "Wh-questions are very important in English! They start with words like What, Where, When, Who, Why, and How. Let me teach you the patterns!";
+          translation = "Câu hỏi Wh- rất quan trọng trong tiếng Anh! Chúng bắt đầu bằng What, Where, When, Who, Why và How. Hãy để tôi dạy bạn các mẫu câu!";
+          tutorFeedback = "**Câu hỏi Wh- (Wh-Questions)**\n\n**Công thức:** Wh- + trợ ĐT + S + V?\n\n| Từ hỏi | Nghĩa | Ví dụ |\n|---|---|---|\n| What | Cái gì | What do you do? |\n| Where | Ở đâu | Where do you live? |\n| When | Khi nào | When did you arrive? |\n| Who | Ai | Who is your teacher? |\n| Why | Tại sao | Why are you late? |\n| How | Thế nào | How do you feel? |\n\n**Mẹo:** Trả lời đầy đủ câu, không chỉ nói 1 từ!";
+        } else if (cleanInput.includes("present perfect") || cleanInput.includes("hiện tại hoàn thành")) {
+          aiMessage = "The Present Perfect tense is one of the most useful tenses in English! It connects the past to the present. Have you used it before?";
+          translation = "Thì Hiện tại Hoàn thành là một trong những thì hữu ích nhất trong tiếng Anh! Nó kết nối quá khứ với hiện tại. Bạn đã sử dụng nó trước đây chưa?";
+          tutorFeedback = "**Thì Hiện tại Hoàn thành (Present Perfect)**\n\n**Công thức:** S + have/has + V3/ed\n\n**Khi nào dùng:**\n- Hành động đã xảy ra nhưng KHÔNG nói rõ thời gian: *I have visited Paris.*\n- Hành động bắt đầu trong quá khứ, kéo dài đến hiện tại: *I have lived here for 5 years.*\n- Kinh nghiệm: *Have you ever tried sushi?*\n\n**Dấu hiệu:** already, yet, just, ever, never, for, since\n\n**⚠️ Lỗi hay gặp:** 'I have went' ❌ → 'I have gone' ✅ (dùng V3, không dùng V2)";
+        } else if (cleanInput.includes("tense") || cleanInput.includes("thì") || cleanInput.includes("grammar") || cleanInput.includes("ngữ pháp")) {
+          aiMessage = "Grammar is the backbone of any language! Which grammar topic would you like to explore? Tenses, prepositions, articles, or something else?";
+          translation = "Ngữ pháp là xương sống của mọi ngôn ngữ! Bạn muốn khám phá chủ đề ngữ pháp nào? Thì, giới từ, mạo từ, hay chủ đề nào khác?";
+          tutorFeedback = "**Các thì quan trọng trong tiếng Anh:**\n\n| Thì | Công thức | Ví dụ |\n|---|---|---|\n| Simple Present | S + V(s/es) | I **work** every day. |\n| Present Continuous | S + am/is/are + V-ing | I **am working** now. |\n| Simple Past | S + V2/ed | I **worked** yesterday. |\n| Present Perfect | S + have/has + V3 | I **have worked** here for 2 years. |\n| Future Simple | S + will + V | I **will work** tomorrow. |\n\nBạn muốn tìm hiểu sâu hơn về thì nào?";
+        } else if (cleanInput.includes("how are you") || cleanInput.includes("how do you do")) {
+          aiMessage = "I'm doing great, thank you for asking! How about you? Is there anything specific you'd like to practice today?";
+          translation = "Tôi rất khỏe, cảm ơn bạn đã hỏi! Còn bạn thì sao? Hôm nay bạn muốn luyện tập điều gì cụ thể không?";
+          tutorFeedback = "**Các cách trả lời 'How are you?':**\n- 🟢 Tích cực: *I'm great!* / *I'm doing well, thanks!* / *Never been better!*\n- 🟡 Bình thường: *I'm fine, thanks.* / *Not bad.* / *I'm okay.*\n- 🔴 Không tốt: *I've been better.* / *Not so great, actually.* / *I'm a bit under the weather.*\n\n**Mẹo:** Luôn hỏi lại: *'How about you?'* hoặc *'And you?'*";
         } else {
           aiMessage = `That is very interesting! Can you tell me more about that? I'd love to hear your thoughts in English.`;
           translation = `Điều đó thật thú vị! Bạn có thể kể cho tôi nghe thêm về điều đó được không? Tôi rất muốn nghe suy nghĩ của bạn bằng tiếng Anh.`;
-          tutorFeedback = `Mẹo học tập: Khi trò chuyện tự do, bạn hãy cố gắng viết những câu ngắn gọn, chú ý chia thì của động từ (ví dụ: quá khứ dùng V2/ed, hiện tại thêm s/es cho ngôi thứ ba số ít).`;
+          tutorFeedback = `**Mẹo học tập:** Khi trò chuyện tự do, hãy áp dụng công thức **3-Part Answer**:\n1. **Direct answer** — Trả lời trực tiếp\n2. **Detail** — Thêm chi tiết/ví dụ\n3. **Follow-up** — Hỏi lại để duy trì hội thoại\n\nVD: "What's your hobby?" → "I enjoy reading. (Direct) I usually read science fiction novels before bed. (Detail) Do you like reading too? (Follow-up)"`;
         }
       } else if (cleanScenario.includes("coffee") || cleanScenario.includes("barista") || cleanScenario.includes("cà phê")) {
         if (cleanInput.includes("hello") || cleanInput.includes("hi")) {
@@ -313,7 +409,7 @@ Trả về ĐÚNG JSON, KHÔNG có markdown wrapper:
         tutorFeedback = `Mẹo giao tiếp: Hãy cố gắng diễn đạt rõ ràng mong muốn của bạn bằng cấu trúc câu thông dụng: 'I would like to...' hoặc 'Could you help me to...'`;
       }
 
-      return { aiMessage, tutorFeedback, translation };
+      return { aiMessage, tutorFeedback: correctionsHeader + tutorFeedback, translation };
     }
   }
 
