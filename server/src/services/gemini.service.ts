@@ -380,6 +380,22 @@ Chỉ trả về JSON thuần túy, không chứa ký tự hay wrapper markdown 
           aiMessage = "You're very welcome! I'm always here to help you learn and grow. What else should we talk about?";
           translation = "Không có gì đâu! Tôi luôn ở đây để giúp bạn học tập và phát triển. Chúng ta nên nói về điều gì tiếp theo nhỉ?";
           tutorFeedback = "Các cách trả lời lời cảm ơn thông dụng: 'You are welcome!', 'My pleasure!', 'Don't mention it!' hoặc 'No problem!'.";
+        } else if (cleanInput.includes("work") || cleanInput.includes("job") || cleanInput.includes("công việc") || cleanInput.includes("làm việc") || cleanInput.includes("company")) {
+          aiMessage = "That is cool! What do you do at your job? Tell me about your daily tasks.";
+          translation = "Thật ngầu! Bạn làm công việc gì? Hãy kể cho tôi nghe về các nhiệm vụ hàng ngày của bạn.";
+          tutorFeedback = "**💼 CÁCH NÓI VỀ CÔNG VIỆC TRONG TIẾNG ANH:**\n\n" +
+            "- Để giới thiệu công ty: *I work at [Company Name]* (VD: \"I work at Ebest\").\n" +
+            "- Để giới thiệu vị trí: *I work as a/an [Job Title]* hoặc *I am a/an [Job Title]* (VD: \"I work as a software engineer\").\n" +
+            "- Để mô tả bộ phận: *I work in the [Department] department* (VD: \"I work in the Marketing department\").\n\n" +
+            "**⚠️ Lỗi hay gặp:** Nói *\"I work company Ebest\"* ❌ $\\rightarrow$ Sửa: *\"I work **at** Ebest\"* hoặc *\"I work **for** Ebest\"* ✅.";
+        } else if (cleanInput.includes("study") || cleanInput.includes("learn") || cleanInput.includes("student") || cleanInput.includes("học") || cleanInput.includes("sinh viên")) {
+          aiMessage = "Studying is a wonderful journey! What major or subjects are you learning right now?";
+          translation = "Học tập là một hành trình tuyệt vời! Hiện tại bạn đang học chuyên ngành hay môn học nào?";
+          tutorFeedback = "**🎓 CÁCH NÓI VỀ VIỆC HỌC TẬP TRONG TIẾNG ANH:**\n\n" +
+            "- Để nói trường học: *I study at [School/University]* (VD: \"I study at UED\").\n" +
+            "- Để nói chuyên ngành: *I major in [Subject]* hoặc *My major is [Subject]* (VD: \"I major in Computer Science\").\n" +
+            "- Để nói về việc học cái gì: *I am learning how to [do something]* (VD: \"I am learning how to speak English\").\n\n" +
+            "**⚠️ Lỗi hay gặp:** Nói *\"I study major IT\"* ❌ $\rightarrow$ Sửa: *\"I **major in** IT\"* hoặc *\"My major is IT\"* ✅.";
         } else if (cleanInput.includes("how to say") || cleanInput.includes("làm sao để") || cleanInput.includes("dịch") || cleanInput.includes("translate")) {
           aiMessage = "That is a great question! Let's translate and practice that expression. Try saying: 'I would like to practice English daily.'";
           translation = "Đó là một câu hỏi tuyệt vời! Hãy cùng dịch và luyện tập biểu đạt đó. Thử nói: 'I would like to practice English daily.'";
