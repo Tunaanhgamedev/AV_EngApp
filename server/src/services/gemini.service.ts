@@ -346,6 +346,22 @@ Chỉ trả về JSON thuần túy, không chứa ký tự hay wrapper markdown 
       if (cleanInput.includes("i am student") || cleanInput === "i student") {
         offlineCorrections.push({ error: "I am student", fix: "I am a student", explanation: "Cần thêm mạo từ 'a' trước danh từ số ít chỉ nghề nghiệp/vai trò." });
       }
+      if (cleanInput.includes("look forward to meet")) {
+        offlineCorrections.push({ error: "look forward to meet", fix: "look forward to meeting", explanation: "Sau cấu trúc 'look forward to' phải dùng động từ thêm -ing (V-ing)." });
+      }
+      if (cleanInput.includes("interest in") && !cleanInput.includes("interested in")) {
+        offlineCorrections.push({ error: "interest in", fix: "interested in", explanation: "Để diễn tả cảm xúc/sở thích của ai đó đối với cái gì, ta dùng tính từ tận cùng là '-ed': 'interested in'." });
+      }
+      if (cleanInput.includes("i am agree") || cleanInput.includes("i'm agree")) {
+        offlineCorrections.push({ error: cleanInput.includes("i am agree") ? "I am agree" : "I'm agree", fix: "I agree", explanation: "'Agree' là động từ thường nên không đi kèm với động từ tobe 'am/are/is' phía trước." });
+      }
+      if (cleanInput.includes("no like") || cleanInput.includes("no want")) {
+        offlineCorrections.push({ 
+          error: cleanInput.includes("no like") ? "no like" : "no want", 
+          fix: cleanInput.includes("no like") ? "don't like" : "don't want", 
+          explanation: "Không dùng 'no' trực tiếp trước động từ thường để phủ định; cần mượn trợ động từ 'don't' hoặc 'doesn't'." 
+        });
+      }
 
       // Prepositions with parts of the day (e.g., "on morning", "in morning", "at morning", "in night")
       if (cleanInput.includes("on morning")) {
@@ -629,6 +645,58 @@ Chỉ trả về JSON thuần túy, không chứa ký tự hay wrapper markdown 
           aiMessage = "I'm doing great, thank you for asking! How about you? Is there anything specific you'd like to practice today?";
           translation = "Tôi rất khỏe, cảm ơn bạn đã hỏi! Còn bạn thì sao? Hôm nay bạn muốn luyện tập điều gì cụ thể không?";
           tutorFeedback = "**Các cách trả lời 'How are you?':**\n- 🟢 Tích cực: *I'm great!* / *I'm doing well, thanks!* / *Never been better!*\n- 🟡 Bình thường: *I'm fine, thanks.* / *Not bad.* / *I'm okay.*\n- 🔴 Không tốt: *I've been better.* / *Not so great, actually.* / *I'm a bit under the weather.*\n\n**Mẹo:** Luôn hỏi lại: *'How about you?'* hoặc *'And you?'*";
+        } else if (cleanInput.includes("email") || cleanInput.includes("letter") || cleanInput.includes("viết thư") || cleanInput.includes("viết email")) {
+          aiMessage = "Writing professional emails is a key skill! Let's look at the standard structure and templates you can use.";
+          translation = "Viết email chuyên nghiệp là một kỹ năng quan trọng! Hãy cùng xem cấu trúc chuẩn và các mẫu thư bạn có thể sử dụng.";
+          tutorFeedback = "**📧 CẨM NANG VIẾT EMAIL CHUYÊN NGHIỆP TRONG TIẾNG ANH:**\n\n" +
+            "### 1. Phần Chào hỏi (Greetings)\n" +
+            "- Trang trọng: *Dear Mr./Ms. [Last Name],* hoặc *Dear Sir/Madam,*\n" +
+            "- Thân mật: *Hi [First Name],* hoặc *Hello [First Name],*\n\n" +
+            "### 2. Lý do viết email (Reason for writing)\n" +
+            "- *I am writing to inquire about...* (Tôi viết thư này để hỏi về...)\n" +
+            "- *I am writing to confirm...* (Tôi viết thư này để xác nhận...)\n" +
+            "- *I am writing to update you on...* (Tôi viết thư này để cập nhật cho bạn về...)\n\n" +
+            "### 3. Phần Kết thúc & Ký tên (Closing & Sign-off)\n" +
+            "- Trang trọng: *Sincerely yours,* / *Best regards,*\n" +
+            "- Thân mật: *Best,* / *Warmly,* / *Thanks,*";
+        } else if (cleanInput.includes("presentation") || cleanInput.includes("present") || cleanInput.includes("thuyết trình") || cleanInput.includes("nói trước đám đông")) {
+          aiMessage = "Presenting in English can be scary, but having signpost language makes it much smoother! Let me share the best transitions.";
+          translation = "Thuyết trình bằng tiếng Anh có thể đáng sợ, nhưng có ngôn ngữ chỉ dẫn (signpost language) sẽ giúp bài nói trôi chảy hơn rất nhiều! Hãy để tôi chia sẻ các từ nối tốt nhất.";
+          tutorFeedback = "**📊 CÁC CỤM TỪ DÙNG TRONG THUYẾT TRÌNH TIẾNG ANH:**\n\n" +
+            "### 1. Mở đầu bài nói (Introduction)\n" +
+            "- *Today I'd like to talk about...* (Hôm nay tôi muốn nói về...)\n" +
+            "- *Let's start by looking at...* (Hãy bắt đầu bằng việc nhìn vào...)\n\n" +
+            "### 2. Chuyển ý (Moving to another point)\n" +
+            "- *Now let's move on to the next point, which is...* (Bây giờ hãy chuyển sang ý tiếp theo là...)\n" +
+            "- *Turning now to...* (Chuyển sang khía cạnh...)\n\n" +
+            "### 3. Kết luận (Conclusion)\n" +
+            "- *To summarize the main points...* (Để tóm tắt lại các ý chính...)\n" +
+            "- *In conclusion, I'd like to emphasize...* (Tóm lại, tôi muốn nhấn mạnh...)";
+        } else if (cleanInput.includes("restaurant") || cleanInput.includes("order food") || cleanInput.includes("menu") || cleanInput.includes("nhà hàng") || cleanInput.includes("gọi món")) {
+          aiMessage = "Let's learn how to order food and communicate politely in a restaurant setting!";
+          translation = "Hãy cùng học cách gọi món và giao tiếp lịch sự trong bối cảnh nhà hàng nhé!";
+          tutorFeedback = "**🍽️ MẪU CÂU GIAO TIẾP TẠI NHÀ HÀNG:**\n\n" +
+            "### 1. Đặt bàn / Yêu cầu chỗ ngồi\n" +
+            "- *A table for two, please.* (Cho tôi một bàn hai người.)\n" +
+            "- *Could we sit by the window?* (Chúng tôi có thể ngồi cạnh cửa sổ không?)\n\n" +
+            "### 2. Gọi món (Ordering)\n" +
+            "- *Could I see the menu, please?* (Cho tôi xem thực đơn với.)\n" +
+            "- *I'll have the steak, please.* (Cho tôi món bít tết.)\n" +
+            "- *Can I get a glass of water?* (Cho tôi một cốc nước.)\n\n" +
+            "### 3. Thanh toán (Payment)\n" +
+            "- *Could we have the bill, please?* (Cho chúng tôi xin hóa đơn thanh toán.)\n" +
+            "- *Do you accept credit cards?* (Nhà hàng có nhận thẻ tín dụng không?)";
+        } else if (cleanInput.includes("direction") || cleanInput.includes("ask way") || cleanInput.includes("hỏi đường") || cleanInput.includes("chỉ đường")) {
+          aiMessage = "Asking for and giving directions is highly practical. Let's master the essential phrases!";
+          translation = "Hỏi và chỉ đường là kỹ năng vô cùng thực tế. Hãy cùng làm chủ các cụm từ thiết yếu nhé!";
+          tutorFeedback = "**🗺️ MẪU CÂU HỎI & CHỈ ĐƯỜNG TIẾNG ANH:**\n\n" +
+            "### 1. Cách hỏi đường lịch sự\n" +
+            "- *Excuse me, could you tell me how to get to the train station?* (Xin lỗi, bạn chỉ giúp tôi đường ra ga tàu được không?)\n" +
+            "- *Is there a supermarket near here?* (Gần đây có siêu thị nào không?)\n\n" +
+            "### 2. Cách chỉ đường thông dụng\n" +
+            "- *Go straight ahead.* (Đi thẳng phía trước.)\n" +
+            "- *Take the first turning on the left.* (Rẽ ở lối rẽ đầu tiên bên trái.)\n" +
+            "- *It's on your right.* (Nó nằm ở bên tay phải của bạn.)";
         } else {
           aiMessage = `That is very interesting! Can you tell me more about that? I'd love to hear your thoughts in English.`;
           translation = `Điều đó thật thú vị! Bạn có thể kể cho tôi nghe thêm về điều đó được không? Tôi rất muốn nghe suy nghĩ của bạn bằng tiếng Anh.`;
