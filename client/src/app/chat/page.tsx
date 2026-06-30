@@ -70,6 +70,10 @@ const QUICK_ACTIONS = [
   { label: 'Hỏi dạng câu hỏi', prompt: 'Explain the 6 main English Question Types (Yes/No, Wh-, Tag, Negative, Indirect, Hypothetical) and how to master them.', icon: GraduationCap },
   { label: 'Câu hỏi phủ định', prompt: 'How do I answer negative questions correctly (e.g., "Aren\'t you coming?") without making mistakes?', icon: BookOpen },
   { label: 'Khung trả lời STAR/PREP', prompt: 'Give me an example of how to structure an answer using the STAR or PREP framework.', icon: Sparkles },
+  { label: '8 từ loại chính', prompt: 'Explain the 8 main Parts of Speech in English (Noun, Pronoun, Verb, Adjective, Adverb, Preposition, Conjunction, Interjection) with examples.', icon: BookOpen },
+  { label: 'Sự khác nhau Adj vs Adv', prompt: 'What is the difference between Adjectives and Adverbs in English? When do I use which, and what are common mistakes?', icon: PenTool },
+  { label: 'Giới từ thời gian/nơi chốn', prompt: 'Explain how to use the prepositions of time and place (In, On, At) using the triangle rule.', icon: Lightbulb },
+  { label: 'Thì Hiện tại Hoàn thành', prompt: 'Explain the Present Perfect tense (structure, usage, signals, and common mistakes) with daily life examples.', icon: Sparkles },
   { label: 'Gợi ý chủ đề', prompt: 'Suggest an interesting topic to practice English about ', icon: Lightbulb },
 ];
 

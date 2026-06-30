@@ -780,6 +780,135 @@ Chỉ trả về JSON thuần túy, không chứa ký tự hay wrapper markdown 
             "### Hỏi giờ:\n" +
             "- *What time is it?* hoặc *Could you tell me the time, please?*\n\n" +
             "**⚠️ Lỗi hay gặp:** Nói *\"Now is 3 o'clock\"* ❌ $\\rightarrow$ Sửa: *\"**It is** 3 o'clock **now**\"* ✅.";
+        } else if (cleanInput.includes("sorry") || cleanInput.includes("excuse me") || cleanInput.includes("apologize") || cleanInput.includes("xin lỗi") || cleanInput.includes("forgive")) {
+          aiMessage = "It's okay! Apologizing shows great manners. Let me teach you how to apologize properly in different situations in English.";
+          translation = "Không sao đâu! Việc xin lỗi cho thấy bạn rất lịch sự. Hãy để tôi dạy bạn cách xin lỗi đúng cách trong các tình huống khác nhau bằng tiếng Anh.";
+          tutorFeedback = "**🙏 CÁCH XIN LỖI & THỂ HIỆN SỰ LỊCH SỰ TRONG TIẾNG ANH:**\n\n" +
+            "### Mức độ trang trọng tăng dần:\n" +
+            "1. **Thân mật**: *Sorry!* / *My bad!* / *Oops, sorry about that!*\n" +
+            "2. **Bình thường**: *I'm sorry for being late.* / *Sorry, I didn't mean to.*\n" +
+            "3. **Trang trọng**: *I apologize for the inconvenience.* / *Please forgive me for...*\n\n" +
+            "### Cách chấp nhận lời xin lỗi:\n" +
+            "- *That's okay.* / *No worries.* / *Don't worry about it.* / *It's no big deal.*\n\n" +
+            "### Dùng 'Excuse me' khi:\n" +
+            "- Muốn xin đường: *Excuse me, can I get through?*\n" +
+            "- Muốn hỏi thông tin: *Excuse me, where is the nearest bank?*\n" +
+            "- Khi hắt hơi/ợ: *Excuse me!*\n\n" +
+            "**⚠️ Lỗi hay gặp:** Nói *\"I'm sorry to late\"* ❌ $\\rightarrow$ Sửa: *\"I'm sorry **for being** late\"* ✅ (sau 'sorry for' dùng V-ing).";
+        } else if (cleanInput.includes("think") || cleanInput.includes("opinion") || cleanInput.includes("agree") || cleanInput.includes("disagree") || cleanInput.includes("ý kiến") || cleanInput.includes("đồng ý") || cleanInput.includes("không đồng ý")) {
+          aiMessage = "Sharing your opinion is an essential communication skill! Let me show you how to express, agree, and disagree politely in English.";
+          translation = "Chia sẻ ý kiến là kỹ năng giao tiếp thiết yếu! Hãy để tôi chỉ bạn cách diễn đạt, đồng ý và không đồng ý một cách lịch sự bằng tiếng Anh.";
+          tutorFeedback = "**💭 CÁCH ĐƯARA Ý KIẾN, ĐỒNG Ý & KHÔNG ĐỒNG Ý:**\n\n" +
+            "### Đưa ra ý kiến:\n" +
+            "- *I think that...* / *In my opinion,...* / *I believe that...*\n" +
+            "- *From my point of view,...* / *As far as I'm concerned,...*\n\n" +
+            "### Đồng ý (Agreeing):\n" +
+            "- 🟢 *I agree with you.* / *That's a good point.* / *Exactly!* / *I couldn't agree more.*\n\n" +
+            "### Không đồng ý lịch sự (Polite Disagreeing):\n" +
+            "- 🔴 *I see your point, but...* / *I'm afraid I disagree.* / *I understand what you mean, however...*\n" +
+            "- ❌ KHÔNG NÊN nói thẳng: *\"You are wrong!\"*\n\n" +
+            "**⚠️ Lỗi hay gặp:** Nói *\"I am agree\"* ❌ $\\rightarrow$ Sửa: *\"I agree\"* ✅ ('agree' là động từ, không cần 'am/is/are').";
+        } else if (cleanInput.includes("describe") || cleanInput.includes("tall") || cleanInput.includes("short") || cleanInput.includes("beautiful") || cleanInput.includes("handsome") || cleanInput.includes("appearance") || cleanInput.includes("look like") || cleanInput.includes("ngoại hình") || cleanInput.includes("mô tả")) {
+          aiMessage = "Describing people is a very useful skill! You can talk about their appearance, personality, and style. How would you describe yourself?";
+          translation = "Mô tả người khác là kỹ năng rất hữu ích! Bạn có thể nói về ngoại hình, tính cách và phong cách. Bạn sẽ mô tả bản thân mình như thế nào?";
+          tutorFeedback = "**👤 CÁCH MÔ TẢ NGOẠI HÌNH & TÍNH CÁCH TRONG TIẾNG ANH:**\n\n" +
+            "### Câu hỏi thông dụng:\n" +
+            "- *What does he/she look like?* (Anh ấy/cô ấy trông như thế nào?) → Hỏi về ngoại hình\n" +
+            "- *What is he/she like?* (Anh ấy/cô ấy là người như thế nào?) → Hỏi về tính cách\n\n" +
+            "### Từ vựng mô tả ngoại hình:\n" +
+            "- **Chiều cao**: *tall* (cao), *short* (thấp), *medium height* (tầm trung)\n" +
+            "- **Cân nặng**: *slim/thin* (gầy), *chubby/overweight* (mập), *well-built* (vạm vỡ)\n" +
+            "- **Tóc**: *long/short/curly/straight/wavy hair* (tóc dài/ngắn/xoăn/thẳng/gợn sóng)\n" +
+            "- **Mắt**: *big/small eyes*, *dark/brown/blue eyes*\n\n" +
+            "### Từ vựng mô tả tính cách:\n" +
+            "- 🟢 *kind, friendly, generous, hardworking, patient, honest*\n" +
+            "- 🔴 *selfish, lazy, impatient, stubborn, rude*\n\n" +
+            "**⚠️ Phân biệt:** *\"What does she look like?\"* (ngoại hình) ≠ *\"What does she like?\"* (sở thích).";
+        } else if (cleanInput.includes("direction") || cleanInput.includes("where is") || cleanInput.includes("how to get") || cleanInput.includes("turn left") || cleanInput.includes("turn right") || cleanInput.includes("đường đi") || cleanInput.includes("chỉ đường") || cleanInput.includes("go straight")) {
+          aiMessage = "Asking for and giving directions is essential when traveling or exploring a new city! Let me teach you the key phrases.";
+          translation = "Hỏi đường và chỉ đường là kỹ năng thiết yếu khi đi du lịch hoặc khám phá thành phố mới! Hãy để tôi dạy bạn những cụm từ quan trọng.";
+          tutorFeedback = "**🗺️ CÁCH HỎI ĐƯỜNG & CHỈ ĐƯỜNG TRONG TIẾNG ANH:**\n\n" +
+            "### Hỏi đường:\n" +
+            "- *Excuse me, where is the nearest hospital?* (Xin lỗi, bệnh viện gần nhất ở đâu?)\n" +
+            "- *How do I get to the train station?* (Làm sao để đến ga tàu?)\n" +
+            "- *Could you tell me the way to the airport?* (Bạn có thể chỉ đường đến sân bay không?)\n\n" +
+            "### Chỉ đường:\n" +
+            "- *Go straight ahead.* (Đi thẳng.)\n" +
+            "- *Turn left/right at the traffic light.* (Rẽ trái/phải ở đèn giao thông.)\n" +
+            "- *It is on your left/right.* (Nó ở bên trái/phải bạn.)\n" +
+            "- *It is next to / opposite / behind the bank.* (Nó ở cạnh / đối diện / phía sau ngân hàng.)\n\n" +
+            "**⚠️ Lỗi hay gặp:** Nói *\"Go to straight\"* ❌ $\\rightarrow$ Sửa: *\"Go straight\"* ✅ (không cần 'to').";
+        } else if (cleanInput.includes("phone") || cleanInput.includes("computer") || cleanInput.includes("internet") || cleanInput.includes("app") || cleanInput.includes("wifi") || cleanInput.includes("technology") || cleanInput.includes("điện thoại") || cleanInput.includes("máy tính") || cleanInput.includes("công nghệ")) {
+          aiMessage = "Technology is everywhere in our lives! Do you enjoy using technology? What apps do you use the most?";
+          translation = "Công nghệ có mặt ở khắp mọi nơi trong cuộc sống! Bạn có thích sử dụng công nghệ không? Bạn dùng ứng dụng nào nhiều nhất?";
+          tutorFeedback = "**📱 CÁCH NÓI VỀ CÔNG NGHỆ TRONG TIẾNG ANH:**\n\n" +
+            "### Câu hỏi thông dụng:\n" +
+            "- *How much time do you spend on your phone?* (Bạn dùng điện thoại bao nhiêu thời gian?)\n" +
+            "- *What is your favorite app?* (Ứng dụng yêu thích của bạn là gì?)\n" +
+            "- *Do you prefer Android or iPhone?* (Bạn thích Android hay iPhone?)\n\n" +
+            "### Câu trả lời mẫu:\n" +
+            "- *I spend about 3 hours a day on social media.* (Tôi dành khoảng 3 tiếng mỗi ngày cho mạng xã hội.)\n" +
+            "- *I use TikTok and YouTube the most.* (Tôi dùng TikTok và YouTube nhiều nhất.)\n\n" +
+            "### Từ vựng hữu ích:\n" +
+            "- *download* (tải xuống), *upload* (tải lên), *update* (cập nhật)\n" +
+            "- *log in* (đăng nhập), *log out* (đăng xuất), *sign up* (đăng ký)\n" +
+            "- *charge the phone* (sạc điện thoại), *the battery is dead* (hết pin)";
+        } else if (cleanInput.includes("if") || cleanInput.includes("would") || cleanInput.includes("condition") || cleanInput.includes("điều kiện") || cleanInput.includes("conditional") || cleanInput.includes("câu điều kiện")) {
+          aiMessage = "Conditional sentences are powerful! They help you talk about hypothetical situations, dreams, and consequences. Let me explain the 3 main types.";
+          translation = "Câu điều kiện rất mạnh mẽ! Chúng giúp bạn nói về các tình huống giả định, ước mơ và hậu quả. Hãy để tôi giải thích 3 loại chính.";
+          tutorFeedback = "**🔀 3 LOẠI CÂU ĐIỀU KIỆN QUAN TRỌNG (CONDITIONAL SENTENCES):**\n\n" +
+            "### Loại 0: Sự thật hiển nhiên / Quy luật tự nhiên\n" +
+            "- **Công thức**: If + S + V (hiện tại đơn), S + V (hiện tại đơn)\n" +
+            "- **VD**: *If you heat water to 100°C, it boils.* (Nếu bạn đun nước đến 100°C, nó sôi.)\n\n" +
+            "### Loại 1: Có thể xảy ra ở hiện tại / tương lai\n" +
+            "- **Công thức**: If + S + V (hiện tại đơn), S + **will** + V\n" +
+            "- **VD**: *If it rains tomorrow, I will stay at home.* (Nếu mai trời mưa, tôi sẽ ở nhà.)\n\n" +
+            "### Loại 2: Không có thật ở hiện tại (giả định)\n" +
+            "- **Công thức**: If + S + V (quá khứ đơn), S + **would** + V\n" +
+            "- **VD**: *If I had a million dollars, I would travel around the world.* (Nếu tôi có 1 triệu đô, tôi sẽ đi du lịch vòng quanh thế giới.)\n\n" +
+            "### Loại 3: Không có thật ở quá khứ (tiếc nuối)\n" +
+            "- **Công thức**: If + S + **had** + V3, S + **would have** + V3\n" +
+            "- **VD**: *If I had studied harder, I would have passed the exam.* (Nếu tôi đã học chăm hơn, tôi đã đậu kỳ thi.)\n\n" +
+            "**⚠️ Lỗi hay gặp:** Nói *\"If I will go...\"* ❌ $\\rightarrow$ Sửa: *\"If I **go**...\"* ✅ (mệnh đề If không dùng 'will').";
+        } else if (cleanInput.includes("more") || cleanInput.includes("most") || cleanInput.includes("than") || cleanInput.includes("comparison") || cleanInput.includes("so sánh") || cleanInput.includes("comparative") || cleanInput.includes("superlative") || cleanInput.includes("er ") || cleanInput.includes("est ")) {
+          aiMessage = "Comparisons are essential for expressing preferences and making choices in English! Let me explain the rules clearly.";
+          translation = "So sánh là phần thiết yếu để thể hiện sở thích và đưa ra lựa chọn trong tiếng Anh! Hãy để tôi giải thích các quy tắc rõ ràng.";
+          tutorFeedback = "**📊 SO SÁNH HƠN & SO SÁNH NHẤT TRONG TIẾNG ANH:**\n\n" +
+            "### 1. So sánh hơn (Comparative):\n" +
+            "- **Tính từ ngắn (1 âm tiết)**: Adj + **-er** + than (VD: *taller than, faster than*)\n" +
+            "- **Tính từ dài (2+ âm tiết)**: **more** + Adj + than (VD: *more beautiful than, more expensive than*)\n\n" +
+            "### 2. So sánh nhất (Superlative):\n" +
+            "- **Tính từ ngắn**: the + Adj + **-est** (VD: *the tallest, the fastest*)\n" +
+            "- **Tính từ dài**: the + **most** + Adj (VD: *the most beautiful, the most expensive*)\n\n" +
+            "### 3. So sánh bằng (Equal):\n" +
+            "- **as** + Adj + **as** (VD: *She is as tall as her mother.* — Cô ấy cao bằng mẹ.)\n\n" +
+            "### Bất quy tắc:\n" +
+            "| Gốc | So sánh hơn | So sánh nhất |\n" +
+            "|---|---|---|\n" +
+            "| good | **better** | **the best** |\n" +
+            "| bad | **worse** | **the worst** |\n" +
+            "| far | **farther/further** | **the farthest/furthest** |\n\n" +
+            "**⚠️ Lỗi hay gặp:** Nói *\"more better\"* ❌ $\\rightarrow$ Sửa: *\"**better**\"* ✅ (không dùng double comparative).";
+        } else if (cleanInput.includes("said") || cleanInput.includes("told me") || cleanInput.includes("reported") || cleanInput.includes("tường thuật") || cleanInput.includes("reported speech") || cleanInput.includes("indirect speech") || cleanInput.includes("câu tường thuật")) {
+          aiMessage = "Reported speech is how we retell what someone else said! It's used a lot in daily conversation and storytelling. Let me show you the rules.";
+          translation = "Câu tường thuật là cách chúng ta kể lại lời ai đó đã nói! Nó được dùng rất nhiều trong giao tiếp hàng ngày và kể chuyện. Hãy để tôi chỉ bạn các quy tắc.";
+          tutorFeedback = "**🗣️ CÂU TƯỜNG THUẬT (REPORTED SPEECH):**\n\n" +
+            "### Quy tắc lùi thì (Backshift):\n" +
+            "| Câu trực tiếp | Câu tường thuật |\n" +
+            "|---|---|\n" +
+            "| *\"I **am** happy.\"* | He said he **was** happy. |\n" +
+            "| *\"I **like** coffee.\"* | She said she **liked** coffee. |\n" +
+            "| *\"I **will** go.\"* | He said he **would** go. |\n" +
+            "| *\"I **can** swim.\"* | She said she **could** swim. |\n" +
+            "| *\"I **have** done it.\"* | He said he **had** done it. |\n\n" +
+            "### Đổi đại từ & trạng từ:\n" +
+            "- *I* → *he/she*, *my* → *his/her*\n" +
+            "- *today* → *that day*, *tomorrow* → *the next day*, *yesterday* → *the day before*\n" +
+            "- *here* → *there*, *this* → *that*\n\n" +
+            "### Ví dụ đầy đủ:\n" +
+            "- Trực tiếp: *\"I will visit you tomorrow,\"* she said.\n" +
+            "- Tường thuật: *She said she **would** visit me **the next day**.*\n\n" +
+            "**💡 Phân biệt:** Dùng *said* (nói) khi không có tân ngữ: *He said that...*. Dùng *told* khi có tân ngữ: *He told **me** that...*";
         } else {
           aiMessage = `That is very interesting! Can you tell me more about that? I'd love to hear your thoughts in English.`;
           translation = `Điều đó thật thú vị! Bạn có thể kể cho tôi nghe thêm về điều đó được không? Tôi rất muốn nghe suy nghĩ của bạn bằng tiếng Anh.`;

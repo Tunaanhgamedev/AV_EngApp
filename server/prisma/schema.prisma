@@ -243,3 +243,14 @@ model TranslationCache {
   @@map("translation_cache")
   @@index([sourceText, sourceLang, targetLang])
 }
+
+model UnresolvedQuestion {
+  id           String   @id @default(uuid())
+  userId       String?  @map("user_id")
+  questionText String   @map("question_text") @db.Text
+  errorContext String?  @map("error_context") @db.Text
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@map("unresolved_questions")
+}
+
