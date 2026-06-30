@@ -258,7 +258,21 @@ Chỉ trả về JSON thuần túy, không chứa ký tự hay wrapper markdown 
       }
 
       const jsonStr = text.replace(/```json|```/g, "").trim();
-      return JSON.parse(jsonStr);
+      const responseData = JSON.parse(jsonStr);
+
+      // Proactive detection: If the bot returns a message indicating it couldn't resolve/answer
+      const lowerMessage = (responseData.aiMessage || "").toLowerCase();
+      const rawInput = messages[messages.length - 1]?.content || "";
+      const unresolvedPhrases = [
+        "don't know", "do not know", "cannot answer", "can't answer", "unable to answer", 
+        "tôi không biết", "không thể trả lời", "chưa thể trả lời"
+      ];
+      const isUnresolved = unresolvedPhrases.some(phrase => lowerMessage.includes(phrase));
+      if (isUnresolved) {
+        GeminiService.logUnresolvedQuestion(userId, rawInput, "AI Bot returned unable-to-answer response");
+      }
+
+      return responseData;
     } catch (error: any) {
       console.error('EngBot Chat Error, using local robust chat fallback:', error.message || error);
       
