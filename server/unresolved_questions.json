@@ -1,0 +1,9 @@
+[
+  {
+    "id": "1782815183581",
+    "userId": "test-user-id",
+    "questionText": "How does nuclear fusion work in detail?",
+    "errorContext": "Unit Test forced logging",
+    "createdAt": "2026-06-30T10:26:23.581Z"
+  }
+]

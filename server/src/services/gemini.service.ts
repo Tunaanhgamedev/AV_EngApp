@@ -1,5 +1,8 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import dotenv from 'dotenv';
+import prisma from '../lib/prisma';
+import fs from 'fs';
+import path from 'path';
 
 dotenv.config();
 
@@ -86,7 +89,7 @@ export class GeminiService {
   /**
    * AI Chat Roleplay using EngBot
    */
-  static async generateChatResponse(messages: any[], persona: string, scenario: string) {
+  static async generateChatResponse(messages: any[], persona: string, scenario: string, userId?: string) {
     try {
       // Build proper Gemini chat history from previous messages (excluding the latest user message)
       let chatHistory = messages.slice(0, -1).map(m => ({
@@ -260,6 +263,8 @@ Chỉ trả về JSON thuần túy, không chứa ký tự hay wrapper markdown 
       console.error('EngBot Chat Error, using local robust chat fallback:', error.message || error);
       
       const rawInput = messages[messages.length - 1]?.content || "";
+      // Log the API error and question
+      GeminiService.logUnresolvedQuestion(userId, rawInput, `Gemini API Error: ${error.message || error}`);
       const cleanInput = rawInput.toLowerCase().trim();
       const cleanScenario = (scenario || "").toLowerCase();
       let aiMessage = "";
@@ -913,6 +918,13 @@ Chỉ trả về JSON thuần túy, không chứa ký tự hay wrapper markdown 
           aiMessage = `That is very interesting! Can you tell me more about that? I'd love to hear your thoughts in English.`;
           translation = `Điều đó thật thú vị! Bạn có thể kể cho tôi nghe thêm về điều đó được không? Tôi rất muốn nghe suy nghĩ của bạn bằng tiếng Anh.`;
           tutorFeedback = `**Mẹo học tập:** Khi trò chuyện tự do, hãy áp dụng công thức **3-Part Answer**:\n1. **Direct answer** — Trả lời trực tiếp\n2. **Detail** — Thêm chi tiết/ví dụ\n3. **Follow-up** — Hỏi lại để duy trì hội thoại\n\nVD: "What's your hobby?" → "I enjoy reading. (Direct) I usually read science fiction novels before bed. (Detail) Do you like reading too? (Follow-up)"`;
+          
+          // Log unresolved question since local fallback couldn't handle it specifically
+          const simpleGreetings = ["hi", "hello", "hey", "how are you", "how's it going", "good morning", "good afternoon", "good evening"];
+          const isSimpleGreeting = simpleGreetings.some(g => cleanInput === g || cleanInput.startsWith(g + " ") || g.startsWith(cleanInput));
+          if (!isSimpleGreeting && cleanInput.length > 12) {
+            GeminiService.logUnresolvedQuestion(userId, rawInput, "Offline fallback: Unmatched custom question");
+          }
         }
       } else if (cleanScenario.includes("coffee") || cleanScenario.includes("barista") || cleanScenario.includes("cà phê")) {
         if (cleanInput.includes("hello") || cleanInput.includes("hi")) {
@@ -1473,6 +1485,46 @@ ${wordList}
       }
 
       return fallbackData;
+    }
+  }
+
+  /**
+   * Log tricky/unresolved questions when the bot fails to answer
+   */
+  static async logUnresolvedQuestion(userId: string | null | undefined, questionText: string, errorContext?: string) {
+    try {
+      const uId = userId || null;
+      await prisma.unresolvedQuestion.create({
+        data: {
+          userId: uId,
+          questionText,
+          errorContext: errorContext || null
+        }
+      });
+      console.log(`[UnresolvedQuestion] Logged to db: "${questionText}"`);
+    } catch (dbErr: any) {
+      console.error('[UnresolvedQuestion] Failed to save to database, using local fallback:', dbErr.message || dbErr);
+      try {
+        const filePath = path.join(__dirname, '../../unresolved_questions.json');
+        let questions = [];
+        if (fs.existsSync(filePath)) {
+          const data = fs.readFileSync(filePath, 'utf8');
+          if (data.trim()) {
+            questions = JSON.parse(data);
+          }
+        }
+        questions.push({
+          id: new Date().getTime().toString(),
+          userId: userId || null,
+          questionText,
+          errorContext: errorContext || null,
+          createdAt: new Date().toISOString()
+        });
+        fs.writeFileSync(filePath, JSON.stringify(questions, null, 2), 'utf8');
+        console.log(`[UnresolvedQuestion] Saved to fallback JSON file at ${filePath}`);
+      } catch (fileErr: any) {
+        console.error('[UnresolvedQuestion] Fallback JSON logging failed:', fileErr.message || fileErr);
+      }
     }
   }
 }

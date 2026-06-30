@@ -17,7 +17,7 @@ export const sendMessage = async (req: Request, res: Response) => {
     ];
 
     // 2. Get AI Response
-    const aiResult = await AIService.generateChatResponse(messages, persona, scenario);
+    const aiResult = await AIService.generateChatResponse(messages, persona, scenario, userId);
 
     // 3. Save to Database
     try {
