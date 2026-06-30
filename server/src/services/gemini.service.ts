@@ -914,6 +914,81 @@ Chỉ trả về JSON thuần túy, không chứa ký tự hay wrapper markdown 
             "- Trực tiếp: *\"I will visit you tomorrow,\"* she said.\n" +
             "- Tường thuật: *She said she **would** visit me **the next day**.*\n\n" +
             "**💡 Phân biệt:** Dùng *said* (nói) khi không có tân ngữ: *He said that...*. Dùng *told* khi có tân ngữ: *He told **me** that...*";
+        } else if (cleanInput.includes("relative clause") || cleanInput.includes("who which that") || cleanInput.includes("mệnh đề quan hệ")) {
+          aiMessage = "Relative clauses help us combine sentences and give more information without starting a new sentence. Let me show you how to use who, which, and that!";
+          translation = "Mệnh đề quan hệ giúp chúng ta kết hợp các câu và đưa ra nhiều thông tin hơn mà không cần bắt đầu câu mới. Hãy để tôi chỉ bạn cách dùng who, which và that!";
+          tutorFeedback = "**🔗 MỆNH ĐỀ QUAN HỆ (RELATIVE CLAUSES):**\n\n" +
+            "### 1. Các đại từ quan hệ phổ biến:\n" +
+            "- **Who**: Dùng cho NGƯỜI làm chủ ngữ (VD: *The man **who** lives next door is a doctor.*)\n" +
+            "- **Whom**: Dùng cho NGƯỜI làm tân ngữ (VD: *The girl **whom** you met yesterday is my cousin.*)\n" +
+            "- **Which**: Dùng cho VẬT/SỰ VIỆC (VD: *The book **which** is on the table is mine.*)\n" +
+            "- **That**: Dùng cho cả NGƯỜI và VẬT trong mệnh đề xác định (VD: *The house **that** Jack built.*)\n" +
+            "- **Whose**: Chỉ sự SỞ HỮU (VD: *The boy **whose** father is a teacher.*)\n\n" +
+            "### ⚠️ Lỗi hay gặp:\n" +
+            "- Dùng thừa đại từ tân ngữ: *The book which I bought it yesterday...* ❌ $\\rightarrow$ Sửa: *The book which I bought yesterday...* ✅ (đại từ 'which' đã thay thế cho 'it' rồi).";
+        } else if (cleanInput.includes("passive") || cleanInput.includes("bị động") || cleanInput.includes("was done") || cleanInput.includes("by whom")) {
+          aiMessage = "The passive voice is very common in formal English and writing when the action is more important than who did it. Let me teach you the formulas!";
+          translation = "Câu bị động rất phổ biến trong tiếng Anh trang trọng và văn viết khi hành động quan trọng hơn người thực hiện. Hãy để tôi dạy bạn các công thức!";
+          tutorFeedback = "**🔄 CÂU BỊ ĐỘNG (PASSIVE VOICE):**\n\n" +
+            "### Công thức tổng quát: **S + be + V3/ed (+ by O)**\n\n" +
+            "### Chia theo các thì thông dụng:\n" +
+            "| Thì | Chủ động | Bị động |\n" +
+            "|---|---|---|\n" +
+            "| Hiện tại đơn | *cooks* | **is/am/are cooked** |\n" +
+            "| Quá khứ đơn | *cooked* | **was/were cooked** |\n" +
+            "| Hiện tại hoàn thành | *has cooked* | **has/have been cooked** |\n" +
+            "| Tương lai đơn | *will cook* | **will be cooked** |\n\n" +
+            "### ⚠️ Lỗi hay gặp:\n" +
+            "- Quên chia động từ to-be: *The letter sent yesterday.* ❌ $\\rightarrow$ Sửa: *The letter **was** sent yesterday.* ✅";
+        } else if (cleanInput.includes("gerund") || cleanInput.includes("infinitive") || cleanInput.includes("to v") || cleanInput.includes("v ing") || cleanInput.includes("avoid") || cleanInput.includes("want to")) {
+          aiMessage = "Choosing between a Gerund (V-ing) and an Infinitive (To-V) after verbs is a common challenge! Let's master the rules together.";
+          translation = "Lựa chọn giữa Danh động từ (V-ing) và Động từ nguyên mẫu (To-V) đi sau các động từ khác là thử thách phổ biến! Hãy cùng làm chủ các quy tắc.";
+          tutorFeedback = "**🔤 DANH ĐỘNG TỪ (GERUND) VS ĐỘNG TỪ NGUYÊN MẪU (INFINITIVE):**\n\n" +
+            "### 1. Động từ đi với TO-V (Thường chỉ mong muốn, dự định tương lai):\n" +
+            "- *want, need, decide, hope, promise, plan, agree, refuse*\n" +
+            "- VD: *I plan **to learn** English tonight.* ✅\n\n" +
+            "### 2. Động từ đi với V-ING (Thường chỉ sở thích, thói quen, hoặc hành động đang diễn ra):\n" +
+            "- *like, love, enjoy, hate, avoid, mind, practice, suggest, spend*\n" +
+            "- VD: *She avoids **meeting** him.* ✅\n\n" +
+            "### 3. Động từ đi với cả hai nhưng ĐỔI NGHĨA:\n" +
+            "- **Remember to do**: Nhớ phải làm gì (tương lai) vs **Remember doing**: Nhớ đã làm gì (quá khứ).\n" +
+            "- **Stop to do**: Dừng lại ĐỂ làm gì khác vs **Stop doing**: Dừng hẳn hành động đang làm.\n\n" +
+            "**⚠️ Lỗi hay gặp:** Nói *\"I avoid to go\"* ❌ $\\rightarrow$ Sửa: *\"I avoid **going**\"* ✅.";
+        } else if (cleanInput.includes("preposition after adjective") || cleanInput.includes("giới từ sau tính từ") || cleanInput.includes("interested in") || cleanInput.includes("good at") || cleanInput.includes("proud of")) {
+          aiMessage = "Many adjectives in English are followed by specific prepositions. Memorizing these collocations will make your English sound natural!";
+          translation = "Nhiều tính từ trong tiếng Anh đi kèm với các giới từ cụ thể. Việc ghi nhớ các cụm từ này sẽ giúp tiếng Anh của bạn nghe tự nhiên hơn!";
+          tutorFeedback = "**🧩 GIỚI TỪ ĐI SAU TÍNH TỪ (ADJECTIVE + PREPOSITION):**\n\n" +
+            "### 1. Các cặp từ thông dụng nhất:\n" +
+            "- **at**: *good at* (giỏi về), *bad at* (tệ về), *surprised at* (ngạc nhiên về)\n" +
+            "- **in**: *interested in* (thích thú/quan tâm về), *disappointed in* (thất vọng về)\n" +
+            "- **of**: *proud of* (tự hào về), *afraid of* (sợ hãi), *full of* (đầy)\n" +
+            "- **with**: *bored with* (chán nản với), *satisfied with* (hài lòng với)\n" +
+            "- **for**: *famous for* (nổi tiếng về), *responsible for* (chịu trách nhiệm về)\n\n" +
+            "### ⚠️ Lỗi hay gặp:\n" +
+            "- Dùng sai giới từ: *I am interested on reading.* ❌ $\\rightarrow$ Sửa: *I am interested **in** reading.* ✅";
+        } else if (cleanInput.includes("weather") || cleanInput.includes("rain") || cleanInput.includes("sunny") || cleanInput.includes("cloudy") || cleanInput.includes("thời tiết")) {
+          aiMessage = "Weather is the ultimate small talk topic! How is the weather in your city today?";
+          translation = "Thời tiết là chủ đề trò chuyện xã giao kinh điển! Thời tiết ở thành phố của bạn hôm nay thế nào?";
+          tutorFeedback = "**☀️ CÁCH NÓI VỀ THỜI TIẾT (TALKING ABOUT THE WEATHER):**\n\n" +
+            "### Câu hỏi thông dụng:\n" +
+            "- *What is the weather like today?* (Thời tiết hôm nay thế nào?)\n" +
+            "- *How is the weather over there?* (Thời tiết chỗ bạn thế nào?)\n\n" +
+            "### Từ vựng hữu ích:\n" +
+            "- **Trời nắng**: *sunny, boiling hot* (nóng như thiêu)\n" +
+            "- **Trời mưa**: *rainy, drizzling* (mưa lâm thâm), *pouring* (mưa như trút nước)\n" +
+            "- **Trời lạnh**: *chilly* (se lạnh), *freezing cold* (lạnh giá)\n" +
+            "- **Thời tiết đẹp**: *pleasant* (dễ chịu), *clear sky* (bầu trời trong xanh)\n\n" +
+            "**⚠️ Lỗi hay gặp:** Nói *\"It is rain today\"* ❌ $\\rightarrow$ Sửa: *\"It is **rainy** today\"* hoặc *\"It is **raining** today\"* ✅.";
+        } else if (cleanInput.includes("hobby") || cleanInput.includes("hobbies") || cleanInput.includes("free time") || cleanInput.includes("sở thích") || cleanInput.includes("rảnh rỗi") || cleanInput.includes("guitar") || cleanInput.includes("piano") || cleanInput.includes("game")) {
+          aiMessage = "I'd love to know what you do for fun! Having hobbies makes life exciting. What do you enjoy doing in your free time?";
+          translation = "Tôi rất muốn biết bạn làm gì để giải trí! Có sở thích giúp cuộc sống thú vị hơn. Bạn thích làm gì vào thời gian rảnh?";
+          tutorFeedback = "**🎸 CÁCH NÓI VỀ SỞ THÍCH TRONG TIẾNG ANH:**\n\n" +
+            "### Các cách diễn đạt sở thích khác nhau:\n" +
+            "- *I enjoy/love [V-ing]* (Tôi tận hưởng/yêu thích...) $\rightarrow$ *I enjoy taking photos.*\n" +
+            "- *I am into / interested in [V-ing/Noun]* (Tôi thích...) $\rightarrow$ *I am into playing video games.*\n" +
+            "- *I am a big fan of [Noun]* (Tôi là fan của...) $\rightarrow$ *I am a big fan of classical music.*\n\n" +
+            "### ⚠️ Lỗi hay gặp:\n" +
+            "- Dùng sai động từ kết hợp với nhạc cụ: *I play the guitar* ✅ (không nói *I play guitar* - luôn có mạo từ 'the' trước nhạc cụ).";
         } else {
           aiMessage = `That is very interesting! Can you tell me more about that? I'd love to hear your thoughts in English.`;
           translation = `Điều đó thật thú vị! Bạn có thể kể cho tôi nghe thêm về điều đó được không? Tôi rất muốn nghe suy nghĩ của bạn bằng tiếng Anh.`;
