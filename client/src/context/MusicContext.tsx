@@ -278,19 +278,29 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
     
     try {
       audioRef.current.pause();
-      audioRef.current.src = track.url;
-      setCurrentTrack(track);
-      setProgress(0);
-      setCurrentTimeSec(0);
-
-      audioRef.current.play()
-        .then(() => {
-          setIsPlaying(true);
-        })
-        .catch((e) => {
-          console.error("Audio play failed:", e);
-          setIsPlaying(false);
-        });
+      
+      const isYt = track.url.includes('youtube.com') || track.url.includes('youtu.be') || track.url.includes('youtube-nocookie.com');
+      
+      if (isYt) {
+        audioRef.current.src = "";
+        setCurrentTrack(track);
+        setProgress(0);
+        setCurrentTimeSec(0);
+        setIsPlaying(true);
+      } else {
+        audioRef.current.src = track.url;
+        setCurrentTrack(track);
+        setProgress(0);
+        setCurrentTimeSec(0);
+        audioRef.current.play()
+          .then(() => {
+            setIsPlaying(true);
+          })
+          .catch((e) => {
+            console.error("Audio play failed:", e);
+            setIsPlaying(false);
+          });
+      }
     } catch (err) {
       console.error("Audio source load error:", err);
     }
@@ -298,6 +308,13 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
 
   const togglePlay = () => {
     if (!audioRef.current) return;
+
+    const isYt = currentTrack.url.includes('youtube.com') || currentTrack.url.includes('youtu.be') || currentTrack.url.includes('youtube-nocookie.com');
+
+    if (isYt) {
+      setIsPlaying(!isPlaying);
+      return;
+    }
 
     // Lazy load the current track source if it has never been set yet!
     if (!audioRef.current.src || audioRef.current.src === "") {
