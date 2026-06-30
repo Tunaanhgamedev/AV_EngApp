@@ -346,21 +346,55 @@ Chỉ trả về JSON thuần túy, không chứa ký tự hay wrapper markdown 
       if (cleanInput.includes("i am student") || cleanInput === "i student") {
         offlineCorrections.push({ error: "I am student", fix: "I am a student", explanation: "Cần thêm mạo từ 'a' trước danh từ số ít chỉ nghề nghiệp/vai trò." });
       }
-      if (cleanInput.includes("look forward to meet")) {
-        offlineCorrections.push({ error: "look forward to meet", fix: "look forward to meeting", explanation: "Sau cấu trúc 'look forward to' phải dùng động từ thêm -ing (V-ing)." });
+      if (cleanInput.includes("i am teacher") || cleanInput.includes("she is teacher") || cleanInput.includes("he is teacher")) {
+        offlineCorrections.push({ error: "am/is teacher", fix: "am/is a teacher", explanation: "Cần thêm mạo từ 'a' trước danh từ số ít chỉ nghề nghiệp: 'I am a teacher'." });
       }
-      if (cleanInput.includes("interest in") && !cleanInput.includes("interested in")) {
-        offlineCorrections.push({ error: "interest in", fix: "interested in", explanation: "Để diễn tả cảm xúc/sở thích của ai đó đối với cái gì, ta dùng tính từ tận cùng là '-ed': 'interested in'." });
+      if (cleanInput.includes("she is doctor") || cleanInput.includes("he is doctor") || cleanInput.includes("i am doctor")) {
+        offlineCorrections.push({ error: "is/am doctor", fix: "is/am a doctor", explanation: "Cần thêm mạo từ 'a' trước danh từ chỉ nghề nghiệp: 'She is a doctor'." });
       }
-      if (cleanInput.includes("i am agree") || cleanInput.includes("i'm agree")) {
-        offlineCorrections.push({ error: cleanInput.includes("i am agree") ? "I am agree" : "I'm agree", fix: "I agree", explanation: "'Agree' là động từ thường nên không đi kèm với động từ tobe 'am/are/is' phía trước." });
+      // Collocation mistakes: do vs make
+      if (cleanInput.includes("make exercise") || cleanInput.includes("make sport")) {
+        offlineCorrections.push({ error: cleanInput.includes("make exercise") ? "make exercise" : "make sport", fix: "do exercise / do sport", explanation: "Collocation đúng là 'do exercise' và 'do sport', không dùng 'make'." });
       }
-      if (cleanInput.includes("no like") || cleanInput.includes("no want")) {
-        offlineCorrections.push({ 
-          error: cleanInput.includes("no like") ? "no like" : "no want", 
-          fix: cleanInput.includes("no like") ? "don't like" : "don't want", 
-          explanation: "Không dùng 'no' trực tiếp trước động từ thường để phủ định; cần mượn trợ động từ 'don't' hoặc 'doesn't'." 
-        });
+      if (cleanInput.includes("do a mistake") || cleanInput.includes("do mistake")) {
+        offlineCorrections.push({ error: cleanInput.includes("do a mistake") ? "do a mistake" : "do mistake", fix: "make a mistake", explanation: "Collocation đúng là 'make a mistake' (mắc lỗi), không dùng 'do'." });
+      }
+      if (cleanInput.includes("make a decision") === false && cleanInput.includes("do decision")) {
+        offlineCorrections.push({ error: "do decision", fix: "make a decision", explanation: "Collocation đúng là 'make a decision' (đưa ra quyết định)." });
+      }
+      // Preposition errors
+      if (cleanInput.includes("interested of")) {
+        offlineCorrections.push({ error: "interested of", fix: "interested in", explanation: "Giới từ đi với 'interested' phải là 'in': 'interested in something'." });
+      }
+      if (cleanInput.includes("good in")) {
+        offlineCorrections.push({ error: "good in", fix: "good at", explanation: "Giới từ đi với 'good' phải là 'at': 'good at something' (giỏi về cái gì)." });
+      }
+      if (cleanInput.includes("listen the music") || cleanInput.includes("listen music")) {
+        offlineCorrections.push({ error: cleanInput.includes("listen the music") ? "listen the music" : "listen music", fix: "listen to music", explanation: "Động từ 'listen' luôn đi với giới từ 'to': 'listen to music'." });
+      }
+      if (cleanInput.includes("arrive to")) {
+        offlineCorrections.push({ error: "arrive to", fix: "arrive at / arrive in", explanation: "Động từ 'arrive' đi với 'at' (địa điểm nhỏ) hoặc 'in' (thành phố/quốc gia), không dùng 'to'." });
+      }
+      if (cleanInput.includes("discuss about")) {
+        offlineCorrections.push({ error: "discuss about", fix: "discuss [something]", explanation: "'Discuss' là ngoại động từ, đi trực tiếp với tân ngữ, không cần giới từ 'about'." });
+      }
+      // Verb pattern errors
+      if (cleanInput.includes("enjoy to ")) {
+        offlineCorrections.push({ error: "enjoy to [verb]", fix: "enjoy [verb]-ing", explanation: "Sau 'enjoy' luôn dùng V-ing: 'I enjoy reading' (không dùng 'enjoy to read')." });
+      }
+      if (cleanInput.includes("suggest to ") && !cleanInput.includes("suggest to him") && !cleanInput.includes("suggest to her") && !cleanInput.includes("suggest to me") && !cleanInput.includes("suggest to them")) {
+        offlineCorrections.push({ error: "suggest to [verb]", fix: "suggest [verb]-ing", explanation: "Sau 'suggest' dùng V-ing: 'I suggest going there' (không dùng 'suggest to go')." });
+      }
+      if (cleanInput.includes("look forward to see") || cleanInput.includes("look forward to meet") || cleanInput.includes("look forward to hear")) {
+        const verb = cleanInput.includes("see") ? "see" : cleanInput.includes("meet") ? "meet" : "hear";
+        offlineCorrections.push({ error: `look forward to ${verb}`, fix: `look forward to ${verb}ing`, explanation: `Trong 'look forward to', từ 'to' là giới từ nên sau nó phải dùng V-ing: 'look forward to ${verb}ing'.` });
+      }
+      // Tense confusion
+      const yesterdayPresentMatch = cleanInput.match(/\byesterday\b.*\b(i go|i eat|i see|i buy|i come|i have|i take|i make|i do|i get|i run|i give|i think|i say|i tell)\b/);
+      if (yesterdayPresentMatch) {
+        const wrongVerb = yesterdayPresentMatch[1];
+        const verbMap: Record<string, string> = { "i go": "I went", "i eat": "I ate", "i see": "I saw", "i buy": "I bought", "i come": "I came", "i have": "I had", "i take": "I took", "i make": "I made", "i do": "I did", "i get": "I got", "i run": "I ran", "i give": "I gave", "i think": "I thought", "i say": "I said", "i tell": "I told" };
+        offlineCorrections.push({ error: wrongVerb, fix: verbMap[wrongVerb] || wrongVerb, explanation: "Khi nói về sự việc 'yesterday' (hôm qua), phải dùng thì Quá khứ Đơn (V2/ed)." });
       }
 
       // Prepositions with parts of the day (e.g., "on morning", "in morning", "at morning", "in night")
@@ -645,58 +679,107 @@ Chỉ trả về JSON thuần túy, không chứa ký tự hay wrapper markdown 
           aiMessage = "I'm doing great, thank you for asking! How about you? Is there anything specific you'd like to practice today?";
           translation = "Tôi rất khỏe, cảm ơn bạn đã hỏi! Còn bạn thì sao? Hôm nay bạn muốn luyện tập điều gì cụ thể không?";
           tutorFeedback = "**Các cách trả lời 'How are you?':**\n- 🟢 Tích cực: *I'm great!* / *I'm doing well, thanks!* / *Never been better!*\n- 🟡 Bình thường: *I'm fine, thanks.* / *Not bad.* / *I'm okay.*\n- 🔴 Không tốt: *I've been better.* / *Not so great, actually.* / *I'm a bit under the weather.*\n\n**Mẹo:** Luôn hỏi lại: *'How about you?'* hoặc *'And you?'*";
-        } else if (cleanInput.includes("email") || cleanInput.includes("letter") || cleanInput.includes("viết thư") || cleanInput.includes("viết email")) {
-          aiMessage = "Writing professional emails is a key skill! Let's look at the standard structure and templates you can use.";
-          translation = "Viết email chuyên nghiệp là một kỹ năng quan trọng! Hãy cùng xem cấu trúc chuẩn và các mẫu thư bạn có thể sử dụng.";
-          tutorFeedback = "**📧 CẨM NANG VIẾT EMAIL CHUYÊN NGHIỆP TRONG TIẾNG ANH:**\n\n" +
-            "### 1. Phần Chào hỏi (Greetings)\n" +
-            "- Trang trọng: *Dear Mr./Ms. [Last Name],* hoặc *Dear Sir/Madam,*\n" +
-            "- Thân mật: *Hi [First Name],* hoặc *Hello [First Name],*\n\n" +
-            "### 2. Lý do viết email (Reason for writing)\n" +
-            "- *I am writing to inquire about...* (Tôi viết thư này để hỏi về...)\n" +
-            "- *I am writing to confirm...* (Tôi viết thư này để xác nhận...)\n" +
-            "- *I am writing to update you on...* (Tôi viết thư này để cập nhật cho bạn về...)\n\n" +
-            "### 3. Phần Kết thúc & Ký tên (Closing & Sign-off)\n" +
-            "- Trang trọng: *Sincerely yours,* / *Best regards,*\n" +
-            "- Thân mật: *Best,* / *Warmly,* / *Thanks,*";
-        } else if (cleanInput.includes("presentation") || cleanInput.includes("present") || cleanInput.includes("thuyết trình") || cleanInput.includes("nói trước đám đông")) {
-          aiMessage = "Presenting in English can be scary, but having signpost language makes it much smoother! Let me share the best transitions.";
-          translation = "Thuyết trình bằng tiếng Anh có thể đáng sợ, nhưng có ngôn ngữ chỉ dẫn (signpost language) sẽ giúp bài nói trôi chảy hơn rất nhiều! Hãy để tôi chia sẻ các từ nối tốt nhất.";
-          tutorFeedback = "**📊 CÁC CỤM TỪ DÙNG TRONG THUYẾT TRÌNH TIẾNG ANH:**\n\n" +
-            "### 1. Mở đầu bài nói (Introduction)\n" +
-            "- *Today I'd like to talk about...* (Hôm nay tôi muốn nói về...)\n" +
-            "- *Let's start by looking at...* (Hãy bắt đầu bằng việc nhìn vào...)\n\n" +
-            "### 2. Chuyển ý (Moving to another point)\n" +
-            "- *Now let's move on to the next point, which is...* (Bây giờ hãy chuyển sang ý tiếp theo là...)\n" +
-            "- *Turning now to...* (Chuyển sang khía cạnh...)\n\n" +
-            "### 3. Kết luận (Conclusion)\n" +
-            "- *To summarize the main points...* (Để tóm tắt lại các ý chính...)\n" +
-            "- *In conclusion, I'd like to emphasize...* (Tóm lại, tôi muốn nhấn mạnh...)";
-        } else if (cleanInput.includes("restaurant") || cleanInput.includes("order food") || cleanInput.includes("menu") || cleanInput.includes("nhà hàng") || cleanInput.includes("gọi món")) {
-          aiMessage = "Let's learn how to order food and communicate politely in a restaurant setting!";
-          translation = "Hãy cùng học cách gọi món và giao tiếp lịch sự trong bối cảnh nhà hàng nhé!";
-          tutorFeedback = "**🍽️ MẪU CÂU GIAO TIẾP TẠI NHÀ HÀNG:**\n\n" +
-            "### 1. Đặt bàn / Yêu cầu chỗ ngồi\n" +
-            "- *A table for two, please.* (Cho tôi một bàn hai người.)\n" +
-            "- *Could we sit by the window?* (Chúng tôi có thể ngồi cạnh cửa sổ không?)\n\n" +
-            "### 2. Gọi món (Ordering)\n" +
-            "- *Could I see the menu, please?* (Cho tôi xem thực đơn với.)\n" +
-            "- *I'll have the steak, please.* (Cho tôi món bít tết.)\n" +
-            "- *Can I get a glass of water?* (Cho tôi một cốc nước.)\n\n" +
-            "### 3. Thanh toán (Payment)\n" +
-            "- *Could we have the bill, please?* (Cho chúng tôi xin hóa đơn thanh toán.)\n" +
-            "- *Do you accept credit cards?* (Nhà hàng có nhận thẻ tín dụng không?)";
-        } else if (cleanInput.includes("direction") || cleanInput.includes("ask way") || cleanInput.includes("hỏi đường") || cleanInput.includes("chỉ đường")) {
-          aiMessage = "Asking for and giving directions is highly practical. Let's master the essential phrases!";
-          translation = "Hỏi và chỉ đường là kỹ năng vô cùng thực tế. Hãy cùng làm chủ các cụm từ thiết yếu nhé!";
-          tutorFeedback = "**🗺️ MẪU CÂU HỎI & CHỈ ĐƯỜNG TIẾNG ANH:**\n\n" +
-            "### 1. Cách hỏi đường lịch sự\n" +
-            "- *Excuse me, could you tell me how to get to the train station?* (Xin lỗi, bạn chỉ giúp tôi đường ra ga tàu được không?)\n" +
-            "- *Is there a supermarket near here?* (Gần đây có siêu thị nào không?)\n\n" +
-            "### 2. Cách chỉ đường thông dụng\n" +
-            "- *Go straight ahead.* (Đi thẳng phía trước.)\n" +
-            "- *Take the first turning on the left.* (Rẽ ở lối rẽ đầu tiên bên trái.)\n" +
-            "- *It's on your right.* (Nó nằm ở bên tay phải của bạn.)";
+        } else if (cleanInput.includes("food") || cleanInput.includes("eat") || cleanInput.includes("cook") || cleanInput.includes("hungry") || cleanInput.includes("ăn") || cleanInput.includes("nấu") || cleanInput.includes("đói") || cleanInput.includes("breakfast") || cleanInput.includes("lunch") || cleanInput.includes("dinner")) {
+          aiMessage = "Food is one of the best conversation topics! What did you have for your last meal? Do you enjoy cooking?";
+          translation = "Ẩm thực là một trong những chủ đề trò chuyện hay nhất! Bữa ăn gần nhất của bạn là gì? Bạn có thích nấu ăn không?";
+          tutorFeedback = "**🍲 CÁCH NÓI VỀ ĐỒ ĂN & BỮA ĂN TRONG TIẾNG ANH:**\n\n" +
+            "### Câu hỏi thông dụng:\n" +
+            "- *What did you have for breakfast/lunch/dinner?* (Bạn ăn gì vào bữa sáng/trưa/tối?)\n" +
+            "- *What is your favorite food?* (Món ăn yêu thích của bạn là gì?)\n" +
+            "- *Can you cook?* (Bạn có biết nấu ăn không?)\n\n" +
+            "### Câu trả lời mẫu:\n" +
+            "- *I had pho for breakfast.* (Tôi ăn phở vào bữa sáng.)\n" +
+            "- *My favorite food is banh mi.* (Món ăn yêu thích của tôi là bánh mì.)\n" +
+            "- *I love cooking Vietnamese food.* (Tôi thích nấu đồ ăn Việt Nam.)\n\n" +
+            "**⚠️ Lỗi hay gặp:** Nói *\"I eat already\"* ❌ $\\rightarrow$ Sửa: *\"I have already eaten\"* hoặc *\"I already ate\"* ✅.";
+        } else if (cleanInput.includes("travel") || cleanInput.includes("vacation") || cleanInput.includes("trip") || cleanInput.includes("du lịch") || cleanInput.includes("kỳ nghỉ") || cleanInput.includes("visit")) {
+          aiMessage = "I love hearing about travel experiences! Where is your dream destination? Have you traveled recently?";
+          translation = "Tôi rất thích nghe về những trải nghiệm du lịch! Điểm đến trong mơ của bạn là ở đâu? Gần đây bạn có đi du lịch không?";
+          tutorFeedback = "**✈️ CÁCH NÓI VỀ DU LỊCH & KỲ NGHỈ TRONG TIẾNG ANH:**\n\n" +
+            "### Câu hỏi thông dụng:\n" +
+            "- *Where did you go on your last vacation?* (Kỳ nghỉ vừa rồi bạn đã đi đâu?)\n" +
+            "- *How long did you stay there?* (Bạn ở đó bao lâu?)\n" +
+            "- *What was the highlight of your trip?* (Điểm nhấn của chuyến đi là gì?)\n\n" +
+            "### Câu trả lời mẫu:\n" +
+            "- *I went to Da Lat last month. I stayed there for 3 days.* (Tôi đã đi Đà Lạt tháng trước. Tôi ở đó 3 ngày.)\n" +
+            "- *The best part was trying local food and visiting flower gardens.* (Phần hay nhất là thử đồ ăn địa phương và tham quan vườn hoa.)\n\n" +
+            "**⚠️ Lỗi hay gặp:** Nói *\"I go to Da Lat yesterday\"* ❌ $\\rightarrow$ Sửa: *\"I **went** to Da Lat yesterday\"* ✅ (dùng V2 cho quá khứ).";
+        } else if (cleanInput.includes("family") || cleanInput.includes("gia đình") || cleanInput.includes("mother") || cleanInput.includes("father") || cleanInput.includes("parent") || cleanInput.includes("brother") || cleanInput.includes("sister") || cleanInput.includes("mẹ") || cleanInput.includes("bố")) {
+          aiMessage = "Family is such a meaningful topic! How many people are there in your family? Tell me about them!";
+          translation = "Gia đình là một chủ đề thật ý nghĩa! Gia đình bạn có bao nhiêu người? Hãy kể cho tôi nghe về họ!";
+          tutorFeedback = "**👨‍👩‍👧‍👦 CÁCH NÓI VỀ GIA ĐÌNH TRONG TIẾNG ANH:**\n\n" +
+            "### Câu hỏi thông dụng:\n" +
+            "- *How many people are there in your family?* (Gia đình bạn có bao nhiêu người?)\n" +
+            "- *What does your father/mother do?* (Bố/mẹ bạn làm nghề gì?)\n" +
+            "- *Do you have any brothers or sisters?* (Bạn có anh chị em không?)\n\n" +
+            "### Câu trả lời mẫu:\n" +
+            "- *There are four people in my family: my parents, my sister, and me.* (Gia đình tôi có 4 người: bố mẹ, chị gái và tôi.)\n" +
+            "- *My father is a teacher and my mother is a nurse.* (Bố tôi là giáo viên và mẹ tôi là y tá.)\n\n" +
+            "**⚠️ Lỗi hay gặp:** Nói *\"My family has 4 people\"* ❌ $\\rightarrow$ Sửa: *\"There **are** 4 people in my family\"* ✅.";
+        } else if (cleanInput.includes("health") || cleanInput.includes("exercise") || cleanInput.includes("gym") || cleanInput.includes("sport") || cleanInput.includes("sức khỏe") || cleanInput.includes("tập thể dục") || cleanInput.includes("sick") || cleanInput.includes("bệnh")) {
+          aiMessage = "Health is wealth! Do you exercise regularly? What kind of physical activity do you enjoy?";
+          translation = "Sức khỏe là tài sản quý giá nhất! Bạn có tập thể dục thường xuyên không? Bạn thích hoạt động thể chất nào?";
+          tutorFeedback = "**💪 CÁCH NÓI VỀ SỨC KHỎE & TẬP THỂ DỤC TRONG TIẾNG ANH:**\n\n" +
+            "### Câu hỏi thông dụng:\n" +
+            "- *How often do you exercise?* (Bạn tập thể dục thường xuyên như thế nào?)\n" +
+            "- *What sports do you play?* (Bạn chơi môn thể thao nào?)\n" +
+            "- *Are you feeling okay?* (Bạn có ổn không?)\n\n" +
+            "### Câu trả lời mẫu:\n" +
+            "- *I go to the gym three times a week.* (Tôi đi tập gym ba lần một tuần.)\n" +
+            "- *I enjoy jogging in the morning.* (Tôi thích chạy bộ vào buổi sáng.)\n" +
+            "- *I have a headache / a sore throat / a fever.* (Tôi bị đau đầu / đau họng / sốt.)\n\n" +
+            "**⚠️ Lỗi hay gặp:** Nói *\"I have sick\"* ❌ $\\rightarrow$ Sửa: *\"I **am** sick\"* ✅ (dùng 'be' + adj, không dùng 'have').";
+        } else if (cleanInput.includes("movie") || cleanInput.includes("film") || cleanInput.includes("music") || cleanInput.includes("song") || cleanInput.includes("phim") || cleanInput.includes("nhạc") || cleanInput.includes("bài hát")) {
+          aiMessage = "Movies and music are universal topics! What kind of movies or music do you like?";
+          translation = "Phim và nhạc là những chủ đề toàn cầu! Bạn thích thể loại phim hoặc nhạc nào?";
+          tutorFeedback = "**🎬 CÁCH NÓI VỀ PHIM & ÂM NHẠC TRONG TIẾNG ANH:**\n\n" +
+            "### Câu hỏi thông dụng:\n" +
+            "- *What kind of movies do you like?* (Bạn thích thể loại phim nào?)\n" +
+            "- *Have you watched any good movies recently?* (Gần đây bạn có xem phim hay nào không?)\n" +
+            "- *Who is your favorite singer/band?* (Ca sĩ/ban nhạc yêu thích của bạn là ai?)\n\n" +
+            "### Câu trả lời mẫu:\n" +
+            "- *I love action movies, especially Marvel films.* (Tôi thích phim hành động, đặc biệt là phim Marvel.)\n" +
+            "- *I usually listen to pop music on Spotify.* (Tôi thường nghe nhạc pop trên Spotify.)\n\n" +
+            "### Các thể loại phổ biến:\n" +
+            "🎭 *comedy* (hài), 🎬 *action* (hành động), 😱 *horror* (kinh dị), 💕 *romance* (tình cảm), 🔬 *sci-fi* (khoa học viễn tưởng)";
+        } else if (cleanInput.includes("routine") || cleanInput.includes("daily") || cleanInput.includes("every day") || cleanInput.includes("thói quen") || cleanInput.includes("hàng ngày") || cleanInput.includes("schedule") || cleanInput.includes("lịch trình")) {
+          aiMessage = "Talking about your daily routine is great practice for the Simple Present tense! What does a typical day look like for you?";
+          translation = "Nói về thói quen hàng ngày là bài tập tuyệt vời cho thì Hiện tại Đơn! Một ngày bình thường của bạn trông như thế nào?";
+          tutorFeedback = "**⏰ CÁCH NÓI VỀ THÓI QUEN HÀNG NGÀY (DAILY ROUTINE):**\n\n" +
+            "### Câu hỏi thông dụng:\n" +
+            "- *What time do you wake up?* (Bạn thức dậy lúc mấy giờ?)\n" +
+            "- *What do you usually do after work/school?* (Sau giờ làm/học bạn thường làm gì?)\n\n" +
+            "### Câu trả lời mẫu:\n" +
+            "- *I wake up at 6 AM every day. First, I brush my teeth and take a shower.* (Tôi thức dậy lúc 6 giờ mỗi ngày.)\n" +
+            "- *After lunch, I usually take a short nap.* (Sau bữa trưa, tôi thường ngủ trưa.)\n" +
+            "- *In the evening, I watch TV or read a book before going to bed.* (Buổi tối, tôi xem TV hoặc đọc sách trước khi đi ngủ.)\n\n" +
+            "**💡 Mẹo:** Dùng trạng từ tần suất: *always, usually, often, sometimes, rarely, never*.";
+        } else if (cleanInput.includes("buy") || cleanInput.includes("shop") || cleanInput.includes("price") || cleanInput.includes("cheap") || cleanInput.includes("expensive") || cleanInput.includes("mua") || cleanInput.includes("giá") || cleanInput.includes("rẻ") || cleanInput.includes("đắt") || cleanInput.includes("how much")) {
+          aiMessage = "Shopping is a practical topic! Do you prefer shopping online or in stores? What did you buy recently?";
+          translation = "Mua sắm là một chủ đề thực tế! Bạn thích mua sắm online hay ở cửa hàng? Gần đây bạn đã mua gì?";
+          tutorFeedback = "**🛒 CÁCH NÓI VỀ MUA SẮM & GIÁ CẢ TRONG TIẾNG ANH:**\n\n" +
+            "### Câu hỏi khi mua sắm:\n" +
+            "- *How much is this?* / *How much does this cost?* (Cái này giá bao nhiêu?)\n" +
+            "- *Do you have this in a different size/color?* (Bạn có cái này cỡ/màu khác không?)\n" +
+            "- *Can I try this on?* (Tôi có thể thử không?)\n" +
+            "- *Is there a discount?* (Có giảm giá không?)\n\n" +
+            "### Câu trả lời mẫu:\n" +
+            "- *It costs 200,000 VND.* (Nó giá 200.000 VNĐ.)\n" +
+            "- *That is too expensive. Do you have anything cheaper?* (Quá đắt. Bạn có cái nào rẻ hơn không?)\n\n" +
+            "**⚠️ Lỗi hay gặp:** Nói *\"How much money is it?\"* ❌ $\\rightarrow$ Sửa: *\"How much **is** it?\"* ✅ (không cần 'money').";
+        } else if (cleanInput.includes("what time") || cleanInput.includes("mấy giờ") || cleanInput.includes("o'clock") || cleanInput.includes("clock")) {
+          aiMessage = "Time is a topic you need every single day! Do you know how to tell the time in English? Let me teach you!";
+          translation = "Thời gian là chủ đề bạn cần mỗi ngày! Bạn có biết cách nói giờ trong tiếng Anh không? Hãy để tôi dạy bạn!";
+          tutorFeedback = "**🕐 CÁCH NÓI GIỜ TRONG TIẾNG ANH:**\n\n" +
+            "### Quy tắc cơ bản:\n" +
+            "- **Giờ chẵn**: *It is [Number] o'clock.* (VD: *It is 3 o'clock.*)\n" +
+            "- **Giờ lẻ (past)**: *It is [Minutes] past [Hour].* (VD: *It is ten past three.* = 3:10)\n" +
+            "- **Giờ lẻ (to)**: *It is [Minutes] to [Hour].* (VD: *It is ten to four.* = 3:50)\n" +
+            "- **Nửa giờ**: *It is half past [Hour].* (VD: *It is half past three.* = 3:30)\n" +
+            "- **15 phút**: *It is a quarter past/to [Hour].* (VD: *a quarter past 3* = 3:15)\n\n" +
+            "### Hỏi giờ:\n" +
+            "- *What time is it?* hoặc *Could you tell me the time, please?*\n\n" +
+            "**⚠️ Lỗi hay gặp:** Nói *\"Now is 3 o'clock\"* ❌ $\\rightarrow$ Sửa: *\"**It is** 3 o'clock **now**\"* ✅.";
         } else {
           aiMessage = `That is very interesting! Can you tell me more about that? I'd love to hear your thoughts in English.`;
           translation = `Điều đó thật thú vị! Bạn có thể kể cho tôi nghe thêm về điều đó được không? Tôi rất muốn nghe suy nghĩ của bạn bằng tiếng Anh.`;
