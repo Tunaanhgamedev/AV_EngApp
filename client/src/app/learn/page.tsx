@@ -137,6 +137,11 @@ const TOPIC_ICONS: Record<string, any> = {
   science_tech: Cpu,
   society_law: Scale,
   shopping: ShoppingBag,
+  nature: Cloud,
+  feelings: Heart,
+  hobbies: Play,
+  town: Home,
+  business: Briefcase,
 };
 
 
@@ -161,6 +166,7 @@ export default function LearnPage() {
   const [vocabIndex, setVocabIndex] = useState<number>(0);
   const [showVocabHint, setShowVocabHint] = useState<boolean>(false);
   const [vocabCompleted, setVocabCompleted] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState<'card' | 'list'>('card');
 
   const activeVocabTopic = VOCABULARY_TOPICS.find(t => t.id === selectedVocabTopicId);
   const activeVocabWords = activeVocabTopic ? activeVocabTopic[vocabLevel] : [];
@@ -589,6 +595,7 @@ export default function LearnPage() {
                         setVocabIndex(0);
                         setShowVocabHint(false);
                         setVocabCompleted(false);
+                        setActiveTab('card');
                       }}
                       className={cn(
                         "bg-white rounded-[2rem] p-6 border text-left flex flex-col gap-4 hover:shadow-xl transition-all group relative overflow-hidden cursor-pointer",
@@ -696,6 +703,7 @@ export default function LearnPage() {
                         setVocabIndex(0);
                         setShowVocabHint(false);
                         setVocabCompleted(false);
+                        setActiveTab('card');
                       }}
                       className={cn(
                         "px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer",
@@ -712,6 +720,7 @@ export default function LearnPage() {
                         setVocabIndex(0);
                         setShowVocabHint(false);
                         setVocabCompleted(false);
+                        setActiveTab('card');
                       }}
                       className={cn(
                         "px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer",
@@ -738,10 +747,38 @@ export default function LearnPage() {
                 />
               </div>
 
+              {/* Mobile View Switcher Tabs */}
+              {activeVocabWords[vocabIndex] && (
+                <div className="flex lg:hidden bg-slate-100 p-1 rounded-2xl mb-1">
+                  <button
+                    onClick={() => setActiveTab('card')}
+                    className={cn(
+                      "flex-1 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider text-center transition-all cursor-pointer",
+                      activeTab === 'card'
+                        ? "bg-white text-slate-800 shadow-sm"
+                        : "text-slate-500 hover:text-slate-700"
+                    )}
+                  >
+                    🎴 Thẻ Từ Vựng
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('list')}
+                    className={cn(
+                      "flex-1 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider text-center transition-all cursor-pointer",
+                      activeTab === 'list'
+                        ? "bg-white text-slate-800 shadow-sm"
+                        : "text-slate-500 hover:text-slate-700"
+                    )}
+                  >
+                    📋 Danh Sách ({activeVocabWords.length})
+                  </button>
+                </div>
+              )}
+
               {activeVocabWords[vocabIndex] && (
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 lg:gap-6 items-start">
                   {/* Flashcard (3 cols) */}
-                  <div className="lg:col-span-3">
+                  <div className={cn("lg:col-span-3", activeTab === 'card' ? "block" : "hidden lg:block")}>
                     <div className="perspective-1000 w-full h-[280px] xs:h-[320px] sm:h-[340px] md:h-[380px] landscape:h-[250px] landscape:sm:h-[280px]">
                       <div className={cn(
                         "relative w-full h-full preserve-3d transition-transform duration-500 border border-slate-200/80 rounded-[2.5rem] shadow-xl",
@@ -839,7 +876,7 @@ export default function LearnPage() {
                   </div>
 
                   {/* Word List Sidebar (2 cols) */}
-                  <div className="lg:col-span-2">
+                  <div className={cn("lg:col-span-2", activeTab === 'list' ? "block" : "hidden lg:block")}>
                     <div className="premium-card p-4 bg-white border border-slate-200 rounded-[1.5rem] space-y-3 max-h-[520px] overflow-y-auto">
                       <div className="flex items-center justify-between">
                         <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider">Danh sách từ vựng</h4>
@@ -859,12 +896,14 @@ export default function LearnPage() {
                             onClick={() => {
                               setVocabIndex(idx);
                               setShowVocabHint(false);
+                              setActiveTab('card');
                             }}
                             onKeyDown={(e) => {
                               if (e.key === 'Enter' || e.key === ' ') {
                                 e.preventDefault();
                                 setVocabIndex(idx);
                                 setShowVocabHint(false);
+                                setActiveTab('card');
                               }
                             }}
                             className={cn(
