@@ -1611,6 +1611,411 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "điểm số",
         "example": "We scored a point in the last minute.",
         "exampleVi": "Chúng tôi đã ghi được một điểm ở phút cuối cùng."
+      },
+      {
+        "word": "sport",
+        "phonetic": "/spɔːt/",
+        "wordType": "noun",
+        "meaningEn": "A game, competition, or activity needing physical effort and skill.",
+        "meaningVi": "thể thao",
+        "example": "My favorite sport is basketball.",
+        "exampleVi": "Môn thể thao yêu thích của tôi là bóng rổ."
+      },
+      {
+        "word": "walk",
+        "phonetic": "/wɔːk/",
+        "wordType": "verb",
+        "meaningEn": "To move along by putting one foot in front of the other.",
+        "meaningVi": "đi bộ",
+        "example": "I walk in the park every morning.",
+        "exampleVi": "Tôi đi bộ trong công viên mỗi sáng."
+      },
+      {
+        "word": "dance",
+        "phonetic": "/dɑːns/",
+        "wordType": "verb",
+        "meaningEn": "To move your body to the rhythm of music.",
+        "meaningVi": "nhảy, khiêu vũ",
+        "example": "They love to dance at parties.",
+        "exampleVi": "Họ rất thích nhảy tại các bữa tiệc."
+      },
+      {
+        "word": "music",
+        "phonetic": "/ˈmjuː.zɪk/",
+        "wordType": "noun",
+        "meaningEn": "Sounds that are sung or played to express ideas and emotions.",
+        "meaningVi": "âm nhạc",
+        "example": "Listening to music is very relaxing.",
+        "exampleVi": "Nghe nhạc rất là thư giãn."
+      },
+      {
+        "word": "movie",
+        "phonetic": "/ˈmuː.vi/",
+        "wordType": "noun",
+        "meaningEn": "A story shown in moving pictures, shown at the cinema or on TV.",
+        "meaningVi": "bộ phim",
+        "example": "Let's watch a comedy movie tonight.",
+        "exampleVi": "Tối nay chúng ta hãy xem một bộ phim hài đi."
+      },
+      {
+        "word": "sing",
+        "phonetic": "/sɪŋ/",
+        "wordType": "verb",
+        "meaningEn": "To make musical sounds with your voice.",
+        "meaningVi": "hát",
+        "example": "She can sing very beautiful songs.",
+        "exampleVi": "Cô ấy có thể hát những bài hát rất hay."
+      },
+      {
+        "word": "climb",
+        "phonetic": "/klaɪm/",
+        "wordType": "verb",
+        "meaningEn": "To go up something towards the top using your hands and feet.",
+        "meaningVi": "leo trèo",
+        "example": "Children like to climb trees.",
+        "exampleVi": "Trẻ em thích leo trèo cây."
+      },
+      {
+        "word": "fun",
+        "phonetic": "/fʌn/",
+        "wordType": "noun",
+        "meaningEn": "Pleasure, enjoyment, or entertainment.",
+        "meaningVi": "niềm vui, sự vui vẻ",
+        "example": "We had a lot of fun at the beach.",
+        "exampleVi": "Chúng tôi đã có rất nhiều niềm vui ở bãi biển."
+      },
+      {
+        "word": "club",
+        "phonetic": "/klʌb/",
+        "wordType": "noun",
+        "meaningEn": "An organization of people with a common interest who meet regularly.",
+        "meaningVi": "câu lạc bộ",
+        "example": "He joined the school chess club.",
+        "exampleVi": "Cậu ấy đã tham gia câu lạc bộ cờ vua của trường."
+      },
+      {
+        "word": "park",
+        "phonetic": "/pɑːk/",
+        "wordType": "noun",
+        "meaningEn": "A large public green area in a town, used for recreation.",
+        "meaningVi": "công viên",
+        "example": "The kids are playing football in the park.",
+        "exampleVi": "Lũ trẻ đang chơi bóng đá trong công viên."
+      },
+      {
+        "word": "pool",
+        "phonetic": "/puːl/",
+        "wordType": "noun",
+        "meaningEn": "An artificial area of water for swimming.",
+        "meaningVi": "hồ bơi",
+        "example": "The hotel has a large outdoor pool.",
+        "exampleVi": "Khách sạn có một hồ bơi ngoài trời lớn."
+      },
+      {
+        "word": "race",
+        "phonetic": "/reɪs/",
+        "wordType": "noun",
+        "meaningEn": "A competition between people, animals, or vehicles to see which is fastest.",
+        "meaningVi": "cuộc đua",
+        "example": "He won the 100-meter running race.",
+        "exampleVi": "Anh ấy đã thắng cuộc đua chạy 100 mét."
+      },
+      {
+        "word": "ride",
+        "phonetic": "/raɪd/",
+        "wordType": "verb",
+        "meaningEn": "To sit on and control the movement of a bicycle, horse, or motorcycle.",
+        "meaningVi": "đi, cưỡi (xe, ngựa)",
+        "example": "Can you ride a bicycle?",
+        "exampleVi": "Bạn có biết đi xe đạp không?"
+      },
+      {
+        "word": "toy",
+        "phonetic": "/tɔɪ/",
+        "wordType": "noun",
+        "meaningEn": "An object for children to play with.",
+        "meaningVi": "đồ chơi",
+        "example": "He is playing with his new toy car.",
+        "exampleVi": "Cậu bé đang chơi với chiếc xe ô tô đồ chơi mới."
+      },
+      {
+        "word": "score",
+        "phonetic": "/skɔːr/",
+        "wordType": "noun",
+        "meaningEn": "The number of points, goals, etc. achieved in a game.",
+        "meaningVi": "điểm số",
+        "example": "What is the final score of the match?",
+        "exampleVi": "Điểm số cuối cùng của trận đấu là bao nhiêu?"
+      },
+      {
+        "word": "golf",
+        "phonetic": "/ɡɒlf/",
+        "wordType": "noun",
+        "meaningEn": "A game played on a large course where a small hard ball is hit into holes.",
+        "meaningVi": "môn đánh gôn",
+        "example": "He plays golf every weekend.",
+        "exampleVi": "Anh ấy chơi gôn mỗi cuối tuần."
+      },
+      {
+        "word": "card",
+        "phonetic": "/kɑːd/",
+        "wordType": "noun",
+        "meaningEn": "A small, rectangular piece of stiff paper used to play games.",
+        "meaningVi": "quân bài, thẻ",
+        "example": "They like to play card games during holidays.",
+        "exampleVi": "Họ thích chơi các trò chơi bài trong kỳ nghỉ."
+      },
+      {
+        "word": "chess",
+        "phonetic": "/tʃes/",
+        "wordType": "noun",
+        "meaningEn": "A game for two players who move 16 pieces each on a checkered board.",
+        "meaningVi": "cờ vua",
+        "example": "My father taught me how to play chess.",
+        "exampleVi": "Bố tôi đã dạy tôi cách chơi cờ vua."
+      },
+      {
+        "word": "watch",
+        "phonetic": "/wɒtʃ/",
+        "wordType": "verb",
+        "meaningEn": "To look at something for a period of time.",
+        "meaningVi": "xem, theo dõi",
+        "example": "We love to watch television after dinner.",
+        "exampleVi": "Chúng tôi thích xem truyền hình sau bữa tối."
+      },
+      {
+        "word": "group",
+        "phonetic": "/ɡruːp/",
+        "wordType": "noun",
+        "meaningEn": "A number of people or things that are located, gathered, or classed together.",
+        "meaningVi": "nhóm",
+        "example": "They went hiking in a large group.",
+        "exampleVi": "Họ đã đi leo núi dã ngoại theo một nhóm đông."
+      },
+      {
+        "word": "fast",
+        "phonetic": "/fɑːst/",
+        "wordType": "adj",
+        "meaningEn": "Moving or capable of moving at high speed.",
+        "meaningVi": "nhanh",
+        "example": "He is a very fast runner.",
+        "exampleVi": "Anh ấy là một người chạy rất nhanh."
+      },
+      {
+        "word": "slow",
+        "phonetic": "/sləʊ/",
+        "wordType": "adj",
+        "meaningEn": "Moving or operating, or happening at a low speed.",
+        "meaningVi": "chậm",
+        "example": "Walking is a slow but healthy exercise.",
+        "exampleVi": "Đi bộ là một bài tập chậm nhưng tốt cho sức khỏe."
+      },
+      {
+        "word": "active",
+        "phonetic": "/ˈæk.tɪv/",
+        "wordType": "adj",
+        "meaningEn": "Engaging or ready to engage in physically energetic pursuits.",
+        "meaningVi": "năng động, tích cực",
+        "example": "She leads a very active life.",
+        "exampleVi": "Cô ấy dẫn dắt một cuộc sống rất năng động."
+      },
+      {
+        "word": "happy",
+        "phonetic": "/ˈhæp.i/",
+        "wordType": "adj",
+        "meaningEn": "Feeling or showing pleasure or contentment.",
+        "meaningVi": "vui vẻ, hạnh phúc",
+        "example": "The children are happy playing outside.",
+        "exampleVi": "Lũ trẻ đang vui vẻ chơi đùa bên ngoài."
+      },
+      {
+        "word": "goal",
+        "phonetic": "/ɡəʊl/",
+        "wordType": "noun",
+        "meaningEn": "An instance of sending the ball into the net in sports.",
+        "meaningVi": "bàn thắng, khung thành",
+        "example": "He scored a beautiful goal in the second half.",
+        "exampleVi": "Anh ấy đã ghi một bàn thắng đẹp mắt ở hiệp hai."
+      },
+      {
+        "word": "relax",
+        "phonetic": "/rɪˈlæks/",
+        "wordType": "verb",
+        "meaningEn": "To rest and get back your strength after working or exercising.",
+        "meaningVi": "thư giãn",
+        "example": "I like to relax and read a book on Sundays.",
+        "exampleVi": "Tôi thích thư giãn và đọc một cuốn sách vào các ngày Chủ Nhật."
+      },
+      {
+        "word": "hobby",
+        "phonetic": "/ˈhɒb.i/",
+        "wordType": "noun",
+        "meaningEn": "An activity done regularly in one's leisure time for pleasure.",
+        "meaningVi": "sở thích",
+        "example": "My sister's main hobby is gardening.",
+        "exampleVi": "Sở thích chính của chị gái tôi là làm vườn."
+      },
+      {
+        "word": "skate",
+        "phonetic": "/skeɪt/",
+        "wordType": "verb",
+        "meaningEn": "To move on ice skates or roller skates.",
+        "meaningVi": "trượt (băng, patin)",
+        "example": "Many teenagers like to skate in this park.",
+        "exampleVi": "Nhiều thanh thiếu niên thích trượt patin ở công viên này."
+      },
+      {
+        "word": "camp",
+        "phonetic": "/kæmp/",
+        "wordType": "verb",
+        "meaningEn": "To live in a tent, especially while on holiday.",
+        "meaningVi": "cắm trại",
+        "example": "We plan to camp near the lake this weekend.",
+        "exampleVi": "Chúng tôi dự định cắm trại gần hồ vào cuối tuần này."
+      },
+      {
+        "word": "kick",
+        "phonetic": "/kɪk/",
+        "wordType": "verb",
+        "meaningEn": "To hit something with your foot.",
+        "meaningVi": "đá",
+        "example": "Kick the ball to me!",
+        "exampleVi": "Đá quả bóng cho tôi nào!"
+      },
+      {
+        "word": "throw",
+        "phonetic": "/θrəʊ/",
+        "wordType": "verb",
+        "meaningEn": "To send something through the air with force, using your arm.",
+        "meaningVi": "ném",
+        "example": "Throw the ball as far as you can.",
+        "exampleVi": "Hãy ném quả bóng đi xa nhất có thể."
+      },
+      {
+        "word": "catch",
+        "phonetic": "/kætʃ/",
+        "wordType": "verb",
+        "meaningEn": "To take and hold something that is moving through the air.",
+        "meaningVi": "bắt lấy, chụp lấy",
+        "example": "He managed to catch the baseball.",
+        "exampleVi": "Anh ấy đã xoay xở để bắt được quả bóng chày."
+      },
+      {
+        "word": "health",
+        "phonetic": "/helθ/",
+        "wordType": "noun",
+        "meaningEn": "The state of being free from illness or injury.",
+        "meaningVi": "sức khỏe",
+        "example": "Exercising daily is great for your health.",
+        "exampleVi": "Tập thể dục hàng ngày rất tốt cho sức khỏe của bạn."
+      },
+      {
+        "word": "runny",
+        "phonetic": "/ˈrʌn.i/",
+        "wordType": "adj",
+        "meaningEn": "More liquid than usual; of a nose, producing too much liquid.",
+        "meaningVi": "chảy nước (mũi/mắt)",
+        "example": "Running outside in the cold gives me a runny nose.",
+        "exampleVi": "Chạy bộ ngoài trời lạnh làm tôi bị chảy nước mũi."
+      },
+      {
+        "word": "shoes",
+        "phonetic": "/ʃuːz/",
+        "wordType": "noun",
+        "meaningEn": "Outer coverings for people's feet, typically of leather or plastic.",
+        "meaningVi": "đôi giày",
+        "example": "I need to buy new running shoes.",
+        "exampleVi": "Tôi cần mua giày chạy bộ mới."
+      },
+      {
+        "word": "strong",
+        "phonetic": "/strɒŋ/",
+        "wordType": "adj",
+        "meaningEn": "Having physical power or strength.",
+        "meaningVi": "khỏe mạnh, mạnh mẽ",
+        "example": "Lifting weights makes your muscles strong.",
+        "exampleVi": "Nâng tạ làm cho cơ bắp của bạn khỏe mạnh."
+      },
+      {
+        "word": "weak",
+        "phonetic": "/wiːk/",
+        "wordType": "adj",
+        "meaningEn": "Lacking physical strength or energy.",
+        "meaningVi": "yếu, yếu ớt",
+        "example": "My legs felt weak after the long walk.",
+        "exampleVi": "Chân tôi cảm thấy yếu đi sau chuyến đi bộ dài."
+      },
+      {
+        "word": "easy",
+        "phonetic": "/ˈiː.zi/",
+        "wordType": "adj",
+        "meaningEn": "Achieved without great effort; not difficult.",
+        "meaningVi": "dễ dàng",
+        "example": "The rules of this game are very easy.",
+        "exampleVi": "Các quy tắc của trò chơi này rất dễ dàng."
+      },
+      {
+        "word": "hard",
+        "phonetic": "/hɑːd/",
+        "wordType": "adj",
+        "meaningEn": "Difficult to do or understand.",
+        "meaningVi": "khó khăn, vất vả",
+        "example": "Training for a marathon is hard work.",
+        "exampleVi": "Tập luyện cho một cuộc đua marathon là một công việc vất vả."
+      },
+      {
+        "word": "fit",
+        "phonetic": "/fɪt/",
+        "wordType": "adj",
+        "meaningEn": "Healthy and strong, especially as a result of exercise.",
+        "meaningVi": "cân đối, khỏe khoắn",
+        "example": "She runs every day to stay fit.",
+        "exampleVi": "Cô ấy chạy bộ mỗi ngày để giữ vóc dáng cân đối."
+      },
+      {
+        "word": "outdoor",
+        "phonetic": "/ˈaʊt.dɔːr/",
+        "wordType": "adj",
+        "meaningEn": "Done, situated, or used in the open air.",
+        "meaningVi": "ngoài trời",
+        "example": "Football is an outdoor sport.",
+        "exampleVi": "Bóng đá là một môn thể thao ngoài trời."
+      },
+      {
+        "word": "indoor",
+        "phonetic": "/ˈɪn.dɔːr/",
+        "wordType": "adj",
+        "meaningEn": "Done, situated, or used inside a building.",
+        "meaningVi": "trong nhà",
+        "example": "Table tennis is an indoor game.",
+        "exampleVi": "Bóng bàn là một trò chơi trong nhà."
+      },
+      {
+        "word": "net",
+        "phonetic": "/net/",
+        "wordType": "noun",
+        "meaningEn": "A material made of threads or ropes tied together with open spaces, used in sports.",
+        "meaningVi": "lưới",
+        "example": "The ball flew over the tennis net.",
+        "exampleVi": "Quả bóng đã bay qua lưới tennis."
+      },
+      {
+        "word": "teamwork",
+        "phonetic": "/ˈtiːm.wɜːk/",
+        "wordType": "noun",
+        "meaningEn": "The collaborative effort of a group to achieve a common goal.",
+        "meaningVi": "sự làm việc nhóm",
+        "example": "Teamwork is important for winning basketball games.",
+        "exampleVi": "Sự làm việc nhóm rất quan trọng để giành chiến thắng trong các trận bóng rổ."
+      },
+      {
+        "word": "whistle",
+        "phonetic": "/ˈwɪs.əl/",
+        "wordType": "noun",
+        "meaningEn": "A small device that makes a high, loud sound when blown.",
+        "meaningVi": "cái còi",
+        "example": "The referee blew his whistle to stop the play.",
+        "exampleVi": "Trọng tài đã thổi còi để dừng trận đấu."
       }
     ],
     "advanced": [
@@ -1838,6 +2243,411 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "vận động viên điền kinh/thể thao",
         "example": "He is a talented track and field athlete.",
         "exampleVi": "Anh ấy là một vận động viên điền kinh tài năng."
+      },
+      {
+        "word": "performance",
+        "phonetic": "/pəˈfɔː.məns/",
+        "wordType": "noun",
+        "meaningEn": "How well a person, machine, etc. does a piece of work or an activity.",
+        "meaningVi": "hiệu suất, phong độ thi đấu",
+        "example": "The coach was highly pleased with the team's performance.",
+        "exampleVi": "Huấn luyện viên rất hài lòng với phong độ thi đấu của đội."
+      },
+      {
+        "word": "aerobic",
+        "phonetic": "/eəˈrəʊ.bɪk/",
+        "wordType": "adj",
+        "meaningEn": "Relating to physical exercise that increases heart and lung efficiency.",
+        "meaningVi": "thuộc hiếu khí, thể dục thẩm mỹ",
+        "example": "Aerobic exercise helps improve cardiovascular health.",
+        "exampleVi": "Bài tập hiếu khí giúp cải thiện sức khỏe tim mạch."
+      },
+      {
+        "word": "anaerobic",
+        "phonetic": "/ˌæn.eəˈrəʊ.bɪk/",
+        "wordType": "adj",
+        "meaningEn": "Relating to exercise that does not use oxygen, such as weightlifting.",
+        "meaningVi": "thuộc kỵ khí, không dùng oxy",
+        "example": "Sprinting is an anaerobic activity that builds fast-twitch muscle fibers.",
+        "exampleVi": "Chạy nước rút là một hoạt động kỵ khí giúp phát triển các sợi cơ co rút nhanh."
+      },
+      {
+        "word": "suppleness",
+        "phonetic": "/ˈsʌp.əl.nəs/",
+        "wordType": "noun",
+        "meaningEn": "The quality of being bent easily; flexibility.",
+        "meaningVi": "sự dẻo dai, sự linh hoạt",
+        "example": "Yoga is excellent for maintaining body suppleness.",
+        "exampleVi": "Yoga rất tuyệt vời để duy trì sự dẻo dai của cơ thể."
+      },
+      {
+        "word": "stamina",
+        "phonetic": "/ˈstæm.ɪ.nə/",
+        "wordType": "noun",
+        "meaningEn": "The physical or mental strength that enables you to do something for a long time.",
+        "meaningVi": "sức chịu đựng, sự bền bỉ",
+        "example": "You need great stamina to finish a full marathon.",
+        "exampleVi": "Bạn cần có sức bền bỉ tuyệt vời để hoàn thành một cuộc đua marathon đầy đủ."
+      },
+      {
+        "word": "cardiovascular",
+        "phonetic": "/ˌkɑː.di.əʊˈvæs.kjə.lər/",
+        "wordType": "adj",
+        "meaningEn": "Relating to the heart and blood vessels.",
+        "meaningVi": "thuộc tim mạch",
+        "example": "Swimming is a low-impact cardiovascular workout.",
+        "exampleVi": "Bơi lội là một bài tập tim mạch ít tác động mạnh."
+      },
+      {
+        "word": "kinesiology",
+        "phonetic": "/kɪˌniː.siˈɒl.ə.dʒi/",
+        "wordType": "noun",
+        "meaningEn": "The study of the mechanics of body movements.",
+        "meaningVi": "ngành động lực học cơ thể",
+        "example": "She decided to major in kinesiology to become a sports therapist.",
+        "exampleVi": "Cô ấy quyết định theo học chuyên ngành động lực học cơ thể để trở thành một nhà trị liệu thể thao."
+      },
+      {
+        "word": "disqualification",
+        "phonetic": "/dɪsˌkwɒl.ɪ.fɪˈkeɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "The act of stopping someone from taking part in a competition because of a rule breach.",
+        "meaningVi": "sự truất quyền thi đấu",
+        "example": "The athlete suffered a disqualification after testing positive for banned substances.",
+        "exampleVi": "Vận động viên này đã bị truất quyền thi đấu sau khi có kết quả xét nghiệm dương tính với chất cấm."
+      },
+      {
+        "word": "consecutive",
+        "phonetic": "/kənˈsek.jə.tɪv/",
+        "wordType": "adj",
+        "meaningEn": "Following continuously; in unbroken or logical sequence.",
+        "meaningVi": "liên tiếp",
+        "example": "They won five consecutive league titles.",
+        "exampleVi": "Họ đã giành được năm danh hiệu vô địch giải đấu liên tiếp."
+      },
+      {
+        "word": "biomechanics",
+        "phonetic": "/ˌbaɪ.əʊ.mɪˈkæn.ɪks/",
+        "wordType": "noun",
+        "meaningEn": "The study of the mechanical laws relating to the movement of living organisms.",
+        "meaningVi": "cơ học sinh học",
+        "example": "Understanding biomechanics can help athletes run more efficiently.",
+        "exampleVi": "Hiểu về cơ học sinh học có thể giúp các vận động viên chạy hiệu quả hơn."
+      },
+      {
+        "word": "hypertrophy",
+        "phonetic": "/haɪˈpɜː.trə.fi/",
+        "wordType": "noun",
+        "meaningEn": "The enlargement of an organ or tissue from the increase in size of its cells.",
+        "meaningVi": "sự phì đại (cơ bắp)",
+        "example": "Bodybuilders train specifically to induce muscle hypertrophy.",
+        "exampleVi": "Các vận động viên thể hình tập luyện cụ thể để kích thích sự phì đại cơ bắp."
+      },
+      {
+        "word": "underdog",
+        "phonetic": "/ˈʌn.də.dɒɡ/",
+        "wordType": "noun",
+        "meaningEn": "A competitor thought to have little chance of winning a fight or contest.",
+        "meaningVi": "đội/người bị đánh giá thấp hơn, cửa dưới",
+        "example": "The crowd cheered for the underdog throughout the match.",
+        "exampleVi": "Khán giả đã cổ vũ cho đội cửa dưới trong suốt trận đấu."
+      },
+      {
+        "word": "playmaker",
+        "phonetic": "/ˈpleɪˌmeɪ.kər/",
+        "wordType": "noun",
+        "meaningEn": "A player who controls the flow of the team's offensive play.",
+        "meaningVi": "nhạc trưởng, người kiến thiết lối chơi",
+        "example": "The midfielder is the team's primary playmaker.",
+        "exampleVi": "Tiền vệ này là nhạc trưởng kiến thiết lối chơi chính của đội."
+      },
+      {
+        "word": "momentum",
+        "phonetic": "/məˈmen.təm/",
+        "wordType": "noun",
+        "meaningEn": "The driving force or speed of movement of an ongoing event or team.",
+        "meaningVi": "đà, thế lực, động lượng",
+        "example": "The team gained momentum after scoring the equalizer.",
+        "exampleVi": "Đội bóng đã lấy lại thế trận sau khi ghi bàn gỡ hòa."
+      },
+      {
+        "word": "rehabilitation",
+        "phonetic": "/ˌriː.həˌbɪl.ɪˈteɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "The process of restoring someone to health or normal life through therapy.",
+        "meaningVi": "sự phục hồi chức năng",
+        "example": "He underwent months of physical rehabilitation after his knee surgery.",
+        "exampleVi": "Anh ấy đã trải qua nhiều tháng phục hồi chức năng thể chất sau ca phẫu thuật đầu gối."
+      },
+      {
+        "word": "hydrotherapy",
+        "phonetic": "/ˌhaɪ.drəʊˈθer.ə.pi/",
+        "wordType": "noun",
+        "meaningEn": "The use of exercises in water as a treatment for arthritis or partial paralysis.",
+        "meaningVi": "thủy liệu pháp",
+        "example": "Hydrotherapy helped the injured runner regain mobility.",
+        "exampleVi": "Thủy liệu pháp đã giúp vận động viên chạy bộ bị chấn thương lấy lại khả năng vận động."
+      },
+      {
+        "word": "motivation",
+        "phonetic": "/ˌməʊ.tɪˈveɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "The reason or reasons one has for acting or behaving in a particular way.",
+        "meaningVi": "động lực",
+        "example": "Intrinsic motivation is key to maintaining a long-term fitness routine.",
+        "exampleVi": "Động lực nội tại là chìa khóa để duy trì thói quen tập thể dục lâu dài."
+      },
+      {
+        "word": "tactician",
+        "phonetic": "/tækˈtɪʃ.ən/",
+        "wordType": "noun",
+        "meaningEn": "A person who is skilled at planning tactics, especially in sports.",
+        "meaningVi": "nhà chiến thuật",
+        "example": "The manager is known as a brilliant tactician.",
+        "exampleVi": "Người quản lý được biết đến như một nhà chiến thuật lỗi lạc."
+      },
+      {
+        "word": "physiotherapist",
+        "phonetic": "/ˌfɪz.i.əʊˈθer.ə.pɪst/",
+        "wordType": "noun",
+        "meaningEn": "A person qualified to treat disease, injury, or deformity by physical methods.",
+        "meaningVi": "chuyên gia vật lý trị liệu",
+        "example": "The physiotherapist massaged his sore hamstring.",
+        "exampleVi": "Chuyên gia vật lý trị liệu đã xoa bóp cơ gân kheo bị đau của anh ấy."
+      },
+      {
+        "word": "outperform",
+        "phonetic": "/ˌaʊt.pəˈfɔːm/",
+        "wordType": "verb",
+        "meaningEn": "To perform better than another participant or team.",
+        "meaningVi": "vượt trội hơn, chơi tốt hơn",
+        "example": "Our team managed to outperform the rivals in every department.",
+        "exampleVi": "Đội của chúng tôi đã xoay xở để chơi tốt hơn các đối thủ ở mọi vị trí."
+      },
+      {
+        "word": "supplement",
+        "phonetic": "/ˈsʌp.lɪ.mənt/",
+        "wordType": "noun",
+        "meaningEn": "A substance taken to remedy the dietary deficiencies of a person.",
+        "meaningVi": "chất bổ sung, thực phẩm chức năng",
+        "example": "Protein supplements are popular among weightlifters.",
+        "exampleVi": "Chất bổ sung protein rất phổ biến trong giới cử tạ."
+      },
+      {
+        "word": "doping",
+        "phonetic": "/ˈdəʊ.pɪŋ/",
+        "wordType": "noun",
+        "meaningEn": "The use of banned performance-enhancing drugs in sports.",
+        "meaningVi": "sử dụng chất kích thích (doping)",
+        "example": "Anti-doping agencies work hard to ensure clean competitions.",
+        "exampleVi": "Các cơ quan phòng chống doping nỗ lực làm việc để đảm bảo các cuộc thi đấu sạch."
+      },
+      {
+        "word": "fixture",
+        "phonetic": "/ˈfɪks.tʃər/",
+        "wordType": "noun",
+        "meaningEn": "A sports match that has been arranged for a particular date.",
+        "meaningVi": "trận đấu cố định (đã lên lịch)",
+        "example": "The next home fixture will be played next Saturday.",
+        "exampleVi": "Trận đấu cố định trên sân nhà tiếp theo sẽ được diễn ra vào thứ Bảy tới."
+      },
+      {
+        "word": "playoff",
+        "phonetic": "/ˈpleɪ.ɒf/",
+        "wordType": "noun",
+        "meaningEn": "An extra game played to decide the winner of a sports competition.",
+        "meaningVi": "vòng loại trực tiếp, trận tranh vé vớt",
+        "example": "They made it to the playoffs for the first time in five years.",
+        "exampleVi": "Họ đã lọt vào vòng loại trực tiếp lần đầu tiên sau năm năm."
+      },
+      {
+        "word": "scrimmage",
+        "phonetic": "/ˈskrɪm.ɪdʒ/",
+        "wordType": "noun",
+        "meaningEn": "An informal game or practice match.",
+        "meaningVi": "trận đấu tập",
+        "example": "The coach organized a scrimmage between the starters and the bench players.",
+        "exampleVi": "Huấn luyện viên đã tổ chức một trận đấu tập giữa các cầu thủ đá chính và các cầu thủ dự bị."
+      },
+      {
+        "word": "decathlon",
+        "phonetic": "/dɪˈkæθ.lɒn/",
+        "wordType": "noun",
+        "meaningEn": "An athletic event taking place over two days, consisting of ten track and field events.",
+        "meaningVi": "môn mười môn phối hợp",
+        "example": "To win the Olympic decathlon requires versatile physical prowess.",
+        "exampleVi": "Để giành chiến thắng ở môn mười môn phối hợp Olympic đòi hỏi năng lực thể chất linh hoạt."
+      },
+      {
+        "word": "triathlon",
+        "phonetic": "/traɪˈæθ.lɒn/",
+        "wordType": "noun",
+        "meaningEn": "An athletic contest comprising three consecutive events, usually swimming, cycling, and running.",
+        "meaningVi": "môn ba môn phối hợp",
+        "example": "Completing a triathlon requires extensive endurance training.",
+        "exampleVi": "Hoàn thành một cuộc đua ba môn phối hợp yêu cầu quá trình tập luyện sức bền rất nhiều."
+      },
+      {
+        "word": "recreationalist",
+        "phonetic": "/ˌrek.riˈeɪ.ʃən.əl.ɪst/",
+        "wordType": "noun",
+        "meaningEn": "A person who takes part in recreational activities.",
+        "meaningVi": "người tham gia các hoạt động giải trí",
+        "example": "Recreationalists often crowd the national park during summer weekends.",
+        "exampleVi": "Những người tham gia giải trí thường tập trung đông đúc tại công viên quốc gia vào những ngày cuối tuần mùa hè."
+      },
+      {
+        "word": "vehemence",
+        "phonetic": "/ˈviː.ə.məns/",
+        "wordType": "noun",
+        "meaningEn": "The display of strong feeling; passion or intensity in sport.",
+        "meaningVi": "sự mãnh liệt, sự sôi nổi",
+        "example": "The team fought with great vehemence until the final whistle.",
+        "exampleVi": "Đội bóng đã thi đấu với sự mãnh liệt tuyệt vời cho đến tiếng còi mãn cuộc."
+      },
+      {
+        "word": "velodrome",
+        "phonetic": "/ˈvel.ə.drəʊm/",
+        "wordType": "noun",
+        "meaningEn": "An arena for track cycling, featuring a banked track.",
+        "meaningVi": "sân đua xe đạp lòng chảo",
+        "example": "The modern velodrome is designed to reduce wind resistance.",
+        "exampleVi": "Sân đua xe đạp lòng chảo hiện đại được thiết kế để giảm sức cản của gió."
+      },
+      {
+        "word": "prodigy",
+        "phonetic": "/ˈprɒd.ɪ.dʒi/",
+        "wordType": "noun",
+        "meaningEn": "A young person endowed with exceptional qualities or abilities.",
+        "meaningVi": "thần đồng",
+        "example": "The teenage tennis prodigy won her first major tournament.",
+        "exampleVi": "Thần đồng quần vợt tuổi teen đã giành chiến thắng trong giải đấu lớn đầu tiên của mình."
+      },
+      {
+        "word": "overtraining",
+        "phonetic": "/ˌəʊ.vəˈtreɪ.nɪŋ/",
+        "wordType": "noun",
+        "meaningEn": "Excessive training where the body does not have enough time to recover.",
+        "meaningVi": "hội chứng tập luyện quá sức",
+        "example": "Overtraining can lead to fatigue, injury, and a drop in performance.",
+        "exampleVi": "Tập luyện quá sức có thể dẫn đến mệt mỏi, chấn thương và suy giảm hiệu suất."
+      },
+      {
+        "word": "glycogen",
+        "phonetic": "/ˈɡlaɪ.kə.dʒən/",
+        "wordType": "noun",
+        "meaningEn": "A substance deposited in bodily tissues as a store of carbohydrates.",
+        "meaningVi": "hợp chất dự trữ năng lượng glycogen",
+        "example": "Athletes eat carbs before a race to maximize glycogen storage.",
+        "exampleVi": "Các vận động viên ăn carbohydrate trước cuộc đua để tối đa hóa lượng glycogen dự trữ."
+      },
+      {
+        "word": "dehydration",
+        "phonetic": "/ˌdiː.haɪˈdreɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "A harmful reduction in the amount of water in the body.",
+        "meaningVi": "sự mất nước",
+        "example": "Dehydration can cause muscle cramps and dizziness during a game.",
+        "exampleVi": "Mất nước có thể gây ra chuột rút cơ bắp và chóng mặt trong suốt trận đấu."
+      },
+      {
+        "word": "sedentary",
+        "phonetic": "/ˈsed.ən.tər.i/",
+        "wordType": "adj",
+        "meaningEn": "Tending to spend much time seated; somewhat inactive.",
+        "meaningVi": "ít vận động, ngồi nhiều",
+        "example": "A sedentary lifestyle increases the risk of heart disease.",
+        "exampleVi": "Một lối sống ít vận động làm tăng nguy cơ mắc bệnh tim."
+      },
+      {
+        "word": "resilience",
+        "phonetic": "/rɪˈzɪl.i.əns/",
+        "wordType": "noun",
+        "meaningEn": "The capacity to recover quickly from difficulties; toughness.",
+        "meaningVi": "khả năng phục hồi, sự kiên cường",
+        "example": "Mental resilience is just as important as physical strength in elite sports.",
+        "exampleVi": "Sự kiên cường về mặt tinh thần cũng quan trọng không kém gì sức mạnh thể chất trong thể thao đỉnh cao."
+      },
+      {
+        "word": "proprioception",
+        "phonetic": "/ˌprəʊ.pri.əʊˈsep.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "The body's ability to sense movement, action, and location.",
+        "meaningVi": "khả năng cảm nhận bản thể, tự cảm nhận vị trí cơ thể",
+        "example": "Balance exercises improve proprioception and help prevent ankle injuries.",
+        "exampleVi": "Các bài tập thăng bằng cải thiện khả năng cảm nhận bản thể và giúp ngăn ngừa chấn thương mắt cá chân."
+      },
+      {
+        "word": "isometric",
+        "phonetic": "/ˌaɪ.səˈmet.rɪk/",
+        "wordType": "adj",
+        "meaningEn": "Relating to exercise where the muscle tension increases but the muscle length remains static.",
+        "meaningVi": "đẳng trường, không thay đổi chiều dài cơ",
+        "example": "The plank is a classic isometric exercise.",
+        "exampleVi": "Tập plank là một bài tập đẳng trường cổ điển."
+      },
+      {
+        "word": "isotonic",
+        "phonetic": "/ˌaɪ.səˈtɒn.ɪk/",
+        "wordType": "adj",
+        "meaningEn": "Relating to exercise where the muscles shorten or lengthen while lifting a constant load.",
+        "meaningVi": "đẳng trương, co cơ có chuyển động",
+        "example": "Bicep curls are a great example of isotonic exercise.",
+        "exampleVi": "Gập cơ bắp tay trước là một ví dụ tuyệt vời về bài tập đẳng trương."
+      },
+      {
+        "word": "periodization",
+        "phonetic": "/ˌpɪə.ri.ə.daɪˈzeɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "The systematic planning of athletic training divided into cycles.",
+        "meaningVi": "sự phân kỳ tập luyện, chu kỳ hóa tập luyện",
+        "example": "Proper periodization helps athletes peak at the right time for championships.",
+        "exampleVi": "Việc phân kỳ tập luyện đúng cách giúp các vận động viên đạt phong độ đỉnh cao đúng thời điểm diễn ra giải vô địch."
+      },
+      {
+        "word": "plyometrics",
+        "phonetic": "/ˌplaɪ.əʊˈmet.rɪks/",
+        "wordType": "noun",
+        "meaningEn": "Exercises where muscles exert maximum force in short intervals, to increase power.",
+        "meaningVi": "phương pháp tập luyện bộc phát, bài tập nhảy",
+        "example": "Basketball players use plyometrics to increase their vertical jump.",
+        "exampleVi": "Các cầu thủ bóng rổ sử dụng phương pháp tập luyện bộc phát để tăng sức bật nhảy cao."
+      },
+      {
+        "word": "draft",
+        "phonetic": "/drɑːft/",
+        "wordType": "noun",
+        "meaningEn": "A process where sports teams select college or other amateur players.",
+        "meaningVi": "kỳ tuyển chọn cầu thủ trẻ",
+        "example": "He was chosen as the first overall pick in this year's NBA draft.",
+        "exampleVi": "Anh ấy đã được chọn là cầu thủ được chọn đầu tiên trong kỳ tuyển chọn NBA năm nay."
+      },
+      {
+        "word": "free-agent",
+        "phonetic": "/ˌfriːˈeɪ.dʒənt/",
+        "wordType": "noun",
+        "meaningEn": "A professional athlete who is free to sign a contract with any team.",
+        "meaningVi": "cầu thủ tự do",
+        "example": "After his contract expired, the star quarterback became a free agent.",
+        "exampleVi": "Sau khi hết hạn hợp đồng, ngôi sao tiền vệ kiến thiết đã trở thành cầu thủ tự do."
+      },
+      {
+        "word": "sportsmanship",
+        "phonetic": "/ˈspɔːts.mən.ʃɪp/",
+        "wordType": "noun",
+        "meaningEn": "Fair and generous behavior or treatment of others in a sports contest.",
+        "meaningVi": "tinh thần thể thao, tinh thần thượng võ",
+        "example": "Shaking hands after a hard-fought game is a display of good sportsmanship.",
+        "exampleVi": "Bắt tay sau một trận đấu căng thẳng là sự thể hiện của tinh thần thể thao tốt đẹp."
+      },
+      {
+        "word": "hyperventilation",
+        "phonetic": "/ˌhaɪ.pəˌven.tɪˈleɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "Breathing at an abnormally rapid rate, resulting in low carbon dioxide levels.",
+        "meaningVi": "sự tăng thông khí, thở quá nhanh",
+        "example": "Hyperventilation during high-altitude runs can cause dizziness.",
+        "exampleVi": "Tình trạng thở quá nhanh khi chạy ở độ cao lớn có thể gây chóng mặt."
       }
     ]
   },
@@ -3911,6 +4721,402 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "chiến tranh, xung đột",
         "example": "Many soldiers lost their lives in the war.",
         "exampleVi": "Nhiều người lính đã hy sinh trong cuộc chiến tranh."
+      },
+      {
+        "word": "act",
+        "phonetic": "/ækt/",
+        "wordType": "noun",
+        "meaningEn": "a law made by a government",
+        "meaningVi": "đạo luật",
+        "example": "The new act protects wild animals in the forest.",
+        "exampleVi": "Đạo luật mới bảo vệ các loài động vật hoang dã trong rừng."
+      },
+      {
+        "word": "allow",
+        "phonetic": "/əˈlaʊ/",
+        "wordType": "verb",
+        "meaningEn": "to let someone do something",
+        "meaningVi": "cho phép",
+        "example": "Parents allow their children to play in the park.",
+        "exampleVi": "Cha mẹ cho phép con cái của họ chơi trong công viên."
+      },
+      {
+        "word": "army",
+        "phonetic": "/ˈɑː.mi/",
+        "wordType": "noun",
+        "meaningEn": "a large group of soldiers who fight for their country",
+        "meaningVi": "quân đội",
+        "example": "The army protects the nation from danger.",
+        "exampleVi": "Quân đội bảo vệ đất nước khỏi mối nguy hiểm."
+      },
+      {
+        "word": "ban",
+        "phonetic": "/bæn/",
+        "wordType": "verb",
+        "meaningEn": "to say officially that something is not allowed",
+        "meaningVi": "cấm",
+        "example": "They want to ban cars from the city center.",
+        "exampleVi": "Họ muốn cấm xe ô tô đi vào trung tâm thành phố."
+      },
+      {
+        "word": "bill",
+        "phonetic": "/bɪl/",
+        "wordType": "noun",
+        "meaningEn": "a planned new law that is being discussed",
+        "meaningVi": "dự luật",
+        "example": "Parliament will vote on the new education bill tomorrow.",
+        "exampleVi": "Nghị viện sẽ bỏ phiếu về dự luật giáo dục mới vào ngày mai."
+      },
+      {
+        "word": "break",
+        "phonetic": "/breɪk/",
+        "wordType": "verb",
+        "meaningEn": "to fail to keep a law or a promise",
+        "meaningVi": "phá vỡ, vi phạm",
+        "example": "Do not break the rules of the school.",
+        "exampleVi": "Đừng vi phạm nội quy của nhà trường."
+      },
+      {
+        "word": "bribe",
+        "phonetic": "/braɪb/",
+        "wordType": "noun",
+        "meaningEn": "money or a gift given to make someone help you dishonestly",
+        "meaningVi": "hối lộ, của đút lót",
+        "example": "The police officer refused to take a bribe.",
+        "exampleVi": "Người cảnh sát đã từ chối nhận hối lộ."
+      },
+      {
+        "word": "capital",
+        "phonetic": "/ˈkæp.ɪ.təl/",
+        "wordType": "noun",
+        "meaningEn": "the city where the government of a country is based",
+        "meaningVi": "thủ đô",
+        "example": "Hanoi is the capital of Vietnam.",
+        "exampleVi": "Hà Nội là thủ đô của Việt Nam."
+      },
+      {
+        "word": "chief",
+        "phonetic": "/tʃiːf/",
+        "wordType": "noun",
+        "meaningEn": "a leader or ruler of a group of people",
+        "meaningVi": "người đứng đầu, thủ lĩnh",
+        "example": "He is the chief of the local police.",
+        "exampleVi": "Ông ấy là người đứng đầu lực lượng cảnh sát địa phương."
+      },
+      {
+        "word": "class",
+        "phonetic": "/klɑːs/",
+        "wordType": "noun",
+        "meaningEn": "a group of people within society who share the same social status",
+        "meaningVi": "tầng lớp, giai cấp",
+        "example": "Many people want to help the working class.",
+        "exampleVi": "Nhiều người muốn giúp đỡ tầng lớp lao động."
+      },
+      {
+        "word": "clash",
+        "phonetic": "/klæʃ/",
+        "wordType": "noun",
+        "meaningEn": "a fight or argument between people",
+        "meaningVi": "cuộc đụng độ, tranh chấp",
+        "example": "There was a clash between the protesters and the police.",
+        "exampleVi": "Đã có một cuộc đụng độ giữa những người biểu tình và cảnh sát."
+      },
+      {
+        "word": "crime",
+        "phonetic": "/kraɪm/",
+        "wordType": "noun",
+        "meaningEn": "an action that is against the law",
+        "meaningVi": "tội phạm, tội ác",
+        "example": "Stealing money is a serious crime.",
+        "exampleVi": "Ăn trộm tiền là một tội ác nghiêm trọng."
+      },
+      {
+        "word": "crowd",
+        "phonetic": "/kraʊd/",
+        "wordType": "noun",
+        "meaningEn": "a large group of people who are together in one place",
+        "meaningVi": "đám đông",
+        "example": "A big crowd gathered outside the court.",
+        "exampleVi": "Một đám đông lớn đã tụ tập bên ngoài tòa án."
+      },
+      {
+        "word": "duty",
+        "phonetic": "/ˈdʒuː.ti/",
+        "wordType": "noun",
+        "meaningEn": "something that you have to do because it is your job or moral responsibility",
+        "meaningVi": "bổn phận, nghĩa vụ",
+        "example": "It is the duty of every citizen to vote.",
+        "exampleVi": "Đó là nghĩa vụ của mọi công dân khi đi bỏ phiếu."
+      },
+      {
+        "word": "equal",
+        "phonetic": "/ˈiː.kwəl/",
+        "wordType": "adjective",
+        "meaningEn": "having the same rights, status, or opportunities as others",
+        "meaningVi": "bình đẳng, ngang bằng",
+        "example": "All people should have equal chances to get a job.",
+        "exampleVi": "Mọi người nên có cơ hội ngang nhau để có được một công việc."
+      },
+      {
+        "word": "fair",
+        "phonetic": "/feər/",
+        "wordType": "adjective",
+        "meaningEn": "treating everyone in the same way, according to the rules",
+        "meaningVi": "công bằng",
+        "example": "The judge gave a fair decision.",
+        "exampleVi": "Vị thẩm phán đã đưa ra một quyết định công bằng."
+      },
+      {
+        "word": "fine",
+        "phonetic": "/faɪn/",
+        "wordType": "noun",
+        "meaningEn": "money that you have to pay as a punishment for breaking a law",
+        "meaningVi": "tiền phạt",
+        "example": "He had to pay a fine for parking his car in the wrong place.",
+        "exampleVi": "Anh ấy đã phải trả tiền phạt vì đỗ xe sai nơi quy định."
+      },
+      {
+        "word": "force",
+        "phonetic": "/fɔːs/",
+        "wordType": "noun",
+        "meaningEn": "power or physical strength, or an official group like the police",
+        "meaningVi": "lực lượng, sức mạnh",
+        "example": "The police force works hard to keep the city safe.",
+        "exampleVi": "Lực lượng cảnh sát làm việc chăm chỉ để giữ an toàn cho thành phố."
+      },
+      {
+        "word": "guard",
+        "phonetic": "/ɡɑːd/",
+        "wordType": "noun",
+        "meaningEn": "a person who protects a place or people from danger",
+        "meaningVi": "vệ sĩ, bảo vệ",
+        "example": "The security guard stands at the entrance.",
+        "exampleVi": "Người bảo vệ an ninh đứng ở lối vào."
+      },
+      {
+        "word": "guilt",
+        "phonetic": "/ɡɪlt/",
+        "wordType": "noun",
+        "meaningEn": "the state of having done something wrong or committed a crime",
+        "meaningVi": "tội lỗi, sự phạm tội",
+        "example": "The jury decided on the man's guilt.",
+        "exampleVi": "Bồi thẩm đoàn đã quyết định về tội lỗi của người đàn ông."
+      },
+      {
+        "word": "jail",
+        "phonetic": "/dʒeɪl/",
+        "wordType": "noun",
+        "meaningEn": "a place where criminals are kept as a punishment",
+        "meaningVi": "nhà tù",
+        "example": "He spent three years in jail for stealing.",
+        "exampleVi": "Anh ấy đã trải qua ba năm trong tù vì tội trộm cắp."
+      },
+      {
+        "word": "judge",
+        "phonetic": "/dʒʌdʒ/",
+        "wordType": "noun",
+        "meaningEn": "the person in control of a court who decides how to punish criminals",
+        "meaningVi": "thẩm phán",
+        "example": "The judge listened to both sides before making a decision.",
+        "exampleVi": "Thẩm phán đã lắng nghe cả hai bên trước khi đưa ra quyết định."
+      },
+      {
+        "word": "jury",
+        "phonetic": "/ˈdʒʊə.ri/",
+        "wordType": "noun",
+        "meaningEn": "a group of ordinary people in a court who decide if someone is guilty",
+        "meaningVi": "bồi thẩm đoàn",
+        "example": "The jury agreed that the man was innocent.",
+        "exampleVi": "Bồi thẩm đoàn đồng ý rằng người đàn ông đó vô tội."
+      },
+      {
+        "word": "lawful",
+        "phonetic": "/ˈlɔː.fəl/",
+        "wordType": "adjective",
+        "meaningEn": "allowed by the law",
+        "meaningVi": "hợp pháp",
+        "example": "They have a lawful right to protest peacefully.",
+        "exampleVi": "Họ có quyền hợp pháp để biểu tình ôn hòa."
+      },
+      {
+        "word": "mayor",
+        "phonetic": "/meər/",
+        "wordType": "noun",
+        "meaningEn": "the head of the government of a town or city",
+        "meaningVi": "thị trưởng",
+        "example": "The mayor gave a speech about the new public library.",
+        "exampleVi": "Thị trưởng đã phát biểu về thư viện công cộng mới."
+      },
+      {
+        "word": "nation",
+        "phonetic": "/ˈneɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "a large group of people of the same race, language, and culture who live in a particular area",
+        "meaningVi": "quốc gia",
+        "example": "We want to build a strong and united nation.",
+        "exampleVi": "Chúng tôi muốn xây dựng một quốc gia mạnh mẽ và đoàn kết."
+      },
+      {
+        "word": "obey",
+        "phonetic": "/əˈbeɪ/",
+        "wordType": "verb",
+        "meaningEn": "to do what a law, rule, or person tells you to do",
+        "meaningVi": "vâng lời, tuân theo",
+        "example": "Drivers must obey the speed limit.",
+        "exampleVi": "Tài xế phải tuân theo giới hạn tốc độ."
+      },
+      {
+        "word": "order",
+        "phonetic": "/ˈɔː.dər/",
+        "wordType": "noun",
+        "meaningEn": "a state in which laws and rules are obeyed and everything is calm",
+        "meaningVi": "trật tự",
+        "example": "The police kept public order during the festival.",
+        "exampleVi": "Cảnh sát đã giữ gìn trật tự công cộng trong suốt lễ hội."
+      },
+      {
+        "word": "party",
+        "phonetic": "/ˈpɑː.ti/",
+        "wordType": "noun",
+        "meaningEn": "an organized group of people with the same political aims",
+        "meaningVi": "đảng phái",
+        "example": "Which political party do you support?",
+        "exampleVi": "Bạn ủng hộ đảng phái chính trị nào?"
+      },
+      {
+        "word": "peaceful",
+        "phonetic": "/ˈpiːs.fəl/",
+        "wordType": "adjective",
+        "meaningEn": "calm and quiet, without violence or war",
+        "meaningVi": "hòa bình, yên bình",
+        "example": "They held a peaceful march through the city.",
+        "exampleVi": "Họ đã tổ chức một cuộc tuần hành hòa bình qua thành phố."
+      },
+      {
+        "word": "prison",
+        "phonetic": "/ˈprɪz.ən/",
+        "wordType": "noun",
+        "meaningEn": "a building where criminals are kept as a punishment",
+        "meaningVi": "nhà tù",
+        "example": "He was sent to prison for his crimes.",
+        "exampleVi": "Anh ta đã bị gửi vào tù vì những tội lỗi của mình."
+      },
+      {
+        "word": "protest",
+        "phonetic": "/prəˈtest/",
+        "wordType": "verb",
+        "meaningEn": "to show publicly that you do not agree with something",
+        "meaningVi": "biểu tình phản đối",
+        "example": "Thousands of people gathered to protest against the tax increase.",
+        "exampleVi": "Hàng ngàn người đã tụ tập để phản đối việc tăng thuế."
+      },
+      {
+        "word": "public",
+        "phonetic": "/ˈpʌb.lɪk/",
+        "wordType": "noun",
+        "meaningEn": "ordinary people in society in general",
+        "meaningVi": "công chúng, công cộng",
+        "example": "The public is not allowed inside this room.",
+        "exampleVi": "Công chúng không được phép vào bên trong căn phòng này."
+      },
+      {
+        "word": "punish",
+        "phonetic": "/ˈpʌn.ɪʃ/",
+        "wordType": "verb",
+        "meaningEn": "to make someone suffer for doing something wrong",
+        "meaningVi": "trừng phạt",
+        "example": "The government will punish those who break the law.",
+        "exampleVi": "Chính phủ sẽ trừng phạt những ai vi phạm pháp luật."
+      },
+      {
+        "word": "rebel",
+        "phonetic": "/ˈreb.əl/",
+        "wordType": "noun",
+        "meaningEn": "a person who fights against the government or people in authority",
+        "meaningVi": "kẻ nổi loạn, người chống đối",
+        "example": "The rebel soldiers took control of the small town.",
+        "exampleVi": "Các binh lính nổi loạn đã nắm quyền kiểm soát thị trấn nhỏ."
+      },
+      {
+        "word": "rightful",
+        "phonetic": "/ˈraɪt.fəl/",
+        "wordType": "adjective",
+        "meaningEn": "morally or socially correct, or legal",
+        "meaningVi": "hợp pháp, đúng đắn",
+        "example": "The property was returned to its rightful owner.",
+        "exampleVi": "Tài sản đã được trả lại cho chủ sở hữu hợp pháp của nó."
+      },
+      {
+        "word": "rob",
+        "phonetic": "/rɒb/",
+        "wordType": "verb",
+        "meaningEn": "to steal money or property from a person or place",
+        "meaningVi": "cướp, trộm",
+        "example": "They planned to rob the local bank.",
+        "exampleVi": "Họ đã lên kế hoạch cướp ngân hàng địa phương."
+      },
+      {
+        "word": "sheriff",
+        "phonetic": "/ˈʃer.ɪf/",
+        "wordType": "noun",
+        "meaningEn": "an elected officer in a county who is in charge of keeping the peace",
+        "meaningVi": "quận trưởng cảnh sát",
+        "example": "The sheriff caught the bank robber quickly.",
+        "exampleVi": "Quận trưởng cảnh sát đã bắt được kẻ cướp ngân hàng một cách nhanh chóng."
+      },
+      {
+        "word": "steal",
+        "phonetic": "/stiːl/",
+        "wordType": "verb",
+        "meaningEn": "to take something that belongs to someone else without permission",
+        "meaningVi": "ăn cắp, lấy trộm",
+        "example": "It is wrong to steal from others.",
+        "exampleVi": "Ăn cắp của người khác là sai trái."
+      },
+      {
+        "word": "tax",
+        "phonetic": "/tæks/",
+        "wordType": "noun",
+        "meaningEn": "money paid to the government to fund public services",
+        "meaningVi": "thuế",
+        "example": "The government raised the sales tax last month.",
+        "exampleVi": "Chính phủ đã tăng thuế doanh thu vào tháng trước."
+      },
+      {
+        "word": "trial",
+        "phonetic": "/traɪəl/",
+        "wordType": "noun",
+        "meaningEn": "the process in a court to decide if someone is guilty of a crime",
+        "meaningVi": "phiên tòa xét xử",
+        "example": "The murder trial lasted for three weeks.",
+        "exampleVi": "Phiên tòa xét xử vụ giết người đã kéo dài ba tuần."
+      },
+      {
+        "word": "union",
+        "phonetic": "/ˈjuː.ni.ən/",
+        "wordType": "noun",
+        "meaningEn": "an organization that protects the rights of workers",
+        "meaningVi": "công đoàn, liên đoàn",
+        "example": "The workers joined a union to fight for better pay.",
+        "exampleVi": "Các công nhân đã gia nhập công đoàn để đấu tranh cho mức lương tốt hơn."
+      },
+      {
+        "word": "victim",
+        "phonetic": "/ˈvɪk.tɪm/",
+        "wordType": "noun",
+        "meaningEn": "someone who has been hurt or killed because of a crime",
+        "meaningVi": "nạn nhân",
+        "example": "The victim of the robbery called the police immediately.",
+        "exampleVi": "Nạn nhân của vụ cướp đã gọi cảnh sát ngay lập tức."
+      },
+      {
+        "word": "youth",
+        "phonetic": "/juːθ/",
+        "wordType": "noun",
+        "meaningEn": "young people considered as a group",
+        "meaningVi": "giới trẻ, thanh thiếu niên",
+        "example": "The government needs to create more jobs for the youth.",
+        "exampleVi": "Chính phủ cần tạo ra nhiều việc làm hơn cho giới trẻ."
       }
     ],
     "advanced": [
@@ -4138,6 +5344,411 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "quyền công dân, quốc tịch",
         "example": "He applied for American citizenship.",
         "exampleVi": "Anh ấy đã nộp đơn xin quốc tịch Mỹ."
+      },
+      {
+        "word": "acquittal",
+        "phonetic": "/əˈkwɪt.əl/",
+        "wordType": "noun",
+        "meaningEn": "an official decision in court that someone is not guilty of a crime",
+        "meaningVi": "sự tuyên trắng án",
+        "example": "The trial ended in an acquittal for the defendant.",
+        "exampleVi": "Phiên tòa kết thúc với sự tuyên trắng án cho bị cáo."
+      },
+      {
+        "word": "amnesty",
+        "phonetic": "/ˈæm.nəs.ti/",
+        "wordType": "noun",
+        "meaningEn": "an official pardon for people who have been convicted of political offenses",
+        "meaningVi": "sự ân xá",
+        "example": "The government granted amnesty to all political prisoners.",
+        "exampleVi": "Chính phủ đã ban lệnh ân xá cho tất cả các tù nhân chính trị."
+      },
+      {
+        "word": "arbitration",
+        "phonetic": "/ˌɑː.bɪˈtreɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "the official settling of a dispute by an independent third party",
+        "meaningVi": "sự phân xử, trọng tài",
+        "example": "Both companies agreed to resolve their dispute through arbitration.",
+        "exampleVi": "Cả hai công ty đã đồng ý giải quyết tranh chấp của họ thông qua trọng tài."
+      },
+      {
+        "word": "authoritarianism",
+        "phonetic": "/ɔːˌθɒr.ɪˈteə.ri.ə.nɪ.zəm/",
+        "wordType": "noun",
+        "meaningEn": "the enforcement of strict obedience to authority at the expense of personal freedom",
+        "meaningVi": "chủ nghĩa độc tài",
+        "example": "The country suffered from decades of authoritarianism.",
+        "exampleVi": "Đất nước đã phải gánh chịu nhiều thập kỷ của chủ nghĩa độc tài."
+      },
+      {
+        "word": "bureaucracy",
+        "phonetic": "/bjʊəˈrɒk.rə.si/",
+        "wordType": "noun",
+        "meaningEn": "a system of government in which most of the important decisions are taken by state officials",
+        "meaningVi": "bộ máy quan liêu, thủ tục hành chính phức tạp",
+        "example": "The project was delayed due to excessive bureaucracy.",
+        "exampleVi": "Dự án đã bị trì hoãn do bộ máy quan liêu quá mức."
+      },
+      {
+        "word": "capitalism",
+        "phonetic": "/ˈkæp.ɪ.təl.ɪ.zəm/",
+        "wordType": "noun",
+        "meaningEn": "an economic system where a country's trade and industry are controlled by private owners for profit",
+        "meaningVi": "chủ nghĩa tư bản",
+        "example": "Modern global economies are largely built on capitalism.",
+        "exampleVi": "Các nền kinh tế toàn cầu hiện đại phần lớn được xây dựng dựa trên chủ nghĩa tư bản."
+      },
+      {
+        "word": "censorship",
+        "phonetic": "/ˈsen.sə.ʃɪp/",
+        "wordType": "noun",
+        "meaningEn": "the suppression of books, films, or news that are considered politically unacceptable or obscene",
+        "meaningVi": "sự kiểm duyệt",
+        "example": "The government imposed strict censorship on the internet.",
+        "exampleVi": "Chính phủ đã áp đặt sự kiểm duyệt nghiêm ngặt đối với internet."
+      },
+      {
+        "word": "coalition",
+        "phonetic": "/ˌkəʊ.əˈlɪʃ.ən/",
+        "wordType": "noun",
+        "meaningEn": "a temporary alliance of political parties forming a government",
+        "meaningVi": "sự liên minh",
+        "example": "The two minority parties formed a coalition to govern the country.",
+        "exampleVi": "Hai đảng thiểu số đã thành lập một chính phủ liên minh để điều hành đất nước."
+      },
+      {
+        "word": "corruption",
+        "phonetic": "/kəˈrʌp.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "dishonest or illegal behavior by those in power",
+        "meaningVi": "sự tham nhũng, sự hối lộ",
+        "example": "He promised to root out corruption in the police force.",
+        "exampleVi": "Ông ấy hứa sẽ tận diệt nạn tham nhũng trong lực lượng cảnh sát."
+      },
+      {
+        "word": "decree",
+        "phonetic": "/dɪˈkriː/",
+        "wordType": "noun",
+        "meaningEn": "an official order issued by a legal authority",
+        "meaningVi": "sắc lệnh, nghị định",
+        "example": "The president signed a decree to lower income taxes.",
+        "exampleVi": "Tổng thống đã ký một sắc lệnh giảm thuế thu nhập."
+      },
+      {
+        "word": "defendant",
+        "phonetic": "/dɪˈfen.dənt/",
+        "wordType": "noun",
+        "meaningEn": "an individual or group being sued or accused in a court of law",
+        "meaningVi": "bị cáo",
+        "example": "The defendant maintained his innocence throughout the trial.",
+        "exampleVi": "Bị cáo vẫn duy trì sự vô tội của mình trong suốt phiên tòa."
+      },
+      {
+        "word": "depose",
+        "phonetic": "/dɪˈpəʊz/",
+        "wordType": "verb",
+        "meaningEn": "to remove a powerful leader from office, usually by force",
+        "meaningVi": "phế truất",
+        "example": "The military conspired to depose the president.",
+        "exampleVi": "Quân đội đã âm mưu phế truất tổng thống."
+      },
+      {
+        "word": "disenfranchise",
+        "phonetic": "/ˌdɪs.ɪnˈfræn.tʃaɪz/",
+        "wordType": "verb",
+        "meaningEn": "to deprive someone of the right to vote",
+        "meaningVi": "tước quyền bầu cử, tước quyền công dân",
+        "example": "New laws could disenfranchise thousands of low-income voters.",
+        "exampleVi": "Các đạo luật mới có thể tước quyền bầu cử của hàng ngàn cử tri có thu nhập thấp."
+      },
+      {
+        "word": "egalitarianism",
+        "phonetic": "/ɪˌɡæl.ɪˈteə.ri.ə.nɪ.zəm/",
+        "wordType": "noun",
+        "meaningEn": "the belief in or promotion of equal rights for all people",
+        "meaningVi": "chủ nghĩa bình quân, sự bình đẳng xã hội",
+        "example": "She is a strong advocate for social and political egalitarianism.",
+        "exampleVi": "Cô ấy là một người ủng hộ mạnh mẽ cho sự bình đẳng xã hội và chính trị."
+      },
+      {
+        "word": "extradition",
+        "phonetic": "/ˌek.strəˈdɪʃ.ən/",
+        "wordType": "noun",
+        "meaningEn": "the official process of sending a person back to another country to face trial",
+        "meaningVi": "sự dẫn độ",
+        "example": "The government requested his extradition to stand trial for fraud.",
+        "exampleVi": "Chính phủ đã yêu cầu dẫn độ ông ta để hầu tòa vì tội gian lận."
+      },
+      {
+        "word": "felony",
+        "phonetic": "/ˈfel.ə.ni/",
+        "wordType": "noun",
+        "meaningEn": "a grave crime, such as murder or burglary, usually punishable by a severe sentence",
+        "meaningVi": "trọng tội",
+        "example": "Assault with a deadly weapon is considered a felony.",
+        "exampleVi": "Tấn công bằng hung khí nguy hiểm được coi là một trọng tội."
+      },
+      {
+        "word": "filibuster",
+        "phonetic": "/ˈfɪl.ɪ.bʌs.tər/",
+        "wordType": "noun",
+        "meaningEn": "an action such as a prolonged speech that obstructs progress in a legislative assembly",
+        "meaningVi": "sự trì hoãn thông qua luật (bằng cách diễn thuyết dài dòng)",
+        "example": "The senator used a filibuster to prevent the bill from being voted on.",
+        "exampleVi": "Nghị sĩ đã dùng cách nói kéo dài thời gian để ngăn dự luật được bỏ phiếu."
+      },
+      {
+        "word": "hegemony",
+        "phonetic": "/hɪˈɡem.ə.ni/",
+        "wordType": "noun",
+        "meaningEn": "leadership or dominance, especially by one state or social group over others",
+        "meaningVi": "quyền bá chủ, sự bá quyền",
+        "example": "The country fought to maintain its economic hegemony in the region.",
+        "exampleVi": "Đất nước này đã chiến đấu để duy trì bá quyền kinh tế của mình trong khu vực."
+      },
+      {
+        "word": "impeachment",
+        "phonetic": "/ɪmˈpiːtʃ.mənt/",
+        "wordType": "noun",
+        "meaningEn": "a formal charge of misconduct made against a public official",
+        "meaningVi": "sự luận tội, đàn hặc",
+        "example": "The president is facing impeachment over allegations of corruption.",
+        "exampleVi": "Tổng thống đang đối mặt với việc bị luận tội vì các cáo buộc tham nhũng."
+      },
+      {
+        "word": "injunction",
+        "phonetic": "/ɪnˈdʒʌŋk.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "an official order given by a court which demands that something must or must not be done",
+        "meaningVi": "lệnh tòa án, lệnh cấm",
+        "example": "The court granted an injunction to stop the construction work.",
+        "exampleVi": "Tòa án đã ban hành một lệnh cấm để dừng việc thi công."
+      },
+      {
+        "word": "jurisdiction",
+        "phonetic": "/ˌdʒʊə.rɪsˈdɪk.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "the official power to make legal decisions and judgments",
+        "meaningVi": "thẩm quyền tài phán",
+        "example": "The case does not fall under the jurisdiction of the local court.",
+        "exampleVi": "Vụ án này không thuộc thẩm quyền tài phán của tòa án địa phương."
+      },
+      {
+        "word": "jurisprudence",
+        "phonetic": "/ˌdʒʊə.rɪsˈpruː.dəns/",
+        "wordType": "noun",
+        "meaningEn": "the theory or philosophy of law",
+        "meaningVi": "pháp lý học, triết học pháp luật",
+        "example": "He studied comparative jurisprudence at Oxford.",
+        "exampleVi": "Anh ấy đã học ngành pháp lý học so sánh tại Oxford."
+      },
+      {
+        "word": "leniency",
+        "phonetic": "/ˈliː.ni.ən.si/",
+        "wordType": "noun",
+        "meaningEn": "treatment in which someone is punished less severely than they could be",
+        "meaningVi": "sự khoan hồng",
+        "example": "The defense lawyer pleaded for leniency because of the client's young age.",
+        "exampleVi": "Luật sư bào chữa đã cầu xin sự khoan hồng vì tuổi còn trẻ của thân chủ."
+      },
+      {
+        "word": "libel",
+        "phonetic": "/ˈlaɪ.bəl/",
+        "wordType": "noun",
+        "meaningEn": "a published false statement that is damaging to a person's reputation",
+        "meaningVi": "tội vu khống bằng văn bản",
+        "example": "The actor sued the newspaper for libel.",
+        "exampleVi": "Nam diễn viên đã kiện tờ báo vì tội vu khống bằng văn bản."
+      },
+      {
+        "word": "lobbying",
+        "phonetic": "/ˈlɒb.i.ɪŋ/",
+        "wordType": "noun",
+        "meaningEn": "actions aimed at influencing public officials on an issue",
+        "meaningVi": "vận động hành lang",
+        "example": "Large environmental groups spend millions on lobbying in Washington.",
+        "exampleVi": "Các nhóm môi trường lớn chi hàng triệu đô la cho việc vận động hành lang tại Washington."
+      },
+      {
+        "word": "marginalization",
+        "phonetic": "/ˌmɑː.dʒɪ.nəl.aɪˈzeɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "treatment of a person or group as insignificant or peripheral",
+        "meaningVi": "sự gạt ra ngoài lề xã hội",
+        "example": "The social marginalization of minority groups must be addressed.",
+        "exampleVi": "Sự gạt ra ngoài lề xã hội của các nhóm thiểu số cần phải được giải quyết."
+      },
+      {
+        "word": "oligarchy",
+        "phonetic": "/ˈɒl.ɪ.ɡɑː.ki/",
+        "wordType": "noun",
+        "meaningEn": "a small group of people having control of a country or organization",
+        "meaningVi": "chế độ đầu sỏ, tập đoàn cai trị",
+        "example": "Critics argue that the country is ruled by a powerful oligarchy.",
+        "exampleVi": "Các nhà phê bình lập luận rằng đất nước này được cai trị bởi một tập đoàn cai trị hùng mạnh."
+      },
+      {
+        "word": "ordinance",
+        "phonetic": "/ˈɔː.dɪ.nəns/",
+        "wordType": "noun",
+        "meaningEn": "a law or regulation made by a city or town government",
+        "meaningVi": "pháp lệnh, quy định địa phương",
+        "example": "The city passed an ordinance banning smoking in parks.",
+        "exampleVi": "Thành phố đã thông qua một quy định cấm hút thuốc trong các công viên."
+      },
+      {
+        "word": "parliament",
+        "phonetic": "/ˈpɑː.lɪ.mənt/",
+        "wordType": "noun",
+        "meaningEn": "the group of people who are elected to make and change the laws of a country",
+        "meaningVi": "nghị viện, quốc hội",
+        "example": "The bill must be approved by parliament before it becomes law.",
+        "exampleVi": "Dự luật phải được nghị viện thông qua trước khi trở thành luật."
+      },
+      {
+        "word": "paternalism",
+        "phonetic": "/pəˈtɜː.nəl.ɪ.zəm/",
+        "wordType": "noun",
+        "meaningEn": "government policy that limits freedom for the assumed good of the citizens",
+        "meaningVi": "chủ nghĩa gia trưởng (trong quản lý nhà nước)",
+        "example": "The government is often criticized for its paternalism.",
+        "exampleVi": "Chính phủ thường bị chỉ trích vì sự quản lý mang tính gia trưởng."
+      },
+      {
+        "word": "perjury",
+        "phonetic": "/ˈpɜː.dʒər.i/",
+        "wordType": "noun",
+        "meaningEn": "the crime of telling a lie in court after promising to tell the truth",
+        "meaningVi": "tội khai man trước tòa",
+        "example": "She was found guilty of perjury and sentenced to prison.",
+        "exampleVi": "Cô ta đã bị kết tội khai man trước tòa và bị kết án tù."
+      },
+      {
+        "word": "plaintiff",
+        "phonetic": "/ˈpleɪn.tɪf/",
+        "wordType": "noun",
+        "meaningEn": "a person who brings a case against another in a court of law",
+        "meaningVi": "nguyên đơn",
+        "example": "The plaintiff argued that the contract had been breached.",
+        "exampleVi": "Nguyên đơn lập luận rằng hợp đồng đã bị vi phạm."
+      },
+      {
+        "word": "plebiscite",
+        "phonetic": "/ˈpleb.ɪ.saɪt/",
+        "wordType": "noun",
+        "meaningEn": "the direct vote of all the members of an electorate on an important public question",
+        "meaningVi": "cuộc trưng cầu dân ý",
+        "example": "The government decided to hold a plebiscite on the new constitution.",
+        "exampleVi": "Chính phủ quyết định tổ chức một cuộc trưng cầu dân ý về hiến pháp mới."
+      },
+      {
+        "word": "precedent",
+        "phonetic": "/ˈpres.ɪ.dənt/",
+        "wordType": "noun",
+        "meaningEn": "an earlier court decision that serves as an example or guide for similar cases",
+        "meaningVi": "án lệ, tiền lệ pháp",
+        "example": "The judge's ruling set a historic precedent for future civil cases.",
+        "exampleVi": "Phán quyết của thẩm phán đã tạo ra một án lệ mang tính lịch sử cho các vụ án dân sự tương lai."
+      },
+      {
+        "word": "prosecutor",
+        "phonetic": "/ˈprɒs.ɪ.kjuː.tər/",
+        "wordType": "noun",
+        "meaningEn": "a lawyer who represents the government in a criminal trial",
+        "meaningVi": "công tố viên",
+        "example": "The prosecutor presented crucial evidence during the trial.",
+        "exampleVi": "Công tố viên đã trình bày bằng chứng quan trọng trong suốt phiên tòa."
+      },
+      {
+        "word": "referendum",
+        "phonetic": "/ˌref.əˈren.dəm/",
+        "wordType": "noun",
+        "meaningEn": "a general vote by the electorate on a single political question",
+        "meaningVi": "trưng cầu dân ý",
+        "example": "The nation voted to leave the union in a historic referendum.",
+        "exampleVi": "Quốc gia đã bỏ phiếu rời khỏi liên minh trong một cuộc trưng cầu dân ý lịch sử."
+      },
+      {
+        "word": "sanction",
+        "phonetic": "/ˈsæŋk.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "an official action taken against a country to force it to obey international law",
+        "meaningVi": "biện pháp chế tài, lệnh trừng phạt",
+        "example": "Economic sanctions were imposed on the country to stop the war.",
+        "exampleVi": "Các biện pháp trừng phạt kinh tế đã được áp đặt lên đất nước này để ngăn chặn chiến tranh."
+      },
+      {
+        "word": "segregation",
+        "phonetic": "/ˌseɡ.rɪˈɡeɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "the official practice of keeping people of different races, religions, or genders separate",
+        "meaningVi": "sự phân biệt, sự kỳ thị chia rẽ",
+        "example": "They fought for years to end racial segregation in public schools.",
+        "exampleVi": "Họ đã đấu tranh nhiều năm để chấm dứt phân biệt chủng tộc ở các trường công lập."
+      },
+      {
+        "word": "sovereignty",
+        "phonetic": "/ˈsɒv.rɪn.ti/",
+        "wordType": "noun",
+        "meaningEn": "the authority of a state to govern itself",
+        "meaningVi": "chủ quyền",
+        "example": "The nation defended its sovereignty against foreign intervention.",
+        "exampleVi": "Quốc gia bảo vệ chủ quyền của mình chống lại sự can thiệp của nước ngoài."
+      },
+      {
+        "word": "statute",
+        "phonetic": "/ˈstætʃ.uːt/",
+        "wordType": "noun",
+        "meaningEn": "a written law passed by a legislative body",
+        "meaningVi": "đạo luật (do quốc hội ban hành)",
+        "example": "The protection of consumers is guaranteed by state statute.",
+        "exampleVi": "Sự bảo vệ người tiêu dùng được đảm bảo bởi đạo luật của bang."
+      },
+      {
+        "word": "subpoena",
+        "phonetic": "/səˈpiː.nə/",
+        "wordType": "noun",
+        "meaningEn": "a legal document ordering someone to attend a court",
+        "meaningVi": "trát hầu tòa",
+        "example": "She received a subpoena to testify as a witness.",
+        "exampleVi": "Cô ấy đã nhận được trát hầu tòa để ra làm chứng."
+      },
+      {
+        "word": "totalitarianism",
+        "phonetic": "/təʊˌtæl.ɪˈteə.ri.ə.nɪ.zəm/",
+        "wordType": "noun",
+        "meaningEn": "a political system where the state has total authority over society and private life",
+        "meaningVi": "chủ nghĩa cực quyền",
+        "example": "The book explores the dark realities of life under totalitarianism.",
+        "exampleVi": "Cuốn sách khám phá thực tế đen tối của cuộc sống dưới chế độ cực quyền."
+      },
+      {
+        "word": "treason",
+        "phonetic": "/ˈtriː.zən/",
+        "wordType": "noun",
+        "meaningEn": "the crime of betraying one's country, especially by trying to overthrow the government",
+        "meaningVi": "tội phản quốc",
+        "example": "He was arrested and charged with high treason.",
+        "exampleVi": "Anh ta đã bị bắt và bị buộc tội phản quốc mức độ nghiêm trọng."
+      },
+      {
+        "word": "verdict",
+        "phonetic": "/ˈvɜː.dɪkt/",
+        "wordType": "noun",
+        "meaningEn": "a decision on a disputed issue in a civil or criminal case",
+        "meaningVi": "phán quyết, bản án",
+        "example": "The jury took twelve hours to reach their verdict.",
+        "exampleVi": "Bồi thẩm đoàn đã mất mười hai giờ để đưa ra phán quyết của họ."
+      },
+      {
+        "word": "xenophobia",
+        "phonetic": "/ˌzen.əˈfəʊ.bi.ə/",
+        "wordType": "noun",
+        "meaningEn": "dislike of or prejudice against people from other countries",
+        "meaningVi": "hội chứng sợ/bài xích người nước ngoài",
+        "example": "The rising tide of xenophobia in Europe is worrying.",
+        "exampleVi": "Sự gia tăng làn sóng bài ngoại ở châu Âu thật đáng lo ngại."
       }
     ]
   },
