@@ -763,7 +763,7 @@ export default function LearnPage() {
                 </div>
 
                 {/* Category Chips */}
-                <div className="flex overflow-x-auto no-scrollbar gap-2 w-full md:w-auto justify-start md:justify-end pb-1 md:pb-0 -mx-4 px-4 md:mx-0 md:px-0">
+                <div className="flex flex-nowrap md:flex-wrap overflow-x-auto md:overflow-visible no-scrollbar gap-2 w-full md:w-auto md:ml-auto justify-start pb-1 md:pb-0 -mx-4 px-4 md:mx-0 md:px-0">
                   {[
                     { id: 'all', label: 'Tất cả', count: VOCABULARY_TOPICS.length },
                     { id: 'daily', label: '🌱 Đời sống', count: VOCABULARY_TOPICS.filter(t => TOPIC_CATEGORIES[t.id] === 'daily').length },
