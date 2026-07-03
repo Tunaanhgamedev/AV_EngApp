@@ -505,25 +505,25 @@ export default function LearnPage() {
   return (
     <div className="max-w-6xl mx-auto py-6 px-4 space-y-8 animate-in fade-in duration-700 pb-12">
       {/* Page Header */}
-      <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-200/60 pb-6">
+      <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-200/60 dark:border-slate-800/60 pb-6">
         <div>
-          <h1 className="text-3xl font-black text-slate-800 flex items-center gap-2">
-            <GraduationCap className="w-8 h-8 text-primary" /> Study Center
+          <h1 className="text-3xl font-black text-slate-800 dark:text-slate-100 flex items-center gap-2">
+            <GraduationCap className="w-8 h-8 text-blue-600 dark:text-blue-400" /> Study Center
           </h1>
-          <p className="text-slate-500 font-medium text-sm mt-1">
+          <p className="text-slate-500 dark:text-slate-400 font-medium text-sm mt-1">
             Học từ vựng theo trình độ CEFR chuẩn quốc tế và theo các chủ đề thông dụng hàng ngày.
           </p>
         </div>
 
         {/* Mode Switcher */}
-        <div className="flex bg-slate-100 p-1.5 rounded-2xl self-start md:self-center">
+        <div className="flex bg-slate-100 dark:bg-slate-900 p-1.5 rounded-2xl self-start md:self-center">
           <button
             onClick={() => setActiveMode('vocabulary')}
             className={cn(
               "px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer",
               activeMode === 'vocabulary' 
-                ? "bg-slate-900 text-white shadow-md" 
-                : "text-slate-500 hover:text-slate-800"
+                ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-950 shadow-md" 
+                : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
             )}
           >
             <BrainCircuit className="w-4 h-4" /> Từ Vựng CEFR
@@ -533,8 +533,8 @@ export default function LearnPage() {
             className={cn(
               "px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer",
               activeMode === 'topics' 
-                ? "bg-slate-900 text-white shadow-md" 
-                : "text-slate-500 hover:text-slate-800"
+                ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-950 shadow-md" 
+                : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
             )}
           >
             <BookOpen className="w-4 h-4" /> Chủ Đề
@@ -549,12 +549,12 @@ export default function LearnPage() {
           {!selectedLevel ? (
             <div className="space-y-8">
               <div className="text-center space-y-2">
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-slate-955 text-white rounded-full">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-slate-900 dark:bg-slate-800 text-white dark:text-slate-105 rounded-full">
                   <BrainCircuit className="w-3.5 h-3.5" />
                   <span className="text-[9px] font-black uppercase tracking-widest">Daily Flashcards</span>
                 </div>
-                <h2 className="text-3xl font-black text-slate-800 tracking-tight">Vocabulary CEFR levels</h2>
-                <p className="text-slate-500 font-medium text-sm">Học 15 từ vựng mới mỗi ngày theo trình độ tiêu chuẩn Châu Âu.</p>
+                <h2 className="text-3xl font-black text-slate-800 dark:text-slate-100 tracking-tight">Vocabulary CEFR levels</h2>
+                <p className="text-slate-500 dark:text-slate-400 font-medium text-sm font-sans">Học 15 từ vựng mới mỗi ngày theo trình độ tiêu chuẩn Châu Âu.</p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -562,21 +562,21 @@ export default function LearnPage() {
                   <button 
                     key={l.level} 
                     onClick={() => setSelectedLevel(l.level)}
-                    className="bg-white rounded-[2rem] p-6 border border-slate-200/80 hover:border-primary flex flex-col items-start gap-4 hover:shadow-xl transition-all group text-left relative overflow-hidden cursor-pointer"
+                    className="bg-white dark:bg-slate-950 rounded-[2rem] p-6 border border-slate-200/80 dark:border-slate-800/80 hover:border-blue-600 dark:hover:border-blue-400 flex flex-col items-start gap-4 hover:shadow-xl transition-all group text-left relative overflow-hidden cursor-pointer"
                   >
                     <div className="flex items-center justify-between w-full">
                       <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${l.color} flex items-center justify-center text-white font-black text-lg shadow-lg group-hover:scale-105 transition-transform`}>
                         {l.level}
                       </div>
-                      <span className="text-amber-400 text-sm font-bold">{l.difficulty}</span>
+                      <span className="text-amber-500 dark:text-amber-400 text-sm font-bold">{l.difficulty}</span>
                     </div>
                     <div>
-                      <h3 className="font-black text-lg text-slate-800">{l.label}</h3>
-                      <p className="text-xs text-slate-500 mt-1.5 leading-relaxed font-medium">{l.desc}</p>
+                      <h3 className="font-black text-lg text-slate-800 dark:text-slate-150">{l.label}</h3>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed font-medium">{l.desc}</p>
                     </div>
-                    <div className="flex items-center justify-between w-full pt-3 border-t border-slate-100">
-                      <span className="text-[11px] font-bold text-slate-400">{l.words} words</span>
-                      <span className="text-xs font-black text-[#002147] group-hover:translate-x-1 transition-transform flex items-center gap-0.5">
+                    <div className="flex items-center justify-between w-full pt-3 border-t border-slate-100 dark:border-slate-800/80">
+                      <span className="text-[11px] font-bold text-slate-400 dark:text-slate-500">{l.words} words</span>
+                      <span className="text-xs font-black text-[#002147] dark:text-sky-400 group-hover:translate-x-1 transition-transform flex items-center gap-0.5">
                         Bắt đầu <ChevronRight className="w-3.5 h-3.5" />
                       </span>
                     </div>
@@ -586,37 +586,37 @@ export default function LearnPage() {
             </div>
           ) : loading ? (
             <div className="flex flex-col items-center justify-center min-h-[40vh] space-y-4">
-              <Loader2 className="w-10 h-10 text-[#002147] animate-spin" />
-              <p className="text-slate-400 font-bold uppercase tracking-widest text-xs animate-pulse">Đang tải từ mới...</p>
+              <Loader2 className="w-10 h-10 text-[#002147] dark:text-sky-400 animate-spin" />
+              <p className="text-slate-400 dark:text-slate-500 font-bold uppercase tracking-widest text-xs animate-pulse">Đang tải từ mới...</p>
             </div>
           ) : words.length === 0 ? (
             <div className="flex flex-col items-center justify-center min-h-[40vh] text-center space-y-6">
-              <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center">
-                <BrainCircuit className="w-10 h-10 text-slate-300" />
+              <div className="w-20 h-20 bg-slate-50 dark:bg-slate-900 rounded-full flex items-center justify-center">
+                <BrainCircuit className="w-10 h-10 text-slate-300 dark:text-slate-700" />
               </div>
               <div>
-                <h2 className="text-2xl font-black text-slate-800">Không có dữ liệu từ mới</h2>
-                <p className="text-sm text-slate-500 max-w-sm mx-auto mt-1 font-medium">Hiện tại không thể tải từ vựng mới cấp độ {selectedLevel}. Vui lòng thử lại sau.</p>
+                <h2 className="text-2xl font-black text-slate-800 dark:text-slate-105">Không có dữ liệu từ mới</h2>
+                <p className="text-sm text-slate-500 dark:text-slate-400 max-w-sm mx-auto mt-1 font-medium">Hiện tại không thể tải từ vựng mới cấp độ {selectedLevel}. Vui lòng thử lại sau.</p>
               </div>
               <button 
                 onClick={() => setSelectedLevel(null)}
-                className="px-8 py-3 bg-[#002147] text-white rounded-xl font-bold hover:shadow-lg transition-all cursor-pointer"
+                className="px-8 py-3 bg-[#002147] dark:bg-slate-100 text-white dark:text-slate-950 rounded-xl font-bold hover:shadow-lg transition-all cursor-pointer"
               >
                 Trở lại Chọn Trình Độ
               </button>
             </div>
           ) : completed ? (
             <div className="flex flex-col items-center justify-center min-h-[40vh] space-y-6 text-center animate-in zoom-in-95 duration-500">
-              <div className="w-24 h-24 bg-yellow-400 rounded-full flex items-center justify-center shadow-xl shadow-yellow-100">
+              <div className="w-24 h-24 bg-yellow-400 rounded-full flex items-center justify-center shadow-xl shadow-yellow-100 dark:shadow-none">
                 <Trophy className="w-12 h-12 text-white" />
               </div>
               <div>
-                <h1 className="text-3xl font-black text-slate-800">Tuyệt vời!</h1>
-                <p className="text-sm text-slate-500 mt-1 font-medium">Bạn đã hoàn thành việc học 15 từ vựng mới cấp độ {selectedLevel}.</p>
+                <h1 className="text-3xl font-black text-slate-800 dark:text-slate-105">Tuyệt vời!</h1>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 font-medium">Bạn đã hoàn thành việc học 15 từ vựng mới cấp độ {selectedLevel}.</p>
               </div>
               <button 
                 onClick={() => setSelectedLevel(null)}
-                className="px-10 py-3 bg-[#002147] text-white rounded-xl font-bold shadow-md cursor-pointer"
+                className="px-10 py-3 bg-[#002147] dark:bg-slate-100 text-white dark:text-slate-950 rounded-xl font-bold shadow-md cursor-pointer"
               >
                 Tiếp Tục Học
               </button>
@@ -627,43 +627,43 @@ export default function LearnPage() {
               <div className="flex items-center justify-between">
                 <button 
                   onClick={() => setSelectedLevel(null)}
-                  className="flex items-center gap-1 text-slate-400 hover:text-slate-600 font-bold transition-colors cursor-pointer text-xs"
+                  className="flex items-center gap-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold transition-colors cursor-pointer text-xs"
                 >
                   <ChevronLeft className="w-4 h-4" /> Chọn Cấp Độ
                 </button>
                 <div className="flex items-center gap-3">
-                  <span className="px-2.5 py-0.5 bg-green-50 border border-green-100 text-xs font-bold text-green-700 rounded-full">{selectedLevel}</span>
-                  <span className="text-xs font-bold text-slate-400">{currentIndex + 1}/{words.length}</span>
+                  <span className="px-2.5 py-0.5 bg-green-50 border border-green-100 dark:bg-green-950/30 dark:border-green-900/50 text-xs font-bold text-green-700 dark:text-green-400 rounded-full">{selectedLevel}</span>
+                  <span className="text-xs font-bold text-slate-400 dark:text-slate-500">{currentIndex + 1}/{words.length}</span>
                 </div>
               </div>
 
               {/* Word Flashcard */}
               <div className="perspective-1000 w-full h-[280px] xs:h-[320px] sm:h-[360px] md:h-[400px] landscape:h-[260px] landscape:sm:h-[300px]">
                 <div className={cn(
-                  "relative w-full h-full preserve-3d transition-transform duration-500 border border-slate-200/80 rounded-[2.5rem] shadow-xl",
+                  "relative w-full h-full preserve-3d transition-transform duration-500 border border-slate-200/80 dark:border-slate-800/80 rounded-[2.5rem] shadow-xl",
                   showHint ? "rotate-y-180" : ""
                 )}>
                   {/* Front Side */}
-                  <div className="absolute w-full h-full backface-hidden flex flex-col items-center justify-center text-center bg-white p-6 sm:p-8 rounded-[2.5rem]">
-                    <span className="px-3 py-1 bg-green-100 text-green-700 text-[11px] sm:text-xs font-bold rounded-full uppercase tracking-wider mb-3">
+                  <div className="absolute w-full h-full backface-hidden flex flex-col items-center justify-center text-center bg-white dark:bg-slate-950 p-6 sm:p-8 rounded-[2.5rem]">
+                    <span className="px-3 py-1 bg-green-100 dark:bg-green-950/40 text-green-700 dark:text-green-400 text-[11px] sm:text-xs font-bold rounded-full uppercase tracking-wider mb-3">
                       {words[currentIndex].cefrLevel}
                     </span>
-                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-800 tracking-tight mb-1 sm:mb-2">{words[currentIndex].word}</h1>
+                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-800 dark:text-slate-105 tracking-tight mb-1 sm:mb-2">{words[currentIndex].word}</h1>
                     <div className="flex items-center gap-2">
-                      <span className="text-sm sm:text-base font-serif text-slate-400">{words[currentIndex].phonetic}</span>
-                      <span className="text-xs sm:text-sm font-semibold text-rose-500 font-sans italic">({words[currentIndex].wordType})</span>
+                      <span className="text-sm sm:text-base font-serif text-slate-400 dark:text-slate-500">{words[currentIndex].phonetic}</span>
+                      <span className="text-xs sm:text-sm font-semibold text-rose-500 dark:text-rose-450 font-sans italic">({words[currentIndex].wordType})</span>
                     </div>
                     <button 
                       onClick={playPronunciation}
-                      className="mt-4 sm:mt-6 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-green-50 border border-green-100 flex items-center justify-center text-green-500 hover:bg-green-500 hover:text-white transition-all shadow-sm cursor-pointer"
+                      className="mt-4 sm:mt-6 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-green-50 dark:bg-green-950/40 border border-green-100 dark:border-green-905/40 flex items-center justify-center text-green-500 dark:text-green-405 hover:bg-green-500 hover:text-white transition-all shadow-sm cursor-pointer"
                     >
                       <Volume2 className="w-7 h-7 sm:w-8 sm:h-8" />
                     </button>
-                    <p className="absolute bottom-4 sm:bottom-6 text-xs text-slate-400 font-bold uppercase tracking-wider">Nhấn "Hiện gợi ý" bên dưới để lật thẻ</p>
+                    <p className="absolute bottom-4 sm:bottom-6 text-xs text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">Nhấn "Hiện gợi ý" bên dưới để lật thẻ</p>
                   </div>
 
                   {/* Back Side */}
-                  <div className="absolute w-full h-full backface-hidden rotate-y-180 flex flex-col items-center justify-center text-center bg-[#002147] text-white p-6 sm:p-8 overflow-y-auto rounded-[2.5rem]">
+                  <div className="absolute w-full h-full backface-hidden rotate-y-180 flex flex-col items-center justify-center text-center bg-[#002147] dark:bg-slate-900 text-white p-6 sm:p-8 overflow-y-auto rounded-[2.5rem]">
                     {(!words[currentIndex].meaningVi || words[currentIndex].meaningVi === words[currentIndex].word) ? (
                       <div className="flex flex-col items-center justify-center space-y-4 w-full">
                         <Loader2 className="w-8 h-8 text-emerald-400 animate-spin" />
@@ -675,15 +675,15 @@ export default function LearnPage() {
                           <span className="text-[11px] sm:text-xs text-emerald-400 font-bold uppercase tracking-widest block">Nghĩa tiếng Việt</span>
                           <h2 className="text-lg sm:text-xl font-bold text-emerald-400 mt-1">{words[currentIndex].meaningVi}</h2>
                         </div>
-                        <div className="border-t border-white/10 pt-2 sm:pt-3">
-                          <span className="text-[11px] sm:text-xs text-white/40 font-bold uppercase tracking-widest block">Định nghĩa (EN)</span>
-                          <p className="text-xs sm:text-sm text-slate-200 mt-1 italic leading-relaxed">"{words[currentIndex].meaningEn}"</p>
+                        <div className="border-t border-white/10 dark:border-slate-800 pt-2 sm:pt-3">
+                          <span className="text-[11px] sm:text-xs text-white/40 dark:text-slate-500 font-bold uppercase tracking-widest block">Định nghĩa (EN)</span>
+                          <p className="text-xs sm:text-sm text-slate-200 dark:text-slate-300 mt-1 italic leading-relaxed">"{words[currentIndex].meaningEn}"</p>
                         </div>
                         {words[currentIndex].example && (
-                          <div className="border-t border-white/10 pt-2 sm:pt-3 text-left">
-                            <span className="text-[11px] sm:text-xs text-white/40 font-bold uppercase tracking-widest block mb-1">Ví dụ minh họa</span>
+                          <div className="border-t border-white/10 dark:border-slate-800 pt-2 sm:pt-3 text-left">
+                            <span className="text-[11px] sm:text-xs text-white/40 dark:text-slate-500 font-bold uppercase tracking-widest block mb-1">Ví dụ minh họa</span>
                             <p className="text-xs sm:text-sm text-white font-medium italic">"{words[currentIndex].example}"</p>
-                            {words[currentIndex].exampleVi && <p className="text-xs text-emerald-400/80 mt-0.5 italic">{words[currentIndex].exampleVi}</p>}
+                            {words[currentIndex].exampleVi && <p className="text-xs text-emerald-400/80 dark:text-emerald-400 mt-0.5 italic">{words[currentIndex].exampleVi}</p>}
                           </div>
                         )}
                       </div>
@@ -696,7 +696,7 @@ export default function LearnPage() {
               <div className="grid grid-cols-3 gap-3">
                 <button 
                   onClick={handleNext}
-                  className="flex flex-col items-center gap-1.5 py-4 bg-slate-50 border border-slate-200 rounded-2xl hover:bg-rose-50 hover:border-rose-200 group transition-all cursor-pointer"
+                  className="flex flex-col items-center gap-1.5 py-4 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl hover:bg-rose-50 dark:hover:bg-rose-950/20 hover:border-rose-200 dark:hover:border-rose-900/40 group transition-all cursor-pointer"
                 >
                   <XCircle className="w-6 h-6 text-rose-500" />
                   <span className="text-[10px] sm:text-xs font-bold text-rose-500 uppercase tracking-wider">Đang Học</span>
@@ -704,7 +704,7 @@ export default function LearnPage() {
 
                 <button 
                   onClick={() => setShowHint(!showHint)}
-                  className="flex flex-col items-center gap-1.5 py-4 bg-slate-50 border border-slate-200 rounded-2xl hover:bg-amber-50 hover:border-amber-200 group transition-all cursor-pointer"
+                  className="flex flex-col items-center gap-1.5 py-4 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl hover:bg-amber-50 dark:hover:bg-amber-950/20 hover:border-amber-200 dark:hover:border-amber-900/40 group transition-all cursor-pointer"
                 >
                   <Lightbulb className="w-6 h-6 text-amber-500" />
                   <span className="text-[10px] sm:text-xs font-bold text-amber-500 uppercase tracking-wider">{showHint ? 'Ẩn gợi ý' : 'Hiện gợi ý'}</span>
@@ -712,7 +712,7 @@ export default function LearnPage() {
 
                 <button 
                   onClick={handleIKnowIt}
-                  className="flex flex-col items-center gap-1.5 py-4 bg-slate-50 border border-slate-200 rounded-2xl hover:bg-green-50 hover:border-green-200 group transition-all cursor-pointer"
+                  className="flex flex-col items-center gap-1.5 py-4 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl hover:bg-green-50 dark:hover:bg-green-950/20 hover:border-green-200 dark:hover:border-green-900/40 group transition-all cursor-pointer"
                 >
                   <CheckCircle2 className="w-6 h-6 text-green-500" />
                   <span className="text-[10px] sm:text-xs font-bold text-green-500 uppercase tracking-wider">Đã Thuộc</span>
@@ -722,6 +722,7 @@ export default function LearnPage() {
           )}
         </>
       )}
+
       {/* ════════════════════════════════════════════ VOCABULARY BY TOPIC MODE ═══ */}
       {activeMode === 'topics' && (
         <>
@@ -729,13 +730,13 @@ export default function LearnPage() {
             /* ── Topic Selection Grid ── */
             <div className="space-y-8 animate-in fade-in duration-500">
               <div className="text-center space-y-2">
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-slate-900 text-white rounded-full">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-slate-900 dark:bg-slate-800 text-white dark:text-slate-100 rounded-full">
                   <BookOpen className="w-3.5 h-3.5" />
                   <span className="text-[9px] font-black uppercase tracking-widest">Vocabulary by Topic</span>
                 </div>
-                <h2 className="text-3xl font-black text-slate-800 tracking-tight">Học Từ Vựng Theo Chủ Đề</h2>
-                <p className="text-slate-500 font-medium text-sm max-w-xl mx-auto">
-                  Chọn một chủ đề bên dưới để bắt đầu học từ vựng. Mỗi chủ đề được chia thành 2 cấp độ: <strong className="text-emerald-600">Mới bắt đầu</strong> và <strong className="text-violet-600">Nâng cao</strong>.
+                <h2 className="text-3xl font-black text-slate-800 dark:text-slate-100 tracking-tight">Học Từ Vựng Theo Chủ Đề</h2>
+                <p className="text-slate-500 dark:text-slate-400 font-medium text-sm max-w-xl mx-auto">
+                  Chọn một chủ đề bên dưới để bắt đầu học từ vựng. Mỗi chủ đề được chia thành 2 cấp độ: <strong className="text-emerald-600 dark:text-emerald-400">Mới bắt đầu</strong> và <strong className="text-violet-600 dark:text-violet-400">Nâng cao</strong>.
                 </p>
               </div>
 
@@ -762,7 +763,7 @@ export default function LearnPage() {
                 </div>
 
                 {/* Category Chips */}
-                <div className="flex flex-wrap gap-2 w-full md:w-auto justify-start md:justify-end">
+                <div className="flex overflow-x-auto no-scrollbar gap-2 w-full md:w-auto justify-start md:justify-end pb-1 md:pb-0 -mx-4 px-4 md:mx-0 md:px-0">
                   {[
                     { id: 'all', label: 'Tất cả', count: VOCABULARY_TOPICS.length },
                     { id: 'daily', label: '🌱 Đời sống', count: VOCABULARY_TOPICS.filter(t => TOPIC_CATEGORIES[t.id] === 'daily').length },
@@ -773,9 +774,9 @@ export default function LearnPage() {
                       key={cat.id}
                       onClick={() => setVocabActiveCategory(cat.id as any)}
                       className={cn(
-                        "px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 border cursor-pointer",
+                        "px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 border cursor-pointer shrink-0",
                         vocabActiveCategory === cat.id
-                          ? "bg-slate-900 border-slate-900 text-white dark:bg-slate-100 dark:border-slate-100 dark:text-slate-900 shadow-sm"
+                          ? "bg-slate-900 border-slate-900 text-white dark:bg-slate-100 dark:border-slate-105 dark:text-slate-900 shadow-sm"
                           : "bg-white border-slate-200 text-slate-600 dark:bg-slate-950 dark:border-slate-800 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900"
                       )}
                     >
@@ -799,7 +800,7 @@ export default function LearnPage() {
                     <Info className="w-8 h-8" />
                   </div>
                   <h3 className="font-bold text-lg text-slate-800 dark:text-slate-200">Không tìm thấy chủ đề nào</h3>
-                  <p className="text-sm text-slate-500 max-w-sm">
+                  <p className="text-sm text-slate-500 dark:text-slate-400 max-w-sm">
                     Thử thay đổi từ khóa tìm kiếm hoặc chọn bộ lọc chủ đề khác xem sao nhé!
                   </p>
                   <button
@@ -807,7 +808,7 @@ export default function LearnPage() {
                       setVocabSearchQuery('');
                       setVocabActiveCategory('all');
                     }}
-                    className="px-4 py-2 bg-slate-900 text-white text-xs font-bold uppercase tracking-widest rounded-xl hover:bg-slate-800 transition-all cursor-pointer"
+                    className="px-4 py-2 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-xs font-bold uppercase tracking-widest rounded-xl hover:bg-slate-800 dark:hover:bg-slate-200 transition-all cursor-pointer"
                   >
                     Đặt lại bộ lọc
                   </button>
@@ -829,17 +830,17 @@ export default function LearnPage() {
                           setActiveTab('card');
                         }}
                         className={cn(
-                          "bg-white dark:bg-slate-950 rounded-[2rem] p-6 border border-slate-200/60 dark:border-slate-800/80 text-left flex flex-col justify-between hover:shadow-xl transition-all group relative overflow-hidden cursor-pointer h-full min-h-[220px]",
+                          "bg-white dark:bg-slate-955 rounded-[2rem] p-6 border border-slate-200/60 dark:border-slate-800/80 text-left flex flex-col justify-between hover:shadow-xl transition-all group relative overflow-hidden cursor-pointer h-full min-h-[220px]",
                           colorClasses.borderHover
                         )}
                       >
-                        <div className="flex items-center justify-between w-full mb-3">
-                          <div className={cn("w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform border border-slate-100 dark:border-slate-800/40", colorClasses.iconBg)}>
+                        <div className="flex items-center justify-between w-full mb-3 gap-3">
+                          <div className={cn("w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform border border-slate-100 dark:border-slate-800/40 shrink-0", colorClasses.iconBg)}>
                             <TopicIcon className={cn("w-6 h-6", colorClasses.iconText)} />
                           </div>
-                          <div className="flex flex-col items-end gap-1">
-                            <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-100/50 dark:border-emerald-900/50 px-2 py-0.5 rounded-full">{topic.beginner.length} từ cơ bản</span>
-                            <span className="text-[10px] font-bold text-violet-600 bg-violet-50 dark:bg-violet-950/40 border border-violet-100/50 dark:border-violet-900/50 px-2 py-0.5 rounded-full">{topic.advanced.length} từ nâng cao</span>
+                          <div className="flex flex-col items-end gap-1 shrink-0">
+                            <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-100/50 dark:border-emerald-900/50 px-2 py-0.5 rounded-full shrink-0">{topic.beginner.length} từ cơ bản</span>
+                            <span className="text-[10px] font-bold text-violet-600 bg-violet-50 dark:bg-violet-950/40 border border-violet-100/50 dark:border-violet-900/50 px-2 py-0.5 rounded-full shrink-0">{topic.advanced.length} từ nâng cao</span>
                           </div>
                         </div>
                         <div className="flex-1 flex flex-col justify-start">
@@ -861,13 +862,13 @@ export default function LearnPage() {
           ) : vocabCompleted ? (
             /* ── Completion Screen ── */
             <div className="flex flex-col items-center justify-center min-h-[40vh] space-y-6 text-center animate-in zoom-in-95 duration-500">
-              <div className="w-24 h-24 bg-yellow-400 rounded-full flex items-center justify-center shadow-xl shadow-yellow-100">
+              <div className="w-24 h-24 bg-yellow-400 rounded-full flex items-center justify-center shadow-xl shadow-yellow-100 dark:shadow-none">
                 <Trophy className="w-12 h-12 text-white" />
               </div>
               <div>
-                <h1 className="text-3xl font-black text-slate-800">Tuyệt vời! 🎉</h1>
-                <p className="text-sm text-slate-500 mt-1 font-medium">
-                  Bạn đã hoàn thành {activeVocabWords.length} từ vựng chủ đề <strong>{activeVocabTopic?.title}</strong> ({vocabLevel === 'beginner' ? 'Mới bắt đầu' : 'Nâng cao'}).
+                <h1 className="text-3xl font-black text-slate-800 dark:text-slate-100">Tuyệt vời! 🎉</h1>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 font-medium">
+                  Bạn đã hoàn thành {activeVocabWords.length} từ vựng chủ đề <strong className="text-slate-800 dark:text-slate-200">{activeVocabTopic?.title}</strong> ({vocabLevel === 'beginner' ? 'Mới bắt đầu' : 'Nâng cao'}).
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-3 w-full max-w-md">
@@ -879,7 +880,7 @@ export default function LearnPage() {
                       setShowVocabHint(false);
                       setVocabCompleted(false);
                     }}
-                    className="flex-1 py-3 bg-violet-600 hover:bg-violet-700 text-white font-black text-xs uppercase tracking-widest rounded-xl transition-all active:scale-95 cursor-pointer shadow-lg shadow-violet-200"
+                    className="flex-1 py-3 bg-violet-600 hover:bg-violet-700 text-white font-black text-xs uppercase tracking-widest rounded-xl transition-all active:scale-95 cursor-pointer shadow-lg shadow-violet-900/30"
                   >
                     Thử cấp Nâng cao →
                   </button>
@@ -890,7 +891,7 @@ export default function LearnPage() {
                     setShowVocabHint(false);
                     setVocabCompleted(false);
                   }}
-                  className="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs uppercase tracking-widest rounded-xl transition-all active:scale-95 cursor-pointer"
+                  className="flex-1 py-3 bg-slate-100 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-850 text-slate-700 dark:text-slate-350 font-bold text-xs uppercase tracking-widest rounded-xl transition-all active:scale-95 cursor-pointer"
                 >
                   Học lại lượt mới
                 </button>
@@ -901,7 +902,7 @@ export default function LearnPage() {
                     setShowVocabHint(false);
                     setVocabCompleted(false);
                   }}
-                  className="flex-1 py-3 bg-slate-900 hover:bg-slate-800 text-white font-black text-xs uppercase tracking-widest rounded-xl transition-all active:scale-95 cursor-pointer"
+                  className="flex-1 py-3 bg-slate-900 hover:bg-slate-800 dark:bg-slate-100 dark:hover:bg-slate-205 text-white dark:text-slate-950 font-black text-xs uppercase tracking-widest rounded-xl transition-all active:scale-95 cursor-pointer"
                 >
                   Chọn Chủ Đề Khác
                 </button>
@@ -920,15 +921,15 @@ export default function LearnPage() {
                       setShowVocabHint(false);
                       setVocabCompleted(false);
                     }}
-                    className="flex items-center gap-1 text-slate-400 hover:text-slate-600 font-bold transition-colors cursor-pointer text-xs"
+                    className="flex items-center gap-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold transition-colors cursor-pointer text-xs"
                   >
                     <ChevronLeft className="w-4 h-4" /> Chọn Chủ Đề
                   </button>
-                  <span className="text-xs font-black text-slate-300">|</span>
-                  <span className="text-sm font-black text-slate-700">{activeVocabTopic?.title}</span>
+                  <span className="text-xs font-black text-slate-300 dark:text-slate-700">|</span>
+                  <span className="text-sm font-black text-slate-700 dark:text-slate-300">{activeVocabTopic?.title}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="flex bg-slate-100 p-1 rounded-xl">
+                  <div className="flex bg-slate-100 dark:bg-slate-900 p-1 rounded-xl">
                     <button
                       onClick={() => {
                         setVocabLevel('beginner');
@@ -941,7 +942,7 @@ export default function LearnPage() {
                         "px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer",
                         vocabLevel === 'beginner'
                           ? "bg-emerald-500 text-white shadow-sm"
-                          : "text-slate-500 hover:text-slate-700"
+                          : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
                       )}
                     >
                       🌱 Mới bắt đầu
@@ -958,18 +959,18 @@ export default function LearnPage() {
                         "px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer",
                         vocabLevel === 'advanced'
                           ? "bg-violet-500 text-white shadow-sm"
-                          : "text-slate-500 hover:text-slate-700"
+                          : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
                       )}
                     >
                       🚀 Nâng cao
                     </button>
                   </div>
-                  <span className="text-xs font-black text-slate-400">{vocabIndex + 1}/{activeVocabWords.length}</span>
+                  <span className="text-xs font-black text-slate-400 dark:text-slate-500">{vocabIndex + 1}/{activeVocabWords.length}</span>
                 </div>
               </div>
 
               {/* Progress bar */}
-              <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+              <div className="w-full h-2 bg-slate-100 dark:bg-slate-900 rounded-full overflow-hidden">
                 <div
                   className={cn(
                     "h-full rounded-full transition-all duration-500",
@@ -981,14 +982,14 @@ export default function LearnPage() {
 
               {/* Mobile View Switcher Tabs */}
               {activeVocabWords[vocabIndex] && (
-                <div className="flex lg:hidden bg-slate-100 p-1 rounded-2xl mb-1">
+                <div className="flex lg:hidden bg-slate-100 dark:bg-slate-900 p-1 rounded-2xl mb-1">
                   <button
                     onClick={() => setActiveTab('card')}
                     className={cn(
                       "flex-1 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider text-center transition-all cursor-pointer",
                       activeTab === 'card'
-                        ? "bg-white text-slate-800 shadow-sm"
-                        : "text-slate-500 hover:text-slate-700"
+                        ? "bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 shadow-sm"
+                        : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
                     )}
                   >
                     🎴 Thẻ Từ Vựng
@@ -998,8 +999,8 @@ export default function LearnPage() {
                     className={cn(
                       "flex-1 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider text-center transition-all cursor-pointer",
                       activeTab === 'list'
-                        ? "bg-white text-slate-800 shadow-sm"
-                        : "text-slate-500 hover:text-slate-700"
+                        ? "bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 shadow-sm"
+                        : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
                     )}
                   >
                     📋 Danh Sách ({activeVocabWords.length})
@@ -1010,53 +1011,53 @@ export default function LearnPage() {
               {activeVocabWords[vocabIndex] && (
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 lg:gap-6 items-start">
                   {/* Flashcard (3 cols) */}
-                  <div className={cn("lg:col-span-3", activeTab === 'card' ? "block" : "hidden lg:block")}>
+                  <div className={cn("lg:col-span-3 w-full", activeTab === 'card' ? "block" : "hidden lg:block")}>
                     <div className="perspective-1000 w-full h-[280px] xs:h-[320px] sm:h-[340px] md:h-[380px] landscape:h-[250px] landscape:sm:h-[280px]">
                       <div className={cn(
-                        "relative w-full h-full preserve-3d transition-transform duration-500 border border-slate-200/80 rounded-[2.5rem] shadow-xl",
+                        "relative w-full h-full preserve-3d transition-transform duration-500 border border-slate-200/80 dark:border-slate-800/80 rounded-[2.5rem] shadow-xl",
                         showVocabHint ? "rotate-y-180" : ""
                       )}>
                         {/* Front */}
-                        <div className="absolute w-full h-full backface-hidden flex flex-col items-center justify-center text-center bg-white p-6 sm:p-8 rounded-[2.5rem]">
+                        <div className="absolute w-full h-full backface-hidden flex flex-col items-center justify-center text-center bg-white dark:bg-slate-950 p-6 sm:p-8 rounded-[2.5rem]">
                           <span className={cn(
                             "px-3 py-1 text-[11px] sm:text-xs font-bold rounded-full uppercase tracking-wider mb-3",
-                            vocabLevel === 'beginner' ? "bg-emerald-100 text-emerald-700" : "bg-violet-100 text-violet-700"
+                            vocabLevel === 'beginner' ? "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400" : "bg-violet-100 dark:bg-violet-950/60 text-violet-700 dark:text-violet-400"
                           )}>
                             {vocabLevel === 'beginner' ? '🌱 Beginner' : '🚀 Advanced'}
                           </span>
-                          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-800 tracking-tight mb-1 sm:mb-2">{activeVocabWords[vocabIndex].word}</h1>
+                          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-800 dark:text-slate-100 tracking-tight mb-1 sm:mb-2">{activeVocabWords[vocabIndex].word}</h1>
                           <div className="flex items-center gap-2">
-                            <span className="text-sm sm:text-base font-serif text-slate-400">{activeVocabWords[vocabIndex].phonetic}</span>
-                            <span className="text-xs sm:text-sm font-semibold text-rose-500 font-sans italic">({activeVocabWords[vocabIndex].wordType})</span>
+                            <span className="text-sm sm:text-base font-serif text-slate-400 dark:text-slate-500">{activeVocabWords[vocabIndex].phonetic}</span>
+                            <span className="text-xs sm:text-sm font-semibold text-rose-500 dark:text-rose-450 font-sans italic">({activeVocabWords[vocabIndex].wordType})</span>
                           </div>
                           <button
                             onClick={() => speak(activeVocabWords[vocabIndex].word)}
-                            className="mt-4 sm:mt-6 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-green-50 border border-green-100 flex items-center justify-center text-green-500 hover:bg-green-500 hover:text-white transition-all shadow-sm cursor-pointer"
+                            className="mt-4 sm:mt-6 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-green-50 dark:bg-green-950/40 border border-green-100 dark:border-green-900/50 flex items-center justify-center text-green-500 hover:bg-green-500 hover:text-white transition-all shadow-sm cursor-pointer"
                           >
                             <Volume2 className="w-7 h-7 sm:w-8 sm:h-8" />
                           </button>
-                          <p className="absolute bottom-4 sm:bottom-6 text-xs text-slate-400 font-bold uppercase tracking-wider">Nhấn &quot;Lật thẻ&quot; bên dưới để xem nghĩa</p>
+                          <p className="absolute bottom-4 sm:bottom-6 text-xs text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">Nhấn &quot;Lật thẻ&quot; bên dưới để xem nghĩa</p>
                         </div>
 
                         {/* Back */}
-                        <div className="absolute w-full h-full backface-hidden rotate-y-180 flex flex-col items-center justify-center text-center bg-slate-900 text-white p-6 sm:p-8 overflow-y-auto rounded-[2.5rem]">
+                        <div className="absolute w-full h-full backface-hidden rotate-y-180 flex flex-col items-center justify-center text-center bg-slate-900 dark:bg-slate-950 text-white p-6 sm:p-8 overflow-y-auto rounded-[2.5rem]">
                           <div className="space-y-3 sm:space-y-4 w-full">
                             <div>
-                              <span className="text-[11px] sm:text-xs text-emerald-400 font-bold uppercase tracking-widest block">Nghĩa tiếng Việt</span>
+                               <span className="text-[11px] sm:text-xs text-emerald-400 font-bold uppercase tracking-widest block">Nghĩa tiếng Việt</span>
                               <h2 className="text-lg sm:text-xl font-bold text-emerald-400 mt-1">{activeVocabWords[vocabIndex].meaningVi}</h2>
                             </div>
-                            <div className="border-t border-white/10 pt-2 sm:pt-3">
-                              <span className="text-[11px] sm:text-xs text-white/40 font-bold uppercase tracking-widest block">Định nghĩa (EN)</span>
-                              <p className="text-xs sm:text-sm text-slate-200 mt-1 italic leading-relaxed">&quot;{activeVocabWords[vocabIndex].meaningEn}&quot;</p>
+                            <div className="border-t border-white/10 dark:border-slate-800 pt-2 sm:pt-3">
+                              <span className="text-[11px] sm:text-xs text-white/40 dark:text-slate-500 font-bold uppercase tracking-widest block">Định nghĩa (EN)</span>
+                              <p className="text-xs sm:text-sm text-slate-200 dark:text-slate-300 mt-1 italic leading-relaxed">&quot;{activeVocabWords[vocabIndex].meaningEn}&quot;</p>
                             </div>
-                            <div className="border-t border-white/10 pt-2 sm:pt-3 text-left">
-                              <span className="text-[11px] sm:text-xs text-white/40 font-bold uppercase tracking-widest block mb-1">Ví dụ minh họa</span>
-                              <p className="text-xs text-white font-medium italic">&quot;{activeVocabWords[vocabIndex].example}&quot;</p>
-                              <p className="text-xs text-emerald-400/80 mt-0.5 italic">{activeVocabWords[vocabIndex].exampleVi}</p>
+                            <div className="border-t border-white/10 dark:border-slate-800 pt-2 sm:pt-3 text-left">
+                              <span className="text-[11px] sm:text-xs text-white/40 dark:text-slate-500 font-bold uppercase tracking-widest block mb-1">Ví dụ minh họa</span>
+                              <p className="text-xs text-white dark:text-slate-100 font-medium italic">&quot;{activeVocabWords[vocabIndex].example}&quot;</p>
+                              <p className="text-xs text-emerald-400/80 dark:text-emerald-400 mt-0.5 italic">{activeVocabWords[vocabIndex].exampleVi}</p>
                             </div>
                             <button
                               onClick={() => speak(activeVocabWords[vocabIndex].example)}
-                              className="mt-2 px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/10 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer mx-auto"
+                              className="mt-2 px-4 py-2 bg-white/10 hover:bg-white/20 dark:bg-slate-900/60 dark:hover:bg-slate-900 border border-white/10 dark:border-slate-800 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer mx-auto"
                             >
                               <Volume2 className="w-3.5 h-3.5" /> Nghe ví dụ
                             </button>
@@ -1076,7 +1077,7 @@ export default function LearnPage() {
                             setVocabCompleted(true);
                           }
                         }}
-                        className="flex flex-col items-center gap-1.5 py-4 bg-slate-50 border border-slate-200 rounded-2xl hover:bg-rose-50 hover:border-rose-200 transition-all cursor-pointer"
+                        className="flex flex-col items-center gap-1.5 py-4 bg-slate-55/60 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl hover:bg-rose-50 dark:hover:bg-rose-950/20 hover:border-rose-200 dark:hover:border-rose-900/40 transition-all cursor-pointer"
                       >
                         <XCircle className="w-6 h-6 text-rose-500" />
                         <span className="text-[10px] sm:text-xs font-bold text-rose-500 uppercase tracking-wider">Đang Học</span>
@@ -1084,7 +1085,7 @@ export default function LearnPage() {
 
                       <button
                         onClick={() => setShowVocabHint(!showVocabHint)}
-                        className="flex flex-col items-center gap-1.5 py-4 bg-slate-50 border border-slate-200 rounded-2xl hover:bg-amber-50 hover:border-amber-200 transition-all cursor-pointer"
+                        className="flex flex-col items-center gap-1.5 py-4 bg-slate-55/60 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl hover:bg-amber-50 dark:hover:bg-amber-950/20 hover:border-amber-200 dark:hover:border-amber-900/40 transition-all cursor-pointer"
                       >
                         <Lightbulb className="w-6 h-6 text-amber-500" />
                         <span className="text-[10px] sm:text-xs font-bold text-amber-500 uppercase tracking-wider">{showVocabHint ? 'Ẩn nghĩa' : 'Lật thẻ'}</span>
@@ -1099,7 +1100,7 @@ export default function LearnPage() {
                             setVocabCompleted(true);
                           }
                         }}
-                        className="flex flex-col items-center gap-1.5 py-4 bg-slate-50 border border-slate-200 rounded-2xl hover:bg-green-50 hover:border-green-200 transition-all cursor-pointer"
+                        className="flex flex-col items-center gap-1.5 py-4 bg-slate-55/60 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl hover:bg-green-50 dark:hover:bg-green-950/20 hover:border-green-200 dark:hover:border-green-900/40 transition-all cursor-pointer"
                       >
                         <CheckCircle2 className="w-6 h-6 text-green-500" />
                         <span className="text-[10px] sm:text-xs font-bold text-green-500 uppercase tracking-wider">Đã Thuộc</span>
@@ -1108,13 +1109,13 @@ export default function LearnPage() {
                   </div>
 
                   {/* Word List Sidebar (2 cols) */}
-                  <div className={cn("lg:col-span-2", activeTab === 'list' ? "block" : "hidden lg:block")}>
-                    <div className="premium-card p-4 bg-white border border-slate-200 rounded-[1.5rem] space-y-3 max-h-[520px] overflow-y-auto">
+                  <div className={cn("lg:col-span-2 w-full", activeTab === 'list' ? "block" : "hidden lg:block")}>
+                    <div className="premium-card p-4 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-[1.5rem] space-y-3 max-h-[520px] overflow-y-auto">
                       <div className="flex items-center justify-between">
-                        <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider">Danh sách từ vựng</h4>
+                        <h4 className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Danh sách từ vựng</h4>
                         <span className={cn(
                           "text-[10px] sm:text-xs font-bold px-2.5 py-1 rounded-full",
-                          vocabLevel === 'beginner' ? "bg-emerald-50 text-emerald-600" : "bg-violet-50 text-violet-600"
+                          vocabLevel === 'beginner' ? "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400" : "bg-violet-50 dark:bg-violet-950/40 text-violet-600 dark:text-violet-400"
                         )}>
                           {vocabLevel === 'beginner' ? 'Cơ bản' : 'Nâng cao'}
                         </span>
@@ -1141,19 +1142,19 @@ export default function LearnPage() {
                             className={cn(
                               "w-full flex items-center gap-3 p-3 rounded-xl border text-left transition-all cursor-pointer group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400",
                               idx === vocabIndex
-                                ? "bg-slate-900 border-slate-950 text-white shadow-md"
-                                : "bg-white border-slate-100 hover:border-slate-300 text-slate-700"
+                                ? "bg-slate-900 border-slate-950 text-white dark:bg-slate-100 dark:border-slate-100 dark:text-slate-900 shadow-md"
+                                : "bg-white border-slate-100 dark:bg-slate-900/50 dark:border-slate-900 hover:border-slate-300 dark:hover:border-slate-700 text-slate-700 dark:text-slate-350"
                             )}
                           >
                             <span className={cn(
                               "w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0",
-                              idx === vocabIndex ? "bg-white/10 text-white" : "bg-slate-50 text-slate-400"
+                              idx === vocabIndex ? "bg-white/10 text-white dark:text-slate-900" : "bg-slate-50 dark:bg-slate-900 text-slate-400 dark:text-slate-500"
                             )}>
                               {idx + 1}
                             </span>
                             <div className="flex-1 min-w-0">
-                              <p className={cn("text-sm font-bold truncate", idx === vocabIndex ? "text-white" : "text-slate-800")}>{w.word}</p>
-                              <p className={cn("text-xs font-medium truncate", idx === vocabIndex ? "text-slate-400" : "text-slate-500")}>{w.meaningVi}</p>
+                              <p className={cn("text-sm font-bold truncate", idx === vocabIndex ? "text-white dark:text-slate-900" : "text-slate-800 dark:text-slate-200")}>{w.word}</p>
+                              <p className={cn("text-xs font-medium truncate", idx === vocabIndex ? "text-slate-400 dark:text-slate-600" : "text-slate-500 dark:text-slate-400")}>{w.meaningVi}</p>
                             </div>
                             <button
                               onClick={(e) => {
@@ -1164,7 +1165,7 @@ export default function LearnPage() {
                                 "w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 transition-all cursor-pointer",
                                 idx === vocabIndex
                                   ? "bg-white/10 text-white hover:bg-white/20"
-                                  : "bg-slate-50 text-slate-400 hover:bg-green-50 hover:text-green-500"
+                                  : "bg-slate-50 dark:bg-slate-900 text-slate-400 dark:text-slate-500 hover:bg-green-50 dark:hover:bg-green-950/40 hover:text-green-500 dark:hover:text-green-400"
                               )}
                             >
                               <Volume2 className="w-3.5 h-3.5" />
