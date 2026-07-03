@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { useMusic, Track } from '@/context/MusicContext';
+import { useMusic, Track, getYouTubeId } from '@/context/MusicContext';
 import { useAuth } from '@/context/AuthContext';
 import { 
   Play, 
@@ -47,6 +47,8 @@ export default function MusicHub() {
     deleteCustomTrack
   } = useMusic();
 
+  const ytVideoId = getYouTubeId(currentTrack.url);
+
   const [isMuted, setIsMuted] = useState(false);
   const [prevVolume, setPrevVolume] = useState(volume);
   const [pomodoroTime, setPomodoroTime] = useState(25 * 60); // 25 minutes default
@@ -67,35 +69,6 @@ export default function MusicHub() {
   const [newUrl, setNewUrl] = useState("");
   const [addMode, setAddMode] = useState<'url' | 'file'>('url');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
-  const [showVideo, setShowVideo] = useState(true);
-  const iframeRef = useRef<HTMLIFrameElement | null>(null);
-  
-  const getYouTubeId = (url: string): string | null => {
-    if (!url) return null;
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-    const match = url.match(regExp);
-    return (match && match[2].length === 11) ? match[2] : null;
-  };
-
-  const youtubeId = currentTrack ? getYouTubeId(currentTrack.url) : null;
-
-  useEffect(() => {
-    if (youtubeId && iframeRef.current) {
-      const contentWindow = iframeRef.current.contentWindow;
-      if (contentWindow) {
-        try {
-          if (isPlaying) {
-            contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'playVideo' }), '*');
-          } else {
-            contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'pauseVideo' }), '*');
-          }
-        } catch (e) {
-          console.error("Failed to send postMessage to YouTube iframe:", e);
-        }
-      }
-    }
-  }, [isPlaying, youtubeId]);
 
   // Sync mute state
   const handleMuteToggle = () => {
@@ -319,51 +292,28 @@ export default function MusicHub() {
           <div className="absolute inset-0 bg-gradient-to-b from-indigo-500/5 via-transparent to-transparent pointer-events-none" />
           
           {/* Track Detail Badge */}
-          <div className="space-y-2 z-10 flex flex-col items-center">
+          <div className="space-y-1 z-10">
             <span className="text-[9px] font-black uppercase tracking-widest text-primary px-2.5 py-0.5 rounded-full bg-primary/10 border border-primary/20">
               {currentTrack.category}
             </span>
             <h2 className="text-xl md:text-2xl font-black text-white truncate max-w-md">{currentTrack.title}</h2>
             <p className="text-xs text-slate-400 font-bold">{currentTrack.artist}</p>
-
-            {youtubeId && (
-              <button
-                onClick={() => setShowVideo(!showVideo)}
-                className="mt-1 px-3 py-1 bg-indigo-950/60 border border-indigo-900/60 text-indigo-400 hover:text-white rounded-full text-[10px] font-black uppercase tracking-widest transition-all cursor-pointer hover:bg-indigo-900/60 active:scale-95 flex items-center gap-1.5"
-              >
-                <Sparkles className="w-3 h-3 text-yellow-400 animate-pulse" />
-                {showVideo ? "Ẩn Video / Hiện đĩa xoay" : "Xem Video YouTube"}
-              </button>
-            )}
           </div>
 
-          {/* Main Stage: Rotating Vinyl or YouTube Frame */}
-          <div className="relative w-full flex flex-col items-center justify-center min-h-[224px] md:min-h-[256px] z-10">
-            {/* YouTube Embed (kept in DOM for continuous playback) */}
-            {youtubeId && (
-              <div 
-                className={cn(
-                  "relative w-full aspect-video md:max-w-md rounded-2xl overflow-hidden border border-slate-850 shadow-2xl z-10 transition-all duration-300",
-                  showVideo ? "block" : "hidden"
-                )}
-              >
-                <iframe
-                  ref={iframeRef}
-                  src={`https://www.youtube.com/embed/${youtubeId}?enablejsapi=1&autoplay=1`}
-                  className="w-full h-full"
-                  allow="autoplay; encrypted-media"
-                  allowFullScreen
-                />
-              </div>
-            )}
-
-            {/* Epic Interactive Rotating Vinyl */}
-            <div 
-              className={cn(
-                "relative w-56 h-56 md:w-64 md:h-64 shrink-0 items-center justify-center z-10",
-                (youtubeId && showVideo) ? "hidden" : "flex"
-              )}
-            >
+          {/* Epic Interactive Rotating Vinyl or YouTube Player */}
+          {ytVideoId ? (
+            <div className="relative w-full aspect-video md:w-[480px] rounded-2xl overflow-hidden shadow-2xl border border-slate-800 z-10">
+              <iframe
+                src={`https://www.youtube.com/embed/${ytVideoId}?autoplay=${isPlaying ? 1 : 0}&enablejsapi=1&origin=${typeof window !== 'undefined' ? window.location.origin : ''}`}
+                title={currentTrack.title}
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                className="w-full h-full"
+              ></iframe>
+            </div>
+          ) : (
+            <div className="relative w-56 h-56 md:w-64 md:h-64 shrink-0 flex items-center justify-center z-10">
               {/* Outer Glow Ring */}
               <div className={cn(
                 "absolute inset-0 rounded-full bg-indigo-500/10 blur-xl transition-all duration-1000",
@@ -387,62 +337,37 @@ export default function MusicHub() {
                 </div>
               </div>
 
-              {/* Tonearm Needle */}
+              {/* Tonearm Player Needle */}
               <div 
                 className={cn(
                   "absolute top-[-10px] right-[40px] w-24 h-24 origin-top-right transition-transform duration-700 pointer-events-none z-20",
                   isPlaying ? "rotate-[15deg]" : "rotate-[0deg]"
                 )}
               >
+                {/* Silver Tonearm Vector */}
                 <div className="w-2 h-20 bg-gradient-to-b from-slate-400 to-slate-200 rounded-full shadow-md ml-16" />
                 <div className="w-4 h-6 bg-slate-800 border border-slate-700 rounded shadow-md ml-15 mt-[-5px]" />
               </div>
             </div>
-          </div>
-
-          {/* Interactive Custom Progress Slider or Equalizer */}
-          {youtubeId ? (
-            <div className="w-full space-y-2.5 z-10 select-none">
-              <div className="flex items-center justify-center gap-1.5 py-1.5 bg-indigo-950/40 border border-indigo-900/50 rounded-2xl">
-                <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-ping" />
-                <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">YouTube Audio Active</span>
-              </div>
-              <div className="h-8 flex items-end justify-center gap-1.5 pt-2">
-                {isPlaying ? (
-                  Array.from({ length: 18 }).map((_, i) => (
-                    <span 
-                      key={i} 
-                      className="w-1 bg-primary rounded-full animate-bounce" 
-                      style={{ 
-                        height: `${Math.floor(Math.random() * 20) + 8}px`,
-                        animationDuration: `${Math.floor(Math.random() * 600) + 400}ms`,
-                        animationDelay: `${i * 30}ms`
-                      }} 
-                    />
-                  ))
-                ) : (
-                  <span className="text-xs text-slate-500 font-bold uppercase tracking-wide">Tạm dừng phát nhạc</span>
-                )}
-              </div>
-            </div>
-          ) : (
-            <div className="w-full space-y-2 z-10">
-              <div 
-                onClick={handleProgressClick}
-                className="w-full h-2 bg-slate-800 rounded-full cursor-pointer relative overflow-hidden group/progress"
-              >
-                <div 
-                  className="h-full bg-gradient-to-r from-primary to-indigo-500 rounded-full transition-all duration-100" 
-                  style={{ width: `${progress}%` }} 
-                />
-                <div className="absolute top-0 bottom-0 left-0 right-0 bg-transparent hover:bg-white/5 transition-all" />
-              </div>
-              <div className="flex justify-between text-[10px] font-bold text-slate-400 select-none">
-                <span>{formatTime(currentTimeSec)}</span>
-                <span>{formatTime(durationSec || 300)}</span>
-              </div>
-            </div>
           )}
+
+          {/* Interactive Custom Progress Slider */}
+          <div className="w-full space-y-2 z-10">
+            <div 
+              onClick={handleProgressClick}
+              className="w-full h-2 bg-slate-800 rounded-full cursor-pointer relative overflow-hidden group/progress"
+            >
+              <div 
+                className="h-full bg-gradient-to-r from-primary to-indigo-500 rounded-full transition-all duration-100" 
+                style={{ width: `${progress}%` }} 
+              />
+              <div className="absolute top-0 bottom-0 left-0 right-0 bg-transparent hover:bg-white/5 transition-all" />
+            </div>
+            <div className="flex justify-between text-[10px] font-bold text-slate-400 select-none">
+              <span>{formatTime(currentTimeSec)}</span>
+              <span>{formatTime(durationSec || 300)}</span>
+            </div>
+          </div>
 
           {/* Media Player Controls Row */}
           <div className="flex items-center justify-center gap-6 z-10 select-none">

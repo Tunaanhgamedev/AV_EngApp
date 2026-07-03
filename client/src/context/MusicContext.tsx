@@ -13,6 +13,32 @@ export interface Track {
   studyBenefit: string;
 }
 
+export function getYouTubeId(url: string): string | null {
+  if (!url) return null;
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11) ? match[2] : null;
+}
+
+export function cleanMusicUrl(url: string): string {
+  if (!url) return "";
+  const trimmed = url.trim();
+  
+  // 1. Google Drive Share Link Conversion
+  const gdMatch = trimmed.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || trimmed.match(/id=([a-zA-Z0-9_-]+)/);
+  if (trimmed.includes("drive.google.com") && gdMatch) {
+    const fileId = gdMatch[1];
+    return `https://docs.google.com/uc?export=download&id=${fileId}`;
+  }
+  
+  // 2. Dropbox Link Conversion
+  if (trimmed.includes("dropbox.com")) {
+    return trimmed.replace("?dl=0", "").replace("www.dropbox.com", "dl.dropboxusercontent.com") + (trimmed.includes("?") ? "&raw=1" : "?raw=1");
+  }
+  
+  return trimmed;
+}
+
 // 100% Clean, secure, CORS-free HTTPS Study & Focus tracks from highly-reliable educational music CDNs
 export const STUDY_TRACKS: Track[] = [
   {
@@ -272,6 +298,34 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
     }
   }, [volume]);
 
+  // Simulate progress and auto-next for YouTube tracks
+  useEffect(() => {
+    let interval: NodeJS.Timeout | null = null;
+    const ytId = getYouTubeId(currentTrack.url);
+    
+    if (ytId && isPlaying) {
+      interval = setInterval(() => {
+        setCurrentTimeSec((prev) => {
+          const next = prev + 1;
+          const duration = durationSec || 180; // default 3 mins
+          
+          if (next >= duration) {
+            clearInterval(interval!);
+            handleAutoNext();
+            return 0;
+          }
+          
+          setProgress((next / duration) * 100);
+          return next;
+        });
+      }, 1000);
+    }
+    
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isPlaying, currentTrack, durationSec]);
+
   // Handle playing source changes
   const playTrack = (track: Track) => {
     if (!audioRef.current) return;
@@ -279,28 +333,29 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
     try {
       audioRef.current.pause();
       
-      const isYt = track.url.includes('youtube.com') || track.url.includes('youtu.be') || track.url.includes('youtube-nocookie.com');
-      
-      if (isYt) {
-        audioRef.current.src = "";
+      const ytId = getYouTubeId(track.url);
+      if (ytId) {
         setCurrentTrack(track);
         setProgress(0);
         setCurrentTimeSec(0);
+        setDurationSec(180); // Default duration for YouTube simulation (3 mins)
         setIsPlaying(true);
-      } else {
-        audioRef.current.src = track.url;
-        setCurrentTrack(track);
-        setProgress(0);
-        setCurrentTimeSec(0);
-        audioRef.current.play()
-          .then(() => {
-            setIsPlaying(true);
-          })
-          .catch((e) => {
-            console.error("Audio play failed:", e);
-            setIsPlaying(false);
-          });
+        return;
       }
+      
+      audioRef.current.src = track.url;
+      setCurrentTrack(track);
+      setProgress(0);
+      setCurrentTimeSec(0);
+
+      audioRef.current.play()
+        .then(() => {
+          setIsPlaying(true);
+        })
+        .catch((e) => {
+          console.error("Audio play failed:", e);
+          setIsPlaying(false);
+        });
     } catch (err) {
       console.error("Audio source load error:", err);
     }
@@ -309,9 +364,8 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
   const togglePlay = () => {
     if (!audioRef.current) return;
 
-    const isYt = currentTrack.url.includes('youtube.com') || currentTrack.url.includes('youtu.be') || currentTrack.url.includes('youtube-nocookie.com');
-
-    if (isYt) {
+    const ytId = getYouTubeId(currentTrack.url);
+    if (ytId) {
       setIsPlaying(!isPlaying);
       return;
     }
@@ -360,6 +414,15 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
   };
 
   const seek = (seconds: number) => {
+    const ytId = getYouTubeId(currentTrack.url);
+    if (ytId) {
+      const duration = durationSec || 180;
+      const clamped = Math.max(0, Math.min(duration, seconds));
+      setCurrentTimeSec(clamped);
+      setProgress((clamped / duration) * 100);
+      return;
+    }
+
     if (audioRef.current && audioRef.current.duration) {
       const clamped = Math.max(0, Math.min(audioRef.current.duration, seconds));
       audioRef.current.currentTime = clamped;
@@ -385,23 +448,32 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
         alert("Không thể lưu file nhạc vào bộ nhớ trình duyệt.");
         return;
       }
+    } else {
+      // Clean up sharing links (Drive, Dropbox, etc.)
+      trackUrl = cleanMusicUrl(url);
     }
+
+    const ytId = getYouTubeId(trackUrl);
+    const resolvedCategory = ytId ? "YouTube Music" : category;
+    const resolvedDuration = ytId ? "YouTube" : (isLocalFile ? "Local File" : "MP3 URL");
 
     const newTrack: Track & { isLocalFile?: boolean } = {
       id: trackId,
-      title: title || "Bài hát tùy chọn",
-      artist: artist || "Tài khoản của tôi",
+      title: title || (ytId ? "YouTube Chill Track" : "Bài hát tùy chọn"),
+      artist: artist || (ytId ? "YouTube Video" : "Tài khoản của tôi"),
       url: trackUrl,
-      category: category,
-      duration: isLocalFile ? "Local File" : "MP3 URL",
-      studyBenefit: "Bản nhạc cá nhân được lưu trữ riêng biệt trên tài khoản của bạn để ôn tập.",
+      category: resolvedCategory,
+      duration: resolvedDuration,
+      studyBenefit: ytId
+        ? "Video nhạc YouTube được tích hợp phát trực tiếp trên giao diện của bạn."
+        : "Bản nhạc cá nhân được lưu trữ riêng biệt trên tài khoản của bạn để ôn tập.",
       isLocalFile: isLocalFile
     };
 
     // Strip temp URL for local files when writing metadata to localStorage to prevent stale references
     const metadataToStore = {
       ...newTrack,
-      url: isLocalFile ? "" : url
+      url: isLocalFile ? "" : trackUrl
     };
 
     const stored = localStorage.getItem(`custom_tracks_${user.uid}`);
