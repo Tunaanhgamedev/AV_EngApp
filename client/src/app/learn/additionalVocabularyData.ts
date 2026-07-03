@@ -7161,5 +7161,385 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "exampleVi": "Chúng ta cần một chiến lược tiếp thị mới."
       }
     ]
+  },
+  {
+    "id": "family",
+    "title": "Gia đình & Mối quan hệ (Family & Relationships)",
+    "desc": "Từ vựng về các thành viên gia đình, họ hàng và các khía cạnh mối quan hệ xã hội.",
+    "color": "border-pink-200 bg-pink-50/50 text-pink-850 hover:border-pink-400 dark:bg-slate-900/50 dark:border-slate-800 dark:text-pink-450",
+    "beginner": [
+      {
+        "word": "parent",
+        "phonetic": "/ˈpeə.rənt/",
+        "wordType": "noun",
+        "meaningEn": "a father or mother of a person",
+        "meaningVi": "cha hoặc mẹ",
+        "example": "My parents are very supportive.",
+        "exampleVi": "Bố mẹ tôi luôn ủng hộ tôi."
+      },
+      {
+        "word": "sibling",
+        "phonetic": "/ˈsɪb.lɪŋ/",
+        "wordType": "noun",
+        "meaningEn": "a brother or sister",
+        "meaningVi": "anh chị em ruột",
+        "example": "I have two siblings: a brother and a sister.",
+        "exampleVi": "Tôi có hai anh chị em: một anh trai và một em gái."
+      },
+      {
+        "word": "spouse",
+        "phonetic": "/spaʊs/",
+        "wordType": "noun",
+        "meaningEn": "a husband or wife",
+        "meaningVi": "vợ hoặc chồng",
+        "example": "She met her spouse at college.",
+        "exampleVi": "Cô ấy gặp chồng mình khi học đại học."
+      },
+      {
+        "word": "uncle",
+        "phonetic": "/ˈʌŋ.kl̩/",
+        "wordType": "noun",
+        "meaningEn": "the brother of one's father or mother",
+        "meaningVi": "chú, bác, cậu",
+        "example": "My uncle lives in Hanoi.",
+        "exampleVi": "Chú tôi sống ở Hà Nội."
+      },
+      {
+        "word": "aunt",
+        "phonetic": "/ɑːnt/",
+        "wordType": "noun",
+        "meaningEn": "the sister of one's father or mother",
+        "meaningVi": "cô, dì, mợ, bác gái",
+        "example": "My aunt is a doctor.",
+        "exampleVi": "Dì tôi là một bác sĩ."
+      },
+      {
+        "word": "nephew",
+        "phonetic": "/ˈnef.juː/",
+        "wordType": "noun",
+        "meaningEn": "a son of one's brother or sister",
+        "meaningVi": "cháu trai (con của anh chị em)",
+        "example": "My nephew is playing games.",
+        "exampleVi": "Cháu trai tôi đang chơi trò chơi."
+      },
+      {
+        "word": "niece",
+        "phonetic": "/niːs/",
+        "wordType": "noun",
+        "meaningEn": "a daughter of one's brother or sister",
+        "meaningVi": "cháu gái (con của anh chị em)",
+        "example": "My niece is 5 years old.",
+        "exampleVi": "Cháu gái tôi 5 tuổi."
+      },
+      {
+        "word": "cousin",
+        "phonetic": "/ˈkʌz.n̩/",
+        "wordType": "noun",
+        "meaningEn": "a child of one's uncle or aunt",
+        "meaningVi": "anh chị em họ",
+        "example": "We played together with our cousins.",
+        "exampleVi": "Chúng tôi đã chơi cùng với anh chị em họ của mình."
+      },
+      {
+        "word": "marriage",
+        "phonetic": "/ˈmær.ɪdʒ/",
+        "wordType": "noun",
+        "meaningEn": "the legally or formally recognized union of two people",
+        "meaningVi": "cuộc hôn nhân",
+        "example": "They celebrated 10 years of marriage.",
+        "exampleVi": "Họ kỷ niệm 10 năm ngày cưới."
+      },
+      {
+        "word": "relative",
+        "phonetic": "/ˈrel.ə.tɪv/",
+        "wordType": "noun",
+        "meaningEn": "a person connected by blood or marriage",
+        "meaningVi": "họ hàng, người thân",
+        "example": "All relatives gathered for Tet holiday.",
+        "exampleVi": "Tất cả họ hàng tụ họp vào dịp Tết."
+      }
+    ],
+    "advanced": [
+      {
+        "word": "ancestor",
+        "phonetic": "/ˈæn.ses.tər/",
+        "wordType": "noun",
+        "meaningEn": "a person from whom one is descended",
+        "meaningVi": "tổ tiên",
+        "example": "Our ancestors built this house centuries ago.",
+        "exampleVi": "Tổ tiên của chúng tôi đã xây dựng ngôi nhà này từ nhiều thế kỷ trước."
+      },
+      {
+        "word": "descendant",
+        "phonetic": "/dɪˈsen.dənt/",
+        "wordType": "noun",
+        "meaningEn": "a person that is descended from a particular ancestor",
+        "meaningVi": "con cháu, hậu duệ",
+        "example": "They are descendants of royalty.",
+        "exampleVi": "Họ là hậu duệ của hoàng gia."
+      },
+      {
+        "word": "adolescent",
+        "phonetic": "/ˌæd.əˈles.ənt/",
+        "wordType": "noun",
+        "meaningEn": "a young person who is developing into an adult",
+        "meaningVi": "thanh thiếu niên",
+        "example": "Adolescents need guidance from parents.",
+        "exampleVi": "Thanh thiếu niên cần sự hướng dẫn từ cha mẹ."
+      },
+      {
+        "word": "guardian",
+        "phonetic": "/ˈɡɑː.di.ən/",
+        "wordType": "noun",
+        "meaningEn": "a person who looks after someone who cannot protect themselves",
+        "meaningVi": "người giám hộ",
+        "example": "He was appointed as her legal guardian.",
+        "exampleVi": "Anh ấy được chỉ định làm người giám hộ hợp pháp của cô ấy."
+      },
+      {
+        "word": "kinship",
+        "phonetic": "/ˈkɪn.ʃɪp/",
+        "wordType": "noun",
+        "meaningEn": "sharing of characteristics or origins; family relationship",
+        "meaningVi": "quan hệ họ hàng, tình thân",
+        "example": "The community felt a strong sense of kinship.",
+        "exampleVi": "Cộng đồng cảm thấy một mối gắn kết tình thân sâu sắc."
+      },
+      {
+        "word": "nurture",
+        "phonetic": "/ˈnɜː.tʃər/",
+        "wordType": "verb",
+        "meaningEn": "care for and encourage the growth or development of",
+        "meaningVi": "nuôi dưỡng",
+        "example": "Parents nurture their children with love.",
+        "exampleVi": "Cha mẹ nuôi dưỡng con cái bằng tình yêu thương."
+      },
+      {
+        "word": "affection",
+        "phonetic": "/əˈfek.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "a gentle feeling of liking or liking and caring",
+        "meaningVi": "tình cảm, tình yêu thương",
+        "example": "She felt deep affection for her grandparents.",
+        "exampleVi": "Cô ấy cảm thấy tình yêu thương sâu sắc dành cho ông bà."
+      },
+      {
+        "word": "estrangement",
+        "phonetic": "/ɪˈstreɪndʒ.mənt/",
+        "wordType": "noun",
+        "meaningEn": "the state of being alienated or separated from family",
+        "meaningVi": "sự rạn nứt, sự xa lánh",
+        "example": "Their estrangement lasted for five years.",
+        "exampleVi": "Sự rạn nứt của họ kéo dài suốt năm năm."
+      },
+      {
+        "word": "heritage",
+        "phonetic": "/ˈher.ɪ.tɪdʒ/",
+        "wordType": "noun",
+        "meaningEn": "valued objects and qualities such as cultural traditions passed down",
+        "meaningVi": "di sản truyền thống",
+        "example": "Respecting family heritage is very important.",
+        "exampleVi": "Tôn trọng di sản gia đình là điều rất quan trọng."
+      },
+      {
+        "word": "reconciliation",
+        "phonetic": "/ˌrek.ən.ˌsɪl.i.ˈeɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "the restoration of friendly relations",
+        "meaningVi": "sự hòa giải, sự làm lành",
+        "example": "The brothers reached a reconciliation after years of dispute.",
+        "exampleVi": "Hai anh em đã tiến tới hòa giải sau nhiều năm tranh chấp."
+      }
+    ]
+  },
+  {
+    "id": "history",
+    "title": "Lịch sử & Văn hóa (History & Culture)",
+    "desc": "Từ vựng về lịch sử thế giới, các nền văn hóa, truyền thống và các di tích lịch sử.",
+    "color": "border-amber-200 bg-amber-50/50 text-amber-850 hover:border-amber-400 dark:bg-slate-900/50 dark:border-slate-800 dark:text-amber-450",
+    "beginner": [
+      {
+        "word": "history",
+        "phonetic": "/ˈhɪs.tər.i/",
+        "wordType": "noun",
+        "meaningEn": "the study of past events, particularly in human affairs",
+        "meaningVi": "lịch sử",
+        "example": "I love reading about world history.",
+        "exampleVi": "Tôi thích đọc về lịch sử thế giới."
+      },
+      {
+        "word": "culture",
+        "phonetic": "/ˈkʌl.tʃər/",
+        "wordType": "noun",
+        "meaningEn": "the arts and other manifestations of human intellectual achievement regarded collectively",
+        "meaningVi": "văn hóa",
+        "example": "Vietnam has a rich and diverse culture.",
+        "exampleVi": "Việt Nam có một nền văn hóa phong phú và đa dạng."
+      },
+      {
+        "word": "tradition",
+        "phonetic": "/trəˈdɪʃ.ən/",
+        "wordType": "noun",
+        "meaningEn": "the transmission of customs or beliefs from generation to generation",
+        "meaningVi": "truyền thống",
+        "example": "Making Banh Chung is a Tet tradition.",
+        "exampleVi": "Gói bánh chưng là một truyền thống ngày Tết."
+      },
+      {
+        "word": "museum",
+        "phonetic": "/mjuːˈziː.əm/",
+        "wordType": "noun",
+        "meaningEn": "a building in which objects of historical interest are stored and exhibited",
+        "meaningVi": "bảo tàng",
+        "example": "We visited the national history museum.",
+        "exampleVi": "Chúng tôi đã ghé thăm bảo tàng lịch sử quốc gia."
+      },
+      {
+        "word": "custom",
+        "phonetic": "/ˈkʌs.təm/",
+        "wordType": "noun",
+        "meaningEn": "a traditional and widely accepted way of behaving or doing something",
+        "meaningVi": "phong tục, tập quán",
+        "example": "Local customs differ by region.",
+        "exampleVi": "Phong tục địa phương khác nhau theo từng vùng."
+      },
+      {
+        "word": "ancient",
+        "phonetic": "/ˈeɪn.ʃənt/",
+        "wordType": "adj",
+        "meaningEn": "belonging to the very distant past",
+        "meaningVi": "cổ kính, cổ đại",
+        "example": "Rome is an ancient city with rich history.",
+        "exampleVi": "Rome là một thành phố cổ kính với lịch sử phong phú."
+      },
+      {
+        "word": "celebration",
+        "phonetic": "/ˌsel.əˈbreɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "the action of marking one's pleasure at an important event or occasion by festive activity",
+        "meaningVi": "sự kỷ niệm, lễ kỷ niệm",
+        "example": "New Year is a grand celebration globally.",
+        "exampleVi": "Năm mới là một lễ kỷ niệm lớn trên toàn cầu."
+      },
+      {
+        "word": "art",
+        "phonetic": "/ɑːt/",
+        "wordType": "noun",
+        "meaningEn": "the expression or application of human creative skill and imagination",
+        "meaningVi": "nghệ thuật",
+        "example": "She is studying traditional folk art.",
+        "exampleVi": "Cô ấy đang nghiên cứu nghệ thuật dân gian truyền thống."
+      },
+      {
+        "word": "hero",
+        "phonetic": "/ˈhɪə.rəʊ/",
+        "wordType": "noun",
+        "meaningEn": "a person who is admired for their courage, outstanding achievements, or noble qualities",
+        "meaningVi": "anh hùng",
+        "example": "Tran Hung Dao is a national hero of Vietnam.",
+        "exampleVi": "Trần Hưng Đạo là anh hùng dân tộc của Việt Nam."
+      },
+      {
+        "word": "event",
+        "phonetic": "/ɪˈvent/",
+        "wordType": "noun",
+        "meaningEn": "a thing that happens, especially one of importance",
+        "meaningVi": "sự kiện",
+        "example": "Historical events shape our present society.",
+        "exampleVi": "Các sự kiện lịch sử định hình xã hội hiện tại của chúng ta."
+      }
+    ],
+    "advanced": [
+      {
+        "word": "archaeology",
+        "phonetic": "/ˌɑː.kiˈɒl.ə.dʒi/",
+        "wordType": "noun",
+        "meaningEn": "the study of human history and prehistory through the excavation of sites",
+        "meaningVi": "khảo cổ học",
+        "example": "Archaeology reveals secrets about ancient societies.",
+        "exampleVi": "Khảo cổ học tiết lộ những bí mật về các xã hội cổ đại."
+      },
+      {
+        "word": "civilization",
+        "phonetic": "/ˌsɪv.ɪ.laɪˈzeɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "the stage of human social and cultural development and organization that is considered most advanced",
+        "meaningVi": "nền văn minh",
+        "example": "The Egyptian civilization was vast and powerful.",
+        "exampleVi": "Nền văn minh Ai Cập rất rộng lớn và quyền lực."
+      },
+      {
+        "word": "heritage",
+        "phonetic": "/ˈher.ɪ.tɪdʒ/",
+        "wordType": "noun",
+        "meaningEn": "a World Heritage site or cultural inheritance",
+        "meaningVi": "di sản văn hóa",
+        "example": "Hoi An is recognized as a World Heritage site.",
+        "exampleVi": "Hội An được công nhận là di sản văn hóa thế giới."
+      },
+      {
+        "word": "artifact",
+        "phonetic": "/ˈɑː.tɪ.fækt/",
+        "wordType": "noun",
+        "meaningEn": "an object made by a human being, typically of cultural or historical interest",
+        "meaningVi": "cổ vật, hiện vật lịch sử",
+        "example": "The museum displays rare golden artifacts.",
+        "exampleVi": "Bảo tàng trưng bày các cổ vật bằng vàng quý hiếm."
+      },
+      {
+        "word": "dynasty",
+        "phonetic": "/ˈdɪn.ə.sti/",
+        "wordType": "noun",
+        "meaningEn": "a line of hereditary rulers of a country",
+        "meaningVi": "triều đại",
+        "example": "The Ly dynasty ruled Vietnam for over two centuries.",
+        "exampleVi": "Triều đại nhà Lý đã trị vì Việt Nam trong hơn hai thế kỷ."
+      },
+      {
+        "word": "preservation",
+        "phonetic": "/ˌprez.əˈveɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "the action of preserving something",
+        "meaningVi": "sự bảo tồn, giữ gìn",
+        "example": "Cultural preservation is essential for our identity.",
+        "exampleVi": "Bảo tồn văn hóa là điều cốt yếu đối với bản sắc của chúng ta."
+      },
+      {
+        "word": "monument",
+        "phonetic": "/ˈmɒn.jə.mənt/",
+        "wordType": "noun",
+        "meaningEn": "a statue, building, or other structure erected to commemorate a famous person or event",
+        "meaningVi": "di tích, đài tưởng niệm",
+        "example": "This monument honors heroes who fought for freedom.",
+        "exampleVi": "Đài tưởng niệm này vinh danh những người anh hùng đã chiến đấu vì tự do."
+      },
+      {
+        "word": "patriotism",
+        "phonetic": "/ˈpæt.ri.ə.tɪ.zəm/",
+        "wordType": "noun",
+        "meaningEn": "devotion to and vigorous support for one's country",
+        "meaningVi": "lòng yêu nước",
+        "example": "Vietnamese patriotism runs deep throughout history.",
+        "exampleVi": "Lòng yêu nước của người Việt Nam chảy suốt dòng lịch sử."
+      },
+      {
+        "word": "mythology",
+        "phonetic": "/mɪˈθɒl.ə.dʒi/",
+        "wordType": "noun",
+        "meaningEn": "a collection of myths, especially one belonging to a particular religious or cultural tradition",
+        "meaningVi": "thần thoại học",
+        "example": "I enjoy studying ancient Greek mythology.",
+        "exampleVi": "Tôi thích nghiên cứu thần thoại Hy Lạp cổ đại."
+      },
+      {
+        "word": "renaissance",
+        "phonetic": "/rəˈneɪ.səns/",
+        "wordType": "noun",
+        "meaningEn": "the revival of European art and literature under the influence of classical models in the 14th–16th centuries",
+        "meaningVi": "thời kỳ Phục hưng",
+        "example": "The Renaissance was a period of great cultural growth.",
+        "exampleVi": "Thời kỳ Phục hưng là một giai đoạn phát triển văn hóa lớn."
+      }
+    ]
   }
 ];
