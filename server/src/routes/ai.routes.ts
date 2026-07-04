@@ -1099,4 +1099,45 @@ router.post('/analyze-stress', async (req, res) => {
   }
 });
 
+// AI Text-to-Speech (TTS) Proxy to bypass CORS / Referer restrictions
+router.get('/tts', async (req, res) => {
+  const { text } = req.query;
+  if (!text || typeof text !== 'string') {
+    return res.status(400).json({ error: 'Query parameter "text" is required' });
+  }
+
+  try {
+    const ttsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=${encodeURIComponent(text)}`;
+    const response = await fetch(ttsUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+      }
+    });
+
+    if (!response.ok) {
+      console.error(`[TTS Proxy] Google TTS responded with status: ${response.status}`);
+      return res.status(response.status).json({ error: 'Failed to fetch TTS from Google' });
+    }
+
+    res.setHeader('Content-Type', 'audio/mpeg');
+    res.setHeader('Cache-Control', 'public, max-age=86400'); // Cache for 1 day
+
+    if (response.body) {
+      const reader = response.body.getReader();
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        res.write(value);
+      }
+      res.end();
+    } else {
+      const buffer = await response.arrayBuffer();
+      res.send(Buffer.from(buffer));
+    }
+  } catch (err: any) {
+    console.error('[TTS Proxy] Error fetching audio:', err.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 export default router;

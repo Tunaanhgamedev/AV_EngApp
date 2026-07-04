@@ -559,12 +559,27 @@ export default function ListeningPage() {
   // Speak single word in Vocabulary Tab
   const speakSingleWord = (word: string) => {
     stopAudio();
-    if (typeof window !== 'undefined' && window.speechSynthesis) {
+    if (typeof window !== 'undefined' && window.speechSynthesis && !(window as any).__FORCE_SIMULATED_AUDIO__) {
       const newUtt = new SpeechSynthesisUtterance(word);
       newUtt.lang = 'en-US';
       newUtt.rate = 0.9;
+      newUtt.onerror = () => {
+        playSingleWordFallback(word);
+      };
       window.speechSynthesis.speak(newUtt);
+    } else {
+      playSingleWordFallback(word);
     }
+  };
+
+  const playSingleWordFallback = (word: string) => {
+    const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+    const url = `${apiBase}/ai/tts?text=${encodeURIComponent(word)}`;
+    const audio = new Audio(url);
+    audioRef.current = audio;
+    audio.play().catch(err => {
+      console.warn("Failed to play word pronunciation fallback:", err);
+    });
   };
 
   // Play simulated speech / subtitles when audio engines are blocked or unavailable
@@ -647,7 +662,8 @@ export default function ListeningPage() {
   };
 
   const playGoogleTts = (text: string, index: number) => {
-    const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=${encodeURIComponent(text)}`;
+    const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+    const url = `${apiBase}/ai/tts?text=${encodeURIComponent(text)}`;
     const audio = new Audio(url);
     audioRef.current = audio;
     audio.playbackRate = playbackRate;
