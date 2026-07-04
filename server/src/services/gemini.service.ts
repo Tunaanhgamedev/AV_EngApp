@@ -9,13 +9,96 @@ dotenv.config();
 export const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 
 export class GeminiService {
+  private static readonly models = [
+    "gemini-3.5-flash",
+    "gemini-3.1-flash-lite",
+    "gemini-2.5-flash",
+    "gemini-2.0-flash",
+    "gemini-flash-latest",
+    "gemini-1.5-flash",
+    "gemini-pro"
+  ];
+
+  /**
+   * Helper to execute content generation with a list of fallback models
+   */
+  private static async generateContentWithFallback(prompt: string, systemInstruction?: string): Promise<{ text: string; modelName: string }> {
+    let lastError = null;
+    for (const modelName of GeminiService.models) {
+      try {
+        console.log(`[GeminiService] Attempting generateContent with model: ${modelName}`);
+        const model = genAI.getGenerativeModel({
+          model: modelName,
+          ...(systemInstruction ? { systemInstruction } : {})
+        });
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        const text = response.text();
+        if (text && text.trim().length > 0) {
+          console.log(`[GeminiService] Success with model: ${modelName}`);
+          return { text, modelName };
+        }
+      } catch (err: any) {
+        console.warn(`[GeminiService] Model ${modelName} failed:`, err.message || err);
+        lastError = err;
+      }
+    }
+    throw lastError || new Error("All generative models failed or are busy");
+  }
+
+  /**
+   * Helper to parse JSON robustly, cleaning up markdown code blocks and wrapping text
+   */
+  private static cleanAndParseJson(text: string): any {
+    if (!text) throw new Error("Empty text input");
+    
+    let clean = text.trim();
+    
+    const jsonBlockRegex = /```(?:json)?\s*([\s\S]*?)\s*```/i;
+    const match = clean.match(jsonBlockRegex);
+    if (match && match[1]) {
+      clean = match[1].trim();
+    }
+    
+    const firstBrace = clean.indexOf('{');
+    const firstBracket = clean.indexOf('[');
+    const lastBrace = clean.lastIndexOf('}');
+    const lastBracket = clean.lastIndexOf(']');
+    
+    let startIndex = -1;
+    let endIndex = -1;
+    
+    if (firstBrace !== -1 && (firstBracket === -1 || firstBrace < firstBracket)) {
+      startIndex = firstBrace;
+      endIndex = lastBrace;
+    } else if (firstBracket !== -1) {
+      startIndex = firstBracket;
+      endIndex = lastBracket;
+    }
+    
+    if (startIndex !== -1 && endIndex !== -1 && endIndex > startIndex) {
+      clean = clean.substring(startIndex, endIndex + 1);
+    }
+    
+    try {
+      return JSON.parse(clean);
+    } catch (e: any) {
+      try {
+        const sanitized = clean
+          .replace(/,\s*([}\]])/g, '$1')
+          .replace(/'/g, '"');
+        return JSON.parse(sanitized);
+      } catch (innerErr) {
+        throw new Error(`Failed to parse JSON: ${e.message}. Raw text: ${text}`);
+      }
+    }
+  }
+
   /**
    * Analyze journal using EngBot (Powered by Gemini)
    */
   static async analyzeJournal(content: string) {
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
-
       const prompt = `
         You are EngBot, an expert AI English teacher. Analyze the following journal entry written by an English learner.
         
@@ -33,12 +116,8 @@ export class GeminiService {
         Respond ONLY with the JSON object.
       `;
 
-      const result = await model.generateContent(prompt);
-      const response = await result.response;
-      const text = response.text();
-
-      const jsonStr = text.replace(/```json|```/g, "").trim();
-      return JSON.parse(jsonStr);
+      const { text } = await GeminiService.generateContentWithFallback(prompt);
+      return GeminiService.cleanAndParseJson(text);
     } catch (error) {
       console.error('EngBot Analysis Error, using intelligent free fallback:', error);
 
@@ -157,6 +236,13 @@ Khi người học hỏi về dạng câu hỏi hoặc cách trả lời, hãy p
    - *Chiến lược*: Trình bày giả định (Hypothesis) → Hệ quả (Consequence) → Lý do (Rationalization).
 
 ═══════════════════════════════════
+🗣️ HƯỚNG DẪN GIAO TIẾP TỰ NHIÊN & TRÔI CHẢY (Conversation & Q&A Smoothness)
+═══════════════════════════════════
+- Hướng dẫn người học sử dụng các từ đệm tự nhiên (Conversation Fillers) như: "Well", "Actually", "To be honest", "You see", "By the way" để kéo dài thời gian suy nghĩ và nghe tự nhiên hơn.
+- Cung cấp các từ nối (Linkers) chỉ nguyên nhân, kết quả, sự đối lập để câu văn mượt mà hơn.
+- Khi người học đặt câu hỏi không trôi chảy hoặc có lỗi cấu trúc, trong phần 'tutorFeedback' hãy chỉ ra cách viết lại trơn tru hơn bằng bảng đối chiếu "Câu gốc của bạn" vs "Cách nói mượt mà tự nhiên".
+
+═══════════════════════════════════
 💡 CÁC KHUNG TRẢ LỜI BIỂU MẪU (Answer Blueprints)
 ═══════════════════════════════════
 Hướng dẫn người học trả lời theo các cấu trúc chuyên nghiệp sau:
@@ -226,7 +312,7 @@ Chỉ trả về JSON thuần túy, không chứa ký tự hay wrapper markdown 
 `;
 
       // Try models in priority order for absolute stability
-      const models = ["gemini-flash-latest", "gemini-2.0-flash", "gemini-1.5-flash", "gemini-pro"];
+      const models = GeminiService.models;
       let lastError = null;
       let text = "";
 
@@ -257,8 +343,7 @@ Chỉ trả về JSON thuần túy, không chứa ký tự hay wrapper markdown 
         throw lastError || new Error("All chat generative models failed or are busy");
       }
 
-      const jsonStr = text.replace(/```json|```/g, "").trim();
-      const responseData = JSON.parse(jsonStr);
+      const responseData = GeminiService.cleanAndParseJson(text);
 
       // Proactive detection: If the bot returns a message indicating it couldn't resolve/answer
       const lowerMessage = (responseData.aiMessage || "").toLowerCase();
@@ -437,6 +522,82 @@ Chỉ trả về JSON thuần túy, không chứa ký tự hay wrapper markdown 
       }
       if (cleanInput.includes("in night") || cleanInput.includes("on night")) {
         offlineCorrections.push({ error: cleanInput.includes("in night") ? "in night" : "on night", fix: "at night", explanation: "Đi với buổi tối muộn 'night' ta dùng giới từ 'at' và không dùng mạo từ 'the': 'at night'." });
+      }
+
+      // Uncountable nouns plural error
+      if (cleanInput.includes("homeworks")) {
+        offlineCorrections.push({ error: "homeworks", fix: "homework", explanation: "Danh từ 'homework' là danh từ không đếm được, không thêm s/es ở dạng số nhiều." });
+      }
+      if (cleanInput.includes("vocabularies") || cleanInput.includes("vocabularys")) {
+        offlineCorrections.push({ error: cleanInput.includes("vocabularies") ? "vocabularies" : "vocabularys", fix: "vocabulary / vocabulary words", explanation: "Danh từ 'vocabulary' thường được dùng làm danh từ không đếm được khi nói về vốn từ vựng chung." });
+      }
+      if (cleanInput.includes("informations")) {
+        offlineCorrections.push({ error: "informations", fix: "information", explanation: "Danh từ 'information' là danh từ không đếm được, không có dạng số nhiều 'informations'." });
+      }
+
+      // No + verb error (common in Vietnamese learners)
+      if (cleanInput.includes("i no like") || cleanInput.includes("i no care") || cleanInput.includes("i no know") || cleanInput.includes("i no want")) {
+        const verb = cleanInput.includes("like") ? "like" : cleanInput.includes("care") ? "care" : cleanInput.includes("know") ? "know" : "want";
+        offlineCorrections.push({ error: `no ${verb}`, fix: `don't ${verb}`, explanation: "Trong tiếng Anh phủ định của động từ thường cần sử dụng trợ động từ (don't/doesn't), không dùng trực tiếp 'no'." });
+      }
+      if (cleanInput.includes("i no have")) {
+        offlineCorrections.push({ error: "no have", fix: "don't have", explanation: "Cần dùng trợ động từ phủ định 'don't have' thay vì 'no have'." });
+      }
+
+      // Double comparatives
+      if (cleanInput.includes("more better")) {
+        offlineCorrections.push({ error: "more better", fix: "better", explanation: "Tính từ so sánh hơn của 'good' là 'better', không dùng thêm 'more' đằng trước." });
+      }
+      if (cleanInput.includes("more easier")) {
+        offlineCorrections.push({ error: "more easier", fix: "easier", explanation: "Tính từ ngắn kết thúc bằng 'y' đổi thành 'ier' (easier) khi so sánh hơn, không dùng thêm 'more'." });
+      }
+      if (cleanInput.includes("more faster")) {
+        offlineCorrections.push({ error: "more faster", fix: "faster", explanation: "Tính từ ngắn thêm 'er' (faster) khi so sánh hơn, không dùng thêm 'more'." });
+      }
+      if (cleanInput.includes("more taller")) {
+        offlineCorrections.push({ error: "more taller", fix: "taller", explanation: "Tính từ ngắn thêm 'er' (taller) khi so sánh hơn, không dùng thêm 'more'." });
+      }
+
+      // Avoid / mind / keep + to V
+      if (cleanInput.includes("avoid to ")) {
+        offlineCorrections.push({ error: "avoid to [verb]", fix: "avoid [verb]-ing", explanation: "Sau động từ 'avoid' yêu cầu động từ theo sau ở dạng 'V-ing' (tránh làm gì)." });
+      }
+      if (cleanInput.includes("mind to ")) {
+        offlineCorrections.push({ error: "mind to [verb]", fix: "mind [verb]-ing", explanation: "Sau động từ 'mind' yêu cầu động từ theo sau ở dạng 'V-ing' (phiền/ngại làm gì)." });
+      }
+      if (cleanInput.includes("keep to ")) {
+        offlineCorrections.push({ error: "keep to [verb]", fix: "keep [verb]-ing", explanation: "Sau động từ 'keep' yêu cầu động từ theo sau ở dạng 'V-ing' (tiếp tục làm gì)." });
+      }
+
+      // Subject-verb agreement / plural people
+      if (cleanInput.includes("people is")) {
+        offlineCorrections.push({ error: "people is", fix: "people are", explanation: "Danh từ 'people' (mọi người) luôn là danh từ số nhiều, cần đi với động từ số nhiều 'are'." });
+      }
+      if (cleanInput.includes("every people")) {
+        offlineCorrections.push({ error: "every people", fix: "everyone / every person", explanation: "Sau 'every' cần danh từ số ít (every person) hoặc dùng đại từ bất định (everyone/everybody)." });
+      }
+
+      // Preposition errors
+      if (cleanInput.includes("afraid about")) {
+        offlineCorrections.push({ error: "afraid about", fix: "afraid of", explanation: "Tính từ 'afraid' đi với giới từ 'of' (lo sợ về cái gì)." });
+      }
+      if (cleanInput.includes("agree of")) {
+        offlineCorrections.push({ error: "agree of", fix: "agree with", explanation: "Động từ 'agree' đi với giới từ 'with' (đồng ý với ai/cái gì) hoặc 'to' (đồng ý với đề xuất)." });
+      }
+      if (cleanInput.includes("congratulate about")) {
+        offlineCorrections.push({ error: "congratulate about", fix: "congratulate on", explanation: "Động từ 'congratulate' đi với giới từ 'on' (chúc mừng về điều gì)." });
+      }
+      if (cleanInput.includes("insist in")) {
+        offlineCorrections.push({ error: "insist in", fix: "insist on", explanation: "Cụm động từ đúng là 'insist on' (khăng khăng làm gì)." });
+      }
+      if (cleanInput.includes("successful at") || cleanInput.includes("successful of")) {
+        offlineCorrections.push({ error: cleanInput.includes("successful at") ? "successful at" : "successful of", fix: "successful in", explanation: "Tính từ 'successful' đi với giới từ 'in' (thành công trong lĩnh vực/việc gì)." });
+      }
+      if (cleanInput.includes("think to ") && !cleanInput.includes("think to myself") && !cleanInput.includes("think to be")) {
+        offlineCorrections.push({ error: "think to", fix: "think of / think about", explanation: "Khi nói về suy nghĩ về ai/cái gì, dùng 'think of' hoặc 'think about'." });
+      }
+      if (cleanInput.includes("thank about")) {
+        offlineCorrections.push({ error: "thank about", fix: "thank for", explanation: "Cấu trúc đúng là 'thank someone for something' (cảm ơn ai vì cái gì)." });
       }
 
       let correctionsHeader = "";
@@ -1384,8 +1545,6 @@ ${wordList}
    */
   static async generateToeicPractice(part: number) {
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
-
       const prompt = `
         Bạn là chuyên gia ra đề thi TOEIC. Hãy tạo một đề luyện tập TOEIC Part ${part} gồm 5 câu hỏi chất lượng cao, bám sát cấu trúc đề thi thật mới nhất.
         
@@ -1415,12 +1574,8 @@ ${wordList}
         }
       `;
 
-      const result = await model.generateContent(prompt);
-      const response = await result.response;
-      const text = response.text();
-
-      const jsonStr = text.replace(/```json|```/g, "").trim();
-      return JSON.parse(jsonStr);
+      const { text } = await GeminiService.generateContentWithFallback(prompt);
+      return GeminiService.cleanAndParseJson(text);
     } catch (error: any) {
       console.error(`Generate TOEIC Practice Part ${part} Error, using high-quality local fallback:`, error.message || error);
       
@@ -1492,8 +1647,6 @@ ${wordList}
    */
   static async generateIeltsPractice(skill: string) {
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
-
       const prompt = `
         Bạn là chuyên gia khảo thí IELTS quốc tế. Hãy tạo một bài luyện tập IELTS cho kĩ năng "${skill}" chất lượng cao, bám sát định dạng bài thi thật.
         
@@ -1519,12 +1672,8 @@ ${wordList}
         }
       `;
 
-      const result = await model.generateContent(prompt);
-      const response = await result.response;
-      const text = response.text();
-
-      const jsonStr = text.replace(/```json|```/g, "").trim();
-      return JSON.parse(jsonStr);
+      const { text } = await GeminiService.generateContentWithFallback(prompt);
+      return GeminiService.cleanAndParseJson(text);
     } catch (error: any) {
       console.error(`Generate IELTS Practice ${skill} Error, using local fallback:`, error.message || error);
       
