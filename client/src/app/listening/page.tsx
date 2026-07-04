@@ -476,6 +476,7 @@ export default function ListeningPage() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const shadowingInterval = useRef<ReturnType<typeof setInterval> | null>(null);
   const simulatedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
   
   // Audio state
   const [isSimulatedAudio, setIsSimulatedAudio] = useState(false);
@@ -535,11 +536,43 @@ export default function ListeningPage() {
     return () => stopAudio();
   }, []);
 
+  // Playback timer effect to increment elapsed time smoothly
+  useEffect(() => {
+    let intervalId: ReturnType<typeof setInterval> | null = null;
+    
+    if (isPlaying) {
+      intervalId = setInterval(() => {
+        setElapsed(prev => {
+          const totalSec = getLessonDurationInSeconds(selected);
+          if (prev >= totalSec) {
+            if (intervalId) clearInterval(intervalId);
+            setProgress(100);
+            return totalSec;
+          }
+          const nextVal = prev + 1;
+          setProgress(Math.min(100, Math.round((nextVal / totalSec) * 100)));
+          return nextVal;
+        });
+      }, 1000);
+    }
+    
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [isPlaying, selected]);
+
   const stopAudio = () => {
     if (typeof window !== 'undefined') {
+      if (utteranceRef.current) {
+        utteranceRef.current.onend = null;
+        utteranceRef.current.onerror = null;
+        utteranceRef.current = null;
+      }
       window.speechSynthesis?.cancel();
     }
     if (audioRef.current) {
+      audioRef.current.onended = null;
+      audioRef.current.onerror = null;
       audioRef.current.pause();
       audioRef.current = null;
     }
@@ -554,6 +587,26 @@ export default function ListeningPage() {
   const getDurationInSeconds = (dur: string) => {
     const [m, s] = dur.split(':').map(Number);
     return m * 60 + s;
+  };
+
+  const getLessonDurationInSeconds = (les: Lesson) => {
+    if (!les.transcript || les.transcript.length === 0) return 0;
+    const lastLine = les.transcript[les.transcript.length - 1];
+    const lastLineWords = lastLine.text.split(/\s+/).length;
+    const lastLineDuration = Math.ceil(lastLineWords * 0.4 + 2);
+    return lastLine.time + lastLineDuration;
+  };
+
+  const getLineIndexForTime = (sec: number) => {
+    let activeIdx = 0;
+    for (let i = 0; i < selected.transcript.length; i++) {
+      if (selected.transcript[i].time <= sec) {
+        activeIdx = i;
+      } else {
+        break;
+      }
+    }
+    return activeIdx;
   };
 
   // Speak single word in Vocabulary Tab
@@ -600,7 +653,7 @@ export default function ListeningPage() {
       } else {
         setIsPlaying(false);
         setProgress(100);
-        setElapsed(getDurationInSeconds(selected.duration));
+        setElapsed(getLessonDurationInSeconds(selected));
         setIsSimulatedAudio(false);
         if (!completedLessons.includes(selected.id)) {
           const updated = [...completedLessons, selected.id];
@@ -614,15 +667,21 @@ export default function ListeningPage() {
   // Play line by line recursively
   const playLine = (index: number) => {
     if (typeof window === 'undefined') return;
+    
+    // Stop any ongoing playback resources before starting a new line
+    stopAudio();
+
     setActiveLine(index);
-    setProgress(Math.round((index / selected.transcript.length) * 100));
-    setElapsed(Math.round((index / selected.transcript.length) * getDurationInSeconds(selected.duration)));
+    const totalSec = getLessonDurationInSeconds(selected);
+    const lineTime = selected.transcript[index].time;
+    setElapsed(lineTime);
+    setProgress(totalSec > 0 ? Math.min(100, Math.round((lineTime / totalSec) * 100)) : 0);
 
     const lineText = selected.transcript[index].text;
 
     if (window.speechSynthesis && !(window as any).__FORCE_SIMULATED_AUDIO__) {
-      window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(lineText);
+      utteranceRef.current = utterance;
       utterance.lang = 'en-US';
       utterance.rate = playbackRate;
       
@@ -640,7 +699,7 @@ export default function ListeningPage() {
         } else {
           setIsPlaying(false);
           setProgress(100);
-          setElapsed(getDurationInSeconds(selected.duration));
+          setElapsed(getLessonDurationInSeconds(selected));
           // Mark lesson complete
           if (!completedLessons.includes(selected.id)) {
             const updated = [...completedLessons, selected.id];
@@ -675,7 +734,7 @@ export default function ListeningPage() {
       } else {
         setIsPlaying(false);
         setProgress(100);
-        setElapsed(getDurationInSeconds(selected.duration));
+        setElapsed(getLessonDurationInSeconds(selected));
         if (!completedLessons.includes(selected.id)) {
           const updated = [...completedLessons, selected.id];
           saveCompleted(updated);
@@ -722,11 +781,12 @@ export default function ListeningPage() {
     if (activeLine + 1 < selected.transcript.length) {
       const next = activeLine + 1;
       setActiveLine(next);
+      const totalSec = getLessonDurationInSeconds(selected);
+      const nextTime = selected.transcript[next].time;
+      setElapsed(nextTime);
+      setProgress(totalSec > 0 ? Math.min(100, Math.round((nextTime / totalSec) * 100)) : 0);
       if (isPlaying) {
         playLine(next);
-      } else {
-        setProgress(Math.round((next / selected.transcript.length) * 100));
-        setElapsed(Math.round((next / selected.transcript.length) * getDurationInSeconds(selected.duration)));
       }
     }
   };
@@ -735,31 +795,28 @@ export default function ListeningPage() {
     if (activeLine > 0) {
       const prev = activeLine - 1;
       setActiveLine(prev);
+      const totalSec = getLessonDurationInSeconds(selected);
+      const prevTime = selected.transcript[prev].time;
+      setElapsed(prevTime);
+      setProgress(totalSec > 0 ? Math.min(100, Math.round((prevTime / totalSec) * 100)) : 0);
       if (isPlaying) {
         playLine(prev);
-      } else {
-        setProgress(Math.round((prev / selected.transcript.length) * 100));
-        setElapsed(Math.round((prev / selected.transcript.length) * getDurationInSeconds(selected.duration)));
       }
     } else {
       handleRestart();
     }
   };
 
-  // Speak one single line directly from transcript click
+  // Speak one single line directly from transcript click and continue playback
   const handleLineClick = (text: string, index: number) => {
     stopAudio();
     setActiveLine(index);
-    if (window.speechSynthesis) {
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'en-US';
-      utterance.rate = playbackRate;
-      window.speechSynthesis.speak(utterance);
-    } else {
-      const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=${encodeURIComponent(text)}`;
-      const audio = new Audio(url);
-      audio.play().catch(e => console.error(e));
-    }
+    const totalSec = getLessonDurationInSeconds(selected);
+    const lineTime = selected.transcript[index].time;
+    setElapsed(lineTime);
+    setProgress(totalSec > 0 ? Math.min(100, Math.round((lineTime / totalSec) * 100)) : 0);
+    setIsPlaying(true);
+    playLine(index);
   };
 
   // ─── Dictation check ────────────────────────────────────────────────────────
@@ -962,7 +1019,7 @@ export default function ListeningPage() {
                   <span className="px-3 py-1 bg-white/20 backdrop-blur-md text-white text-[10px] font-black rounded-lg uppercase tracking-wider">{selected.level}</span>
                   <span className="px-3 py-1 bg-white/20 backdrop-blur-md text-white text-[10px] font-black rounded-lg uppercase tracking-wider">{selected.category}</span>
                   <span className="px-3 py-1 bg-white/20 backdrop-blur-md text-white text-[10px] font-black rounded-lg uppercase tracking-wider flex items-center gap-1">
-                    <Clock className="w-3 h-3" /> {selected.duration}
+                    <Clock className="w-3 h-3" /> {formatTime(getLessonDurationInSeconds(selected))}
                   </span>
                   {isSimulatedAudio && (
                     <span className="px-3 py-1 bg-amber-500 text-white text-[10px] font-black rounded-lg uppercase tracking-wider flex items-center gap-1 animate-pulse shadow-sm shadow-amber-500/30">
@@ -1019,19 +1076,22 @@ export default function ListeningPage() {
               <div className="space-y-2.5">
                 <div className="flex justify-between text-xs font-black text-slate-400">
                   <span>{formatTime(elapsed)}</span>
-                  <span>{selected.duration}</span>
+                  <span>{formatTime(getLessonDurationInSeconds(selected))}</span>
                 </div>
                 <div 
                   className="relative h-2 bg-slate-100 rounded-full cursor-pointer group" 
                   onClick={(e) => {
                     const rect = e.currentTarget.getBoundingClientRect();
                     const pct = ((e.clientX - rect.left) / rect.width);
-                    const totalSec = getDurationInSeconds(selected.duration);
-                    const nextLine = Math.round(pct * selected.transcript.length);
-                    const finalLine = Math.max(0, Math.min(selected.transcript.length - 1, nextLine));
+                    const totalSec = getLessonDurationInSeconds(selected);
+                    const clickedSec = Math.max(0, Math.min(totalSec, Math.round(pct * totalSec)));
+                    
+                    const finalLine = getLineIndexForTime(clickedSec);
+                    
                     setActiveLine(finalLine);
-                    setProgress(Math.round((finalLine / selected.transcript.length) * 100));
-                    setElapsed(Math.round((finalLine / selected.transcript.length) * totalSec));
+                    setElapsed(clickedSec);
+                    setProgress(totalSec > 0 ? Math.min(100, Math.round((clickedSec / totalSec) * 100)) : 0);
+                    
                     if (isPlaying) {
                       playLine(finalLine);
                     }
@@ -1458,7 +1518,7 @@ export default function ListeningPage() {
                           )}
                         </div>
                         <p className="text-[10px] font-black text-slate-400 uppercase tracking-wider mt-1">
-                          {lesson.category} · {lesson.duration}
+                          {lesson.category} · {formatTime(getLessonDurationInSeconds(lesson))}
                         </p>
                         {score !== undefined && (
                           <span className="inline-block mt-1 text-[9px] font-black bg-violet-100 text-violet-700 px-1.5 py-0.5 rounded">
