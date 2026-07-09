@@ -124,9 +124,21 @@ export class GeminiService {
       const normalizedMessage = message.toLowerCase();
 
       for (const dir of dirs) {
-        if (normalizedMessage.includes(dir.toLowerCase()) ||
-            (dir.includes('-') && dir.split('-').every(part => part.length > 2 && normalizedMessage.includes(part)))) {
+        const dirLower = dir.toLowerCase();
+        if (normalizedMessage.includes(dirLower)) {
           matchedDirs.push(dir);
+        } else if (dir.includes('-')) {
+          const parts = dirLower.split('-');
+          const allPartsMatch = parts.every(part => {
+            if (part.length <= 3) {
+              const regex = new RegExp(`\\b${part}\\b`, 'i');
+              return regex.test(normalizedMessage);
+            }
+            return normalizedMessage.includes(part);
+          });
+          if (allPartsMatch) {
+            matchedDirs.push(dir);
+          }
         }
       }
 
@@ -146,6 +158,17 @@ export class GeminiService {
           'security': 'ai-engineering-toolkit',
           'ml': 'ai-ml',
           'mcp': 'ai-dev-jobs-mcp',
+          'jobs': 'ai-dev-jobs-mcp',
+          'engineer': 'ai-engineer',
+          'loop': 'ai-loop',
+          'md': 'ai-md',
+          'markdown': 'ai-md',
+          'cli': 'ai-native-cli',
+          'native': 'ai-native-cli',
+          'product': 'ai-product',
+          'studio': 'ai-studio-image',
+          'image': 'ai-studio-image',
+          'wrapper': 'ai-wrapper-product',
         };
 
         for (const [key, dirName] of Object.entries(aliasMap)) {
