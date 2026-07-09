@@ -5,7 +5,7 @@ import {
   MessageSquare, Send, User as UserIcon, Bot, Sparkles, RotateCcw, 
   ChevronLeft, Coffee, Briefcase, Plane, ShoppingBag, Mic, MicOff,
   Loader2, LogIn, Zap, BookOpen, Languages, PenTool, GraduationCap,
-  Lightbulb, History, X, Trash2, Plus
+  Lightbulb, History, X, Trash2, Plus, Cpu
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { sendMessage } from '@/services/chat.service';
@@ -61,6 +61,39 @@ const SCENARIOS: Scenario[] = [
     icon: ShoppingBag, color: 'from-rose-500 to-pink-600',
     persona: 'A store clerk at a clothing store.',
     scenario: 'You bought a shirt yesterday but it has a small hole. You want a refund.'
+  }
+];
+
+const TECH_SCENARIOS: Scenario[] = [
+  {
+    id: 'ai_agents_architect', title: 'AI Agents Architect', titleVi: 'Kiến trúc sư Agent AI',
+    icon: Cpu, color: 'from-violet-500 to-purple-600',
+    persona: 'EngBot, an expert AI Agent Systems Architect and technical coach.',
+    scenario: 'Luyện tập thảo luận và thiết kế hệ thống multi-agent, ReAct loop, supervisor pattern và checkpoint recovery theo tài liệu ai-agents-architect.'
+  },
+  {
+    id: 'senior_fullstack', title: 'Senior Fullstack Dev', titleVi: 'Lập trình viên Fullstack Cấp cao',
+    icon: Briefcase, color: 'from-indigo-500 to-blue-600',
+    persona: 'EngBot, a veteran Senior Fullstack Engineer and software architect.',
+    scenario: 'Thảo luận về kiến trúc phần mềm, nguyên tắc clean code, codebase design, và giải quyết nợ kỹ thuật (technical debt) trong dự án web hiện đại.'
+  },
+  {
+    id: 'ui_ux_pro', title: 'UI/UX Pro Max', titleVi: 'Thiết kế Giao diện Cao cấp',
+    icon: Sparkles, color: 'from-pink-500 to-rose-600',
+    persona: 'EngBot, a senior UI/UX Design Specialist and frontend reviewer.',
+    scenario: 'Thảo luận và thiết kế giao diện đa thiết bị, responsive layouts, micro-animations, glassmorphism và tối ưu hóa visual premium feel.'
+  },
+  {
+    id: 'n8n_automation', title: 'n8n Automation & JS', titleVi: 'Tự động hóa n8n & Javascript',
+    icon: Zap, color: 'from-amber-500 to-yellow-600',
+    persona: 'EngBot, a workflow automation expert and senior Javascript developer.',
+    scenario: 'Thảo luận về viết custom Javascript node trong n8n, tối ưu hóa bộ nhớ, xử lý error handling và quản lý state trong workflow tự động hóa.'
+  },
+  {
+    id: 'copywriting_seo', title: 'Copywriting & SEO', titleVi: 'Viết nội dung quảng cáo & SEO',
+    icon: BookOpen, color: 'from-teal-500 to-emerald-600',
+    persona: 'EngBot, a professional copywriter, digital marketer and SEO specialist.',
+    scenario: 'Luyện tập tối ưu hóa nội dung tiếp thị, viết blog post chuẩn SEO, meta descriptions và phân tích search intent của người dùng.'
   }
 ];
 
@@ -274,7 +307,7 @@ export default function ChatPage() {
                 </div>
                 <button
                   onClick={() => {
-                    const sc = SCENARIOS.find(x => x.title === s.title);
+                    const sc = SCENARIOS.find(x => x.title === s.title) || TECH_SCENARIOS.find(x => x.title === s.title);
                     if (sc) { setSelectedScenario(sc); setMessages(s.messages); }
                   }}
                   className="px-3 py-1.5 text-xs font-bold text-primary hover:bg-primary/10 rounded-lg transition-colors cursor-pointer flex-shrink-0"
@@ -287,33 +320,76 @@ export default function ChatPage() {
         )}
 
         {/* Scenario grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 pt-4">
-          {SCENARIOS.map((scenario) => {
-            const Icon = scenario.icon;
-            return (
-              <button
-                key={scenario.id}
-                onClick={() => handleStartScenario(scenario)}
-                className={cn(
-                  "premium-card p-5 sm:p-6 text-left group hover:shadow-lg transition-all cursor-pointer",
-                  "flex items-start gap-3 sm:gap-4 active:scale-[0.98]",
-                  scenario.id === 'free_chat' && "sm:col-span-2"
-                )}
-              >
-                <div className={cn(
-                  "p-2.5 sm:p-3 rounded-xl bg-gradient-to-br text-white shadow-md flex-shrink-0",
-                  scenario.color
-                )}>
-                  <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
-                </div>
-                <div className="min-w-0">
-                  <h3 className="font-bold text-base sm:text-lg mb-0.5 text-slate-800 dark:text-slate-100">{scenario.title}</h3>
-                  <p className="text-xs text-slate-400 font-medium mb-1">{scenario.titleVi}</p>
-                  <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed line-clamp-2">{scenario.scenario}</p>
-                </div>
-              </button>
-            );
-          })}
+        <div className="space-y-4 pt-2">
+          <h2 className="text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+            <MessageSquare className="w-5 h-5 text-primary" />
+            Tình huống Giao tiếp Thực tế
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+            {SCENARIOS.map((scenario) => {
+              const Icon = scenario.icon;
+              return (
+                <button
+                  key={scenario.id}
+                  onClick={() => handleStartScenario(scenario)}
+                  className={cn(
+                    "premium-card p-5 sm:p-6 text-left group hover:shadow-lg transition-all cursor-pointer",
+                    "flex items-start gap-3 sm:gap-4 active:scale-[0.98]",
+                    scenario.id === 'free_chat' && "sm:col-span-2"
+                  )}
+                >
+                  <div className={cn(
+                    "p-2.5 sm:p-3 rounded-xl bg-gradient-to-br text-white shadow-md flex-shrink-0",
+                    scenario.color
+                  )}>
+                    <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="font-bold text-base sm:text-lg mb-0.5 text-slate-800 dark:text-slate-100">{scenario.title}</h3>
+                    <p className="text-xs text-slate-400 font-medium mb-1">{scenario.titleVi}</p>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed line-clamp-2">{scenario.scenario}</p>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Technical Coaching Grid */}
+        <div className="space-y-4 pt-6 border-t border-slate-100 dark:border-slate-800">
+          <div className="space-y-1">
+            <h2 className="text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+              <Cpu className="w-5 h-5 text-indigo-500" />
+              Luyện tập Kỹ thuật & Chuyên môn (Awesome-Skills RAG)
+            </h2>
+            <p className="text-xs text-slate-400 font-medium">
+              Các chủ đề này tự động nạp tri thức chuyên sâu từ tài liệu Awesome-Skills để phân tích và hỗ trợ bạn.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+            {TECH_SCENARIOS.map((scenario) => {
+              const Icon = scenario.icon;
+              return (
+                <button
+                  key={scenario.id}
+                  onClick={() => handleStartScenario(scenario)}
+                  className="premium-card p-5 sm:p-6 text-left group hover:shadow-lg transition-all cursor-pointer flex items-start gap-3 sm:gap-4 active:scale-[0.98]"
+                >
+                  <div className={cn(
+                    "p-2.5 sm:p-3 rounded-xl bg-gradient-to-br text-white shadow-md flex-shrink-0",
+                    scenario.color
+                  )}>
+                    <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="font-bold text-base sm:text-lg mb-0.5 text-slate-800 dark:text-slate-100">{scenario.title}</h3>
+                    <p className="text-xs text-slate-400 font-medium mb-1">{scenario.titleVi}</p>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed line-clamp-2">{scenario.scenario}</p>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
     );

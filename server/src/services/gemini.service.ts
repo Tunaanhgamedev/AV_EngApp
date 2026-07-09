@@ -129,59 +129,82 @@ export class GeminiService {
           matchedDirs.push(dir);
         } else if (dir.includes('-')) {
           const parts = dirLower.split('-');
-          const allPartsMatch = parts.every(part => {
+          const minMatch = parts.length > 3 ? 2 : parts.length;
+          let matchCount = 0;
+          for (const part of parts) {
             if (part.length <= 3) {
               const regex = new RegExp(`\\b${part}\\b`, 'i');
-              return regex.test(normalizedMessage);
+              if (regex.test(normalizedMessage)) matchCount++;
+            } else {
+              if (normalizedMessage.includes(part)) matchCount++;
             }
-            return normalizedMessage.includes(part);
-          });
-          if (allPartsMatch) {
+          }
+          if (matchCount >= minMatch) {
             matchedDirs.push(dir);
           }
         }
       }
 
-      // Fallback matching for common keywords/aliases
-      if (matchedDirs.length === 0) {
-        const aliasMap: { [key: string]: string } = {
-          'agent': 'ai-agents-architect',
-          'rag': 'ai-engineering-toolkit',
-          'prompt': 'ai-engineering-toolkit',
-          'seo': 'ai-seo',
-          'brainstorm': 'brainstorming',
-          'clean code': 'ai-analyzer',
-          'refactor': 'ai-analyzer',
-          'responsive': 'ai-wrapper-product',
-          'ui/ux': 'ai-wrapper-product',
-          'audit': 'ai-engineering-toolkit',
-          'security': 'ai-engineering-toolkit',
-          'ml': 'ai-ml',
-          'mcp': 'ai-dev-jobs-mcp',
-          'jobs': 'ai-dev-jobs-mcp',
-          'engineer': 'ai-engineer',
-          'loop': 'ai-loop',
-          'md': 'ai-md',
-          'markdown': 'ai-md',
-          'cli': 'ai-native-cli',
-          'native': 'ai-native-cli',
-          'product': 'ai-product',
-          'studio': 'ai-studio-image',
-          'image': 'ai-studio-image',
-          'wrapper': 'ai-wrapper-product',
-        };
+      // Alias map matching (always run to collect all relevant context)
+      const aliasMap: { [key: string]: string } = {
+        'agent': 'ai-agents-architect',
+        'rag': 'ai-engineering-toolkit',
+        'prompt': 'ai-engineering-toolkit',
+        'seo': 'ai-seo',
+        'brainstorming': 'brainstorming',
+        'brainstorm': 'brainstorming',
+        'clean code': 'clean-code',
+        'clean-code': 'clean-code',
+        'codebase cleanup': 'codebase-cleanup-refactor-clean',
+        'refactor': 'codebase-cleanup-refactor-clean',
+        'codebase design': 'codebase-design',
+        'copywriting': 'copywriting',
+        'data engineer': 'data-engineer',
+        'debugger': 'debugger',
+        'debugging strategies': 'debugging-strategies',
+        'debugging': 'debugging-strategies',
+        'design it': 'design-it',
+        'frontend developer': 'frontend-developer',
+        'frontend': 'frontend-developer',
+        'ai assistant': 'llm-application-dev-ai-assistant',
+        'llm assistant': 'llm-application-dev-ai-assistant',
+        'app patterns': 'llm-app-patterns',
+        'llm app': 'llm-app-patterns',
+        'structured output': 'llm-structured-output',
+        'logic fix': 'logic-fix-all',
+        'logic-fix': 'logic-fix-all',
+        'n8n': 'n8n-code-javascript',
+        'n8n javascript': 'n8n-code-javascript',
+        'senior fullstack': 'senior-fullstack',
+        'fullstack': 'senior-fullstack',
+        'skill developer': 'skill-developer',
+        'ui skills': 'ui-skills',
+        'ui-ux pro': 'ui-ux-pro-max',
+        'ui ux pro': 'ui-ux-pro-max',
+        'web project': 'web-project-brainstorming',
+        'wrapper': 'ai-wrapper-product',
+        'mcp': 'ai-dev-jobs-mcp',
+        'jobs': 'ai-dev-jobs-mcp',
+        'loop': 'ai-loop',
+        'md': 'ai-md',
+        'ml': 'ai-ml',
+        'cli': 'ai-native-cli',
+        'native': 'ai-native-cli',
+        'product': 'ai-product',
+        'studio': 'ai-studio-image',
+        'image': 'ai-studio-image',
+      };
 
-        for (const [key, dirName] of Object.entries(aliasMap)) {
-          if (normalizedMessage.includes(key)) {
-            matchedDirs.push(dirName);
-          }
+      for (const [key, dirName] of Object.entries(aliasMap)) {
+        if (normalizedMessage.includes(key)) {
+          matchedDirs.push(dirName);
         }
       }
 
       if (matchedDirs.length === 0) return '';
 
       // De-duplicate matched directories
-      const uniqueMatched = Array.from(new Set(matchedDirs)).slice(0, 2);
+      const uniqueMatched = Array.from(new Set(matchedDirs)).slice(0, 3);
       let context = '\n═══════════════════════════════════\n💡 DYNAMIC SKILL KNOWLEDGE BASE CONTEXT (RAG)\n═══════════════════════════════════\n';
       
       for (const dir of uniqueMatched) {
@@ -295,7 +318,8 @@ export class GeminiService {
       }
 
       const lastUserMessage = messages[messages.length - 1]?.content || "";
-      const skillContext = await GeminiService.retrieveSkillContext(lastUserMessage);
+      const searchKey = `${lastUserMessage} ${persona} ${scenario}`;
+      const skillContext = await GeminiService.retrieveSkillContext(searchKey);
 
       let systemInstruction = `
 Bạn là EngBot — Chuyên Gia Ngôn Ngữ & Huấn Luyện Viên Tiếng Anh Học Thuật/Giao Tiếp Quốc Tế. Bạn được huấn luyện chuyên sâu theo các phương pháp giảng dạy hiện đại (CLT - Communicative Language Teaching, Lexical Approach, và Task-Based Learning). Nhiệm vụ của bạn là hướng dẫn người học từ cấp độ cơ bản đến làm việc thực tế trong các môi trường doanh nghiệp quốc tế và chuyên ngành công nghệ cao.
