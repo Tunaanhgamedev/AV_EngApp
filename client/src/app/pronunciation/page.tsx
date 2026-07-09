@@ -958,8 +958,139 @@ function predictVerbFormFromClue(clue: string, verb: string = 'eat') {
   return { predictedForm, predictedAnswer, ruleName, explanation, sampleSentence };
 }
 
+const QUESTION_TYPES_DATA = [
+  {
+    type: 'Yes/No Questions',
+    title: 'Câu hỏi Có/Không (Yes/No Questions)',
+    desc: 'Yêu cầu câu trả lời Có (Yes) hoặc Không (No).',
+    intonation: 'Ngữ điệu đi lên (Rising Intonation) ở cuối câu.',
+    formula: 'Trợ động từ (Do/Does/Did/Have/Has) + Chủ ngữ + Động từ chính?  hoặc  To be + Chủ ngữ + ...?',
+    examples: [
+      { text: 'Do you like learning English?', ipa: '/duː juː laɪk ˈlɜː.nɪŋ ˈɪŋ.ɡlɪʃ/ ⤴', vi: 'Bạn có thích học tiếng Anh không?' },
+      { text: 'Are you coming to the party tonight?', ipa: '/ɑːr juː ˈkʌm.ɪŋ tu ðə ˈpɑː.ti təˈnaɪt/ ⤴', vi: 'Tối nay bạn có đi dự tiệc không?' },
+      { text: 'Has he finished his homework?', ipa: '/hæz hiː ˈfɪn.ɪʃt hɪz ˈhəʊm.wɜːk/ ⤴', vi: 'Anh ấy đã làm xong bài tập về nhà chưa?' }
+    ]
+  },
+  {
+    type: 'Wh- Questions',
+    title: 'Câu hỏi lấy thông tin (Wh- Questions)',
+    desc: 'Hỏi thông tin chi tiết bằng các từ nghi vấn (Who, What, Where, When, Why, How, Which, Whose).',
+    intonation: 'Ngữ điệu đi xuống (Falling Intonation) ở cuối câu.',
+    formula: 'Từ nghi vấn (Wh-) + Trợ động từ / To be + Chủ ngữ + Động từ chính?',
+    examples: [
+      { text: 'What is your favorite book?', ipa: '/wɒt ɪz jɔː ˈfeɪ.vər.ɪt bʊk/ ⤵', vi: 'Cuốn sách yêu thích của bạn là gì?' },
+      { text: 'Where do you live?', ipa: '/weə duː juː lɪv/ ⤵', vi: 'Bạn sống ở đâu?' },
+      { text: 'How did you learn to speak so well?', ipa: '/haʊ dɪd juː lɜːn tu spiːk səʊ wel/ ⤵', vi: 'Làm thế nào bạn học nói tốt như vậy?' }
+    ]
+  },
+  {
+    type: 'Tag Questions',
+    title: 'Câu hỏi đuôi (Tag Questions)',
+    desc: 'Dùng để xác nhận thông tin hoặc tìm kiếm sự đồng ý của người nghe.',
+    intonation: 'Tùy ý chí người nói:\n- Đi lên (Rising) ⤴: Khi không chắc chắn, thực sự muốn hỏi.\n- Đi xuống (Falling) ⤵: Khi chắc chắn, chỉ mong đợi sự đồng tình.',
+    formula: 'Mệnh đề khẳng định, + đuôi phủ định?  hoặc  Mệnh đề phủ định, + đuôi khẳng định?',
+    examples: [
+      { text: "You are a developer, aren't you?", ipa: "/juː ɑːr ə dɪˈvel.ə.pər ˈɑːnt juː/ ⤴ (thực sự hỏi) hoặc ⤵ (chờ đồng ý)", vi: 'Bạn là một lập trình viên, phải không?' },
+      { text: "It is a beautiful day, isn't it?", ipa: '/ɪt ɪz ə ˈbjuː.tɪ.fəl deɪ ˈɪz.ənt ɪt/ ⤵', vi: 'Hôm nay là một ngày đẹp trời, đúng thế không?' }
+    ]
+  },
+  {
+    type: 'Negative Questions',
+    title: 'Câu hỏi phủ định (Negative Questions)',
+    desc: 'Dùng trợ động từ phủ định ở đầu câu để diễn tả sự ngạc nhiên, hoặc mong muốn người nghe đồng ý với mình.',
+    intonation: 'Ngữ điệu đi lên (Rising Intonation) ở cuối câu.',
+    formula: "Trợ động từ phủ định (Don't/Doesn't/Didn't/Aren't) + Chủ ngữ + Động từ?",
+    examples: [
+      { text: "Don't you like pizza?", ipa: '/dəʊnt juː laɪk ˈpiːt.sə/ ⤴', vi: 'Chẳng lẽ bạn lại không thích ăn pizza sao?' },
+      { text: "Aren't you going to work today?", ipa: '/ɑːnt juː ˈɡəʊ.ɪŋ tu wɜːk təˈdeɪ/ ⤴', vi: 'Hôm nay bạn không đi làm à?' }
+    ]
+  },
+  {
+    type: 'Indirect Questions',
+    title: 'Câu hỏi gián tiếp (Indirect Questions)',
+    desc: 'Cách đặt câu hỏi lịch sự, trang trọng bằng cách lồng câu hỏi vào một cụm từ mở đầu.',
+    intonation: 'Sử dụng ngữ điệu của câu trần thuật hoặc câu hỏi yes/no của mệnh đề chính (thường đi lên ⤴ ở cuối).',
+    formula: 'Cụm từ lịch sự (Could you tell me / Do you know...) + Từ nghi vấn + Chủ ngữ + Động từ (không đảo trợ động từ lên trước!).',
+    examples: [
+      { text: 'Could you tell me where the station is?', ipa: '/kʊd juː tel miː weə ðə ˈsteɪ.ʃən ɪz/ ⤴', vi: 'Bạn có thể chỉ giúp tôi ga tàu ở đâu không?' },
+      { text: 'Do you know if she is coming?', ipa: '/duː juː nəʊ ɪf ʃiː ɪz ˈkʌm.ɪŋ/ ⤴', vi: 'Bạn có biết liệu cô ấy có đến không?' }
+    ]
+  },
+  {
+    type: 'Hypothetical Questions',
+    title: 'Câu hỏi giả định (Hypothetical Questions)',
+    desc: 'Hỏi về các tình huống giả tưởng, không có thật hoặc khó xảy ra ở hiện tại/tương lai.',
+    intonation: 'Lên giọng ở vế giả thiết (If-clause) và xuống giọng ở mệnh đề chính hỏi thông tin.',
+    formula: 'What would you do if + S + V2/ed...?',
+    examples: [
+      { text: 'What would you do if you won the lottery?', ipa: '/wɒt wʊd juː duː ɪf juː wʌn ðə ˈlɒt.ər.i/ ⤵', vi: 'Bạn sẽ làm gì nếu bạn trúng vé số?' },
+      { text: 'If you could travel anywhere, where would you go?', ipa: '/ɪf juː kʊd ˈtræv.əl ˈen.i.weə/ ⤴ / weə wʊd juː ɡəʊ/ ⤵', vi: 'Nếu bạn có thể đi du lịch bất cứ đâu, bạn sẽ đi đâu?' }
+    ]
+  }
+];
+
+const INTONATION_GUIDELINES = [
+  {
+    pattern: 'Rising Intonation (Ngữ điệu đi lên ⤴)',
+    desc: 'Âm vực của giọng nói tăng dần ở cuối câu.',
+    rules: [
+      { rule: 'Câu hỏi Yes/No', example: 'Is this your book?' },
+      { rule: 'Liệt kê các từ (trước từ cuối cùng)', example: 'I need apples ⤴, bananas ⤴, and oranges ⤵.' },
+      { rule: 'Bày tỏ sự ngạc nhiên, hoài nghi', example: 'Really? You sold your car?' },
+      { rule: 'Lời chào thân mật hoặc yêu cầu lịch sự', example: 'Good morning! / Excuse me?' }
+    ]
+  },
+  {
+    pattern: 'Falling Intonation (Ngữ điệu đi xuống ⤵)',
+    desc: 'Âm vực của giọng nói giảm dần ở cuối câu.',
+    rules: [
+      { rule: 'Câu hỏi lấy thông tin (Wh-)', example: 'Where is the classroom?' },
+      { rule: 'Câu trần thuật, khẳng định', example: 'I am learning to code.' },
+      { rule: 'Câu mệnh lệnh', example: 'Sit down and open your book.' },
+      { rule: 'Câu cảm thán', example: 'What a beautiful house!' }
+    ]
+  },
+  {
+    pattern: 'Rise-Fall / Fall-Rise (Ngữ điệu kết hợp ⤴⤵)',
+    desc: 'Giọng nói đi lên rồi lại đi xuống, hoặc ngược lại.',
+    rules: [
+      { rule: 'Lựa chọn thay thế (Alternative)', example: 'Would you like tea ⤴ or coffee ⤵?' },
+      { rule: 'Mệnh đề phụ đứng trước', example: 'Although it was raining ⤴, they went out ⤵.' },
+      { rule: 'Câu hỏi đuôi chắc chắn / đồng ý', example: "It is warm today ⤴, isn't it ⤵?" }
+    ]
+  }
+];
+
+const SENTENCE_STRESS_RULES = [
+  {
+    category: 'Content Words (Từ mang ý nghĩa chính - NHẤN MẠNH)',
+    desc: 'Những từ mang thông điệp chính của câu, phát âm to hơn, rõ hơn và chậm hơn.',
+    types: [
+      { name: 'Động từ chính (Main verbs)', example: 'He runs to school.' },
+      { name: 'Danh từ (Nouns)', example: 'The dog barked at the cat.' },
+      { name: 'Tính từ (Adjectives)', example: 'She has a beautiful voice.' },
+      { name: 'Trạng từ (Adverbs)', example: 'They speak English fluently.' },
+      { name: 'Từ để hỏi (Question words)', example: 'Where is my key?' },
+      { name: 'Từ phủ định (Negatives)', example: "I don't like fish." }
+    ]
+  },
+  {
+    category: 'Structure Words (Từ cấu trúc - PHÁT ÂM LƯỚT NHẸ)',
+    desc: 'Những từ ngữ pháp kết nối câu, phát âm nhanh hơn, nhỏ hơn và lướt qua.',
+    types: [
+      { name: 'Đại từ (Pronouns)', example: 'Give it to him.' },
+      { name: 'Giới từ (Prepositions)', example: 'He is at home.' },
+      { name: 'Mạo từ (Articles)', example: 'The sun is shining.' },
+      { name: 'Liên từ (Conjunctions)', example: 'Black and white.' },
+      { name: 'Trợ động từ khẳng định (Auxiliary)', example: 'She is working.' }
+    ]
+  }
+];
+
 export default function PronunciationPage() {
-  const [activeTab, setActiveTab] = useState<'alphabet' | 'chart' | 'stress' | 'pairs' | 'building' | 'numbers' | 'endings' | 'datetime' | 'countries' | 'topics' | 'nouns' | 'verbs' | 'adjectives' | 'possessives' | 'tenses'>('alphabet');
+  const [activeTab, setActiveTab] = useState<'alphabet' | 'chart' | 'stress' | 'pairs' | 'building' | 'numbers' | 'endings' | 'datetime' | 'countries' | 'topics' | 'nouns' | 'verbs' | 'adjectives' | 'possessives' | 'tenses' | 'intonation'>('alphabet');
+  const [intonationSection, setIntonationSection] = useState<'questions' | 'intonation' | 'sentence_stress'>('questions');
+  const [selectedStressWordIdx, setSelectedStressWordIdx] = useState<number | null>(null);
   const [foundationTopicId, setFoundationTopicId] = useState<string>('pronouns');
   const [currentQuizQuestions, setCurrentQuizQuestions] = useState<any[]>([]);
   const [quizIndex, setQuizIndex] = useState<number>(0);
@@ -1116,6 +1247,7 @@ export default function PronunciationPage() {
     { id: 'adjectives' as const, label: 'Tính Từ', icon: Palette },
     { id: 'possessives' as const, label: 'Đại Từ & Sở Hữu', icon: Users },
     { id: 'tenses' as const, label: 'Thì & Động Từ To Be', icon: Clock },
+    { id: 'intonation' as const, label: 'Ngữ Điệu & Câu Hỏi', icon: HelpCircle },
     { id: 'pairs' as const, label: 'Cặp Tối Thiểu', icon: Mic },
     { id: 'building' as const, label: 'Nối Câu & Chữ', icon: Sparkles },
   ];
@@ -1570,6 +1702,253 @@ export default function PronunciationPage() {
               </div>
             ))}
           </div>
+        </div>
+      )}
+
+      {/* ════════════════════════════════════════════ INTONATION & QUESTIONS ═══════ */}
+      {activeTab === 'intonation' && (
+        <div className="space-y-6">
+          {/* Sub-navigation Segment control */}
+          <div className="flex flex-wrap gap-2 p-1 bg-slate-100 dark:bg-slate-800 rounded-2xl w-fit">
+            {[
+              { id: 'questions' as const, label: 'Cách Đặt Câu Hỏi (Questions)', icon: HelpCircle },
+              { id: 'intonation' as const, label: 'Ngữ Điệu Nói (Intonation)', icon: Volume2 },
+              { id: 'sentence_stress' as const, label: 'Trọng Âm Câu (Sentence Stress)', icon: Target }
+            ].map(sec => (
+              <button
+                key={sec.id}
+                onClick={() => setIntonationSection(sec.id)}
+                className={cn(
+                  "flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer",
+                  intonationSection === sec.id
+                    ? "bg-slate-900 text-white shadow-sm"
+                    : "text-slate-500 hover:text-slate-850"
+                )}
+              >
+                <sec.icon className="w-4 h-4" />
+                {sec.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Render sub-section contents */}
+          {intonationSection === 'questions' && (
+            <div className="space-y-6">
+              <div className="premium-card p-6 bg-gradient-to-r from-violet-50 to-indigo-50 border-violet-200">
+                <h3 className="text-lg font-black text-violet-800 flex items-center gap-2 mb-2">
+                  <HelpCircle className="w-5 h-5 text-violet-600" /> Cách Đặt Câu Hỏi trong Tiếng Anh (English Question Formulation)
+                </h3>
+                <p className="text-sm text-violet-700 leading-relaxed font-medium">
+                  Tiếng Anh có nhiều dạng câu hỏi với các cấu trúc ngữ pháp và cách lên/xuống giọng khác nhau. Hãy nắm vững cấu trúc và cách đọc dưới đây.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {QUESTION_TYPES_DATA.map((item, idx) => (
+                  <div key={idx} className="premium-card p-6 bg-white border border-slate-200 hover:shadow-xl transition-all rounded-[2rem] flex flex-col justify-between space-y-4">
+                    <div className="space-y-2">
+                      <span className="text-[10px] font-black uppercase tracking-widest text-violet-600 bg-violet-50 px-3 py-1 rounded-full border border-violet-100">
+                        {item.type}
+                      </span>
+                      <h4 className="text-base font-black text-slate-800">{item.title}</h4>
+                      <p className="text-xs text-slate-500 font-medium leading-relaxed">{item.desc}</p>
+                    </div>
+
+                    <div className="p-3.5 bg-slate-50 border border-slate-100 rounded-xl space-y-1">
+                      <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider block">Cấu trúc / Công thức</span>
+                      <code className="text-xs font-mono font-black text-violet-700 block break-words">{item.formula}</code>
+                    </div>
+
+                    <div className="p-3.5 bg-indigo-50/50 border border-indigo-100 rounded-xl space-y-1">
+                      <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider block">Ngữ điệu (Intonation)</span>
+                      <p className="text-xs text-indigo-800 font-semibold">{item.intonation}</p>
+                    </div>
+
+                    <div className="space-y-2.5">
+                      <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Ví dụ & Phát âm:</span>
+                      <div className="space-y-2">
+                        {item.examples.map((ex, exIdx) => (
+                          <div key={exIdx} className="flex items-center justify-between gap-3 p-3 bg-slate-50 hover:bg-slate-100/80 border border-slate-200/60 rounded-2xl transition-all">
+                            <div className="min-w-0 flex-1">
+                              <span className="font-bold text-sm text-slate-800 block select-all">"{ex.text}"</span>
+                              <span className="text-xs font-mono text-slate-500 block mt-0.5">{ex.ipa}</span>
+                              <span className="text-xs text-slate-500 font-medium italic block mt-0.5">{ex.vi}</span>
+                            </div>
+                            <button
+                              onClick={() => speak(ex.text, 0.75)}
+                              className="w-9 h-9 rounded-full bg-white hover:bg-violet-600 hover:text-white border border-slate-200 hover:border-violet-600 flex items-center justify-center text-slate-600 transition-all cursor-pointer shadow-sm active:scale-95 flex-shrink-0"
+                            >
+                              <Volume2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {intonationSection === 'intonation' && (
+            <div className="space-y-6">
+              <div className="premium-card p-6 bg-gradient-to-r from-emerald-50 to-teal-50 border-emerald-200">
+                <h3 className="text-lg font-black text-emerald-800 flex items-center gap-2 mb-2">
+                  <Volume2 className="w-5 h-5 text-emerald-600" /> Ngữ Điệu Nói Tiếng Anh (English Intonation Patterns)
+                </h3>
+                <p className="text-sm text-emerald-700 leading-relaxed font-medium">
+                  Ngữ điệu giống như "âm nhạc" của ngôn ngữ. Lên giọng (Rising) và xuống giọng (Falling) giúp biểu lộ cảm xúc, thái độ và làm rõ nghĩa của câu nói.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {INTONATION_GUIDELINES.map((guide, idx) => (
+                  <div key={idx} className="premium-card p-6 bg-white border border-slate-200 hover:shadow-xl transition-all rounded-[2rem] flex flex-col justify-between space-y-4">
+                    <div className="space-y-2 text-left">
+                      <h4 className="text-base font-black text-slate-800 flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                        {guide.pattern}
+                      </h4>
+                      <p className="text-xs text-slate-500 font-medium leading-relaxed">{guide.desc}</p>
+                    </div>
+
+                    <div className="space-y-3 pt-2 border-t border-slate-100 flex-1">
+                      <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">Trường hợp sử dụng:</span>
+                      <div className="space-y-3">
+                        {guide.rules.map((rule, ruleIdx) => (
+                          <div key={ruleIdx} className="space-y-1">
+                            <span className="text-xs font-black text-slate-700 block">{rule.rule}</span>
+                            <div className="flex items-center justify-between gap-2 p-2 bg-slate-50 rounded-xl border border-slate-100">
+                              <span className="text-xs font-medium text-slate-600 truncate">"{rule.example}"</span>
+                              <button
+                                onClick={() => speak(rule.example.replace(/[⤴⤵]/g, ''))}
+                                className="w-6 h-6 rounded-md bg-white hover:bg-emerald-600 hover:text-white border border-slate-200 flex items-center justify-center text-slate-500 transition-all cursor-pointer flex-shrink-0"
+                              >
+                                <Play className="w-3 h-3 fill-current" />
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {intonationSection === 'sentence_stress' && (
+            <div className="space-y-6">
+              <div className="premium-card p-6 bg-gradient-to-r from-amber-50 to-yellow-50 border-amber-200">
+                <h3 className="text-lg font-black text-amber-800 flex items-center gap-2 mb-2">
+                  <Target className="w-5 h-5 text-amber-600" /> Trọng Âm của Câu Nói (Sentence Stress)
+                </h3>
+                <p className="text-sm text-amber-700 leading-relaxed font-medium">
+                  Trong một câu tiếng Anh, không phải từ nào cũng được phát âm rõ như nhau. Chúng ta nhấn vào những **Content Words** (từ mang nghĩa chính) và đọc lướt nhanh những **Structure Words** (từ chức năng ngữ pháp).
+                </p>
+              </div>
+
+              {/* Interactive Sentence Stress Player */}
+              <div className="premium-card p-6 md:p-8 bg-slate-900 text-white border-slate-800 shadow-xl rounded-[2rem]">
+                <div className="text-center space-y-4">
+                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Trình phát tương tác đổi trọng âm để đổi nghĩa của câu</span>
+                  <h3 className="text-lg font-black text-slate-200">Hãy click vào từng từ dưới đây để xem nghĩa thay đổi thế nào:</h3>
+                  
+                  {/* Words rendering */}
+                  <div className="flex flex-wrap items-center justify-center gap-2 py-4">
+                    {["I", "didn't", "say", "he", "stole", "the", "money"].map((w, wIdx) => {
+                      const isStressed = selectedStressWordIdx === wIdx;
+                      return (
+                        <button
+                          key={wIdx}
+                          onClick={() => {
+                            setSelectedStressWordIdx(wIdx);
+                            speak(w === "didn't" ? "did not" : w, 0.75);
+                          }}
+                          className={cn(
+                            "px-4 py-2.5 rounded-2xl font-black text-lg sm:text-xl transition-all cursor-pointer border-2",
+                            isStressed
+                              ? "bg-gradient-to-br from-amber-400 to-orange-500 border-amber-300 text-white scale-110 shadow-lg shadow-orange-500/20"
+                              : "bg-slate-800 border-slate-700 hover:border-slate-500 text-slate-300"
+                          )}
+                        >
+                          {w}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Stressed Explanation box */}
+                  <div className="p-5 bg-slate-800/60 border border-slate-800 rounded-2xl text-left max-w-xl mx-auto space-y-2 min-h-[100px] flex flex-col justify-center animate-in fade-in duration-300">
+                    {selectedStressWordIdx !== null ? (
+                      (() => {
+                        const explanations = [
+                          { title: 'Nhấn vào "I"', meaning: 'Không phải tôi nói, mà là AI đó khác nói việc anh ta lấy tiền.', focus: 'Someone else said it, not me.' },
+                          { title: 'Nhấn vào "didn\'t"', meaning: 'Tôi hoàn toàn phủ nhận việc tôi đã nói anh ta lấy tiền.', focus: 'I deny saying it.' },
+                          { title: 'Nhấn vào "say"', meaning: 'Tôi không trực tiếp nói ra điều đó, tôi chỉ ngụ ý hoặc viết ra thôi.', focus: 'I implied it or wrote it, but didn\'t say it aloud.' },
+                          { title: 'Nhấn vào "he"', meaning: 'Tôi nói là có ai đó lấy tiền, nhưng không phải là anh ta lấy.', focus: 'Someone else stole the money, not him.' },
+                          { title: 'Nhấn vào "stole"', meaning: 'Tôi không bảo anh ta ăn trộm, có thể anh ta chỉ mượn, nhặt được thôi.', focus: 'He borrowed it or found it, didn\'t steal it.' },
+                          { title: 'Nhấn vào "the"', meaning: 'Không áp dụng trọng âm đặc biệt cho mạo từ (thường lướt qua).', focus: 'Structure word - rarely stressed unless referencing a specific instance.' },
+                          { title: 'Nhấn vào "money"', meaning: 'Anh ta lấy cắp thứ gì đó khác (xe, điện thoại...), chứ không phải tiền.', focus: 'He stole something else, not money.' }
+                        ];
+                        const activeExp = explanations[selectedStressWordIdx] || explanations[0];
+                        return (
+                          <>
+                            <div className="flex items-center justify-between gap-3">
+                              <h4 className="text-sm font-black text-amber-400 uppercase tracking-widest">{activeExp.title}</h4>
+                              <button
+                                onClick={() => speak("I didn't say he stole the money.", 0.75)}
+                                className="px-3 py-1 bg-slate-700 hover:bg-slate-650 rounded-lg text-xs font-bold text-slate-200 transition-all flex items-center gap-1 cursor-pointer"
+                              >
+                                Nghe cả câu <Play className="w-2.5 h-2.5 fill-current" />
+                              </button>
+                            </div>
+                            <p className="text-sm text-slate-200 font-semibold">{activeExp.meaning}</p>
+                            <span className="text-xs text-slate-400 block italic">Ý chính: {activeExp.focus}</span>
+                          </>
+                        );
+                      })()
+                    ) : (
+                      <p className="text-sm text-slate-400 font-medium text-center italic py-4">Click vào một từ phía trên để bắt đầu thử nghiệm đổi trọng âm câu.</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Stress Rules Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {SENTENCE_STRESS_RULES.map((rule, idx) => (
+                  <div key={idx} className="premium-card p-6 bg-white border border-slate-200 hover:shadow-xl transition-all rounded-[2rem] flex flex-col justify-between space-y-4">
+                    <div className="space-y-2 text-left">
+                      <h4 className="text-base font-black text-slate-800">{rule.category}</h4>
+                      <p className="text-xs text-slate-500 font-medium leading-relaxed">{rule.desc}</p>
+                    </div>
+
+                    <div className="space-y-3 pt-2 border-t border-slate-100 flex-1">
+                      <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">Các từ tiêu biểu:</span>
+                      <div className="grid grid-cols-1 gap-2">
+                        {rule.types.map((type, tIdx) => (
+                          <div key={tIdx} className="flex items-center justify-between p-3 bg-slate-50 rounded-2xl border border-slate-100/80">
+                            <div>
+                              <span className="text-xs font-bold text-slate-800 block">{type.name}</span>
+                              <span className="text-xs text-slate-500 font-mono mt-0.5 block">{type.example}</span>
+                            </div>
+                            <button
+                              onClick={() => speak(type.example, 0.75)}
+                              className="w-8 h-8 rounded-full bg-white hover:bg-slate-150 border border-slate-200 flex items-center justify-center text-slate-500 transition-all cursor-pointer shadow-sm active:scale-95"
+                            >
+                              <Volume2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
         </div>
       )}
 
