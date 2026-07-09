@@ -95,6 +95,95 @@ export class GeminiService {
   }
 
   /**
+   * Dynamically search and retrieve relevant skill contents from antigravity-awesome-skills
+   */
+  private static async retrieveSkillContext(message: string): Promise<string> {
+    try {
+      const possiblePaths = [
+        path.join(process.cwd(), '../antigravity-awesome-skills/skills'),
+        path.join(__dirname, '../../../antigravity-awesome-skills/skills'),
+        path.join(__dirname, '../../../../antigravity-awesome-skills/skills'),
+        path.join(process.cwd(), 'antigravity-awesome-skills/skills'),
+      ];
+
+      let skillsDir = '';
+      for (const p of possiblePaths) {
+        if (fs.existsSync(p) && fs.statSync(p).isDirectory()) {
+          skillsDir = p;
+          break;
+        }
+      }
+
+      if (!skillsDir) {
+        console.warn('[GeminiService] Could not find skills directory in any known location.');
+        return '';
+      }
+
+      const dirs = fs.readdirSync(skillsDir);
+      const matchedDirs: string[] = [];
+      const normalizedMessage = message.toLowerCase();
+
+      for (const dir of dirs) {
+        if (normalizedMessage.includes(dir.toLowerCase()) ||
+            (dir.includes('-') && dir.split('-').every(part => part.length > 2 && normalizedMessage.includes(part)))) {
+          matchedDirs.push(dir);
+        }
+      }
+
+      // Fallback matching for common keywords/aliases
+      if (matchedDirs.length === 0) {
+        const aliasMap: { [key: string]: string } = {
+          'agent': 'ai-agents-architect',
+          'rag': 'ai-engineering-toolkit',
+          'prompt': 'ai-engineering-toolkit',
+          'seo': 'ai-seo',
+          'brainstorm': 'brainstorming',
+          'clean code': 'ai-analyzer',
+          'refactor': 'ai-analyzer',
+          'responsive': 'ai-wrapper-product',
+          'ui/ux': 'ai-wrapper-product',
+          'audit': 'ai-engineering-toolkit',
+          'security': 'ai-engineering-toolkit',
+          'ml': 'ai-ml',
+          'mcp': 'ai-dev-jobs-mcp',
+        };
+
+        for (const [key, dirName] of Object.entries(aliasMap)) {
+          if (normalizedMessage.includes(key)) {
+            matchedDirs.push(dirName);
+          }
+        }
+      }
+
+      if (matchedDirs.length === 0) return '';
+
+      // De-duplicate matched directories
+      const uniqueMatched = Array.from(new Set(matchedDirs)).slice(0, 2);
+      let context = '\n═══════════════════════════════════\n💡 DYNAMIC SKILL KNOWLEDGE BASE CONTEXT (RAG)\n═══════════════════════════════════\n';
+      
+      for (const dir of uniqueMatched) {
+        const dirPath = path.join(skillsDir, dir);
+        if (fs.existsSync(dirPath) && fs.statSync(dirPath).isDirectory()) {
+          const files = fs.readdirSync(dirPath);
+          const mdFile = files.find(f => f.toLowerCase() === 'skill.md' || f.toLowerCase() === 'readme.md' || f.endsWith('.md'));
+          if (mdFile) {
+            const filePath = path.join(dirPath, mdFile);
+            const content = fs.readFileSync(filePath, 'utf8');
+            // Clean frontmatter from the skill markdown content to save tokens
+            const cleanedContent = content.replace(/^---[\s\S]*?---/, '').trim();
+            context += `\n[Skill Module: ${dir.toUpperCase()}]\n${cleanedContent.substring(0, 4500)}\n`;
+          }
+        }
+      }
+      context += '\n═══════════════════════════════════\n';
+      return context;
+    } catch (err) {
+      console.error('[GeminiService] Error retrieving skill context:', err);
+      return '';
+    }
+  }
+
+  /**
    * Analyze journal using EngBot (Powered by Gemini)
    */
   static async analyzeJournal(content: string) {
@@ -183,15 +272,16 @@ export class GeminiService {
       }
 
       const lastUserMessage = messages[messages.length - 1]?.content || "";
+      const skillContext = await GeminiService.retrieveSkillContext(lastUserMessage);
 
-      const systemInstruction = `
+      let systemInstruction = `
 Bạn là EngBot — Chuyên Gia Ngôn Ngữ & Huấn Luyện Viên Tiếng Anh Học Thuật/Giao Tiếp Quốc Tế. Bạn được huấn luyện chuyên sâu theo các phương pháp giảng dạy hiện đại (CLT - Communicative Language Teaching, Lexical Approach, và Task-Based Learning). Nhiệm vụ của bạn là hướng dẫn người học từ cấp độ cơ bản đến làm việc thực tế trong các môi trường doanh nghiệp quốc tế và chuyên ngành công nghệ cao.
 
 ═══════════════════════════════════
 🎭 VAI TRÒ CHUYÊN GIA & KỊCH BẢN
 ═══════════════════════════════════
-- Nhân vật (Persona): "\${persona}"
-- Kịch bản (Scenario): "\${scenario}"
+- Nhân vật (Persona): "${persona}"
+- Kịch bản (Scenario): "${scenario}"
 - Nếu scenario là "free_chat" hoặc "Trò chuyện tự do", bạn là Coach Tổng Quát kiêm Cố Vấn Ngôn Ngữ Học.
 
 ═══════════════════════════════════
@@ -310,6 +400,10 @@ Chỉ trả về JSON thuần túy, không chứa ký tự hay wrapper markdown 
   "translation": "Natural Vietnamese translation of aiMessage"
 }
 `;
+
+      if (skillContext) {
+        systemInstruction += `\n${skillContext}\nLƯU Ý QUAN TRỌNG: Người dùng đang thảo luận/hỏi về các khía cạnh kỹ thuật trong Skill Module ở trên. Hãy sử dụng thông tin và nguyên tắc trong phần DYNAMIC SKILL KNOWLEDGE BASE CONTEXT này để trả lời và phân tích chi tiết, sâu sắc nhất có thể.`;
+      }
 
       // Try models in priority order for absolute stability
       const models = GeminiService.models;

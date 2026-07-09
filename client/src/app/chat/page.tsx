@@ -67,6 +67,10 @@ const SCENARIOS: Scenario[] = [
 const QUICK_ACTIONS = [
   { label: 'Sửa ngữ pháp', prompt: 'Please correct my grammar in this sentence: ', icon: PenTool },
   { label: 'Dịch câu', prompt: 'How do you say this in English: ', icon: Languages },
+  { label: 'Thiết kế Agent Loop', prompt: 'Explain how to design an autonomous AI agent using the ReAct loop pattern or Supervisor pattern according to the ai-agents-architect skill.', icon: Sparkles },
+  { label: 'Đánh giá Prompt (Eval)', prompt: 'Review my prompt structure and explain how to design a robust evaluation criteria (LLM-as-a-judge) according to the ai-engineering-toolkit skill.', icon: PenTool },
+  { label: 'Tối ưu Vòng lặp AI (Latency)', prompt: 'Suggest strategies to minimize latency (e.g. streaming, prompt caching, fallback models) for an AI wrapper product according to the ai-wrapper-product skill.', icon: Lightbulb },
+  { label: 'Tối ưu UI/UX Đa thiết bị', prompt: 'Explain key design guidelines for responsive layouts, touch targets, and visual premium feel (glassmorphism, micro-animations) according to the frontend guidelines.', icon: Sparkles },
   { label: 'Hỏi dạng câu hỏi', prompt: 'Explain the 6 main English Question Types (Yes/No, Wh-, Tag, Negative, Indirect, Hypothetical) and how to master them.', icon: GraduationCap },
   { label: 'Câu hỏi phủ định', prompt: 'How do I answer negative questions correctly (e.g., "Aren\'t you coming?") without making mistakes?', icon: BookOpen },
   { label: 'Khung trả lời STAR/PREP', prompt: 'Give me an example of how to structure an answer using the STAR or PREP framework.', icon: Sparkles },

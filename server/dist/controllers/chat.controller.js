@@ -18,7 +18,7 @@ const sendMessage = async (req, res) => {
             { role: "user", content: message }
         ];
         // 2. Get AI Response
-        const aiResult = await ai_service_1.AIService.generateChatResponse(messages, persona, scenario);
+        const aiResult = await ai_service_1.AIService.generateChatResponse(messages, persona, scenario, userId);
         // 3. Save to Database
         try {
             await prisma_1.default.aIChatHistory.create({
