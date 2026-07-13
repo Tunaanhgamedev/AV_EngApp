@@ -9086,97 +9086,411 @@ const ORIGINAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "động cơ",
         "example": "Start the car engine, please.",
         "exampleVi": "Làm ơn hãy nổ máy động cơ ô tô."
-      }
-    ,
-      {
-            "word": "motorboat",
-            "phonetic": "/ˈməʊ.tə.bəʊt/",
-            "wordType": "noun",
-            "meaningEn": "a boat powered by a motor",
-            "meaningVi": "xuồng máy, tàu máy",
-            "example": "We rented a motorboat to explore the lake.",
-            "exampleVi": "Chúng tôi thuê một chiếc xuồng máy để khám phá hồ."
       },
       {
-            "word": "yacht",
-            "phonetic": "/jɒt/",
-            "wordType": "noun",
-            "meaningEn": "a medium-sized sailboat equipped for cruising or racing",
-            "meaningVi": "du thuyền",
-            "example": "The millionaire bought a luxury yacht.",
-            "exampleVi": "Vị triệu phú đã mua một chiếc du thuyền sang trọng."
+        "word": "motorboat",
+        "phonetic": "/ˈməʊ.tə.bəʊt/",
+        "wordType": "noun",
+        "meaningEn": "a boat powered by a motor",
+        "meaningVi": "xuồng máy, tàu máy",
+        "example": "We rented a motorboat to explore the lake.",
+        "exampleVi": "Chúng tôi thuê một chiếc xuồng máy để khám phá hồ."
       },
       {
-            "word": "helicopter",
-            "phonetic": "/ˈhel.ɪˌkɒp.tər/",
-            "wordType": "noun",
-            "meaningEn": "a type of aircraft with rotating overhead blades",
-            "meaningVi": "máy bay trực thăng",
-            "example": "The rescue team arrived in a helicopter.",
-            "exampleVi": "Đội cứu hộ đã đến bằng máy bay trực thăng."
+        "word": "yacht",
+        "phonetic": "/jɒt/",
+        "wordType": "noun",
+        "meaningEn": "a medium-sized sailboat equipped for cruising or racing",
+        "meaningVi": "du thuyền",
+        "example": "The millionaire bought a luxury yacht.",
+        "exampleVi": "Vị triệu phú đã mua một chiếc du thuyền sang trọng."
       },
       {
-            "word": "ambulance",
-            "phonetic": "/ˈæm.bjə.ləns/",
-            "wordType": "noun",
-            "meaningEn": "a vehicle equipped for taking sick or injured people to hospital",
-            "meaningVi": "xe cứu thương",
-            "example": "The ambulance rushed to the scene of the accident.",
-            "exampleVi": "Xe cứu thương đã lao nhanh đến hiện trường vụ tai nạn."
+        "word": "ambulance",
+        "phonetic": "/ˈæm.bjə.ləns/",
+        "wordType": "noun",
+        "meaningEn": "a vehicle equipped for taking sick or injured people to hospital",
+        "meaningVi": "xe cứu thương",
+        "example": "The ambulance rushed to the scene of the accident.",
+        "exampleVi": "Xe cứu thương đã lao nhanh đến hiện trường vụ tai nạn."
       },
       {
-            "word": "tractor",
-            "phonetic": "/ˈtræk.tər/",
-            "wordType": "noun",
-            "meaningEn": "a powerful motor vehicle with large rear tires, used on farms",
-            "meaningVi": "máy kéo",
-            "example": "The farmer is plowing the field with a tractor.",
-            "exampleVi": "Người nông dân đang cày ruộng bằng máy kéo."
+        "word": "tractor",
+        "phonetic": "/ˈtræk.tər/",
+        "wordType": "noun",
+        "meaningEn": "a powerful motor vehicle with large rear tires, used on farms",
+        "meaningVi": "máy kéo",
+        "example": "The farmer is plowing the field with a tractor.",
+        "exampleVi": "Người nông dân đang cày ruộng bằng máy kéo."
       },
       {
-            "word": "scooter",
-            "phonetic": "/ˈskuː.tər/",
-            "wordType": "noun",
-            "meaningEn": "a light two-wheeled motor vehicle",
-            "meaningVi": "xe tay ga, xe scooter",
-            "example": "He rides a motor scooter to work.",
-            "exampleVi": "Anh ấy đi xe tay ga đi làm."
+        "word": "scooter",
+        "phonetic": "/ˈskuː.tər/",
+        "wordType": "noun",
+        "meaningEn": "a light two-wheeled motor vehicle",
+        "meaningVi": "xe tay ga, xe scooter",
+        "example": "He rides a motor scooter to work.",
+        "exampleVi": "Anh ấy đi xe tay ga đi làm."
       },
       {
-            "word": "subway",
-            "phonetic": "/ˈsʌb.weɪ/",
-            "wordType": "noun",
-            "meaningEn": "an underground railway system",
-            "meaningVi": "tàu điện ngầm",
-            "example": "We took the subway to avoid the traffic.",
-            "exampleVi": "Chúng tôi đi tàu điện ngầm để tránh tắc đường."
+        "word": "trolley",
+        "phonetic": "/ˈtrɒl.i/",
+        "wordType": "noun",
+        "meaningEn": "a vehicle that runs on rails and is powered by overhead electricity",
+        "meaningVi": "xe điện, xe đẩy",
+        "example": "The trolley runs through the historic district.",
+        "exampleVi": "Xe điện chạy qua khu lịch sử."
       },
       {
-            "word": "trolley",
-            "phonetic": "/ˈtrɒl.i/",
-            "wordType": "noun",
-            "meaningEn": "a vehicle that runs on rails and is powered by overhead electricity",
-            "meaningVi": "xe điện, xe đẩy",
-            "example": "The trolley runs through the historic district.",
-            "exampleVi": "Xe điện chạy qua khu lịch sử."
+        "word": "ferry",
+        "phonetic": "/ˈfer.i/",
+        "wordType": "noun",
+        "meaningEn": "a boat or ship for conveying passengers and goods across a river or sea",
+        "meaningVi": "phà, tàu thủy chở khách",
+        "example": "We crossed the river by ferry.",
+        "exampleVi": "Chúng tôi qua sông bằng phà."
       },
       {
-            "word": "ferry",
-            "phonetic": "/ˈfer.i/",
-            "wordType": "noun",
-            "meaningEn": "a boat or ship for conveying passengers and goods across a river or sea",
-            "meaningVi": "phà, tàu thủy chở khách",
-            "example": "We crossed the river by ferry.",
-            "exampleVi": "Chúng tôi qua sông bằng phà."
+        "word": "van",
+        "phonetic": "/væn/",
+        "wordType": "noun",
+        "meaningEn": "a medium-sized motor vehicle, typically without side windows in the back",
+        "meaningVi": "xe tải nhỏ, xe bán tải",
+        "example": "They loaded the delivery van with boxes.",
+        "exampleVi": "Họ chất những chiếc hộp lên xe tải nhỏ chở hàng."
       },
       {
-            "word": "van",
-            "phonetic": "/væn/",
-            "wordType": "noun",
-            "meaningEn": "a medium-sized motor vehicle, typically without side windows in the back",
-            "meaningVi": "xe tải nhỏ, xe bán tải",
-            "example": "They loaded the delivery van with boxes.",
-            "exampleVi": "Họ chất những chiếc hộp lên xe tải nhỏ chở hàng."
+        "word": "jeep",
+        "phonetic": "/dʒiːp/",
+        "wordType": "noun",
+        "meaningEn": "a powerful car with four-wheel drive",
+        "meaningVi": "xe jeep, xe dã ngoại",
+        "example": "They drove a jeep through the desert.",
+        "exampleVi": "Họ lái một chiếc xe jeep băng qua sa mạc."
+      },
+      {
+        "word": "moped",
+        "phonetic": "/ˈməʊ.ped/",
+        "wordType": "noun",
+        "meaningEn": "a light motorcycle with pedals and a low-powered engine",
+        "meaningVi": "xe máy nhỏ, xe đạp máy",
+        "example": "She rides a moped around the town.",
+        "exampleVi": "Cô ấy đi xe máy nhỏ quanh thị trấn."
+      },
+      {
+        "word": "skateboard",
+        "phonetic": "/ˈskeɪt.bɔːd/",
+        "wordType": "noun",
+        "meaningEn": "a short narrow board with wheels at each end",
+        "meaningVi": "ván trượt",
+        "example": "He fell off his skateboard and hurt his knee.",
+        "exampleVi": "Cậu ấy bị ngã khỏi ván trượt và bị thương ở đầu gối."
+      },
+      {
+        "word": "convertible",
+        "phonetic": "/kənˈvɜː.tə.bəl/",
+        "wordType": "noun",
+        "meaningEn": "a car with a folding or removable roof",
+        "meaningVi": "xe mui trần",
+        "example": "They rented a red convertible for their trip.",
+        "exampleVi": "Họ thuê một chiếc xe mui trần màu đỏ cho chuyến đi."
+      },
+      {
+        "word": "tire",
+        "phonetic": "/taɪər/",
+        "wordType": "noun",
+        "meaningEn": "a rubber ring placed around a wheel of a vehicle",
+        "meaningVi": "lốp xe",
+        "example": "I need to pump up the front tire.",
+        "exampleVi": "Tôi cần bơm lốp xe phía trước."
+      },
+      {
+        "word": "pedal",
+        "phonetic": "/ˈped.əl/",
+        "wordType": "noun",
+        "meaningEn": "a foot-operated lever used for controlling a vehicle",
+        "meaningVi": "bàn đạp",
+        "example": "Push the pedal to make the bicycle go.",
+        "exampleVi": "Nhấn bàn đạp để làm xe đạp chạy."
+      },
+      {
+        "word": "brake",
+        "phonetic": "/breɪk/",
+        "wordType": "noun",
+        "meaningEn": "a device for slowing or stopping a moving vehicle",
+        "meaningVi": "phanh xe, thắng",
+        "example": "The driver stepped on the brake to avoid the dog.",
+        "exampleVi": "Tài xế đạp phanh để tránh chú chó."
+      },
+      {
+        "word": "clutch",
+        "phonetic": "/klʌtʃ/",
+        "wordType": "noun",
+        "meaningEn": "a pedal in a car that you press to change gear",
+        "meaningVi": "côn xe, bộ ly hợp",
+        "example": "Press the clutch before shifting to second gear.",
+        "exampleVi": "Nhấn côn trước khi chuyển sang số hai."
+      },
+      {
+        "word": "dashboard",
+        "phonetic": "/ˈdæʃ.bɔːd/",
+        "wordType": "noun",
+        "meaningEn": "the panel facing the driver in a vehicle with instruments",
+        "meaningVi": "bảng điều khiển",
+        "example": "The speedometer is on the dashboard.",
+        "exampleVi": "Đồng hồ tốc độ nằm trên bảng điều khiển."
+      },
+      {
+        "word": "windshield",
+        "phonetic": "/ˈwɪnd.ʃiːld/",
+        "wordType": "noun",
+        "meaningEn": "the window at the front of a car",
+        "meaningVi": "kính chắn gió",
+        "example": "The windshield was cracked by a small stone.",
+        "exampleVi": "Kính chắn gió bị rạn nứt bởi một viên đá nhỏ."
+      },
+      {
+        "word": "bumper",
+        "phonetic": "/ˈbʌm.pər/",
+        "wordType": "noun",
+        "meaningEn": "a bar fixed to the front and back of a vehicle to reduce damage",
+        "meaningVi": "cản xe, cản trước/sau",
+        "example": "The rear bumper was damaged in the accident.",
+        "exampleVi": "Cản sau xe đã bị hỏng trong vụ tai nạn."
+      },
+      {
+        "word": "headlight",
+        "phonetic": "/ˈhed.laɪt/",
+        "wordType": "noun",
+        "meaningEn": "a powerful light at the front of a motor vehicle",
+        "meaningVi": "đèn pha",
+        "example": "Remember to turn on your headlights at night.",
+        "exampleVi": "Hãy nhớ bật đèn pha vào ban đêm."
+      },
+      {
+        "word": "fare",
+        "phonetic": "/feər/",
+        "wordType": "noun",
+        "meaningEn": "the money a passenger on public transportation pays",
+        "meaningVi": "tiền vé, cước phí",
+        "example": "What is the bus fare to the airport?",
+        "exampleVi": "Giá vé xe buýt đến sân bay là bao nhiêu?"
+      },
+      {
+        "word": "highway",
+        "phonetic": "/ˈhaɪ.weɪ/",
+        "wordType": "noun",
+        "meaningEn": "a main road connecting major towns or cities",
+        "meaningVi": "đường cao tốc",
+        "example": "We drove along the coastal highway.",
+        "exampleVi": "Chúng tôi lái xe dọc theo đường cao tốc ven biển."
+      },
+      {
+        "word": "traffic",
+        "phonetic": "/ˈtræf.ɪk/",
+        "wordType": "noun",
+        "meaningEn": "vehicles moving on a road",
+        "meaningVi": "giao thông, xe cộ",
+        "example": "The traffic was moving very slowly.",
+        "exampleVi": "Giao thông di chuyển rất chậm."
+      },
+      {
+        "word": "crosswalk",
+        "phonetic": "/ˈkrɒs.wɔːk/",
+        "wordType": "noun",
+        "meaningEn": "a marked path where pedestrians can cross a street",
+        "meaningVi": "vạch kẻ sang đường",
+        "example": "Pedestrians should cross the street at the crosswalk.",
+        "exampleVi": "Người đi bộ nên băng qua đường ở vạch kẻ sang đường."
+      },
+      {
+        "word": "sidewalk",
+        "phonetic": "/ˈsaɪd.wɔːk/",
+        "wordType": "noun",
+        "meaningEn": "a paved path for pedestrians at the side of a road",
+        "meaningVi": "vỉa hè",
+        "example": "Keep on the sidewalk for safety.",
+        "exampleVi": "Hãy đi trên vỉa hè để đảm bảo an toàn."
+      },
+      {
+        "word": "garage",
+        "phonetic": "/ˈɡær.ɑːʒ/",
+        "wordType": "noun",
+        "meaningEn": "a building or shed for housing motor vehicles",
+        "meaningVi": "nhà để xe, ga-ra",
+        "example": "He parked his car in the garage.",
+        "exampleVi": "Anh ấy đỗ xe của mình trong nhà để xe."
+      },
+      {
+        "word": "fuel",
+        "phonetic": "/fjuːəl/",
+        "wordType": "noun",
+        "meaningEn": "material that is burned to produce heat or power",
+        "meaningVi": "nhiên liệu, xăng dầu",
+        "example": "This car consumes a lot of fuel.",
+        "exampleVi": "Chiếc xe này tiêu thụ rất nhiều nhiên liệu."
+      },
+      {
+        "word": "trunk",
+        "phonetic": "/trʌŋk/",
+        "wordType": "noun",
+        "meaningEn": "the luggage compartment at the rear of a car",
+        "meaningVi": "cốp xe",
+        "example": "Put your bags in the trunk.",
+        "exampleVi": "Hãy đặt túi của bạn vào cốp xe."
+      },
+      {
+        "word": "route",
+        "phonetic": "/ruːt/",
+        "wordType": "noun",
+        "meaningEn": "a way taken in getting from a starting point to a destination",
+        "meaningVi": "tuyến đường, lộ trình",
+        "example": "This is the shortest route to the station.",
+        "exampleVi": "Đây là tuyến đường ngắn nhất đến nhà ga."
+      },
+      {
+        "word": "delay",
+        "phonetic": "/dɪˈleɪ/",
+        "wordType": "noun",
+        "meaningEn": "a period of time by which something is late",
+        "meaningVi": "sự trì hoãn, trễ giờ",
+        "example": "We apologize for the delay.",
+        "exampleVi": "Chúng tôi xin lỗi vì sự trễ giờ này."
+      },
+      {
+        "word": "tram",
+        "phonetic": "/træm/",
+        "wordType": "noun",
+        "meaningEn": "a passenger vehicle powered by electricity running on rails",
+        "meaningVi": "xe điện bánh sắt",
+        "example": "Trams are popular in Melbourne.",
+        "exampleVi": "Xe điện rất phổ biến ở Melbourne."
+      },
+      {
+        "word": "indicator",
+        "phonetic": "/ˈɪn.dɪ.keɪ.tər/",
+        "wordType": "noun",
+        "meaningEn": "a flashing light on a vehicle showing it is about to turn",
+        "meaningVi": "đèn xi-nhan",
+        "example": "Use your indicator before changing lanes.",
+        "exampleVi": "Hãy bật đèn xi-nhan trước khi chuyển làn đường."
+      },
+      {
+        "word": "windshield wiper",
+        "phonetic": "/ˈwɪnd.ʃiːld ˌwaɪ.pər/",
+        "wordType": "noun",
+        "meaningEn": "a device for clearing rain from a windshield",
+        "meaningVi": "cần gạt nước kính chắn gió",
+        "example": "Turn on the windshield wipers; it is starting to rain.",
+        "exampleVi": "Hãy bật cần gạt nước kính chắn gió; trời bắt đầu mưa rồi."
+      },
+      {
+        "word": "horn",
+        "phonetic": "/hɔːn/",
+        "wordType": "noun",
+        "meaningEn": "a device on a vehicle for making a loud warning sound",
+        "meaningVi": "còi xe",
+        "example": "The driver honked his horn in anger.",
+        "exampleVi": "Tài xế bóp còi xe trong giận dữ."
+      },
+      {
+        "word": "mirror",
+        "phonetic": "/ˈmɪr.ər/",
+        "wordType": "noun",
+        "meaningEn": "a glass surface reflecting images, used to see behind",
+        "meaningVi": "gương chiếu hậu",
+        "example": "Adjust your side mirrors before driving.",
+        "exampleVi": "Hãy điều chỉnh gương chiếu hậu bên hông trước khi lái xe."
+      },
+      {
+        "word": "speedometer",
+        "phonetic": "/spiːˈdɒm.ɪ.tər/",
+        "wordType": "noun",
+        "meaningEn": "an instrument on a vehicle dashboard indicating its speed",
+        "meaningVi": "đồng hồ tốc độ",
+        "example": "Keep an eye on the speedometer.",
+        "exampleVi": "Hãy để mắt đến đồng hồ đo tốc độ."
+      },
+      {
+        "word": "license plate",
+        "phonetic": "/ˈlaɪ.səns pleɪt/",
+        "wordType": "noun",
+        "meaningEn": "a metal plate on a vehicle showing its registration number",
+        "meaningVi": "biển số xe",
+        "example": "The witness wrote down the license plate number.",
+        "exampleVi": "Nhân chứng đã ghi lại số biển số xe."
+      },
+      {
+        "word": "seatbelt",
+        "phonetic": "/ˈsiːt.belt/",
+        "wordType": "noun",
+        "meaningEn": "a belt used in a car or plane to hold you in your seat",
+        "meaningVi": "dây an toàn",
+        "example": "Fasten your seatbelt before we start.",
+        "exampleVi": "Hãy thắt dây an toàn trước khi chúng ta bắt đầu."
+      },
+      {
+        "word": "accelerator",
+        "phonetic": "/əkˈsel.ə.reɪ.tər/",
+        "wordType": "noun",
+        "meaningEn": "the pedal in a vehicle that makes it go faster",
+        "meaningVi": "chân ga",
+        "example": "Press down on the accelerator to speed up.",
+        "exampleVi": "Hãy nhấn chân ga để tăng tốc."
+      },
+      {
+        "word": "mechanic",
+        "phonetic": "/mɪˈkæn.ɪk/",
+        "wordType": "noun",
+        "meaningEn": "a person who repairs and maintains machinery and engines",
+        "meaningVi": "thợ sửa xe, thợ cơ khí",
+        "example": "We took the car to the mechanic.",
+        "exampleVi": "Chúng tôi đem xe đến tiệm thợ sửa xe."
+      },
+      {
+        "word": "railway",
+        "phonetic": "/ˈreɪl.weɪ/",
+        "wordType": "noun",
+        "meaningEn": "a track made of steel rails for passenger and freight trains",
+        "meaningVi": "đường sắt",
+        "example": "He works for the state railway.",
+        "exampleVi": "Anh ấy làm việc cho ngành đường sắt nhà nước."
+      },
+      {
+        "word": "limousine",
+        "phonetic": "/ˌlɪm.əˈziːn/",
+        "wordType": "noun",
+        "meaningEn": "a large, luxurious automobile driven by a chauffeur",
+        "meaningVi": "xe limousine, xe sang",
+        "example": "The celebrities arrived in a limousine.",
+        "exampleVi": "Các ngôi sao đã đến trên một chiếc xe limousine."
+      },
+      {
+        "word": "submarine",
+        "phonetic": "/ˌsʌb.məˈriːn/",
+        "wordType": "noun",
+        "meaningEn": "a warship designed to operate completely submerged in the sea",
+        "meaningVi": "tàu ngầm",
+        "example": "The submarine dived to a depth of 200 meters.",
+        "exampleVi": "Tàu ngầm đã lặn xuống độ sâu 200 mét."
+      },
+      {
+        "word": "aircraft",
+        "phonetic": "/ˈeə.krɑːft/",
+        "wordType": "noun",
+        "meaningEn": "a machine capable of flight, such as an airplane or helicopter",
+        "meaningVi": "máy bay, phi cơ",
+        "example": "The military aircraft flew over the city.",
+        "exampleVi": "Chiếc máy bay quân sự đã bay qua thành phố."
+      },
+      {
+        "word": "tricycle",
+        "phonetic": "/ˈtraɪ.sɪ.kəl/",
+        "wordType": "noun",
+        "meaningEn": "a vehicle similar to a bicycle but having three wheels",
+        "meaningVi": "xe ba bánh",
+        "example": "The little boy is riding his tricycle.",
+        "exampleVi": "Cậu bé đang đạp chiếc xe ba bánh của mình."
       }
     ],
     "advanced": [
@@ -9397,104 +9711,418 @@ const ORIGINAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "exampleVi": "Lốp xe bị mòn làm tăng nguy cơ gặp hiện tượng trượt nước."
       },
       {
-        "word": "gridlock",
-        "phonetic": "/ˈɡrɪd.lɒk/",
+        "word": "transit",
+        "phonetic": "/ˈtræn.zɪt/",
         "wordType": "noun",
-        "meaningEn": "a traffic jam affecting a whole network of intersecting streets",
-        "meaningVi": "sự tê liệt giao thông hoàn toàn",
-        "example": "The snowy weather caused a city-wide gridlock.",
-        "exampleVi": "Thời tiết tuyết rơi đã gây ra sự tê liệt giao thông toàn thành phố."
-      }
-    ,
-      {
-            "word": "congestion",
-            "phonetic": "/kənˈdʒes.tʃən/",
-            "wordType": "noun",
-            "meaningEn": "the state of being overcrowded with traffic or people",
-            "meaningVi": "sự tắc nghẽn giao thông",
-            "example": "Traffic congestion is a major problem in big cities.",
-            "exampleVi": "Tắc nghẽn giao thông là một vấn đề lớn ở các thành phố lớn."
+        "meaningEn": "the carrying of people or goods from one place to another",
+        "meaningVi": "sự vận chuyển, hệ thống vận tải công cộng",
+        "example": "The city improved its rapid transit system.",
+        "exampleVi": "Thành phố đã cải thiện hệ thống vận tải nhanh của mình."
       },
       {
-            "word": "commute",
-            "phonetic": "/kəˈmjuːt/",
-            "wordType": "verb/noun",
-            "meaningEn": "travel some distance between one's home and place of work on a regular basis",
-            "meaningVi": "đi lại thường nhật giữa nhà và nơi làm việc",
-            "example": "She has a long daily commute to London.",
-            "exampleVi": "Cô ấy có hành trình đi lại hàng ngày khá xa tới London."
+        "word": "cargo",
+        "phonetic": "/ˈkɑː.ɡəʊ/",
+        "wordType": "noun",
+        "meaningEn": "goods carried on a ship, aircraft, or motor vehicle",
+        "meaningVi": "hàng hóa (vận chuyển bằng tàu/xe)",
+        "example": "The freighter was carrying cargo to Asia.",
+        "exampleVi": "Tàu chở hàng đang chở hàng hóa sang châu Á."
       },
       {
-            "word": "pedestrian",
-            "phonetic": "/pəˈdes.tri.ən/",
-            "wordType": "noun",
-            "meaningEn": "a person walking rather than travelling in a vehicle",
-            "meaningVi": "người đi bộ",
-            "example": "The driver stopped to let the pedestrian cross.",
-            "exampleVi": "Tài xế đã dừng lại để cho người đi bộ băng qua."
+        "word": "toll",
+        "phonetic": "/təʊl/",
+        "wordType": "noun",
+        "meaningEn": "a charge payable for permission to use a particular bridge or road",
+        "meaningVi": "phí cầu đường",
+        "example": "Drivers must pay a toll to cross the bridge.",
+        "exampleVi": "Người lái xe phải trả phí cầu đường để qua cầu."
       },
       {
-            "word": "intersection",
-            "phonetic": "/ˌɪn.təˈsek.ʃən/",
-            "wordType": "noun",
-            "meaningEn": "a point at which two or more roads meet and cross",
-            "meaningVi": "ngã tư, giao lộ",
-            "example": "Turn left at the next intersection.",
-            "exampleVi": "Rẽ trái ở ngã tư tiếp theo."
+        "word": "deceleration",
+        "phonetic": "/ˌdiː.sel.əˈreɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "reduction in speed or rate",
+        "meaningVi": "sự giảm tốc độ, hãm phanh",
+        "example": "The aircraft experienced a sudden deceleration.",
+        "exampleVi": "Máy bay đã trải qua một sự giảm tốc đột ngột."
       },
       {
-            "word": "locomotive",
-            "phonetic": "/ˌləʊ.kəˈməʊ.tɪv/",
-            "wordType": "noun",
-            "meaningEn": "a powered railway vehicle used for pulling trains",
-            "meaningVi": "đầu máy xe lửa",
-            "example": "The old steam locomotive is kept in the museum.",
-            "exampleVi": "Đầu máy xe lửa chạy bằng hơi nước cũ được giữ trong bảo tàng."
+        "word": "combustion",
+        "phonetic": "/kəmˈbʌs.tʃən/",
+        "wordType": "noun",
+        "meaningEn": "the process of burning something, especially fuel in an engine",
+        "meaningVi": "sự đốt cháy nhiên liệu",
+        "example": "Internal combustion engines power most cars.",
+        "exampleVi": "Động cơ đốt trong cung cấp năng lượng cho hầu hết ô tô."
       },
       {
-            "word": "aviation",
-            "phonetic": "/ˌeɪ.viˈeɪ.ʃən/",
-            "wordType": "noun",
-            "meaningEn": "the flying or operating of aircraft",
-            "meaningVi": "ngành hàng không, sự bay lượn",
-            "example": "He has always been interested in aviation.",
-            "exampleVi": "Anh ấy đã luôn quan tâm đến ngành hàng không."
+        "word": "chassis",
+        "phonetic": "/ˈʃæsi/",
+        "wordType": "noun",
+        "meaningEn": "the base frame of a motor vehicle",
+        "meaningVi": "khung gầm xe, sát-xi",
+        "example": "The car chassis is made of lightweight aluminum.",
+        "exampleVi": "Khung gầm ô tô được làm bằng nhôm nhẹ."
       },
       {
-            "word": "navigation",
-            "phonetic": "/ˌnæv.ɪˈɡeɪ.ʃən/",
-            "wordType": "noun",
-            "meaningEn": "the process or activity of accurately ascertaining one's position and planning a route",
-            "meaningVi": "sự định vị, sự dẫn đường, hàng hải",
-            "example": "Satellite navigation systems make driving easier.",
-            "exampleVi": "Các hệ thống định vị vệ tinh giúp việc lái xe trở nên dễ dàng hơn."
+        "word": "catalytic converter",
+        "phonetic": "/ˌkæt.əl.ɪt.ɪk kənˈvɜː.tər/",
+        "wordType": "noun",
+        "meaningEn": "a device in an exhaust system that reduces emissions",
+        "meaningVi": "bộ chuyển đổi xúc tác khí thải",
+        "example": "A faulty catalytic converter can fail emissions tests.",
+        "exampleVi": "Bộ chuyển đổi xúc tác bị lỗi có thể khiến xe trượt bài kiểm tra khí thải."
       },
       {
-            "word": "transit",
-            "phonetic": "/ˈtræn.zɪt/",
-            "wordType": "noun",
-            "meaningEn": "the carrying of people or goods from one place to another",
-            "meaningVi": "sự vận chuyển, hệ thống vận tải công cộng",
-            "example": "The city improved its rapid transit system.",
-            "exampleVi": "Thành phố đã cải thiện hệ thống vận tải nhanh của mình."
+        "word": "interchange",
+        "phonetic": "/ˈɪn.tə.tʃeɪndʒ/",
+        "wordType": "noun",
+        "meaningEn": "a junction of highways allowing flow without crossing traffic",
+        "meaningVi": "nút giao thông khác mức",
+        "example": "The highway interchange is complicated.",
+        "exampleVi": "Nút giao thông đường cao tốc rất phức tạp."
       },
       {
-            "word": "cargo",
-            "phonetic": "/ˈkɑː.ɡəʊ/",
-            "wordType": "noun",
-            "meaningEn": "goods carried on a ship, aircraft, or motor vehicle",
-            "meaningVi": "hàng hóa (vận chuyển bằng tàu/xe)",
-            "example": "The freighter was carrying cargo to Asia.",
-            "exampleVi": "Tàu chở hàng đang chở hàng hóa sang châu Á."
+        "word": "tailgating",
+        "phonetic": "/ˈteɪl.ɡeɪ.tɪŋ/",
+        "wordType": "noun",
+        "meaningEn": "driving too closely behind another vehicle",
+        "meaningVi": "hành vi bám đuôi xe khác nguy hiểm",
+        "example": "Tailgating is a primary cause of collisions.",
+        "exampleVi": "Bám đuôi xe khác là nguyên nhân chính gây ra các vụ va chạm."
       },
       {
-            "word": "toll",
-            "phonetic": "/təʊl/",
-            "wordType": "noun",
-            "meaningEn": "a charge payable for permission to use a particular bridge or road",
-            "meaningVi": "phí cầu đường",
-            "example": "Drivers must pay a toll to cross the bridge.",
-            "exampleVi": "Người lái xe phải trả phí cầu đường để qua cầu."
+        "word": "ridesharing",
+        "phonetic": "/ˈraɪd.ʃeə.rɪŋ/",
+        "wordType": "noun",
+        "meaningEn": "sharing car journeys so multiple people travel together",
+        "meaningVi": "dịch vụ đi chung xe, chia sẻ xe",
+        "example": "Ridesharing apps have revolutionized transport.",
+        "exampleVi": "Các ứng dụng đi chung xe đã cách mạng hóa giao thông."
+      },
+      {
+        "word": "freeway",
+        "phonetic": "/ˈfriː.weɪ/",
+        "wordType": "noun",
+        "meaningEn": "an express highway with controlled access",
+        "meaningVi": "đường cao tốc không thu phí",
+        "example": "The freeway has four lanes in each direction.",
+        "exampleVi": "Đường cao tốc có bốn làn đường cho mỗi hướng."
+      },
+      {
+        "word": "telematics",
+        "phonetic": "/ˌtel.ɪˈmæt.ɪks/",
+        "wordType": "noun",
+        "meaningEn": "IT dealing with long-distance transmission of vehicle data",
+        "meaningVi": "tin học viễn thông trên xe",
+        "example": "Insurance companies use telematics to track habits.",
+        "exampleVi": "Các công ty bảo hiểm dùng tin học viễn thông để theo dõi thói quen."
+      },
+      {
+        "word": "undercarriage",
+        "phonetic": "/ˈʌn.dəˌkær.ɪdʒ/",
+        "wordType": "noun",
+        "meaningEn": "the landing gear of an aircraft or underside of a vehicle",
+        "meaningVi": "gầm xe, bộ phận hạ cánh",
+        "example": "Inspect the vehicle's undercarriage for rust.",
+        "exampleVi": "Kiểm tra gầm xe xem có bị rỉ sét không."
+      },
+      {
+        "word": "odometer",
+        "phonetic": "/ɒdˈɒm.ɪ.tər/",
+        "wordType": "noun",
+        "meaningEn": "an instrument measuring distance traveled",
+        "meaningVi": "đồng hồ công-tơ-mét",
+        "example": "The odometer showed fifty thousand miles.",
+        "exampleVi": "Đồng hồ công-tơ-mét cho thấy năm vạn dặm."
+      },
+      {
+        "word": "maintenance",
+        "phonetic": "/ˈmeɪn.tən.əns/",
+        "wordType": "noun",
+        "meaningEn": "the work of keeping something in proper condition",
+        "meaningVi": "sự bảo trì, bảo dưỡng định kỳ",
+        "example": "Regular maintenance extends vehicle life.",
+        "exampleVi": "Bảo dưỡng định kỳ giúp kéo dài tuổi thọ phương tiện."
+      },
+      {
+        "word": "horsepower",
+        "phonetic": "/ˈhɔːsˌpaʊ.ər/",
+        "wordType": "noun",
+        "meaningEn": "a unit of power used to measure engine strength",
+        "meaningVi": "mã lực (sức ngựa)",
+        "example": "The sports car has an engine with over four hundred horsepower.",
+        "exampleVi": "Chiếc xe thể thao có động cơ công suất hơn bốn trăm mã lực."
+      },
+      {
+        "word": "suspension",
+        "phonetic": "/səˈspen.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "system of springs and shock absorbers in a vehicle",
+        "meaningVi": "hệ thống treo của xe",
+        "example": "The new model has an improved suspension system.",
+        "exampleVi": "Mẫu xe mới có hệ thống treo được cải tiến."
+      },
+      {
+        "word": "freight",
+        "phonetic": "/freɪt/",
+        "wordType": "noun",
+        "meaningEn": "goods transported by bulk transport",
+        "meaningVi": "hàng hóa chở số lượng lớn",
+        "example": "Most freight is moved by rail in this region.",
+        "exampleVi": "Hầu hết hàng hóa lớn được vận chuyển bằng đường sắt."
+      },
+      {
+        "word": "aerodynamics",
+        "phonetic": "/ˌeə.rəʊ.daɪˈnæm.ɪks/",
+        "wordType": "noun",
+        "meaningEn": "the study of how gases interact with moving bodies",
+        "meaningVi": "khí động học",
+        "example": "Wind tunnel tests improved the aerodynamics.",
+        "exampleVi": "Các thử nghiệm trong hầm gió đã cải thiện tính khí động học."
+      },
+      {
+        "word": "drivetrain",
+        "phonetic": "/ˈdraɪv.treɪn/",
+        "wordType": "noun",
+        "meaningEn": "system that connects the engine to the wheels",
+        "meaningVi": "hệ thống truyền động",
+        "example": "The mechanic repaired the vehicle's drivetrain.",
+        "exampleVi": "Thợ sửa xe đã sửa chữa hệ thống truyền động."
+      },
+      {
+        "word": "amortization",
+        "phonetic": "/əˌmɔː.tɪˈzeɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "gradually writing off the initial cost of an asset",
+        "meaningVi": "sự khấu hao tài sản",
+        "example": "Calculate the vehicle's amortization cost.",
+        "exampleVi": "Tính toán chi phí khấu hao của phương tiện."
+      },
+      {
+        "word": "braking distance",
+        "phonetic": "/ˈbreɪ.kɪŋ ˌdɪs.təns/",
+        "wordType": "noun",
+        "meaningEn": "the distance a vehicle travels after brakes are applied",
+        "meaningVi": "quãng đường phanh",
+        "example": "Wet roads increase the braking distance.",
+        "exampleVi": "Đường ướt làm tăng quãng đường phanh."
+      },
+      {
+        "word": "carburetor",
+        "phonetic": "/ˈkɑː.bər.eɪ.tər/",
+        "wordType": "noun",
+        "meaningEn": "a device in an engine for mixing air with fuel",
+        "meaningVi": "bộ chế hòa khí",
+        "example": "Older cars use a carburetor instead of fuel injection.",
+        "exampleVi": "Xe hơi cũ sử dụng bộ chế hòa khí thay vì phun xăng điện tử."
+      },
+      {
+        "word": "differential",
+        "phonetic": "/ˌdɪf.əˈren.ʃəl/",
+        "wordType": "noun",
+        "meaningEn": "a gear assembly allowing wheels to turn at different speeds",
+        "meaningVi": "bộ vi sai xe hơi",
+        "example": "The rear differential helps the car turn smoothly.",
+        "exampleVi": "Bộ vi sai cầu sau giúp xe rẽ hướng êm ái."
+      },
+      {
+        "word": "supercharger",
+        "phonetic": "/ˈsuː.pə.tʃɑː.dʒər/",
+        "wordType": "noun",
+        "meaningEn": "a compressor that forces more air into the engine",
+        "meaningVi": "bộ siêu tăng áp",
+        "example": "The supercharger increases the engine's power output.",
+        "exampleVi": "Bộ siêu tăng áp làm tăng công suất của động cơ."
+      },
+      {
+        "word": "headwind",
+        "phonetic": "/ˈhed.wɪnd/",
+        "wordType": "noun",
+        "meaningEn": "a wind blowing directly against the course of a vehicle",
+        "meaningVi": "gió ngược chiều",
+        "example": "The plane flew slower due to a strong headwind.",
+        "exampleVi": "Máy bay bay chậm hơn do gió ngược mạnh."
+      },
+      {
+        "word": "hydroplane",
+        "phonetic": "/ˈhaɪ.drə.pleɪn/",
+        "wordType": "verb",
+        "meaningEn": "slide on a wet road surface due to a thin film of water",
+        "meaningVi": "bị trượt nước mất lái",
+        "example": "The car began to hydroplane on the wet highway.",
+        "exampleVi": "Chiếc xe bắt đầu bị trượt nước mất lái trên đường cao tốc ẩm ướt."
+      },
+      {
+        "word": "carpooling",
+        "phonetic": "/ˈkɑːˌpuː.lɪŋ/",
+        "wordType": "noun",
+        "meaningEn": "sharing car rides to work to reduce emissions",
+        "meaningVi": "đi chung xe tiết kiệm",
+        "example": "Carpooling helps reduce the number of cars.",
+        "exampleVi": "Đi chung xe giúp giảm số lượng xe hơi trên đường."
+      },
+      {
+        "word": "crosswind",
+        "phonetic": "/ˈkrɒs.wɪnd/",
+        "wordType": "noun",
+        "meaningEn": "a wind blowing across the direction of travel",
+        "meaningVi": "gió cắt ngang",
+        "example": "Crosswinds made it difficult to keep the car straight.",
+        "exampleVi": "Gió ngang gây khó khăn cho việc giữ xe đi thẳng."
+      },
+      {
+        "word": "tail wind",
+        "phonetic": "/ˈteɪl.wɪnd/",
+        "wordType": "noun",
+        "meaningEn": "a wind blowing in the direction of travel",
+        "meaningVi": "gió xuôi chiều",
+        "example": "The aircraft benefited from a strong tail wind.",
+        "exampleVi": "Máy bay đã được hưởng lợi từ luồng gió xuôi mạnh."
+      },
+      {
+        "word": "turbocharger",
+        "phonetic": "/ˈtɜː.bəʊˌtʃɑː.dʒər/",
+        "wordType": "noun",
+        "meaningEn": "a supercharger driven by a turbine powered by exhaust gases",
+        "meaningVi": "bộ tăng áp turbo",
+        "example": "The engine is equipped with a turbocharger.",
+        "exampleVi": "Động cơ được trang bị bộ tăng áp turbo."
+      },
+      {
+        "word": "airbag",
+        "phonetic": "/ˈeə.bæɡ/",
+        "wordType": "noun",
+        "meaningEn": "a safety device that fills with air in a crash",
+        "meaningVi": "túi khí an toàn",
+        "example": "The airbag deployed immediately upon impact.",
+        "exampleVi": "Túi khí đã bung ra ngay lập tức khi xảy ra va chạm."
+      },
+      {
+        "word": "exhaust pipe",
+        "phonetic": "/ɪɡˈzɔːst paɪp/",
+        "wordType": "noun",
+        "meaningEn": "a pipe through which exhaust gases are discharged",
+        "meaningVi": "ống xả khí thải, ống pô",
+        "example": "Smoke was coming out of the exhaust pipe.",
+        "exampleVi": "Khói đang bay ra từ ống xả."
+      },
+      {
+        "word": "spark plug",
+        "phonetic": "/ˈspɑːk plʌɡ/",
+        "wordType": "noun",
+        "meaningEn": "a device for firing the explosive mixture in an engine",
+        "meaningVi": "bugi đánh lửa",
+        "example": "The mechanic replaced the dirty spark plugs.",
+        "exampleVi": "Thợ sửa xe đã thay thế những chiếc bugi bị bẩn."
+      },
+      {
+        "word": "alternator",
+        "phonetic": "/ˈɔːl.tə.neɪ.tər/",
+        "wordType": "noun",
+        "meaningEn": "a generator that produces alternating current",
+        "meaningVi": "máy phát điện xoay chiều",
+        "example": "A bad alternator will drain the car battery.",
+        "exampleVi": "Máy phát điện bị hỏng sẽ làm cạn pin xe hơi."
+      },
+      {
+        "word": "radiator",
+        "phonetic": "/ˈreɪ.di.eɪ.tər/",
+        "wordType": "noun",
+        "meaningEn": "an engine-cooling device in a motor vehicle",
+        "meaningVi": "két nước làm mát",
+        "example": "Coolant was leaking from the radiator.",
+        "exampleVi": "Nước làm mát đang rò rỉ từ két nước."
+      },
+      {
+        "word": "combustion chamber",
+        "phonetic": "/kəmˈbʌs.tʃən ˌtʃeɪ.mər/",
+        "wordType": "noun",
+        "meaningEn": "the space in an engine where fuel is burned",
+        "meaningVi": "buồng đốt nhiên liệu",
+        "example": "Fuel is ignited inside the combustion chamber.",
+        "exampleVi": "Nhiên liệu được đốt cháy bên trong buồng đốt."
+      },
+      {
+        "word": "piston",
+        "phonetic": "/ˈpɪs.tən/",
+        "wordType": "noun",
+        "meaningEn": "a disk fitting closely inside a cylinder moving up and down",
+        "meaningVi": "pít-tông động cơ",
+        "example": "The engine has four cylinders and four pistons.",
+        "exampleVi": "Động cơ có bốn xi-lanh và đóng vai trò nòng cốt."
+      },
+      {
+        "word": "cylinder",
+        "phonetic": "/ˈsɪl.ɪn.dər/",
+        "wordType": "noun",
+        "meaningEn": "a chamber within which the piston moves",
+        "meaningVi": "xi-lanh động cơ",
+        "example": "Engine displacement depends on cylinder volume.",
+        "exampleVi": "Dung tích động cơ phụ thuộc vào thể tích xi-lanh."
+      },
+      {
+        "word": "crankshaft",
+        "phonetic": "/ˈkræŋk.ʃɑːft/",
+        "wordType": "noun",
+        "meaningEn": "a shaft driven by a crank turning reciprocating motion to rotating motion",
+        "meaningVi": "trục khuỷu động cơ",
+        "example": "The pistons turn the crankshaft.",
+        "exampleVi": "Các pít-tông làm quay trục khuỷu."
+      },
+      {
+        "word": "muffler",
+        "phonetic": "/ˈmʌf.lər/",
+        "wordType": "noun",
+        "meaningEn": "a device for reducing the noise emitted by an engine",
+        "meaningVi": "bộ giảm thanh ống xả",
+        "example": "A broken muffler makes the car very noisy.",
+        "exampleVi": "Bộ giảm thanh bị hỏng làm cho xe rất ồn."
+      },
+      {
+        "word": "windshield washer",
+        "phonetic": "/ˈwɪnd.ʃiːld ˌwɒʃ.ər/",
+        "wordType": "noun",
+        "meaningEn": "a device that sprays liquid onto the windshield",
+        "meaningVi": "vòi phun nước rửa kính",
+        "example": "Fill up the windshield washer fluid.",
+        "exampleVi": "Hãy đổ đầy nước rửa kính chắn gió."
+      },
+      {
+        "word": "shock absorber",
+        "phonetic": "/ˈʃɒk əbˌzɔː.bər/",
+        "wordType": "noun",
+        "meaningEn": "a device for absorbing jolts and vibrations on a vehicle",
+        "meaningVi": "bộ giảm xóc, phuộc xe",
+        "example": "The car needs new shock absorbers.",
+        "exampleVi": "Xe cần có bộ giảm xóc mới."
+      },
+      {
+        "word": "steering wheel",
+        "phonetic": "/ˈstɪə.rɪŋ ˌwiːl/",
+        "wordType": "noun",
+        "meaningEn": "a wheel that you turn to control the direction of a vehicle",
+        "meaningVi": "vô lăng lái xe",
+        "example": "He gripped the steering wheel tightly.",
+        "exampleVi": "Anh ấy nắm chặt vô lăng lái xe."
+      },
+      {
+        "word": "wheelbase",
+        "phonetic": "/ˈwiːl.beɪs/",
+        "wordType": "noun",
+        "meaningEn": "the distance between the front and rear axles of a vehicle",
+        "meaningVi": "chiều dài cơ sở",
+        "example": "A longer wheelbase provides a smoother ride.",
+        "exampleVi": "Chiều dài cơ sở dài hơn mang lại chuyến đi êm ái hơn."
+      },
+      {
+        "word": "powertrain",
+        "phonetic": "/ˈpaʊə.treɪn/",
+        "wordType": "noun",
+        "meaningEn": "the mechanism that transmits power from the engine to the axle",
+        "meaningVi": "hệ thống truyền động động lực",
+        "example": "The manufacturer warrants the powertrain for five years.",
+        "exampleVi": "Nhà sản xuất bảo hành hệ thống truyền động trong năm năm."
       }
     ]
   },
@@ -9728,97 +10356,411 @@ const ORIGINAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "lợi nhuận",
         "example": "The company made a record profit this year.",
         "exampleVi": "Công ty đạt mức lợi nhuận kỷ lục năm nay."
-      }
-    ,
-      {
-            "word": "employee",
-            "phonetic": "/ɪmˈplɔɪ.iː/",
-            "wordType": "noun",
-            "meaningEn": "a person employed for wages or salary",
-            "meaningVi": "nhân viên, người làm công",
-            "example": "The company has over 500 employees.",
-            "exampleVi": "Công ty có hơn 500 nhân viên."
       },
       {
-            "word": "salary",
-            "phonetic": "/ˈsæl.ər.i/",
-            "wordType": "noun",
-            "meaningEn": "a fixed regular payment, typically paid on a monthly basis",
-            "meaningVi": "lương tháng",
-            "example": "She receives a decent salary.",
-            "exampleVi": "Cô ấy nhận được một mức lương khá."
+        "word": "schedule",
+        "phonetic": "/ˈʃedʒ.uːl/",
+        "wordType": "noun",
+        "meaningEn": "a plan for carrying out a process or procedure",
+        "meaningVi": "lịch trình, thời khóa biểu",
+        "example": "We need to stay on schedule.",
+        "exampleVi": "Chúng ta cần tuân thủ đúng lịch trình."
       },
       {
-            "word": "meeting",
-            "phonetic": "/ˈmiː.tɪŋ/",
-            "wordType": "noun",
-            "meaningEn": "an assembly of people for a particular purpose",
-            "meaningVi": "cuộc họp",
-            "example": "We have a staff meeting every Monday.",
-            "exampleVi": "Chúng tôi có một cuộc họp nhân viên vào thứ Hai hàng tuần."
+        "word": "employer",
+        "phonetic": "/ɪmˈplɔɪ.ər/",
+        "wordType": "noun",
+        "meaningEn": "a person or organization that employs people",
+        "meaningVi": "người sử dụng lao động, chủ doanh nghiệp",
+        "example": "He is a fair and supportive employer.",
+        "exampleVi": "Ông ấy là một người chủ công bằng và biết hỗ trợ."
       },
       {
-            "word": "office",
-            "phonetic": "/ˈɒf.ɪs/",
-            "wordType": "noun",
-            "meaningEn": "a room, set of rooms, or building used as a place for commercial or professional work",
-            "meaningVi": "văn phòng",
-            "example": "His office is on the third floor.",
-            "exampleVi": "Văn phòng của anh ấy nằm ở tầng ba."
+        "word": "promotion",
+        "phonetic": "/prəˈməʊ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "advancement to a higher position or rank",
+        "meaningVi": "sự thăng tiến / khuyến mãi",
+        "example": "He received a promotion to manager.",
+        "exampleVi": "Anh ấy đã nhận được sự thăng chức."
       },
       {
-            "word": "project",
-            "phonetic": "/ˈprɒdʒ.ekt/",
-            "wordType": "noun",
-            "meaningEn": "an individual or collaborative enterprise that is carefully planned",
-            "meaningVi": "dự án",
-            "example": "He is leading the new software project.",
-            "exampleVi": "Anh ấy đang dẫn dắt dự án phần mềm mới."
+        "word": "task",
+        "phonetic": "/tɑːsk/",
+        "wordType": "noun",
+        "meaningEn": "a piece of work to be done",
+        "meaningVi": "nhiệm vụ, tác vụ",
+        "example": "She completed the assigned task on time.",
+        "exampleVi": "Cô ấy đã hoàn thành nhiệm vụ được giao."
       },
       {
-            "word": "department",
-            "phonetic": "/dɪˈpɑːt.mənt/",
-            "wordType": "noun",
-            "meaningEn": "a division of a large organization or company",
-            "meaningVi": "phòng ban, bộ phận",
-            "example": "She works in the marketing department.",
-            "exampleVi": "Cô ấy làm việc ở bộ phận marketing."
+        "word": "recruitment",
+        "phonetic": "/rɪˈkruːt.mənt/",
+        "wordType": "noun",
+        "meaningEn": "the action of finding new employees",
+        "meaningVi": "sự tuyển dụng nhân sự",
+        "example": "The company started its annual recruitment.",
+        "exampleVi": "Công ty đã bắt tác đợt tuyển dụng thường niên."
       },
       {
-            "word": "schedule",
-            "phonetic": "/ˈʃedʒ.uːl/",
-            "wordType": "noun",
-            "meaningEn": "a plan for carrying out a process or procedure",
-            "meaningVi": "lịch trình, thời khóa biểu",
-            "example": "We need to stay on schedule.",
-            "exampleVi": "Chúng ta cần tuân thủ đúng lịch trình."
+        "word": "advertisement",
+        "phonetic": "/ədˈvɜː.tɪs.mənt/",
+        "wordType": "noun",
+        "meaningEn": "a notice promoting a product or service",
+        "meaningVi": "quảng cáo",
+        "example": "They placed an advertisement in the paper.",
+        "exampleVi": "Họ đã đặt một quảng cáo trên tờ báo."
       },
       {
-            "word": "customer",
-            "phonetic": "/ˈkʌs.tə.mər/",
-            "wordType": "noun",
-            "meaningEn": "a person who buys goods or services from a shop or business",
-            "meaningVi": "khách hàng",
-            "example": "The customer was very satisfied with the service.",
-            "exampleVi": "Khách hàng đã rất hài lòng với dịch vụ."
+        "word": "interview",
+        "phonetic": "/ˈɪn.tə.vjuː/",
+        "wordType": "noun",
+        "meaningEn": "a formal meeting to evaluate an applicant",
+        "meaningVi": "buổi phỏng vấn",
+        "example": "He had a job interview this morning.",
+        "exampleVi": "Anh ấy đã có một buổi phỏng vấn xin việc."
       },
       {
-            "word": "employer",
-            "phonetic": "/ɪmˈplɔɪ.ər/",
-            "wordType": "noun",
-            "meaningEn": "a person or organization that employs people",
-            "meaningVi": "người sử dụng lao động, chủ doanh nghiệp",
-            "example": "He is a fair and supportive employer.",
-            "exampleVi": "Ông ấy là một người chủ công bằng và biết hỗ trợ."
+        "word": "resume",
+        "phonetic": "/ˈrez.juː.meɪ/",
+        "wordType": "noun",
+        "meaningEn": "a summary of education and work experience",
+        "meaningVi": "sơ yếu lý lịch, CV",
+        "example": "Send your resume to the HR department.",
+        "exampleVi": "Hãy gửi sơ yếu lý lịch của bạn đến phòng nhân sự."
       },
       {
-            "word": "business",
-            "phonetic": "/ˈbɪz.nɪs/",
-            "wordType": "noun",
-            "meaningEn": "a person's regular occupation, profession, or trade",
-            "meaningVi": "kinh doanh, doanh nghiệp",
-            "example": "She runs a small family business.",
-            "exampleVi": "Cô ấy điều hành một doanh nghiệp gia đình nhỏ."
+        "word": "vacancy",
+        "phonetic": "/ˈveɪ.kən.si/",
+        "wordType": "noun",
+        "meaningEn": "an unoccupied position or job",
+        "meaningVi": "vị trí còn trống",
+        "example": "We currently have a vacancy for a developer.",
+        "exampleVi": "Chúng tôi hiện có một vị trí trống cho lập trình viên."
+      },
+      {
+        "word": "benefit",
+        "phonetic": "/ˈben.ɪ.fɪt/",
+        "wordType": "noun",
+        "meaningEn": "advantages provided to employees in addition to salary",
+        "meaningVi": "phúc lợi, lợi ích",
+        "example": "The job offers good health benefits.",
+        "exampleVi": "Công việc này cung cấp các phúc lợi sức khỏe."
+      },
+      {
+        "word": "union",
+        "phonetic": "/ˈjuː.nj.ən/",
+        "wordType": "noun",
+        "meaningEn": "workers' association to protect their rights",
+        "meaningVi": "công đoàn",
+        "example": "He joined the labor union last year.",
+        "exampleVi": "Anh ấy đã gia nhập công đoàn lao động."
+      },
+      {
+        "word": "agenda",
+        "phonetic": "/əˈdʒen.də/",
+        "wordType": "noun",
+        "meaningEn": "a list of items to be discussed at a meeting",
+        "meaningVi": "chương trình họp",
+        "example": "What is the first item on the agenda?",
+        "exampleVi": "Nội dung đầu tiên trong chương trình họp là gì?"
+      },
+      {
+        "word": "minutes",
+        "phonetic": "/ˈmɪn.ɪts/",
+        "wordType": "noun",
+        "meaningEn": "the official written record of a meeting",
+        "meaningVi": "biên bản cuộc họp",
+        "example": "She took the minutes during the meeting.",
+        "exampleVi": "Cô ấy đã ghi biên bản trong cuộc họp."
+      },
+      {
+        "word": "deadline",
+        "phonetic": "/ˈded.laɪn/",
+        "wordType": "noun",
+        "meaningEn": "the latest date by which something should be completed",
+        "meaningVi": "hạn chót",
+        "example": "We must meet the project deadline.",
+        "exampleVi": "Chúng ta phải hoàn thành đúng hạn chót."
+      },
+      {
+        "word": "bonus",
+        "phonetic": "/ˈbəʊ.nəs/",
+        "wordType": "noun",
+        "meaningEn": "an extra sum of money given as a reward",
+        "meaningVi": "tiền thưởng",
+        "example": "Employees receive a year-end bonus.",
+        "exampleVi": "Nhân viên được nhận tiền thưởng cuối năm."
+      },
+      {
+        "word": "overtime",
+        "phonetic": "/ˈəʊ.və.taɪm/",
+        "wordType": "noun",
+        "meaningEn": "time worked in addition to normal hours",
+        "meaningVi": "làm việc ngoài giờ",
+        "example": "He did ten hours of overtime this week.",
+        "exampleVi": "Anh ấy đã làm việc ngoài giờ mười tiếng."
+      },
+      {
+        "word": "trainee",
+        "phonetic": "/ˌtreɪˈniː/",
+        "wordType": "noun",
+        "meaningEn": "a person undergoing training for a job",
+        "meaningVi": "thực tập sinh, người học việc",
+        "example": "The new trainee is eager to learn.",
+        "exampleVi": "Thực tập sinh mới rất hăm hở học hỏi."
+      },
+      {
+        "word": "reception",
+        "phonetic": "/rɪˈsep.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "the area where visitors are greeted",
+        "meaningVi": "quầy lễ tân",
+        "example": "Please wait at the reception desk.",
+        "exampleVi": "Vui lòng đợi ở quầy lễ tân."
+      },
+      {
+        "word": "colleague",
+        "phonetic": "/ˈcɒl.iːɡ/",
+        "wordType": "noun",
+        "meaningEn": "a person with whom one works",
+        "meaningVi": "đồng nghiệp",
+        "example": "My colleagues helped me finish the report.",
+        "exampleVi": "Các đồng nghiệp đã giúp tôi hoàn thành bản báo cáo."
+      },
+      {
+        "word": "budget",
+        "phonetic": "/ˈbʌdʒ.ɪt/",
+        "wordType": "noun",
+        "meaningEn": "an estimate of income and expenditure",
+        "meaningVi": "ngân sách",
+        "example": "We need to stick to our budget.",
+        "exampleVi": "Chúng ta cần phải bám sát ngân sách."
+      },
+      {
+        "word": "workshop",
+        "phonetic": "/ˈwɜːk.ʃɒp/",
+        "wordType": "noun",
+        "meaningEn": "a meeting at which a group of people engage in intensive discussion",
+        "meaningVi": "hội thảo chuyên đề",
+        "example": "We attended a workshop on digital marketing.",
+        "exampleVi": "Chúng tôi đã tham dự một hội thảo về tiếp thị số."
+      },
+      {
+        "word": "head office",
+        "phonetic": "/hed ˈɒf.ɪs/",
+        "wordType": "noun",
+        "meaningEn": "the main office of a business or organization",
+        "meaningVi": "trụ sở chính",
+        "example": "The head office is located in London.",
+        "exampleVi": "Trụ sở chính được đặt tại Luân Đôn."
+      },
+      {
+        "word": "retailer",
+        "phonetic": "/ˈriː.teɪ.lər/",
+        "wordType": "noun",
+        "meaningEn": "a person or business that sells goods to the public",
+        "meaningVi": "nhà bán lẻ",
+        "example": "Amazon is a major online retailer.",
+        "exampleVi": "Amazon là một nhà bán lẻ trực tuyến lớn."
+      },
+      {
+        "word": "wholesaler",
+        "phonetic": "/ˈhəʊl.seɪ.lər/",
+        "wordType": "noun",
+        "meaningEn": "a person or company that sells goods in large quantities",
+        "meaningVi": "nhà bán sỉ, đại lý bán buôn",
+        "example": "The wholesaler supplied goods to local shops.",
+        "exampleVi": "Nhà bán sỉ đã cung cấp hàng hóa cho các cửa hàng địa phương."
+      },
+      {
+        "word": "supervisor",
+        "phonetic": "/ˈsuː.pə.vaɪ.zər/",
+        "wordType": "noun",
+        "meaningEn": "a person who supervises workers or activities",
+        "meaningVi": "người giám sát",
+        "example": "Report any problems to your supervisor.",
+        "exampleVi": "Hãy báo cáo bất kỳ vấn đề gì cho người giám sát của bạn."
+      },
+      {
+        "word": "consultant",
+        "phonetic": "/kənˈsʌl.tənt/",
+        "wordType": "noun",
+        "meaningEn": "a professional who provides expert advice in a field",
+        "meaningVi": "chuyên gia tư vấn",
+        "example": "They hired a financial consultant to help.",
+        "exampleVi": "Họ đã thuê một chuyên gia tư vấn tài chính để trợ giúp."
+      },
+      {
+        "word": "investor",
+        "phonetic": "/ɪnˈves.tər/",
+        "wordType": "noun",
+        "meaningEn": "a person or organization that puts money into financial schemes",
+        "meaningVi": "nhà đầu tư",
+        "example": "The start-up is seeking new investors.",
+        "exampleVi": "Công ty khởi nghiệp đang tìm kiếm các nhà đầu tư mới."
+      },
+      {
+        "word": "entrepreneur",
+        "phonetic": "/ˌɒn.trə.prəˈnɜː/",
+        "wordType": "noun",
+        "meaningEn": "a person who sets up a business, taking on financial risks",
+        "meaningVi": "nhà doanh nghiệp, doanh nhân",
+        "example": "He is a successful tech entrepreneur.",
+        "exampleVi": "Cậu ấy là một doanh nhân công nghệ thành công."
+      },
+      {
+        "word": "supplier",
+        "phonetic": "/səˈplaɪ.ər/",
+        "wordType": "noun",
+        "meaningEn": "a person or organization that provides something needed",
+        "meaningVi": "nhà cung cấp",
+        "example": "We switched to a local paper supplier.",
+        "exampleVi": "Chúng tôi đã chuyển sang một nhà cung cấp giấy địa phương."
+      },
+      {
+        "word": "manufacturer",
+        "phonetic": "/ˌmæn.jəˈfæk.tʃə.rər/",
+        "wordType": "noun",
+        "meaningEn": "a person or company that makes goods for sale",
+        "meaningVi": "nhà sản xuất",
+        "example": "The car manufacturer unveiled a new electric model.",
+        "exampleVi": "Nhà sản xuất xe hơi đã tiết lộ một mẫu xe điện mới."
+      },
+      {
+        "word": "intern",
+        "phonetic": "/ˈɪn.tɜːn/",
+        "wordType": "noun",
+        "meaningEn": "a student or trainee who works to gain experience",
+        "meaningVi": "thực tập sinh",
+        "example": "She started as an intern at the company.",
+        "exampleVi": "Cô ấy bắt đầu làm thực tập sinh tại công ty."
+      },
+      {
+        "word": "salary raise",
+        "phonetic": "/ˈsæl.ər.i reɪz/",
+        "wordType": "noun",
+        "meaningEn": "an increase in the amount of money you earn",
+        "meaningVi": "sự tăng lương",
+        "example": "He asked his boss for a salary raise.",
+        "exampleVi": "Anh ấy đã yêu cầu sếp tăng lương."
+      },
+      {
+        "word": "resignation",
+        "phonetic": "/ˌrez.ɪɡˈneɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "an act of retiring or giving up a position",
+        "meaningVi": "sự từ chức, thôi việc",
+        "example": "The manager announced his resignation.",
+        "exampleVi": "Quản lý đã thông báo thôi việc."
+      },
+      {
+        "word": "retirement",
+        "phonetic": "/rɪˈtaɪə.mənt/",
+        "wordType": "noun",
+        "meaningEn": "the action of leaving one's job and ceasing work",
+        "meaningVi": "sự nghỉ hưu",
+        "example": "He is planning his retirement after thirty years.",
+        "exampleVi": "Ông ấy đang lên kế hoạch nghỉ hưu sau ba mươi năm."
+      },
+      {
+        "word": "pension",
+        "phonetic": "/ˈpen.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "a regular payment made during a person's retirement",
+        "meaningVi": "tiền lương hưu",
+        "example": "She receives a monthly state pension.",
+        "exampleVi": "Bà ấy nhận tiền lương hưu hàng tháng của nhà nước."
+      },
+      {
+        "word": "leave",
+        "phonetic": "/liːv/",
+        "wordType": "noun",
+        "meaningEn": "time allowed away from work for holiday or illness",
+        "meaningVi": "phép nghỉ làm",
+        "example": "She is on maternity leave.",
+        "exampleVi": "Cô ấy đang trong thời gian nghỉ thai sản."
+      },
+      {
+        "word": "sick leave",
+        "phonetic": "/sɪk liːv/",
+        "wordType": "noun",
+        "meaningEn": "leave of absence granted because of illness",
+        "meaningVi": "phép nghỉ ốm",
+        "example": "He took three days of sick leave.",
+        "exampleVi": "Anh ấy đã nghỉ ốm ba ngày."
+      },
+      {
+        "word": "holiday",
+        "phonetic": "/ˈhɒl.ə.deɪ/",
+        "wordType": "noun",
+        "meaningEn": "a day when no work is done",
+        "meaningVi": "ngày nghỉ lễ",
+        "example": "New Year is a national holiday.",
+        "exampleVi": "Năm mới là một ngày nghỉ lễ quốc gia."
+      },
+      {
+        "word": "plan",
+        "phonetic": "/plæn/",
+        "wordType": "noun",
+        "meaningEn": "a detailed proposal for doing or achieving something",
+        "meaningVi": "kế hoạch",
+        "example": "We need a backup plan for the launch.",
+        "exampleVi": "Chúng ta cần một kế hoạch dự phòng cho buổi ra mắt."
+      },
+      {
+        "word": "report",
+        "phonetic": "/rɪˈpɔːt/",
+        "wordType": "noun",
+        "meaningEn": "an account given in the form of an official document",
+        "meaningVi": "bản báo cáo",
+        "example": "He submitted the quarterly report yesterday.",
+        "exampleVi": "Anh ấy đã nộp báo cáo quý vào ngày hôm qua."
+      },
+      {
+        "word": "feedback",
+        "phonetic": "/ˈfiːd.bæk/",
+        "wordType": "noun",
+        "meaningEn": "information about reactions to a product or performance",
+        "meaningVi": "phản hồi, ý kiến đóng góp",
+        "example": "Customer feedback helps improve our services.",
+        "exampleVi": "Phản hồi của khách hàng giúp cải thiện dịch vụ của chúng tôi."
+      },
+      {
+        "word": "training",
+        "phonetic": "/ˈtreɪ.nɪŋ/",
+        "wordType": "noun",
+        "meaningEn": "the action of teaching a person a particular skill",
+        "meaningVi": "sự đào tạo, tập huấn",
+        "example": "The company provides training for new staff.",
+        "exampleVi": "Công ty cung cấp chương trình đào tạo cho nhân viên mới."
+      },
+      {
+        "word": "branch",
+        "phonetic": "/brɑːntʃ/",
+        "wordType": "noun",
+        "meaningEn": "a division or office of a large business",
+        "meaningVi": "chi nhánh công ty",
+        "example": "They opened a new branch in Tokyo.",
+        "exampleVi": "Họ đã mở một chi nhánh mới tại Tokyo."
+      },
+      {
+        "word": "startup",
+        "phonetic": "/ˈstɑːt.ʌp/",
+        "wordType": "noun",
+        "meaningEn": "a newly established business",
+        "meaningVi": "công ty khởi nghiệp",
+        "example": "Working at a startup is exciting but risky.",
+        "exampleVi": "Làm việc tại một công ty khởi nghiệp rất thú vị nhưng mạo hiểm."
+      },
+      {
+        "word": "branding",
+        "phonetic": "/ˈbræn.dɪŋ/",
+        "wordType": "noun",
+        "meaningEn": "the promotion of a product by means of advertising",
+        "meaningVi": "xây dựng thương hiệu",
+        "example": "Good branding builds customer loyalty.",
+        "exampleVi": "Xây dựng thương hiệu tốt tạo dựng lòng trung thành."
       }
     ],
     "advanced": [
@@ -10046,97 +10988,411 @@ const ORIGINAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "sự kiểm toán, kiểm toán",
         "example": "The firm underwent a rigorous financial audit.",
         "exampleVi": "Công ty đã trải qua một đợt kiểm toán tài chính nghiêm ngặt."
-      }
-    ,
-      {
-            "word": "conglomerate",
-            "phonetic": "/kənˈɡlɒm.ər.ət/",
-            "wordType": "noun",
-            "meaningEn": "a multi-industry company combination of multiple business entities",
-            "meaningVi": "tập đoàn kinh tế đa ngành",
-            "example": "The media conglomerate expanded its digital branch.",
-            "exampleVi": "Tập đoàn truyền thông đa ngành đã mở rộng chi nhánh kỹ thuật số của mình."
       },
       {
-            "word": "acquisition",
-            "phonetic": "/ˌæk.wɪˈzɪʃ.ən/",
-            "wordType": "noun",
-            "meaningEn": "an asset or object bought or obtained, typically by a company",
-            "meaningVi": "sự thâu tóm, mua lại (công ty)",
-            "example": "The corporation announced its latest acquisition.",
-            "exampleVi": "Tập đoàn đã thông báo về thương vụ thâu tóm mới nhất của mình."
+        "word": "liquidity",
+        "phonetic": "/lɪˈkwɪd.ə.ti/",
+        "wordType": "noun",
+        "meaningEn": "the availability of liquid assets to a market or company",
+        "meaningVi": "tính thanh khoản, khả năng chuyển đổi tiền mặt",
+        "example": "The firm needs to maintain sufficient liquidity.",
+        "exampleVi": "Công ty cần duy trì tính thanh khoản đầy đủ."
       },
       {
-            "word": "shareholder",
-            "phonetic": "/ˈʃeəˌhəʊl.dər/",
-            "wordType": "noun",
-            "meaningEn": "an owner of shares in a company",
-            "meaningVi": "cổ đông",
-            "example": "The shareholders voted in favor of the merger.",
-            "exampleVi": "Các cổ đông đã bỏ phiếu thuận cho việc sáp nhập."
+        "word": "compliance",
+        "phonetic": "/kəmˈplaɪ.əns/",
+        "wordType": "noun",
+        "meaningEn": "the action of complying with rules or laws",
+        "meaningVi": "sự tuân thủ pháp luật/quy định",
+        "example": "The company hired a compliance officer.",
+        "exampleVi": "Công ty đã thuê một nhân viên tuân thủ."
       },
       {
-            "word": "dividend",
-            "phonetic": "/ˈdɪv.ɪ.dend/",
-            "wordType": "noun",
-            "meaningEn": "a sum of money paid regularly by a company to its shareholders out of its profits",
-            "meaningVi": "cổ tức",
-            "example": "The board approved a high annual dividend.",
-            "exampleVi": "Ban quản trị đã phê duyệt một mức cổ tức hàng năm cao."
+        "word": "whistleblower",
+        "phonetic": "/ˈwɪs.əlˌbləʊ.ər/",
+        "wordType": "noun",
+        "meaningEn": "a person who informs on illicit activity in an organization",
+        "meaningVi": "người tố giác, người thổi còi",
+        "example": "The whistleblower exposed financial corruption.",
+        "exampleVi": "Người tố giác đã vạch trần vụ tham nhũng tài chính."
       },
       {
-            "word": "audit",
-            "phonetic": "/ˈɔː.dɪt/",
-            "wordType": "noun/verb",
-            "meaningEn": "an official inspection of an organization's accounts",
-            "meaningVi": "kiểm toán, sự kiểm toán",
-            "example": "The annual financial audit is starting next week.",
-            "exampleVi": "Đợt kiểm toán tài chính hàng năm sẽ bắt đầu vào tuần tới."
+        "word": "restructuring",
+        "phonetic": "/ˌriːˈstrʌk.tʃər.ɪŋ/",
+        "wordType": "noun",
+        "meaningEn": "organizing a company in a different way for efficiency",
+        "meaningVi": "sự tái cơ cấu doanh nghiệp",
+        "example": "The restructuring resulted in job losses.",
+        "exampleVi": "Việc tái cơ cấu đã dẫn đến một số vụ mất việc."
       },
       {
-            "word": "liquidity",
-            "phonetic": "/lɪˈkwɪd.ə.ti/",
-            "wordType": "noun",
-            "meaningEn": "the availability of liquid assets to a market or company",
-            "meaningVi": "tính thanh khoản, khả năng chuyển đổi tiền mặt",
-            "example": "The firm needs to maintain sufficient liquidity.",
-            "exampleVi": "Công ty cần duy trì tính thanh khoản đầy đủ."
+        "word": "insolvency",
+        "phonetic": "/inˈsɒl.vən.si/",
+        "wordType": "noun",
+        "meaningEn": "the state of being unable to pay debts",
+        "meaningVi": "tình trạng vỡ nợ, mất thanh toán",
+        "example": "The company filed for insolvency after a poor year.",
+        "exampleVi": "Công ty đã nộp đơn xin vỡ nợ sau một năm nghèo nàn."
       },
       {
-            "word": "infrastructure",
-            "phonetic": "/ˈɪn.frəˌstrʌk.tʃər/",
-            "wordType": "noun",
-            "meaningEn": "the basic physical and organizational structures needed for operation",
-            "meaningVi": "cơ sở hạ tầng",
-            "example": "The company invested heavily in technical infrastructure.",
-            "exampleVi": "Công ty đã đầu tư mạnh mẽ vào cơ sở hạ tầng kỹ thuật."
+        "word": "procurement",
+        "phonetic": "/prəˈkjuə.mənt/",
+        "wordType": "noun",
+        "meaningEn": "the action of obtaining equipment and supplies",
+        "meaningVi": "sự thu mua nguyên vật liệu, vật tư",
+        "example": "He is in charge of software procurement.",
+        "exampleVi": "Anh ấy chịu trách nhiệm thu mua phần mềm."
       },
       {
-            "word": "subsidiary",
-            "phonetic": "/səbˈsɪd.i.ə.ri/",
-            "wordType": "noun",
-            "meaningEn": "a company controlled by a holding company",
-            "meaningVi": "công ty con",
-            "example": "The German subsidiary handles European distribution.",
-            "exampleVi": "Công ty con tại Đức phụ trách việc phân phối ở châu Âu."
+        "word": "monopoly",
+        "phonetic": "/məˈnɒp.əl.i/",
+        "wordType": "noun",
+        "meaningEn": "exclusive control of the supply of a commodity",
+        "meaningVi": "sự độc quyền kinh doanh",
+        "example": "The state utility has a monopoly on electricity.",
+        "exampleVi": "Cơ quan tiện ích nhà nước có sự độc quyền về điện."
       },
       {
-            "word": "overhead",
-            "phonetic": "/ˈəʊ.və.hed/",
-            "wordType": "noun",
-            "meaningEn": "business expenses, such as rent, that are not directly attributed to creating a product",
-            "meaningVi": "chi phí cố định, chi phí vận hành gián tiếp",
-            "example": "We need to cut down our overhead cost.",
-            "exampleVi": "Chúng ta cần cắt giảm chi phí vận hành gián tiếp."
+        "word": "cartel",
+        "phonetic": "/kɑːˈtel/",
+        "wordType": "noun",
+        "meaningEn": "association of suppliers to maintain high prices",
+        "meaningVi": "băng nhóm các nhà cung cấp, các-ten",
+        "example": "The oil cartel agreed to limit production.",
+        "exampleVi": "Các-ten dầu mỏ đã đồng ý hạn chế sản lượng."
       },
       {
-            "word": "equity",
-            "phonetic": "/ˈek.wɪ.ti/",
-            "wordType": "noun",
-            "meaningEn": "the value of the shares issued by a company",
-            "meaningVi": "vốn chủ sở hữu, cổ phần",
-            "example": "She sold her equity in the company.",
-            "exampleVi": "Cô ấy đã bán cổ phần của mình trong công ty."
+        "word": "turnover",
+        "phonetic": "/ˈtɜːn.əʊ.vər/",
+        "wordType": "noun",
+        "meaningEn": "the amount of money taken by a business",
+        "meaningVi": "doanh thu hoặc tỷ lệ luân chuyển nhân sự",
+        "example": "The shop has an annual turnover of one million.",
+        "exampleVi": "Cửa hàng có doanh thu hàng năm là một triệu."
+      },
+      {
+        "word": "severance",
+        "phonetic": "/ˈsev.ər.əns/",
+        "wordType": "noun",
+        "meaningEn": "pay received by an employee when employment ends",
+        "meaningVi": "trợ cấp thôi việc",
+        "example": "She received a generous severance package.",
+        "exampleVi": "Cô ấy đã nhận được một gói trợ cấp thôi việc."
+      },
+      {
+        "word": "venture capital",
+        "phonetic": "/ˈven.tʃər ˌkæp.ɪ.təl/",
+        "wordType": "noun",
+        "meaningEn": "capital invested in risky start-up projects",
+        "meaningVi": "vốn đầu tư mạo hiểm",
+        "example": "The startup raised five million in venture capital.",
+        "exampleVi": "Công ty khởi nghiệp đã huy động được năm triệu vốn."
+      },
+      {
+        "word": "outsourcing",
+        "phonetic": "/ˈaʊtˌsɔː.sɪŋ/",
+        "wordType": "noun",
+        "meaningEn": "obtaining services from an outside supplier",
+        "meaningVi": "sự thuê ngoài, gia công",
+        "example": "Outsourcing customer service saved money.",
+        "exampleVi": "Thuê ngoài dịch vụ chăm sóc khách hàng đã tiết kiệm tiền."
+      },
+      {
+        "word": "arbitrage",
+        "phonetic": "/ˈɑː.bɪ.trɑːʒ/",
+        "wordType": "noun",
+        "meaningEn": "simultaneous buying and selling to exploit price differences",
+        "meaningVi": "nghiệp vụ kinh doanh chênh lệch giá",
+        "example": "Traders use arbitrage to make quick profits.",
+        "exampleVi": "Các nhà giao dịch sử dụng chênh lệch giá để kiếm lợi nhuận."
+      },
+      {
+        "word": "benchmark",
+        "phonetic": "/ˈbentʃ.mɑːk/",
+        "wordType": "noun",
+        "meaningEn": "a standard against which things may be compared",
+        "meaningVi": "tiêu chuẩn đối sánh",
+        "example": "Their performance set a new industry benchmark.",
+        "exampleVi": "Hiệu suất của họ đã thiết lập một tiêu chuẩn mới."
+      },
+      {
+        "word": "subsidy",
+        "phonetic": "/ˈsʌb.sɪ.di/",
+        "wordType": "noun",
+        "meaningEn": "money granted by government to assist an industry",
+        "meaningVi": "tiền trợ cấp của chính phủ",
+        "example": "Agricultural subsidies keep prices low.",
+        "exampleVi": "Trợ cấp nông nghiệp giữ cho giá cả ở mức thấp."
+      },
+      {
+        "word": "depreciation",
+        "phonetic": "/dɪˌpriː.ʃiˈeɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "a reduction in the value of an asset over time",
+        "meaningVi": "sự hao mòn giá trị tài sản",
+        "example": "We must calculate the machinery depreciation.",
+        "exampleVi": "Chúng ta phải tính toán hao mòn máy móc."
+      },
+      {
+        "word": "commission",
+        "phonetic": "/kəˈmɪʃ.ən/",
+        "wordType": "noun",
+        "meaningEn": "an instruction or percentage payment for a sale",
+        "meaningVi": "tiền hoa hồng đại lý",
+        "example": "He earned a ten percent commission on the deal.",
+        "exampleVi": "Anh ấy kiếm được mười phần trăm hoa hồng từ thỏa thuận."
+      },
+      {
+        "word": "receivables",
+        "phonetic": "/rɪˈsiː.və.bəlz/",
+        "wordType": "noun",
+        "meaningEn": "amounts owed to a business by its customers",
+        "meaningVi": "các khoản phải thu",
+        "example": "The accountant reviewed the accounts receivables.",
+        "exampleVi": "Kế toán đã rà soát các khoản phải thu."
+      },
+      {
+        "word": "payables",
+        "phonetic": "/ˈpeɪ.ə.bəlz/",
+        "wordType": "noun",
+        "meaningEn": "amounts owed by a business to its suppliers",
+        "meaningVi": "các khoản phải trả",
+        "example": "Keep track of your accounts payables to avoid penalties.",
+        "exampleVi": "Hãy theo dõi các khoản phải trả để tránh bị phạt."
+      },
+      {
+        "word": "diversification",
+        "phonetic": "/daɪˌvɜː.sɪ.fɪˈkeɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "allocating capital in a way that reduces exposure to one risk",
+        "meaningVi": "sự đa dạng hóa đầu tư",
+        "example": "Diversification is essential in portfolio management.",
+        "exampleVi": "Đa dạng hóa là điều cần thiết trong quản lý danh mục."
+      },
+      {
+        "word": "globalization",
+        "phonetic": "/ˌɡləʊ.bəl.aɪˈzeɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "the process by which businesses develop international influence",
+        "meaningVi": "sự toàn cầu hóa",
+        "example": "Globalization has created new markets for companies.",
+        "exampleVi": "Toàn cầu hóa đã tạo ra thị trường mới cho các công ty."
+      },
+      {
+        "word": "profitability",
+        "phonetic": "/ˌprɒf.ɪ.təˈbɪl.ə.ti/",
+        "wordType": "noun",
+        "meaningEn": "the degree to which a business yields profit",
+        "meaningVi": "khả năng sinh lời",
+        "example": "The new strategy aims to improve profitability.",
+        "exampleVi": "Chiến lược mới nhằm cải thiện khả năng sinh lời."
+      },
+      {
+        "word": "joint venture",
+        "phonetic": "/dʒɔɪnt ˈven.tʃər/",
+        "wordType": "noun",
+        "meaningEn": "a commercial enterprise undertaken jointly by two or more parties",
+        "meaningVi": "liên doanh, công ty liên doanh",
+        "example": "They entered into a joint venture with a Chinese firm.",
+        "exampleVi": "Họ đã tham gia vào một liên doanh với một công ty Trung Quốc."
+      },
+      {
+        "word": "capitalization",
+        "phonetic": "/ˌkæp.ɪ.təl.aɪˈzeɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "the total value of a company's issued shares",
+        "meaningVi": "vốn hóa thị trường",
+        "example": "The company's market capitalization reached one billion.",
+        "exampleVi": "Vốn hóa thị trường của công ty đã đạt một tỷ."
+      },
+      {
+        "word": "franchise",
+        "phonetic": "/ˈfræn.tʃaɪz/",
+        "wordType": "noun",
+        "meaningEn": "authorization enabling commercial activities in an area",
+        "meaningVi": "nhượng quyền thương mại",
+        "example": "They bought a fast-food franchise.",
+        "exampleVi": "Họ đã mua một thương hiệu nhượng quyền thức ăn nhanh."
+      },
+      {
+        "word": "leveraged buyout",
+        "phonetic": "/ˈliː.vər.ɪdʒd ˈbaɪ.aʊt/",
+        "wordType": "noun",
+        "meaningEn": "the acquisition of another company using borrowed money",
+        "meaningVi": "thâu tóm bằng đòn bẩy tài chính",
+        "example": "The leveraged buyout was financed by high-yield bonds.",
+        "exampleVi": "Vụ thâu tóm bằng nợ đã được tài trợ bởi trái phiếu."
+      },
+      {
+        "word": "hostile takeover",
+        "phonetic": "/ˈhɒs.taɪl ˈteɪkˌəʊ.vər/",
+        "wordType": "noun",
+        "meaningEn": "the acquisition of a company by directly appealing to shareholders",
+        "meaningVi": "thâu tóm thù địch",
+        "example": "The board rejected the hostile takeover bid.",
+        "exampleVi": "Hội đồng quản trị đã bác bỏ đề nghị thâu tóm thù địch."
+      },
+      {
+        "word": "auditor",
+        "phonetic": "/ˈɔː.dɪ.tər/",
+        "wordType": "noun",
+        "meaningEn": "a person who conducts an official audit of accounts",
+        "meaningVi": "kiểm toán viên",
+        "example": "The external auditors approved the statements.",
+        "exampleVi": "Các kiểm toán viên đã phê duyệt báo cáo tài chính."
+      },
+      {
+        "word": "liquidation",
+        "phonetic": "/ˌlɪk.wɪˈdeɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "the process of winding up a company and distributing assets",
+        "meaningVi": "sự thanh lý tài sản",
+        "example": "The company went into liquidation last month.",
+        "exampleVi": "Công ty đã đi vào thanh lý tài sản vào tháng trước."
+      },
+      {
+        "word": "collateral",
+        "phonetic": "/kəˈlæt.ər.əl/",
+        "wordType": "noun",
+        "meaningEn": "something pledged as security for repayment of a loan",
+        "meaningVi": "tài sản thế chấp",
+        "example": "He used his house as collateral for the loan.",
+        "exampleVi": "Anh ấy đã dùng ngôi nhà của mình làm tài sản thế chấp."
+      },
+      {
+        "word": "liability insurance",
+        "phonetic": "/ˌlaɪ.əˈbɪl.ə.ti ɪnˌʃɔː.rəns/",
+        "wordType": "noun",
+        "meaningEn": "insurance providing protection against claims of injury or damage",
+        "meaningVi": "bảo hiểm trách nhiệm pháp lý",
+        "example": "The firm carries extensive liability insurance.",
+        "exampleVi": "Công ty có bảo hiểm trách nhiệm pháp lý rộng rãi."
+      },
+      {
+        "word": "indemnity",
+        "phonetic": "/ɪnˈdem.nə.ti/",
+        "wordType": "noun",
+        "meaningEn": "security or protection against loss or financial burden",
+        "meaningVi": "sự bồi thường",
+        "example": "The contract includes an indemnity clause.",
+        "exampleVi": "Hợp đồng bao gồm điều khoản bồi thường."
+      },
+      {
+        "word": "stakeholder",
+        "phonetic": "/ˈsteɪkˌhəʊl.dər/",
+        "wordType": "noun",
+        "meaningEn": "a person with an interest or concern in a business",
+        "meaningVi": "bên liên quan, đối tác liên đới",
+        "example": "We must balance the needs of all stakeholders.",
+        "exampleVi": "Chúng ta phải cân bằng nhu cầu của tất cả các bên."
+      },
+      {
+        "word": "fiduciary",
+        "phonetic": "/fɪˈdʒuː.ʃi.ə.ri/",
+        "wordType": "adj",
+        "meaningEn": "involving trust in a relationship between trustee and beneficiary",
+        "meaningVi": "ủy thác, thuộc về trách nhiệm ủy thác",
+        "example": "Directors have a fiduciary duty to the company.",
+        "exampleVi": "Các giám đốc có nghĩa vụ ủy thác đối với công ty."
+      },
+      {
+        "word": "foreclosure",
+        "phonetic": "/fɔːˈkləʊ.ʒər/",
+        "wordType": "noun",
+        "meaningEn": "taking possession of mortgaged property when payments fail",
+        "meaningVi": "sự tịch thu tài sản thế chấp",
+        "example": "The bank started foreclosure proceedings.",
+        "exampleVi": "Ngân hàng đã bắt đầu thủ tục tịch thu tài sản."
+      },
+      {
+        "word": "default",
+        "phonetic": "/dɪˈfɔːlt/",
+        "wordType": "verb",
+        "meaningEn": "fail to fulfill an obligation, especially to repay a loan",
+        "meaningVi": "vỡ nợ, không trả được nợ",
+        "example": "The country defaulted on its national debt.",
+        "exampleVi": "Quốc gia này đã vỡ nợ quốc gia."
+      },
+      {
+        "word": "receivership",
+        "phonetic": "/rɪˈsiː.və.ʃɪp/",
+        "wordType": "noun",
+        "meaningEn": "a situation in which an institution is held by a receiver",
+        "meaningVi": "tình trạng tiếp quản tài sản",
+        "example": "The company was placed in receivership.",
+        "exampleVi": "Công ty đã bị đặt trong tình trạng tiếp quản tài sản."
+      },
+      {
+        "word": "capital expenditure",
+        "phonetic": "/ˈkæp.ɪ.təl ɪkˈspen.dɪ.tʃər/",
+        "wordType": "noun",
+        "meaningEn": "money spent by a business on acquiring or maintaining fixed assets",
+        "meaningVi": "chi phí đầu tư CapEx",
+        "example": "CapEx was increased to build the new factory.",
+        "exampleVi": "CapEx đã được tăng lên để xây dựng nhà máy mới."
+      },
+      {
+        "word": "operating expense",
+        "phonetic": "/ˈɒp.ər.eɪ.tɪŋ ɪkˈspen.dɪ.tʃər/",
+        "wordType": "noun",
+        "meaningEn": "an ongoing cost for running a product or system",
+        "meaningVi": "chi phí vận hành OpEx",
+        "example": "We need to reduce our OpEx this quarter.",
+        "exampleVi": "Chúng ta cần giảm OpEx trong quý này."
+      },
+      {
+        "word": "supply chain",
+        "phonetic": "/səˈplaɪ tʃeɪn/",
+        "wordType": "noun",
+        "meaningEn": "sequence of processes in production and distribution",
+        "meaningVi": "chuỗi cung ứng",
+        "example": "Disruptions in the supply chain delayed deliveries.",
+        "exampleVi": "Sự gián đoạn trong chuỗi cung ứng làm chậm giao hàng."
+      },
+      {
+        "word": "market penetration",
+        "phonetic": "/ˈmɑː.kɪt ˌpen.ɪ.treɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "measure of product sales compared to market size",
+        "meaningVi": "sự thâm nhập thị trường",
+        "example": "Our market penetration is currently low.",
+        "exampleVi": "Sự thâm nhập thị trường của chúng tôi hiện tại rất thấp."
+      },
+      {
+        "word": "feasibility study",
+        "phonetic": "/ˌfiː.zəˈbɪl.ə.ti ˌstʌd.i/",
+        "wordType": "noun",
+        "meaningEn": "assessment of practicality of a proposed plan",
+        "meaningVi": "nghiên cứu khả thi",
+        "example": "We conducted a feasibility study before launching.",
+        "exampleVi": "Chúng tôi đã tiến hành nghiên cứu khả thi."
+      },
+      {
+        "word": "turnaround",
+        "phonetic": "/ˈtɜːn.ə.raʊnd/",
+        "wordType": "noun",
+        "meaningEn": "an abrupt change from a bad situation to a good one",
+        "meaningVi": "sự xoay chuyển tình thế",
+        "example": "The new CEO engineered a financial turnaround.",
+        "exampleVi": "CEO mới đã thiết kế một cuộc phục hồi tài chính."
+      },
+      {
+        "word": "syndicate",
+        "phonetic": "/ˈsɪn.dɪ.kət/",
+        "wordType": "noun",
+        "meaningEn": "a group of organizations combined to promote common interest",
+        "meaningVi": "tổ hợp, liên minh kinh doanh",
+        "example": "A syndicate of banks provided the loan.",
+        "exampleVi": "Một tổ hợp các ngân hàng đã cung cấp khoản vay."
+      },
+      {
+        "word": "headcount",
+        "phonetic": "/ˈhed.kaʊnt/",
+        "wordType": "noun",
+        "meaningEn": "count of the number of employees in a company",
+        "meaningVi": "quy mô nhân sự",
+        "example": "The company plans to reduce headcount.",
+        "exampleVi": "Công ty có kế hoạch giảm quy mô nhân sự."
       }
     ]
   },
@@ -10370,97 +11626,411 @@ const ORIGINAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "mạng đám mây",
         "example": "Store the photos in the cloud.",
         "exampleVi": "Lưu trữ hình ảnh trên đám mây."
-      }
-    ,
-      {
-            "word": "software",
-            "phonetic": "/ˈsɒft.weər/",
-            "wordType": "noun",
-            "meaningEn": "the programs used by a computer",
-            "meaningVi": "phần mềm",
-            "example": "I need to update the operating software.",
-            "exampleVi": "Tôi cần cập nhật phần mềm điều hành."
       },
       {
-            "word": "hardware",
-            "phonetic": "/ˈhɑːd.weər/",
-            "wordType": "noun",
-            "meaningEn": "the physical components of a computer",
-            "meaningVi": "phần cứng",
-            "example": "The hardware needs an upgrade to run this game.",
-            "exampleVi": "Phần cứng cần nâng cấp để chạy tựa game này."
+        "word": "connection",
+        "phonetic": "/kəˈnek.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "a link between two or more computer systems or devices",
+        "meaningVi": "kết nối",
+        "example": "Check your internet connection.",
+        "exampleVi": "Hãy kiểm tra kết nối mạng của bạn."
       },
       {
-            "word": "keyboard",
-            "phonetic": "/ˈkiː.bɔːd/",
-            "wordType": "noun",
-            "meaningEn": "a panel of keys used to input text into a computer",
-            "meaningVi": "bàn phím",
-            "example": "She typed quickly on her mechanical keyboard.",
-            "exampleVi": "Cô ấy gõ nhanh trên chiếc bàn phím cơ của mình."
+        "word": "browser",
+        "phonetic": "/ˈbraʊ.zər/",
+        "wordType": "noun",
+        "meaningEn": "a program used to view websites",
+        "meaningVi": "trình duyệt web",
+        "example": "Which web browser do you prefer?",
+        "exampleVi": "Bạn thích trình duyệt web nào hơn?"
       },
       {
-            "word": "connection",
-            "phonetic": "/kəˈnek.ʃən/",
-            "wordType": "noun",
-            "meaningEn": "a link between two or more computer systems or devices",
-            "meaningVi": "kết nối",
-            "example": "Check your internet connection.",
-            "exampleVi": "Hãy kiểm tra kết nối mạng của bạn."
+        "word": "settings",
+        "phonetic": "/ˈset.ɪŋz/",
+        "wordType": "noun",
+        "meaningEn": "controls for adjusting app behavior",
+        "meaningVi": "các cài đặt, thiết lập",
+        "example": "You can change the language in settings.",
+        "exampleVi": "Bạn có thể thay đổi ngôn ngữ trong cài đặt."
       },
       {
-            "word": "download",
-            "phonetic": "/ˌdaʊnˈləʊd/",
-            "wordType": "verb/noun",
-            "meaningEn": "copy data from a remote system to a local system",
-            "meaningVi": "tải xuống",
-            "example": "The download finished in a few seconds.",
-            "exampleVi": "Việc tải xuống hoàn thành trong vài giây."
+        "word": "install",
+        "phonetic": "/ɪnˈstɔːl/",
+        "wordType": "verb",
+        "meaningEn": "place software ready for use",
+        "meaningVi": "cài đặt phần mềm",
+        "example": "Install the software on your PC.",
+        "exampleVi": "Hãy cài đặt phần mềm trên máy tính."
       },
       {
-            "word": "file",
-            "phonetic": "/faɪl/",
-            "wordType": "noun",
-            "meaningEn": "a resource for storing information in a computer",
-            "meaningVi": "tập tin, tệp",
-            "example": "Please send me the file via email.",
-            "exampleVi": "Vui lòng gửi cho tôi tệp tin qua email."
+        "word": "offline",
+        "phonetic": "/ˌɒfˈlaɪn/",
+        "wordType": "adj",
+        "meaningEn": "not connected to the internet",
+        "meaningVi": "ngoại tuyến, offline",
+        "example": "You can read downloaded books offline.",
+        "exampleVi": "Bạn có thể đọc sách đã tải ngoại tuyến."
       },
       {
-            "word": "screen",
-            "phonetic": "/skriːn/",
-            "wordType": "noun",
-            "meaningEn": "the surface of a display device",
-            "meaningVi": "màn hình",
-            "example": "The phone screen is cracked.",
-            "exampleVi": "Màn hình điện thoại đã bị nứt."
+        "word": "cable",
+        "phonetic": "/ˈkeɪ.bəl/",
+        "wordType": "noun",
+        "meaningEn": "insulated wire used for transmitting electricity",
+        "meaningVi": "dây cáp kết nối",
+        "example": "Connect the monitor with the HDMI cable.",
+        "exampleVi": "Hãy kết nối màn hình bằng dây cáp."
       },
       {
-            "word": "network",
-            "phonetic": "/ˈnet.wɜːk/",
-            "wordType": "noun",
-            "meaningEn": "a group of interconnected computers",
-            "meaningVi": "mạng lưới máy tính",
-            "example": "We set up a local network in the office.",
-            "exampleVi": "Chúng tôi thiết lập một mạng cục bộ trong văn phòng."
+        "word": "reboot",
+        "phonetic": "/ˌriːˈbuːt/",
+        "wordType": "verb",
+        "meaningEn": "restart a computer system",
+        "meaningVi": "khởi động lại hệ thống",
+        "example": "Reboot the system to apply changes.",
+        "exampleVi": "Hãy khởi động lại hệ thống để áp dụng thay đổi."
       },
       {
-            "word": "folder",
-            "phonetic": "/ˈfəʊl.dər/",
-            "wordType": "noun",
-            "meaningEn": "a directory used for organizing files",
-            "meaningVi": "thư mục",
-            "example": "Organize your documents into different folders.",
-            "exampleVi": "Hãy sắp xếp các tài liệu của bạn vào các thư mục khác nhau."
+        "word": "firewall",
+        "phonetic": "/ˈfaɪə.wɔːl/",
+        "wordType": "noun",
+        "meaningEn": "a security system that monitors network traffic",
+        "meaningVi": "tường lửa bảo mật",
+        "example": "The firewall blocked unauthorized access.",
+        "exampleVi": "Tường lửa đã chặn các truy cập trái phép."
       },
       {
-            "word": "online",
-            "phonetic": "/ˌɒnˈlaɪn/",
-            "wordType": "adj/adv",
-            "meaningEn": "connected to the internet",
-            "meaningVi": "trực tuyến",
-            "example": "Many courses are now available online.",
-            "exampleVi": "Nhiều khóa học hiện đã có sẵn trực tuyến."
+        "word": "database",
+        "phonetic": "/ˈdeɪ.tə.beɪs/",
+        "wordType": "noun",
+        "meaningEn": "a structured set of data held in a computer",
+        "meaningVi": "cơ sở dữ liệu",
+        "example": "The database was updated successfully.",
+        "exampleVi": "Cơ sở dữ liệu đã được cập nhật thành công."
+      },
+      {
+        "word": "gadget",
+        "phonetic": "/ˈɡædʒ.ɪt/",
+        "wordType": "noun",
+        "meaningEn": "a small mechanical or electronic utility device",
+        "meaningVi": "thiết bị tiện ích nhỏ",
+        "example": "He loves buying the latest electronic gadgets.",
+        "exampleVi": "Cậu ấy thích mua các thiết bị điện tử mới nhất."
+      },
+      {
+        "word": "modem",
+        "phonetic": "/ˈməʊ.dem/",
+        "wordType": "noun",
+        "meaningEn": "a device that connects a computer to the internet provider",
+        "meaningVi": "thiết bị bộ điều giải, modem",
+        "example": "The modem has a blinking green light.",
+        "exampleVi": "Modem có đèn màu xanh lá cây đang nhấp nháy."
+      },
+      {
+        "word": "mainframe",
+        "phonetic": "/ˈmeɪn.freɪm/",
+        "wordType": "noun",
+        "meaningEn": "a large high-speed computer supporting many workstations",
+        "meaningVi": "máy tính trung tâm mainframe",
+        "example": "Large banks still run mainframe computers.",
+        "exampleVi": "Các ngân hàng lớn vẫn vận hành hệ thống máy tính trung tâm."
+      },
+      {
+        "word": "hyperlink",
+        "phonetic": "/ˈfaɪ.pə.lɪŋk/",
+        "wordType": "noun",
+        "meaningEn": "a link from a hypertext document to another location",
+        "meaningVi": "siêu liên kết",
+        "example": "The hyperlink takes you to the homepage.",
+        "exampleVi": "Siêu liên kết sẽ đưa bạn đến trang chủ."
+      },
+      {
+        "word": "clipboard",
+        "phonetic": "/ˈklɪp.bɔːd/",
+        "wordType": "noun",
+        "meaningEn": "a temporary storage area for copied information",
+        "meaningVi": "bộ nhớ đệm tạm thời",
+        "example": "The text is copied to your clipboard.",
+        "exampleVi": "Đoạn văn bản đã được sao chép vào bộ nhớ đệm."
+      },
+      {
+        "word": "scam",
+        "phonetic": "/skæm/",
+        "wordType": "noun",
+        "meaningEn": "a deceptive scheme or fraud carried out online",
+        "meaningVi": "chiêu trò lừa đảo trực tuyến",
+        "example": "Watch out for email scams asking for passwords.",
+        "exampleVi": "Hãy coi chừng các email lừa đảo yêu cầu mật khẩu."
+      },
+      {
+        "word": "phishing",
+        "phonetic": "/ˈfɪʃ.ɪŋ/",
+        "wordType": "noun",
+        "meaningEn": "fraudulent practice of sending emails mimicking reputable firms",
+        "meaningVi": "tấn công giả mạo (phishing)",
+        "example": "Phishing attacks steal sensitive user data.",
+        "exampleVi": "Các cuộc tấn công giả mạo đánh cắp dữ liệu người dùng nhạy cảm."
+      },
+      {
+        "word": "spam",
+        "phonetic": "/spæm/",
+        "wordType": "noun",
+        "meaningEn": "unsolicited or junk email sent to many recipients",
+        "meaningVi": "thư rác, tin nhắn rác",
+        "example": "My inbox is full of advertising spam.",
+        "exampleVi": "Hộp thư đến của tôi đầy thư rác quảng cáo."
+      },
+      {
+        "word": "bug",
+        "phonetic": "/bʌɡ/",
+        "wordType": "noun",
+        "meaningEn": "an error in a computer program or system",
+        "meaningVi": "lỗi lập trình, lỗi bug",
+        "example": "The developers fixed the bug in the new release.",
+        "exampleVi": "Các nhà phát triển đã sửa lỗi bug trong bản phát hành mới."
+      },
+      {
+        "word": "hacker",
+        "phonetic": "/ˈhæk.ər/",
+        "wordType": "noun",
+        "meaningEn": "a person who uses computers to gain unauthorized access to data",
+        "meaningVi": "tin tặc, hacker",
+        "example": "The hacker breached the company's database.",
+        "exampleVi": "Hacker đã xâm nhập vào cơ sở dữ liệu của công ty."
+      },
+      {
+        "word": "password manager",
+        "phonetic": "/ˈpɑːs.wɜːd ˌmæn.ɪ.dʒər/",
+        "wordType": "noun",
+        "meaningEn": "a program that helps users store and manage their passwords",
+        "meaningVi": "trình quản lý mật khẩu",
+        "example": "Use a password manager to keep credentials secure.",
+        "exampleVi": "Hãy dùng trình quản lý mật khẩu."
+      },
+      {
+        "word": "desktop",
+        "phonetic": "/ˈdesk.tɒp/",
+        "wordType": "noun",
+        "meaningEn": "the working area of a computer screen",
+        "meaningVi": "màn hình chính desktop",
+        "example": "He cleaned up the icons on his desktop.",
+        "exampleVi": "Anh ấy đã dọn dẹp các biểu tượng trên màn hình desktop."
+      },
+      {
+        "word": "cursor",
+        "phonetic": "/ˈkɜː.sər/",
+        "wordType": "noun",
+        "meaningEn": "a movable indicator on a computer screen",
+        "meaningVi": "con trỏ chuột",
+        "example": "The cursor blinked on the blank page.",
+        "exampleVi": "Con trỏ chuột nhấp nháy trên trang giấy trắng."
+      },
+      {
+        "word": "wifi",
+        "phonetic": "/ˈwaɪ.faɪ/",
+        "wordType": "noun",
+        "meaningEn": "a facility allowing computers to connect wirelessly",
+        "meaningVi": "mạng không dây wifi",
+        "example": "What is the wifi password?",
+        "exampleVi": "Mật khẩu wifi là gì?"
+      },
+      {
+        "word": "pixel",
+        "phonetic": "/ˈpɪk.səl/",
+        "wordType": "noun",
+        "meaningEn": "a minute area of illumination on a display screen",
+        "meaningVi": "điểm ảnh, pixel",
+        "example": "The new screen has a high pixel density.",
+        "exampleVi": "Màn hình mới có mật độ điểm ảnh cao."
+      },
+      {
+        "word": "resolution",
+        "phonetic": "/ˌrez.əˈluː.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "the display resolution of a computer monitor",
+        "meaningVi": "độ phân giải màn hình",
+        "example": "This monitor supports 4K resolution.",
+        "exampleVi": "Màn hình này hỗ trợ độ phân giải 4K."
+      },
+      {
+        "word": "graphics card",
+        "phonetic": "/ˈɡræf.ɪks kɑːd/",
+        "wordType": "noun",
+        "meaningEn": "a circuit board controlling the output to display screen",
+        "meaningVi": "card đồ họa màn hình",
+        "example": "Gamers prefer computers with a graphics card.",
+        "exampleVi": "Các game thủ thích máy tính có card đồ họa."
+      },
+      {
+        "word": "hard drive",
+        "phonetic": "/hɑːd draɪv/",
+        "wordType": "noun",
+        "meaningEn": "a high-capacity storage device inside a computer",
+        "meaningVi": "ổ đĩa cứng",
+        "example": "I need to free up space on my hard drive.",
+        "exampleVi": "Tôi cần giải phóng dung lượng trên ổ cứng của mình."
+      },
+      {
+        "word": "flash drive",
+        "phonetic": "/flæʃ drive/",
+        "wordType": "noun",
+        "meaningEn": "a small device containing flash memory for storing data",
+        "meaningVi": "ổ USB, ổ nhớ flash",
+        "example": "He copied the presentation onto a flash drive.",
+        "exampleVi": "Anh ấy đã sao chép bài thuyết trình vào ổ USB."
+      },
+      {
+        "word": "printer cartridge",
+        "phonetic": "/ˈprɪn.tər ˌkɑː.trɪdʒ/",
+        "wordType": "noun",
+        "meaningEn": "a container holding ink for use in a printer",
+        "meaningVi": "hộp mực máy in",
+        "example": "The printer cartridge needs to be replaced.",
+        "exampleVi": "Hộp mực máy in cần phải được thay thế."
+      },
+      {
+        "word": "scanner",
+        "phonetic": "/ˈskæn.ər/",
+        "wordType": "noun",
+        "meaningEn": "a device for copying images into a computer",
+        "meaningVi": "máy quét, scanner",
+        "example": "Use the scanner to digitize the document.",
+        "exampleVi": "Hãy dùng máy quét để số hóa tài liệu."
+      },
+      {
+        "word": "speaker",
+        "phonetic": "/ˈspiː.kər/",
+        "wordType": "noun",
+        "meaningEn": "a device that converts electrical signals into sounds",
+        "meaningVi": "loa máy tính",
+        "example": "The computer speakers are playing music.",
+        "exampleVi": "Loa máy tính đang phát nhạc."
+      },
+      {
+        "word": "microphone",
+        "phonetic": "/ˈmaɪ.krə.fəʊn/",
+        "wordType": "noun",
+        "meaningEn": "an instrument for converting sound waves to electrical energy",
+        "meaningVi": "micrô, mic",
+        "example": "Ensure your microphone is unmuted.",
+        "exampleVi": "Hãy đảm bảo micrô của bạn không bị tắt tiếng."
+      },
+      {
+        "word": "webcam",
+        "phonetic": "/ˈweb.kæm/",
+        "wordType": "noun",
+        "meaningEn": "a video camera that inputs to a computer",
+        "meaningVi": "webcam quay video",
+        "example": "Turn on your webcam for the conference.",
+        "exampleVi": "Hãy bật webcam của bạn cho cuộc họp."
+      },
+      {
+        "word": "app",
+        "phonetic": "/æp/",
+        "wordType": "noun",
+        "meaningEn": "an application downloaded by a user to a mobile device",
+        "meaningVi": "ứng dụng di động, app",
+        "example": "I downloaded a language learning app.",
+        "exampleVi": "Tôi đã tải một ứng dụng học ngôn ngữ mới."
+      },
+      {
+        "word": "notification",
+        "phonetic": "/ˌnəʊ.tɪ.fɪˈkeɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "a message that appears on a screen to inform you",
+        "meaningVi": "thông báo màn hình",
+        "example": "You have a new notification from the app.",
+        "exampleVi": "Bạn có một thông báo mới từ ứng dụng."
+      },
+      {
+        "word": "inbox",
+        "phonetic": "/ˈin.bɒks/",
+        "wordType": "noun",
+        "meaningEn": "an electronic folder in which emails are held",
+        "meaningVi": "hộp thư đến",
+        "example": "Check your inbox for the confirmation email.",
+        "exampleVi": "Hãy kiểm tra hộp thư đến của bạn."
+      },
+      {
+        "word": "attachment",
+        "phonetic": "/əˈtætʃ.mənt/",
+        "wordType": "noun",
+        "meaningEn": "an extra document sent with an email",
+        "meaningVi": "tệp đính kèm email",
+        "example": "Please see the attachment for details.",
+        "exampleVi": "Vui lòng xem tệp đính kèm để biết chi tiết."
+      },
+      {
+        "word": "tab",
+        "phonetic": "/tæb/",
+        "wordType": "noun",
+        "meaningEn": "a page that can be opened in a web browser",
+        "meaningVi": "tab trình duyệt",
+        "example": "I kept twenty tabs open in my browser.",
+        "exampleVi": "Tôi đã mở hai mươi tab trong trình duyệt."
+      },
+      {
+        "word": "bookmark",
+        "phonetic": "/ˈbʊk.mɑːk/",
+        "wordType": "noun",
+        "meaningEn": "a record of the address of a website for quick access",
+        "meaningVi": "đánh dấu trang web",
+        "example": "Save this site as a bookmark.",
+        "exampleVi": "Hãy lưu trang web này dưới dạng bookmark."
+      },
+      {
+        "word": "history",
+        "phonetic": "/ˈhɪs.tər.i/",
+        "wordType": "noun",
+        "meaningEn": "a record of web pages visited by a user",
+        "meaningVi": "lịch sử duyệt web",
+        "example": "You can clear your browsing history in settings.",
+        "exampleVi": "Bạn có thể xóa lịch sử duyệt web."
+      },
+      {
+        "word": "cookies",
+        "phonetic": "/ˈkʊk.iz/",
+        "wordType": "noun",
+        "meaningEn": "small files stored on a computer containing preferences",
+        "meaningVi": "tệp cookie trình duyệt",
+        "example": "This website uses cookies to improve experience.",
+        "exampleVi": "Trang web này sử dụng cookie để cải thiện."
+      },
+      {
+        "word": "homepage",
+        "phonetic": "/ˈhəʊm.peɪdʒ/",
+        "wordType": "noun",
+        "meaningEn": "the introductory page of a website",
+        "meaningVi": "trang chủ website",
+        "example": "Click the logo to go back to the homepage.",
+        "exampleVi": "Nhấp vào logo để quay lại trang chủ."
+      },
+      {
+        "word": "search engine",
+        "phonetic": "/sɜːtʃ ˈen.dʒɪn/",
+        "wordType": "noun",
+        "meaningEn": "a program for the retrieval of data from the web",
+        "meaningVi": "công cụ tìm kiếm",
+        "example": "Google is the most popular search engine.",
+        "exampleVi": "Google là công cụ tìm kiếm phổ biến nhất."
+      },
+      {
+        "word": "username",
+        "phonetic": "/ˈjuː.zə.neɪm/",
+        "wordType": "noun",
+        "meaningEn": "an identification name used to access a system",
+        "meaningVi": "tên đăng nhập, username",
+        "example": "Enter your username and password.",
+        "exampleVi": "Hãy nhập tên đăng nhập và mật khẩu."
+      },
+      {
+        "word": "avatar",
+        "phonetic": "/ˈæv.ə.tɑːr/",
+        "wordType": "noun",
+        "meaningEn": "an icon representing a person in games or forums",
+        "meaningVi": "ảnh đại diện, avatar",
+        "example": "She uploaded a cartoon avatar.",
+        "exampleVi": "Cô ấy đã tải lên một ảnh đại diện."
       }
     ],
     "advanced": [
@@ -10672,15 +12242,6 @@ const ORIGINAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "exampleVi": "Docker đã phổ biến hóa công nghệ đóng gói container trong DevOps."
       },
       {
-        "word": "repository",
-        "phonetic": "/rɪˈpɒz.ɪ.tər.i/",
-        "wordType": "noun",
-        "meaningEn": "a storage location for software packages or Git project",
-        "meaningVi": "kho lưu trữ mã nguồn",
-        "example": "Create a pull request on the repository.",
-        "exampleVi": "Hãy tạo một yêu cầu kéo mã nguồn (pull request) trên kho lưu trữ."
-      },
-      {
         "word": "deprecated",
         "phonetic": "/ˈdep.rə.keɪ.tɪd/",
         "wordType": "adj",
@@ -10688,97 +12249,420 @@ const ORIGINAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "bị phản đối/lỗi thời, sẽ bị loại bỏ",
         "example": "This function is deprecated in the new API version.",
         "exampleVi": "Hàm này đã lỗi thời và không khuyên dùng trong phiên bản API mới."
-      }
-    ,
-      {
-            "word": "algorithm",
-            "phonetic": "/ˈæl.ɡə.rɪ.ðəm/",
-            "wordType": "noun",
-            "meaningEn": "a process or set of rules to be followed in calculations",
-            "meaningVi": "thuật toán",
-            "example": "The search engine uses a complex sorting algorithm.",
-            "exampleVi": "Công cụ tìm kiếm sử dụng một thuật toán sắp xếp phức tạp."
       },
       {
-            "word": "encryption",
-            "phonetic": "/ɪnˈkrɪp.ʃən/",
-            "wordType": "noun",
-            "meaningEn": "the process of converting information into code to prevent unauthorized access",
-            "meaningVi": "sự mã hóa",
-            "example": "End-to-end encryption secures chat apps.",
-            "exampleVi": "Mã hóa đầu cuối giúp bảo vệ các ứng dụng nhắn tin."
+        "word": "deployment",
+        "phonetic": "/dɪˈplɔɪ.mənt/",
+        "wordType": "noun",
+        "meaningEn": "the process of making an application ready for use",
+        "meaningVi": "sự triển khai phần mềm",
+        "example": "The deployment to production went smoothly.",
+        "exampleVi": "Sự triển khai lên môi trường thực tế (production) đã diễn ra suôn sẻ."
       },
       {
-            "word": "framework",
-            "phonetic": "/ˈfreɪm.wɜːk/",
-            "wordType": "noun",
-            "meaningEn": "a platform for developing software applications",
-            "meaningVi": "khung phần mềm, framework",
-            "example": "Vue is a flexible frontend framework.",
-            "exampleVi": "Vue là một framework frontend linh hoạt."
+        "word": "cryptography",
+        "phonetic": "/krɪpˈtɒɡ.rə.fi/",
+        "wordType": "noun",
+        "meaningEn": "techniques for secure communication",
+        "meaningVi": "mật mã học",
+        "example": "Modern cryptography relies on complex math.",
+        "exampleVi": "Mật mã học hiện đại dựa vào toán học."
       },
       {
-            "word": "database",
-            "phonetic": "/ˈdeɪ.tə.beɪs/",
-            "wordType": "noun",
-            "meaningEn": "a structured set of data stored in a computer",
-            "meaningVi": "cơ sở dữ liệu",
-            "example": "We query the database for user settings.",
-            "exampleVi": "Chúng tôi truy vấn cơ sở dữ liệu để lấy các cấu hình người dùng."
+        "word": "metadata",
+        "phonetic": "/ˈmet.əˌdeɪ.tə/",
+        "wordType": "noun",
+        "meaningEn": "set of data describing and giving info about other data",
+        "meaningVi": "siêu dữ liệu, metadata",
+        "example": "The file contains metadata like date.",
+        "exampleVi": "Tệp hình ảnh chứa siêu dữ liệu như ngày tháng."
       },
       {
-            "word": "cybersecurity",
-            "phonetic": "/ˌsaɪ.bə.sɪˈkjʊə.rə.ti/",
-            "wordType": "noun",
-            "meaningEn": "protection of computer systems from theft or damage",
-            "meaningVi": "an ninh mạng",
-            "example": "The company hired a team of cybersecurity experts.",
-            "exampleVi": "Công ty đã thuê một đội ngũ chuyên gia an ninh mạng."
+        "word": "load balancing",
+        "phonetic": "/ləʊd ˈbæl.əns.ɪŋ/",
+        "wordType": "noun",
+        "meaningEn": "distributing network traffic across multiple servers",
+        "meaningVi": "công nghệ cân bằng tải",
+        "example": "Load balancing prevents server overload.",
+        "exampleVi": "Cân bằng tải ngăn chặn quá tải máy chủ."
       },
       {
-            "word": "repository",
-            "phonetic": "/rɪˈpɒz.ɪ.tər.i/",
-            "wordType": "noun",
-            "meaningEn": "a storage location for software packages or Git history",
-            "meaningVi": "kho lưu trữ code",
-            "example": "Clone the repository to your desktop.",
-            "exampleVi": "Hãy nhân bản (clone) kho lưu trữ về màn hình của bạn."
+        "word": "idempotence",
+        "phonetic": "/ˌaɪ.dəmˈpəʊ.təns/",
+        "wordType": "noun",
+        "meaningEn": "operations applicable multiple times without changing result",
+        "meaningVi": "tính lũy đẳng",
+        "example": "Payment API endpoints should exhibit idempotence.",
+        "exampleVi": "Các đầu cuối API thanh toán nên thể hiện tính lũy đẳng."
       },
       {
-            "word": "scalability",
-            "phonetic": "/ˌskeɪ.ləˈbɪl.ə.ti/",
-            "wordType": "noun",
-            "meaningEn": "the capability of a system to handle growth",
-            "meaningVi": "khả năng mở rộng hệ thống",
-            "example": "AWS helps with the scalability of web apps.",
-            "exampleVi": "AWS hỗ trợ khả năng mở rộng của các ứng dụng web."
+        "word": "versioning",
+        "phonetic": "/ˈvɜː.ʃən.ɪŋ/",
+        "wordType": "noun",
+        "meaningEn": "creation and management of multiple releases",
+        "meaningVi": "sự quản lý phiên bản",
+        "example": "Semantic versioning is a popular standard.",
+        "exampleVi": "Quản lý phiên bản ngữ nghĩa là một tiêu chuẩn."
       },
       {
-            "word": "bandwidth",
-            "phonetic": "/ˈbænd.wɪtθ/",
-            "wordType": "noun",
-            "meaningEn": "the transmission capacity of a computer network connection",
-            "meaningVi": "băng thông mạng",
-            "example": "Downloading huge files consumes bandwidth.",
-            "exampleVi": "Tải xuống các tập tin khổng lồ tiêu thụ nhiều băng thông."
+        "word": "asynchronous",
+        "phonetic": "/eɪˈsɪŋ.krə.nəs/",
+        "wordType": "adj",
+        "meaningEn": "not occurring at the same time",
+        "meaningVi": "bất đồng bộ",
+        "example": "Asynchronous programming prevents freezing.",
+        "exampleVi": "Lập trình bất đồng bộ ngăn giao diện bị đơ."
       },
       {
-            "word": "deployment",
-            "phonetic": "/dɪˈplɔɪ.mənt/",
-            "wordType": "noun",
-            "meaningEn": "the process of making an application ready for use",
-            "meaningVi": "sự triển khai phần mềm",
-            "example": "The deployment to production went smoothly.",
-            "exampleVi": "Sự triển khai lên môi trường thực tế (production) đã diễn ra suôn sẻ."
+        "word": "redundancy",
+        "phonetic": "/rɪˈdʌn.dən.si/",
+        "wordType": "noun",
+        "meaningEn": "extra components protecting in case of failure",
+        "meaningVi": "sự dư thừa dữ liệu dự phòng",
+        "example": "Data redundancy ensures no records are lost.",
+        "exampleVi": "Dư thừa dữ liệu dự phòng đảm bảo không bị mất."
       },
       {
-            "word": "concurrency",
-            "phonetic": "/kənˈkʌr.ən.si/",
-            "wordType": "noun",
-            "meaningEn": "the ability of different parts of a program to be executed out-of-order",
-            "meaningVi": "xử lý đồng thời, tính đồng hành",
-            "example": "Concurrency improves application responsiveness.",
-            "exampleVi": "Xử lý đồng thời cải thiện khả năng phản hồi của ứng dụng."
+        "word": "provisioning",
+        "phonetic": "/prəˈvɪʒ.ən.ɪŋ/",
+        "wordType": "noun",
+        "meaningEn": "preparing and equipping server to provide service",
+        "meaningVi": "cung cấp tài nguyên hệ thống",
+        "example": "Automated provisioning saves DevOps teams hours.",
+        "exampleVi": "Cung cấp máy chủ tự động giúp tiết kiệm hàng giờ."
+      },
+      {
+        "word": "telemetry",
+        "phonetic": "/təˈlem.ə.tri/",
+        "wordType": "noun",
+        "meaningEn": "automatic measurement and transmission of data",
+        "meaningVi": "dữ liệu đo lường từ xa",
+        "example": "The software sends telemetry to developers.",
+        "exampleVi": "Phần mềm gửi dữ liệu viễn thông về cho lập trình viên."
+      },
+      {
+        "word": "interoperability",
+        "phonetic": "/ˌɪn.tərˌɒp.ər.əˈbɪl.ə.ti/",
+        "wordType": "noun",
+        "meaningEn": "ability of systems to exchange and make use of info",
+        "meaningVi": "khả năng tương tác liên thông",
+        "example": "Open standards promote interoperability.",
+        "exampleVi": "Các tiêu chuẩn mở thúc đẩy khả năng tương tác."
+      },
+      {
+        "word": "latency",
+        "phonetic": "/ˈleɪ.tən.si/",
+        "wordType": "noun",
+        "meaningEn": "delay before data transfer begins",
+        "meaningVi": "độ trễ mạng",
+        "example": "We need to reduce latency to improve experience.",
+        "exampleVi": "Chúng ta cần giảm độ trễ để cải thiện trải nghiệm."
+      },
+      {
+        "word": "payload",
+        "phonetic": "/ˈpeɪ.ləʊd/",
+        "wordType": "noun",
+        "meaningEn": "the actual data transmitted in a packet",
+        "meaningVi": "dữ liệu truyền tải thực tế",
+        "example": "The JSON payload contained the user profile.",
+        "exampleVi": "Dữ liệu truyền tải JSON chứa thông tin người dùng."
+      },
+      {
+        "word": "parsing",
+        "phonetic": "/ˈpɑː.zɪŋ/",
+        "wordType": "noun",
+        "meaningEn": "analyzing a string of symbols in computer language",
+        "meaningVi": "phân tích cú pháp dữ liệu",
+        "example": "XML parsing can be slow for large files.",
+        "exampleVi": "Phân tích cú pháp XML có thể chậm."
+      },
+      {
+        "word": "serialization",
+        "phonetic": "/ˌsɪə.ri.ə.laɪˈzeɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "translating data structures into a storable format",
+        "meaningVi": "tuần tự hóa dữ liệu",
+        "example": "JSON serialization is used to send data.",
+        "exampleVi": "Tuần tự hóa JSON được dùng để gửi dữ liệu."
+      },
+      {
+        "word": "multithreading",
+        "phonetic": "/ˌmʌl.tiˈθred.ɪŋ/",
+        "wordType": "noun",
+        "meaningEn": "ability of CPU to execute multiple threads concurrently",
+        "meaningVi": "công nghệ đa luồng",
+        "example": "Multithreading improves application performance.",
+        "exampleVi": "Công nghệ đa luồng cải thiện hiệu năng ứng dụng."
+      },
+      {
+        "word": "synchronization",
+        "phonetic": "/ˌsɪŋ.krə.naɪˈzeɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "coordinating execution of multiple threads",
+        "meaningVi": "sự đồng bộ hóa các luồng",
+        "example": "Thread synchronization prevents data corruption.",
+        "exampleVi": "Đồng bộ hóa các luồng ngăn chặn sự hỏng dữ liệu."
+      },
+      {
+        "word": "deadlock",
+        "phonetic": "/ˈded.lɒk/",
+        "wordType": "noun",
+        "meaningEn": "state where threads block waiting for each other",
+        "meaningVi": "tình trạng bế tắc, khóa chết",
+        "example": "A deadlock occurred when threads locked resources.",
+        "exampleVi": "Tình trạng khóa chết xảy ra khi cả hai luồng đều khóa."
+      },
+      {
+        "word": "race condition",
+        "phonetic": "/reɪs kənˈdɪʃ.ən/",
+        "wordType": "noun",
+        "meaningEn": "system behavior where output depends on sequence of events",
+        "meaningVi": "tranh chấp tài nguyên",
+        "example": "Use locks to avoid a race condition.",
+        "exampleVi": "Sử dụng khóa để tránh tranh chấp tài nguyên."
+      },
+      {
+        "word": "polymorphism",
+        "phonetic": "/ˌpɒl.ɪˈmɔː.fɪ.zəm/",
+        "wordType": "noun",
+        "meaningEn": "presenting same interface for differing data types in OOP",
+        "meaningVi": "tính đa hình trong lập trình",
+        "example": "Polymorphism makes the code highly reusable.",
+        "exampleVi": "Tính đa hình làm cho mã nguồn có khả năng tái sử dụng."
+      },
+      {
+        "word": "inheritance",
+        "phonetic": "/ɪnˈher.ɪ.təns/",
+        "wordType": "noun",
+        "meaningEn": "basing a class upon another class in OOP",
+        "meaningVi": "tính kế thừa",
+        "example": "Java classes use inheritance to reuse code.",
+        "exampleVi": "Các lớp Java sử dụng tính kế thừa để tái sử dụng."
+      },
+      {
+        "word": "encapsulation",
+        "phonetic": "/ɪnˌkæp.səˈleɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "bundling data with methods operating on that data",
+        "meaningVi": "tính đóng gói dữ liệu",
+        "example": "Encapsulation protects class properties.",
+        "exampleVi": "Tính đóng gói bảo vệ các thuộc tính của lớp."
+      },
+      {
+        "word": "abstraction",
+        "phonetic": "/æbˈstræk.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "dealing with ideas rather than concrete events in OOP",
+        "meaningVi": "tính trừu tượng hóa",
+        "example": "Database abstraction hides query complexity.",
+        "exampleVi": "Trừu tượng hóa cơ sở dữ liệu giúp ẩn đi độ phức tạp."
+      },
+      {
+        "word": "obfuscation",
+        "phonetic": "/ˌɒb.fʌsˈkeɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "making the source code difficult for humans to understand",
+        "meaningVi": "sự làm mờ mã nguồn",
+        "example": "Code obfuscation protects intellectual property.",
+        "exampleVi": "Làm xáo trộn mã nguồn bảo vệ sở hữu trí tuệ."
+      },
+      {
+        "word": "backpropagation",
+        "phonetic": "/ˌbæk.prɒp.əˈɡeɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "method in neural networks to calculate gradients",
+        "meaningVi": "thuật toán lan truyền ngược",
+        "example": "Backpropagation is crucial for training.",
+        "exampleVi": "Lan truyền ngược rất quan trọng cho việc huấn luyện."
+      },
+      {
+        "word": "convolutional",
+        "phonetic": "/ˌkɒn.vəˈluː.ʃən.əl/",
+        "wordType": "adj",
+        "meaningEn": "relating to a mathematical function or CNNs",
+        "meaningVi": "tích chập",
+        "example": "Convolutional neural networks are used for images.",
+        "exampleVi": "Mạng nơ-ron tích chập được dùng để nhận dạng hình ảnh."
+      },
+      {
+        "word": "hyperparameter",
+        "phonetic": "/ˌhaɪ.pə.pəˈræm.ɪ.tər/",
+        "wordType": "noun",
+        "meaningEn": "parameter set before training models",
+        "meaningVi": "siêu tham số mô hình",
+        "example": "Tuning hyperparameters improves accuracy.",
+        "exampleVi": "Tinh chỉnh siêu tham số giúp cải thiện độ chính xác."
+      },
+      {
+        "word": "dimensionality",
+        "phonetic": "/daɪˌmen.ʃənˈæl.ə.ti/",
+        "wordType": "noun",
+        "meaningEn": "number of input features in a dataset",
+        "meaningVi": "số chiều dữ liệu",
+        "example": "PCA reduces data dimensionality.",
+        "exampleVi": "Phân tích thành phần chính giúp giảm số chiều."
+      },
+      {
+        "word": "overfitting",
+        "phonetic": "/ˌəʊ.vəˈfɪt.ɪŋ/",
+        "wordType": "noun",
+        "meaningEn": "model corresponding too closely to training data",
+        "meaningVi": "hiện tượng quá khớp",
+        "example": "Regularization prevents overfitting.",
+        "exampleVi": "Quá khớp được phòng tránh bằng phương pháp điều hòa."
+      },
+      {
+        "word": "underfitting",
+        "phonetic": "/ˌʌn.dərˈfɪt.ɪŋ/",
+        "wordType": "noun",
+        "meaningEn": "model failing to capture underlying trend",
+        "meaningVi": "hiện tượng dưới khớp",
+        "example": "Underfitting happens when the model is too simple.",
+        "exampleVi": "Dưới khớp xảy ra khi mô hình quá đơn giản."
+      },
+      {
+        "word": "normalization",
+        "phonetic": "/ˌnɔː.mə.laɪˈzeɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "organizing database to reduce redundancy",
+        "meaningVi": "chuẩn hóa cơ sở dữ liệu",
+        "example": "Database normalization reduces duplicate records.",
+        "exampleVi": "Chuẩn hóa cơ sở dữ liệu làm giảm bản ghi trùng."
+      },
+      {
+        "word": "indexing",
+        "phonetic": "/ˈɪn.deks.ɪŋ/",
+        "wordType": "noun",
+        "meaningEn": "creating an index to optimize query performance",
+        "meaningVi": "sự lập chỉ mục database",
+        "example": "Proper indexing speeds up search queries.",
+        "exampleVi": "Lập chỉ mục thích hợp giúp tăng tốc câu truy vấn."
+      },
+      {
+        "word": "sharding",
+        "phonetic": "/ˈʃɑː.dɪŋ/",
+        "wordType": "noun",
+        "meaningEn": "partitioning database across multiple servers",
+        "meaningVi": "phân mảnh database",
+        "example": "Database sharding distributes data across servers.",
+        "exampleVi": "Phân mảnh cơ sở dữ liệu giúp phân phối dữ liệu."
+      },
+      {
+        "word": "replication",
+        "phonetic": "/ˌrep.lɪˈkeɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "copying data from one server to another",
+        "meaningVi": "sự sao chép dữ liệu đồng bộ",
+        "example": "Replication ensures high availability of systems.",
+        "exampleVi": "Sao chép dữ liệu đảm bảo tính sẵn sàng cao."
+      },
+      {
+        "word": "transpiler",
+        "phonetic": "/trænzˈpaɪ.lər/",
+        "wordType": "noun",
+        "meaningEn": "compiler translating code between high-level languages",
+        "meaningVi": "trình chuyển dịch mã nguồn",
+        "example": "Babel is a popular JavaScript transpiler.",
+        "exampleVi": "Babel là một trình chuyển dịch JavaScript phổ biến."
+      },
+      {
+        "word": "boilerplate",
+        "phonetic": "/ˈbɔɪ.lə.pleɪt/",
+        "wordType": "noun",
+        "meaningEn": "standardized pieces of code used repeatedly",
+        "meaningVi": "mã mẫu, boilerplate",
+        "example": "Create React App generates boilerplate code.",
+        "exampleVi": "Create React App tạo ra mã nguồn mẫu cơ bản."
+      },
+      {
+        "word": "dependency injection",
+        "phonetic": "/dɪˈpen.dən.si ɪnˈdʒek.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "design pattern where object receives its dependencies",
+        "meaningVi": "tiêm phụ thuộc",
+        "example": "Dependency injection makes unit testing easier.",
+        "exampleVi": "Tiêm phụ thuộc giúp kiểm thử dễ dàng hơn."
+      },
+      {
+        "word": "monolith",
+        "phonetic": "/ˈmɒn.ə.lɪθ/",
+        "wordType": "noun",
+        "meaningEn": "software application designed as a single unit",
+        "meaningVi": "hệ thống nguyên khối monolith",
+        "example": "Migrating from a monolith requires planning.",
+        "exampleVi": "Di chuyển từ hệ thống nguyên khối cần lập kế hoạch."
+      },
+      {
+        "word": "orchestration",
+        "phonetic": "/ˌɔː.kɪsˈtreɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "automated management of computer systems",
+        "meaningVi": "sự điều phối container",
+        "example": "Kubernetes is used for container orchestration.",
+        "exampleVi": "Kubernetes được dùng để điều phối container."
+      },
+      {
+        "word": "virtual machine",
+        "phonetic": "/ˈvɜː.tʃu.əl məˈʃiːn/",
+        "wordType": "noun",
+        "meaningEn": "an emulation of a computer system",
+        "meaningVi": "máy ảo, VM",
+        "example": "You can run Linux inside a virtual machine.",
+        "exampleVi": "Bạn có thể chạy hệ điều hành Linux bên trong máy ảo."
+      },
+      {
+        "word": "hypervisor",
+        "phonetic": "/ˈhaɪ.pə.vaɪ.zər/",
+        "wordType": "noun",
+        "meaningEn": "software that creates and runs virtual machines",
+        "meaningVi": "phần mềm quản lý máy ảo",
+        "example": "VMware ESXi is a bare-metal hypervisor.",
+        "exampleVi": "VMware ESXi là phần mềm quản lý máy ảo hypervisor."
+      },
+      {
+        "word": "telecommunication",
+        "phonetic": "/ˌtel.ɪ.cəˌmjuː.nɪˈkeɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "communication over a distance by cable or radio",
+        "meaningVi": "viễn thông",
+        "example": "Telecommunication networks connect people.",
+        "exampleVi": "Mạng viễn thông kết nối mọi người toàn cầu."
+      },
+      {
+        "word": "cryptocurrency",
+        "phonetic": "/ˌkrɪp.təʊˈkʌr.ən.si/",
+        "wordType": "noun",
+        "meaningEn": "digital currency verified by cryptography",
+        "meaningVi": "tiền mã hóa, tiền điện tử",
+        "example": "Bitcoin was the first cryptocurrency.",
+        "exampleVi": "Bitcoin là đồng tiền mã hóa phi tập trung đầu tiên."
+      },
+      {
+        "word": "blockchain",
+        "phonetic": "/ˈblɒk.tʃeɪn/",
+        "wordType": "noun",
+        "meaningEn": "system of records maintained across peer-to-peer network",
+        "meaningVi": "công nghệ blockchain",
+        "example": "Blockchain technology guarantees data integrity.",
+        "exampleVi": "Công nghệ chuỗi khối đảm bảo tính toàn vẹn."
+      },
+      {
+        "word": "load balancer",
+        "phonetic": "/ləʊd ˈbæl.ən.sər/",
+        "wordType": "noun",
+        "meaningEn": "device distributing traffic across servers",
+        "meaningVi": "bộ cân bằng tải",
+        "example": "The load balancer routes requests to healthy instances.",
+        "exampleVi": "Bộ cân bằng tải định tuyến các yêu cầu."
+      },
+      {
+        "word": "back-end",
+        "phonetic": "/ˌbækˈend/",
+        "wordType": "noun",
+        "meaningEn": "part of software system not accessed directly by user",
+        "meaningVi": "back-end, hậu đài",
+        "example": "The back-end server connects to the database.",
+        "exampleVi": "Máy chủ back-end kết nối với cơ sở dữ liệu."
       }
     ]
   }
