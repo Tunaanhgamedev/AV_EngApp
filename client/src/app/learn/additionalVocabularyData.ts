@@ -231,97 +231,96 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "chua",
         "example": "Lemons have a very sour taste.",
         "exampleVi": "Chanh có vị rất chua."
-      }
-    ,
-      {
-            "word": "apple",
-            "phonetic": "/ˈæp.əl/",
-            "wordType": "noun",
-            "meaningEn": "a round fruit with red, green, or yellow skin and crisp white flesh",
-            "meaningVi": "quả táo",
-            "example": "An apple a day keeps the doctor away.",
-            "exampleVi": "Mỗi ngày một quả táo giúp tránh xa bác sĩ."
       },
       {
-            "word": "cheese",
-            "phonetic": "/tʃiːz/",
-            "wordType": "noun",
-            "meaningEn": "a food made from the pressed curds of milk",
-            "meaningVi": "phô mai",
-            "example": "Would you like some cheese on your pasta?",
-            "exampleVi": "Bạn có muốn bỏ một ít phô mai lên mì Ý không?"
+        "word": "apple",
+        "phonetic": "/ˈæp.əl/",
+        "wordType": "noun",
+        "meaningEn": "a round fruit with red, green, or yellow skin and crisp white flesh",
+        "meaningVi": "quả táo",
+        "example": "An apple a day keeps the doctor away.",
+        "exampleVi": "Mỗi ngày một quả táo giúp tránh xa bác sĩ."
       },
       {
-            "word": "egg",
-            "phonetic": "/eɡ/",
-            "wordType": "noun",
-            "meaningEn": "an oval object produced by a female bird, eaten as food",
-            "meaningVi": "quả trứng",
-            "example": "She fried an egg for breakfast.",
-            "exampleVi": "Cô ấy đã rán một quả trứng cho bữa sáng."
+        "word": "cheese",
+        "phonetic": "/tʃiːz/",
+        "wordType": "noun",
+        "meaningEn": "a food made from the pressed curds of milk",
+        "meaningVi": "phô mai",
+        "example": "Would you like some cheese on your pasta?",
+        "exampleVi": "Bạn có muốn bỏ một ít phô mai lên mì Ý không?"
       },
       {
-            "word": "soup",
-            "phonetic": "/suːp/",
-            "wordType": "noun",
-            "meaningEn": "a liquid food made by boiling meat, fish, or vegetables in water",
-            "meaningVi": "súp, canh",
-            "example": "Chicken soup is perfect for a cold day.",
-            "exampleVi": "Súp gà là lựa chọn hoàn hảo cho một ngày lạnh."
+        "word": "egg",
+        "phonetic": "/eɡ/",
+        "wordType": "noun",
+        "meaningEn": "an oval object produced by a female bird, eaten as food",
+        "meaningVi": "quả trứng",
+        "example": "She fried an egg for breakfast.",
+        "exampleVi": "Cô ấy đã rán một quả trứng cho bữa sáng."
       },
       {
-            "word": "fish",
-            "phonetic": "/fɪʃ/",
-            "wordType": "noun",
-            "meaningEn": "a limbless cold-blooded animal with gills and fins living in water",
-            "meaningVi": "cá",
-            "example": "They ate grilled fish for dinner.",
-            "exampleVi": "Họ đã ăn cá nướng cho bữa tối."
+        "word": "soup",
+        "phonetic": "/suːp/",
+        "wordType": "noun",
+        "meaningEn": "a liquid food made by boiling meat, fish, or vegetables in water",
+        "meaningVi": "súp, canh",
+        "example": "Chicken soup is perfect for a cold day.",
+        "exampleVi": "Súp gà là lựa chọn hoàn hảo cho một ngày lạnh."
       },
       {
-            "word": "salt",
-            "phonetic": "/sɒlt/",
-            "wordType": "noun",
-            "meaningEn": "a white crystalline substance used for seasoning food",
-            "meaningVi": "muối",
-            "example": "Don't add too much salt to the stew.",
-            "exampleVi": "Đừng cho quá nhiều muối vào món hầm."
+        "word": "fish",
+        "phonetic": "/fɪʃ/",
+        "wordType": "noun",
+        "meaningEn": "a limbless cold-blooded animal with gills and fins living in water",
+        "meaningVi": "cá",
+        "example": "They ate grilled fish for dinner.",
+        "exampleVi": "Họ đã ăn cá nướng cho bữa tối."
       },
       {
-            "word": "sugar",
-            "phonetic": "/ˈʃʊɡ.ər/",
-            "wordType": "noun",
-            "meaningEn": "a sweet substance obtained from plants like sugar cane",
-            "meaningVi": "đường",
-            "example": "He put two teaspoons of sugar in his tea.",
-            "exampleVi": "Anh ấy đã cho hai thìa đường vào trà."
+        "word": "salt",
+        "phonetic": "/sɒlt/",
+        "wordType": "noun",
+        "meaningEn": "a white crystalline substance used for seasoning food",
+        "meaningVi": "muối",
+        "example": "Don't add too much salt to the stew.",
+        "exampleVi": "Đừng cho quá nhiều muối vào món hầm."
       },
       {
-            "word": "vegetable",
-            "phonetic": "/ˈvedʒ.tə.bəl/",
-            "wordType": "noun",
-            "meaningEn": "a plant or part of a plant used as food",
-            "meaningVi": "rau củ",
-            "example": "Eat fresh vegetables daily.",
-            "exampleVi": "Hãy ăn rau củ tươi hàng ngày."
+        "word": "sugar",
+        "phonetic": "/ˈʃʊɡ.ər/",
+        "wordType": "noun",
+        "meaningEn": "a sweet substance obtained from plants like sugar cane",
+        "meaningVi": "đường",
+        "example": "He put two teaspoons of sugar in his tea.",
+        "exampleVi": "Anh ấy đã cho hai thìa đường vào trà."
       },
       {
-            "word": "fruit",
-            "phonetic": "/fruːt/",
-            "wordType": "noun",
-            "meaningEn": "the sweet produce of a tree or plant containing seeds",
-            "meaningVi": "trái cây, hoa quả",
-            "example": "We bought a basket of fresh fruit.",
-            "exampleVi": "Chúng tôi đã mua một giỏ hoa quả tươi."
+        "word": "vegetable",
+        "phonetic": "/ˈvedʒ.tə.bəl/",
+        "wordType": "noun",
+        "meaningEn": "a plant or part of a plant used as food",
+        "meaningVi": "rau củ",
+        "example": "Eat fresh vegetables daily.",
+        "exampleVi": "Hãy ăn rau củ tươi hàng ngày."
       },
       {
-            "word": "bread",
-            "phonetic": "/bred/",
-            "wordType": "noun",
-            "meaningEn": "food made of baked flour and water dough",
-            "meaningVi": "bánh mì",
-            "example": "He cut a slice of fresh bread.",
-            "exampleVi": "Anh ấy cắt một lát bánh mì tươi."
+        "word": "fruit",
+        "phonetic": "/fruːt/",
+        "wordType": "noun",
+        "meaningEn": "the sweet produce of a tree or plant containing seeds",
+        "meaningVi": "trái cây, hoa quả",
+        "example": "We bought a basket of fresh fruit.",
+        "exampleVi": "Chúng tôi đã mua một giỏ hoa quả tươi."
+      },
+      {
+        "word": "bread",
+        "phonetic": "/bred/",
+        "wordType": "noun",
+        "meaningEn": "food made of baked flour and water dough",
+        "meaningVi": "bánh mì",
+        "example": "He cut a slice of fresh bread.",
+        "exampleVi": "Anh ấy cắt một lát bánh mì tươi."
       }
     ],
     "advanced": [
@@ -549,97 +548,96 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "ẩm thực, phong cách nấu ăn",
         "example": "I love Italian cuisine, especially pasta.",
         "exampleVi": "Tôi yêu ẩm thực Ý, đặc biệt là mì Ý."
-      }
-    ,
-      {
-            "word": "delicacy",
-            "phonetic": "/ˈdel.ɪ.kə.si/",
-            "wordType": "noun",
-            "meaningEn": "a choice or expensive food",
-            "meaningVi": "đặc sản, món ngon quý hiếm",
-            "example": "Truffles are a famous culinary delicacy.",
-            "exampleVi": "Nấm truffle là một món đặc sản ẩm thực nổi tiếng."
       },
       {
-            "word": "culinary",
-            "phonetic": "/ˈkʌl.ɪ.nər.i/",
-            "wordType": "adj",
-            "meaningEn": "relating to cooking or the kitchen",
-            "meaningVi": "thuộc ẩm thực, bếp núc",
-            "example": "He developed his culinary skills in France.",
-            "exampleVi": "Anh ấy đã phát triển các kỹ năng ẩm thực của mình tại Pháp."
+        "word": "delicacy",
+        "phonetic": "/ˈdel.ɪ.kə.si/",
+        "wordType": "noun",
+        "meaningEn": "a choice or expensive food",
+        "meaningVi": "đặc sản, món ngon quý hiếm",
+        "example": "Truffles are a famous culinary delicacy.",
+        "exampleVi": "Nấm truffle là một món đặc sản ẩm thực nổi tiếng."
       },
       {
-            "word": "gourmet",
-            "phonetic": "/ˈɡʊər.meɪ/",
-            "wordType": "noun/adj",
-            "meaningEn": "high-quality, premium food, or a connoisseur of it",
-            "meaningVi": "người sành ăn, đồ ăn cao cấp",
-            "example": "They dined at a gourmet restaurant.",
-            "exampleVi": "Họ đã dùng bữa tại một nhà hàng cao cấp."
+        "word": "culinary",
+        "phonetic": "/ˈkʌl.ɪ.nər.i/",
+        "wordType": "adj",
+        "meaningEn": "relating to cooking or the kitchen",
+        "meaningVi": "thuộc ẩm thực, bếp núc",
+        "example": "He developed his culinary skills in France.",
+        "exampleVi": "Anh ấy đã phát triển các kỹ năng ẩm thực của mình tại Pháp."
       },
       {
-            "word": "appetizer",
-            "phonetic": "/ˈæp.ə.taɪ.zər/",
-            "wordType": "noun",
-            "meaningEn": "a small dish served before a meal to stimulate appetite",
-            "meaningVi": "món khai vị",
-            "example": "We ordered spring rolls as an appetizer.",
-            "exampleVi": "Chúng tôi đã gọi món chả giò làm món khai vị."
+        "word": "gourmet",
+        "phonetic": "/ˈɡʊər.meɪ/",
+        "wordType": "noun/adj",
+        "meaningEn": "high-quality, premium food, or a connoisseur of it",
+        "meaningVi": "người sành ăn, đồ ăn cao cấp",
+        "example": "They dined at a gourmet restaurant.",
+        "exampleVi": "Họ đã dùng bữa tại một nhà hàng cao cấp."
       },
       {
-            "word": "seasoning",
-            "phonetic": "/ˈsiː.zən.ɪŋ/",
-            "wordType": "noun",
-            "meaningEn": "salt, herbs, or spices added to food to enhance flavor",
-            "meaningVi": "gia vị nêm nếm",
-            "example": "Taste the broth and adjust the seasoning.",
-            "exampleVi": "Hãy nếm thử nước dùng và điều chỉnh gia vị nêm nếm."
+        "word": "appetizer",
+        "phonetic": "/ˈæp.ə.taɪ.zər/",
+        "wordType": "noun",
+        "meaningEn": "a small dish served before a meal to stimulate appetite",
+        "meaningVi": "món khai vị",
+        "example": "We ordered spring rolls as an appetizer.",
+        "exampleVi": "Chúng tôi đã gọi món chả giò làm món khai vị."
       },
       {
-            "word": "confectionery",
-            "phonetic": "/kənˈfek.ʃən.ər.i/",
-            "wordType": "noun",
-            "meaningEn": "sweets and chocolates collectively",
-            "meaningVi": "bánh kẹo",
-            "example": "The bakery is famous for its confectionery.",
-            "exampleVi": "Tiệm bánh nổi tiếng với các sản phẩm bánh kẹo."
+        "word": "seasoning",
+        "phonetic": "/ˈsiː.zən.ɪŋ/",
+        "wordType": "noun",
+        "meaningEn": "salt, herbs, or spices added to food to enhance flavor",
+        "meaningVi": "gia vị nêm nếm",
+        "example": "Taste the broth and adjust the seasoning.",
+        "exampleVi": "Hãy nếm thử nước dùng và điều chỉnh gia vị nêm nếm."
       },
       {
-            "word": "beverage",
-            "phonetic": "/ˈbev.ər.ɪdʒ/",
-            "wordType": "noun",
-            "meaningEn": "a drink other than plain water",
-            "meaningVi": "đồ uống, thức uống",
-            "example": "Soft beverages are served free of charge.",
-            "exampleVi": "Đồ uống nhẹ được phục vụ miễn phí."
+        "word": "confectionery",
+        "phonetic": "/kənˈfek.ʃən.ər.i/",
+        "wordType": "noun",
+        "meaningEn": "sweets and chocolates collectively",
+        "meaningVi": "bánh kẹo",
+        "example": "The bakery is famous for its confectionery.",
+        "exampleVi": "Tiệm bánh nổi tiếng với các sản phẩm bánh kẹo."
       },
       {
-            "word": "dietary",
-            "phonetic": "/ˈdaɪ.ə.tər.i/",
-            "wordType": "adj",
-            "meaningEn": "relating to the rules of eating or diets",
-            "meaningVi": "thuộc về chế độ ăn uống",
-            "example": "The chef accommodated our dietary needs.",
-            "exampleVi": "Đầu bếp đã đáp ứng các nhu cầu ăn kiêng của chúng tôi."
+        "word": "beverage",
+        "phonetic": "/ˈbev.ər.ɪdʒ/",
+        "wordType": "noun",
+        "meaningEn": "a drink other than plain water",
+        "meaningVi": "đồ uống, thức uống",
+        "example": "Soft beverages are served free of charge.",
+        "exampleVi": "Đồ uống nhẹ được phục vụ miễn phí."
       },
       {
-            "word": "organic",
-            "phonetic": "/ɔːˈɡæn.ɪk/",
-            "wordType": "adj",
-            "meaningEn": "produced without chemical fertilizers or pesticides",
-            "meaningVi": "hữu cơ, sạch",
-            "example": "We buy organic vegetables from the market.",
-            "exampleVi": "Chúng tôi mua rau hữu cơ từ chợ."
+        "word": "dietary",
+        "phonetic": "/ˈdaɪ.ə.tər.i/",
+        "wordType": "adj",
+        "meaningEn": "relating to the rules of eating or diets",
+        "meaningVi": "thuộc về chế độ ăn uống",
+        "example": "The chef accommodated our dietary needs.",
+        "exampleVi": "Đầu bếp đã đáp ứng các nhu cầu ăn kiêng của chúng tôi."
       },
       {
-            "word": "wholesome",
-            "phonetic": "/ˈhəʊl.səm/",
-            "wordType": "adj",
-            "meaningEn": "conducive to physical health and well-being",
-            "meaningVi": "bổ dưỡng, lành mạnh cho sức khỏe",
-            "example": "They prepare simple, wholesome family meals.",
-            "exampleVi": "Họ chuẩn bị các bữa ăn gia đình đơn giản, bổ dưỡng."
+        "word": "organic",
+        "phonetic": "/ɔːˈɡæn.ɪk/",
+        "wordType": "adj",
+        "meaningEn": "produced without chemical fertilizers or pesticides",
+        "meaningVi": "hữu cơ, sạch",
+        "example": "We buy organic vegetables from the market.",
+        "exampleVi": "Chúng tôi mua rau hữu cơ từ chợ."
+      },
+      {
+        "word": "wholesome",
+        "phonetic": "/ˈhəʊl.səm/",
+        "wordType": "adj",
+        "meaningEn": "conducive to physical health and well-being",
+        "meaningVi": "bổ dưỡng, lành mạnh cho sức khỏe",
+        "example": "They prepare simple, wholesome family meals.",
+        "exampleVi": "Họ chuẩn bị các bữa ăn gia đình đơn giản, bổ dưỡng."
       }
     ]
   },
@@ -873,97 +871,96 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "dược phẩm, thuốc",
         "example": "This drug is only available with a prescription.",
         "exampleVi": "Loại thuốc này chỉ có sẵn khi có đơn thuốc."
-      }
-    ,
-      {
-            "word": "doctor",
-            "phonetic": "/ˈdɒk.tər/",
-            "wordType": "noun",
-            "meaningEn": "a medical practitioner qualified to treat sick people",
-            "meaningVi": "bác sĩ",
-            "example": "I need to see a doctor today.",
-            "exampleVi": "Tôi cần phải đi khám bác sĩ hôm nay."
       },
       {
-            "word": "nurse",
-            "phonetic": "/nɜːs/",
-            "wordType": "noun",
-            "meaningEn": "a person trained to care for sick or injured people",
-            "meaningVi": "y tá, điều dưỡng",
-            "example": "The nurse gave him the injection.",
-            "exampleVi": "Cô y tá đã tiêm thuốc cho anh ấy."
+        "word": "doctor",
+        "phonetic": "/ˈdɒk.tər/",
+        "wordType": "noun",
+        "meaningEn": "a medical practitioner qualified to treat sick people",
+        "meaningVi": "bác sĩ",
+        "example": "I need to see a doctor today.",
+        "exampleVi": "Tôi cần phải đi khám bác sĩ hôm nay."
       },
       {
-            "word": "medicine",
-            "phonetic": "/ˈmed.əs.ən/",
-            "wordType": "noun",
-            "meaningEn": "a substance used in treating disease or pain",
-            "meaningVi": "thuốc uống, y học",
-            "example": "Take this medicine twice a day.",
-            "exampleVi": "Hãy uống thuốc này hai lần mỗi ngày."
+        "word": "nurse",
+        "phonetic": "/nɜːs/",
+        "wordType": "noun",
+        "meaningEn": "a person trained to care for sick or injured people",
+        "meaningVi": "y tá, điều dưỡng",
+        "example": "The nurse gave him the injection.",
+        "exampleVi": "Cô y tá đã tiêm thuốc cho anh ấy."
       },
       {
-            "word": "hospital",
-            "phonetic": "/ˈhɒs.pɪ.təl/",
-            "wordType": "noun",
-            "meaningEn": "an institution providing medical treatment and nursing care",
-            "meaningVi": "bệnh viện",
-            "example": "He spent a week in the hospital.",
-            "exampleVi": "Anh ấy đã ở bệnh viện một tuần."
+        "word": "medicine",
+        "phonetic": "/ˈmed.əs.ən/",
+        "wordType": "noun",
+        "meaningEn": "a substance used in treating disease or pain",
+        "meaningVi": "thuốc uống, y học",
+        "example": "Take this medicine twice a day.",
+        "exampleVi": "Hãy uống thuốc này hai lần mỗi ngày."
       },
       {
-            "word": "healthy",
-            "phonetic": "/ˈhel.θi/",
-            "wordType": "adj",
-            "meaningEn": "in a good physical or mental state",
-            "meaningVi": "khỏe mạnh",
-            "example": "A balanced diet keeps you healthy.",
-            "exampleVi": "Một chế độ ăn uống cân bằng giữ cho bạn khỏe mạnh."
+        "word": "hospital",
+        "phonetic": "/ˈhɒs.pɪ.təl/",
+        "wordType": "noun",
+        "meaningEn": "an institution providing medical treatment and nursing care",
+        "meaningVi": "bệnh viện",
+        "example": "He spent a week in the hospital.",
+        "exampleVi": "Anh ấy đã ở bệnh viện một tuần."
       },
       {
-            "word": "pain",
-            "phonetic": "/peɪn/",
-            "wordType": "noun",
-            "meaningEn": "physical suffering caused by illness or injury",
-            "meaningVi": "cơn đau, sự đau đớn",
-            "example": "He felt a sharp pain in his chest.",
-            "exampleVi": "Anh ấy cảm thấy một cơn đau nhói ở ngực."
+        "word": "healthy",
+        "phonetic": "/ˈhel.θi/",
+        "wordType": "adj",
+        "meaningEn": "in a good physical or mental state",
+        "meaningVi": "khỏe mạnh",
+        "example": "A balanced diet keeps you healthy.",
+        "exampleVi": "Một chế độ ăn uống cân bằng giữ cho bạn khỏe mạnh."
       },
       {
-            "word": "exercise",
-            "phonetic": "/ˈek.sə.saɪz/",
-            "wordType": "noun/verb",
-            "meaningEn": "physical activity to sustain fitness",
-            "meaningVi": "tập thể dục",
-            "example": "Walking is a gentle form of exercise.",
-            "exampleVi": "Đi bộ là một hình thức tập thể dục nhẹ nhàng."
+        "word": "pain",
+        "phonetic": "/peɪn/",
+        "wordType": "noun",
+        "meaningEn": "physical suffering caused by illness or injury",
+        "meaningVi": "cơn đau, sự đau đớn",
+        "example": "He felt a sharp pain in his chest.",
+        "exampleVi": "Anh ấy cảm thấy một cơn đau nhói ở ngực."
       },
       {
-            "word": "headache",
-            "phonetic": "/ˈhed.eɪk/",
-            "wordType": "noun",
-            "meaningEn": "a continuous pain in one's head",
-            "meaningVi": "đau đầu",
-            "example": "A hot tea might cure your headache.",
-            "exampleVi": "Một ly trà nóng có thể chữa cơn đau đầu của bạn."
+        "word": "exercise",
+        "phonetic": "/ˈek.sə.saɪz/",
+        "wordType": "noun/verb",
+        "meaningEn": "physical activity to sustain fitness",
+        "meaningVi": "tập thể dục",
+        "example": "Walking is a gentle form of exercise.",
+        "exampleVi": "Đi bộ là một hình thức tập thể dục nhẹ nhàng."
       },
       {
-            "word": "clinic",
-            "phonetic": "/ˈklɪn.ɪk/",
-            "wordType": "noun",
-            "meaningEn": "a medical facility for outpatients",
-            "meaningVi": "phòng khám",
-            "example": "The neighborhood clinic is open late.",
-            "exampleVi": "Phòng khám trong khu phố mở cửa muộn."
+        "word": "headache",
+        "phonetic": "/ˈhed.eɪk/",
+        "wordType": "noun",
+        "meaningEn": "a continuous pain in one's head",
+        "meaningVi": "đau đầu",
+        "example": "A hot tea might cure your headache.",
+        "exampleVi": "Một ly trà nóng có thể chữa cơn đau đầu của bạn."
       },
       {
-            "word": "sleep",
-            "phonetic": "/sliːp/",
-            "wordType": "noun/verb",
-            "meaningEn": "a natural state of rest",
-            "meaningVi": "giấc ngủ",
-            "example": "Make sure to get eight hours of sleep.",
-            "exampleVi": "Hãy chắc chắn ngủ đủ tám tiếng."
+        "word": "clinic",
+        "phonetic": "/ˈklɪn.ɪk/",
+        "wordType": "noun",
+        "meaningEn": "a medical facility for outpatients",
+        "meaningVi": "phòng khám",
+        "example": "The neighborhood clinic is open late.",
+        "exampleVi": "Phòng khám trong khu phố mở cửa muộn."
+      },
+      {
+        "word": "sleep",
+        "phonetic": "/sliːp/",
+        "wordType": "noun/verb",
+        "meaningEn": "a natural state of rest",
+        "meaningVi": "giấc ngủ",
+        "example": "Make sure to get eight hours of sleep.",
+        "exampleVi": "Hãy chắc chắn ngủ đủ tám tiếng."
       }
     ],
     "advanced": [
@@ -1191,97 +1188,96 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "sự mệt mỏi, kiệt sức",
         "example": "He was suffering from physical and mental fatigue.",
         "exampleVi": "Anh ấy đang bị mệt mỏi cả về thể chất lẫn tinh thần."
-      }
-    ,
-      {
-            "word": "diagnosis",
-            "phonetic": "/ˌdaɪ.əɡˈnəʊ.sɪs/",
-            "wordType": "noun",
-            "meaningEn": "the identification of the nature of an illness by examination",
-            "meaningVi": "sự chẩn đoán bệnh",
-            "example": "The early diagnosis saved her life.",
-            "exampleVi": "Chẩn đoán sớm đã cứu sống mạng cô ấy."
       },
       {
-            "word": "prescription",
-            "phonetic": "/prɪˈskrɪp.ʃən/",
-            "wordType": "noun",
-            "meaningEn": "an instruction written by a doctor for medicine",
-            "meaningVi": "đơn thuốc, toa thuốc",
-            "example": "Fill this prescription at the pharmacy.",
-            "exampleVi": "Hãy điền đơn thuốc này tại quầy thuốc."
+        "word": "diagnosis",
+        "phonetic": "/ˌdaɪ.əɡˈnəʊ.sɪs/",
+        "wordType": "noun",
+        "meaningEn": "the identification of the nature of an illness by examination",
+        "meaningVi": "sự chẩn đoán bệnh",
+        "example": "The early diagnosis saved her life.",
+        "exampleVi": "Chẩn đoán sớm đã cứu sống mạng cô ấy."
       },
       {
-            "word": "chronic",
-            "phonetic": "/ˈkrɒn.ɪk/",
-            "wordType": "adj",
-            "meaningEn": "persisting for a long time or constantly recurring",
-            "meaningVi": "mãn tính",
-            "example": "He has chronic back pain.",
-            "exampleVi": "Anh ấy bị đau lưng mãn tính."
+        "word": "prescription",
+        "phonetic": "/prɪˈskrɪp.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "an instruction written by a doctor for medicine",
+        "meaningVi": "đơn thuốc, toa thuốc",
+        "example": "Fill this prescription at the pharmacy.",
+        "exampleVi": "Hãy điền đơn thuốc này tại quầy thuốc."
       },
       {
-            "word": "therapy",
-            "phonetic": "/ˈθer.ə.pi/",
-            "wordType": "noun",
-            "meaningEn": "treatment intended to relieve or heal a disorder",
-            "meaningVi": "liệu pháp, trị liệu",
-            "example": "Speech therapy helped the child communicate better.",
-            "exampleVi": "Trị liệu ngôn ngữ giúp đứa trẻ giao tiếp tốt hơn."
+        "word": "chronic",
+        "phonetic": "/ˈkrɒn.ɪk/",
+        "wordType": "adj",
+        "meaningEn": "persisting for a long time or constantly recurring",
+        "meaningVi": "mãn tính",
+        "example": "He has chronic back pain.",
+        "exampleVi": "Anh ấy bị đau lưng mãn tính."
       },
       {
-            "word": "symptom",
-            "phonetic": "/ˈsɪmp.təm/",
-            "wordType": "noun",
-            "meaningEn": "a physical or mental sign indicating a disease",
-            "meaningVi": "triệu chứng bệnh",
-            "example": "High fever is a symptom of infection.",
-            "exampleVi": "Sốt cao là một triệu chứng của sự nhiễm trùng."
+        "word": "therapy",
+        "phonetic": "/ˈθer.ə.pi/",
+        "wordType": "noun",
+        "meaningEn": "treatment intended to relieve or heal a disorder",
+        "meaningVi": "liệu pháp, trị liệu",
+        "example": "Speech therapy helped the child communicate better.",
+        "exampleVi": "Trị liệu ngôn ngữ giúp đứa trẻ giao tiếp tốt hơn."
       },
       {
-            "word": "hygiene",
-            "phonetic": "/ˈhaɪ.dʒiːn/",
-            "wordType": "noun",
-            "meaningEn": "practices conducive to maintaining health and cleanliness",
-            "meaningVi": "vệ sinh sạch sẽ",
-            "example": "Wash your hands to maintain good hygiene.",
-            "exampleVi": "Hãy rửa tay để giữ gìn vệ sinh tốt."
+        "word": "symptom",
+        "phonetic": "/ˈsɪmp.təm/",
+        "wordType": "noun",
+        "meaningEn": "a physical or mental sign indicating a disease",
+        "meaningVi": "triệu chứng bệnh",
+        "example": "High fever is a symptom of infection.",
+        "exampleVi": "Sốt cao là một triệu chứng của sự nhiễm trùng."
       },
       {
-            "word": "epidemic",
-            "phonetic": "/ˌep.ɪˈdem.ɪk/",
-            "wordType": "noun",
-            "meaningEn": "a widespread occurrence of an infectious disease",
-            "meaningVi": "dịch bệnh",
-            "example": "The government took action against the epidemic.",
-            "exampleVi": "Chính phủ đã hành động chống lại dịch bệnh."
+        "word": "hygiene",
+        "phonetic": "/ˈhaɪ.dʒiːn/",
+        "wordType": "noun",
+        "meaningEn": "practices conducive to maintaining health and cleanliness",
+        "meaningVi": "vệ sinh sạch sẽ",
+        "example": "Wash your hands to maintain good hygiene.",
+        "exampleVi": "Hãy rửa tay để giữ gìn vệ sinh tốt."
       },
       {
-            "word": "immune",
-            "phonetic": "/ɪˈmjuːn/",
-            "wordType": "adj",
-            "meaningEn": "resistant to a particular disease or infection",
-            "meaningVi": "miễn dịch",
-            "example": "He is immune to this type of virus.",
-            "exampleVi": "Anh ấy miễn dịch với loại vi-rút này."
+        "word": "epidemic",
+        "phonetic": "/ˌep.ɪˈdem.ɪk/",
+        "wordType": "noun",
+        "meaningEn": "a widespread occurrence of an infectious disease",
+        "meaningVi": "dịch bệnh",
+        "example": "The government took action against the epidemic.",
+        "exampleVi": "Chính phủ đã hành động chống lại dịch bệnh."
       },
       {
-            "word": "recovery",
-            "phonetic": "/rɪˈkʌv.ər.i/",
-            "wordType": "noun",
-            "meaningEn": "a return to a normal state of health or strength",
-            "meaningVi": "sự hồi phục",
-            "example": "She made a complete recovery after the surgery.",
-            "exampleVi": "Cô ấy đã hồi phục hoàn toàn sau ca phẫu thuật."
+        "word": "immune",
+        "phonetic": "/ɪˈmjuːn/",
+        "wordType": "adj",
+        "meaningEn": "resistant to a particular disease or infection",
+        "meaningVi": "miễn dịch",
+        "example": "He is immune to this type of virus.",
+        "exampleVi": "Anh ấy miễn dịch với loại vi-rút này."
       },
       {
-            "word": "rehabilitation",
-            "phonetic": "/ˌriː.həˌbɪl.ɪˈteɪ.ʃən/",
-            "wordType": "noun",
-            "meaningEn": "restoring someone to health after illness or injury",
-            "meaningVi": "sự phục hồi chức năng",
-            "example": "He went to rehabilitation for his knee.",
-            "exampleVi": "Anh ấy đã đi phục hồi chức năng cho khớp gối của mình."
+        "word": "recovery",
+        "phonetic": "/rɪˈkʌv.ər.i/",
+        "wordType": "noun",
+        "meaningEn": "a return to a normal state of health or strength",
+        "meaningVi": "sự hồi phục",
+        "example": "She made a complete recovery after the surgery.",
+        "exampleVi": "Cô ấy đã hồi phục hoàn toàn sau ca phẫu thuật."
+      },
+      {
+        "word": "rehabilitation",
+        "phonetic": "/ˌriː.həˌbɪl.ɪˈteɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "restoring someone to health after illness or injury",
+        "meaningVi": "sự phục hồi chức năng",
+        "example": "He went to rehabilitation for his knee.",
+        "exampleVi": "Anh ấy đã đi phục hồi chức năng cho khớp gối của mình."
       }
     ]
   },
@@ -1515,97 +1511,96 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "hành khách",
         "example": "All passengers must fasten their seat belts.",
         "exampleVi": "Tất cả hành khách đều phải thắt dây an toàn."
-      }
-    ,
-      {
-            "word": "beach",
-            "phonetic": "/biːtʃ/",
-            "wordType": "noun",
-            "meaningEn": "a sandy or pebbly shore of a sea or lake",
-            "meaningVi": "bãi biển",
-            "example": "We built sandcastles on the beach.",
-            "exampleVi": "Chúng tôi đã xây lâu đài cát trên bãi biển."
       },
       {
-            "word": "map",
-            "phonetic": "/mæp/",
-            "wordType": "noun",
-            "meaningEn": "a diagrammatic representation of an area of land",
-            "meaningVi": "bản đồ",
-            "example": "We looked at the map to find the station.",
-            "exampleVi": "Chúng tôi đã nhìn bản đồ để tìm nhà ga."
+        "word": "beach",
+        "phonetic": "/biːtʃ/",
+        "wordType": "noun",
+        "meaningEn": "a sandy or pebbly shore of a sea or lake",
+        "meaningVi": "bãi biển",
+        "example": "We built sandcastles on the beach.",
+        "exampleVi": "Chúng tôi đã xây lâu đài cát trên bãi biển."
       },
       {
-            "word": "suitcase",
-            "phonetic": "/ˈsuːt.keɪs/",
-            "wordType": "noun",
-            "meaningEn": "a case with a handle for carrying clothes while traveling",
-            "meaningVi": "vali",
-            "example": "She packed her suitcase for the weekend trip.",
-            "exampleVi": "Cô ấy đã xếp vali cho chuyến đi cuối tuần."
+        "word": "map",
+        "phonetic": "/mæp/",
+        "wordType": "noun",
+        "meaningEn": "a diagrammatic representation of an area of land",
+        "meaningVi": "bản đồ",
+        "example": "We looked at the map to find the station.",
+        "exampleVi": "Chúng tôi đã nhìn bản đồ để tìm nhà ga."
       },
       {
-            "word": "ticket",
-            "phonetic": "/ˈtɪk.ɪt/",
-            "wordType": "noun",
-            "meaningEn": "a piece of paper showing that you have paid for a journey",
-            "meaningVi": "vé tàu xe, vé máy bay",
-            "example": "Buy your train ticket in advance.",
-            "exampleVi": "Hãy mua vé tàu trước."
+        "word": "suitcase",
+        "phonetic": "/ˈsuːt.keɪs/",
+        "wordType": "noun",
+        "meaningEn": "a case with a handle for carrying clothes while traveling",
+        "meaningVi": "vali",
+        "example": "She packed her suitcase for the weekend trip.",
+        "exampleVi": "Cô ấy đã xếp vali cho chuyến đi cuối tuần."
       },
       {
-            "word": "hotel",
-            "phonetic": "/həʊˈtel/",
-            "wordType": "noun",
-            "meaningEn": "an establishment providing accommodation, meals for travelers",
-            "meaningVi": "khách sạn",
-            "example": "We booked a room in a seaside hotel.",
-            "exampleVi": "Chúng tôi đặt một phòng tại khách sạn ven biển."
+        "word": "ticket",
+        "phonetic": "/ˈtɪk.ɪt/",
+        "wordType": "noun",
+        "meaningEn": "a piece of paper showing that you have paid for a journey",
+        "meaningVi": "vé tàu xe, vé máy bay",
+        "example": "Buy your train ticket in advance.",
+        "exampleVi": "Hãy mua vé tàu trước."
       },
       {
-            "word": "plane",
-            "phonetic": "/pleɪn/",
-            "wordType": "noun",
-            "meaningEn": "a powered flying vehicle with fixed wings",
-            "meaningVi": "máy bay",
-            "example": "The plane landed safely in Tokyo.",
-            "exampleVi": "Máy bay đã hạ cánh an toàn xuống Tokyo."
+        "word": "hotel",
+        "phonetic": "/həʊˈtel/",
+        "wordType": "noun",
+        "meaningEn": "an establishment providing accommodation, meals for travelers",
+        "meaningVi": "khách sạn",
+        "example": "We booked a room in a seaside hotel.",
+        "exampleVi": "Chúng tôi đặt một phòng tại khách sạn ven biển."
       },
       {
-            "word": "museum",
-            "phonetic": "/mjuːˈziː.əm/",
-            "wordType": "noun",
-            "meaningEn": "a building in which objects of interest are exhibited",
-            "meaningVi": "bảo tàng",
-            "example": "We visited the natural history museum.",
-            "exampleVi": "Chúng tôi đã ghé thăm bảo tàng lịch sử tự nhiên."
+        "word": "plane",
+        "phonetic": "/pleɪn/",
+        "wordType": "noun",
+        "meaningEn": "a powered flying vehicle with fixed wings",
+        "meaningVi": "máy bay",
+        "example": "The plane landed safely in Tokyo.",
+        "exampleVi": "Máy bay đã hạ cánh an toàn xuống Tokyo."
       },
       {
-            "word": "tourist",
-            "phonetic": "/ˈtʊə.rɪst/",
-            "wordType": "noun",
-            "meaningEn": "a person who is traveling or visiting a place for pleasure",
-            "meaningVi": "khách du lịch",
-            "example": "The city attracts millions of tourists annually.",
-            "exampleVi": "Thành phố thu hút hàng triệu khách du lịch mỗi năm."
+        "word": "museum",
+        "phonetic": "/mjuːˈziː.əm/",
+        "wordType": "noun",
+        "meaningEn": "a building in which objects of interest are exhibited",
+        "meaningVi": "bảo tàng",
+        "example": "We visited the natural history museum.",
+        "exampleVi": "Chúng tôi đã ghé thăm bảo tàng lịch sử tự nhiên."
       },
       {
-            "word": "flight",
-            "phonetic": "/flaɪt/",
-            "wordType": "noun",
-            "meaningEn": "a journey made through the air by an aircraft",
-            "meaningVi": "chuyến bay",
-            "example": "Our flight was delayed by two hours.",
-            "exampleVi": "Chuyến bay của chúng tôi đã bị hoãn hai tiếng."
+        "word": "tourist",
+        "phonetic": "/ˈtʊə.rɪst/",
+        "wordType": "noun",
+        "meaningEn": "a person who is traveling or visiting a place for pleasure",
+        "meaningVi": "khách du lịch",
+        "example": "The city attracts millions of tourists annually.",
+        "exampleVi": "Thành phố thu hút hàng triệu khách du lịch mỗi năm."
       },
       {
-            "word": "passport",
-            "phonetic": "/ˈpɑːs.pɔːt/",
-            "wordType": "noun",
-            "meaningEn": "an official document certifying identity for international travel",
-            "meaningVi": "hộ chiếu",
-            "example": "Make sure your passport is valid.",
-            "exampleVi": "Hãy chắc chắn hộ chiếu của bạn còn hạn sử dụng."
+        "word": "flight",
+        "phonetic": "/flaɪt/",
+        "wordType": "noun",
+        "meaningEn": "a journey made through the air by an aircraft",
+        "meaningVi": "chuyến bay",
+        "example": "Our flight was delayed by two hours.",
+        "exampleVi": "Chuyến bay của chúng tôi đã bị hoãn hai tiếng."
+      },
+      {
+        "word": "passport",
+        "phonetic": "/ˈpɑːs.pɔːt/",
+        "wordType": "noun",
+        "meaningEn": "an official document certifying identity for international travel",
+        "meaningVi": "hộ chiếu",
+        "example": "Make sure your passport is valid.",
+        "exampleVi": "Hãy chắc chắn hộ chiếu của bạn còn hạn sử dụng."
       }
     ],
     "advanced": [
@@ -1833,97 +1828,96 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "hẻo lánh, xa xôi",
         "example": "He lives in a remote village in the mountains.",
         "exampleVi": "Anh ấy sống ở một ngôi làng hẻo lánh trên núi."
-      }
-    ,
-      {
-            "word": "itinerary",
-            "phonetic": "/aɪˈtɪn.ər.ər.i/",
-            "wordType": "noun",
-            "meaningEn": "a planned route or journey",
-            "meaningVi": "lịch trình chuyến đi",
-            "example": "We kept a copy of the detailed itinerary.",
-            "exampleVi": "Chúng tôi giữ một bản sao của lịch trình chi tiết."
       },
       {
-            "word": "destination",
-            "phonetic": "/ˌdes.tɪˈneɪ.ʃən/",
-            "wordType": "noun",
-            "meaningEn": "the place to which someone or something is going or being sent",
-            "meaningVi": "điểm đến",
-            "example": "Paris is our final travel destination.",
-            "exampleVi": "Paris là điểm đến du lịch cuối cùng của chúng tôi."
+        "word": "itinerary",
+        "phonetic": "/aɪˈtɪn.ər.ər.i/",
+        "wordType": "noun",
+        "meaningEn": "a planned route or journey",
+        "meaningVi": "lịch trình chuyến đi",
+        "example": "We kept a copy of the detailed itinerary.",
+        "exampleVi": "Chúng tôi giữ một bản sao của lịch trình chi tiết."
       },
       {
-            "word": "souvenir",
-            "phonetic": "/ˌsuː.vənˈɪər/",
-            "wordType": "noun",
-            "meaningEn": "a thing that is kept as a reminder of a person, place, or event",
-            "meaningVi": "quà lưu niệm",
-            "example": "She bought a keychain as a souvenir.",
-            "exampleVi": "Cô ấy đã mua một chiếc móc khóa làm quà lưu niệm."
+        "word": "destination",
+        "phonetic": "/ˌdes.tɪˈneɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "the place to which someone or something is going or being sent",
+        "meaningVi": "điểm đến",
+        "example": "Paris is our final travel destination.",
+        "exampleVi": "Paris là điểm đến du lịch cuối cùng của chúng tôi."
       },
       {
-            "word": "expedition",
-            "phonetic": "/ˌek.spəˈdɪʃ.ən/",
-            "wordType": "noun",
-            "meaningEn": "a journey undertaken by a group of people with a particular purpose",
-            "meaningVi": "chuyến thám hiểm",
-            "example": "They organized a scientific expedition to the Antarctic.",
-            "exampleVi": "Họ tổ chức một chuyến thám hiểm khoa học tới Nam Cực."
+        "word": "souvenir",
+        "phonetic": "/ˌsuː.vənˈɪər/",
+        "wordType": "noun",
+        "meaningEn": "a thing that is kept as a reminder of a person, place, or event",
+        "meaningVi": "quà lưu niệm",
+        "example": "She bought a keychain as a souvenir.",
+        "exampleVi": "Cô ấy đã mua một chiếc móc khóa làm quà lưu niệm."
       },
       {
-            "word": "excursion",
-            "phonetic": "/ɪkˈskɜː.ʃən/",
-            "wordType": "noun",
-            "meaningEn": "a short journey or trip, especially one taken as a leisure activity",
-            "meaningVi": "chuyến đi dã ngoại ngắn ngày",
-            "example": "The school organized a weekend excursion to the hills.",
-            "exampleVi": "Nhà trường đã tổ chức một chuyến dã ngoại cuối tuần lên đồi."
+        "word": "expedition",
+        "phonetic": "/ˌek.spəˈdɪʃ.ən/",
+        "wordType": "noun",
+        "meaningEn": "a journey undertaken by a group of people with a particular purpose",
+        "meaningVi": "chuyến thám hiểm",
+        "example": "They organized a scientific expedition to the Antarctic.",
+        "exampleVi": "Họ tổ chức một chuyến thám hiểm khoa học tới Nam Cực."
       },
       {
-            "word": "spectacular",
-            "phonetic": "/spekˈtæk.jə.lər/",
-            "wordType": "adj",
-            "meaningEn": "beautiful in a dramatic and eye-catching way",
-            "meaningVi": "ngoạn mục, hùng vĩ",
-            "example": "The mountain view was absolutely spectacular.",
-            "exampleVi": "Cảnh núi non thực sự rất ngoạn mục."
+        "word": "excursion",
+        "phonetic": "/ɪkˈskɜː.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "a short journey or trip, especially one taken as a leisure activity",
+        "meaningVi": "chuyến đi dã ngoại ngắn ngày",
+        "example": "The school organized a weekend excursion to the hills.",
+        "exampleVi": "Nhà trường đã tổ chức một chuyến dã ngoại cuối tuần lên đồi."
       },
       {
-            "word": "heritage",
-            "phonetic": "/ˈher.ɪ.tɪdʒ/",
-            "wordType": "noun",
-            "meaningEn": "valued objects and qualities such as historic buildings and cultural traditions",
-            "meaningVi": "di sản văn hóa/lịch sử",
-            "example": "The temple is listed as a world heritage site.",
-            "exampleVi": "Ngôi đền được xếp hạng là di sản thế giới."
+        "word": "spectacular",
+        "phonetic": "/spekˈtæk.jə.lər/",
+        "wordType": "adj",
+        "meaningEn": "beautiful in a dramatic and eye-catching way",
+        "meaningVi": "ngoạn mục, hùng vĩ",
+        "example": "The mountain view was absolutely spectacular.",
+        "exampleVi": "Cảnh núi non thực sự rất ngoạn mục."
       },
       {
-            "word": "accommodation",
-            "phonetic": "/əˌkɒm.əˈdeɪ.ʃən/",
-            "wordType": "noun",
-            "meaningEn": "temporary lodgings, or room and food in a hotel",
-            "meaningVi": "chỗ ở, chỗ trú chân du lịch",
-            "example": "We need to find accommodation for the night.",
-            "exampleVi": "Chúng tôi cần tìm chỗ ở cho đêm nay."
+        "word": "heritage",
+        "phonetic": "/ˈher.ɪ.tɪdʒ/",
+        "wordType": "noun",
+        "meaningEn": "valued objects and qualities such as historic buildings and cultural traditions",
+        "meaningVi": "di sản văn hóa/lịch sử",
+        "example": "The temple is listed as a world heritage site.",
+        "exampleVi": "Ngôi đền được xếp hạng là di sản thế giới."
       },
       {
-            "word": "hospitality",
-            "phonetic": "/ˌhɒs.pɪˈtæl.ə.ti/",
-            "wordType": "noun",
-            "meaningEn": "the friendly reception and entertainment of guests",
-            "meaningVi": "sự hiếu khách, ngành nhà hàng khách sạn",
-            "example": "Thank you for your warm hospitality during our stay.",
-            "exampleVi": "Cảm ơn vì sự hiếu khách nồng hậu của bạn trong kỳ nghỉ của chúng tôi."
+        "word": "accommodation",
+        "phonetic": "/əˌkɒm.əˈdeɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "temporary lodgings, or room and food in a hotel",
+        "meaningVi": "chỗ ở, chỗ trú chân du lịch",
+        "example": "We need to find accommodation for the night.",
+        "exampleVi": "Chúng tôi cần tìm chỗ ở cho đêm nay."
       },
       {
-            "word": "migration",
-            "phonetic": "/maɪˈɡreɪ.ʃən/",
-            "wordType": "noun",
-            "meaningEn": "movement of people or animals to a new area",
-            "meaningVi": "sự di cư",
-            "example": "We observed the annual bird migration.",
-            "exampleVi": "Chúng tôi đã quan sát sự di cư hàng năm của loài chim."
+        "word": "hospitality",
+        "phonetic": "/ˌhɒs.pɪˈtæl.ə.ti/",
+        "wordType": "noun",
+        "meaningEn": "the friendly reception and entertainment of guests",
+        "meaningVi": "sự hiếu khách, ngành nhà hàng khách sạn",
+        "example": "Thank you for your warm hospitality during our stay.",
+        "exampleVi": "Cảm ơn vì sự hiếu khách nồng hậu của bạn trong kỳ nghỉ của chúng tôi."
+      },
+      {
+        "word": "migration",
+        "phonetic": "/maɪˈɡreɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "movement of people or animals to a new area",
+        "meaningVi": "sự di cư",
+        "example": "We observed the annual bird migration.",
+        "exampleVi": "Chúng tôi đã quan sát sự di cư hàng năm của loài chim."
       }
     ]
   },
@@ -3427,97 +3421,96 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "không khí",
         "example": "Fresh mountain air is very clean.",
         "exampleVi": "Không khí trong lành trên núi rất sạch sẽ."
-      }
-    ,
-      {
-            "word": "sun",
-            "phonetic": "/sʌn/",
-            "wordType": "noun",
-            "meaningEn": "the star around which the earth orbits",
-            "meaningVi": "mặt trời",
-            "example": "The sun is shining brightly today.",
-            "exampleVi": "Hôm nay mặt trời đang chiếu sáng rực rỡ."
       },
       {
-            "word": "rain",
-            "phonetic": "/reɪn/",
-            "wordType": "noun/verb",
-            "meaningEn": "moisture condensed from the atmosphere that falls in separate drops",
-            "meaningVi": "mưa, trời mưa",
-            "example": "We need some rain to refresh the garden.",
-            "exampleVi": "Chúng ta cần mưa để tưới mát khu vườn."
+        "word": "sun",
+        "phonetic": "/sʌn/",
+        "wordType": "noun",
+        "meaningEn": "the star around which the earth orbits",
+        "meaningVi": "mặt trời",
+        "example": "The sun is shining brightly today.",
+        "exampleVi": "Hôm nay mặt trời đang chiếu sáng rực rỡ."
       },
       {
-            "word": "cloud",
-            "phonetic": "/klaʊd/",
-            "wordType": "noun",
-            "meaningEn": "a visible mass of condensed water vapor floating in the atmosphere",
-            "meaningVi": "đám mây",
-            "example": "Dark clouds gathered in the sky.",
-            "exampleVi": "Những đám mây đen tụ lại trên bầu trời."
+        "word": "rain",
+        "phonetic": "/reɪn/",
+        "wordType": "noun/verb",
+        "meaningEn": "moisture condensed from the atmosphere that falls in separate drops",
+        "meaningVi": "mưa, trời mưa",
+        "example": "We need some rain to refresh the garden.",
+        "exampleVi": "Chúng ta cần mưa để tưới mát khu vườn."
       },
       {
-            "word": "wind",
-            "phonetic": "/wɪnd/",
-            "wordType": "noun",
-            "meaningEn": "the perceptible natural movement of the air",
-            "meaningVi": "gió",
-            "example": "The strong wind blew the leaves away.",
-            "exampleVi": "Cơn gió mạnh đã thổi bay những chiếc lá."
+        "word": "cloud",
+        "phonetic": "/klaʊd/",
+        "wordType": "noun",
+        "meaningEn": "a visible mass of condensed water vapor floating in the atmosphere",
+        "meaningVi": "đám mây",
+        "example": "Dark clouds gathered in the sky.",
+        "exampleVi": "Những đám mây đen tụ lại trên bầu trời."
       },
       {
-            "word": "snow",
-            "phonetic": "/snəʊ/",
-            "wordType": "noun/verb",
-            "meaningEn": "atmospheric water vapor frozen into ice crystals",
-            "meaningVi": "tuyết, tuyết rơi",
-            "example": "The kids love to play in the snow.",
-            "exampleVi": "Trẻ em thích chơi đùa trong tuyết."
+        "word": "wind",
+        "phonetic": "/wɪnd/",
+        "wordType": "noun",
+        "meaningEn": "the perceptible natural movement of the air",
+        "meaningVi": "gió",
+        "example": "The strong wind blew the leaves away.",
+        "exampleVi": "Cơn gió mạnh đã thổi bay những chiếc lá."
       },
       {
-            "word": "hot",
-            "phonetic": "/hɒt/",
-            "wordType": "adj",
-            "meaningEn": "having a high temperature",
-            "meaningVi": "nóng nực",
-            "example": "It is too hot to walk outside.",
-            "exampleVi": "Trời quá nóng để đi dạo bên ngoài."
+        "word": "snow",
+        "phonetic": "/snəʊ/",
+        "wordType": "noun/verb",
+        "meaningEn": "atmospheric water vapor frozen into ice crystals",
+        "meaningVi": "tuyết, tuyết rơi",
+        "example": "The kids love to play in the snow.",
+        "exampleVi": "Trẻ em thích chơi đùa trong tuyết."
       },
       {
-            "word": "cold",
-            "phonetic": "/kəʊld/",
-            "wordType": "adj",
-            "meaningEn": "having a low temperature",
-            "meaningVi": "lạnh lẽo",
-            "example": "Put on a coat, it's cold outside.",
-            "exampleVi": "Hãy mặc áo khoác vào, bên ngoài trời lạnh lắm."
+        "word": "hot",
+        "phonetic": "/hɒt/",
+        "wordType": "adj",
+        "meaningEn": "having a high temperature",
+        "meaningVi": "nóng nực",
+        "example": "It is too hot to walk outside.",
+        "exampleVi": "Trời quá nóng để đi dạo bên ngoài."
       },
       {
-            "word": "warm",
-            "phonetic": "/wɔːm/",
-            "wordType": "adj",
-            "meaningEn": "having a pleasant moderate temperature",
-            "meaningVi": "ấm áp",
-            "example": "The spring sun feels warm.",
-            "exampleVi": "Ánh nắng mùa xuân mang lại cảm giác ấm áp."
+        "word": "cold",
+        "phonetic": "/kəʊld/",
+        "wordType": "adj",
+        "meaningEn": "having a low temperature",
+        "meaningVi": "lạnh lẽo",
+        "example": "Put on a coat, it's cold outside.",
+        "exampleVi": "Hãy mặc áo khoác vào, bên ngoài trời lạnh lắm."
       },
       {
-            "word": "dry",
-            "phonetic": "/draɪ/",
-            "wordType": "adj",
-            "meaningEn": "free from moisture or liquid",
-            "meaningVi": "khô ráo, khô hanh",
-            "example": "The soil is very dry this summer.",
-            "exampleVi": "Đất đai rất khô cằn vào mùa hè này."
+        "word": "warm",
+        "phonetic": "/wɔːm/",
+        "wordType": "adj",
+        "meaningEn": "having a pleasant moderate temperature",
+        "meaningVi": "ấm áp",
+        "example": "The spring sun feels warm.",
+        "exampleVi": "Ánh nắng mùa xuân mang lại cảm giác ấm áp."
       },
       {
-            "word": "wet",
-            "phonetic": "/wet/",
-            "wordType": "adj",
-            "meaningEn": "covered or saturated with water or another liquid",
-            "meaningVi": "ẩm ướt, bị ướt",
-            "example": "Your shoes are wet from the rain.",
-            "exampleVi": "Giày của bạn đã bị ướt vì trời mưa."
+        "word": "dry",
+        "phonetic": "/draɪ/",
+        "wordType": "adj",
+        "meaningEn": "free from moisture or liquid",
+        "meaningVi": "khô ráo, khô hanh",
+        "example": "The soil is very dry this summer.",
+        "exampleVi": "Đất đai rất khô cằn vào mùa hè này."
+      },
+      {
+        "word": "wet",
+        "phonetic": "/wet/",
+        "wordType": "adj",
+        "meaningEn": "covered or saturated with water or another liquid",
+        "meaningVi": "ẩm ướt, bị ướt",
+        "example": "Your shoes are wet from the rain.",
+        "exampleVi": "Giày của bạn đã bị ướt vì trời mưa."
       }
     ],
     "advanced": [
@@ -3745,97 +3738,96 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "cầu vồng",
         "example": "A beautiful rainbow appeared after the rain.",
         "exampleVi": "Một chiếc cầu vồng tuyệt đẹp xuất hiện sau cơn mưa."
-      }
-    ,
-      {
-            "word": "forecast",
-            "phonetic": "/ˈfɔː.kɑːst/",
-            "wordType": "noun/verb",
-            "meaningEn": "a prediction of future events, especially weather",
-            "meaningVi": "dự báo (thời tiết)",
-            "example": "The weather forecast predicts heavy rain tomorrow.",
-            "exampleVi": "Dự báo thời tiết cho biết sẽ có mưa lớn vào ngày mai."
       },
       {
-            "word": "humidity",
-            "phonetic": "/hjuːˈmɪd.ə.ti/",
-            "wordType": "noun",
-            "meaningEn": "the state or quality of being humid, moisture in air",
-            "meaningVi": "độ ẩm không khí",
-            "example": "The high humidity makes the heat feel worse.",
-            "exampleVi": "Độ ẩm cao khiến cái nóng trở nên tồi tệ hơn."
+        "word": "forecast",
+        "phonetic": "/ˈfɔː.kɑːst/",
+        "wordType": "noun/verb",
+        "meaningEn": "a prediction of future events, especially weather",
+        "meaningVi": "dự báo (thời tiết)",
+        "example": "The weather forecast predicts heavy rain tomorrow.",
+        "exampleVi": "Dự báo thời tiết cho biết sẽ có mưa lớn vào ngày mai."
       },
       {
-            "word": "precipitation",
-            "phonetic": "/prɪˌsɪp.ɪˈteɪ.ʃən/",
-            "wordType": "noun",
-            "meaningEn": "rain, snow, sleet, or hail that falls to the ground",
-            "meaningVi": "lượng mưa, sự ngưng tụ nước",
-            "example": "There is a fifty percent chance of precipitation.",
-            "exampleVi": "Có 50% khả năng xảy ra lượng mưa ngưng tụ."
+        "word": "humidity",
+        "phonetic": "/hjuːˈmɪd.ə.ti/",
+        "wordType": "noun",
+        "meaningEn": "the state or quality of being humid, moisture in air",
+        "meaningVi": "độ ẩm không khí",
+        "example": "The high humidity makes the heat feel worse.",
+        "exampleVi": "Độ ẩm cao khiến cái nóng trở nên tồi tệ hơn."
       },
       {
-            "word": "meteorology",
-            "phonetic": "/ˌmiː.ti.əˈrɒl.ə.dʒi/",
-            "wordType": "noun",
-            "meaningEn": "the branch of science concerned with the processes and phenomena of the atmosphere",
-            "meaningVi": "khí tượng học",
-            "example": "She is studying meteorology at university.",
-            "exampleVi": "Cô ấy đang học ngành khí tượng học ở trường đại học."
+        "word": "precipitation",
+        "phonetic": "/prɪˌsɪp.ɪˈteɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "rain, snow, sleet, or hail that falls to the ground",
+        "meaningVi": "lượng mưa, sự ngưng tụ nước",
+        "example": "There is a fifty percent chance of precipitation.",
+        "exampleVi": "Có 50% khả năng xảy ra lượng mưa ngưng tụ."
       },
       {
-            "word": "temperature",
-            "phonetic": "/ˈtem.prə.tʃər/",
-            "wordType": "noun",
-            "meaningEn": "the degree or intensity of heat present in a substance or object",
-            "meaningVi": "nhiệt độ",
-            "example": "The temperature dropped below freezing tonight.",
-            "exampleVi": "Nhiệt độ đã xuống dưới mức đóng băng tối nay."
+        "word": "meteorology",
+        "phonetic": "/ˌmiː.ti.əˈrɒl.ə.dʒi/",
+        "wordType": "noun",
+        "meaningEn": "the branch of science concerned with the processes and phenomena of the atmosphere",
+        "meaningVi": "khí tượng học",
+        "example": "She is studying meteorology at university.",
+        "exampleVi": "Cô ấy đang học ngành khí tượng học ở trường đại học."
       },
       {
-            "word": "breeze",
-            "phonetic": "/briːz/",
-            "wordType": "noun",
-            "meaningEn": "a gentle wind",
-            "meaningVi": "cơn gió nhẹ, gió hiu hiu",
-            "example": "A cool sea breeze refreshed us.",
-            "exampleVi": "Một làn gió biển mát rượi đã làm chúng tôi tỉnh táo lại."
+        "word": "temperature",
+        "phonetic": "/ˈtem.prə.tʃər/",
+        "wordType": "noun",
+        "meaningEn": "the degree or intensity of heat present in a substance or object",
+        "meaningVi": "nhiệt độ",
+        "example": "The temperature dropped below freezing tonight.",
+        "exampleVi": "Nhiệt độ đã xuống dưới mức đóng băng tối nay."
       },
       {
-            "word": "climate",
-            "phonetic": "/ˈklaɪ.mət/",
-            "wordType": "noun",
-            "meaningEn": "the weather conditions prevailing in an area in general",
-            "meaningVi": "khí hậu",
-            "example": "The region is known for its mild climate.",
-            "exampleVi": "Vùng này nổi tiếng với khí hậu ôn hòa."
+        "word": "breeze",
+        "phonetic": "/briːz/",
+        "wordType": "noun",
+        "meaningEn": "a gentle wind",
+        "meaningVi": "cơn gió nhẹ, gió hiu hiu",
+        "example": "A cool sea breeze refreshed us.",
+        "exampleVi": "Một làn gió biển mát rượi đã làm chúng tôi tỉnh táo lại."
       },
       {
-            "word": "atmospheric",
-            "phonetic": "/ˌæt.məsˈfer.ɪk/",
-            "wordType": "adj",
-            "meaningEn": "relating to the atmosphere of the earth",
-            "meaningVi": "thuộc bầu khí quyển",
-            "example": "We observed strange atmospheric phenomena.",
-            "exampleVi": "Chúng tôi đã quan sát thấy những hiện tượng khí quyển kỳ lạ."
+        "word": "climate",
+        "phonetic": "/ˈklaɪ.mət/",
+        "wordType": "noun",
+        "meaningEn": "the weather conditions prevailing in an area in general",
+        "meaningVi": "khí hậu",
+        "example": "The region is known for its mild climate.",
+        "exampleVi": "Vùng này nổi tiếng với khí hậu ôn hòa."
       },
       {
-            "word": "hurricane",
-            "phonetic": "/ˈhʌr.ɪ.kən/",
-            "wordType": "noun",
-            "meaningEn": "a storm with a violent wind, in particular a tropical cyclone",
-            "meaningVi": "bão lớn, siêu bão",
-            "example": "The hurricane caused severe damage to the coastal town.",
-            "exampleVi": "Siêu bão đã gây thiệt hại nặng nề cho thị trấn ven biển."
+        "word": "atmospheric",
+        "phonetic": "/ˌæt.məsˈfer.ɪk/",
+        "wordType": "adj",
+        "meaningEn": "relating to the atmosphere of the earth",
+        "meaningVi": "thuộc bầu khí quyển",
+        "example": "We observed strange atmospheric phenomena.",
+        "exampleVi": "Chúng tôi đã quan sát thấy những hiện tượng khí quyển kỳ lạ."
       },
       {
-            "word": "avalanche",
-            "phonetic": "/ˈæv.əl.ɑːnʃ/",
-            "wordType": "noun",
-            "meaningEn": "a mass of snow, ice, and rocks falling rapidly down a mountainside",
-            "meaningVi": "lở tuyết",
-            "example": "The climbers were warned of the risk of an avalanche.",
-            "exampleVi": "Các nhà leo núi đã được cảnh báo về nguy cơ lở tuyết."
+        "word": "hurricane",
+        "phonetic": "/ˈhʌr.ɪ.kən/",
+        "wordType": "noun",
+        "meaningEn": "a storm with a violent wind, in particular a tropical cyclone",
+        "meaningVi": "bão lớn, siêu bão",
+        "example": "The hurricane caused severe damage to the coastal town.",
+        "exampleVi": "Siêu bão đã gây thiệt hại nặng nề cho thị trấn ven biển."
+      },
+      {
+        "word": "avalanche",
+        "phonetic": "/ˈæv.əl.ɑːnʃ/",
+        "wordType": "noun",
+        "meaningEn": "a mass of snow, ice, and rocks falling rapidly down a mountainside",
+        "meaningVi": "lở tuyết",
+        "example": "The climbers were warned of the risk of an avalanche.",
+        "exampleVi": "Các nhà leo núi đã được cảnh báo về nguy cơ lở tuyết."
       }
     ]
   },
@@ -4069,97 +4061,96 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "sự giảm giá, chiết khấu",
         "example": "Students get a ten percent discount.",
         "exampleVi": "Học sinh được giảm giá mười phần trăm."
-      }
-    ,
-      {
-            "word": "bank",
-            "phonetic": "/bæŋk/",
-            "wordType": "noun",
-            "meaningEn": "a financial establishment that uses money to lend",
-            "meaningVi": "ngân hàng",
-            "example": "I need to withdraw some money from the bank.",
-            "exampleVi": "Tôi cần rút một ít tiền từ ngân hàng."
       },
       {
-            "word": "cash",
-            "phonetic": "/kæʃ/",
-            "wordType": "noun",
-            "meaningEn": "money in coins or notes, as distinct from checks",
-            "meaningVi": "tiền mặt",
-            "example": "Do you prefer to pay in cash or by card?",
-            "exampleVi": "Bạn thích thanh toán bằng tiền mặt hay bằng thẻ?"
+        "word": "bank",
+        "phonetic": "/bæŋk/",
+        "wordType": "noun",
+        "meaningEn": "a financial establishment that uses money to lend",
+        "meaningVi": "ngân hàng",
+        "example": "I need to withdraw some money from the bank.",
+        "exampleVi": "Tôi cần rút một ít tiền từ ngân hàng."
       },
       {
-            "word": "coin",
-            "phonetic": "/kɔɪn/",
-            "wordType": "noun",
-            "meaningEn": "a flat, typically round piece of metal used as money",
-            "meaningVi": "tiền xu",
-            "example": "He found a rare silver coin.",
-            "exampleVi": "Anh ấy đã tìm thấy một đồng xu bạc hiếm."
+        "word": "cash",
+        "phonetic": "/kæʃ/",
+        "wordType": "noun",
+        "meaningEn": "money in coins or notes, as distinct from checks",
+        "meaningVi": "tiền mặt",
+        "example": "Do you prefer to pay in cash or by card?",
+        "exampleVi": "Bạn thích thanh toán bằng tiền mặt hay bằng thẻ?"
       },
       {
-            "word": "wallet",
-            "phonetic": "/ˈwɒl.ɪt/",
-            "wordType": "noun",
-            "meaningEn": "a pocket-sized flat folding case for holding money and cards",
-            "meaningVi": "ví tiền",
-            "example": "He put his driver's license back in his wallet.",
-            "exampleVi": "Anh ấy cất bằng lái xe lại vào ví."
+        "word": "coin",
+        "phonetic": "/kɔɪn/",
+        "wordType": "noun",
+        "meaningEn": "a flat, typically round piece of metal used as money",
+        "meaningVi": "tiền xu",
+        "example": "He found a rare silver coin.",
+        "exampleVi": "Anh ấy đã tìm thấy một đồng xu bạc hiếm."
       },
       {
-            "word": "buy",
-            "phonetic": "/baɪ/",
-            "wordType": "verb",
-            "meaningEn": "obtain in exchange for payment",
-            "meaningVi": "mua",
-            "example": "Where did you buy that shirt?",
-            "exampleVi": "Bạn đã mua chiếc áo đó ở đâu thế?"
+        "word": "wallet",
+        "phonetic": "/ˈwɒl.ɪt/",
+        "wordType": "noun",
+        "meaningEn": "a pocket-sized flat folding case for holding money and cards",
+        "meaningVi": "ví tiền",
+        "example": "He put his driver's license back in his wallet.",
+        "exampleVi": "Anh ấy cất bằng lái xe lại vào ví."
       },
       {
-            "word": "sell",
-            "phonetic": "/sel/",
-            "wordType": "verb",
-            "meaningEn": "give or hand over something in exchange for money",
-            "meaningVi": "bán",
-            "example": "They sell fresh bread at the bakery.",
-            "exampleVi": "Họ bán bánh mì tươi ở tiệm bánh."
+        "word": "buy",
+        "phonetic": "/baɪ/",
+        "wordType": "verb",
+        "meaningEn": "obtain in exchange for payment",
+        "meaningVi": "mua",
+        "example": "Where did you buy that shirt?",
+        "exampleVi": "Bạn đã mua chiếc áo đó ở đâu thế?"
       },
       {
-            "word": "price",
-            "phonetic": "/praɪs/",
-            "wordType": "noun",
-            "meaningEn": "the amount of money required to buy something",
-            "meaningVi": "giá cả",
-            "example": "The price of petrol has gone up again.",
-            "exampleVi": "Giá xăng lại tăng lên một lần nữa."
+        "word": "sell",
+        "phonetic": "/sel/",
+        "wordType": "verb",
+        "meaningEn": "give or hand over something in exchange for money",
+        "meaningVi": "bán",
+        "example": "They sell fresh bread at the bakery.",
+        "exampleVi": "Họ bán bánh mì tươi ở tiệm bánh."
       },
       {
-            "word": "save",
-            "phonetic": "/seɪv/",
-            "wordType": "verb",
-            "meaningEn": "keep money for future use",
-            "meaningVi": "tiết kiệm",
-            "example": "Try to save a portion of your monthly income.",
-            "exampleVi": "Hãy cố gắng tiết kiệm một phần thu nhập hàng tháng."
+        "word": "price",
+        "phonetic": "/praɪs/",
+        "wordType": "noun",
+        "meaningEn": "the amount of money required to buy something",
+        "meaningVi": "giá cả",
+        "example": "The price of petrol has gone up again.",
+        "exampleVi": "Giá xăng lại tăng lên một lần nữa."
       },
       {
-            "word": "cost",
-            "phonetic": "/kɒst/",
-            "wordType": "noun/verb",
-            "meaningEn": "an amount that has to be paid or spent to buy something",
-            "meaningVi": "giá, trị giá",
-            "example": "The cost of repairs was very high.",
-            "exampleVi": "Chi phí sửa chữa rất cao."
+        "word": "save",
+        "phonetic": "/seɪv/",
+        "wordType": "verb",
+        "meaningEn": "keep money for future use",
+        "meaningVi": "tiết kiệm",
+        "example": "Try to save a portion of your monthly income.",
+        "exampleVi": "Hãy cố gắng tiết kiệm một phần thu nhập hàng tháng."
       },
       {
-            "word": "cheap",
-            "phonetic": "/tʃiːp/",
-            "wordType": "adj",
-            "meaningEn": "low in price, especially in relation to similar items",
-            "meaningVi": "rẻ, giá rẻ",
-            "example": "The flight tickets were cheap because we booked early.",
-            "exampleVi": "Vé máy bay rất rẻ vì chúng tôi đặt sớm."
+        "word": "cost",
+        "phonetic": "/kɒst/",
+        "wordType": "noun/verb",
+        "meaningEn": "an amount that has to be paid or spent to buy something",
+        "meaningVi": "giá, trị giá",
+        "example": "The cost of repairs was very high.",
+        "exampleVi": "Chi phí sửa chữa rất cao."
+      },
+      {
+        "word": "cheap",
+        "phonetic": "/tʃiːp/",
+        "wordType": "adj",
+        "meaningEn": "low in price, especially in relation to similar items",
+        "meaningVi": "rẻ, giá rẻ",
+        "example": "The flight tickets were cheap because we booked early.",
+        "exampleVi": "Vé máy bay rất rẻ vì chúng tôi đặt sớm."
       }
     ],
     "advanced": [
@@ -4387,97 +4378,96 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "lương hưu, quỹ hưu trí",
         "example": "He lives comfortably on his military pension.",
         "exampleVi": "Ông ấy sống thoải mái nhờ lương hưu quân đội của mình."
-      }
-    ,
-      {
-            "word": "investment",
-            "phonetic": "/ɪnˈvest.mənt/",
-            "wordType": "noun",
-            "meaningEn": "the action of investing money for financial return",
-            "meaningVi": "khoản đầu tư, sự đầu tư",
-            "example": "Buying stocks carries a risk, but offers good investment potential.",
-            "exampleVi": "Mua cổ phiếu mang lại rủi ro, nhưng cung cấp tiềm năng đầu tư tốt."
       },
       {
-            "word": "inflation",
-            "phonetic": "/ɪnˈfleɪ.ʃən/",
-            "wordType": "noun",
-            "meaningEn": "a general increase in prices and fall in the purchasing value of money",
-            "meaningVi": "lạm phát",
-            "example": "High inflation rate erodes savings over time.",
-            "exampleVi": "Tỷ lệ lạm phát cao làm giảm tiết kiệm theo thời gian."
+        "word": "investment",
+        "phonetic": "/ɪnˈvest.mənt/",
+        "wordType": "noun",
+        "meaningEn": "the action of investing money for financial return",
+        "meaningVi": "khoản đầu tư, sự đầu tư",
+        "example": "Buying stocks carries a risk, but offers good investment potential.",
+        "exampleVi": "Mua cổ phiếu mang lại rủi ro, nhưng cung cấp tiềm năng đầu tư tốt."
       },
       {
-            "word": "transaction",
-            "phonetic": "/trænˈzæk.ʃən/",
-            "wordType": "noun",
-            "meaningEn": "an instance of buying or selling something, a business deal",
-            "meaningVi": "giao dịch",
-            "example": "The bank transaction was completed online.",
-            "exampleVi": "Giao dịch ngân hàng được hoàn thành trực tuyến."
+        "word": "inflation",
+        "phonetic": "/ɪnˈfleɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "a general increase in prices and fall in the purchasing value of money",
+        "meaningVi": "lạm phát",
+        "example": "High inflation rate erodes savings over time.",
+        "exampleVi": "Tỷ lệ lạm phát cao làm giảm tiết kiệm theo thời gian."
       },
       {
-            "word": "budget",
-            "phonetic": "/ˈbʌdʒ.ɪt/",
-            "wordType": "noun/verb",
-            "meaningEn": "an estimate of income and expenditure for a set period",
-            "meaningVi": "ngân sách",
-            "example": "We have to operate within a tight budget.",
-            "exampleVi": "Chúng tôi phải hoạt động trong một ngân sách eo hẹp."
+        "word": "transaction",
+        "phonetic": "/trænˈzæk.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "an instance of buying or selling something, a business deal",
+        "meaningVi": "giao dịch",
+        "example": "The bank transaction was completed online.",
+        "exampleVi": "Giao dịch ngân hàng được hoàn thành trực tuyến."
       },
       {
-            "word": "bankruptcy",
-            "phonetic": "/ˈbæŋ.krəpt.si/",
-            "wordType": "noun",
-            "meaningEn": "the state of being completely lacking in money and unable to pay debts",
-            "meaningVi": "sự phá sản",
-            "example": "The startup avoided bankruptcy by securing new funding.",
-            "exampleVi": "Công ty khởi nghiệp tránh được phá sản nhờ có được nguồn tài trợ mới."
+        "word": "budget",
+        "phonetic": "/ˈbʌdʒ.ɪt/",
+        "wordType": "noun/verb",
+        "meaningEn": "an estimate of income and expenditure for a set period",
+        "meaningVi": "ngân sách",
+        "example": "We have to operate within a tight budget.",
+        "exampleVi": "Chúng tôi phải hoạt động trong một ngân sách eo hẹp."
       },
       {
-            "word": "revenue",
-            "phonetic": "/ˈrev.ən.juː/",
-            "wordType": "noun",
-            "meaningEn": "income, especially when of a company or organization",
-            "meaningVi": "doanh thu",
-            "example": "The company's annual revenue reached ten million dollars.",
-            "exampleVi": "Doanh thu hàng năm của công ty đạt mười triệu đô la."
+        "word": "bankruptcy",
+        "phonetic": "/ˈbæŋ.krəpt.si/",
+        "wordType": "noun",
+        "meaningEn": "the state of being completely lacking in money and unable to pay debts",
+        "meaningVi": "sự phá sản",
+        "example": "The startup avoided bankruptcy by securing new funding.",
+        "exampleVi": "Công ty khởi nghiệp tránh được phá sản nhờ có được nguồn tài trợ mới."
       },
       {
-            "word": "currency",
-            "phonetic": "/ˈkʌr.ən.si/",
-            "wordType": "noun",
-            "meaningEn": "a system of money in common use in a country",
-            "meaningVi": "tiền tệ",
-            "example": "The US dollar is a major global currency.",
-            "exampleVi": "Đồng đô la Mỹ là một loại tiền tệ toàn cầu chính."
+        "word": "revenue",
+        "phonetic": "/ˈrev.ən.juː/",
+        "wordType": "noun",
+        "meaningEn": "income, especially when of a company or organization",
+        "meaningVi": "doanh thu",
+        "example": "The company's annual revenue reached ten million dollars.",
+        "exampleVi": "Doanh thu hàng năm của công ty đạt mười triệu đô la."
       },
       {
-            "word": "debit",
-            "phonetic": "/ˈdeb.ɪt/",
-            "wordType": "noun/verb",
-            "meaningEn": "an entry recording a sum owed, or withdrawing money",
-            "meaningVi": "ghi nợ, trừ tiền tài khoản",
-            "example": "The money was debited from my account yesterday.",
-            "exampleVi": "Số tiền đã được trừ khỏi tài khoản của tôi ngày hôm qua."
+        "word": "currency",
+        "phonetic": "/ˈkʌr.ən.si/",
+        "wordType": "noun",
+        "meaningEn": "a system of money in common use in a country",
+        "meaningVi": "tiền tệ",
+        "example": "The US dollar is a major global currency.",
+        "exampleVi": "Đồng đô la Mỹ là một loại tiền tệ toàn cầu chính."
       },
       {
-            "word": "credit",
-            "phonetic": "/ˈkred.ɪt/",
-            "wordType": "noun/verb",
-            "meaningEn": "an entry recording a sum received, or trust in payment",
-            "meaningVi": "tín dụng, cộng tiền",
-            "example": "They offered interest-free credit for twelve months.",
-            "exampleVi": "Họ đã cung cấp tín dụng không lãi suất trong mười hai tháng."
+        "word": "debit",
+        "phonetic": "/ˈdeb.ɪt/",
+        "wordType": "noun/verb",
+        "meaningEn": "an entry recording a sum owed, or withdrawing money",
+        "meaningVi": "ghi nợ, trừ tiền tài khoản",
+        "example": "The money was debited from my account yesterday.",
+        "exampleVi": "Số tiền đã được trừ khỏi tài khoản của tôi ngày hôm qua."
       },
       {
-            "word": "liability",
-            "phonetic": "/ˌlaɪ.əˈbɪl.ə.ti/",
-            "wordType": "noun",
-            "meaningEn": "a thing for which someone is responsible, especially a financial debt",
-            "meaningVi": "khoản nợ phải trả, nghĩa vụ pháp lý",
-            "example": "The company has more assets than liabilities.",
-            "exampleVi": "Công ty có nhiều tài sản hơn các khoản nợ phải trả."
+        "word": "credit",
+        "phonetic": "/ˈkred.ɪt/",
+        "wordType": "noun/verb",
+        "meaningEn": "an entry recording a sum received, or trust in payment",
+        "meaningVi": "tín dụng, cộng tiền",
+        "example": "They offered interest-free credit for twelve months.",
+        "exampleVi": "Họ đã cung cấp tín dụng không lãi suất trong mười hai tháng."
+      },
+      {
+        "word": "liability",
+        "phonetic": "/ˌlaɪ.əˈbɪl.ə.ti/",
+        "wordType": "noun",
+        "meaningEn": "a thing for which someone is responsible, especially a financial debt",
+        "meaningVi": "khoản nợ phải trả, nghĩa vụ pháp lý",
+        "example": "The company has more assets than liabilities.",
+        "exampleVi": "Công ty có nhiều tài sản hơn các khoản nợ phải trả."
       }
     ]
   },
@@ -4711,97 +4701,96 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "tạp chí",
         "example": "She reads fashion magazines regularly.",
         "exampleVi": "Cô ấy đọc tạp chí thời trang thường xuyên."
-      }
-    ,
-      {
-            "word": "song",
-            "phonetic": "/sɒŋ/",
-            "wordType": "noun",
-            "meaningEn": "a short poem or other set of words set to music",
-            "meaningVi": "bài hát",
-            "example": "She sang a beautiful acoustic song.",
-            "exampleVi": "Cô ấy đã hát một bài hát mộc rất hay."
       },
       {
-            "word": "paint",
-            "phonetic": "/peɪnt/",
-            "wordType": "verb/noun",
-            "meaningEn": "apply liquid color to a surface, or the color itself",
-            "meaningVi": "sơn, vẽ, màu vẽ",
-            "example": "He likes to paint mountain landscapes.",
-            "exampleVi": "Anh ấy thích vẽ tranh phong cảnh núi non."
+        "word": "song",
+        "phonetic": "/sɒŋ/",
+        "wordType": "noun",
+        "meaningEn": "a short poem or other set of words set to music",
+        "meaningVi": "bài hát",
+        "example": "She sang a beautiful acoustic song.",
+        "exampleVi": "Cô ấy đã hát một bài hát mộc rất hay."
       },
       {
-            "word": "movie",
-            "phonetic": "/ˈmuː.vi/",
-            "wordType": "noun",
-            "meaningEn": "a cinema film",
-            "meaningVi": "phim điện ảnh",
-            "example": "Let's watch a movie tonight.",
-            "exampleVi": "Tối nay chúng ta hãy xem phim đi."
+        "word": "paint",
+        "phonetic": "/peɪnt/",
+        "wordType": "verb/noun",
+        "meaningEn": "apply liquid color to a surface, or the color itself",
+        "meaningVi": "sơn, vẽ, màu vẽ",
+        "example": "He likes to paint mountain landscapes.",
+        "exampleVi": "Anh ấy thích vẽ tranh phong cảnh núi non."
       },
       {
-            "word": "book",
-            "phonetic": "/bʊk/",
-            "wordType": "noun",
-            "meaningEn": "a written work consisting of pages bound together",
-            "meaningVi": "cuốn sách",
-            "example": "He was reading an interesting history book.",
-            "exampleVi": "Anh ấy đang đọc một cuốn sách lịch sử thú vị."
+        "word": "movie",
+        "phonetic": "/ˈmuː.vi/",
+        "wordType": "noun",
+        "meaningEn": "a cinema film",
+        "meaningVi": "phim điện ảnh",
+        "example": "Let's watch a movie tonight.",
+        "exampleVi": "Tối nay chúng ta hãy xem phim đi."
       },
       {
-            "word": "actor",
-            "phonetic": "/ˈæk.tər/",
-            "wordType": "noun",
-            "meaningEn": "a person whose profession is acting in plays, movies",
-            "meaningVi": "nam diễn viên",
-            "example": "The main actor gave an outstanding performance.",
-            "exampleVi": "Nam diễn viên chính đã có một màn trình diễn xuất sắc."
+        "word": "book",
+        "phonetic": "/bʊk/",
+        "wordType": "noun",
+        "meaningEn": "a written work consisting of pages bound together",
+        "meaningVi": "cuốn sách",
+        "example": "He was reading an interesting history book.",
+        "exampleVi": "Anh ấy đang đọc một cuốn sách lịch sử thú vị."
       },
       {
-            "word": "artist",
-            "phonetic": "/ˈɑː.tɪst/",
-            "wordType": "noun",
-            "meaningEn": "a person who creates paintings or drawings",
-            "meaningVi": "họa sĩ, nghệ sĩ",
-            "example": "The local artist exhibits his work in the town library.",
-            "exampleVi": "Nghệ sĩ địa phương trưng bày tác phẩm của mình tại thư viện thị trấn."
+        "word": "actor",
+        "phonetic": "/ˈæk.tər/",
+        "wordType": "noun",
+        "meaningEn": "a person whose profession is acting in plays, movies",
+        "meaningVi": "nam diễn viên",
+        "example": "The main actor gave an outstanding performance.",
+        "exampleVi": "Nam diễn viên chính đã có một màn trình diễn xuất sắc."
       },
       {
-            "word": "music",
-            "phonetic": "/ˈmjuː.zɪk/",
-            "wordType": "noun",
-            "meaningEn": "vocal or instrumental sounds combined in a beautiful way",
-            "meaningVi": "âm nhạc",
-            "example": "She listens to classical music while studying.",
-            "exampleVi": "Cô ấy nghe nhạc cổ điển khi đang học."
+        "word": "artist",
+        "phonetic": "/ˈɑː.tɪst/",
+        "wordType": "noun",
+        "meaningEn": "a person who creates paintings or drawings",
+        "meaningVi": "họa sĩ, nghệ sĩ",
+        "example": "The local artist exhibits his work in the town library.",
+        "exampleVi": "Nghệ sĩ địa phương trưng bày tác phẩm của mình tại thư viện thị trấn."
       },
       {
-            "word": "photo",
-            "phonetic": "/ˈfəʊ.təʊ/",
-            "wordType": "noun",
-            "meaningEn": "a photograph",
-            "meaningVi": "bức ảnh",
-            "example": "He took a beautiful photo of the sunrise.",
-            "exampleVi": "Anh ấy đã chụp một bức ảnh bình minh tuyệt đẹp."
+        "word": "music",
+        "phonetic": "/ˈmjuː.zɪk/",
+        "wordType": "noun",
+        "meaningEn": "vocal or instrumental sounds combined in a beautiful way",
+        "meaningVi": "âm nhạc",
+        "example": "She listens to classical music while studying.",
+        "exampleVi": "Cô ấy nghe nhạc cổ điển khi đang học."
       },
       {
-            "word": "camera",
-            "phonetic": "/ˈkæm.rə/",
-            "wordType": "noun",
-            "meaningEn": "a device for recording visual images",
-            "meaningVi": "máy ảnh, máy quay phim",
-            "example": "She bought a new digital camera.",
-            "exampleVi": "Cô ấy đã mua một chiếc máy ảnh kỹ thuật số mới."
+        "word": "photo",
+        "phonetic": "/ˈfəʊ.təʊ/",
+        "wordType": "noun",
+        "meaningEn": "a photograph",
+        "meaningVi": "bức ảnh",
+        "example": "He took a beautiful photo of the sunrise.",
+        "exampleVi": "Anh ấy đã chụp một bức ảnh bình minh tuyệt đẹp."
       },
       {
-            "word": "radio",
-            "phonetic": "/ˈreɪ.di.əʊ/",
-            "wordType": "noun",
-            "meaningEn": "the transmission and reception of electromagnetic waves carrying sound messages",
-            "meaningVi": "đài phát thanh, đài radio",
-            "example": "I heard the news on the radio this morning.",
-            "exampleVi": "Tôi nghe tin tức trên đài phát thanh sáng nay."
+        "word": "camera",
+        "phonetic": "/ˈkæm.rə/",
+        "wordType": "noun",
+        "meaningEn": "a device for recording visual images",
+        "meaningVi": "máy ảnh, máy quay phim",
+        "example": "She bought a new digital camera.",
+        "exampleVi": "Cô ấy đã mua một chiếc máy ảnh kỹ thuật số mới."
+      },
+      {
+        "word": "radio",
+        "phonetic": "/ˈreɪ.di.əʊ/",
+        "wordType": "noun",
+        "meaningEn": "the transmission and reception of electromagnetic waves carrying sound messages",
+        "meaningVi": "đài phát thanh, đài radio",
+        "example": "I heard the news on the radio this morning.",
+        "exampleVi": "Tôi nghe tin tức trên đài phát thanh sáng nay."
       }
     ],
     "advanced": [
@@ -5029,97 +5018,96 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "phòng trưng bày nghệ thuật",
         "example": "The national gallery has a huge collection of paintings.",
         "exampleVi": "Phòng trưng bày quốc gia có một bộ sưu tập tranh khổng lồ."
-      }
-    ,
-      {
-            "word": "masterpiece",
-            "phonetic": "/ˈmɑː.stə.piːs/",
-            "wordType": "noun",
-            "meaningEn": "a work of outstanding artistry, skill, or workmanship",
-            "meaningVi": "kiệt tác",
-            "example": "The painting was hailed as a masterpiece.",
-            "exampleVi": "Bức tranh được tôn vinh như một kiệt tác."
       },
       {
-            "word": "broadcast",
-            "phonetic": "/ˈbrɔːd.kɑːst/",
-            "wordType": "verb/noun",
-            "meaningEn": "transmit a program or some information by radio or television",
-            "meaningVi": "phát sóng truyền hình/phát thanh",
-            "example": "The concert will be broadcast live tomorrow.",
-            "exampleVi": "Buổi hòa nhạc sẽ được phát sóng trực tiếp vào ngày mai."
+        "word": "masterpiece",
+        "phonetic": "/ˈmɑː.stə.piːs/",
+        "wordType": "noun",
+        "meaningEn": "a work of outstanding artistry, skill, or workmanship",
+        "meaningVi": "kiệt tác",
+        "example": "The painting was hailed as a masterpiece.",
+        "exampleVi": "Bức tranh được tôn vinh như một kiệt tác."
       },
       {
-            "word": "journalism",
-            "phonetic": "/ˈdʒɜː.nə.lɪ.zəm/",
-            "wordType": "noun",
-            "meaningEn": "the activity of writing for newspapers, magazines, or news websites",
-            "meaningVi": "ngành báo chí, nghề làm báo",
-            "example": "He decided to pursue a career in investigative journalism.",
-            "exampleVi": "Anh ấy đã quyết định theo đuổi sự nghiệp báo chí điều tra."
+        "word": "broadcast",
+        "phonetic": "/ˈbrɔːd.kɑːst/",
+        "wordType": "verb/noun",
+        "meaningEn": "transmit a program or some information by radio or television",
+        "meaningVi": "phát sóng truyền hình/phát thanh",
+        "example": "The concert will be broadcast live tomorrow.",
+        "exampleVi": "Buổi hòa nhạc sẽ được phát sóng trực tiếp vào ngày mai."
       },
       {
-            "word": "exhibition",
-            "phonetic": "/ˌek.sɪˈbɪʃ.ən/",
-            "wordType": "noun",
-            "meaningEn": "a public display of works of art or items of interest",
-            "meaningVi": "cuộc triển lãm",
-            "example": "We visited the art exhibition at the gallery.",
-            "exampleVi": "Chúng tôi đã tham quan buổi triển lãm nghệ thuật tại phòng trưng bày."
+        "word": "journalism",
+        "phonetic": "/ˈdʒɜː.nə.lɪ.zəm/",
+        "wordType": "noun",
+        "meaningEn": "the activity of writing for newspapers, magazines, or news websites",
+        "meaningVi": "ngành báo chí, nghề làm báo",
+        "example": "He decided to pursue a career in investigative journalism.",
+        "exampleVi": "Anh ấy đã quyết định theo đuổi sự nghiệp báo chí điều tra."
       },
       {
-            "word": "aesthetic",
-            "phonetic": "/esˈθet.ɪk/",
-            "wordType": "adj/noun",
-            "meaningEn": "concerned with beauty or the appreciation of beauty",
-            "meaningVi": "mang tính thẩm mỹ, mỹ học",
-            "example": "The building is modern but lacks aesthetic appeal.",
-            "exampleVi": "Tòa nhà hiện đại nhưng thiếu đi sức hút thẩm mỹ."
+        "word": "exhibition",
+        "phonetic": "/ˌek.sɪˈbɪʃ.ən/",
+        "wordType": "noun",
+        "meaningEn": "a public display of works of art or items of interest",
+        "meaningVi": "cuộc triển lãm",
+        "example": "We visited the art exhibition at the gallery.",
+        "exampleVi": "Chúng tôi đã tham quan buổi triển lãm nghệ thuật tại phòng trưng bày."
       },
       {
-            "word": "sculpture",
-            "phonetic": "/ˈskʌlp.tʃər/",
-            "wordType": "noun",
-            "meaningEn": "the art of making two- or three-dimensional representative forms by carving stone or wood",
-            "meaningVi": "bức tượng điêu khắc, nghệ thuật điêu khắc",
-            "example": "The park features several marble sculptures.",
-            "exampleVi": "Công viên có một vài tác phẩm điêu khắc bằng đá cẩm thạch."
+        "word": "aesthetic",
+        "phonetic": "/esˈθet.ɪk/",
+        "wordType": "adj/noun",
+        "meaningEn": "concerned with beauty or the appreciation of beauty",
+        "meaningVi": "mang tính thẩm mỹ, mỹ học",
+        "example": "The building is modern but lacks aesthetic appeal.",
+        "exampleVi": "Tòa nhà hiện đại nhưng thiếu đi sức hút thẩm mỹ."
       },
       {
-            "word": "narrative",
-            "phonetic": "/ˈnær.ə.tɪv/",
-            "wordType": "noun/adj",
-            "meaningEn": "a spoken or written account of connected events, a story",
-            "meaningVi": "cốt truyện, lời kể, tự sự",
-            "example": "The novel has a compelling narrative structure.",
-            "exampleVi": "Cuốn tiểu thuyết có cấu trúc kể chuyện rất hấp dẫn."
+        "word": "sculpture",
+        "phonetic": "/ˈskʌlp.tʃər/",
+        "wordType": "noun",
+        "meaningEn": "the art of making two- or three-dimensional representative forms by carving stone or wood",
+        "meaningVi": "bức tượng điêu khắc, nghệ thuật điêu khắc",
+        "example": "The park features several marble sculptures.",
+        "exampleVi": "Công viên có một vài tác phẩm điêu khắc bằng đá cẩm thạch."
       },
       {
-            "word": "gallery",
-            "phonetic": "/ˈɡæl.ər.i/",
-            "wordType": "noun",
-            "meaningEn": "a room or building for the display or sale of works of art",
-            "meaningVi": "phòng trưng bày nghệ thuật, triển lãm",
-            "example": "The national gallery has a huge collection of oil paintings.",
-            "exampleVi": "Phòng trưng bày quốc gia có một bộ sưu tập tranh sơn dầu khổng lồ."
+        "word": "narrative",
+        "phonetic": "/ˈnær.ə.tɪv/",
+        "wordType": "noun/adj",
+        "meaningEn": "a spoken or written account of connected events, a story",
+        "meaningVi": "cốt truyện, lời kể, tự sự",
+        "example": "The novel has a compelling narrative structure.",
+        "exampleVi": "Cuốn tiểu thuyết có cấu trúc kể chuyện rất hấp dẫn."
       },
       {
-            "word": "critic",
-            "phonetic": "/ˈkrɪt.ɪk/",
-            "wordType": "noun",
-            "meaningEn": "a person who expresses an unfavorable opinion or analyzes art works",
-            "meaningVi": "nhà phê bình",
-            "example": "The film critic gave the movie a highly positive review.",
-            "exampleVi": "Nhà phê bình điện ảnh đã đưa ra một đánh giá rất tích cực cho bộ phim."
+        "word": "gallery",
+        "phonetic": "/ˈɡæl.ər.i/",
+        "wordType": "noun",
+        "meaningEn": "a room or building for the display or sale of works of art",
+        "meaningVi": "phòng trưng bày nghệ thuật, triển lãm",
+        "example": "The national gallery has a huge collection of oil paintings.",
+        "exampleVi": "Phòng trưng bày quốc gia có một bộ sưu tập tranh sơn dầu khổng lồ."
       },
       {
-            "word": "dynamic",
-            "phonetic": "/daɪˈnæm.ɪk/",
-            "wordType": "adj",
-            "meaningEn": "characterized by constant change, activity, or progress",
-            "meaningVi": "năng động, giàu sức hút, sinh động",
-            "example": "The media industry has a dynamic environment.",
-            "exampleVi": "Ngành truyền thông có một môi trường thay đổi sinh động."
+        "word": "critic",
+        "phonetic": "/ˈkrɪt.ɪk/",
+        "wordType": "noun",
+        "meaningEn": "a person who expresses an unfavorable opinion or analyzes art works",
+        "meaningVi": "nhà phê bình",
+        "example": "The film critic gave the movie a highly positive review.",
+        "exampleVi": "Nhà phê bình điện ảnh đã đưa ra một đánh giá rất tích cực cho bộ phim."
+      },
+      {
+        "word": "dynamic",
+        "phonetic": "/daɪˈnæm.ɪk/",
+        "wordType": "adj",
+        "meaningEn": "characterized by constant change, activity, or progress",
+        "meaningVi": "năng động, giàu sức hút, sinh động",
+        "example": "The media industry has a dynamic environment.",
+        "exampleVi": "Ngành truyền thông có một môi trường thay đổi sinh động."
       }
     ]
   },
@@ -5353,97 +5341,96 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "mạng lưới kết nối",
         "example": "The office network went down temporarily.",
         "exampleVi": "Mạng lưới kết nối văn phòng đã tạm thời bị ngắt kết nối."
-      }
-    ,
-      {
-            "word": "space",
-            "phonetic": "/speɪs/",
-            "wordType": "noun",
-            "meaningEn": "the physical universe beyond the earth's atmosphere",
-            "meaningVi": "không gian vũ trụ",
-            "example": "Satellites are launched into outer space.",
-            "exampleVi": "Vệ tinh được phóng vào không gian vũ trụ."
       },
       {
-            "word": "star",
-            "phonetic": "/stɑːr/",
-            "wordType": "noun",
-            "meaningEn": "a luminous point in the night sky that is a large glowing body",
-            "meaningVi": "ngôi sao",
-            "example": "The sky was filled with countless stars.",
-            "exampleVi": "Bầu trời tràn ngập vô số ngôi sao."
+        "word": "space",
+        "phonetic": "/speɪs/",
+        "wordType": "noun",
+        "meaningEn": "the physical universe beyond the earth's atmosphere",
+        "meaningVi": "không gian vũ trụ",
+        "example": "Satellites are launched into outer space.",
+        "exampleVi": "Vệ tinh được phóng vào không gian vũ trụ."
       },
       {
-            "word": "planet",
-            "phonetic": "/ˈplæn.ɪt/",
-            "wordType": "noun",
-            "meaningEn": "a celestial body moving in an elliptical orbit around a star",
-            "meaningVi": "hành tinh",
-            "example": "Earth is the third planet from the sun.",
-            "exampleVi": "Trái đất là hành tinh thứ ba tính từ mặt trời."
+        "word": "star",
+        "phonetic": "/stɑːr/",
+        "wordType": "noun",
+        "meaningEn": "a luminous point in the night sky that is a large glowing body",
+        "meaningVi": "ngôi sao",
+        "example": "The sky was filled with countless stars.",
+        "exampleVi": "Bầu trời tràn ngập vô số ngôi sao."
       },
       {
-            "word": "machine",
-            "phonetic": "/məˈʃiːn/",
-            "wordType": "noun",
-            "meaningEn": "an apparatus using mechanical power to perform a task",
-            "meaningVi": "máy móc",
-            "example": "The factory uses advanced sewing machines.",
-            "exampleVi": "Nhà máy sử dụng máy khâu tiên tiến."
+        "word": "planet",
+        "phonetic": "/ˈplæn.ɪt/",
+        "wordType": "noun",
+        "meaningEn": "a celestial body moving in an elliptical orbit around a star",
+        "meaningVi": "hành tinh",
+        "example": "Earth is the third planet from the sun.",
+        "exampleVi": "Trái đất là hành tinh thứ ba tính từ mặt trời."
       },
       {
-            "word": "power",
-            "phonetic": "/paʊər/",
-            "wordType": "noun",
-            "meaningEn": "ability to do something, or physical strength/energy",
-            "meaningVi": "năng lượng, sức mạnh",
-            "example": "Nuclear power is clean but dangerous.",
-            "exampleVi": "Điện hạt nhân sạch nhưng nguy hiểm."
+        "word": "machine",
+        "phonetic": "/məˈʃiːn/",
+        "wordType": "noun",
+        "meaningEn": "an apparatus using mechanical power to perform a task",
+        "meaningVi": "máy móc",
+        "example": "The factory uses advanced sewing machines.",
+        "exampleVi": "Nhà máy sử dụng máy khâu tiên tiến."
       },
       {
-            "word": "tool",
-            "phonetic": "/tuːl/",
-            "wordType": "noun",
-            "meaningEn": "a device or implement used to carry out a particular function",
-            "meaningVi": "công cụ, dụng cụ",
-            "example": "A hammer is an essential carpentry tool.",
-            "exampleVi": "Búa là một dụng cụ nghề mộc thiết yếu."
+        "word": "power",
+        "phonetic": "/paʊər/",
+        "wordType": "noun",
+        "meaningEn": "ability to do something, or physical strength/energy",
+        "meaningVi": "năng lượng, sức mạnh",
+        "example": "Nuclear power is clean but dangerous.",
+        "exampleVi": "Điện hạt nhân sạch nhưng nguy hiểm."
       },
       {
-            "word": "light",
-            "phonetic": "/laɪt/",
-            "wordType": "noun/adj",
-            "meaningEn": "the natural agent that stimulates sight and makes things visible",
-            "meaningVi": "ánh sáng",
-            "example": "Plants need sunlight to grow.",
-            "exampleVi": "Thực vật cần ánh sáng mặt trời để phát triển."
+        "word": "tool",
+        "phonetic": "/tuːl/",
+        "wordType": "noun",
+        "meaningEn": "a device or implement used to carry out a particular function",
+        "meaningVi": "công cụ, dụng cụ",
+        "example": "A hammer is an essential carpentry tool.",
+        "exampleVi": "Búa là một dụng cụ nghề mộc thiết yếu."
       },
       {
-            "word": "earth",
-            "phonetic": "/ɜːθ/",
-            "wordType": "noun",
-            "meaningEn": "the planet on which we live; the world",
-            "meaningVi": "trái đất, mặt đất",
-            "example": "The Earth rotates around its axis.",
-            "exampleVi": "Trái đất quay quanh trục của nó."
+        "word": "light",
+        "phonetic": "/laɪt/",
+        "wordType": "noun/adj",
+        "meaningEn": "the natural agent that stimulates sight and makes things visible",
+        "meaningVi": "ánh sáng",
+        "example": "Plants need sunlight to grow.",
+        "exampleVi": "Thực vật cần ánh sáng mặt trời để phát triển."
       },
       {
-            "word": "sand",
-            "phonetic": "/sænd/",
-            "wordType": "noun",
-            "meaningEn": "a loose granular substance, typically pale yellowish brown",
-            "meaningVi": "cát",
-            "example": "The beach sand is fine and golden.",
-            "exampleVi": "Cát bãi biển rất mịn và vàng óng."
+        "word": "earth",
+        "phonetic": "/ɜːθ/",
+        "wordType": "noun",
+        "meaningEn": "the planet on which we live; the world",
+        "meaningVi": "trái đất, mặt đất",
+        "example": "The Earth rotates around its axis.",
+        "exampleVi": "Trái đất quay quanh trục của nó."
       },
       {
-            "word": "science",
-            "phonetic": "/ˈsaɪ.əns/",
-            "wordType": "noun",
-            "meaningEn": "the intellectual and practical study of the structure and behavior of the world",
-            "meaningVi": "khoa học",
-            "example": "He has a great passion for environmental science.",
-            "exampleVi": "Anh ấy có niềm đam mê lớn đối với khoa học môi trường."
+        "word": "sand",
+        "phonetic": "/sænd/",
+        "wordType": "noun",
+        "meaningEn": "a loose granular substance, typically pale yellowish brown",
+        "meaningVi": "cát",
+        "example": "The beach sand is fine and golden.",
+        "exampleVi": "Cát bãi biển rất mịn và vàng óng."
+      },
+      {
+        "word": "science",
+        "phonetic": "/ˈsaɪ.əns/",
+        "wordType": "noun",
+        "meaningEn": "the intellectual and practical study of the structure and behavior of the world",
+        "meaningVi": "khoa học",
+        "example": "He has a great passion for environmental science.",
+        "exampleVi": "Anh ấy có niềm đam mê lớn đối với khoa học môi trường."
       }
     ],
     "advanced": [
@@ -5671,97 +5658,96 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "cơ sở hạ tầng, nền tảng",
         "example": "Cloud infrastructure requires high maintenance.",
         "exampleVi": "Cơ sở hạ tầng đám mây đòi hỏi chi phí bảo trì cao."
-      }
-    ,
-      {
-            "word": "innovation",
-            "phonetic": "/ˌɪn.əˈveɪ.ʃən/",
-            "wordType": "noun",
-            "meaningEn": "the action or process of innovating, a new method or idea",
-            "meaningVi": "sự đổi mới, sự cách tân",
-            "example": "Technological innovation drives economic growth.",
-            "exampleVi": "Đổi mới công nghệ thúc đẩy tăng trưởng kinh tế."
       },
       {
-            "word": "laboratory",
-            "phonetic": "/ləˈbɒr.ə.tər.i/",
-            "wordType": "noun",
-            "meaningEn": "a room or building equipped for scientific research or experiments",
-            "meaningVi": "phòng thí nghiệm",
-            "example": "The scientists are working in the research laboratory.",
-            "exampleVi": "Các nhà khoa học đang làm việc trong phòng thí nghiệm nghiên cứu."
+        "word": "innovation",
+        "phonetic": "/ˌɪn.əˈveɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "the action or process of innovating, a new method or idea",
+        "meaningVi": "sự đổi mới, sự cách tân",
+        "example": "Technological innovation drives economic growth.",
+        "exampleVi": "Đổi mới công nghệ thúc đẩy tăng trưởng kinh tế."
       },
       {
-            "word": "experiment",
-            "phonetic": "/ɪkˈsper.ɪ.mənt/",
-            "wordType": "noun/verb",
-            "meaningEn": "a scientific procedure undertaken to make a discovery or test a hypothesis",
-            "meaningVi": "thí nghiệm, cuộc thử nghiệm",
-            "example": "They conducted a series of laboratory experiments.",
-            "exampleVi": "Họ đã thực hiện một loạt các thí nghiệm trong phòng lab."
+        "word": "laboratory",
+        "phonetic": "/ləˈbɒr.ə.tər.i/",
+        "wordType": "noun",
+        "meaningEn": "a room or building equipped for scientific research or experiments",
+        "meaningVi": "phòng thí nghiệm",
+        "example": "The scientists are working in the research laboratory.",
+        "exampleVi": "Các nhà khoa học đang làm việc trong phòng thí nghiệm nghiên cứu."
       },
       {
-            "word": "biotechnology",
-            "phonetic": "/ˌbaɪ.əʊ.tekˈnɒl.ə.dʒi/",
-            "wordType": "noun",
-            "meaningEn": "the exploitation of biological processes for industrial purposes",
-            "meaningVi": "công nghệ sinh học",
-            "example": "Biotechnology has revolutionized modern medicine.",
-            "exampleVi": "Công nghệ sinh học đã cách mạng hóa nền y học hiện đại."
+        "word": "experiment",
+        "phonetic": "/ɪkˈsper.ɪ.mənt/",
+        "wordType": "noun/verb",
+        "meaningEn": "a scientific procedure undertaken to make a discovery or test a hypothesis",
+        "meaningVi": "thí nghiệm, cuộc thử nghiệm",
+        "example": "They conducted a series of laboratory experiments.",
+        "exampleVi": "Họ đã thực hiện một loạt các thí nghiệm trong phòng lab."
       },
       {
-            "word": "physics",
-            "phonetic": "/ˈfɪz.ɪks/",
-            "wordType": "noun",
-            "meaningEn": "the branch of science concerned with the nature and properties of matter and energy",
-            "meaningVi": "vật lý học",
-            "example": "Quantum physics describes the behavior of atoms.",
-            "exampleVi": "Vật lý lượng tử mô tả hành vi của các nguyên tử."
+        "word": "biotechnology",
+        "phonetic": "/ˌbaɪ.əʊ.tekˈnɒl.ə.dʒi/",
+        "wordType": "noun",
+        "meaningEn": "the exploitation of biological processes for industrial purposes",
+        "meaningVi": "công nghệ sinh học",
+        "example": "Biotechnology has revolutionized modern medicine.",
+        "exampleVi": "Công nghệ sinh học đã cách mạng hóa nền y học hiện đại."
       },
       {
-            "word": "hypothesis",
-            "phonetic": "/haɪˈpɒθ.ə.sɪs/",
-            "wordType": "noun",
-            "meaningEn": "a proposed explanation made on the basis of limited evidence as a starting point",
-            "meaningVi": "giả thuyết khoa học",
-            "example": "The scientists tested their hypothesis using statistical data.",
-            "exampleVi": "Các nhà khoa học đã kiểm nghiệm giả thuyết của họ bằng dữ liệu thống kê."
+        "word": "physics",
+        "phonetic": "/ˈfɪz.ɪks/",
+        "wordType": "noun",
+        "meaningEn": "the branch of science concerned with the nature and properties of matter and energy",
+        "meaningVi": "vật lý học",
+        "example": "Quantum physics describes the behavior of atoms.",
+        "exampleVi": "Vật lý lượng tử mô tả hành vi của các nguyên tử."
       },
       {
-            "word": "microscopic",
-            "phonetic": "/ˌmaɪ.krəˈskɒp.ɪk/",
-            "wordType": "adj",
-            "meaningEn": "so small as to be visible only with a microscope",
-            "meaningVi": "kính hiển vi mới thấy được, siêu nhỏ",
-            "example": "Bacteria are microscopic organisms.",
-            "exampleVi": "Vi khuẩn là những sinh vật siêu nhỏ kính hiển vi mới thấy được."
+        "word": "hypothesis",
+        "phonetic": "/haɪˈpɒθ.ə.sɪs/",
+        "wordType": "noun",
+        "meaningEn": "a proposed explanation made on the basis of limited evidence as a starting point",
+        "meaningVi": "giả thuyết khoa học",
+        "example": "The scientists tested their hypothesis using statistical data.",
+        "exampleVi": "Các nhà khoa học đã kiểm nghiệm giả thuyết của họ bằng dữ liệu thống kê."
       },
       {
-            "word": "evolution",
-            "phonetic": "/ˌiː.vəˈluː.ʃən/",
-            "wordType": "noun",
-            "meaningEn": "the process by which different kinds of living organisms developed from earlier forms",
-            "meaningVi": "sự tiến hóa",
-            "example": "Darwin formulated the theory of biological evolution.",
-            "exampleVi": "Darwin đã xây dựng nên thuyết tiến hóa sinh học."
+        "word": "microscopic",
+        "phonetic": "/ˌmaɪ.krəˈskɒp.ɪk/",
+        "wordType": "adj",
+        "meaningEn": "so small as to be visible only with a microscope",
+        "meaningVi": "kính hiển vi mới thấy được, siêu nhỏ",
+        "example": "Bacteria are microscopic organisms.",
+        "exampleVi": "Vi khuẩn là những sinh vật siêu nhỏ kính hiển vi mới thấy được."
       },
       {
-            "word": "discovery",
-            "phonetic": "/dɪˈskʌv.ər.i/",
-            "wordType": "noun",
-            "meaningEn": "the act of finding something that had not been known before",
-            "meaningVi": "sự khám phá, phát kiến",
-            "example": "The discovery of penicillin changed the world.",
-            "exampleVi": "Sự khám phá ra penicillin đã thay đổi thế giới."
+        "word": "evolution",
+        "phonetic": "/ˌiː.vəˈluː.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "the process by which different kinds of living organisms developed from earlier forms",
+        "meaningVi": "sự tiến hóa",
+        "example": "Darwin formulated the theory of biological evolution.",
+        "exampleVi": "Darwin đã xây dựng nên thuyết tiến hóa sinh học."
       },
       {
-            "word": "quantum",
-            "phonetic": "/ˈkwɒn.təm/",
-            "wordType": "noun/adj",
-            "meaningEn": "a discrete quantity of energy proportional in magnitude to the frequency of radiation",
-            "meaningVi": "lượng tử",
-            "example": "Quantum mechanics explains subatomic particles.",
-            "exampleVi": "Cơ học lượng tử giải thích các hạt dưới nguyên tử."
+        "word": "discovery",
+        "phonetic": "/dɪˈskʌv.ər.i/",
+        "wordType": "noun",
+        "meaningEn": "the act of finding something that had not been known before",
+        "meaningVi": "sự khám phá, phát kiến",
+        "example": "The discovery of penicillin changed the world.",
+        "exampleVi": "Sự khám phá ra penicillin đã thay đổi thế giới."
+      },
+      {
+        "word": "quantum",
+        "phonetic": "/ˈkwɒn.təm/",
+        "wordType": "noun/adj",
+        "meaningEn": "a discrete quantity of energy proportional in magnitude to the frequency of radiation",
+        "meaningVi": "lượng tử",
+        "example": "Quantum mechanics explains subatomic particles.",
+        "exampleVi": "Cơ học lượng tử giải thích các hạt dưới nguyên tử."
       }
     ]
   },
@@ -7256,97 +7242,96 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "hàng đợi, sự xếp hàng",
         "example": "We stood in a long queue at the cash desk.",
         "exampleVi": "Chúng tôi xếp hàng dài chờ đợi ở quầy thanh toán."
-      }
-    ,
-      {
-            "word": "shop",
-            "phonetic": "/ʃɒp/",
-            "wordType": "noun/verb",
-            "meaningEn": "a building where goods are sold, or looking for goods",
-            "meaningVi": "cửa hàng, mua sắm",
-            "example": "He works in a clothing shop downtown.",
-            "exampleVi": "Anh ấy làm việc tại một cửa hàng quần áo dưới phố."
       },
       {
-            "word": "market",
-            "phonetic": "/ˈmɑː.kɪt/",
-            "wordType": "noun",
-            "meaningEn": "a regular gathering of people for the purchase and sale of provisions",
-            "meaningVi": "chợ, thị trường",
-            "example": "We buy fresh vegetables at the local market.",
-            "exampleVi": "Chúng tôi mua rau củ tươi ở khu chợ địa phương."
+        "word": "shop",
+        "phonetic": "/ʃɒp/",
+        "wordType": "noun/verb",
+        "meaningEn": "a building where goods are sold, or looking for goods",
+        "meaningVi": "cửa hàng, mua sắm",
+        "example": "He works in a clothing shop downtown.",
+        "exampleVi": "Anh ấy làm việc tại một cửa hàng quần áo dưới phố."
       },
       {
-            "word": "price",
-            "phonetic": "/praɪs/",
-            "wordType": "noun",
-            "meaningEn": "the amount of money expected in payment for something",
-            "meaningVi": "mức giá",
-            "example": "The price tag was missing from the dress.",
-            "exampleVi": "Chiếc váy bị thiếu nhãn ghi giá."
+        "word": "market",
+        "phonetic": "/ˈmɑː.kɪt/",
+        "wordType": "noun",
+        "meaningEn": "a regular gathering of people for the purchase and sale of provisions",
+        "meaningVi": "chợ, thị trường",
+        "example": "We buy fresh vegetables at the local market.",
+        "exampleVi": "Chúng tôi mua rau củ tươi ở khu chợ địa phương."
       },
       {
-            "word": "buy",
-            "phonetic": "/baɪ/",
-            "wordType": "verb",
-            "meaningEn": "obtain in exchange for payment",
-            "meaningVi": "mua hàng",
-            "example": "She wants to buy a new laptop.",
-            "exampleVi": "Cô ấy muốn mua một chiếc laptop mới."
+        "word": "price",
+        "phonetic": "/praɪs/",
+        "wordType": "noun",
+        "meaningEn": "the amount of money expected in payment for something",
+        "meaningVi": "mức giá",
+        "example": "The price tag was missing from the dress.",
+        "exampleVi": "Chiếc váy bị thiếu nhãn ghi giá."
       },
       {
-            "word": "card",
-            "phonetic": "/kɑːd/",
-            "wordType": "noun",
-            "meaningEn": "a small plastic card issued by a bank",
-            "meaningVi": "thẻ ngân hàng",
-            "example": "Do you accept credit cards here?",
-            "exampleVi": "Ở đây các bạn có nhận thanh toán thẻ tín dụng không?"
+        "word": "buy",
+        "phonetic": "/baɪ/",
+        "wordType": "verb",
+        "meaningEn": "obtain in exchange for payment",
+        "meaningVi": "mua hàng",
+        "example": "She wants to buy a new laptop.",
+        "exampleVi": "Cô ấy muốn mua một chiếc laptop mới."
       },
       {
-            "word": "cash",
-            "phonetic": "/kæʃ/",
-            "wordType": "noun",
-            "meaningEn": "money in coins or notes",
-            "meaningVi": "tiền mặt",
-            "example": "I don't have any cash on me.",
-            "exampleVi": "Tôi không mang theo bất kỳ đồng tiền mặt nào cả."
+        "word": "card",
+        "phonetic": "/kɑːd/",
+        "wordType": "noun",
+        "meaningEn": "a small plastic card issued by a bank",
+        "meaningVi": "thẻ ngân hàng",
+        "example": "Do you accept credit cards here?",
+        "exampleVi": "Ở đây các bạn có nhận thanh toán thẻ tín dụng không?"
       },
       {
-            "word": "bag",
-            "phonetic": "/bæɡ/",
-            "wordType": "noun",
-            "meaningEn": "a flexible container with an opening at the top, used for carrying things",
-            "meaningVi": "túi đựng đồ",
-            "example": "He carried the shopping bag home.",
-            "exampleVi": "Anh ấy xách túi mua sắm về nhà."
+        "word": "cash",
+        "phonetic": "/kæʃ/",
+        "wordType": "noun",
+        "meaningEn": "money in coins or notes",
+        "meaningVi": "tiền mặt",
+        "example": "I don't have any cash on me.",
+        "exampleVi": "Tôi không mang theo bất kỳ đồng tiền mặt nào cả."
       },
       {
-            "word": "free",
-            "phonetic": "/friː/",
-            "wordType": "adj",
-            "meaningEn": "given without charge",
-            "meaningVi": "miễn phí",
-            "example": "The store offers free shipping for large orders.",
-            "exampleVi": "Cửa hàng cung cấp vận chuyển miễn phí cho đơn hàng lớn."
+        "word": "bag",
+        "phonetic": "/bæɡ/",
+        "wordType": "noun",
+        "meaningEn": "a flexible container with an opening at the top, used for carrying things",
+        "meaningVi": "túi đựng đồ",
+        "example": "He carried the shopping bag home.",
+        "exampleVi": "Anh ấy xách túi mua sắm về nhà."
       },
       {
-            "word": "gift",
-            "phonetic": "/ɡɪft/",
-            "wordType": "noun",
-            "meaningEn": "a thing given willingly to someone without payment",
-            "meaningVi": "món quà",
-            "example": "She bought a nice birthday gift for her sister.",
-            "exampleVi": "Cô ấy đã mua một món quà sinh nhật xinh xắn cho em gái mình."
+        "word": "free",
+        "phonetic": "/friː/",
+        "wordType": "adj",
+        "meaningEn": "given without charge",
+        "meaningVi": "miễn phí",
+        "example": "The store offers free shipping for large orders.",
+        "exampleVi": "Cửa hàng cung cấp vận chuyển miễn phí cho đơn hàng lớn."
       },
       {
-            "word": "open",
-            "phonetic": "/ˈəʊ.pən/",
-            "wordType": "adj/verb",
-            "meaningEn": "allowing access, passage, or view",
-            "meaningVi": "mở cửa, mở ra",
-            "example": "The supermarket is open twenty-four hours a day.",
-            "exampleVi": "Siêu thị mở cửa hai mươi tư giờ một ngày."
+        "word": "gift",
+        "phonetic": "/ɡɪft/",
+        "wordType": "noun",
+        "meaningEn": "a thing given willingly to someone without payment",
+        "meaningVi": "món quà",
+        "example": "She bought a nice birthday gift for her sister.",
+        "exampleVi": "Cô ấy đã mua một món quà sinh nhật xinh xắn cho em gái mình."
+      },
+      {
+        "word": "open",
+        "phonetic": "/ˈəʊ.pən/",
+        "wordType": "adj/verb",
+        "meaningEn": "allowing access, passage, or view",
+        "meaningVi": "mở cửa, mở ra",
+        "example": "The supermarket is open twenty-four hours a day.",
+        "exampleVi": "Siêu thị mở cửa hai mươi tư giờ một ngày."
       }
     ],
     "advanced": [
@@ -7574,97 +7559,96 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "cửa hàng thời trang cao cấp",
         "example": "She bought her wedding dress at a boutique.",
         "exampleVi": "Cô ấy đã mua váy cưới tại một cửa hàng thời trang cao cấp."
-      }
-    ,
-      {
-            "word": "consumerism",
-            "phonetic": "/kənˈsjuː.mə.rɪ.zəm/",
-            "wordType": "noun",
-            "meaningEn": "the protection or promotion of the interests of consumers",
-            "meaningVi": "chủ nghĩa tiêu dùng",
-            "example": "Modern advertising fuels mindless consumerism.",
-            "exampleVi": "Quảng cáo hiện đại châm ngòi cho chủ nghĩa tiêu dùng thiếu suy nghĩ."
       },
       {
-            "word": "purchase",
-            "phonetic": "/ˈpɜː.tʃəs/",
-            "wordType": "verb/noun",
-            "meaningEn": "acquire something by paying for it, or the thing bought",
-            "meaningVi": "mua sắm, vật phẩm mua được",
-            "example": "Keep your receipt as proof of purchase.",
-            "exampleVi": "Hãy giữ lại hóa đơn để làm bằng chứng mua hàng."
+        "word": "consumerism",
+        "phonetic": "/kənˈsjuː.mə.rɪ.zəm/",
+        "wordType": "noun",
+        "meaningEn": "the protection or promotion of the interests of consumers",
+        "meaningVi": "chủ nghĩa tiêu dùng",
+        "example": "Modern advertising fuels mindless consumerism.",
+        "exampleVi": "Quảng cáo hiện đại châm ngòi cho chủ nghĩa tiêu dùng thiếu suy nghĩ."
       },
       {
-            "word": "discount",
-            "phonetic": "/ˈdɪs.kaʊnt/",
-            "wordType": "noun/verb",
-            "meaningEn": "a deduction from the usual cost of something",
-            "meaningVi": "sự giảm giá, chiết khấu",
-            "example": "They offer a ten percent discount to students.",
-            "exampleVi": "Họ giảm giá 10% cho học sinh sinh viên."
+        "word": "purchase",
+        "phonetic": "/ˈpɜː.tʃəs/",
+        "wordType": "verb/noun",
+        "meaningEn": "acquire something by paying for it, or the thing bought",
+        "meaningVi": "mua sắm, vật phẩm mua được",
+        "example": "Keep your receipt as proof of purchase.",
+        "exampleVi": "Hãy giữ lại hóa đơn để làm bằng chứng mua hàng."
       },
       {
-            "word": "receipt",
-            "phonetic": "/rɪˈsiːt/",
-            "wordType": "noun",
-            "meaningEn": "a written statement confirming that money has been received",
-            "meaningVi": "biên lai, hóa đơn",
-            "example": "The cashier handed me the receipt.",
-            "exampleVi": "Thu ngân đã đưa cho tôi hóa đơn."
+        "word": "discount",
+        "phonetic": "/ˈdɪs.kaʊnt/",
+        "wordType": "noun/verb",
+        "meaningEn": "a deduction from the usual cost of something",
+        "meaningVi": "sự giảm giá, chiết khấu",
+        "example": "They offer a ten percent discount to students.",
+        "exampleVi": "Họ giảm giá 10% cho học sinh sinh viên."
       },
       {
-            "word": "warranty",
-            "phonetic": "/ˈwɒr.ən.ti/",
-            "wordType": "noun",
-            "meaningEn": "a written guarantee promising to repair an article within a period",
-            "meaningVi": "sự bảo hành, phiếu bảo hành",
-            "example": "The television comes with a two-year warranty.",
-            "exampleVi": "Chiếc ti vi đi kèm với bảo hành hai năm."
+        "word": "receipt",
+        "phonetic": "/rɪˈsiːt/",
+        "wordType": "noun",
+        "meaningEn": "a written statement confirming that money has been received",
+        "meaningVi": "biên lai, hóa đơn",
+        "example": "The cashier handed me the receipt.",
+        "exampleVi": "Thu ngân đã đưa cho tôi hóa đơn."
       },
       {
-            "word": "merchandise",
-            "phonetic": "/ˈmɜː.tʃən.daɪs/",
-            "wordType": "noun",
-            "meaningEn": "goods to be bought and sold",
-            "meaningVi": "hàng hóa thương mại",
-            "example": "The shop imports its merchandise directly from Italy.",
-            "exampleVi": "Cửa hàng nhập khẩu hàng hóa trực tiếp từ Ý."
+        "word": "warranty",
+        "phonetic": "/ˈwɒr.ən.ti/",
+        "wordType": "noun",
+        "meaningEn": "a written guarantee promising to repair an article within a period",
+        "meaningVi": "sự bảo hành, phiếu bảo hành",
+        "example": "The television comes with a two-year warranty.",
+        "exampleVi": "Chiếc ti vi đi kèm với bảo hành hai năm."
       },
       {
-            "word": "commercial",
-            "phonetic": "/kəˈmɜː.ʃəl/",
-            "wordType": "adj/noun",
-            "meaningEn": "concerned with commerce, or a television advertisement",
-            "meaningVi": "thuộc về thương mại, quảng cáo",
-            "example": "The street is a bustling commercial center.",
-            "exampleVi": "Con phố là một trung tâm thương mại nhộn nhịp."
+        "word": "merchandise",
+        "phonetic": "/ˈmɜː.tʃən.daɪs/",
+        "wordType": "noun",
+        "meaningEn": "goods to be bought and sold",
+        "meaningVi": "hàng hóa thương mại",
+        "example": "The shop imports its merchandise directly from Italy.",
+        "exampleVi": "Cửa hàng nhập khẩu hàng hóa trực tiếp từ Ý."
       },
       {
-            "word": "wholesale",
-            "phonetic": "/ˈhəʊl.seɪl/",
-            "wordType": "noun/adj/adv",
-            "meaningEn": "the selling of goods in large quantities to be retailed by others",
-            "meaningVi": "bán buôn, bán sỉ",
-            "example": "We buy goods at wholesale prices.",
-            "exampleVi": "Chúng tôi mua hàng hóa ở mức giá bán sỉ."
+        "word": "commercial",
+        "phonetic": "/kəˈmɜː.ʃəl/",
+        "wordType": "adj/noun",
+        "meaningEn": "concerned with commerce, or a television advertisement",
+        "meaningVi": "thuộc về thương mại, quảng cáo",
+        "example": "The street is a bustling commercial center.",
+        "exampleVi": "Con phố là một trung tâm thương mại nhộn nhịp."
       },
       {
-            "word": "retail",
-            "phonetic": "/ˈriː.teɪl/",
-            "wordType": "noun/adj/adv",
-            "meaningEn": "the sale of goods to the public in relatively small quantities",
-            "meaningVi": "bán lẻ",
-            "example": "The retail industry is facing tough competition.",
-            "exampleVi": "Ngành bán lẻ đang đối mặt với sự cạnh tranh khốc liệt."
+        "word": "wholesale",
+        "phonetic": "/ˈhəʊl.seɪl/",
+        "wordType": "noun/adj/adv",
+        "meaningEn": "the selling of goods in large quantities to be retailed by others",
+        "meaningVi": "bán buôn, bán sỉ",
+        "example": "We buy goods at wholesale prices.",
+        "exampleVi": "Chúng tôi mua hàng hóa ở mức giá bán sỉ."
       },
       {
-            "word": "refund",
-            "phonetic": "/ˈriː.fʌnd/",
-            "wordType": "noun/verb",
-            "meaningEn": "a repayment of a sum of money",
-            "meaningVi": "hoàn tiền, trả lại tiền",
-            "example": "If you are not satisfied, you can request a full refund.",
-            "exampleVi": "Nếu không hài lòng, bạn có thể yêu cầu hoàn tiền toàn bộ."
+        "word": "retail",
+        "phonetic": "/ˈriː.teɪl/",
+        "wordType": "noun/adj/adv",
+        "meaningEn": "the sale of goods to the public in relatively small quantities",
+        "meaningVi": "bán lẻ",
+        "example": "The retail industry is facing tough competition.",
+        "exampleVi": "Ngành bán lẻ đang đối mặt với sự cạnh tranh khốc liệt."
+      },
+      {
+        "word": "refund",
+        "phonetic": "/ˈriː.fʌnd/",
+        "wordType": "noun/verb",
+        "meaningEn": "a repayment of a sum of money",
+        "meaningVi": "hoàn tiền, trả lại tiền",
+        "example": "If you are not satisfied, you can request a full refund.",
+        "exampleVi": "Nếu không hài lòng, bạn có thể yêu cầu hoàn tiền toàn bộ."
       }
     ]
   },
@@ -7763,97 +7747,231 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "Trái Đất",
         "example": "We must protect the Earth.",
         "exampleVi": "Chúng ta phải bảo vệ Trái Đất."
-      }
-    ,
-      {
-            "word": "tree",
-            "phonetic": "/triː/",
-            "wordType": "noun",
-            "meaningEn": "a woody perennial plant, typically having a single stem or trunk",
-            "meaningVi": "cây xanh, cây thân gỗ",
-            "example": "Birds are nesting in the oak tree.",
-            "exampleVi": "Những con chim đang làm tổ trên cây sồi."
       },
       {
-            "word": "flower",
-            "phonetic": "/ˈflaʊ.ər/",
-            "wordType": "noun/verb",
-            "meaningEn": "the seed-bearing part of a plant, consisting of petals",
-            "meaningVi": "bông hoa",
-            "example": "Roses are beautiful flowers.",
-            "exampleVi": "Hoa hồng là những bông hoa đẹp."
+        "word": "grass",
+        "phonetic": "/ɡrɑːs/",
+        "wordType": "noun",
+        "meaningEn": "vegetation consisting of typically short plants with long, narrow leaves",
+        "meaningVi": "bãi cỏ, ngọn cỏ",
+        "example": "The children sat on the green grass.",
+        "exampleVi": "Lũ trẻ ngồi trên bãi cỏ xanh."
       },
       {
-            "word": "grass",
-            "phonetic": "/ɡrɑːs/",
-            "wordType": "noun",
-            "meaningEn": "vegetation consisting of typically short plants with long, narrow leaves",
-            "meaningVi": "bãi cỏ, ngọn cỏ",
-            "example": "The children sat on the green grass.",
-            "exampleVi": "Lũ trẻ ngồi trên bãi cỏ xanh."
+        "word": "lake",
+        "phonetic": "/leɪk/",
+        "wordType": "noun",
+        "meaningEn": "a large body of water surrounded by land",
+        "meaningVi": "hồ nước",
+        "example": "We rented a cabin near the lake.",
+        "exampleVi": "Chúng tôi thuê một căn cabin gần hồ."
       },
       {
-            "word": "forest",
-            "phonetic": "/ˈfɒr.ɪst/",
-            "wordType": "noun",
-            "meaningEn": "a large area covered chiefly with trees and undergrowth",
-            "meaningVi": "khu rừng",
-            "example": "They went hiking in the deep forest.",
-            "exampleVi": "Họ đi bộ dã ngoại trong rừng sâu."
+        "word": "wind",
+        "phonetic": "/wɪnd/",
+        "wordType": "noun",
+        "meaningEn": "the perceptible natural movement of the air",
+        "meaningVi": "gió",
+        "example": "A strong wind blew away my hat.",
+        "exampleVi": "Một cơn gió mạnh đã thổi bay chiếc mũ của tôi."
       },
       {
-            "word": "river",
-            "phonetic": "/ˈrɪv.ər/",
-            "wordType": "noun",
-            "meaningEn": "a large natural stream of water flowing in a channel to the sea",
-            "meaningVi": "sông, dòng sông",
-            "example": "The river flows through the valley.",
-            "exampleVi": "Dòng sông chảy qua thung lũng."
+        "word": "sun",
+        "phonetic": "/sʌn/",
+        "wordType": "noun",
+        "meaningEn": "the star around which the earth orbits",
+        "meaningVi": "mặt trời",
+        "example": "The sun rises in the east.",
+        "exampleVi": "Mặt trời mọc ở hướng đông."
       },
       {
-            "word": "lake",
-            "phonetic": "/leɪk/",
-            "wordType": "noun",
-            "meaningEn": "a large body of water surrounded by land",
-            "meaningVi": "hồ nước",
-            "example": "We rented a cabin near the lake.",
-            "exampleVi": "Chúng tôi thuê một căn cabin gần hồ."
+        "word": "moon",
+        "phonetic": "/muːn/",
+        "wordType": "noun",
+        "meaningEn": "the natural satellite of the earth",
+        "meaningVi": "mặt trăng",
+        "example": "The moon shines brightly tonight.",
+        "exampleVi": "Đêm nay trăng sáng tỏ."
       },
       {
-            "word": "mountain",
-            "phonetic": "/ˈmaʊn.tɪn/",
-            "wordType": "noun",
-            "meaningEn": "a large natural elevation of the earth's surface",
-            "meaningVi": "ngọn núi",
-            "example": "They climbed the highest mountain in Europe.",
-            "exampleVi": "Họ đã leo lên ngọn núi cao nhất châu Âu."
+        "word": "star",
+        "phonetic": "/stɑːr/",
+        "wordType": "noun",
+        "meaningEn": "a fixed luminous point in the night sky",
+        "meaningVi": "ngôi sao",
+        "example": "We looked at the stars in the sky.",
+        "exampleVi": "Chúng tôi ngắm nhìn những ngôi sao trên bầu trời."
       },
       {
-            "word": "sea",
-            "phonetic": "/siː/",
-            "wordType": "noun",
-            "meaningEn": "the expanse of salt water that covers most of the earth's surface",
-            "meaningVi": "biển, đại dương",
-            "example": "The sea water was cold and clear.",
-            "exampleVi": "Nước biển lạnh và trong vắt."
+        "word": "rain",
+        "phonetic": "/reɪn/",
+        "wordType": "noun",
+        "meaningEn": "moisture condensed from the atmosphere that falls in visible drops",
+        "meaningVi": "cơn mưa",
+        "example": "I love the sound of rain.",
+        "exampleVi": "Tôi yêu tiếng mưa rơi."
       },
       {
-            "word": "sky",
-            "phonetic": "/skaɪ/",
-            "wordType": "noun",
-            "meaningEn": "the region of the atmosphere visible from the earth",
-            "meaningVi": "bầu trời",
-            "example": "There isn't a single cloud in the sky.",
-            "exampleVi": "Không có một bóng mây nào trên bầu trời."
+        "word": "snow",
+        "phonetic": "/snəʊ/",
+        "wordType": "noun",
+        "meaningEn": "atmospheric water vapor frozen into ice crystals",
+        "meaningVi": "tuyết",
+        "example": "Children love playing in the snow.",
+        "exampleVi": "Trẻ em thích chơi đùa trong tuyết."
       },
       {
-            "word": "wind",
-            "phonetic": "/wɪnd/",
-            "wordType": "noun",
-            "meaningEn": "the perceptible natural movement of the air",
-            "meaningVi": "gió",
-            "example": "A strong wind blew away my hat.",
-            "exampleVi": "Một cơn gió mạnh đã thổi bay chiếc mũ của tôi."
+        "word": "ice",
+        "phonetic": "/aɪs/",
+        "wordType": "noun",
+        "meaningEn": "frozen water, a brittle transparent crystalline solid",
+        "meaningVi": "băng, đá",
+        "example": "The lake is covered with thick ice.",
+        "exampleVi": "Mặt hồ bao phủ bởi lớp băng dày."
+      },
+      {
+        "word": "stone",
+        "phonetic": "/stəʊn/",
+        "wordType": "noun",
+        "meaningEn": "hard solid nonmetallic mineral matter",
+        "meaningVi": "hòn đá",
+        "example": "He threw a stone into the river.",
+        "exampleVi": "Cậu bé ném một hòn đá xuống sông."
+      },
+      {
+        "word": "sand",
+        "phonetic": "/sænd/",
+        "wordType": "noun",
+        "meaningEn": "loose granular substance, typically pale yellowish brown",
+        "meaningVi": "cát",
+        "example": "The kids built a sand castle.",
+        "exampleVi": "Lũ trẻ xây một lâu đài cát."
+      },
+      {
+        "word": "soil",
+        "phonetic": "/sɔɪl/",
+        "wordType": "noun",
+        "meaningEn": "the upper layer of earth in which plants grow",
+        "meaningVi": "đất trồng",
+        "example": "Plants need good soil to grow well.",
+        "exampleVi": "Cây cối cần đất tốt để phát triển tốt."
+      },
+      {
+        "word": "leaf",
+        "phonetic": "/liːf/",
+        "wordType": "noun",
+        "meaningEn": "a flattened structure of a higher plant, typically green",
+        "meaningVi": "chiếc lá",
+        "example": "A single leaf fell from the tree.",
+        "exampleVi": "Một chiếc lá rơi xuống từ trên cây."
+      },
+      {
+        "word": "wood",
+        "phonetic": "/wʊd/",
+        "wordType": "noun",
+        "meaningEn": "the hard fibrous material that forms the main substance of the trunk",
+        "meaningVi": "gỗ",
+        "example": "We gathered wood for the campfire.",
+        "exampleVi": "Chúng tôi thu lượm gỗ để đốt lửa trại."
+      },
+      {
+        "word": "ocean",
+        "phonetic": "/ˈəʊ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "a very large expanse of sea, in particular, each of the main areas of saltwater",
+        "meaningVi": "đại dương",
+        "example": "The Pacific is the largest ocean on Earth.",
+        "exampleVi": "Thái Bình Dương là đại dương lớn nhất trên Trái Đất."
+      },
+      {
+        "word": "wave",
+        "phonetic": "/weɪv/",
+        "wordType": "noun",
+        "meaningEn": "a long body of water curling into an arched form and breaking on the shore",
+        "meaningVi": "con sóng",
+        "example": "Huge waves crashed against the rocks.",
+        "exampleVi": "Những con sóng khổng lồ xô vào các vách đá."
+      },
+      {
+        "word": "beach",
+        "phonetic": "/biːtʃ/",
+        "wordType": "noun",
+        "meaningEn": "a pebbly or sandy shore, especially by the ocean",
+        "meaningVi": "bãi biển",
+        "example": "We spent the afternoon at the beach.",
+        "exampleVi": "Chúng tôi dành buổi chiều ở bãi biển."
+      },
+      {
+        "word": "hill",
+        "phonetic": "/hɪl/",
+        "wordType": "noun",
+        "meaningEn": "a naturally raised area of land, not as high as a mountain",
+        "meaningVi": "ngọn đồi",
+        "example": "They ran up the grassy hill.",
+        "exampleVi": "Họ chạy lên ngọn đồi đầy cỏ."
+      },
+      {
+        "word": "valley",
+        "phonetic": "/ˈvæl.i/",
+        "wordType": "noun",
+        "meaningEn": "a low area of land between hills or mountains",
+        "meaningVi": "thung lũng",
+        "example": "The village is nestled in a green valley.",
+        "exampleVi": "Ngôi làng nằm nép mình trong một thung lũng xanh."
+      },
+      {
+        "word": "cave",
+        "phonetic": "/keɪv/",
+        "wordType": "noun",
+        "meaningEn": "a natural underground chamber in a hillside or cliff",
+        "meaningVi": "hang động",
+        "example": "The explorers entered the dark cave.",
+        "exampleVi": "Các nhà thám hiểm đi vào hang động tối tăm."
+      },
+      {
+        "word": "island",
+        "phonetic": "/ˈaɪ.lənd/",
+        "wordType": "noun",
+        "meaningEn": "a piece of land surrounded by water",
+        "meaningVi": "hòn đảo",
+        "example": "They live on a small tropical island.",
+        "exampleVi": "Họ sống trên một hòn đảo nhiệt đới nhỏ."
+      },
+      {
+        "word": "animal",
+        "phonetic": "/ˈæn.ɪ.məl/",
+        "wordType": "noun",
+        "meaningEn": "a living organism that feeds on organic matter",
+        "meaningVi": "động vật",
+        "example": "The lion is a wild animal.",
+        "exampleVi": "Sư tử là một loài động vật hoang dã."
+      },
+      {
+        "word": "insect",
+        "phonetic": "/ˈɪn.sekt/",
+        "wordType": "noun",
+        "meaningEn": "a small arthropod animal that has six legs",
+        "meaningVi": "côn trùng",
+        "example": "An ant is a tiny insect.",
+        "exampleVi": "Kiến là một loài côn trùng nhỏ bé."
+      },
+      {
+        "word": "bird",
+        "phonetic": "/bɜːd/",
+        "wordType": "noun",
+        "meaningEn": "a feathered vertebrate flying animal",
+        "meaningVi": "con chim",
+        "example": "The bird flew away into the sky.",
+        "exampleVi": "Con chim đã bay vút lên bầu trời."
+      },
+      {
+        "word": "fish",
+        "phonetic": "/fɪʃ/",
+        "wordType": "noun",
+        "meaningEn": "a limbless cold-blooded vertebrate animal with gills and fins living wholly in water",
+        "meaningVi": "con cá",
+        "example": "There are many colorful fish in the aquarium.",
+        "exampleVi": "Có nhiều loài cá đầy màu sắc trong bể cá."
       }
     ],
     "advanced": [
@@ -7946,97 +8064,231 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "hữu cơ",
         "example": "The farm uses organic farming methods.",
         "exampleVi": "Trang trại sử dụng các phương pháp canh tác hữu cơ."
-      }
-    ,
-      {
-            "word": "ecosystem",
-            "phonetic": "/ˈiː.kəʊˌsɪs.təm/",
-            "wordType": "noun",
-            "meaningEn": "a biological community of interacting organisms and their physical environment",
-            "meaningVi": "hệ sinh thái",
-            "example": "Pollution can destroy the fragile marine ecosystem.",
-            "exampleVi": "Ô nhiễm có thể tàn phá hệ sinh thái biển mỏng manh."
       },
       {
-            "word": "conservation",
-            "phonetic": "/ˌkɒn.səˈveɪ.ʃən/",
-            "wordType": "noun",
-            "meaningEn": "the action of conserving something, especially the environment",
-            "meaningVi": "sự bảo tồn thiên nhiên",
-            "example": "Wild animal conservation is vital for biodiversity.",
-            "exampleVi": "Bảo tồn động vật hoang dã là tối quan trọng đối với đa dạng sinh học."
+        "word": "sustainability",
+        "phonetic": "/səˌsteɪ.nəˈbɪl.ə.ti/",
+        "wordType": "noun",
+        "meaningEn": "the ability to be maintained at a certain rate or level without harming the future",
+        "meaningVi": "sự phát triển bền vững",
+        "example": "The project promotes environmental sustainability.",
+        "exampleVi": "Dự án thúc đẩy sự phát triển bền vững của môi trường."
       },
       {
-            "word": "biodiversity",
-            "phonetic": "/ˌbaɪ.əʊ.daɪˈvɜː.sə.ti/",
-            "wordType": "noun",
-            "meaningEn": "the variety of plant and animal life in the world or in a habitat",
-            "meaningVi": "sự đa dạng sinh học",
-            "example": "Rainforests are famous for their high biodiversity.",
-            "exampleVi": "Rừng mưa nhiệt đới nổi tiếng với sự đa dạng sinh học cao."
+        "word": "renewable",
+        "phonetic": "/rɪˈnjuː.ə.bəl/",
+        "wordType": "adj",
+        "meaningEn": "not depleted when used, such as wind or solar energy",
+        "meaningVi": "có thể tái tạo",
+        "example": "Solar power is a popular form of renewable energy.",
+        "exampleVi": "Điện mặt trời là một dạng năng lượng tái tạo phổ biến."
       },
       {
-            "word": "sustainability",
-            "phonetic": "/səˌsteɪ.nəˈbɪl.ə.ti/",
-            "wordType": "noun",
-            "meaningEn": "the ability to be maintained at a certain rate or level without harming the future",
-            "meaningVi": "sự phát triển bền vững",
-            "example": "The project promotes environmental sustainability.",
-            "exampleVi": "Dự án thúc đẩy sự phát triển bền vững của môi trường."
+        "word": "resources",
+        "phonetic": "/rɪˈzɔː.sɪz/",
+        "wordType": "noun pl",
+        "meaningEn": "assets that can be drawn on by a person or organization, natural materials",
+        "meaningVi": "tài nguyên thiên nhiên",
+        "example": "We must conserve natural resources like water and forests.",
+        "exampleVi": "Chúng ta phải bảo tồn các tài nguyên thiên nhiên như nước và rừng."
       },
       {
-            "word": "pollution",
-            "phonetic": "/pəˈluː.ʃən/",
-            "wordType": "noun",
-            "meaningEn": "the presence in or introduction into the environment of a substance which has harmful effects",
-            "meaningVi": "sự ô nhiễm",
-            "example": "Air pollution has reached critical levels in the city.",
-            "exampleVi": "Ô nhiễm không khí đã chạm ngưỡng nguy hiểm trong thành phố."
+        "word": "ecology",
+        "phonetic": "/iˈkɒl.ə.dʒi/",
+        "wordType": "noun",
+        "meaningEn": "the branch of biology that deals with the relations of organisms to one another",
+        "meaningVi": "sinh thái học",
+        "example": "He is doing research on forest ecology.",
+        "exampleVi": "Anh ấy đang thực hiện nghiên cứu về sinh thái học rừng."
       },
       {
-            "word": "renewable",
-            "phonetic": "/rɪˈnjuː.ə.bəl/",
-            "wordType": "adj",
-            "meaningEn": "not depleted when used, such as wind or solar energy",
-            "meaningVi": "có thể tái tạo",
-            "example": "Solar power is a popular form of renewable energy.",
-            "exampleVi": "Điện mặt trời là một dạng năng lượng tái tạo phổ biến."
+        "word": "biosphere",
+        "phonetic": "/ˈbaɪ.əʊ.sfɪər/",
+        "wordType": "noun",
+        "meaningEn": "the regions of the surface, atmosphere, and hydrosphere of the earth occupied by living organisms",
+        "meaningVi": "sinh quyển",
+        "example": "All living things exist in the biosphere.",
+        "exampleVi": "Tất cả các sinh vật sống đều tồn tại trong sinh quyển."
       },
       {
-            "word": "climate change",
-            "phonetic": "/ˈklaɪ.mət tʃeɪndʒ/",
-            "wordType": "noun",
-            "meaningEn": "a change in global or regional climate patterns",
-            "meaningVi": "sự biến đổi khí hậu",
-            "example": "Global warming causes extreme climate change.",
-            "exampleVi": "Ấm lên toàn cầu gây ra sự biến đổi khí hậu khắc nghiệt."
+        "word": "habitat",
+        "phonetic": "/ˈhæb.ɪ.tæt/",
+        "wordType": "noun",
+        "meaningEn": "the natural home or environment of an animal, plant, or other organism",
+        "meaningVi": "môi trường sống",
+        "example": "Forests provide a rich habitat for many species.",
+        "exampleVi": "Rừng cung cấp môi trường sống phong phú cho nhiều loài."
       },
       {
-            "word": "resources",
-            "phonetic": "/rɪˈzɔː.sɪz/",
-            "wordType": "noun pl",
-            "meaningEn": "assets that can be drawn on by a person or organization, natural materials",
-            "meaningVi": "tài nguyên thiên nhiên",
-            "example": "We must conserve natural resources like water and forests.",
-            "exampleVi": "Chúng ta phải bảo tồn các tài nguyên thiên nhiên như nước và rừng."
+        "word": "glacier",
+        "phonetic": "/ˈɡlæs.i.ər/",
+        "wordType": "noun",
+        "meaningEn": "a slowly moving mass or river of ice formed by the accumulation and compaction of snow on mountains",
+        "meaningVi": "sông băng",
+        "example": "Glaciers are melting rapidly due to global warming.",
+        "exampleVi": "Các sông băng đang tan chảy nhanh chóng do ấm lên toàn cầu."
       },
       {
-            "word": "atmosphere",
-            "phonetic": "/ˈæt.məs.fɪər/",
-            "wordType": "noun",
-            "meaningEn": "the envelope of gases surrounding the earth",
-            "meaningVi": "khí quyển, bầu không khí",
-            "example": "Carbon dioxide traps heat in the atmosphere.",
-            "exampleVi": "Khí CO2 giữ nhiệt trong bầu khí quyển."
+        "word": "emission",
+        "phonetic": "/iˈmɪʃ.ən/",
+        "wordType": "noun",
+        "meaningEn": "the production and discharge of something, especially gas or radiation",
+        "meaningVi": "khí thải, sự phát thải",
+        "example": "Governments aim to reduce carbon emissions.",
+        "exampleVi": "Các chính phủ đặt mục tiêu giảm lượng khí thải carbon."
       },
       {
-            "word": "ecology",
-            "phonetic": "/iˈkɒl.ə.dʒi/",
-            "wordType": "noun",
-            "meaningEn": "the branch of biology that deals with the relations of organisms to one another",
-            "meaningVi": "sinh thái học",
-            "example": "He is doing research on forest ecology.",
-            "exampleVi": "Anh ấy đang thực hiện nghiên cứu về sinh thái học rừng."
+        "word": "geothermal",
+        "phonetic": "/ˌdʒiː.əʊˈθɜː.məl/",
+        "wordType": "adj",
+        "meaningEn": "relating to or produced by the internal heat of the earth",
+        "meaningVi": "thuộc địa nhiệt",
+        "example": "Geothermal energy is a clean resource.",
+        "exampleVi": "Năng lượng địa nhiệt là một nguồn tài nguyên sạch."
+      },
+      {
+        "word": "precipitation",
+        "phonetic": "/prɪˌsɪp.ɪˈteɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "rain, snow, sleet, or hail that falls to the ground",
+        "meaningVi": "lượng mưa",
+        "example": "The forecast predicts high precipitation tomorrow.",
+        "exampleVi": "Dự báo thời tiết dự báo lượng mưa lớn vào ngày mai."
+      },
+      {
+        "word": "meteorology",
+        "phonetic": "/ˌmiː.ti.əˈrɒl.ə.dʒi/",
+        "wordType": "noun",
+        "meaningEn": "the branch of science concerned with the processes and phenomena of the atmosphere, especially as a means of forecasting the weather",
+        "meaningVi": "khí tượng học",
+        "example": "She decided to study meteorology at university.",
+        "exampleVi": "Cô ấy quyết định học ngành khí tượng học ở trường đại học."
+      },
+      {
+        "word": "degradation",
+        "phonetic": "/ˌdeɡ.rəˈdeɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "the process of something being damaged or made worse",
+        "meaningVi": "sự suy thoái",
+        "example": "Soil degradation poses a threat to food security.",
+        "exampleVi": "Suy thoái đất đe dọa đến an ninh lương thực."
+      },
+      {
+        "word": "erosion",
+        "phonetic": "/ɪˈrəʊ.ʒən/",
+        "wordType": "noun",
+        "meaningEn": "the process of eroding or being eroded by wind, water, or other natural agents",
+        "meaningVi": "sự xói mòn",
+        "example": "Planting trees helps prevent soil erosion.",
+        "exampleVi": "Trồng cây giúp ngăn ngừa tình trạng xói mòn đất."
+      },
+      {
+        "word": "carbon footprint",
+        "phonetic": "/ˌkɑː.bən ˈfʊt.prɪnt/",
+        "wordType": "noun",
+        "meaningEn": "the amount of carbon dioxide emitted due to the consumption of fossil fuels by a particular person, group",
+        "meaningVi": "dấu chân carbon",
+        "example": "We can reduce our carbon footprint by cycling.",
+        "exampleVi": "Chúng ta có thể giảm dấu chân carbon bằng cách đi xe đạp."
+      },
+      {
+        "word": "endangered",
+        "phonetic": "/ɪnˈdeɪn.dʒəd/",
+        "wordType": "adj",
+        "meaningEn": "seriously at risk of extinction",
+        "meaningVi": "có nguy cơ tuyệt chủng",
+        "example": "The giant panda is an endangered species.",
+        "exampleVi": "Gấu trúc lớn là một loài có nguy cơ tuyệt chủng."
+      },
+      {
+        "word": "extinction",
+        "phonetic": "/ɪkˈstɪŋk.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "the state or process of a species, family, or other larger group being or becoming extinct",
+        "meaningVi": "sự tuyệt chủng",
+        "example": "The dinosaurs faced a mass extinction.",
+        "exampleVi": "Khủng long đã đối mặt với một cuộc đại tuyệt chủng."
+      },
+      {
+        "word": "greenhouse",
+        "phonetic": "/ˈɡriːn.haʊs/",
+        "wordType": "noun",
+        "meaningEn": "a glass building in which plants that need protection from cold weather are grown",
+        "meaningVi": "nhà kính",
+        "example": "The greenhouse effect warms the planet.",
+        "exampleVi": "Hiệu ứng nhà kính làm ấm hành tinh."
+      },
+      {
+        "word": "ecological",
+        "phonetic": "/ˌiː.kəˈlɒdʒ.ɪ.kəl/",
+        "wordType": "adj",
+        "meaningEn": "relating to or concerned with the relation of living organisms to one another and to their physical surroundings",
+        "meaningVi": "thuộc sinh thái",
+        "example": "The region suffered an ecological disaster.",
+        "exampleVi": "Khu vực này đã phải hứng chịu một thảm họa sinh thái."
+      },
+      {
+        "word": "contaminate",
+        "phonetic": "/kənˈtæm.ɪ.neɪt/",
+        "wordType": "verb",
+        "meaningEn": "make impure by exposure to or addition of a poisonous or polluting substance",
+        "meaningVi": "làm ô nhiễm, làm độc",
+        "example": "Chemicals contaminate the water supply.",
+        "exampleVi": "Hóa chất làm ô nhiễm nguồn cung cấp nước."
+      },
+      {
+        "word": "sanctuary",
+        "phonetic": "/ˈsæŋk.tʃu.ə.ri/",
+        "wordType": "noun",
+        "meaningEn": "a nature reserve where birds or wild animals are protected",
+        "meaningVi": "khu bảo tồn động vật",
+        "example": "This island is a sanctuary for rare birds.",
+        "exampleVi": "Hòn đảo này là khu bảo tồn các loài chim quý hiếm."
+      },
+      {
+        "word": "drought",
+        "phonetic": "/draʊt/",
+        "wordType": "noun",
+        "meaningEn": "a prolonged period of abnormally low rainfall, leading to a shortage of water",
+        "meaningVi": "hạn hán",
+        "example": "The severe drought destroyed the crops.",
+        "exampleVi": "Trận hạn hán nghiêm trọng đã tàn phá mùa màng."
+      },
+      {
+        "word": "famine",
+        "phonetic": "/ˈfæm.ɪn/",
+        "wordType": "noun",
+        "meaningEn": "extreme scarcity of food",
+        "meaningVi": "nạn đói",
+        "example": "Millions of people suffered during the famine.",
+        "exampleVi": "Hàng triệu người đã phải gánh chịu hậu quả trong nạn đói."
+      },
+      {
+        "word": "toxin",
+        "phonetic": "/ˈtɒk.sɪn/",
+        "wordType": "noun",
+        "meaningEn": "an antigenic poison or venom of plant or animal origin",
+        "meaningVi": "độc tố",
+        "example": "The honey was free of any harmful toxins.",
+        "exampleVi": "Mật ong không chứa bất kỳ độc tố gây hại nào."
+      },
+      {
+        "word": "natural disaster",
+        "phonetic": "/ˌnætʃ.ər.əl dɪˈzɑː.stər/",
+        "wordType": "noun",
+        "meaningEn": "a natural event such as a flood, earthquake, or hurricane that causes great damage or loss of life",
+        "meaningVi": "thiên tai",
+        "example": "Earthquakes are devastating natural disasters.",
+        "exampleVi": "Động đất là những thiên tai có sức tàn phá lớn."
+      },
+      {
+        "word": "climate crisis",
+        "phonetic": "/ˈklaɪ.mət ˈkraɪ.sɪs/",
+        "wordType": "noun",
+        "meaningEn": "the serious problems caused by changes in the earth's weather patterns",
+        "meaningVi": "khủng hoảng khí hậu",
+        "example": "We must act now to combat the climate crisis.",
+        "exampleVi": "Chúng ta phải hành động ngay để chống lại cuộc khủng hoảng khí hậu."
       }
     ]
   },
@@ -8135,97 +8387,231 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "tự hào",
         "example": "I am proud of your achievements.",
         "exampleVi": "Tôi tự hào về những thành tựu của bạn."
-      }
-    ,
-      {
-            "word": "happy",
-            "phonetic": "/ˈhæp.i/",
-            "wordType": "adj",
-            "meaningEn": "feeling or showing pleasure or contentment",
-            "meaningVi": "vui vẻ, hạnh phúc",
-            "example": "She was happy to see her parents again.",
-            "exampleVi": "Cô ấy đã hạnh phúc khi gặp lại bố mẹ."
       },
       {
-            "word": "sad",
-            "phonetic": "/sæd/",
-            "wordType": "adj",
-            "meaningEn": "feeling or showing sorrow; unhappy",
-            "meaningVi": "buồn bã",
-            "example": "The sad movie made her cry.",
-            "exampleVi": "Bộ phim buồn đã khiến cô ấy khóc."
+        "word": "bored",
+        "phonetic": "/bɔːd/",
+        "wordType": "adj",
+        "meaningEn": "feeling weary and restless through lack of interest",
+        "meaningVi": "chán nản, buồn chán",
+        "example": "I got bored during the long lecture.",
+        "exampleVi": "Tôi thấy buồn chán trong bài giảng dài."
       },
       {
-            "word": "angry",
-            "phonetic": "/ˈæŋ.ɡri/",
-            "wordType": "adj",
-            "meaningEn": "feeling or showing strong annoyance or hostility",
-            "meaningVi": "tức giận, giận dữ",
-            "example": "He was angry about the delayed flight.",
-            "exampleVi": "Anh ấy đã tức giận về chuyến bay bị hoãn."
+        "word": "shy",
+        "phonetic": "/ʃaɪ/",
+        "wordType": "adj",
+        "meaningEn": "nervous or timid in the company of other people",
+        "meaningVi": "nhút nhát, e thẹn",
+        "example": "The shy boy hid behind his mother.",
+        "exampleVi": "Cậu bé nhút nhát trốn sau lưng mẹ."
       },
       {
-            "word": "tired",
-            "phonetic": "/taɪəd/",
-            "wordType": "adj",
-            "meaningEn": "in need of sleep or rest; weary",
-            "meaningVi": "mệt mỏi",
-            "example": "I feel tired after a long day of work.",
-            "exampleVi": "Tôi cảm thấy mệt mỏi sau một ngày làm việc dài."
+        "word": "fear",
+        "phonetic": "/fɪər/",
+        "wordType": "noun",
+        "meaningEn": "an unpleasant emotion caused by the threat of danger",
+        "meaningVi": "nỗi sợ hãi",
+        "example": "He overcame his fear of heights.",
+        "exampleVi": "Anh ấy đã vượt qua nỗi sợ độ cao."
       },
       {
-            "word": "excited",
-            "phonetic": "/ɪkˈsaɪ.tɪd/",
-            "wordType": "adj",
-            "meaningEn": "very happy and enthusiastic",
-            "meaningVi": "hào hứng, phấn khích",
-            "example": "The children are excited about the upcoming trip.",
-            "exampleVi": "Lũ trẻ đang rất hào hứng về chuyến đi sắp tới."
+        "word": "joy",
+        "phonetic": "/dʒɔɪ/",
+        "wordType": "noun",
+        "meaningEn": "a feeling of great pleasure and happiness",
+        "meaningVi": "niềm vui, sự hân hoan",
+        "example": "Her face was filled with joy.",
+        "exampleVi": "Khuôn mặt cô ấy tràn ngập niềm vui."
       },
       {
-            "word": "scared",
-            "phonetic": "/skeəd/",
-            "wordType": "adj",
-            "meaningEn": "fearful; frightened",
-            "meaningVi": "sợ hãi",
-            "example": "She was scared of the dark when she was young.",
-            "exampleVi": "Cô ấy đã sợ bóng tối khi còn nhỏ."
+        "word": "love",
+        "phonetic": "/lʌv/",
+        "wordType": "noun",
+        "meaningEn": "an intense feeling of deep affection",
+        "meaningVi": "tình yêu, tình thương",
+        "example": "A mother's love is unconditional.",
+        "exampleVi": "Tình thương của người mẹ là vô điều kiện."
       },
       {
-            "word": "bored",
-            "phonetic": "/bɔːd/",
-            "wordType": "adj",
-            "meaningEn": "feeling weary and restless through lack of interest",
-            "meaningVi": "chán nản, buồn chán",
-            "example": "I got bored during the long lecture.",
-            "exampleVi": "Tôi thấy buồn chán trong bài giảng dài."
+        "word": "hate",
+        "phonetic": "/heɪt/",
+        "wordType": "noun",
+        "meaningEn": "feel intense dislike for",
+        "meaningVi": "ghét bỏ, lòng căm ghét",
+        "example": "Love can overcome hate.",
+        "exampleVi": "Tình yêu có thể vượt qua lòng căm ghét."
       },
       {
-            "word": "surprised",
-            "phonetic": "/səˈpraɪzd/",
-            "wordType": "adj",
-            "meaningEn": "feeling or showing surprise",
-            "meaningVi": "ngạc nhiên",
-            "example": "She was surprised by the unexpected gift.",
-            "exampleVi": "Cô ấy ngạc nhiên trước món quà bất ngờ."
+        "word": "hope",
+        "phonetic": "/həʊp/",
+        "wordType": "noun",
+        "meaningEn": "a feeling of expectation and desire for a certain thing to happen",
+        "meaningVi": "hy vọng",
+        "example": "There is always hope for a better future.",
+        "exampleVi": "Luôn có hy vọng cho một tương lai tốt đẹp hơn."
       },
       {
-            "word": "proud",
-            "phonetic": "/praʊd/",
-            "wordType": "adj",
-            "meaningEn": "feeling deep pleasure or satisfaction as a result of achievements",
-            "meaningVi": "tự hào, hãnh diện",
-            "example": "His parents are very proud of his success.",
-            "exampleVi": "Bố mẹ anh ấy rất tự hào về thành công của anh."
+        "word": "pain",
+        "phonetic": "/peɪn/",
+        "wordType": "noun",
+        "meaningEn": "physical suffering or discomfort caused by illness or injury",
+        "meaningVi": "nỗi đau, sự đau đớn",
+        "example": "She felt a sharp pain in her leg.",
+        "exampleVi": "Cô ấy cảm thấy một cơn đau nhói ở chân."
       },
       {
-            "word": "shy",
-            "phonetic": "/ʃaɪ/",
-            "wordType": "adj",
-            "meaningEn": "nervous or timid in the company of other people",
-            "meaningVi": "nhút nhát, e thẹn",
-            "example": "The shy boy hid behind his mother.",
-            "exampleVi": "Cậu bé nhút nhát trốn sau lưng mẹ."
+        "word": "lonely",
+        "phonetic": "/ˈləʊn.li/",
+        "wordType": "adj",
+        "meaningEn": "sad because one has no friends or company",
+        "meaningVi": "cô đơn, hiu quạnh",
+        "example": "She felt lonely after moving to the city.",
+        "exampleVi": "Cô ấy cảm thấy cô đơn sau khi chuyển đến thành phố."
+      },
+      {
+        "word": "brave",
+        "phonetic": "/breɪv/",
+        "wordType": "adj",
+        "meaningEn": "ready to face and endure danger or pain; showing courage",
+        "meaningVi": "dũng cảm",
+        "example": "The brave firefighter saved the child.",
+        "exampleVi": "Người lính cứu hỏa dũng cảm đã cứu đứa bé."
+      },
+      {
+        "word": "nervous",
+        "phonetic": "/ˈnɜː.vəs/",
+        "wordType": "adj",
+        "meaningEn": "easily agitated or alarmed; anxious",
+        "meaningVi": "lo lắng, hồi hộp",
+        "example": "I felt nervous before the interview.",
+        "exampleVi": "Tôi cảm thấy hồi hộp trước cuộc phỏng vấn."
+      },
+      {
+        "word": "funny",
+        "phonetic": "/ˈfʌn.i/",
+        "wordType": "adj",
+        "meaningEn": "causing laughter or amusement; humorous",
+        "meaningVi": "hài hước, buồn cười",
+        "example": "He told a very funny joke.",
+        "exampleVi": "Anh ấy đã kể một câu chuyện đùa rất hài hước."
+      },
+      {
+        "word": "friendly",
+        "phonetic": "/ˈfrend.li/",
+        "wordType": "adj",
+        "meaningEn": "kind and pleasant",
+        "meaningVi": "thân thiện",
+        "example": "The staff are very friendly and helpful.",
+        "exampleVi": "Nhân viên rất thân thiện và nhiệt tình."
+      },
+      {
+        "word": "kind",
+        "phonetic": "/kaɪnd/",
+        "wordType": "adj",
+        "meaningEn": "having or showing a friendly, generous, and considerate nature",
+        "meaningVi": "tốt bụng, tử tế",
+        "example": "It was very kind of you to help.",
+        "exampleVi": "Bạn thật tốt bụng khi giúp đỡ."
+      },
+      {
+        "word": "lazy",
+        "phonetic": "/ˈleɪ.zi/",
+        "wordType": "adj",
+        "meaningEn": "unwilling to work or use energy",
+        "meaningVi": "lười biếng",
+        "example": "Don't be lazy; stand up and exercise.",
+        "exampleVi": "Đừng lười biếng; hãy đứng lên và tập thể dục."
+      },
+      {
+        "word": "sweet",
+        "phonetic": "/swiːt/",
+        "wordType": "adj",
+        "meaningEn": "pleasing to the mind or feelings; kind and gentle",
+        "meaningVi": "ngọt ngào, đáng yêu",
+        "example": "She sent me a very sweet message.",
+        "exampleVi": "Cô ấy đã gửi cho tôi một tin nhắn rất ngọt ngào."
+      },
+      {
+        "word": "hungry",
+        "phonetic": "/ˈhʌŋ.ɡri/",
+        "wordType": "adj",
+        "meaningEn": "feeling or showing the need for food",
+        "meaningVi": "đói bụng",
+        "example": "I am hungry after a long walk.",
+        "exampleVi": "Tôi thấy đói bụng sau khi đi bộ một quãng đường dài."
+      },
+      {
+        "word": "thirsty",
+        "phonetic": "/ˈθɜː.sti/",
+        "wordType": "adj",
+        "meaningEn": "feeling a need to drink",
+        "meaningVi": "khát nước",
+        "example": "Can I have some water? I am very thirsty.",
+        "exampleVi": "Cho tôi xin ít nước được không? Tôi đang rất khát."
+      },
+      {
+        "word": "sleepy",
+        "phonetic": "/ˈsliː.pi/",
+        "wordType": "adj",
+        "meaningEn": "needing or ready for sleep",
+        "meaningVi": "buồn ngủ",
+        "example": "The warm room made me feel sleepy.",
+        "exampleVi": "Căn phòng ấm áp làm tôi thấy buồn ngủ."
+      },
+      {
+        "word": "guilty",
+        "phonetic": "/ˈɡɪl.ti/",
+        "wordType": "adj",
+        "meaningEn": "feeling responsible for a specified wrongdoing",
+        "meaningVi": "cảm thấy tội lỗi",
+        "example": "He felt guilty about lying to his friend.",
+        "exampleVi": "Anh ấy cảm thấy tội lỗi vì đã nói dối bạn."
+      },
+      {
+        "word": "shocked",
+        "phonetic": "/ʃɒkt/",
+        "wordType": "adj",
+        "meaningEn": "surprised and upset",
+        "meaningVi": "bị sốc, ngỡ ngàng",
+        "example": "She was shocked by the bad news.",
+        "exampleVi": "Cô ấy đã bị sốc trước tin xấu."
+      },
+      {
+        "word": "jealous",
+        "phonetic": "/ˈdʒel.əs/",
+        "wordType": "adj",
+        "meaningEn": "feeling or showing envy of someone or their achievements and advantages",
+        "meaningVi": "ghen tị, đố kỵ",
+        "example": "She was jealous of her friend's new car.",
+        "exampleVi": "Cô ấy ghen tị với chiếc xe mới của bạn mình."
+      },
+      {
+        "word": "pleased",
+        "phonetic": "/pliːzd/",
+        "wordType": "adj",
+        "meaningEn": "feeling or showing pleasure and satisfaction",
+        "meaningVi": "hài lòng, vui mừng",
+        "example": "I am pleased with my exam results.",
+        "exampleVi": "Tôi hài lòng với kết quả thi của mình."
+      },
+      {
+        "word": "honest",
+        "phonetic": "/ˈɒn.ɪst/",
+        "wordType": "adj",
+        "meaningEn": "free of deceit and untruthfulness; sincere",
+        "meaningVi": "trung thực, thật thà",
+        "example": "Give me your honest opinion.",
+        "exampleVi": "Hãy cho tôi biết ý kiến trung thực của bạn."
+      },
+      {
+        "word": "silly",
+        "phonetic": "/ˈsɪl.i/",
+        "wordType": "adj",
+        "meaningEn": "having or showing a lack of common sense or judgment; foolish and lighthearted",
+        "meaningVi": "ngớ ngẩn, khờ khạo",
+        "example": "Stop making silly mistakes.",
+        "exampleVi": "Hãy ngừng mắc những lỗi ngớ ngẩn đi."
       }
     ],
     "advanced": [
@@ -8318,97 +8704,231 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "thờ ơ, lãnh đạm",
         "example": "He was indifferent to their complaints.",
         "exampleVi": "Anh ta thờ ơ với những lời phàn nàn của họ."
-      }
-    ,
-      {
-            "word": "anxious",
-            "phonetic": "/ˈæŋk.ʃəs/",
-            "wordType": "adj",
-            "meaningEn": "feeling worry, unease, or nervousness",
-            "meaningVi": "lo âu, bồn chồn",
-            "example": "She felt anxious about the exam results.",
-            "exampleVi": "Cô ấy cảm thấy lo lắng về kết quả kỳ thi."
       },
       {
-            "word": "frustrated",
-            "phonetic": "/frʌsˈtreɪ.tɪd/",
-            "wordType": "adj",
-            "meaningEn": "feeling annoyed or frustrated due to inability to achieve something",
-            "meaningVi": "bực bội, nản lòng",
-            "example": "He felt frustrated because he couldn't solve the problem.",
-            "exampleVi": "Anh ấy thấy bực bội vì không thể giải quyết vấn đề."
+        "word": "enthusiastic",
+        "phonetic": "/ɪnˌθjuː.ziˈæs.tɪk/",
+        "wordType": "adj",
+        "meaningEn": "having or showing intense and eager enjoyment, interest, or approval",
+        "meaningVi": "nhiệt huyết, say mê",
+        "example": "The team was enthusiastic about the new project.",
+        "exampleVi": "Cả đội rất hào hứng nhiệt huyết với dự án mới."
       },
       {
-            "word": "enthusiastic",
-            "phonetic": "/ɪnˌθjuː.ziˈæs.tɪk/",
-            "wordType": "adj",
-            "meaningEn": "having or showing intense and eager enjoyment, interest, or approval",
-            "meaningVi": "nhiệt huyết, say mê",
-            "example": "The team was enthusiastic about the new project.",
-            "exampleVi": "Cả đội rất hào hứng nhiệt huyết với dự án mới."
+        "word": "sensitive",
+        "phonetic": "/ˈsen.sɪ.tɪv/",
+        "wordType": "adj",
+        "meaningEn": "quick to detect or respond to slight changes, or easily offended",
+        "meaningVi": "nhạy cảm, dễ xúc động",
+        "example": "He is sensitive to criticism.",
+        "exampleVi": "Anh ấy rất nhạy cảm với những lời chỉ trích."
       },
       {
-            "word": "empathetic",
-            "phonetic": "/ˌem.pəˈθet.ɪk/",
-            "wordType": "adj",
-            "meaningEn": "showing an ability to understand and share the feelings of another",
-            "meaningVi": "thấu cảm, cảm thông",
-            "example": "An empathetic listener makes people feel heard.",
-            "exampleVi": "Một người lắng nghe thấu cảm giúp mọi người thấy được tôn trọng."
+        "word": "resilient",
+        "phonetic": "/rɪˈzɪl.jənt/",
+        "wordType": "adj",
+        "meaningEn": "able to withstand or recover quickly from difficult conditions",
+        "meaningVi": "kiên cường, có khả năng phục hồi nhanh",
+        "example": "Resilient people recover quickly from failure.",
+        "exampleVi": "Những người kiên cường phục hồi nhanh chóng từ thất bại."
       },
       {
-            "word": "nostalgic",
-            "phonetic": "/nɒsˈtæl.dʒɪk/",
-            "wordType": "adj",
-            "meaningEn": "feeling or a sentimental longing for the past",
-            "meaningVi": "hoài niệm, nhớ quê hương/quá khứ",
-            "example": "Looking at old school photos made her feel nostalgic.",
-            "exampleVi": "Nhìn những bức ảnh trường cũ làm cô ấy thấy hoài niệm."
+        "word": "compassionate",
+        "phonetic": "/kəmˈpæʃ.ən.ət/",
+        "wordType": "adj",
+        "meaningEn": "feeling or showing sympathy and concern for others",
+        "meaningVi": "lòng trắc ẩn, giàu tình thương",
+        "example": "She is a compassionate nurse who cares deeply for patients.",
+        "exampleVi": "Cô ấy là một y tá giàu tình thương, chăm sóc bệnh nhân hết lòng."
       },
       {
-            "word": "optimistic",
-            "phonetic": "/ˌɒp.tɪˈmɪs.tɪk/",
-            "wordType": "adj",
-            "meaningEn": "hopeful and confident about the future",
-            "meaningVi": "lạc quan",
-            "example": "She is optimistic about her career prospects.",
-            "exampleVi": "Cô ấy lạc quan về triển vọng sự nghiệp của mình."
+        "word": "apprehensive",
+        "phonetic": "/ˌæp.rɪˈhen.sɪv/",
+        "wordType": "adj",
+        "meaningEn": "anxious or fearful that something bad or unpleasant will happen",
+        "meaningVi": "lo sợ, e dè",
+        "example": "He felt apprehensive about the medical test results.",
+        "exampleVi": "Anh ấy cảm thấy lo sợ về kết quả kiểm tra y tế."
       },
       {
-            "word": "pessimistic",
-            "phonetic": "/ˌpes.ɪˈmɪs.tɪk/",
-            "wordType": "adj",
-            "meaningEn": "tending to see the worst aspect of things or believe that the worst will happen",
-            "meaningVi": "bi quan",
-            "example": "He has a pessimistic view of the economic situation.",
-            "exampleVi": "Anh ấy có cái nhìn bi quan về tình hình kinh tế."
+        "word": "apathetic",
+        "phonetic": "/ˌæp.əˈθet.ɪk/",
+        "wordType": "adj",
+        "meaningEn": "showing or feeling no interest, enthusiasm, or concern",
+        "meaningVi": "thờ ơ, hững hờ",
+        "example": "Young people are increasingly apathetic about politics.",
+        "exampleVi": "Người trẻ ngày càng thờ ơ với chính trị."
       },
       {
-            "word": "sensitive",
-            "phonetic": "/ˈsen.sɪ.tɪv/",
-            "wordType": "adj",
-            "meaningEn": "quick to detect or respond to slight changes, or easily offended",
-            "meaningVi": "nhạy cảm, dễ xúc động",
-            "example": "He is sensitive to criticism.",
-            "exampleVi": "Anh ấy rất nhạy cảm với những lời chỉ trích."
+        "word": "jubilant",
+        "phonetic": "/ˈdʒuː.bəl.ənt/",
+        "wordType": "adj",
+        "meaningEn": "feeling or expressing great happiness and triumph",
+        "meaningVi": "hớn hở, vui sướng",
+        "example": "The crowd was jubilant after the victory.",
+        "exampleVi": "Đám đông vô cùng vui sướng sau chiến thắng."
       },
       {
-            "word": "resilient",
-            "phonetic": "/rɪˈzɪl.jənt/",
-            "wordType": "adj",
-            "meaningEn": "able to withstand or recover quickly from difficult conditions",
-            "meaningVi": "kiên cường, có khả năng phục hồi nhanh",
-            "example": "Resilient people recover quickly from failure.",
-            "exampleVi": "Những người kiên cường phục hồi nhanh chóng từ thất bại."
+        "word": "resentful",
+        "phonetic": "/rɪˈzent.fəl/",
+        "wordType": "adj",
+        "meaningEn": "feeling or expressing bitterness or indignation at having been treated unfairly",
+        "meaningVi": "oán giận, bực bội",
+        "example": "She felt resentful about being passed over for promotion.",
+        "exampleVi": "Cô ấy thấy bực bội khi bị bỏ qua trong đợt thăng chức."
       },
       {
-            "word": "compassionate",
-            "phonetic": "/kəmˈpæʃ.ən.ət/",
-            "wordType": "adj",
-            "meaningEn": "feeling or showing sympathy and concern for others",
-            "meaningVi": "lòng trắc ẩn, giàu tình thương",
-            "example": "She is a compassionate nurse who cares deeply for patients.",
-            "exampleVi": "Cô ấy là một y tá giàu tình thương, chăm sóc bệnh nhân hết lòng."
+        "word": "cynical",
+        "phonetic": "/ˈsɪn.ɪ.kəl/",
+        "wordType": "adj",
+        "meaningEn": "believing that people are motivated by self-interest; distrustful of human sincerity",
+        "meaningVi": "hoài nghi, bất mãn",
+        "example": "He has a cynical view of love.",
+        "exampleVi": "Anh ấy có một cái nhìn hoài nghi về tình yêu."
+      },
+      {
+        "word": "exuberant",
+        "phonetic": "/ɪɡˈzjuː.bər.ənt/",
+        "wordType": "adj",
+        "meaningEn": "filled with or characterized by a lively energy and excitement",
+        "meaningVi": "hồ hởi, năng động",
+        "example": "The exuberant children ran around the garden.",
+        "exampleVi": "Những đứa trẻ tràn đầy năng lượng chạy nhảy khắp vườn."
+      },
+      {
+        "word": "melodramatic",
+        "phonetic": "/ˌmel.ə.drəˈmæt.ɪk/",
+        "wordType": "adj",
+        "meaningEn": "characteristic of melodrama, especially in being exaggerated, sensationalized, or overemotional",
+        "meaningVi": "quá kịch tính, cường điệu",
+        "example": "Stop being so melodramatic, it's just a small scratch.",
+        "exampleVi": "Đừng có làm quá lên như thế, chỉ là một vết xước nhỏ thôi."
+      },
+      {
+        "word": "vulnerable",
+        "phonetic": "/ˈvʌl.nər.ə.bəl/",
+        "wordType": "adj",
+        "meaningEn": "susceptible to physical or emotional attack or harm",
+        "meaningVi": "dễ bị tổn thương",
+        "example": "Old people are especially vulnerable to the flu.",
+        "exampleVi": "Người già đặc biệt dễ bị tổn thương bởi cúm."
+      },
+      {
+        "word": "sentimental",
+        "phonetic": "/ˌsen.tɪˈmen.təl/",
+        "wordType": "adj",
+        "meaningEn": "prompted by feelings of tenderness, sadness, or nostalgia",
+        "meaningVi": "đa cảm, ủy mị",
+        "example": "She kept all her old love letters for sentimental reasons.",
+        "exampleVi": "Cô ấy giữ tất cả những bức thư tình cũ vì lý do tình cảm."
+      },
+      {
+        "word": "hostile",
+        "phonetic": "/ˈhɒs.taɪl/",
+        "wordType": "adj",
+        "meaningEn": "unfriendly; antagonistic",
+        "meaningVi": "thù địch, căm ghét",
+        "example": "He gave me a hostile look when I walked in.",
+        "exampleVi": "Anh ta nhìn tôi bằng ánh mắt thù địch khi tôi bước vào."
+      },
+      {
+        "word": "ambivalent",
+        "phonetic": "/æmˈbɪv.ə.lənt/",
+        "wordType": "adj",
+        "meaningEn": "having mixed feelings or contradictory ideas about something or someone",
+        "meaningVi": "mâu thuẫn, nước đôi",
+        "example": "She is ambivalent about her new job offer.",
+        "exampleVi": "Cô ấy đang có cảm giác mâu thuẫn về lời đề nghị công việc mới."
+      },
+      {
+        "word": "nostalgia",
+        "phonetic": "/nɒsˈtæl.dʒə/",
+        "wordType": "noun",
+        "meaningEn": "a sentimental longing or wistful affection for the past",
+        "meaningVi": "nỗi nhớ nhà, sự hoài niệm",
+        "example": "The old photographs filled him with nostalgia.",
+        "exampleVi": "Những bức ảnh cũ lấp đầy tâm trí ông bằng sự hoài niệm."
+      },
+      {
+        "word": "despair",
+        "phonetic": "/dɪˈspeər/",
+        "wordType": "noun",
+        "meaningEn": "the complete loss or absence of hope",
+        "meaningVi": "sự tuyệt vọng",
+        "example": "He gave up in despair after failing many times.",
+        "exampleVi": "Anh ấy đã từ bỏ trong tuyệt vọng sau nhiều lần thất bại."
+      },
+      {
+        "word": "grief",
+        "phonetic": "/ɡriːf/",
+        "wordType": "noun",
+        "meaningEn": "deep sorrow, especially that caused by someone's death",
+        "meaningVi": "nỗi đau buồn, tang thương",
+        "example": "She was overcome with grief after losing her mother.",
+        "exampleVi": "Cô ấy chìm ngập trong nỗi đau buồn sau khi mất mẹ."
+      },
+      {
+        "word": "remorse",
+        "phonetic": "/rɪˈmɔːs/",
+        "wordType": "noun",
+        "meaningEn": "deep regret or guilt for a wrong committed",
+        "meaningVi": "sự hối hận, ray rứt",
+        "example": "The prisoner showed no remorse for his crimes.",
+        "exampleVi": "Tên tù nhân không hề tỏ ra hối hận về tội ác của mình."
+      },
+      {
+        "word": "indignation",
+        "phonetic": "/ˌɪn.dɪɡˈneɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "anger or annoyance provoked by what is perceived as unfair treatment",
+        "meaningVi": "sự phẫn nộ, căm phẫn",
+        "example": "The unfair decision sparked public indignation.",
+        "exampleVi": "Quyết định bất công đã châm ngòi cho sự phẫn nộ của dư luận."
+      },
+      {
+        "word": "euphoria",
+        "phonetic": "/juːˈfɔː.ri.ə/",
+        "wordType": "noun",
+        "meaningEn": "a feeling or state of intense excitement and happiness",
+        "meaningVi": "trạng thái hưng phấn, cực kỳ hạnh phúc",
+        "example": "Winning the championship brought a sense of euphoria.",
+        "exampleVi": "Chiến thắng giải vô địch mang lại một cảm giác vô cùng phấn khích."
+      },
+      {
+        "word": "serenity",
+        "phonetic": "/səˈren.ə.ti/",
+        "wordType": "noun",
+        "meaningEn": "the state of being calm, peaceful, and untroubled",
+        "meaningVi": "sự thanh thản, thanh bình",
+        "example": "She enjoys the serenity of the countryside.",
+        "exampleVi": "Cô ấy tận hưởng sự thanh bình của làng quê."
+      },
+      {
+        "word": "anxiety",
+        "phonetic": "/æŋˈzaɪ.ə.ti/",
+        "wordType": "noun",
+        "meaningEn": "a feeling of worry, nervousness, or unease, typically about an imminent event or something with an uncertain outcome",
+        "meaningVi": "sự lo âu, bồn chồn",
+        "example": "Exam season causes a lot of anxiety for students.",
+        "exampleVi": "Mùa thi cử gây ra nhiều sự lo âu cho học sinh."
+      },
+      {
+        "word": "skeptical",
+        "phonetic": "/ˈskep.tɪ.kəl/",
+        "wordType": "adj",
+        "meaningEn": "not easily convinced; having doubts or reservations",
+        "meaningVi": "hoài nghi, nghi ngờ",
+        "example": "I am skeptical about his promises.",
+        "exampleVi": "Tôi hoài nghi về những lời hứa của anh ấy."
+      },
+      {
+        "word": "sympathy",
+        "phonetic": "/ˈsɪm.pə.θi/",
+        "wordType": "noun",
+        "meaningEn": "feelings of pity and sorrow for someone else's misfortune",
+        "meaningVi": "sự thông cảm, đồng cảm",
+        "example": "We expressed our sympathy to the family.",
+        "exampleVi": "Chúng tôi bày tỏ sự chia buồn sâu sắc tới gia đình."
       }
     ]
   },
@@ -8507,97 +9027,231 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "âm nhạc",
         "example": "I listen to music to relax.",
         "exampleVi": "Tôi nghe nhạc để thư giãn."
-      }
-    ,
-      {
-            "word": "read",
-            "phonetic": "/riːd/",
-            "wordType": "verb",
-            "meaningEn": "look at and comprehend the meaning of written matter",
-            "meaningVi": "đọc sách",
-            "example": "I like to read novels before sleeping.",
-            "exampleVi": "Tôi thích đọc tiểu thuyết trước khi ngủ."
       },
       {
-            "word": "paint",
-            "phonetic": "/peɪnt/",
-            "wordType": "verb",
-            "meaningEn": "apply paint to a canvas to create a picture",
-            "meaningVi": "vẽ tranh, tô màu",
-            "example": "She paints beautiful watercolors.",
-            "exampleVi": "Cô ấy vẽ những bức tranh màu nước tuyệt đẹp."
+        "word": "swim",
+        "phonetic": "/swɪm/",
+        "wordType": "verb",
+        "meaningEn": "propel oneself through water using the limbs",
+        "meaningVi": "bơi lội",
+        "example": "He learned to swim when he was five.",
+        "exampleVi": "Anh ấy đã học bơi từ khi lên năm."
       },
       {
-            "word": "swim",
-            "phonetic": "/swɪm/",
-            "wordType": "verb",
-            "meaningEn": "propel oneself through water using the limbs",
-            "meaningVi": "bơi lội",
-            "example": "He learned to swim when he was five.",
-            "exampleVi": "Anh ấy đã học bơi từ khi lên năm."
+        "word": "run",
+        "phonetic": "/rʌn/",
+        "wordType": "verb",
+        "meaningEn": "move at a speed faster than a walk",
+        "meaningVi": "chạy bộ",
+        "example": "She runs every morning in the park.",
+        "exampleVi": "Cô ấy chạy bộ mỗi sáng trong công viên."
       },
       {
-            "word": "run",
-            "phonetic": "/rʌn/",
-            "wordType": "verb",
-            "meaningEn": "move at a speed faster than a walk",
-            "meaningVi": "chạy bộ",
-            "example": "She runs every morning in the park.",
-            "exampleVi": "Cô ấy chạy bộ mỗi sáng trong công viên."
+        "word": "draw",
+        "phonetic": "/drɔː/",
+        "wordType": "verb",
+        "meaningEn": "produce a picture by making lines on paper",
+        "meaningVi": "vẽ phác thảo, vẽ tranh",
+        "example": "She drew a sketch of the old house.",
+        "exampleVi": "Cô ấy đã vẽ phác thảo ngôi nhà cổ."
       },
       {
-            "word": "sing",
-            "phonetic": "/sɪŋ/",
-            "wordType": "verb",
-            "meaningEn": "make musical sounds with the voice",
-            "meaningVi": "ca hát",
-            "example": "He loves to sing in the shower.",
-            "exampleVi": "Anh ấy thích hát trong phòng tắm."
+        "word": "garden",
+        "phonetic": "/ˈɡɑː.dən/",
+        "wordType": "verb/noun",
+        "meaningEn": "work in a garden, cultivating plants",
+        "meaningVi": "làm vườn",
+        "example": "My grandmother loves to garden.",
+        "exampleVi": "Bà tôi rất thích làm vườn."
       },
       {
-            "word": "dance",
-            "phonetic": "/dɑːns/",
-            "wordType": "verb/noun",
-            "meaningEn": "move rhythmically to music",
-            "meaningVi": "nhảy múa, khiêu vũ",
-            "example": "They dance salsa at the weekend club.",
-            "exampleVi": "Họ nhảy salsa tại câu lạc bộ cuối tuần."
+        "word": "play",
+        "phonetic": "/pleɪ/",
+        "wordType": "verb",
+        "meaningEn": "engage in activity for enjoyment and recreation",
+        "meaningVi": "chơi",
+        "example": "The children want to play in the yard.",
+        "exampleVi": "Trẻ em muốn chơi trong sân."
       },
       {
-            "word": "cook",
-            "phonetic": "/kʊk/",
-            "wordType": "verb/noun",
-            "meaningEn": "prepare food by heating it",
-            "meaningVi": "nấu ăn",
-            "example": "My dad loves to cook gourmet meals.",
-            "exampleVi": "Bố tôi thích nấu những món ăn cao cấp."
+        "word": "write",
+        "phonetic": "/raɪt/",
+        "wordType": "verb",
+        "meaningEn": "mark letters or words on a surface with a pen or pencil",
+        "meaningVi": "viết lách",
+        "example": "He writes stories in his free time.",
+        "exampleVi": "Anh ấy viết truyện vào thời gian rảnh."
       },
       {
-            "word": "draw",
-            "phonetic": "/drɔː/",
-            "wordType": "verb",
-            "meaningEn": "produce a picture by making lines on paper",
-            "meaningVi": "vẽ phác thảo, vẽ tranh",
-            "example": "She drew a sketch of the old house.",
-            "exampleVi": "Cô ấy đã vẽ phác thảo ngôi nhà cổ."
+        "word": "hike",
+        "phonetic": "/haɪk/",
+        "wordType": "verb",
+        "meaningEn": "go for a long walk in the country or woods",
+        "meaningVi": "đi bộ dã ngoại",
+        "example": "We plan to hike in the mountains this weekend.",
+        "exampleVi": "Chúng tôi lên kế hoạch đi bộ dã ngoại trên núi vào cuối tuần này."
       },
       {
-            "word": "travel",
-            "phonetic": "/ˈtræv.əl/",
-            "wordType": "verb/noun",
-            "meaningEn": "go from one place to another",
-            "meaningVi": "đi du lịch",
-            "example": "They travel to Asia every summer.",
-            "exampleVi": "Họ đi du lịch châu Á mỗi mùa hè."
+        "word": "camp",
+        "phonetic": "/kæmp/",
+        "wordType": "verb",
+        "meaningEn": "live temporarily in a tent or camp",
+        "meaningVi": "cắm trại",
+        "example": "They decided to camp near the lake.",
+        "exampleVi": "Họ quyết định cắm trại gần hồ."
       },
       {
-            "word": "garden",
-            "phonetic": "/ˈɡɑː.dən/",
-            "wordType": "verb/noun",
-            "meaningEn": "work in a garden, cultivating plants",
-            "meaningVi": "làm vườn",
-            "example": "My grandmother loves to garden.",
-            "exampleVi": "Bà tôi rất thích làm vườn."
+        "word": "fish",
+        "phonetic": "/fɪʃ/",
+        "wordType": "verb",
+        "meaningEn": "try to catch fish with a hook and line",
+        "meaningVi": "câu cá",
+        "example": "He goes to fish at the river every Sunday.",
+        "exampleVi": "Anh ấy đi câu cá ở sông mỗi chủ nhật."
+      },
+      {
+        "word": "knit",
+        "phonetic": "/nɪt/",
+        "wordType": "verb",
+        "meaningEn": "make a garment by looping yarn together with needles",
+        "meaningVi": "đan len",
+        "example": "My grandmother taught me how to knit.",
+        "exampleVi": "Bà tôi đã dạy tôi cách đan len."
+      },
+      {
+        "word": "bake",
+        "phonetic": "/beɪk/",
+        "wordType": "verb",
+        "meaningEn": "cook food by dry heat in an oven",
+        "meaningVi": "nướng bánh",
+        "example": "She loves to bake chocolate cookies.",
+        "exampleVi": "Cô ấy thích nướng bánh quy socola."
+      },
+      {
+        "word": "climb",
+        "phonetic": "/klaɪm/",
+        "wordType": "verb",
+        "meaningEn": "go up or ascend using the hands and feet",
+        "meaningVi": "leo trèo",
+        "example": "He tried to climb the tall tree.",
+        "exampleVi": "Cậu ấy đã cố leo lên cái cây cao."
+      },
+      {
+        "word": "cycle",
+        "phonetic": "/ˈsaɪ.kəl/",
+        "wordType": "verb",
+        "meaningEn": "ride a bicycle",
+        "meaningVi": "đạp xe",
+        "example": "They cycle to work every day.",
+        "exampleVi": "Họ đạp xe đi làm mỗi ngày."
+      },
+      {
+        "word": "sew",
+        "phonetic": "/səʊ/",
+        "wordType": "verb",
+        "meaningEn": "fasten or repair something using a needle and thread",
+        "meaningVi": "khâu, may",
+        "example": "She can sew her own dresses.",
+        "exampleVi": "Cô ấy có thể tự may váy cho mình."
+      },
+      {
+        "word": "photograph",
+        "phonetic": "/ˈfəʊ.tə.ɡrɑːf/",
+        "wordType": "verb",
+        "meaningEn": "take a photo of something",
+        "meaningVi": "chụp ảnh",
+        "example": "He loves to photograph beautiful landscapes.",
+        "exampleVi": "Anh ấy thích chụp ảnh những phong cảnh đẹp."
+      },
+      {
+        "word": "collect",
+        "phonetic": "/kəˈlekt/",
+        "wordType": "verb",
+        "meaningEn": "gather together items of interest",
+        "meaningVi": "sưu tầm",
+        "example": "My brother collects foreign stamps.",
+        "exampleVi": "Anh trai tôi sưu tầm tem nước ngoài."
+      },
+      {
+        "word": "act",
+        "phonetic": "/ækt/",
+        "wordType": "verb",
+        "meaningEn": "take part in a play or movie",
+        "meaningVi": "diễn xuất",
+        "example": "She wants to act in a theater play.",
+        "exampleVi": "Cô ấy muốn đóng vai trong một vở kịch sân khấu."
+      },
+      {
+        "word": "chess",
+        "phonetic": "/tʃes/",
+        "wordType": "noun",
+        "meaningEn": "a board game for two players",
+        "meaningVi": "cờ vua",
+        "example": "My father and I often play chess.",
+        "exampleVi": "Bố tôi và tôi thường chơi cờ vua."
+      },
+      {
+        "word": "movie",
+        "phonetic": "/ˈmuː.vi/",
+        "wordType": "noun",
+        "meaningEn": "a story recorded by a camera as moving images",
+        "meaningVi": "phim ảnh",
+        "example": "Let's watch a movie tonight.",
+        "exampleVi": "Tối nay chúng ta hãy xem một bộ phim đi."
+      },
+      {
+        "word": "craft",
+        "phonetic": "/krɑːft/",
+        "wordType": "noun",
+        "meaningEn": "an activity involving skill in making things by hand",
+        "meaningVi": "làm thủ công",
+        "example": "She makes crafts from recycled paper.",
+        "exampleVi": "Cô ấy làm đồ thủ công từ giấy tái chế."
+      },
+      {
+        "word": "hobby",
+        "phonetic": "/ˈhɒb.i/",
+        "wordType": "noun",
+        "meaningEn": "an activity done regularly in one's leisure time for pleasure",
+        "meaningVi": "sở thích",
+        "example": "Gardening is her favorite hobby.",
+        "exampleVi": "Làm vườn là sở thích yêu thích của cô ấy."
+      },
+      {
+        "word": "relax",
+        "phonetic": "/rɪˈlæks/",
+        "wordType": "verb",
+        "meaningEn": "make or become less tense or anxious",
+        "meaningVi": "thư giãn",
+        "example": "Music helps me relax after work.",
+        "exampleVi": "Âm nhạc giúp tôi thư giãn sau giờ làm việc."
+      },
+      {
+        "word": "fun",
+        "phonetic": "/fʌn/",
+        "wordType": "noun",
+        "meaningEn": "enjoyment, amusement, or lighthearted pleasure",
+        "meaningVi": "niềm vui",
+        "example": "We had a lot of fun at the party.",
+        "exampleVi": "Chúng tôi đã có rất nhiều niềm vui tại bữa tiệc."
+      },
+      {
+        "word": "exercise",
+        "phonetic": "/ˈek.sə.saɪz/",
+        "wordType": "noun/verb",
+        "meaningEn": "activity requiring physical effort, carried out to sustain health",
+        "meaningVi": "tập thể dục",
+        "example": "Swimming is a great form of exercise.",
+        "exampleVi": "Bơi lội là một hình thức tập thể dục tuyệt vời."
+      },
+      {
+        "word": "jog",
+        "phonetic": "/dʒɒɡ/",
+        "wordType": "verb",
+        "meaningEn": "run at a steady, gentle pace for exercise",
+        "meaningVi": "chạy bộ",
+        "example": "He jogs around the lake every morning.",
+        "exampleVi": "Anh ấy chạy bộ quanh hồ mỗi sáng."
       }
     ],
     "advanced": [
@@ -8690,97 +9344,231 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "nghiệp dư",
         "example": "He is an amateur astronomer.",
         "exampleVi": "Anh ấy là một nhà thiên văn học nghiệp dư."
-      }
-    ,
-      {
-            "word": "recreation",
-            "phonetic": "/ˌrek.riˈeɪ.ʃən/",
-            "wordType": "noun",
-            "meaningEn": "activity done for enjoyment when one is not working",
-            "meaningVi": "sự giải trí, tiêu khiển",
-            "example": "The park provides facilities for outdoor recreation.",
-            "exampleVi": "Công viên cung cấp các trang thiết bị cho giải trí ngoài trời."
       },
       {
-            "word": "photography",
-            "phonetic": "/fəˈtɒɡ.rə.fi/",
-            "wordType": "noun",
-            "meaningEn": "the art or practice of taking and processing photographs",
-            "meaningVi": "nghệ thuật nhiếp ảnh",
-            "example": "Landscape photography requires patience.",
-            "exampleVi": "Nhiếp ảnh phong cảnh đòi hỏi sự kiên nhẫn."
+        "word": "recreation",
+        "phonetic": "/ˌrek.riˈeɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "activity done for enjoyment when one is not working",
+        "meaningVi": "sự giải trí, tiêu khiển",
+        "example": "The park provides facilities for outdoor recreation.",
+        "exampleVi": "Công viên cung cấp các trang thiết bị cho giải trí ngoài trời."
       },
       {
-            "word": "meditation",
-            "phonetic": "/ˌmed.ɪˈteɪ.ʃən/",
-            "wordType": "noun",
-            "meaningEn": "the action or practice of meditating to calm the mind",
-            "meaningVi": "thiền định, sự tĩnh tâm",
-            "example": "Daily meditation helps reduce stress.",
-            "exampleVi": "Thiền định hàng ngày giúp giảm căng thẳng."
+        "word": "meditation",
+        "phonetic": "/ˌmed.ɪˈteɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "the action or practice of meditating to calm the mind",
+        "meaningVi": "thiền định, sự tĩnh tâm",
+        "example": "Daily meditation helps reduce stress.",
+        "exampleVi": "Thiền định hàng ngày giúp giảm căng thẳng."
       },
       {
-            "word": "craftsmanship",
-            "phonetic": "/ˈkrɑːft.smən.ʃɪp/",
-            "wordType": "noun",
-            "meaningEn": "skill in a particular craft, quality design",
-            "meaningVi": "tay nghề thủ công, sự khéo léo",
-            "example": "The wooden cabinet shows exquisite craftsmanship.",
-            "exampleVi": "Chiếc tủ gỗ thể hiện tay nghề thủ công tinh xảo."
+        "word": "craftsmanship",
+        "phonetic": "/ˈkrɑːft.smən.ʃɪp/",
+        "wordType": "noun",
+        "meaningEn": "skill in a particular craft, quality design",
+        "meaningVi": "tay nghề thủ công, sự khéo léo",
+        "example": "The wooden cabinet shows exquisite craftsmanship.",
+        "exampleVi": "Chiếc tủ gỗ thể hiện tay nghề thủ công tinh xảo."
       },
       {
-            "word": "sculpture",
-            "phonetic": "/ˈskʌlp.tʃər/",
-            "wordType": "noun/verb",
-            "meaningEn": "making three-dimensional art by carving",
-            "meaningVi": "điêu khắc",
-            "example": "He has a hobby of creating metal sculptures.",
-            "exampleVi": "Anh ấy có sở thích điêu khắc kim loại."
+        "word": "sculpture",
+        "phonetic": "/ˈskʌlp.tʃər/",
+        "wordType": "noun/verb",
+        "meaningEn": "making three-dimensional art by carving",
+        "meaningVi": "điêu khắc",
+        "example": "He has a hobby of creating metal sculptures.",
+        "exampleVi": "Anh ấy có sở thích điêu khắc kim loại."
       },
       {
-            "word": "expedition",
-            "phonetic": "/ˌek.spəˈdɪʃ.ən/",
-            "wordType": "noun",
-            "meaningEn": "a journey undertaken by a group of people with a particular purpose",
-            "meaningVi": "chuyến thám hiểm, dã ngoại thực tế",
-            "example": "They organized a mountaineering expedition in Nepal.",
-            "exampleVi": "Họ tổ chức một chuyến thám hiểm leo núi ở Nepal."
+        "word": "expedition",
+        "phonetic": "/ˌek.spəˈdɪʃ.ən/",
+        "wordType": "noun",
+        "meaningEn": "a journey undertaken by a group of people with a particular purpose",
+        "meaningVi": "chuyến thám hiểm, dã ngoại thực tế",
+        "example": "They organized a mountaineering expedition in Nepal.",
+        "exampleVi": "Họ tổ chức một chuyến thám hiểm leo núi ở Nepal."
       },
       {
-            "word": "tournament",
-            "phonetic": "/ˈtɔː.nə.mənt/",
-            "wordType": "noun",
-            "meaningEn": "a sporting competition in which players play a series of games",
-            "meaningVi": "giải đấu",
-            "example": "He won the local chess tournament.",
-            "exampleVi": "Anh ấy đã thắng giải đấu cờ vua địa phương."
+        "word": "tournament",
+        "phonetic": "/ˈtɔː.nə.mənt/",
+        "wordType": "noun",
+        "meaningEn": "a sporting competition in which players play a series of games",
+        "meaningVi": "giải đấu",
+        "example": "He won the local chess tournament.",
+        "exampleVi": "Anh ấy đã thắng giải đấu cờ vua địa phương."
       },
       {
-            "word": "amateur",
-            "phonetic": "/ˈæm.ə.tər/",
-            "wordType": "adj/noun",
-            "meaningEn": "engaging in an activity on an unpaid basis",
-            "meaningVi": "nghiệp dư, người chơi nghiệp dư",
-            "example": "He is an amateur astronomer who loves stargazing.",
-            "exampleVi": "Anh ấy là một nhà thiên văn học nghiệp dư thích ngắm sao."
+        "word": "choreography",
+        "phonetic": "/ˌkɒr.iˈɒɡ.rə.fi/",
+        "wordType": "noun",
+        "meaningEn": "the sequence of steps and movements in dance",
+        "meaningVi": "nghệ thuật dàn dựng vũ đạo",
+        "example": "The choreography of the musical was complex and energetic.",
+        "exampleVi": "Vũ đạo của vở nhạc kịch rất phức tạp và tràn đầy năng lượng."
       },
       {
-            "word": "collection",
-            "phonetic": "/kəˈlek.ʃən/",
-            "wordType": "noun",
-            "meaningEn": "a group of accumulated items of interest",
-            "meaningVi": "bộ sưu tập",
-            "example": "He has a valuable stamp collection.",
-            "exampleVi": "Anh ấy có một bộ sưu tập tem giá trị."
+        "word": "philately",
+        "phonetic": "/fɪˈlæt.əl.i/",
+        "wordType": "noun",
+        "meaningEn": "the collection and study of postage stamps",
+        "meaningVi": "thú chơi tem",
+        "example": "His grandfather is an expert in philately.",
+        "exampleVi": "Ông của anh ấy là một chuyên gia sưu tầm tem."
       },
       {
-            "word": "choreography",
-            "phonetic": "/ˌkɒr.iˈɒɡ.rə.fi/",
-            "wordType": "noun",
-            "meaningEn": "the sequence of steps and movements in dance",
-            "meaningVi": "nghệ thuật dàn dựng vũ đạo",
-            "example": "The choreography of the musical was complex and energetic.",
-            "exampleVi": "Vũ đạo của vở nhạc kịch rất phức tạp và tràn đầy năng lượng."
+        "word": "origami",
+        "phonetic": "/ˌɒr.ɪˈɡɑː.mi/",
+        "wordType": "noun",
+        "meaningEn": "the Japanese art of folding paper into decorative shapes",
+        "meaningVi": "nghệ thuật gấp giấy Nhật Bản",
+        "example": "She taught the children how to make an origami crane.",
+        "exampleVi": "Cô ấy đã dạy lũ trẻ cách gấp một con hạc giấy."
+      },
+      {
+        "word": "pottery",
+        "phonetic": "/ˈpɒt.ər.i/",
+        "wordType": "noun",
+        "meaningEn": "pots and other articles made of baked clay",
+        "meaningVi": "làm đồ gốm",
+        "example": "They took a class to learn how to make pottery.",
+        "exampleVi": "Họ đã tham gia một lớp học để học cách làm đồ gốm."
+      },
+      {
+        "word": "mountaineering",
+        "phonetic": "/ˌmaʊn.tɪˈnɪə.rɪŋ/",
+        "wordType": "noun",
+        "meaningEn": "the sport or activity of climbing mountains",
+        "meaningVi": "môn leo núi",
+        "example": "Mountaineering requires physical fitness and training.",
+        "exampleVi": "Leo núi đòi hỏi thể lực tốt và sự rèn luyện."
+      },
+      {
+        "word": "numismatics",
+        "phonetic": "/ˌnjuː.mɪzˈmæt.ɪks/",
+        "wordType": "noun",
+        "meaningEn": "the study or collection of coins and paper money",
+        "meaningVi": "thú sưu tầm tiền cổ",
+        "example": "His interest in history led him to numismatics.",
+        "exampleVi": "Sự quan tâm đến lịch sử đã dẫn dắt ông đến với thú sưu tầm tiền cổ."
+      },
+      {
+        "word": "horticulture",
+        "phonetic": "/ˈhɔː.tɪ.kʌl.tʃər/",
+        "wordType": "noun",
+        "meaningEn": "the art or practice of garden cultivation and management",
+        "meaningVi": "nghệ thuật làm vườn",
+        "example": "She studied horticulture at college.",
+        "exampleVi": "Cô ấy đã học ngành làm vườn ở trường cao đẳng."
+      },
+      {
+        "word": "gastronomy",
+        "phonetic": "/ɡæsˈtrɒn.ə.mi/",
+        "wordType": "noun",
+        "meaningEn": "the practice or art of choosing, cooking, and eating good food",
+        "meaningVi": "nghệ thuật ẩm thực",
+        "example": "France is famous for its rich history of gastronomy.",
+        "exampleVi": "Pháp nổi tiếng với lịch sử ẩm thực phong phú."
+      },
+      {
+        "word": "connoisseur",
+        "phonetic": "/ˌkɒn.əˈsɜːr/",
+        "wordType": "noun",
+        "meaningEn": "an expert judge in matters of taste, especially fine art or food",
+        "meaningVi": "người sành sỏi",
+        "example": "He is a connoisseur of classical music.",
+        "exampleVi": "Anh ấy là một người sành sỏi về nhạc cổ điển."
+      },
+      {
+        "word": "woodworking",
+        "phonetic": "/ˈwʊdˌwɜː.kɪŋ/",
+        "wordType": "noun",
+        "meaningEn": "the activity or skill of making things from wood",
+        "meaningVi": "làm mộc, nghề mộc",
+        "example": "Woodworking is a rewarding weekend hobby.",
+        "exampleVi": "Làm mộc là một sở thích cuối tuần đầy bổ ích."
+      },
+      {
+        "word": "taxidermy",
+        "phonetic": "/ˈtæk.sɪ.dɜː.mi/",
+        "wordType": "noun",
+        "meaningEn": "the art of preparing and mounting the skins of animals in lifelike effect",
+        "meaningVi": "kỹ thuật nhồi bông động vật",
+        "example": "The museum has exhibits of historical taxidermy.",
+        "exampleVi": "Bảo tàng trưng bày các hiện vật nhồi bông động vật lịch sử."
+      },
+      {
+        "word": "puppetry",
+        "phonetic": "/ˈpʌp.ɪ.tri/",
+        "wordType": "noun",
+        "meaningEn": "the art of making and operating puppets",
+        "meaningVi": "nghệ thuật múa rối",
+        "example": "Water puppetry is a famous traditional art in Vietnam.",
+        "exampleVi": "Múa rối nước là một môn nghệ thuật truyền thống nổi tiếng ở Việt Nam."
+      },
+      {
+        "word": "astronomy",
+        "phonetic": "/əˈstrɒn.ə.mi/",
+        "wordType": "noun",
+        "meaningEn": "the branch of science that deals with celestial objects and space",
+        "meaningVi": "thiên văn học nghiệp dư",
+        "example": "Amateur astronomy has grown popular with cheap telescopes.",
+        "exampleVi": "Thiên văn học nghiệp dư đã phát triển phổ biến nhờ kính viễn vọng giá rẻ."
+      },
+      {
+        "word": "restoration",
+        "phonetic": "/ˌres.təˈreɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "the action of returning something to its former condition",
+        "meaningVi": "sự phục chế",
+        "example": "He specializes in the restoration of antique furniture.",
+        "exampleVi": "Anh ấy chuyên về phục chế đồ nội thất cổ."
+      },
+      {
+        "word": "cartography",
+        "phonetic": "/kɑːˈtɒɡ.rə.fi/",
+        "wordType": "noun",
+        "meaningEn": "the science or practice of drawing maps",
+        "meaningVi": "bản đồ học",
+        "example": "Modern cartography relies heavily on satellite imaging.",
+        "exampleVi": "Vẽ bản đồ hiện đại phụ thuộc nhiều vào hình ảnh vệ tinh."
+      },
+      {
+        "word": "athletics",
+        "phonetic": "/æθˈlet.ɪks/",
+        "wordType": "noun",
+        "meaningEn": "physical games or sports, especially track and field events",
+        "meaningVi": "điền kinh",
+        "example": "She is training hard for the school athletics competition.",
+        "exampleVi": "Cô ấy đang tập luyện chăm chỉ cho cuộc thi điền kinh của trường."
+      },
+      {
+        "word": "scuba diving",
+        "phonetic": "/ˈskuː.bə ˌdaɪ.vɪŋ/",
+        "wordType": "noun",
+        "meaningEn": "the sport of swimming underwater using a breathing apparatus",
+        "meaningVi": "lặn bình khí",
+        "example": "They went scuba diving in the coral reef.",
+        "exampleVi": "Họ đã đi lặn bình khí ở rặng san hô."
+      },
+      {
+        "word": "paragliding",
+        "phonetic": "/ˈpær.əˌɡlaɪ.dɪŋ/",
+        "wordType": "noun",
+        "meaningEn": "the sport of gliding through the air wearing a wide canopy resembling a parachute",
+        "meaningVi": "dù lượn",
+        "example": "Paragliding offers a thrilling view of the valley.",
+        "exampleVi": "Bay dù lượn mang lại một tầm nhìn ly kỳ của thung lũng."
+      },
+      {
+        "word": "birdwatching",
+        "phonetic": "/ˈbɜːdˌwɒtʃ.ɪŋ/",
+        "wordType": "noun",
+        "meaningEn": "observing birds in their natural environment as a hobby",
+        "meaningVi": "quan sát chim muông",
+        "example": "He packed his binoculars for a weekend of birdwatching.",
+        "exampleVi": "Anh ấy xếp ống nhòm vào ba lô cho một cuối tuần đi quan sát chim."
       }
     ]
   },
@@ -8879,97 +9667,231 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "con đường",
         "example": "Walk carefully along the road.",
         "exampleVi": "Hãy đi bộ cẩn thận dọc theo con đường."
-      }
-    ,
-      {
-            "word": "street",
-            "phonetic": "/striːt/",
-            "wordType": "noun",
-            "meaningEn": "a public road in a city or town",
-            "meaningVi": "đường phố phố xá",
-            "example": "He lives on a quiet tree-lined street.",
-            "exampleVi": "Anh ấy sống trên một con phố rợp bóng cây yên tĩnh."
       },
       {
-            "word": "shop",
-            "phonetic": "/ʃɒp/",
-            "wordType": "noun",
-            "meaningEn": "a building where goods are sold",
-            "meaningVi": "cửa hiệu, cửa hàng",
-            "example": "She went to the local grocery shop.",
-            "exampleVi": "Cô ấy đã đến cửa hàng tạp hóa địa phương."
+        "word": "school",
+        "phonetic": "/skuːl/",
+        "wordType": "noun",
+        "meaningEn": "an institution for educating children",
+        "meaningVi": "trường học",
+        "example": "The children are at school right now.",
+        "exampleVi": "Lũ trẻ hiện đang ở trường học."
       },
       {
-            "word": "park",
-            "phonetic": "/pɑːk/",
-            "wordType": "noun/verb",
-            "meaningEn": "a large public garden or area of land used for recreation",
-            "meaningVi": "công viên",
-            "example": "We walked the dog in the city park.",
-            "exampleVi": "Chúng tôi dắt chó đi dạo trong công viên thành phố."
+        "word": "house",
+        "phonetic": "/haʊs/",
+        "wordType": "noun",
+        "meaningEn": "a building for human habitation",
+        "meaningVi": "ngôi nhà",
+        "example": "They bought a small house with a garden.",
+        "exampleVi": "Họ đã mua một ngôi nhà nhỏ có vườn."
       },
       {
-            "word": "school",
-            "phonetic": "/skuːl/",
-            "wordType": "noun",
-            "meaningEn": "an institution for educating children",
-            "meaningVi": "trường học",
-            "example": "The children are at school right now.",
-            "exampleVi": "Lũ trẻ hiện đang ở trường học."
+        "word": "garden",
+        "phonetic": "/ˈɡɑː.dən/",
+        "wordType": "noun",
+        "meaningEn": "a piece of ground adjoining a house, used for growing flowers",
+        "meaningVi": "khu vườn",
+        "example": "The garden is full of blooming roses.",
+        "exampleVi": "Khu vườn đầy hoa hồng đang nở rộ."
       },
       {
-            "word": "house",
-            "phonetic": "/haʊs/",
-            "wordType": "noun",
-            "meaningEn": "a building for human habitation",
-            "meaningVi": "ngôi nhà",
-            "example": "They bought a small house with a garden.",
-            "exampleVi": "Họ đã mua một ngôi nhà nhỏ có vườn."
+        "word": "hill",
+        "phonetic": "/hɪl/",
+        "wordType": "noun",
+        "meaningEn": "a naturally raised area of land, not as high as a mountain",
+        "meaningVi": "ngọn đồi",
+        "example": "We climbed the hill to watch the sunset.",
+        "exampleVi": "Chúng tôi đã leo lên đồi để ngắm hoàng hôn."
       },
       {
-            "word": "bridge",
-            "phonetic": "/brɪdʒ/",
-            "wordType": "noun",
-            "meaningEn": "a structure carrying a road or path across an obstacle",
-            "meaningVi": "cây cầu",
-            "example": "The suspension bridge links the two cities.",
-            "exampleVi": "Cây cầu treo liên kết hai thành phố."
+        "word": "town",
+        "phonetic": "/taʊn/",
+        "wordType": "noun",
+        "meaningEn": "an urban area smaller than a city",
+        "meaningVi": "thị trấn",
+        "example": "They live in a quiet seaside town.",
+        "exampleVi": "Họ sống ở một thị trấn ven biển yên bình."
       },
       {
-            "word": "road",
-            "phonetic": "/rəʊd/",
-            "wordType": "noun",
-            "meaningEn": "a wide way, leading from one place to another, for vehicles",
-            "meaningVi": "con đường",
-            "example": "The country road was bumpy.",
-            "exampleVi": "Con đường làng rất gập ghềnh."
+        "word": "station",
+        "phonetic": "/ˈsteɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "a regular stopping place on a public transportation route",
+        "meaningVi": "nhà ga, trạm dừng",
+        "example": "Meet me at the train station.",
+        "exampleVi": "Hãy gặp tôi ở nhà ga xe lửa."
       },
       {
-            "word": "farm",
-            "phonetic": "/fɑːm/",
-            "wordType": "noun/verb",
-            "meaningEn": "an area of land used for growing crops and rearing animals",
-            "meaningVi": "trang trại",
-            "example": "They grow organic vegetables on the farm.",
-            "exampleVi": "Họ trồng rau hữu cơ trên trang trại."
+        "word": "hospital",
+        "phonetic": "/ˈhɒs.pɪ.təl/",
+        "wordType": "noun",
+        "meaningEn": "an institution providing medical treatment for sick people",
+        "meaningVi": "bệnh viện",
+        "example": "She works as a doctor in a public hospital.",
+        "exampleVi": "Cô ấy làm bác sĩ trong một bệnh viện công."
       },
       {
-            "word": "garden",
-            "phonetic": "/ˈɡɑː.dən/",
-            "wordType": "noun",
-            "meaningEn": "a piece of ground adjoining a house, used for growing flowers",
-            "meaningVi": "khu vườn",
-            "example": "The garden is full of blooming roses.",
-            "exampleVi": "Khu vườn đầy hoa hồng đang nở rộ."
+        "word": "library",
+        "phonetic": "/ˈlaɪ.brər.i/",
+        "wordType": "noun",
+        "meaningEn": "a building containing collections of books for reading or borrowing",
+        "meaningVi": "thư viện",
+        "example": "I borrowed these novels from the school library.",
+        "exampleVi": "Tôi đã mượn những cuốn tiểu thuyết này từ thư viện trường."
       },
       {
-            "word": "hill",
-            "phonetic": "/hɪl/",
-            "wordType": "noun",
-            "meaningEn": "a naturally raised area of land, not as high as a mountain",
-            "meaningVi": "ngọn đồi",
-            "example": "We climbed the hill to watch the sunset.",
-            "exampleVi": "Chúng tôi đã leo lên đồi để ngắm hoàng hôn."
+        "word": "hotel",
+        "phonetic": "/həʊˈtel/",
+        "wordType": "noun",
+        "meaningEn": "an establishment providing accommodations and meals for travelers",
+        "meaningVi": "khách sạn",
+        "example": "We booked a room in a five-star hotel.",
+        "exampleVi": "Chúng tôi đã đặt phòng ở một khách sạn năm sao."
+      },
+      {
+        "word": "bank",
+        "phonetic": "/bæŋk/",
+        "wordType": "noun",
+        "meaningEn": "a financial establishment that invests money and handles accounts",
+        "meaningVi": "ngân hàng",
+        "example": "I need to go to the bank to open an account.",
+        "exampleVi": "Tôi cần đến ngân hàng để mở tài khoản."
+      },
+      {
+        "word": "church",
+        "phonetic": "/tʃɜːtʃ/",
+        "wordType": "noun",
+        "meaningEn": "a building used for public Christian worship",
+        "meaningVi": "nhà thờ",
+        "example": "The church bells rang on Sunday morning.",
+        "exampleVi": "Chuông nhà thờ reo vào sáng chủ nhật."
+      },
+      {
+        "word": "temple",
+        "phonetic": "/ˈtem.pəl/",
+        "wordType": "noun",
+        "meaningEn": "a building devoted to worship in religions like Buddhism or Hinduism",
+        "meaningVi": "ngôi đền, chùa",
+        "example": "They visited a Buddhist temple in Hue.",
+        "exampleVi": "Họ đã đến thăm một ngôi chùa Phật giáo ở Huế."
+      },
+      {
+        "word": "river",
+        "phonetic": "/ˈrɪv.ər/",
+        "wordType": "noun",
+        "meaningEn": "a large natural stream of water flowing in a channel",
+        "meaningVi": "sông, dòng sông",
+        "example": "The river runs through the center of the town.",
+        "exampleVi": "Dòng sông chảy qua trung tâm thị trấn."
+      },
+      {
+        "word": "lake",
+        "phonetic": "/leɪk/",
+        "wordType": "noun",
+        "meaningEn": "a large body of water surrounded by land",
+        "meaningVi": "hồ nước",
+        "example": "We went boating on the quiet lake.",
+        "exampleVi": "Chúng tôi đã đi chèo thuyền trên hồ nước yên bình."
+      },
+      {
+        "word": "path",
+        "phonetic": "/pɑːθ/",
+        "wordType": "noun",
+        "meaningEn": "a track laid down for walking",
+        "meaningVi": "con đường nhỏ",
+        "example": "Follow the path through the woods.",
+        "exampleVi": "Hãy đi theo lối đi xuyên qua khu rừng."
+      },
+      {
+        "word": "field",
+        "phonetic": "/fiːld/",
+        "wordType": "noun",
+        "meaningEn": "an area of open land, especially planted with crops",
+        "meaningVi": "cánh đồng",
+        "example": "The farmers are working in the rice field.",
+        "exampleVi": "Các bác nông dân đang làm việc trên cánh đồng lúa."
+      },
+      {
+        "word": "tree",
+        "phonetic": "/triː/",
+        "wordType": "noun",
+        "meaningEn": "a woody perennial plant with a single main trunk",
+        "meaningVi": "cây xanh",
+        "example": "There is an old oak tree in the town square.",
+        "exampleVi": "Có một cây sồi già ở quảng trường thị trấn."
+      },
+      {
+        "word": "forest",
+        "phonetic": "/ˈfɒr.ɪst/",
+        "wordType": "noun",
+        "meaningEn": "a large area covered chiefly with trees",
+        "meaningVi": "khu rừng",
+        "example": "It is easy to get lost in the deep forest.",
+        "exampleVi": "Rất dễ bị lạc trong rừng sâu."
+      },
+      {
+        "word": "corner",
+        "phonetic": "/ˈcɔː.nər/",
+        "wordType": "noun",
+        "meaningEn": "a place where two streets or roads meet",
+        "meaningVi": "góc phố, góc đường",
+        "example": "There is a small cafe on the corner of the street.",
+        "exampleVi": "Có một quán cà phê nhỏ ở góc phố."
+      },
+      {
+        "word": "center",
+        "phonetic": "/ˈsen.tər/",
+        "wordType": "noun",
+        "meaningEn": "the middle point of an area, where main activities happen",
+        "meaningVi": "trung tâm",
+        "example": "The shopping mall is in the city center.",
+        "exampleVi": "Trung tâm mua sắm nằm ở trung tâm thành phố."
+      },
+      {
+        "word": "zoo",
+        "phonetic": "/zuː/",
+        "wordType": "noun",
+        "meaningEn": "a park where wild animals are kept for display and study",
+        "meaningVi": "vườn bách thú",
+        "example": "The kids love feeding monkeys at the zoo.",
+        "exampleVi": "Lũ trẻ thích cho khỉ ăn ở vườn bách thú."
+      },
+      {
+        "word": "museum",
+        "phonetic": "/mjuːˈziː.əm/",
+        "wordType": "noun",
+        "meaningEn": "a building exhibiting objects of historical or artistic interest",
+        "meaningVi": "bảo tàng",
+        "example": "The museum displays ancient art pieces.",
+        "exampleVi": "Bảo tàng trưng bày các tác phẩm nghệ thuật cổ đại."
+      },
+      {
+        "word": "cinema",
+        "phonetic": "/ˈsɪn.ə.mə/",
+        "wordType": "noun",
+        "meaningEn": "a theater where movies are shown",
+        "meaningVi": "rạp chiếu phim",
+        "example": "We are going to the cinema tonight.",
+        "exampleVi": "Chúng tôi sẽ đi xem phim tối nay."
+      },
+      {
+        "word": "store",
+        "phonetic": "/stɔːr/",
+        "wordType": "noun",
+        "meaningEn": "a retail shop selling goods",
+        "meaningVi": "cửa hàng, tiệm",
+        "example": "He runs a grocery store in the town.",
+        "exampleVi": "Anh ấy điều hành một cửa hàng tạp hóa trong thị trấn."
+      },
+      {
+        "word": "bus stop",
+        "phonetic": "/ˈbʌs ˌstɒp/",
+        "wordType": "noun",
+        "meaningEn": "a designated place where buses stop for passengers",
+        "meaningVi": "trạm dừng xe buýt",
+        "example": "I waited for him at the bus stop.",
+        "exampleVi": "Tôi đã đợi anh ấy ở trạm dừng xe buýt."
       }
     ],
     "advanced": [
@@ -9062,97 +9984,231 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "danh lam thắng cảnh, cột mốc",
         "example": "The Eiffel Tower is a famous landmark.",
         "exampleVi": "Tháp Eiffel là một địa danh nổi tiếng."
-      }
-    ,
-      {
-            "word": "urban",
-            "phonetic": "/ˈɜː.bən/",
-            "wordType": "adj",
-            "meaningEn": "relating to, or characteristic of a town or city",
-            "meaningVi": "thuộc đô thị, thành thị",
-            "example": "Urban planning is vital for sustainable cities.",
-            "exampleVi": "Quy hoạch đô thị là tối quan trọng đối với các thành phố bền vững."
       },
       {
-            "word": "rural",
-            "phonetic": "/ˈrʊə.rəl/",
-            "wordType": "adj",
-            "meaningEn": "relating to, or characteristic of the countryside",
-            "meaningVi": "thuộc nông thôn",
-            "example": "Many young people leave rural areas to find work in cities.",
-            "exampleVi": "Nhiều người trẻ rời bỏ vùng nông thôn để tìm việc làm ở thành phố."
+        "word": "urban",
+        "phonetic": "/ˈɜː.bən/",
+        "wordType": "adj",
+        "meaningEn": "relating to, or characteristic of a town or city",
+        "meaningVi": "thuộc đô thị, thành thị",
+        "example": "Urban planning is vital for sustainable cities.",
+        "exampleVi": "Quy hoạch đô thị là tối quan trọng đối với các thành phố bền vững."
       },
       {
-            "word": "suburb",
-            "phonetic": "/ˈsʌb.ɜːb/",
-            "wordType": "noun",
-            "meaningEn": "an outlying district of a city, especially a residential one",
-            "meaningVi": "vùng ngoại ô",
-            "example": "They moved to a quiet suburb to raise children.",
-            "exampleVi": "Họ đã chuyển đến một vùng ngoại ô yên tĩnh để nuôi con."
+        "word": "rural",
+        "phonetic": "/ˈrʊə.rəl/",
+        "wordType": "adj",
+        "meaningEn": "relating to, or characteristic of the countryside",
+        "meaningVi": "thuộc nông thôn",
+        "example": "Many young people leave rural areas to find work in cities.",
+        "exampleVi": "Nhiều người trẻ rời bỏ vùng nông thôn để tìm việc làm ở thành phố."
       },
       {
-            "word": "infrastructure",
-            "phonetic": "/ˈɪn.frəˌstrʌk.tʃər/",
-            "wordType": "noun",
-            "meaningEn": "the basic physical structures needed for the operation of a society",
-            "meaningVi": "cơ sở hạ tầng",
-            "example": "The government is investing in transport infrastructure.",
-            "exampleVi": "Chính phủ đang đầu tư vào cơ sở hạ tầng giao thông."
+        "word": "suburb",
+        "phonetic": "/ˈsʌb.ɜːb/",
+        "wordType": "noun",
+        "meaningEn": "an outlying district of a city, especially a residential one",
+        "meaningVi": "vùng ngoại ô",
+        "example": "They moved to a quiet suburb to raise children.",
+        "exampleVi": "Họ đã chuyển đến một vùng ngoại ô yên tĩnh để nuôi con."
       },
       {
-            "word": "agriculture",
-            "phonetic": "/ˈæɡ.rɪ.kʌl.tʃər/",
-            "wordType": "noun",
-            "meaningEn": "the science or practice of farming",
-            "meaningVi": "ngành nông nghiệp",
-            "example": "Modern agriculture relies heavily on technology.",
-            "exampleVi": "Nông nghiệp hiện đại phụ thuộc nhiều vào công nghệ."
+        "word": "agriculture",
+        "phonetic": "/ˈæɡ.rɪ.kʌl.tʃər/",
+        "wordType": "noun",
+        "meaningEn": "the science or practice of farming",
+        "meaningVi": "ngành nông nghiệp",
+        "example": "Modern agriculture relies heavily on technology.",
+        "exampleVi": "Nông nghiệp hiện đại phụ thuộc nhiều vào công nghệ."
       },
       {
-            "word": "landscape",
-            "phonetic": "/ˈlænd.skeɪp/",
-            "wordType": "noun",
-            "meaningEn": "all the visible features of an area of countryside or land",
-            "meaningVi": "phong cảnh thiên nhiên",
-            "example": "The autumn landscape was filled with warm colors.",
-            "exampleVi": "Phong cảnh mùa thu tràn ngập các màu sắc ấm áp."
+        "word": "landscape",
+        "phonetic": "/ˈlænd.skeɪp/",
+        "wordType": "noun",
+        "meaningEn": "all the visible features of an area of countryside or land",
+        "meaningVi": "phong cảnh thiên nhiên",
+        "example": "The autumn landscape was filled with warm colors.",
+        "exampleVi": "Phong cảnh mùa thu tràn ngập các màu sắc ấm áp."
       },
       {
-            "word": "architecture",
-            "phonetic": "/ˈɑː.kɪ.tek.tʃər/",
-            "wordType": "noun",
-            "meaningEn": "the complex style or design of buildings",
-            "meaningVi": "kiến trúc công trình",
-            "example": "Rome is famous for its ancient architecture.",
-            "exampleVi": "Rome nổi tiếng với các công trình kiến trúc cổ kính."
+        "word": "architecture",
+        "phonetic": "/ˈɑː.kɪ.tek.tʃər/",
+        "wordType": "noun",
+        "meaningEn": "the complex style or design of buildings",
+        "meaningVi": "kiến trúc công trình",
+        "example": "Rome is famous for its ancient architecture.",
+        "exampleVi": "Rome nổi tiếng với các công trình kiến trúc cổ kính."
       },
       {
-            "word": "high-rise",
-            "phonetic": "/ˈhaɪ.raɪz/",
-            "wordType": "noun/adj",
-            "meaningEn": "a building with many stories, multi-story",
-            "meaningVi": "nhà cao tầng, cao ốc",
-            "example": "High-rise apartments dominate the city skyline.",
-            "exampleVi": "Các căn hộ chung cư cao tầng chiếm lĩnh đường chân trời thành phố."
+        "word": "high-rise",
+        "phonetic": "/ˈhaɪ.raɪz/",
+        "wordType": "noun/adj",
+        "meaningEn": "a building with many stories, multi-story",
+        "meaningVi": "nhà cao tầng, cao ốc",
+        "example": "High-rise apartments dominate the city skyline.",
+        "exampleVi": "Các căn hộ chung cư cao tầng chiếm lĩnh đường chân trời thành phố."
       },
       {
-            "word": "commercial",
-            "phonetic": "/kəˈmɜː.ʃəl/",
-            "wordType": "adj",
-            "meaningEn": "concerned with commerce or trade",
-            "meaningVi": "thuộc về thương mại",
-            "example": "The commercial district is very busy on weekends.",
-            "exampleVi": "Khu thương mại rất bận rộn vào những ngày cuối tuần."
+        "word": "commercial",
+        "phonetic": "/kəˈmɜː.ʃəl/",
+        "wordType": "adj",
+        "meaningEn": "concerned with commerce or trade",
+        "meaningVi": "thuộc về thương mại",
+        "example": "The commercial district is very busy on weekends.",
+        "exampleVi": "Khu thương mại rất bận rộn vào những ngày cuối tuần."
       },
       {
-            "word": "residential",
-            "phonetic": "/ˌrez.ɪˈden.ʃəl/",
-            "wordType": "adj",
-            "meaningEn": "designed for people to live in rather than commercial work",
-            "meaningVi": "thuộc khu dân cư",
-            "example": "Speed limits are lower in residential areas.",
-            "exampleVi": "Tốc độ giới hạn thấp hơn ở các khu vực dân cư."
+        "word": "residential",
+        "phonetic": "/ˌrez.ɪˈden.ʃəl/",
+        "wordType": "adj",
+        "meaningEn": "designed for people to live in rather than commercial work",
+        "meaningVi": "thuộc khu dân cư",
+        "example": "Speed limits are lower in residential areas.",
+        "exampleVi": "Tốc độ giới hạn thấp hơn ở các khu vực dân cư."
+      },
+      {
+        "word": "municipality",
+        "phonetic": "/mjuːˌnɪs.ɪˈpæl.ə.ti/",
+        "wordType": "noun",
+        "meaningEn": "a city or town with corporate status and local government",
+        "meaningVi": "đô thị tự trị",
+        "example": "The municipality is responsible for local waste management.",
+        "exampleVi": "Chính quyền đô thị tự trị chịu trách nhiệm quản lý rác thải địa phương."
+      },
+      {
+        "word": "gentrification",
+        "phonetic": "/ˌdʒen.trɪ.fɪˈkeɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "the process of renovating a district to conform to middle-class taste",
+        "meaningVi": "sự chỉnh trang đô thị",
+        "example": "Gentrification has raised property prices in the old district.",
+        "exampleVi": "Sự chỉnh trang đô thị đã làm tăng giá bất động sản ở khu vực cũ."
+      },
+      {
+        "word": "conurbation",
+        "phonetic": "/ˌdɒn.ɜːˈbeɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "an extended urban area formed by several merging towns",
+        "meaningVi": "vùng đô thị hóa",
+        "example": "The area has grown into a vast industrial conurbation.",
+        "exampleVi": "Khu vực này đã phát triển thành một vùng chùm đô thị công nghiệp rộng lớn."
+      },
+      {
+        "word": "boulevard",
+        "phonetic": "/ˈbuː.lə.vɑːd/",
+        "wordType": "noun",
+        "meaningEn": "a wide street in a town or city, typically lined with trees",
+        "meaningVi": "đại lộ",
+        "example": "They took a stroll down the tree-lined boulevard.",
+        "exampleVi": "Họ đi dạo dọc theo đại lộ rợp bóng cây."
+      },
+      {
+        "word": "alleyway",
+        "phonetic": "/ˈæl.i.weɪ/",
+        "wordType": "noun",
+        "meaningEn": "a narrow path or passage between buildings",
+        "meaningVi": "ngõ nhỏ, hẻm nhỏ",
+        "example": "The cat ran down the dark alleyway.",
+        "exampleVi": "Con mèo chạy xuống con hẻm tối."
+      },
+      {
+        "word": "commuter",
+        "phonetic": "/kəˈmjuː.tər/",
+        "wordType": "noun",
+        "meaningEn": "a person who travels some distance to work on a regular basis",
+        "meaningVi": "người đi làm xa",
+        "example": "The morning trains are always crowded with commuters.",
+        "exampleVi": "Những chuyến tàu buổi sáng luôn đông đúc người đi làm xa."
+      },
+      {
+        "word": "amenity",
+        "phonetic": "/əˈmiː.nə.ti/",
+        "wordType": "noun",
+        "meaningEn": "a desirable or useful feature of a building or place",
+        "meaningVi": "tiện nghi, cơ sở tiện ích",
+        "example": "The apartment complex has excellent amenities like a pool and gym.",
+        "exampleVi": "Khu chung cư có các tiện ích tuyệt vời như hồ bơi và phòng tập thể dục."
+      },
+      {
+        "word": "cosmopolitan",
+        "phonetic": "/ˌkɒz.məˈpɒl.ɪ.tən/",
+        "wordType": "adj",
+        "meaningEn": "familiar with and at ease in many different countries and cultures",
+        "meaningVi": "mang tính quốc tế",
+        "example": "London is a cosmopolitan city with people from all over the world.",
+        "exampleVi": "London là một thành phố mang tính quốc tế với người dân từ khắp nơi trên thế giới."
+      },
+      {
+        "word": "zoning",
+        "phonetic": "/ˈzəʊ.nɪŋ/",
+        "wordType": "noun",
+        "meaningEn": "dividing land into areas for different commercial or residential rules",
+        "meaningVi": "sự quy hoạch, phân vùng",
+        "example": "Zoning laws prevent factories from being built near schools.",
+        "exampleVi": "Luật quy hoạch ngăn chặn các nhà máy được xây dựng gần trường học."
+      },
+      {
+        "word": "sprawl",
+        "phonetic": "/sprɔːl/",
+        "wordType": "noun",
+        "meaningEn": "the disorganized expansion of an urban area into the countryside",
+        "meaningVi": "sự đô thị hóa tràn lan",
+        "example": "Urban sprawl has consumed much of the nearby farmland.",
+        "exampleVi": "Sự đô thị hóa tràn lan đã tiêu thụ phần lớn đất canh tác lân cận."
+      },
+      {
+        "word": "provincial",
+        "phonetic": "/prəˈvɪn.ʃəl/",
+        "wordType": "adj",
+        "meaningEn": "belonging to a province; narrow-minded or unsophisticated",
+        "meaningVi": "thuộc về tỉnh lẻ",
+        "example": "He grew tired of the quiet, provincial life.",
+        "exampleVi": "Anh ấy đã chán ngấy cuộc sống tỉnh lẻ yên bình."
+      },
+      {
+        "word": "district",
+        "phonetic": "/ˈdɪs.trɪkt/",
+        "wordType": "noun",
+        "meaningEn": "an area of a country or city with distinct characteristics",
+        "meaningVi": "quận, huyện, khu vực",
+        "example": "The financial district is packed with high-rise buildings.",
+        "exampleVi": "Khu tài chính có mật độ dày đặc các tòa nhà cao tầng."
+      },
+      {
+        "word": "sewerage",
+        "phonetic": "/ˈsuː.ər.ɪdʒ/",
+        "wordType": "noun",
+        "meaningEn": "the system of drainage pipes to dispose of waste water",
+        "meaningVi": "hệ thống thoát nước",
+        "example": "The town upgraded its old sewerage system.",
+        "exampleVi": "Thị trấn đã nâng cấp hệ thống cống rãnh cũ của mình."
+      },
+      {
+        "word": "bypass",
+        "phonetic": "/ˈbaɪ.pɑːs/",
+        "wordType": "noun",
+        "meaningEn": "a road passing round a town to reduce central traffic",
+        "meaningVi": "đường tránh",
+        "example": "They built a bypass to reduce heavy traffic in the town center.",
+        "exampleVi": "Họ đã xây dựng một đường tránh để giảm thiểu lưu lượng giao thông lớn ở trung tâm thị trấn."
+      },
+      {
+        "word": "expressway",
+        "phonetic": "/ɪkˈspres.weɪ/",
+        "wordType": "noun",
+        "meaningEn": "a highway designed for fast traffic with controlled access",
+        "meaningVi": "đường cao tốc",
+        "example": "The new expressway shortened the travel time between the cities.",
+        "exampleVi": "Tuyến đường cao tốc mới đã rút ngắn thời gian di chuyển giữa các thành phố."
+      },
+      {
+        "word": "pavement",
+        "phonetic": "/ˈpeɪv.mənt/",
+        "wordType": "noun",
+        "meaningEn": "a raised paved path for pedestrians at the side of a road",
+        "meaningVi": "vỉa hè",
+        "example": "Don't ride your bicycle on the pavement.",
+        "exampleVi": "Đừng đạp xe đạp trên vỉa hè."
       }
     ]
   },
@@ -9251,97 +10307,231 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "thị trường",
         "example": "They sell their goods in the local market.",
         "exampleVi": "Họ bán hàng hóa của mình ở thị trường địa phương."
-      }
-    ,
-      {
-            "word": "sale",
-            "phonetic": "/seɪl/",
-            "wordType": "noun",
-            "meaningEn": "the exchange of goods for money",
-            "meaningVi": "sự bán hàng, doanh số",
-            "example": "The summer sale starts this Friday.",
-            "exampleVi": "Đợt giảm giá mùa hè bắt đầu vào thứ Sáu này."
       },
       {
-            "word": "plan",
-            "phonetic": "/plæn/",
-            "wordType": "noun/verb",
-            "meaningEn": "a detailed proposal for doing or achieving something",
-            "meaningVi": "kế hoạch",
-            "example": "We need a backup plan in case of issues.",
-            "exampleVi": "Chúng ta cần một kế hoạch dự phòng phòng khi xảy ra sự cố."
+        "word": "sale",
+        "phonetic": "/seɪl/",
+        "wordType": "noun",
+        "meaningEn": "the exchange of goods for money",
+        "meaningVi": "sự bán hàng, doanh số",
+        "example": "The summer sale starts this Friday.",
+        "exampleVi": "Đợt giảm giá mùa hè bắt đầu vào thứ Sáu này."
       },
       {
-            "word": "idea",
-            "phonetic": "/aɪˈdɪə/",
-            "wordType": "noun",
-            "meaningEn": "a thought or suggestion as to a possible course of action",
-            "meaningVi": "ý tưởng",
-            "example": "His business idea was brilliant.",
-            "exampleVi": "Ý tưởng kinh doanh của anh ấy thật xuất sắc."
+        "word": "plan",
+        "phonetic": "/plæn/",
+        "wordType": "noun/verb",
+        "meaningEn": "a detailed proposal for doing or achieving something",
+        "meaningVi": "kế hoạch",
+        "example": "We need a backup plan in case of issues.",
+        "exampleVi": "Chúng ta cần một kế hoạch dự phòng phòng khi xảy ra sự cố."
       },
       {
-            "word": "cost",
-            "phonetic": "/kɒst/",
-            "wordType": "noun/verb",
-            "meaningEn": "the amount spent to produce something",
-            "meaningVi": "chi phí",
-            "example": "The cost of production has increased.",
-            "exampleVi": "Chi phí sản xuất đã gia tăng."
+        "word": "idea",
+        "phonetic": "/aɪˈdɪə/",
+        "wordType": "noun",
+        "meaningEn": "a thought or suggestion as to a possible course of action",
+        "meaningVi": "ý tưởng",
+        "example": "His business idea was brilliant.",
+        "exampleVi": "Ý tưởng kinh doanh của anh ấy thật xuất sắc."
       },
       {
-            "word": "buy",
-            "phonetic": "/baɪ/",
-            "wordType": "verb",
-            "meaningEn": "purchase something by paying money",
-            "meaningVi": "mua",
-            "example": "He decided to buy the business.",
-            "exampleVi": "Anh ấy đã quyết định mua lại doanh nghiệp đó."
+        "word": "cost",
+        "phonetic": "/kɒst/",
+        "wordType": "noun/verb",
+        "meaningEn": "the amount spent to produce something",
+        "meaningVi": "chi phí",
+        "example": "The cost of production has increased.",
+        "exampleVi": "Chi phí sản xuất đã gia tăng."
       },
       {
-            "word": "sell",
-            "phonetic": "/sel/",
-            "wordType": "verb",
-            "meaningEn": "exchange goods for cash",
-            "meaningVi": "bán",
-            "example": "They sell high-quality goods.",
-            "exampleVi": "Họ bán những mặt hàng chất lượng cao."
+        "word": "team",
+        "phonetic": "/tiːm/",
+        "wordType": "noun",
+        "meaningEn": "a group of players or workers",
+        "meaningVi": "đội ngũ, nhóm",
+        "example": "The marketing team worked hard on the campaign.",
+        "exampleVi": "Đội ngũ marketing đã làm việc chăm chỉ cho chiến dịch."
       },
       {
-            "word": "team",
-            "phonetic": "/tiːm/",
-            "wordType": "noun",
-            "meaningEn": "a group of players or workers",
-            "meaningVi": "đội ngũ, nhóm",
-            "example": "The marketing team worked hard on the campaign.",
-            "exampleVi": "Đội ngũ marketing đã làm việc chăm chỉ cho chiến dịch."
+        "word": "work",
+        "phonetic": "/wɜːk/",
+        "wordType": "noun/verb",
+        "meaningEn": "activity involving physical or mental effort",
+        "meaningVi": "công việc, làm việc",
+        "example": "He loves his work as a developer.",
+        "exampleVi": "Anh ấy yêu công việc làm nhà phát triển của mình."
       },
       {
-            "word": "work",
-            "phonetic": "/wɜːk/",
-            "wordType": "noun/verb",
-            "meaningEn": "activity involving physical or mental effort",
-            "meaningVi": "công việc, làm việc",
-            "example": "He loves his work as a developer.",
-            "exampleVi": "Anh ấy yêu công việc làm nhà phát triển của mình."
+        "word": "manager",
+        "phonetic": "/ˈmæn.ɪ.dʒər/",
+        "wordType": "noun",
+        "meaningEn": "a person responsible for controlling or administering an organization",
+        "meaningVi": "người quản lý",
+        "example": "Speak to the manager if you have questions.",
+        "exampleVi": "Hãy nói chuyện với người quản lý nếu bạn có câu hỏi."
       },
       {
-            "word": "manager",
-            "phonetic": "/ˈmæn.ɪ.dʒər/",
-            "wordType": "noun",
-            "meaningEn": "a person responsible for controlling or administering an organization",
-            "meaningVi": "người quản lý",
-            "example": "Speak to the manager if you have questions.",
-            "exampleVi": "Hãy nói chuyện với người quản lý nếu bạn có câu hỏi."
+        "word": "group",
+        "phonetic": "/ɡruːp/",
+        "wordType": "noun",
+        "meaningEn": "a number of people or things put together",
+        "meaningVi": "nhóm",
+        "example": "The study group meets twice a week.",
+        "exampleVi": "Nhóm học tập gặp nhau hai lần một tuần."
       },
       {
-            "word": "group",
-            "phonetic": "/ɡruːp/",
-            "wordType": "noun",
-            "meaningEn": "a number of people or things put together",
-            "meaningVi": "nhóm",
-            "example": "The study group meets twice a week.",
-            "exampleVi": "Nhóm học tập gặp nhau hai lần một tuần."
+        "word": "business",
+        "phonetic": "/ˈbɪz.nɪs/",
+        "wordType": "noun",
+        "meaningEn": "a person's regular occupation or trade",
+        "meaningVi": "việc kinh doanh",
+        "example": "She is studying business administration.",
+        "exampleVi": "Cô ấy đang học ngành quản trị kinh doanh."
+      },
+      {
+        "word": "customer",
+        "phonetic": "/ˈkʌs.tə.mər/",
+        "wordType": "noun",
+        "meaningEn": "a person who buys goods or services from a store",
+        "meaningVi": "khách hàng",
+        "example": "The shop assistant is serving a customer.",
+        "exampleVi": "Nhân viên bán hàng đang phục vụ một khách hàng."
+      },
+      {
+        "word": "office",
+        "phonetic": "/ˈɒf.ɪs/",
+        "wordType": "noun",
+        "meaningEn": "a building or room used as a place of work",
+        "meaningVi": "văn phòng",
+        "example": "Our office is on the tenth floor.",
+        "exampleVi": "Văn phòng của chúng tôi ở tầng mười."
+      },
+      {
+        "word": "meeting",
+        "phonetic": "/ˈmiː.tɪŋ/",
+        "wordType": "noun",
+        "meaningEn": "an assembly of people for discussion or common purpose",
+        "meaningVi": "cuộc họp",
+        "example": "We have an important meeting at 9 AM.",
+        "exampleVi": "Chúng tôi có một cuộc họp quan trọng vào lúc 9 giờ sáng."
+      },
+      {
+        "word": "partner",
+        "phonetic": "/ˈpɑːt.nər/",
+        "wordType": "noun",
+        "meaningEn": "a person who takes part in a business undertaking with others",
+        "meaningVi": "đối tác, cộng sự",
+        "example": "He is a partner in a big law firm.",
+        "exampleVi": "Anh ấy là một cộng sự trong một công ty luật lớn."
+      },
+      {
+        "word": "brand",
+        "phonetic": "/brænd/",
+        "wordType": "noun",
+        "meaningEn": "a type of product manufactured under a particular name",
+        "meaningVi": "thương hiệu",
+        "example": "This is a popular brand of sports shoes.",
+        "exampleVi": "Đây là một thương hiệu giày thể thao phổ biến."
+      },
+      {
+        "word": "pay",
+        "phonetic": "/pay/",
+        "wordType": "verb",
+        "meaningEn": "give someone money due for work or goods",
+        "meaningVi": "thanh toán",
+        "example": "You can pay by cash or credit card.",
+        "exampleVi": "Bạn có thể thanh toán bằng tiền mặt hoặc thẻ tín dụng."
+      },
+      {
+        "word": "coin",
+        "phonetic": "/kɔɪn/",
+        "wordType": "noun",
+        "meaningEn": "a flat round piece of metal used as money",
+        "meaningVi": "tiền xu",
+        "example": "He put a coin into the vending machine.",
+        "exampleVi": "Anh ấy bỏ một đồng xu vào máy bán hàng tự động."
+      },
+      {
+        "word": "card",
+        "phonetic": "/kɑːd/",
+        "wordType": "noun",
+        "meaningEn": "a small plastic card issued by a bank for payments",
+        "meaningVi": "thẻ ngân hàng",
+        "example": "Please insert your card to make a payment.",
+        "exampleVi": "Vui lòng chèn thẻ của bạn để thực hiện thanh toán."
+      },
+      {
+        "word": "cash",
+        "phonetic": "/kæʃ/",
+        "wordType": "noun",
+        "meaningEn": "money in coins or bills",
+        "meaningVi": "tiền mặt",
+        "example": "I don't have any cash on me today.",
+        "exampleVi": "Hôm nay tôi không mang theo tiền mặt."
+      },
+      {
+        "word": "bank",
+        "phonetic": "/bæŋk/",
+        "wordType": "noun",
+        "meaningEn": "a financial establishment that handles deposits and loans",
+        "meaningVi": "ngân hàng",
+        "example": "The bank is closed on public holidays.",
+        "exampleVi": "Ngân hàng đóng cửa vào các ngày lễ công cộng."
+      },
+      {
+        "word": "bill",
+        "phonetic": "/bɪl/",
+        "wordType": "noun",
+        "meaningEn": "a statement of money owed for goods or services",
+        "meaningVi": "hóa đơn",
+        "example": "Can I have the bill, please?",
+        "exampleVi": "Cho tôi xin hóa đơn thanh toán được không?"
+      },
+      {
+        "word": "deal",
+        "phonetic": "/diːl/",
+        "wordType": "noun",
+        "meaningEn": "a commercial agreement entered into for mutual benefit",
+        "meaningVi": "thỏa thuận, hợp đồng",
+        "example": "They signed a business deal yesterday.",
+        "exampleVi": "Họ đã ký một hợp đồng kinh doanh ngày hôm qua."
+      },
+      {
+        "word": "tax",
+        "phonetic": "/tæks/",
+        "wordType": "noun",
+        "meaningEn": "a compulsory contribution to state revenue levied by the government",
+        "meaningVi": "thuế",
+        "example": "The government plans to increase income tax.",
+        "exampleVi": "Chính phủ có kế hoạch tăng thuế thu nhập."
+      },
+      {
+        "word": "worker",
+        "phonetic": "/ˈwɜː.kər/",
+        "wordType": "noun",
+        "meaningEn": "a person who does a specified type of work",
+        "meaningVi": "người lao động",
+        "example": "The factory has over five hundred workers.",
+        "exampleVi": "Nhà máy có hơn năm trăm công nhân."
+      },
+      {
+        "word": "staff",
+        "phonetic": "/stɑːf/",
+        "wordType": "noun",
+        "meaningEn": "all the people employed by an organization",
+        "meaningVi": "nhân viên",
+        "example": "Our school has a very friendly teaching staff.",
+        "exampleVi": "Trường chúng tôi có một đội ngũ giáo viên rất thân thiện."
+      },
+      {
+        "word": "owner",
+        "phonetic": "/ˈəʊ.nər/",
+        "wordType": "noun",
+        "meaningEn": "a person who owns something",
+        "meaningVi": "chủ sở hữu",
+        "example": "He is the owner of a small coffee shop.",
+        "exampleVi": "Anh ấy là chủ sở hữu của một quán cà phê nhỏ."
       }
     ],
     "advanced": [
@@ -9434,97 +10624,231 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "chiến lược",
         "example": "We need a new marketing strategy.",
         "exampleVi": "Chúng ta cần một chiến lược tiếp thị mới."
-      }
-    ,
-      {
-            "word": "entrepreneurship",
-            "phonetic": "/ˌɒn.trə.prəˈnɜː.ʃɪp/",
-            "wordType": "noun",
-            "meaningEn": "the activity of setting up a business, taking financial risks",
-            "meaningVi": "tinh thần khởi nghiệp, sự làm chủ",
-            "example": "Entrepreneurship requires courage and adaptation.",
-            "exampleVi": "Khởi nghiệp đòi hỏi lòng dũng cảm và sự thích nghi."
       },
       {
-            "word": "strategy",
-            "phonetic": "/ˈstræt.ə.dʒi/",
-            "wordType": "noun",
-            "meaningEn": "a plan of action designed to achieve a long-term aim",
-            "meaningVi": "chiến lược kinh doanh",
-            "example": "The board discussed the new marketing strategy.",
-            "exampleVi": "Ban quản trị đã thảo luận về chiến lược tiếp thị mới."
+        "word": "entrepreneurship",
+        "phonetic": "/ˌɒn.trə.prəˈnɜː.ʃɪp/",
+        "wordType": "noun",
+        "meaningEn": "the activity of setting up a business, taking financial risks",
+        "meaningVi": "tinh thần khởi nghiệp, sự làm chủ",
+        "example": "Entrepreneurship requires courage and adaptation.",
+        "exampleVi": "Khởi nghiệp đòi hỏi lòng dũng cảm và sự thích nghi."
       },
       {
-            "word": "investment",
-            "phonetic": "/ɪnˈvest.mənt/",
-            "wordType": "noun",
-            "meaningEn": "the action of investing money for return",
-            "meaningVi": "khoản đầu tư",
-            "example": "Real estate is a solid long-term investment.",
-            "exampleVi": "Bất động sản là một khoản đầu tư dài hạn vững chắc."
+        "word": "negotiation",
+        "phonetic": "/nɪˌɡəʊ.ʃiˈeɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "discussion aimed at reaching an agreement",
+        "meaningVi": "sự đàm phán, thương lượng",
+        "example": "The contract is currently under negotiation.",
+        "exampleVi": "Hợp đồng hiện đang trong quá trình đàm phán."
       },
       {
-            "word": "negotiation",
-            "phonetic": "/nɪˌɡəʊ.ʃiˈeɪ.ʃən/",
-            "wordType": "noun",
-            "meaningEn": "discussion aimed at reaching an agreement",
-            "meaningVi": "sự đàm phán, thương lượng",
-            "example": "The contract is currently under negotiation.",
-            "exampleVi": "Hợp đồng hiện đang trong quá trình đàm phán."
+        "word": "enterprise",
+        "phonetic": "/ˈen.tə.praɪz/",
+        "wordType": "noun",
+        "meaningEn": "a project or undertaking, typically one that is difficult, or a business firm",
+        "meaningVi": "doanh nghiệp, tổ chức kinh doanh",
+        "example": "A joint enterprise was formed between the two firms.",
+        "exampleVi": "Một doanh nghiệp liên doanh đã được thành lập giữa hai công ty."
       },
       {
-            "word": "advertising",
-            "phonetic": "/ˈæd.və.taɪ.zɪŋ/",
-            "wordType": "noun",
-            "meaningEn": "the activity of producing advertisements for products",
-            "meaningVi": "ngành quảng cáo, sự quảng cáo",
-            "example": "The company spent a fortune on online advertising.",
-            "exampleVi": "Công ty đã chi một khoản tiền lớn cho quảng cáo trực tuyến."
+        "word": "branding",
+        "phonetic": "/ˈbræn.dɪŋ/",
+        "wordType": "noun",
+        "meaningEn": "the promotion of a product by means of distinctive design",
+        "meaningVi": "xây dựng thương hiệu",
+        "example": "Strong branding builds customer loyalty.",
+        "exampleVi": "Xây dựng thương hiệu mạnh giúp tăng lòng trung thành của khách hàng."
       },
       {
-            "word": "enterprise",
-            "phonetic": "/ˈen.tə.praɪz/",
-            "wordType": "noun",
-            "meaningEn": "a project or undertaking, typically one that is difficult, or a business firm",
-            "meaningVi": "doanh nghiệp, tổ chức kinh doanh",
-            "example": "A joint enterprise was formed between the two firms.",
-            "exampleVi": "Một doanh nghiệp liên doanh đã được thành lập giữa hai công ty."
+        "word": "competitor",
+        "phonetic": "/kəmˈpet.ɪ.tər/",
+        "wordType": "noun",
+        "meaningEn": "an organization or person that competes with others",
+        "meaningVi": "đối thủ cạnh tranh",
+        "example": "We must analyze our main competitor's price strategy.",
+        "exampleVi": "Chúng ta phải phân tích chiến lược giá của đối thủ cạnh tranh chính."
       },
       {
-            "word": "branding",
-            "phonetic": "/ˈbræn.dɪŋ/",
-            "wordType": "noun",
-            "meaningEn": "the promotion of a product by means of distinctive design",
-            "meaningVi": "xây dựng thương hiệu",
-            "example": "Strong branding builds customer loyalty.",
-            "exampleVi": "Xây dựng thương hiệu mạnh giúp tăng lòng trung thành của khách hàng."
+        "word": "margin",
+        "phonetic": "/ˈmɑː.dʒɪn/",
+        "wordType": "noun",
+        "meaningEn": "the difference between the seller's cost and selling price",
+        "meaningVi": "biên lợi nhuận",
+        "example": "The profit margin on these devices is high.",
+        "exampleVi": "Biên lợi nhuận trên những thiết bị này rất cao."
       },
       {
-            "word": "revenue",
-            "phonetic": "/ˈrev.ən.juː/",
-            "wordType": "noun",
-            "meaningEn": "income, especially when of a company",
-            "meaningVi": "doanh thu",
-            "example": "The tax changes affected company revenues.",
-            "exampleVi": "Các thay đổi về thuế đã ảnh hưởng đến doanh thu của công ty."
+        "word": "acquisition",
+        "phonetic": "/ˌæk.wɪˈzɪʃ.ən/",
+        "wordType": "noun",
+        "meaningEn": "an asset or object bought, or one company purchasing another",
+        "meaningVi": "sự mua lại, thâu tóm",
+        "example": "The company announced the acquisition of a smaller rival.",
+        "exampleVi": "Công ty thông báo việc mua lại một đối thủ cạnh tranh nhỏ hơn."
       },
       {
-            "word": "competitor",
-            "phonetic": "/kəmˈpet.ɪ.tər/",
-            "wordType": "noun",
-            "meaningEn": "an organization or person that competes with others",
-            "meaningVi": "đối thủ cạnh tranh",
-            "example": "We must analyze our main competitor's price strategy.",
-            "exampleVi": "Chúng ta phải phân tích chiến lược giá của đối thủ cạnh tranh chính."
+        "word": "merger",
+        "phonetic": "/ˈmɜː.dʒər/",
+        "wordType": "noun",
+        "meaningEn": "a combination of two companies into one",
+        "meaningVi": "sự sáp nhập doanh nghiệp",
+        "example": "The merger of the two banks created a financial giant.",
+        "exampleVi": "Sự sáp nhập của hai ngân hàng đã tạo ra một gã khổng lồ tài chính."
       },
       {
-            "word": "margin",
-            "phonetic": "/ˈmɑː.dʒɪn/",
-            "wordType": "noun",
-            "meaningEn": "the difference between the seller's cost and selling price",
-            "meaningVi": "biên lợi nhuận",
-            "example": "The profit margin on these devices is high.",
-            "exampleVi": "Biên lợi nhuận trên những thiết bị này rất cao."
+        "word": "liquidity",
+        "phonetic": "/lɪˈkwɪd.ə.ti/",
+        "wordType": "noun",
+        "meaningEn": "the availability of liquid assets to a market or company",
+        "meaningVi": "khả năng thanh khoản",
+        "example": "The firm is facing liquidity problems during the crisis.",
+        "exampleVi": "Công ty đang đối mặt với các vấn đề thanh khoản trong suốt cuộc khủng hoảng."
+      },
+      {
+        "word": "portfolio",
+        "phonetic": "/ˌpɔːtˈfəʊ.li.əʊ/",
+        "wordType": "noun",
+        "meaningEn": "a range of investments held by an organization or person",
+        "meaningVi": "danh mục đầu tư",
+        "example": "He managed a diverse investment portfolio.",
+        "exampleVi": "Anh ấy quản lý một danh mục đầu tư đa dạng."
+      },
+      {
+        "word": "dividend",
+        "phonetic": "/ˈdɪv.ɪ.dend/",
+        "wordType": "noun",
+        "meaningEn": "a sum of money paid regularly by a company to its shareholders",
+        "meaningVi": "cổ tức",
+        "example": "Shareholders will receive their annual dividend next month.",
+        "exampleVi": "Các cổ đông sẽ nhận cổ tức hàng năm của họ vào tháng tới."
+      },
+      {
+        "word": "commodity",
+        "phonetic": "/kəˈmɒd.ə.ti/",
+        "wordType": "noun",
+        "meaningEn": "a raw material or primary agricultural product that can be bought and sold",
+        "meaningVi": "hàng hóa thương phẩm",
+        "example": "Crude oil is a highly traded commodity.",
+        "exampleVi": "Dầu thô là một mặt hàng được giao dịch rất nhiều."
+      },
+      {
+        "word": "consortium",
+        "phonetic": "/kənˈsɔː.ti.əm/",
+        "wordType": "noun",
+        "meaningEn": "an association of several business companies",
+        "meaningVi": "liên minh doanh nghiệp",
+        "example": "A consortium of international banks financed the project.",
+        "exampleVi": "Một liên minh các ngân hàng quốc tế đã tài trợ cho dự án."
+      },
+      {
+        "word": "depreciation",
+        "phonetic": "/dɪˌpriː.ʃiˈeɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "reduction in the value of an asset with the passage of time",
+        "meaningVi": "sự khấu hao",
+        "example": "The depreciation of the machinery was calculated annually.",
+        "exampleVi": "Khấu hao của máy móc được tính toán hàng năm."
+      },
+      {
+        "word": "subsidiary",
+        "phonetic": "/səbˈsɪd.i.ə.ri/",
+        "wordType": "noun",
+        "meaningEn": "a company controlled by a holding parent company",
+        "meaningVi": "công ty con",
+        "example": "The parent company has several subsidiaries in Asia.",
+        "exampleVi": "Công ty mẹ có một vài công ty con ở châu Á."
+      },
+      {
+        "word": "bankruptcy",
+        "phonetic": "/ˈbæŋ.krəpt.si/",
+        "wordType": "noun",
+        "meaningEn": "the state of being unable to pay outstanding debts",
+        "meaningVi": "sự phá sản",
+        "example": "The retail giant filed for bankruptcy last week.",
+        "exampleVi": "Gã khổng lồ bán lẻ đã nộp đơn xin phá sản vào tuần trước."
+      },
+      {
+        "word": "insolvency",
+        "phonetic": "/ɪnˈsɒl.vən.si/",
+        "wordType": "noun",
+        "meaningEn": "the state of being unable to pay money owed on time",
+        "meaningVi": "tình trạng mất khả năng thanh toán",
+        "example": "Financial difficulties led the business into insolvency.",
+        "exampleVi": "Khó khăn tài chính đã dẫn doanh nghiệp tới tình trạng mất khả năng thanh toán."
+      },
+      {
+        "word": "monopoly",
+        "phonetic": "/məˈnɒp.əl.i/",
+        "wordType": "noun",
+        "meaningEn": "the exclusive possession or control of the supply of a service",
+        "meaningVi": "sự độc quyền",
+        "example": "The government aims to break up the telecom monopoly.",
+        "exampleVi": "Chính phủ đặt mục tiêu phá vỡ thế độc quyền viễn thông."
+      },
+      {
+        "word": "arbitrage",
+        "phonetic": "/ˈɑː.bɪ.trɑːʒ/",
+        "wordType": "noun",
+        "meaningEn": "buying and selling assets in different markets to exploit differing prices",
+        "meaningVi": "giao dịch chênh lệch giá",
+        "example": "He made a fortune through currency arbitrage.",
+        "exampleVi": "Anh ta đã làm giàu nhờ giao dịch chênh lệch tỷ giá tiền tệ."
+      },
+      {
+        "word": "synergy",
+        "phonetic": "/ˈsɪn.ə.dʒi/",
+        "wordType": "noun",
+        "meaningEn": "cooperation of multiple organizations to produce a greater combined effect",
+        "meaningVi": "sự cộng hưởng, hợp lực",
+        "example": "The merger created synergy that increased total profit.",
+        "exampleVi": "Sự sáp nhập đã tạo ra sự cộng hưởng làm tăng tổng lợi nhuận."
+      },
+      {
+        "word": "liability",
+        "phonetic": "/ˌlaɪ.əˈbɪl.ə.ti/",
+        "wordType": "noun",
+        "meaningEn": "being responsible by law, or a financial debt owed",
+        "meaningVi": "nghĩa vụ pháp lý, nợ phải trả",
+        "example": "The partners share equal liability for the company's debts.",
+        "exampleVi": "Các đối tác chia sẻ nghĩa vụ pháp lý ngang nhau đối với các khoản nợ của công ty."
+      },
+      {
+        "word": "shareholder",
+        "phonetic": "/ˈʃeərˌhəʊl.dər/",
+        "wordType": "noun",
+        "meaningEn": "an owner of shares in a company",
+        "meaningVi": "cổ đông",
+        "example": "The shareholders voted against the proposed board members.",
+        "exampleVi": "Các cổ đông đã bỏ phiếu chống lại các thành viên hội đồng quản trị được đề xuất."
+      },
+      {
+        "word": "outsourcing",
+        "phonetic": "/ˈaʊtˌsɔː.sɪŋ/",
+        "wordType": "noun",
+        "meaningEn": "obtaining goods or service from an outside supplier",
+        "meaningVi": "dịch vụ thuê ngoài",
+        "example": "Outsourcing customer service has helped the company cut costs.",
+        "exampleVi": "Thuê ngoài dịch vụ chăm sóc khách hàng đã giúp công ty cắt giảm chi phí."
+      },
+      {
+        "word": "globalization",
+        "phonetic": "/ˌɡləʊ.bəl.aɪˈzeɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "companies starting to operate on an international scale",
+        "meaningVi": "toàn cầu hóa",
+        "example": "Globalization has opened up new markets for local brands.",
+        "exampleVi": "Toàn cầu hóa đã mở ra các thị trường mới cho các thương hiệu địa phương."
+      },
+      {
+        "word": "franchise",
+        "phonetic": "/ˈfræn.tʃaɪz/",
+        "wordType": "noun",
+        "meaningEn": "authorization granted by a company to carry out commercial activities",
+        "meaningVi": "nhượng quyền thương mại",
+        "example": "They bought a fast-food franchise.",
+        "exampleVi": "Họ đã mua một thương hiệu nhượng quyền đồ ăn nhanh."
       }
     ]
   },
@@ -9623,97 +10947,231 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "họ hàng, người thân",
         "example": "All relatives gathered for Tet holiday.",
         "exampleVi": "Tất cả họ hàng tụ họp vào dịp Tết."
-      }
-    ,
-      {
-            "word": "mother",
-            "phonetic": "/ˈmʌð.ər/",
-            "wordType": "noun",
-            "meaningEn": "a woman in relation to her child or children",
-            "meaningVi": "người mẹ",
-            "example": "She wrote a letter to her mother.",
-            "exampleVi": "Cô ấy đã viết một bức thư cho mẹ của mình."
       },
       {
-            "word": "father",
-            "phonetic": "/ˈfɑː.ðər/",
-            "wordType": "noun",
-            "meaningEn": "a man in relation to his child or children",
-            "meaningVi": "người cha, người bố",
-            "example": "My father works as an engineer.",
-            "exampleVi": "Bố tôi làm việc như một kỹ sư."
+        "word": "mother",
+        "phonetic": "/ˈmʌð.ər/",
+        "wordType": "noun",
+        "meaningEn": "a woman in relation to her child or children",
+        "meaningVi": "người mẹ",
+        "example": "She wrote a letter to her mother.",
+        "exampleVi": "Cô ấy đã viết một bức thư cho mẹ của mình."
       },
       {
-            "word": "sister",
-            "phonetic": "/ˈsɪs.tər/",
-            "wordType": "noun",
-            "meaningEn": "a woman or girl in relation to other daughters of her parents",
-            "meaningVi": "chị em gái",
-            "example": "My older sister is studying abroad.",
-            "exampleVi": "Chị gái tôi đang đi du học."
+        "word": "father",
+        "phonetic": "/ˈfɑː.ðər/",
+        "wordType": "noun",
+        "meaningEn": "a man in relation to his child or children",
+        "meaningVi": "người cha, người bố",
+        "example": "My father works as an engineer.",
+        "exampleVi": "Bố tôi làm việc như một kỹ sư."
       },
       {
-            "word": "brother",
-            "phonetic": "/ˈbrʌð.ər/",
-            "wordType": "noun",
-            "meaningEn": "a man or boy in relation to other sons of his parents",
-            "meaningVi": "anh em trai",
-            "example": "My younger brother plays football.",
-            "exampleVi": "Em trai tôi chơi đá bóng."
+        "word": "sister",
+        "phonetic": "/ˈsɪs.tər/",
+        "wordType": "noun",
+        "meaningEn": "a woman or girl in relation to other daughters of her parents",
+        "meaningVi": "chị em gái",
+        "example": "My older sister is studying abroad.",
+        "exampleVi": "Chị gái tôi đang đi du học."
       },
       {
-            "word": "son",
-            "phonetic": "/sʌn/",
-            "wordType": "noun",
-            "meaningEn": "a boy or man in relation to his parents",
-            "meaningVi": "con trai (trong gia đình)",
-            "example": "They have one son and two daughters.",
-            "exampleVi": "Họ có một con trai và hai con gái."
+        "word": "brother",
+        "phonetic": "/ˈbrʌð.ər/",
+        "wordType": "noun",
+        "meaningEn": "a man or boy in relation to other sons of his parents",
+        "meaningVi": "anh em trai",
+        "example": "My younger brother plays football.",
+        "exampleVi": "Em trai tôi chơi đá bóng."
       },
       {
-            "word": "daughter",
-            "phonetic": "/ˈdɔː.tər/",
-            "wordType": "noun",
-            "meaningEn": "a girl or woman in relation to her parents",
-            "meaningVi": "con gái (trong gia đình)",
-            "example": "Her daughter wants to become a doctor.",
-            "exampleVi": "Con gái cô ấy muốn trở thành bác sĩ."
+        "word": "son",
+        "phonetic": "/sʌn/",
+        "wordType": "noun",
+        "meaningEn": "a boy or man in relation to his parents",
+        "meaningVi": "con trai (trong gia đình)",
+        "example": "They have one son and two daughters.",
+        "exampleVi": "Họ có một con trai và hai con gái."
       },
       {
-            "word": "baby",
-            "phonetic": "/ˈbeɪ.bi/",
-            "wordType": "noun",
-            "meaningEn": "a very young child or infant",
-            "meaningVi": "em bé, trẻ sơ sinh",
-            "example": "The baby is sleeping in the crib.",
-            "exampleVi": "Em bé đang ngủ trong nôi."
+        "word": "daughter",
+        "phonetic": "/ˈdɔː.tər/",
+        "wordType": "noun",
+        "meaningEn": "a girl or woman in relation to her parents",
+        "meaningVi": "con gái (trong gia đình)",
+        "example": "Her daughter wants to become a doctor.",
+        "exampleVi": "Con gái cô ấy muốn trở thành bác sĩ."
       },
       {
-            "word": "aunt",
-            "phonetic": "/ɑːnt/",
-            "wordType": "noun",
-            "meaningEn": "the sister of one's father or mother",
-            "meaningVi": "cô, dì, bác gái",
-            "example": "My aunt brought us gifts from London.",
-            "exampleVi": "Dì tôi mang quà từ London cho chúng tôi."
+        "word": "baby",
+        "phonetic": "/ˈbeɪ.bi/",
+        "wordType": "noun",
+        "meaningEn": "a very young child or infant",
+        "meaningVi": "em bé, trẻ sơ sinh",
+        "example": "The baby is sleeping in the crib.",
+        "exampleVi": "Em bé đang ngủ trong nôi."
       },
       {
-            "word": "uncle",
-            "phonetic": "/ˈʌŋ.kəl/",
-            "wordType": "noun",
-            "meaningEn": "the brother of one's father or mother",
-            "meaningVi": "chú, cậu, bác trai",
-            "example": "My uncle owns a farm in the country.",
-            "exampleVi": "Bác tôi sở hữu một trang trại ở nông thôn."
+        "word": "family",
+        "phonetic": "/ˈfæm.əl.i/",
+        "wordType": "noun",
+        "meaningEn": "a group of parents and their children living together",
+        "meaningVi": "gia đình",
+        "example": "I love spending time with my family.",
+        "exampleVi": "Tôi thích dành thời gian cho gia đình mình."
       },
       {
-            "word": "cousin",
-            "phonetic": "/ˈkʌz.ən/",
-            "wordType": "noun",
-            "meaningEn": "a child of one's uncle or aunt",
-            "meaningVi": "anh chị em họ",
-            "example": "We played together with our cousins during summer.",
-            "exampleVi": "Chúng tôi đã chơi cùng các anh chị em họ vào mùa hè."
+        "word": "child",
+        "phonetic": "/tʃaɪld/",
+        "wordType": "noun",
+        "meaningEn": "a young human being below the legal age of majority",
+        "meaningVi": "đứa trẻ, con cái",
+        "example": "She has one child, a seven-year-old son.",
+        "exampleVi": "Cô ấy có một đứa con, một cậu con trai bảy tuổi."
+      },
+      {
+        "word": "husband",
+        "phonetic": "/ˈhʌz.bənd/",
+        "wordType": "noun",
+        "meaningEn": "a married man, the male partner in a marriage",
+        "meaningVi": "người chồng",
+        "example": "Her husband is a high school teacher.",
+        "exampleVi": "Chồng cô ấy là một giáo viên trung học."
+      },
+      {
+        "word": "wife",
+        "phonetic": "/waɪf/",
+        "wordType": "noun",
+        "meaningEn": "a married woman, the female partner in a marriage",
+        "meaningVi": "người vợ",
+        "example": "He loves cooking dinners for his wife.",
+        "exampleVi": "Anh ấy thích nấu bữa tối cho vợ mình."
+      },
+      {
+        "word": "grandfather",
+        "phonetic": "/ˈɡræn.fɑː.ðər/",
+        "wordType": "noun",
+        "meaningEn": "the father of one's father or mother",
+        "meaningVi": "ông nội, ông ngoại",
+        "example": "My grandfather told us a story about his youth.",
+        "exampleVi": "Ông tôi kể cho chúng tôi nghe một câu chuyện về thời tuổi trẻ của ông."
+      },
+      {
+        "word": "grandmother",
+        "phonetic": "/ˈɡræn.mʌð.ər/",
+        "wordType": "noun",
+        "meaningEn": "the mother of one's father or mother",
+        "meaningVi": "bà nội, bà ngoại",
+        "example": "My grandmother is baking a cake.",
+        "exampleVi": "Bà tôi đang nướng một chiếc bánh."
+      },
+      {
+        "word": "grandparent",
+        "phonetic": "/ˈɡræn.peə.rənt/",
+        "wordType": "noun",
+        "meaningEn": "a grandmother or grandfather",
+        "meaningVi": "ông bà",
+        "example": "I visit my grandparents every summer.",
+        "exampleVi": "Tôi đến thăm ông bà vào mỗi mùa hè."
+      },
+      {
+        "word": "grandson",
+        "phonetic": "/ˈgænd.sʌn/",
+        "wordType": "noun",
+        "meaningEn": "a son of one's son or daughter",
+        "meaningVi": "cháu trai (của ông bà)",
+        "example": "He is proud of his young grandson.",
+        "exampleVi": "Ông ấy tự hào về đứa cháu trai nhỏ của mình."
+      },
+      {
+        "word": "granddaughter",
+        "phonetic": "/ˈɡræn.dɔː.tər/",
+        "wordType": "noun",
+        "meaningEn": "a daughter of one's son or daughter",
+        "meaningVi": "cháu gái (của ông bà)",
+        "example": "She bought a doll for her granddaughter.",
+        "exampleVi": "Bài ấy đã mua một con búp bê cho cháu gái mình."
+      },
+      {
+        "word": "stepfather",
+        "phonetic": "/ˈstep.fɑː.ðər/",
+        "wordType": "noun",
+        "meaningEn": "a man married to one's mother after father's death or divorce",
+        "meaningVi": "cha dượng",
+        "example": "He gets along well with his stepfather.",
+        "exampleVi": "Cậu ấy hòa thuận với cha dượng của mình."
+      },
+      {
+        "word": "stepmother",
+        "phonetic": "/ˈstep.mʌð.ər/",
+        "wordType": "noun",
+        "meaningEn": "a woman married to one's father after mother's death or divorce",
+        "meaningVi": "mẹ kế",
+        "example": "Cinderella lived with her cruel stepmother.",
+        "exampleVi": "Lọ Lem sống cùng người mẹ kế độc ác của mình."
+      },
+      {
+        "word": "wedding",
+        "phonetic": "/ˈwed.ɪŋ/",
+        "wordType": "noun",
+        "meaningEn": "a marriage ceremony and associated celebrations",
+        "meaningVi": "đám cưới, hôn lễ",
+        "example": "We were invited to their wedding.",
+        "exampleVi": "Chúng tôi được mời đến đám cưới của họ."
+      },
+      {
+        "word": "friend",
+        "phonetic": "/frend/",
+        "wordType": "noun",
+        "meaningEn": "a person with whom one has a bond of mutual affection",
+        "meaningVi": "người bạn",
+        "example": "She is my best friend from school.",
+        "exampleVi": "Cô ấy là người bạn tốt nhất của tôi từ thời đi học."
+      },
+      {
+        "word": "home",
+        "phonetic": "/həʊm/",
+        "wordType": "noun",
+        "meaningEn": "the place where one lives permanently as a member of a family",
+        "meaningVi": "ngôi nhà, mái ấm",
+        "example": "East or West, home is best.",
+        "exampleVi": "Ta về ta tắm ao ta (Dù đi đâu thì nhà vẫn là tốt nhất)."
+      },
+      {
+        "word": "love",
+        "phonetic": "/lʌv/",
+        "wordType": "noun",
+        "meaningEn": "an intense feeling of deep affection",
+        "meaningVi": "tình yêu thương",
+        "example": "A warm family is filled with love.",
+        "exampleVi": "Một gia đình ấm áp luôn tràn ngập tình yêu thương."
+      },
+      {
+        "word": "grow",
+        "phonetic": "/ɡrəʊ/",
+        "wordType": "verb",
+        "meaningEn": "develop by increasing in size and changing physically",
+        "meaningVi": "lớn lên, trưởng thành",
+        "example": "Children grow so fast these days.",
+        "exampleVi": "Trẻ con dạo này lớn nhanh thật đấy."
+      },
+      {
+        "word": "kid",
+        "phonetic": "/kɪd/",
+        "wordType": "noun",
+        "meaningEn": "a child or young person",
+        "meaningVi": "đứa trẻ, trẻ con",
+        "example": "She took the kids to the playground.",
+        "exampleVi": "Cô ấy đưa lũ trẻ ra sân chơi."
+      },
+      {
+        "word": "twin",
+        "phonetic": "/twɪn/",
+        "wordType": "noun/adj",
+        "meaningEn": "one of two children born at the same birth",
+        "meaningVi": "sinh đôi",
+        "example": "They are twin sisters and look exactly alike.",
+        "exampleVi": "Họ là hai chị em sinh đôi và trông giống hệt nhau."
       }
     ],
     "advanced": [
@@ -9806,97 +11264,231 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "sự hòa giải, sự làm lành",
         "example": "The brothers reached a reconciliation after years of dispute.",
         "exampleVi": "Hai anh em đã tiến tới hòa giải sau nhiều năm tranh chấp."
-      }
-    ,
-      {
-            "word": "relationship",
-            "phonetic": "/rɪˈleɪ.ʃən.ʃɪp/",
-            "wordType": "noun",
-            "meaningEn": "the way in which two or more people or organizations are connected",
-            "meaningVi": "mối quan hệ",
-            "example": "They have a close working relationship.",
-            "exampleVi": "Họ có mối quan hệ làm việc gần gũi."
       },
       {
-            "word": "generation",
-            "phonetic": "/ˌdʒen.əˈreɪ.ʃən/",
-            "wordType": "noun",
-            "meaningEn": "all of the people born and living at about the same time",
-            "meaningVi": "thế hệ",
-            "example": "The generation gap can cause misunderstandings.",
-            "exampleVi": "Khoảng cách thế hệ có thể gây ra những hiểu lầm."
+        "word": "relationship",
+        "phonetic": "/rɪˈleɪ.ʃən.ʃɪp/",
+        "wordType": "noun",
+        "meaningEn": "the way in which two or more people or organizations are connected",
+        "meaningVi": "mối quan hệ",
+        "example": "They have a close working relationship.",
+        "exampleVi": "Họ có mối quan hệ làm việc gần gũi."
       },
       {
-            "word": "ancestors",
-            "phonetic": "/ˈæn.ses.təz/",
-            "wordType": "noun pl",
-            "meaningEn": "persons from whom one is descended, forebears",
-            "meaningVi": "tổ tiên, ông bà ngày xưa",
-            "example": "His ancestors came from Ireland in the 19th century.",
-            "exampleVi": "Tổ tiên của anh ấy đến từ Ireland vào thế kỷ 19."
+        "word": "generation",
+        "phonetic": "/ˌdʒen.əˈreɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "all of the people born and living at about the same time",
+        "meaningVi": "thế hệ",
+        "example": "The generation gap can cause misunderstandings.",
+        "exampleVi": "Khoảng cách thế hệ có thể gây ra những hiểu lầm."
       },
       {
-            "word": "siblings",
-            "phonetic": "/ˈsɪb.lɪŋz/",
-            "wordType": "noun pl",
-            "meaningEn": "brothers and sisters",
-            "meaningVi": "anh chị em ruột",
-            "example": "How many siblings do you have?",
-            "exampleVi": "Bạn có bao nhiêu anh chị em ruột?"
+        "word": "ancestors",
+        "phonetic": "/ˈæn.ses.təz/",
+        "wordType": "noun pl",
+        "meaningEn": "persons from whom one is descended, forebears",
+        "meaningVi": "tổ tiên, ông bà ngày xưa",
+        "example": "His ancestors came from Ireland in the 19th century.",
+        "exampleVi": "Tổ tiên của anh ấy đến từ Ireland vào thế kỷ 19."
       },
       {
-            "word": "relative",
-            "phonetic": "/ˈrel.ə.tɪv/",
-            "wordType": "noun/adj",
-            "meaningEn": "a person connected by blood or marriage",
-            "meaningVi": "họ hàng, người thân",
-            "example": "All of our relatives gathered for the wedding.",
-            "exampleVi": "Tất cả họ hàng của chúng tôi đã tụ họp cho đám cưới."
+        "word": "siblings",
+        "phonetic": "/ˈsɪb.lɪŋz/",
+        "wordType": "noun pl",
+        "meaningEn": "brothers and sisters",
+        "meaningVi": "anh chị em ruột",
+        "example": "How many siblings do you have?",
+        "exampleVi": "Bạn có bao nhiêu anh chị em ruột?"
       },
       {
-            "word": "affection",
-            "phonetic": "/əˈfek.ʃən/",
-            "wordType": "noun",
-            "meaningEn": "a gentle feeling of liking or liking someone",
-            "meaningVi": "tình cảm, sự yêu mến",
-            "example": "She felt deep affection for her children.",
-            "exampleVi": "Cô ấy cảm thấy tình thương sâu sắc đối với các con mình."
+        "word": "relative",
+        "phonetic": "/ˈrel.ə.tɪv/",
+        "wordType": "noun/adj",
+        "meaningEn": "a person connected by blood or marriage",
+        "meaningVi": "họ hàng, người thân",
+        "example": "All of our relatives gathered for the wedding.",
+        "exampleVi": "Tất cả họ hàng của chúng tôi đã tụ họp cho đám cưới."
       },
       {
-            "word": "compatibility",
-            "phonetic": "/kəmˌpæt.əˈbɪl.ə.ti/",
-            "wordType": "noun",
-            "meaningEn": "a state in which two things are able to exist or occur together without conflict",
-            "meaningVi": "sự hòa hợp, sự tương thích",
-            "example": "Compatibility is vital for a happy marriage.",
-            "exampleVi": "Sự hòa hợp là tối quan trọng đối với một cuộc hôn nhân hạnh phúc."
+        "word": "compatibility",
+        "phonetic": "/kəmˌpæt.əˈbɪl.ə.ti/",
+        "wordType": "noun",
+        "meaningEn": "a state in which two things are able to exist or occur together without conflict",
+        "meaningVi": "sự hòa hợp, sự tương thích",
+        "example": "Compatibility is vital for a happy marriage.",
+        "exampleVi": "Sự hòa hợp là tối quan trọng đối với một cuộc hôn nhân hạnh phúc."
       },
       {
-            "word": "harmony",
-            "phonetic": "/ˈhɑː.mə.ni/",
-            "wordType": "noun",
-            "meaningEn": "the state of being in agreement or concord",
-            "meaningVi": "sự hòa thuận, hòa âm",
-            "example": "The family lived in perfect harmony.",
-            "exampleVi": "Gia đình đã sống trong sự hòa thuận tuyệt đối."
+        "word": "harmony",
+        "phonetic": "/ˈhɑː.mə.ni/",
+        "wordType": "noun",
+        "meaningEn": "the state of being in agreement or concord",
+        "meaningVi": "sự hòa thuận, hòa âm",
+        "example": "The family lived in perfect harmony.",
+        "exampleVi": "Gia đình đã sống trong sự hòa thuận tuyệt đối."
       },
       {
-            "word": "compromise",
-            "phonetic": "/ˈkɒm.prə.maɪz/",
-            "wordType": "noun/verb",
-            "meaningEn": "an agreement reached by each side making concessions",
-            "meaningVi": "sự thỏa hiệp, nhượng bộ",
-            "example": "They reached a compromise after hours of talk.",
-            "exampleVi": "Họ đã đạt được một sự thỏa hiệp sau hàng giờ nói chuyện."
+        "word": "compromise",
+        "phonetic": "/ˈkɒm.prə.maɪz/",
+        "wordType": "noun/verb",
+        "meaningEn": "an agreement reached by each side making concessions",
+        "meaningVi": "sự thỏa hiệp, nhượng bộ",
+        "example": "They reached a compromise after hours of talk.",
+        "exampleVi": "Họ đã đạt được một sự thỏa hiệp sau hàng giờ nói chuyện."
       },
       {
-            "word": "tolerance",
-            "phonetic": "/ˈtɒl.ər.əns/",
-            "wordType": "noun",
-            "meaningEn": "the ability or willingness to tolerate something, especially opinions",
-            "meaningVi": "lòng vị tha, sự bao dung, sự khoan dung",
-            "example": "Tolerance is key to peaceful co-existence.",
-            "exampleVi": "Sự bao dung là chìa khóa để cùng chung sống hòa bình."
+        "word": "tolerance",
+        "phonetic": "/ˈtɒl.ər.əns/",
+        "wordType": "noun",
+        "meaningEn": "the ability or willingness to tolerate something, especially opinions",
+        "meaningVi": "lòng vị tha, sự bao dung, sự khoan dung",
+        "example": "Tolerance is key to peaceful co-existence.",
+        "exampleVi": "Sự bao dung là chìa khóa để cùng chung sống hòa bình."
+      },
+      {
+        "word": "matriarch",
+        "phonetic": "/ˈmeɪ.tri.ɑːk/",
+        "wordType": "noun",
+        "meaningEn": "a woman who is the head of a family or tribe",
+        "meaningVi": "nữ gia trưởng",
+        "example": "My grandmother is the matriarch of our family.",
+        "exampleVi": "Bà tôi là người phụ nữ đứng đầu gia đình chúng tôi."
+      },
+      {
+        "word": "patriarch",
+        "phonetic": "/ˈpeɪ.tri.ɑːk/",
+        "wordType": "noun",
+        "meaningEn": "the male head of a family or tribe",
+        "meaningVi": "nam gia trưởng",
+        "example": "The aging patriarch called a family meeting.",
+        "exampleVi": "Người đứng đầu gia tộc đã già gọi một cuộc họp gia đình."
+      },
+      {
+        "word": "lineage",
+        "phonetic": "/ˈlɪn.i.ɪdʒ/",
+        "wordType": "noun",
+        "meaningEn": "lineal descent from an ancestor; ancestry",
+        "meaningVi": "dòng dõi",
+        "example": "She can trace her lineage back to the royal family.",
+        "exampleVi": "Cô ấy có thể lần theo dòng dõi của mình về tận hoàng gia."
+      },
+      {
+        "word": "affinity",
+        "phonetic": "/əˈfɪn.ə.ti/",
+        "wordType": "noun",
+        "meaningEn": "a spontaneous or natural liking or sympathy for someone",
+        "meaningVi": "mối quan hệ thân mật",
+        "example": "He felt a special affinity with his cousin.",
+        "exampleVi": "Anh ấy cảm thấy một sự đồng cảm đặc biệt với người em họ của mình."
+      },
+      {
+        "word": "consanguinity",
+        "phonetic": "/ˌkɒn.sæŋˈɡwɪn.ə.ti/",
+        "wordType": "noun",
+        "meaningEn": "relationship by blood, descended from the same ancestor",
+        "meaningVi": "quan hệ huyết thống",
+        "example": "Consanguinity increases the risk of certain genetic diseases.",
+        "exampleVi": "Quan hệ huyết thống cận huyết làm tăng nguy cơ mắc một số bệnh di truyền."
+      },
+      {
+        "word": "foster care",
+        "phonetic": "/ˈfɒs.tər keər/",
+        "wordType": "noun",
+        "meaningEn": "system in which a minor is placed with state-certified caregivers",
+        "meaningVi": "chế độ nuôi dưỡng thay thế",
+        "example": "The orphan was placed in foster care.",
+        "exampleVi": "Đứa trẻ mồ côi đã được đưa vào diện chăm sóc nuôi dưỡng."
+      },
+      {
+        "word": "inheritance",
+        "phonetic": "/ɪnˈher.ɪ.təns/",
+        "wordType": "noun",
+        "meaningEn": "property passed down after someone's death",
+        "meaningVi": "di sản thừa kế",
+        "example": "She received a large inheritance from her uncle.",
+        "exampleVi": "Cô ấy nhận được một khoản thừa kế lớn từ người chú của mình."
+      },
+      {
+        "word": "domesticity",
+        "phonetic": "/ˌdəʊ.mesˈtɪs.ə.ti/",
+        "wordType": "noun",
+        "meaningEn": "home or family life and its tasks",
+        "meaningVi": "đời sống gia đình",
+        "example": "He settled down to enjoy the quiet joys of domesticity.",
+        "exampleVi": "Anh ấy ổn định cuộc sống để tận hưởng niềm vui bình lặng của đời sống gia đình."
+      },
+      {
+        "word": "cohabitation",
+        "phonetic": "/ˌkəʊ.hæb.ɪˈteɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "living together without being married",
+        "meaningVi": "sự chung sống, sống thử",
+        "example": "Cohabitation is becoming more common among young couples.",
+        "exampleVi": "Sống thử đang trở nên phổ biến hơn trong giới trẻ."
+      },
+      {
+        "word": "upbringing",
+        "phonetic": "/ˈʌpˌbrɪŋ.ɪŋ/",
+        "wordType": "noun",
+        "meaningEn": "the treatment and instruction received by a child from parents",
+        "meaningVi": "sự nuôi dạy, giáo dục gia đình",
+        "example": "She had a strict but loving upbringing.",
+        "exampleVi": "Cô ấy đã được nuôi dạy nghiêm khắc nhưng tràn đầy tình yêu thương."
+      },
+      {
+        "word": "filial piety",
+        "phonetic": "/ˈfɪl.i.əl ˈpaɪ.ə.ti/",
+        "wordType": "noun",
+        "meaningEn": "virtue of respect for one's parents and ancestors",
+        "meaningVi": "lòng hiếu thảo",
+        "example": "Filial piety is a core value in many Asian cultures.",
+        "exampleVi": "Lòng hiếu thảo là giá trị cốt lõi trong nhiều nền văn hóa châu Á."
+      },
+      {
+        "word": "maternity",
+        "phonetic": "/məˈtɜː.nə.ti/",
+        "wordType": "noun",
+        "meaningEn": "motherhood, the state of being a mother",
+        "meaningVi": "thai sản, thiên chức làm mẹ",
+        "example": "She is on maternity leave after giving birth.",
+        "exampleVi": "Cô ấy đang trong thời gian nghỉ thai sản sau khi sinh con."
+      },
+      {
+        "word": "paternity",
+        "phonetic": "/pəˈtɜː.nə.ti/",
+        "wordType": "noun",
+        "meaningEn": "fatherhood, the state of being a father",
+        "meaningVi": "thiên chức làm cha",
+        "example": "He took a paternity test to prove he is the father.",
+        "exampleVi": "Anh ấy đã làm xét nghiệm cha con để chứng minh mình là bố."
+      },
+      {
+        "word": "bereavement",
+        "phonetic": "/bɪˈriːv.mənt/",
+        "wordType": "noun",
+        "meaningEn": "the state of having lost a close relative through death",
+        "meaningVi": "sự mất mát người thân",
+        "example": "They offered support during her time of bereavement.",
+        "exampleVi": "Họ đã đề nghị giúp đỡ cô trong thời gian có tang."
+      },
+      {
+        "word": "custody",
+        "phonetic": "/ˈcʊs.tə.di/",
+        "wordType": "noun",
+        "meaningEn": "protective care or guardianship, especially in a divorce case",
+        "meaningVi": "quyền nuôi con, quyền giám hộ",
+        "example": "The court granted custody of the child to the mother.",
+        "exampleVi": "Tòa án trao quyền nuôi con cho người mẹ."
+      },
+      {
+        "word": "brotherhood",
+        "phonetic": "/ˈbrʌð.ə.hʊd/",
+        "wordType": "noun",
+        "meaningEn": "the relationship between brothers or an association for common purpose",
+        "meaningVi": "tình anh em, tình huynh đệ",
+        "example": "The soldiers shared a strong bond of brotherhood.",
+        "exampleVi": "Những người lính chia sẻ một mối liên kết tình anh em mạnh mẽ."
       }
     ]
   },
@@ -9995,97 +11587,231 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "sự kiện",
         "example": "Historical events shape our present society.",
         "exampleVi": "Các sự kiện lịch sử định hình xã hội hiện tại của chúng ta."
-      }
-    ,
-      {
-            "word": "past",
-            "phonetic": "/pɑːst/",
-            "wordType": "noun/adj/adv",
-            "meaningEn": "the time or a period of time before the moment of speaking",
-            "meaningVi": "quá khứ",
-            "example": "You cannot change the past.",
-            "exampleVi": "Bạn không thể thay đổi quá khứ."
       },
       {
-            "word": "old",
-            "phonetic": "/əʊld/",
-            "wordType": "adj",
-            "meaningEn": "having lived for a long time; no longer young",
-            "meaningVi": "cổ xưa, già",
-            "example": "This is an old castle from the middle ages.",
-            "exampleVi": "Đây là một lâu đài cổ từ thời trung cổ."
+        "word": "past",
+        "phonetic": "/pɑːst/",
+        "wordType": "noun/adj/adv",
+        "meaningEn": "the time or a period of time before the moment of speaking",
+        "meaningVi": "quá khứ",
+        "example": "You cannot change the past.",
+        "exampleVi": "Bạn không thể thay đổi quá khứ."
       },
       {
-            "word": "king",
-            "phonetic": "/kɪŋ/",
-            "wordType": "noun",
-            "meaningEn": "the male ruler of an independent state, especially one who inherits position by birth",
-            "meaningVi": "vua, quốc vương",
-            "example": "The king ruled the country for fifty years.",
-            "exampleVi": "Vua đã trị vì đất nước trong năm mươi năm."
+        "word": "old",
+        "phonetic": "/əʊld/",
+        "wordType": "adj",
+        "meaningEn": "having lived for a long time; no longer young",
+        "meaningVi": "cổ xưa, già",
+        "example": "This is an old castle from the middle ages.",
+        "exampleVi": "Đây là một lâu đài cổ từ thời trung cổ."
       },
       {
-            "word": "queen",
-            "phonetic": "/kwiːn/",
-            "wordType": "noun",
-            "meaningEn": "the female ruler of an independent state, or wife of king",
-            "meaningVi": "nữ hoàng, hoàng hậu",
-            "example": "The queen visited the hospital patients.",
-            "exampleVi": "Nữ hoàng đã ghé thăm các bệnh nhân bệnh viện."
+        "word": "king",
+        "phonetic": "/kɪŋ/",
+        "wordType": "noun",
+        "meaningEn": "the male ruler of an independent state, especially one who inherits position by birth",
+        "meaningVi": "vua, quốc vương",
+        "example": "The king ruled the country for fifty years.",
+        "exampleVi": "Vua đã trị vì đất nước trong năm mươi năm."
       },
       {
-            "word": "war",
-            "phonetic": "/wɔːr/",
-            "wordType": "noun",
-            "meaningEn": "a state of armed conflict between different countries or different groups",
-            "meaningVi": "chiến tranh",
-            "example": "The civil war lasted for five years.",
-            "exampleVi": "Cuộc nội chiến đã kéo dài trong năm năm."
+        "word": "queen",
+        "phonetic": "/kwiːn/",
+        "wordType": "noun",
+        "meaningEn": "the female ruler of an independent state, or wife of king",
+        "meaningVi": "nữ hoàng, hoàng hậu",
+        "example": "The queen visited the hospital patients.",
+        "exampleVi": "Nữ hoàng đã ghé thăm các bệnh nhân bệnh viện."
       },
       {
-            "word": "peace",
-            "phonetic": "/piːs/",
-            "wordType": "noun",
-            "meaningEn": "freedom from disturbance; tranquility",
-            "meaningVi": "hòa bình, sự yên bình",
-            "example": "They signed a treaty to secure peace.",
-            "exampleVi": "Họ ký một hiệp ước để đảm bảo hòa bình."
+        "word": "war",
+        "phonetic": "/wɔːr/",
+        "wordType": "noun",
+        "meaningEn": "a state of armed conflict between different countries or different groups",
+        "meaningVi": "chiến tranh",
+        "example": "The civil war lasted for five years.",
+        "exampleVi": "Cuộc nội chiến đã kéo dài trong năm năm."
       },
       {
-            "word": "art",
-            "phonetic": "/ɑːt/",
-            "wordType": "noun",
-            "meaningEn": "the expression or application of human creative skill",
-            "meaningVi": "nghệ thuật, hội họa",
-            "example": "She is studying the history of art.",
-            "exampleVi": "Cô ấy đang nghiên cứu lịch sử nghệ thuật."
+        "word": "peace",
+        "phonetic": "/piːs/",
+        "wordType": "noun",
+        "meaningEn": "freedom from disturbance; tranquility",
+        "meaningVi": "hòa bình, sự yên bình",
+        "example": "They signed a treaty to secure peace.",
+        "exampleVi": "Họ ký một hiệp ước để đảm bảo hòa bình."
       },
       {
-            "word": "book",
-            "phonetic": "/bʊk/",
-            "wordType": "noun",
-            "meaningEn": "a written or printed work consisting of pages bound together",
-            "meaningVi": "sách",
-            "example": "I read a book about the history of Rome.",
-            "exampleVi": "Tôi đọc một cuốn sách viết về lịch sử thành Rome."
+        "word": "book",
+        "phonetic": "/bʊk/",
+        "wordType": "noun",
+        "meaningEn": "a written or printed work consisting of pages bound together",
+        "meaningVi": "sách",
+        "example": "I read a book about the history of Rome.",
+        "exampleVi": "Tôi đọc một cuốn sách viết về lịch sử thành Rome."
       },
       {
-            "word": "story",
-            "phonetic": "/ˈstɔː.ri/",
-            "wordType": "noun",
-            "meaningEn": "an account of imaginary or real people and events told for entertainment",
-            "meaningVi": "câu chuyện, lịch sử phát triển",
-            "example": "He told us an interesting story about his ancestors.",
-            "exampleVi": "Anh ấy kể cho chúng tôi một câu chuyện thú vị về tổ tiên mình."
+        "word": "story",
+        "phonetic": "/ˈstɔː.ri/",
+        "wordType": "noun",
+        "meaningEn": "an account of imaginary or real people and events told for entertainment",
+        "meaningVi": "câu chuyện, lịch sử phát triển",
+        "example": "He told us an interesting story about his ancestors.",
+        "exampleVi": "Anh ấy kể cho chúng tôi một câu chuyện thú vị về tổ tiên mình."
       },
       {
-            "word": "time",
-            "phonetic": "/taɪm/",
-            "wordType": "noun",
-            "meaningEn": "the indefinite continued progress of existence and events in the past, present, and future",
-            "meaningVi": "thời gian, thời đại",
-            "example": "Ancient monuments stand the test of time.",
-            "exampleVi": "Các di tích cổ kính bền bỉ với thử thách của thời gian."
+        "word": "time",
+        "phonetic": "/taɪm/",
+        "wordType": "noun",
+        "meaningEn": "the indefinite continued progress of existence and events in the past, present, and future",
+        "meaningVi": "thời gian, thời đại",
+        "example": "Ancient monuments stand the test of time.",
+        "exampleVi": "Các di tích cổ kính bền bỉ với thử thách của thời gian."
+      },
+      {
+        "word": "empire",
+        "phonetic": "/ˈem.paɪər/",
+        "wordType": "noun",
+        "meaningEn": "an extensive group of states under a single supreme authority",
+        "meaningVi": "đế chế, đế quốc",
+        "example": "The Roman Empire fell in the fifth century.",
+        "exampleVi": "Đế chế La Mã sụp đổ vào thế kỷ thứ năm."
+      },
+      {
+        "word": "soldier",
+        "phonetic": "/ˈsəʊl.dʒər/",
+        "wordType": "noun",
+        "meaningEn": "a person who serves in an army",
+        "meaningVi": "binh lính",
+        "example": "The brave soldier fought for his country.",
+        "exampleVi": "Người lính dũng cảm đã chiến đấu vì đất nước của mình."
+      },
+      {
+        "word": "castle",
+        "phonetic": "/ˈkɑː.səl/",
+        "wordType": "noun",
+        "meaningEn": "a large fortified building from the medieval period",
+        "meaningVi": "lâu đài",
+        "example": "The old castle stands on top of the hill.",
+        "exampleVi": "Lâu đài cổ kính nằm trên đỉnh đồi."
+      },
+      {
+        "word": "palace",
+        "phonetic": "/ˈpæl.ɪs/",
+        "wordType": "noun",
+        "meaningEn": "the official residence of a sovereign or president",
+        "meaningVi": "cung điện",
+        "example": "The king lives in a golden palace.",
+        "exampleVi": "Đức vua sống trong một cung điện bằng vàng."
+      },
+      {
+        "word": "statue",
+        "phonetic": "/ˈstætʃ.uː/",
+        "wordType": "noun",
+        "meaningEn": "a carved or cast figure of a person or animal",
+        "meaningVi": "bức tượng",
+        "example": "The Statue of Liberty is in New York.",
+        "exampleVi": "Tượng Nữ thần Tự do ở New York."
+      },
+      {
+        "word": "flag",
+        "phonetic": "/flæɡ/",
+        "wordType": "noun",
+        "meaningEn": "a piece of cloth with a distinctive design used as a symbol of a nation",
+        "meaningVi": "lá cờ, quốc kỳ",
+        "example": "The national flag was raised at dawn.",
+        "exampleVi": "Quốc kỳ được kéo lên vào lúc bình minh."
+      },
+      {
+        "word": "leader",
+        "phonetic": "/ˈliː.dər/",
+        "wordType": "noun",
+        "meaningEn": "the person who leads or commands a group or country",
+        "meaningVi": "nhà lãnh đạo",
+        "example": "He is a natural leader whom people respect.",
+        "exampleVi": "Ông ấy là một nhà lãnh đạo bẩm sinh được mọi người tôn trọng."
+      },
+      {
+        "word": "battle",
+        "phonetic": "/ˈbæt.əl/",
+        "wordType": "noun",
+        "meaningEn": "a sustained fight between large organized armed forces",
+        "meaningVi": "trận chiến",
+        "example": "The battle of Dien Bien Phu was historic.",
+        "exampleVi": "Trận chiến Điện Biên Phủ mang tính lịch sử."
+      },
+      {
+        "word": "victory",
+        "phonetic": "/ˈvɪk.tər.i/",
+        "wordType": "noun",
+        "meaningEn": "an act of defeating an enemy in a battle or competition",
+        "meaningVi": "chiến thắng",
+        "example": "The crowd celebrated the team's victory.",
+        "exampleVi": "Đám đông đã ăn mừng chiến thắng của cả đội."
+      },
+      {
+        "word": "nation",
+        "phonetic": "/ˈneɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "a large body of people united by common descent or history",
+        "meaningVi": "quốc gia",
+        "example": "Vietnam is a peace-loving nation.",
+        "exampleVi": "Việt Nam là một quốc gia yêu chuộng hòa bình."
+      },
+      {
+        "word": "country",
+        "phonetic": "/ˈkʌn.tri/",
+        "wordType": "noun",
+        "meaningEn": "a nation with its own government occupying a particular territory",
+        "meaningVi": "đất nước",
+        "example": "I love my country and its people.",
+        "exampleVi": "Tôi yêu đất nước và con người nơi đây."
+      },
+      {
+        "word": "tribe",
+        "phonetic": "/traɪb/",
+        "wordType": "noun",
+        "meaningEn": "a traditional social division consisting of linked families",
+        "meaningVi": "bộ lạc, bộ tộc",
+        "example": "The ancient tribe lived in the rainforest.",
+        "exampleVi": "Bộ lạc cổ xưa sống trong rừng mưa nhiệt đới."
+      },
+      {
+        "word": "legend",
+        "phonetic": "/ˈledʒ.ənd/",
+        "wordType": "noun",
+        "meaningEn": "a traditional story popularly regarded as historical but unauthenticated",
+        "meaningVi": "truyền thuyết",
+        "example": "The legend of Lac Long Quan is very popular in Vietnam.",
+        "exampleVi": "Truyền thuyết Lạc Long Quân rất nổi tiếng ở Việt Nam."
+      },
+      {
+        "word": "origin",
+        "phonetic": "/ˈɒr.ɪ.dʒɪn/",
+        "wordType": "noun",
+        "meaningEn": "the point or place where something begins or arises",
+        "meaningVi": "nguồn gốc",
+        "example": "The custom has its origins in ancient times.",
+        "exampleVi": "Phong tục này có nguồn gốc từ thời cổ đại."
+      },
+      {
+        "word": "calendar",
+        "phonetic": "/ˈkæl.ən.dər/",
+        "wordType": "noun",
+        "meaningEn": "a series of pages showing the days, weeks, and months of a year",
+        "meaningVi": "lịch, niên lịch",
+        "example": "The Vietnamese use both the solar and lunar calendars.",
+        "exampleVi": "Người Việt Nam sử dụng cả dương lịch và âm lịch."
+      },
+      {
+        "word": "ruin",
+        "phonetic": "/ˈruː.ɪn/",
+        "wordType": "noun",
+        "meaningEn": "the remains of a building that has suffered much damage",
+        "meaningVi": "tàn tích, phế tích",
+        "example": "They visited the ruins of My Son sanctuary.",
+        "exampleVi": "Họ đã đến thăm tàn tích thánh địa Mỹ Sơn."
       }
     ],
     "advanced": [
@@ -10178,97 +11904,231 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "meaningVi": "thời kỳ Phục hưng",
         "example": "The Renaissance was a period of great cultural growth.",
         "exampleVi": "Thời kỳ Phục hưng là một giai đoạn phát triển văn hóa lớn."
-      }
-    ,
-      {
-            "word": "archaeology",
-            "phonetic": "/ˌɑː.kiˈɒl.ə.dʒi/",
-            "wordType": "noun",
-            "meaningEn": "the study of human history and prehistory through excavation of sites",
-            "meaningVi": "khảo cổ học",
-            "example": "Archaeology helps us understand ancient civilizations.",
-            "exampleVi": "Khảo cổ học giúp chúng ta hiểu các nền văn minh cổ đại."
       },
       {
-            "word": "civilization",
-            "phonetic": "/ˌsɪv.ɪ.laɪˈzeɪ.ʃən/",
-            "wordType": "noun",
-            "meaningEn": "the stage of human social development and organization that is considered most advanced",
-            "meaningVi": "nền văn minh",
-            "example": "The Nile Valley was the birthplace of Egyptian civilization.",
-            "exampleVi": "Thung lũng sông Nile là nơi ra đời của nền văn minh Ai Cập."
+        "word": "tradition",
+        "phonetic": "/trəˈdɪʃ.ən/",
+        "wordType": "noun",
+        "meaningEn": "the transmission of customs or beliefs from generation to generation",
+        "meaningVi": "truyền thống",
+        "example": "It is a long-standing family tradition.",
+        "exampleVi": "Đó là một truyền thống gia đình lâu đời."
       },
       {
-            "word": "dynasty",
-            "phonetic": "/ˈdɪn.ə.sti/",
-            "wordType": "noun",
-            "meaningEn": "a line of hereditary rulers of a country",
-            "meaningVi": "triều đại, vương triều",
-            "example": "The Ming dynasty ruled China for nearly three centuries.",
-            "exampleVi": "Triều đại nhà Minh đã cai trị Trung Quốc trong gần ba thế kỷ."
+        "word": "revolution",
+        "phonetic": "/ˌrev.əˈluː.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "a forcible overthrow of a government or social order",
+        "meaningVi": "cuộc cách mạng",
+        "example": "The French Revolution began in 1789.",
+        "exampleVi": "Cuộc Cách mạng Pháp bắt đầu vào năm 1789."
       },
       {
-            "word": "monument",
-            "phonetic": "/ˈmɒn.jə.mənt/",
-            "wordType": "noun",
-            "meaningEn": "a statue, building, or other structure erected to commemorate a famous person or event",
-            "meaningVi": "đài tưởng niệm, di tích lịch sử",
-            "example": "The Lincoln Memorial is a famous monument in Washington.",
-            "exampleVi": "Đài tưởng niệm Lincoln là một di tích nổi tiếng ở Washington."
+        "word": "era",
+        "phonetic": "/ˈɪə.rə/",
+        "wordType": "noun",
+        "meaningEn": "a long and distinct period of history with a particular feature",
+        "meaningVi": "kỷ nguyên, thời đại",
+        "example": "We live in the digital era.",
+        "exampleVi": "Chúng ta đang sống trong kỷ nguyên kỹ thuật số."
       },
       {
-            "word": "artifact",
-            "phonetic": "/ˈɑː.tɪ.fækt/",
-            "wordType": "noun",
-            "meaningEn": "an object made by a human being, typically of cultural or historical interest",
-            "meaningVi": "cổ vật, hiện vật lịch sử",
-            "example": "The museum displays gold artifacts from ancient tombs.",
-            "exampleVi": "Bảo tàng trưng bày các hiện vật bằng vàng từ các ngôi mộ cổ."
+        "word": "archaeologist",
+        "phonetic": "/ˌɑː.kiˈɒl.ə.dʒɪst/",
+        "wordType": "noun",
+        "meaningEn": "a person who studies history through the excavation of sites",
+        "meaningVi": "nhà khảo cổ học",
+        "example": "Archaeologists found ancient coins under the temple.",
+        "exampleVi": "Các nhà khảo cổ đã tìm thấy tiền xu cổ dưới ngôi đền."
       },
       {
-            "word": "preservation",
-            "phonetic": "/ˌprez.əˈveɪ.ʃən/",
-            "wordType": "noun",
-            "meaningEn": "the action of preserving something, keeping it safe",
-            "meaningVi": "sự bảo tồn, giữ gìn",
-            "example": "The group works for the preservation of historic buildings.",
-            "exampleVi": "Nhóm hoạt động để bảo tồn các tòa nhà lịch sử."
+        "word": "imperialism",
+        "phonetic": "/ɪmˈpɪə.ri.ə.lɪ.zəm/",
+        "wordType": "noun",
+        "meaningEn": "a policy of extending a country's power through diplomacy or military force",
+        "meaningVi": "chủ nghĩa đế quốc",
+        "example": "History lessons teach us about the age of imperialism.",
+        "exampleVi": "Các bài học lịch sử dạy chúng ta về thời kỳ của chủ nghĩa đế quốc."
       },
       {
-            "word": "tradition",
-            "phonetic": "/trəˈdɪʃ.ən/",
-            "wordType": "noun",
-            "meaningEn": "the transmission of customs or beliefs from generation to generation",
-            "meaningVi": "truyền thống",
-            "example": "It is a long-standing family tradition.",
-            "exampleVi": "Đó là một truyền thống gia đình lâu đời."
+        "word": "colonialism",
+        "phonetic": "/kəˈləʊ.ni.ə.lɪ.zəm/",
+        "wordType": "noun",
+        "meaningEn": "the policy of acquiring political control over another country",
+        "meaningVi": "chủ nghĩa thực dân",
+        "example": "The nation struggled for decades to end colonialism.",
+        "exampleVi": "Đất nước đã đấu tranh trong nhiều thập kỷ để chấm dứt chủ nghĩa thực dân."
       },
       {
-            "word": "heritage",
-            "phonetic": "/ˈher.ɪ.tɪdʒ/",
-            "wordType": "noun",
-            "meaningEn": "property that is or may be inherited; valued objects and qualities",
-            "meaningVi": "di sản văn hóa",
-            "example": "We must protect our cultural heritage.",
-            "exampleVi": "Chúng ta phải bảo vệ di sản văn hóa của mình."
+        "word": "feudalism",
+        "phonetic": "/ˈfjuː.dəl.ɪ.zəm/",
+        "wordType": "noun",
+        "meaningEn": "dominant social system in medieval Europe or hereditary systems in Asia",
+        "meaningVi": "chế độ phong kiến",
+        "example": "Feudalism was abolished in Vietnam in 1945.",
+        "exampleVi": "Chế độ phong kiến bị xóa bỏ ở Việt Nam vào năm 1945."
       },
       {
-            "word": "revolution",
-            "phonetic": "/ˌrev.əˈluː.ʃən/",
-            "wordType": "noun",
-            "meaningEn": "a forcible overthrow of a government or social order",
-            "meaningVi": "cuộc cách mạng",
-            "example": "The French Revolution began in 1789.",
-            "exampleVi": "Cuộc Cách mạng Pháp bắt đầu vào năm 1789."
+        "word": "sovereignty",
+        "phonetic": "/ˈsɒv.rɪn.ti/",
+        "wordType": "noun",
+        "meaningEn": "supreme power or authority of a state to govern itself",
+        "meaningVi": "chủ quyền quốc gia",
+        "example": "We must defend our national sovereignty.",
+        "exampleVi": "Chúng ta phải bảo vệ chủ quyền quốc gia của mình."
       },
       {
-            "word": "era",
-            "phonetic": "/ˈɪə.rə/",
-            "wordType": "noun",
-            "meaningEn": "a long and distinct period of history with a particular feature",
-            "meaningVi": "kỷ nguyên, thời đại",
-            "example": "We live in the digital era.",
-            "exampleVi": "Chúng ta đang sống trong kỷ nguyên kỹ thuật số."
+        "word": "chronology",
+        "phonetic": "/krəˈnɒl.ə.dʒi/",
+        "wordType": "noun",
+        "meaningEn": "the arrangement of events in the order of their occurrence",
+        "meaningVi": "niên đại học",
+        "example": "The book gives a clear chronology of the war.",
+        "exampleVi": "Cuốn sách đưa ra một trình tự thời gian rõ ràng của cuộc chiến."
+      },
+      {
+        "word": "historiography",
+        "phonetic": "/hɪˌstɔː.riˈɒɡ.rə.fi/",
+        "wordType": "noun",
+        "meaningEn": "the study of historical writing or the writing of history",
+        "meaningVi": "sử học",
+        "example": "She is doing research on medieval historiography.",
+        "exampleVi": "Cô ấy đang nghiên cứu về phương pháp chép sử thời trung cổ."
+      },
+      {
+        "word": "prehistory",
+        "phonetic": "/priːˈhɪs.tər.i/",
+        "wordType": "noun",
+        "meaningEn": "the period of time before written records",
+        "meaningVi": "thời tiền sử",
+        "example": "Tools from prehistory were found in the cave.",
+        "exampleVi": "Những công cụ từ thời tiền sử đã được tìm thấy trong hang động."
+      },
+      {
+        "word": "antiquity",
+        "phonetic": "/ænˈtɪk.wə.ti/",
+        "wordType": "noun",
+        "meaningEn": "the ancient past, especially the period before the Middle Ages",
+        "meaningVi": "thời kỳ cổ đại",
+        "example": "Many statues have survived from classical antiquity.",
+        "exampleVi": "Nieu bức tượng đã tồn tại từ thời cổ đại cổ điển."
+      },
+      {
+        "word": "treaty",
+        "phonetic": "/ˈtiː.ti/",
+        "wordType": "noun",
+        "meaningEn": "a formally concluded and ratified agreement between countries",
+        "meaningVi": "hiệp ước, hòa ước",
+        "example": "The peace treaty was signed by both leaders.",
+        "exampleVi": "Hiệp ước hòa bình đã được ký kết bởi cả hai nhà lãnh đạo."
+      },
+      {
+        "word": "abdication",
+        "phonetic": "/ˌæb.dɪˈkeɪ.ʃən/",
+        "wordType": "noun",
+        "meaningEn": "an act of abdicating or renouncing the throne",
+        "meaningVi": "sự thoái vị",
+        "example": "The emperor's abdication marked the end of the dynasty.",
+        "exampleVi": "Sự thoái vị của hoàng đế đánh dấu sự kết thúc của triều đại."
+      },
+      {
+        "word": "uprising",
+        "phonetic": "/ˈʌpˌraɪ.zɪŋ/",
+        "wordType": "noun",
+        "meaningEn": "an act of resistance or rebellion; a revolt",
+        "meaningVi": "cuộc nổi dậy",
+        "example": "The peasant uprising was quickly suppressed.",
+        "exampleVi": "Cuộc nổi dậy của nông dân nhanh chóng bị đàn áp."
+      },
+      {
+        "word": "armistice",
+        "phonetic": "/ˈɑː.mɪ.stɪs/",
+        "wordType": "noun",
+        "meaningEn": "agreement made by opposing sides in a war to stop fighting for a time",
+        "meaningVi": "sự đình chiến",
+        "example": "The armistice brought a temporary peace to the region.",
+        "exampleVi": "Sự đình chiến mang lại một nền hòa bình tạm thời cho khu vực."
+      },
+      {
+        "word": "anachronism",
+        "phonetic": "/əˈnæk.rə.nɪ.zəm/",
+        "wordType": "noun",
+        "meaningEn": "a thing belonging to a period other than that in which it exists",
+        "meaningVi": "sự lỗi thời, sai niên đại",
+        "example": "The movie was criticized for its historical anachronisms.",
+        "exampleVi": "Bộ phim bị chỉ trích vì những chi tiết sai lệch niên đại lịch sử."
+      },
+      {
+        "word": "hegemony",
+        "phonetic": "/hɪˈdʒem.ə.ni/",
+        "wordType": "noun",
+        "meaningEn": "leadership or dominance, especially by one country over others",
+        "meaningVi": "quyền bá chủ",
+        "example": "The country struggled against economic hegemony.",
+        "exampleVi": "Đất nước đã đấu tranh chống lại thế bá quyền kinh tế."
+      },
+      {
+        "word": "aristocracy",
+        "phonetic": "/ˌær.ɪˈstɒk.rə.si/",
+        "wordType": "noun",
+        "meaningEn": "the highest class in certain societies, especially holding hereditary titles",
+        "meaningVi": "tầng lớp quý tộc",
+        "example": "Members of the aristocracy held most of the land.",
+        "exampleVi": "Các thành viên của tầng lớp quý tộc nắm giữ hầu hết đất đai."
+      },
+      {
+        "word": "dynastic",
+        "phonetic": "/dɪˈnæs.tɪk/",
+        "wordType": "adj",
+        "meaningEn": "relating to a dynasty or dynasties",
+        "meaningVi": "thuộc triều đại",
+        "example": "The country suffered from dynastic struggles for decades.",
+        "exampleVi": "Đất nước phải hứng chịu các cuộc tranh giành quyền lực triều đại trong nhiều thập kỷ."
+      },
+      {
+        "word": "medieval",
+        "phonetic": "/ˌmed.iˈiː.vəl/",
+        "wordType": "adj",
+        "meaningEn": "relating to the Middle Ages",
+        "meaningVi": "thuộc thời trung cổ",
+        "example": "They enjoyed visiting the medieval towns in Europe.",
+        "exampleVi": "Họ thích đến thăm các thị trấn thời trung cổ ở châu Âu."
+      },
+      {
+        "word": "commonwealth",
+        "phonetic": "/ˈkɒm.ən.welθ/",
+        "wordType": "noun",
+        "meaningEn": "an independent country or community, especially a democratic republic",
+        "meaningVi": "liên bang, khối thịnh vượng chung",
+        "example": "The country is a member of the global commonwealth.",
+        "exampleVi": "Đất nước là một thành viên của khối thịnh vượng chung toàn cầu."
+      },
+      {
+        "word": "predecessor",
+        "phonetic": "/ˈpriː.dɪˌses.ər/",
+        "wordType": "noun",
+        "meaningEn": "a person who held a job or office before the current holder",
+        "meaningVi": "người tiền nhiệm",
+        "example": "The new president praised his predecessor's work.",
+        "exampleVi": "Tân tổng thống ca ngợi công việc của người tiền nhiệm."
+      },
+      {
+        "word": "conquest",
+        "phonetic": "/ˈkɒŋ.kwest/",
+        "wordType": "noun",
+        "meaningEn": "subjugation and assumption of control of a place by military force",
+        "meaningVi": "sự chinh phục",
+        "example": "The Norman conquest of England took place in 1066.",
+        "exampleVi": "Cuộc chinh phục nước Anh của người Norman diễn ra vào năm 1066."
+      },
+      {
+        "word": "succession",
+        "phonetic": "/səkˈseʃ.ən/",
+        "wordType": "noun",
+        "meaningEn": "the action of inheriting a title, office, or property",
+        "meaningVi": "sự kế vị, sự nối ngôi",
+        "example": "The royal succession was debated in parliament.",
+        "exampleVi": "Quyền nối ngôi hoàng gia đã được tranh luận tại nghị viện."
       }
     ]
   }
