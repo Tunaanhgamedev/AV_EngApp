@@ -21,17 +21,19 @@ export const syncUser = async (req: AuthRequest, res: Response) => {
   }
 
   try {
+    const email = firebaseUser.email || `${firebaseUser.uid}@noemail.engbot.com`;
+
     // Upsert user: Create if doesn't exist, update if it does
     const user = await prisma.user.upsert({
-      where: { email: firebaseUser.email },
+      where: { email: email },
       update: {
-        username: firebaseUser.name || firebaseUser.email?.split('@')[0] || 'User',
+        username: firebaseUser.name || email.split('@')[0] || 'User',
         avatarUrl: firebaseUser.picture,
       },
       create: {
         id: firebaseUser.uid, // Use Firebase UID as Primary Key
-        email: firebaseUser.email!,
-        username: firebaseUser.name || firebaseUser.email?.split('@')[0] || 'User',
+        email: email,
+        username: firebaseUser.name || email.split('@')[0] || 'User',
         avatarUrl: firebaseUser.picture,
         xp: 0,
         level: 1,

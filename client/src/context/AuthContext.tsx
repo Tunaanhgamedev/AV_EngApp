@@ -5,10 +5,15 @@ import {
   onAuthStateChanged, 
   User as FirebaseUser,
   GoogleAuthProvider,
+  FacebookAuthProvider,
+  OAuthProvider,
   signInWithPopup,
   signInWithRedirect,
   getRedirectResult,
-  signOut as firebaseSignOut
+  signOut as firebaseSignOut,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  updateProfile
 } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 
@@ -27,6 +32,10 @@ interface AuthContextType {
   dbUser: DbUser | null;
   loading: boolean;
   signInWithGoogle: () => Promise<void>;
+  signInWithFacebook: () => Promise<void>;
+  signInWithApple: () => Promise<void>;
+  signInWithEmail: (email: string, password: string) => Promise<void>;
+  signUpWithEmail: (email: string, password: string, displayName: string) => Promise<void>;
   logout: () => Promise<void>;
   refreshDbUser: () => Promise<void>;
 }
@@ -190,6 +199,138 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const signInWithFacebook = async () => {
+    const provider = new FacebookAuthProvider();
+    try {
+      console.log("[Auth] Attempting Facebook signInWithPopup...");
+      const result = await signInWithPopup(auth, provider);
+      if (result.user) {
+        await fetchDbUser(result.user);
+      }
+    } catch (error: any) {
+      console.warn("[Auth] Facebook signInWithPopup failed:", error?.code || error?.message || error);
+      
+      if (error?.code === 'auth/unauthorized-domain') {
+        const currentDomain = typeof window !== 'undefined' ? window.location.hostname : '';
+        alert(
+          `Lỗi cấu hình Firebase:\nTên miền này (${currentDomain}) chưa được cấp phép (Authorized Domains) trong Firebase Console.\n\n` +
+          `Vui lòng truy cập Firebase Console -> Authentication -> Settings -> Authorized domains và thêm tên miền "${currentDomain}" để sử dụng chức năng đăng nhập Facebook.`
+        );
+        throw error;
+      }
+      
+      const isPopupBlocked = error?.code === 'auth/popup-blocked';
+      const isEnvNotSupported = error?.code === 'auth/operation-not-supported-in-this-environment';
+      const isCrossOriginOrFrameError = /cross-origin|iframe|closed|blocked/i.test(error?.message || '') || error?.code?.includes('iframe');
+      
+      const shouldRedirectFallback = isPopupBlocked || isEnvNotSupported || isCrossOriginOrFrameError;
+      
+      if (shouldRedirectFallback) {
+        console.log("[Auth] Popup blocked or not supported. Falling back to signInWithRedirect (Facebook)...");
+        try {
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('auth_redirect_pending', 'true');
+          }
+          await signInWithRedirect(auth, provider);
+        } catch (redirectError: any) {
+          if (typeof window !== 'undefined') {
+            localStorage.removeItem('auth_redirect_pending');
+          }
+          console.error("[Auth] Redirect fallback also failed:", redirectError);
+          alert(
+            "Không thể đăng nhập bằng Facebook.\n" +
+            "Vui lòng tắt các trình chặn Quảng cáo/Popup trên trình duyệt của bạn hoặc chọn 'Mở bằng Chrome/Safari' để tiếp tục."
+          );
+          throw redirectError;
+        }
+      } else {
+        throw error;
+      }
+    }
+  };
+
+  const signInWithApple = async () => {
+    const provider = new OAuthProvider('apple.com');
+    try {
+      console.log("[Auth] Attempting Apple signInWithPopup...");
+      const result = await signInWithPopup(auth, provider);
+      if (result.user) {
+        await fetchDbUser(result.user);
+      }
+    } catch (error: any) {
+      console.warn("[Auth] Apple signInWithPopup failed:", error?.code || error?.message || error);
+      
+      if (error?.code === 'auth/unauthorized-domain') {
+        const currentDomain = typeof window !== 'undefined' ? window.location.hostname : '';
+        alert(
+          `Lỗi cấu hình Firebase:\nTên miền này (${currentDomain}) chưa được cấp phép (Authorized Domains) trong Firebase Console.\n\n` +
+          `Vui lòng truy cập Firebase Console -> Authentication -> Settings -> Authorized domains và thêm tên miền "${currentDomain}" để sử dụng chức năng đăng nhập Apple.`
+        );
+        throw error;
+      }
+      
+      const isPopupBlocked = error?.code === 'auth/popup-blocked';
+      const isEnvNotSupported = error?.code === 'auth/operation-not-supported-in-this-environment';
+      const isCrossOriginOrFrameError = /cross-origin|iframe|closed|blocked/i.test(error?.message || '') || error?.code?.includes('iframe');
+      
+      const shouldRedirectFallback = isPopupBlocked || isEnvNotSupported || isCrossOriginOrFrameError;
+      
+      if (shouldRedirectFallback) {
+        console.log("[Auth] Popup blocked or not supported. Falling back to signInWithRedirect (Apple)...");
+        try {
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('auth_redirect_pending', 'true');
+          }
+          await signInWithRedirect(auth, provider);
+        } catch (redirectError: any) {
+          if (typeof window !== 'undefined') {
+            localStorage.removeItem('auth_redirect_pending');
+          }
+          console.error("[Auth] Redirect fallback also failed:", redirectError);
+          alert(
+            "Không thể đăng nhập bằng Apple.\n" +
+            "Vui lòng tắt các trình chặn Quảng cáo/Popup trên trình duyệt của bạn hoặc chọn 'Mở bằng Chrome/Safari' để tiếp tục."
+          );
+          throw redirectError;
+        }
+      } else {
+        throw error;
+      }
+    }
+  };
+
+  const signInWithEmail = async (email: string, password: string) => {
+    try {
+      console.log("[Auth] Attempting signInWithEmailAndPassword...");
+      const result = await signInWithEmailAndPassword(auth, email, password);
+      if (result.user) {
+        await fetchDbUser(result.user);
+      }
+    } catch (error: any) {
+      console.error("[Auth] signInWithEmail failed:", error);
+      throw error;
+    }
+  };
+
+  const signUpWithEmail = async (email: string, password: string, displayName: string) => {
+    try {
+      console.log("[Auth] Attempting createUserWithEmailAndPassword...");
+      const result = await createUserWithEmailAndPassword(auth, email, password);
+      if (result.user) {
+        console.log("[Auth] User created. Updating profile...");
+        await updateProfile(result.user, { displayName });
+        const refreshedUser = auth.currentUser;
+        if (refreshedUser) {
+          setUser(refreshedUser);
+          await fetchDbUser(refreshedUser);
+        }
+      }
+    } catch (error: any) {
+      console.error("[Auth] signUpWithEmail failed:", error);
+      throw error;
+    }
+  };
+
   const logout = async () => {
     try {
       await firebaseSignOut(auth);
@@ -206,7 +347,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, dbUser, loading, signInWithGoogle, logout, refreshDbUser }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      dbUser, 
+      loading, 
+      signInWithGoogle, 
+      signInWithFacebook, 
+      signInWithApple, 
+      signInWithEmail, 
+      signUpWithEmail, 
+      logout, 
+      refreshDbUser 
+    }}>
       {children}
     </AuthContext.Provider>
   );

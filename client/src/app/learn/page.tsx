@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { 
-  ChevronLeft, 
-  Volume2, 
-  XCircle, 
-  Lightbulb, 
+import {
+  ChevronLeft,
+  Volume2,
+  XCircle,
+  Lightbulb,
   CheckCircle2,
   BrainCircuit,
   ChevronRight,
@@ -81,7 +81,7 @@ const speak = (text: string) => {
 
     if (window.speechSynthesis) {
       const voices = window.speechSynthesis.getVoices();
-      
+
       // Fallback to Translate TTS if no voices are loaded/installed
       if (voices.length === 0) {
         playTranslateTTS();
@@ -91,11 +91,11 @@ const speak = (text: string) => {
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'en-US';
       utterance.rate = 0.75;
-      
+
       const voicesList = window.speechSynthesis.getVoices();
-      const preferredVoice = voicesList.find(v => v.name.includes('Google') && v.lang === 'en-US') || 
-                             voicesList.find(v => v.lang === 'en-US');
-      
+      const preferredVoice = voicesList.find(v => v.name.includes('Google') && v.lang === 'en-US') ||
+        voicesList.find(v => v.lang === 'en-US');
+
       if (preferredVoice) utterance.voice = preferredVoice;
 
       utterance.onerror = (e) => {
@@ -160,7 +160,7 @@ const TOPIC_CATEGORIES: Record<string, 'daily' | 'work_tech' | 'society_env'> = 
   feelings: 'daily',
   hobbies: 'daily',
   family: 'daily',
-  
+
   jobs: 'work_tech',
   school: 'work_tech',
   company: 'work_tech',
@@ -168,7 +168,7 @@ const TOPIC_CATEGORIES: Record<string, 'daily' | 'work_tech' | 'society_env'> = 
   money: 'work_tech',
   science_tech: 'work_tech',
   business: 'work_tech',
-  
+
   objects: 'society_env',
   house: 'society_env',
   vehicles: 'society_env',
@@ -198,7 +198,7 @@ const getTopicColorClasses = (colorStr: string) => {
   else if (normalized.includes('pink')) color = 'pink';
   else if (normalized.includes('teal')) color = 'teal';
   else if (normalized.includes('purple')) color = 'purple';
-  
+
   const map: Record<string, { iconBg: string, iconText: string, borderHover: string, textAccent: string }> = {
     emerald: {
       iconBg: 'bg-emerald-50 dark:bg-emerald-950/40',
@@ -291,14 +291,14 @@ const getTopicColorClasses = (colorStr: string) => {
 
 export default function LearnPage() {
   const { user } = useAuth();
-  
+
   // Tab/Mode select state
   const [activeMode, setActiveMode] = useState<'vocabulary' | 'topics'>('vocabulary');
-  
+
   // Topic search & filter states
   const [vocabSearchQuery, setVocabSearchQuery] = useState('');
   const [vocabActiveCategory, setVocabActiveCategory] = useState<'all' | 'daily' | 'work_tech' | 'society_env'>('all');
-  
+
   // Vocabulary Flashcard states
   const [selectedLevel, setSelectedLevel] = useState<string | null>(null);
   const [words, setWords] = useState<Word[]>([]);
@@ -321,8 +321,8 @@ export default function LearnPage() {
 
   // Filtered topics based on search & category
   const filteredVocabTopics = VOCABULARY_TOPICS.filter(topic => {
-    const matchesSearch = topic.title.toLowerCase().includes(vocabSearchQuery.toLowerCase()) || 
-                          topic.desc.toLowerCase().includes(vocabSearchQuery.toLowerCase());
+    const matchesSearch = topic.title.toLowerCase().includes(vocabSearchQuery.toLowerCase()) ||
+      topic.desc.toLowerCase().includes(vocabSearchQuery.toLowerCase());
     const matchesCategory = vocabActiveCategory === 'all' || TOPIC_CATEGORIES[topic.id] === vocabActiveCategory;
     return matchesSearch && matchesCategory;
   });
@@ -335,7 +335,7 @@ export default function LearnPage() {
       setWords([]);
       setCurrentIndex(0);
       setCompleted(false);
-      
+
       try {
         const headers: Record<string, string> = {};
         if (user) {
@@ -363,14 +363,14 @@ export default function LearnPage() {
 
     const enrichCurrentAndNext = async () => {
       if (activeMode !== 'vocabulary' || words.length === 0) return;
-      
+
       // Helper to enrich a word by index
       const enrichAtIndex = async (idx: number) => {
         if (idx < 0 || idx >= words.length) return false;
         const wObj = words[idx];
         const needsEn = !wObj.meaningVi || wObj.meaningVi === wObj.word;
         if (!needsEn) return false;
-        
+
         try {
           const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/vocabulary/search?word=${wObj.word}`);
           if (res.ok) {
@@ -405,7 +405,7 @@ export default function LearnPage() {
       if (currentWordObj && (!currentWordObj.meaningVi || currentWordObj.meaningVi === currentWordObj.word)) {
         await enrichAtIndex(currentIndex);
       }
-      
+
       // 2. Pre-enrich next word in the background (low priority)
       const nextIndex = currentIndex + 1;
       if (nextIndex < words.length) {
@@ -428,15 +428,15 @@ export default function LearnPage() {
   const playPronunciation = () => {
     const word = words[currentIndex];
     if (!word) return;
-    
+
     // Warm up speech synthesis immediately and synchronously in the direct user gesture
     if (typeof window !== 'undefined' && window.speechSynthesis) {
       try {
         const dummy = new SpeechSynthesisUtterance('');
         window.speechSynthesis.speak(dummy);
-      } catch (e) {}
+      } catch (e) { }
     }
-    
+
     if (word.audioUs) {
       const audio = new Audio(word.audioUs);
       audio.play().catch((err) => {
@@ -462,7 +462,7 @@ export default function LearnPage() {
       try {
         const dummy = new SpeechSynthesisUtterance('');
         window.speechSynthesis.speak(dummy);
-      } catch (e) {}
+      } catch (e) { }
     }
     setShowHint(false);
     if (currentIndex < words.length - 1) {
@@ -479,7 +479,7 @@ export default function LearnPage() {
       try {
         const dummy = new SpeechSynthesisUtterance('');
         window.speechSynthesis.speak(dummy);
-      } catch (e) {}
+      } catch (e) { }
     }
     const word = words[currentIndex];
     if (user && word) {
@@ -521,8 +521,8 @@ export default function LearnPage() {
             onClick={() => setActiveMode('vocabulary')}
             className={cn(
               "px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer",
-              activeMode === 'vocabulary' 
-                ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-950 shadow-md" 
+              activeMode === 'vocabulary'
+                ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-950 shadow-md"
                 : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
             )}
           >
@@ -532,8 +532,8 @@ export default function LearnPage() {
             onClick={() => setActiveMode('topics')}
             className={cn(
               "px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer",
-              activeMode === 'topics' 
-                ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-950 shadow-md" 
+              activeMode === 'topics'
+                ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-950 shadow-md"
                 : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
             )}
           >
@@ -559,8 +559,8 @@ export default function LearnPage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {levels.map(l => (
-                  <button 
-                    key={l.level} 
+                  <button
+                    key={l.level}
                     onClick={() => setSelectedLevel(l.level)}
                     className="bg-white dark:bg-slate-950 rounded-[2rem] p-6 border border-slate-200/80 dark:border-slate-800/80 hover:border-blue-600 dark:hover:border-blue-400 flex flex-col items-start gap-4 hover:shadow-xl transition-all group text-left relative overflow-hidden cursor-pointer"
                   >
@@ -598,7 +598,7 @@ export default function LearnPage() {
                 <h2 className="text-2xl font-black text-slate-800 dark:text-slate-105">Không có dữ liệu từ mới</h2>
                 <p className="text-sm text-slate-500 dark:text-slate-400 max-w-sm mx-auto mt-1 font-medium">Hiện tại không thể tải từ vựng mới cấp độ {selectedLevel}. Vui lòng thử lại sau.</p>
               </div>
-              <button 
+              <button
                 onClick={() => setSelectedLevel(null)}
                 className="px-8 py-3 bg-[#002147] dark:bg-slate-100 text-white dark:text-slate-950 rounded-xl font-bold hover:shadow-lg transition-all cursor-pointer"
               >
@@ -614,7 +614,7 @@ export default function LearnPage() {
                 <h1 className="text-3xl font-black text-slate-800 dark:text-slate-105">Tuyệt vời!</h1>
                 <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 font-medium">Bạn đã hoàn thành việc học 15 từ vựng mới cấp độ {selectedLevel}.</p>
               </div>
-              <button 
+              <button
                 onClick={() => setSelectedLevel(null)}
                 className="px-10 py-3 bg-[#002147] dark:bg-slate-100 text-white dark:text-slate-950 rounded-xl font-bold shadow-md cursor-pointer"
               >
@@ -625,7 +625,7 @@ export default function LearnPage() {
             // Flashcard content
             <div className="max-w-3xl mx-auto space-y-6 animate-in fade-in duration-500">
               <div className="flex items-center justify-between">
-                <button 
+                <button
                   onClick={() => setSelectedLevel(null)}
                   className="flex items-center gap-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold transition-colors cursor-pointer text-xs"
                 >
@@ -653,7 +653,7 @@ export default function LearnPage() {
                       <span className="text-sm sm:text-base font-serif text-slate-400 dark:text-slate-500">{words[currentIndex].phonetic}</span>
                       <span className="text-xs sm:text-sm font-semibold text-rose-500 dark:text-rose-450 font-sans italic">({words[currentIndex].wordType})</span>
                     </div>
-                    <button 
+                    <button
                       onClick={playPronunciation}
                       className="mt-4 sm:mt-6 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-green-50 dark:bg-green-950/40 border border-green-100 dark:border-green-905/40 flex items-center justify-center text-green-500 dark:text-green-405 hover:bg-green-500 hover:text-white transition-all shadow-sm cursor-pointer"
                     >
@@ -694,7 +694,7 @@ export default function LearnPage() {
 
               {/* Action Buttons Row */}
               <div className="grid grid-cols-3 gap-3">
-                <button 
+                <button
                   onClick={handleNext}
                   className="flex flex-col items-center gap-1.5 py-4 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl hover:bg-rose-50 dark:hover:bg-rose-950/20 hover:border-rose-200 dark:hover:border-rose-900/40 group transition-all cursor-pointer"
                 >
@@ -702,7 +702,7 @@ export default function LearnPage() {
                   <span className="text-[10px] sm:text-xs font-bold text-rose-500 uppercase tracking-wider">Đang Học</span>
                 </button>
 
-                <button 
+                <button
                   onClick={() => setShowHint(!showHint)}
                   className="flex flex-col items-center gap-1.5 py-4 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl hover:bg-amber-50 dark:hover:bg-amber-950/20 hover:border-amber-200 dark:hover:border-amber-900/40 group transition-all cursor-pointer"
                 >
@@ -710,7 +710,7 @@ export default function LearnPage() {
                   <span className="text-[10px] sm:text-xs font-bold text-amber-500 uppercase tracking-wider">{showHint ? 'Ẩn gợi ý' : 'Hiện gợi ý'}</span>
                 </button>
 
-                <button 
+                <button
                   onClick={handleIKnowIt}
                   className="flex flex-col items-center gap-1.5 py-4 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl hover:bg-green-50 dark:hover:bg-green-950/20 hover:border-green-200 dark:hover:border-green-900/40 group transition-all cursor-pointer"
                 >
@@ -1043,7 +1043,7 @@ export default function LearnPage() {
                         <div className="absolute w-full h-full backface-hidden rotate-y-180 flex flex-col items-center justify-center text-center bg-slate-900 dark:bg-slate-950 text-white p-6 sm:p-8 overflow-y-auto rounded-[2.5rem]">
                           <div className="space-y-3 sm:space-y-4 w-full">
                             <div>
-                               <span className="text-[11px] sm:text-xs text-emerald-400 font-bold uppercase tracking-widest block">Nghĩa tiếng Việt</span>
+                              <span className="text-[11px] sm:text-xs text-emerald-400 font-bold uppercase tracking-widest block">Nghĩa tiếng Việt</span>
                               <h2 className="text-lg sm:text-xl font-bold text-emerald-400 mt-1">{activeVocabWords[vocabIndex].meaningVi}</h2>
                             </div>
                             <div className="border-t border-white/10 dark:border-slate-800 pt-2 sm:pt-3">
