@@ -194,42 +194,45 @@ const generateLocalSpeakingFeedback = (transcript: string, targetText: string) =
 
 // AI Translate (with persistent DB cache for instant repeat translations)
 router.post('/translate', async (req, res) => {
-  const { text, targetLang = 'Vietnamese', mode = 'deep' } = req.body;
+  const { text, targetLang = 'Vietnamese', mode = 'deep', trainedSkills } = req.body;
   
   if (!text) return res.status(400).json({ error: 'Text is required' });
 
   const cleanText = text.trim();
   // Determine source language from target (simple toggle)
   const sourceLang = targetLang === 'Vietnamese' ? 'English' : 'Vietnamese';
+  const hasTrainedSkills = trainedSkills && trainedSkills.length > 0;
 
-  // ── Step 1: Check DB Cache ──────────────────────────────────────────────────
-  try {
-    const cached = await prisma.translationCache.findUnique({
-      where: {
-        sourceText_sourceLang_targetLang: {
-          sourceText: cleanText,
-          sourceLang,
-          targetLang
+  // ── Step 1: Check DB Cache (Bypass if custom trained skills are active to avoid pollution) ──
+  if (!hasTrainedSkills) {
+    try {
+      const cached = await prisma.translationCache.findUnique({
+        where: {
+          sourceText_sourceLang_targetLang: {
+            sourceText: cleanText,
+            sourceLang,
+            targetLang
+          }
         }
-      }
-    });
-
-    if (cached) {
-      console.log(`[Translate] ⚡ Cache HIT for "${cleanText.substring(0, 40)}..." (hits: ${cached.hitCount + 1})`);
-      // Increment hit count in background (fire-and-forget)
-      prisma.translationCache.update({
-        where: { id: cached.id },
-        data: { hitCount: { increment: 1 } }
-      }).catch(() => {});
-
-      return res.json({
-        translation: cached.translation,
-        provider: cached.provider,
-        cached: true
       });
+
+      if (cached) {
+        console.log(`[Translate] ⚡ Cache HIT for "${cleanText.substring(0, 40)}..." (hits: ${cached.hitCount + 1})`);
+        // Increment hit count in background (fire-and-forget)
+        prisma.translationCache.update({
+          where: { id: cached.id },
+          data: { hitCount: { increment: 1 } }
+        }).catch(() => {});
+
+        return res.json({
+          translation: cached.translation,
+          provider: cached.provider,
+          cached: true
+        });
+      }
+    } catch (dbErr: any) {
+      console.warn('[Translate] DB cache lookup failed, proceeding to AI:', dbErr.message);
     }
-  } catch (dbErr: any) {
-    console.warn('[Translate] DB cache lookup failed, proceeding to AI:', dbErr.message);
   }
 
   // ── Step 2: AI Translation (cache miss) ─────────────────────────────────────
@@ -260,12 +263,27 @@ router.post('/translate', async (req, res) => {
     }
 
     try {
+      let specificSkillsContext = '';
+      if (hasTrainedSkills) {
+        // Load custom skill context dynamically from indices
+        const { GeminiService } = require('../services/gemini.service');
+        specificSkillsContext = await GeminiService.retrieveSpecificSkillsContext(trainedSkills);
+      }
+
       const prompt = `You are a professional, high-fidelity AI translator. Translate the following text from ${sourceLang} to ${targetLang}.
 
 Input text to translate:
 """
 ${cleanText}
 """
+
+${specificSkillsContext ? `
+═══════════════════════════════════
+🎓 TRAINED SKILLS FOR TRANSLATION
+═══════════════════════════════════
+Translate using the specific rules, guidelines, vocabulary, or coding/domain standards defined below:
+${specificSkillsContext}
+` : ''}
 
 Instructions:
 1. Translate the text with absolute precision, matching the style, tone (formal/informal), context, and linguistic nuances.
@@ -322,32 +340,34 @@ Instructions:
     return res.status(500).json({ error: 'All translation services failed' });
   }
 
-  // ── Step 3: Save to DB Cache (fire-and-forget) ──────────────────────────────
-  prisma.translationCache.upsert({
-    where: {
-      sourceText_sourceLang_targetLang: {
+  // ── Step 3: Save to DB Cache (fire-and-forget) (Bypass if custom trained skills are active to avoid pollution) ──
+  if (!hasTrainedSkills) {
+    prisma.translationCache.upsert({
+      where: {
+        sourceText_sourceLang_targetLang: {
+          sourceText: cleanText,
+          sourceLang,
+          targetLang
+        }
+      },
+      update: {
+        translation,
+        provider,
+        hitCount: { increment: 1 }
+      },
+      create: {
         sourceText: cleanText,
         sourceLang,
-        targetLang
+        targetLang,
+        translation,
+        provider
       }
-    },
-    update: {
-      translation,
-      provider,
-      hitCount: { increment: 1 }
-    },
-    create: {
-      sourceText: cleanText,
-      sourceLang,
-      targetLang,
-      translation,
-      provider
-    }
-  }).then(() => {
-    console.log(`[Translate] 💾 Cached translation for "${cleanText.substring(0, 40)}..."`);
-  }).catch((err: any) => {
-    console.warn('[Translate] Failed to cache translation:', err.message);
-  });
+    }).then(() => {
+      console.log(`[Translate] 💾 Cached translation for "${cleanText.substring(0, 40)}..."`);
+    }).catch((err: any) => {
+      console.warn('[Translate] Failed to cache translation:', err.message);
+    });
+  }
 
   return res.json({ translation, provider, cached: false });
 });

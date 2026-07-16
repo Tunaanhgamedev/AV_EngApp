@@ -3,11 +3,13 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   Languages, ArrowRightLeft, Copy, Volume2, Sparkles,
-  Loader2, Trash2, Check, BookMarked, Plus, X, Tag, Info, AlertCircle, Zap
+  Loader2, Trash2, Check, BookMarked, Plus, X, Tag, Info, AlertCircle, Zap,
+  Brain, Sliders, Search
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
+import { getAvailableSkills } from '@/services/chat.service';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
@@ -145,6 +147,7 @@ function saveLocalCache(cache: Record<string, any>) {
 }
 
 export default function TranslatePage() {
+  const { user } = useAuth();
   const [inputText, setInputText] = useState('');
   const [translatedText, setTranslatedText] = useState('');
   const [isTranslating, setIsTranslating] = useState(false);
@@ -160,6 +163,28 @@ export default function TranslatePage() {
   const [explaining, setExplaining] = useState(false);
   const [explanation, setExplanation] = useState<any>(null);
   const [showExplanation, setShowExplanation] = useState(false);
+
+  // Advanced AI Training State
+  const [trainedSkills, setTrainedSkills] = useState<string[]>([]);
+  const [availableSkills, setAvailableSkills] = useState<any[]>([]);
+  const [showTrainingModal, setShowTrainingModal] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All');
+
+  // Load available skills from API
+  useEffect(() => {
+    const fetchSkills = async () => {
+      if (!user) return;
+      try {
+        const token = await user.getIdToken();
+        const skills = await getAvailableSkills(token);
+        setAvailableSkills(skills || []);
+      } catch (err) {
+        console.error('Failed to load available skills:', err);
+      }
+    };
+    fetchSkills();
+  }, [user]);
 
   const cacheRef = useRef<Record<string, any>>({});
   const explanationCacheRef = useRef<Record<string, any>>({});
@@ -187,7 +212,8 @@ export default function TranslatePage() {
     
     if (text === lastTranslatedRef.current && mode === lastTranslatedModeRef.current) return;
 
-    const cacheKey = `${sLang}-${tLang}-${text}`;
+    const sortedSkillsStr = (trainedSkills || []).sort().join(',');
+    const cacheKey = `${sLang}-${tLang}-${text}-${sortedSkillsStr}`;
     
     // If cache has it, load instantly
     if (cacheRef.current[cacheKey]) {
@@ -214,7 +240,7 @@ export default function TranslatePage() {
     try {
       const res = await fetch(`${API_BASE}/ai/translate`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text, targetLang: tLang, mode }),
+        body: JSON.stringify({ text, targetLang: tLang, mode, trainedSkills }),
         signal: controller.signal,
       });
       const data = await res.json();
@@ -263,7 +289,7 @@ export default function TranslatePage() {
       }
     }
     finally { setIsTranslating(false); }
-  }, [cooldown]);
+  }, [cooldown, trainedSkills]);
 
   // ── Auto-translate on typing (debounced, like Google Translate) ──
   useEffect(() => {
@@ -280,7 +306,8 @@ export default function TranslatePage() {
     setIsTyping(true);
 
     // ── Instant cache check (0ms delay for cached words) ──
-    const cacheKey = `${sourceLang}-${targetLang}-${text}`;
+    const sortedSkillsStr = (trainedSkills || []).sort().join(',');
+    const cacheKey = `${sourceLang}-${targetLang}-${text}-${sortedSkillsStr}`;
     if (cacheRef.current[cacheKey]) {
       setTranslatedText(cacheRef.current[cacheKey].translation);
       setWordInsight(cacheRef.current[cacheKey].insight || null);
@@ -291,24 +318,24 @@ export default function TranslatePage() {
       return;
     }
 
-    // ── Fast mode timer (300ms debounce to avoid hammering on spaces) ──
+    // ── Fast mode timer (250ms debounce to avoid hammering on spaces) ──
     if (fastDebounceRef.current) clearTimeout(fastDebounceRef.current);
     fastDebounceRef.current = setTimeout(() => {
       doTranslate(inputText, sourceLang, targetLang, 'fast');
-    }, 300);
+    }, 250);
 
-    // ── Deep mode timer (800ms debounce) ──
+    // ── Deep mode timer (400ms debounce) ──
     if (deepDebounceRef.current) clearTimeout(deepDebounceRef.current);
     deepDebounceRef.current = setTimeout(() => {
       setIsTyping(false); // Finished typing
       doTranslate(inputText, sourceLang, targetLang, 'deep');
-    }, 800);
+    }, 400);
 
     return () => {
       if (fastDebounceRef.current) clearTimeout(fastDebounceRef.current);
       if (deepDebounceRef.current) clearTimeout(deepDebounceRef.current);
     };
-  }, [inputText, sourceLang, targetLang, doTranslate]);
+  }, [inputText, sourceLang, targetLang, doTranslate, trainedSkills]);
 
   const fetchExplanation = async () => {
     if (!inputText.trim() || !translatedText.trim()) return;
@@ -443,6 +470,34 @@ export default function TranslatePage() {
           <ArrowRightLeft className="w-4 h-4 md:w-5 md:h-5" />
         </button>
         <div className={cn("px-5 md:px-8 py-2.5 md:py-3 rounded-2xl font-black text-xs md:text-sm shadow-sm transition-all border", targetLang === 'English' ? "bg-slate-900 text-white border-slate-900" : "bg-white text-slate-600 border-slate-100")}>{targetLang}</div>
+      </div>
+
+      {/* Trained Skills status bar */}
+      <div className="mx-auto max-w-4xl w-full px-4 py-2.5 bg-slate-50/50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800 flex items-center justify-between gap-3 text-xs rounded-2xl">
+        <div className="flex items-center gap-2 min-w-0">
+          <Brain className="w-4 h-4 text-fuchsia-500 animate-pulse flex-shrink-0" />
+          <span className="font-bold text-slate-500 dark:text-slate-400">Tri thức dịch thuật:</span>
+          {trainedSkills.length === 0 ? (
+            <span className="text-slate-400 italic">Chưa nạp skill (Hệ thống dịch tiêu chuẩn)</span>
+          ) : (
+            <div className="flex gap-1 overflow-x-auto no-scrollbar py-0.5 max-w-[200px] sm:max-w-xs md:max-w-md lg:max-w-xl">
+              {trainedSkills.map(skillId => {
+                const s = availableSkills.find(x => x.id === skillId);
+                return (
+                  <span key={skillId} className="px-2 py-0.5 bg-fuchsia-500/10 dark:bg-fuchsia-500/20 text-fuchsia-600 dark:text-fuchsia-300 border border-fuchsia-500/20 rounded-full font-bold text-[10px] whitespace-nowrap">
+                    {s?.name || skillId}
+                  </span>
+                );
+              })}
+            </div>
+          )}
+        </div>
+        <button 
+          onClick={() => setShowTrainingModal(true)}
+          className="flex items-center gap-1 px-2.5 py-1 bg-fuchsia-50 hover:bg-fuchsia-600 hover:text-white dark:hover:bg-slate-700 text-fuchsia-600 dark:text-fuchsia-300 rounded-lg border border-fuchsia-500/20 dark:border-fuchsia-500/40 transition-all font-bold text-[10px] shadow-sm cursor-pointer whitespace-nowrap active:scale-95"
+        >
+          <Sliders className="w-3.5 h-3.5" /> Huấn luyện AI
+        </button>
       </div>
 
       {/* Main Grid */}
@@ -699,6 +754,164 @@ export default function TranslatePage() {
               <AlertCircle className="w-4 h-4" /> Không thể kết nối tới dịch vụ phân tích. Hãy thử lại sau.
             </div>
           )}
+        </div>
+      )}
+
+      {/* AI Training Room Modal */}
+      {showTrainingModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 animate-in fade-in duration-300">
+          <div className="premium-card max-w-2xl w-full max-h-[85vh] flex flex-col shadow-2xl animate-in zoom-in-95 duration-300">
+            {/* Header */}
+            <div className="flex items-center justify-between p-4 border-b border-slate-100 dark:border-slate-800">
+              <div className="flex items-center gap-2">
+                <div className="p-2 bg-gradient-to-br from-fuchsia-500 to-rose-600 text-white rounded-xl shadow-md">
+                  <Brain className="w-5 h-5 animate-pulse" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-lg text-slate-800 dark:text-slate-100">Phòng Huấn Luyện Tri Thức Dịch Thuật</h3>
+                  <p className="text-xs text-slate-400">Chọn tối đa 5 kỹ năng nâng cao để huấn luyện trực tiếp cho AI dịch thuật</p>
+                </div>
+              </div>
+              <button 
+                onClick={() => setShowTrainingModal(false)}
+                className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors cursor-pointer text-slate-400 hover:text-slate-600"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Neural Synapses Status */}
+            <div className="px-4 py-3 bg-gradient-to-r from-fuchsia-500/5 to-rose-500/5 dark:from-fuchsia-500/10 dark:to-rose-500/10 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between gap-3">
+              <span className="text-xs font-semibold text-slate-600 dark:text-slate-300 flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-fuchsia-500 animate-ping" />
+                Kết nối nơ-ron: <span className="font-bold text-fuchsia-600 dark:text-fuchsia-400">{trainedSkills.length}/5 active</span>
+              </span>
+              {trainedSkills.length > 0 && (
+                <button 
+                  onClick={() => setTrainedSkills([])}
+                  className="text-xs font-bold text-rose-500 hover:underline cursor-pointer"
+                >
+                  Xóa tất cả nơ-ron
+                </button>
+              )}
+            </div>
+
+            {/* Filter and Search */}
+            <div className="p-4 space-y-3 border-b border-slate-100 dark:border-slate-800">
+              <div className="relative">
+                <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <input 
+                  type="text"
+                  placeholder="Tìm kiếm kỹ năng dịch thuật..."
+                  className="w-full h-10 pl-9 pr-4 bg-slate-50 dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 rounded-xl focus:border-primary focus:outline-none transition-all text-sm placeholder:text-slate-400 text-slate-700 dark:text-slate-200"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+
+              {/* Categories */}
+              <div className="flex gap-1.5 overflow-x-auto no-scrollbar py-0.5">
+                {['All', 'ai', 'development', 'security', 'database', 'design', 'seo', 'automation'].map(cat => {
+                  const label = cat === 'All' ? 'Tất cả' : cat.toUpperCase();
+                  const isActive = selectedCategory === cat;
+                  return (
+                    <button
+                      key={cat}
+                      onClick={() => setSelectedCategory(cat)}
+                      className={cn(
+                        "px-3 py-1 rounded-full text-xs font-bold transition-all cursor-pointer whitespace-nowrap",
+                        isActive 
+                          ? "bg-primary text-white" 
+                          : "bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700"
+                      )}
+                    >
+                      {label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Skills List */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-2 max-h-[40vh] min-h-[25vh]">
+              {availableSkills
+                .filter(s => {
+                  const matchSearch = s.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                                     s.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                     s.description.toLowerCase().includes(searchQuery.toLowerCase());
+                  const matchCat = selectedCategory === 'All' || s.category === selectedCategory || s.tags?.includes(selectedCategory);
+                  return matchSearch && matchCat;
+                })
+                .map(skill => {
+                  const isChecked = trainedSkills.includes(skill.id);
+                  return (
+                    <button
+                      key={skill.id}
+                      onClick={() => {
+                        if (isChecked) {
+                          setTrainedSkills(trainedSkills.filter(id => id !== skill.id));
+                        } else {
+                          if (trainedSkills.length >= 5) {
+                            alert('Chỉ huấn luyện tối đa 5 kỹ năng cùng lúc để đạt hiệu suất phản hồi tối ưu.');
+                            return;
+                          }
+                          setTrainedSkills([...trainedSkills, skill.id]);
+                        }
+                      }}
+                      className={cn(
+                        "w-full text-left p-3.5 rounded-xl border transition-all cursor-pointer flex items-start gap-3 active:scale-[0.99]",
+                        isChecked 
+                          ? "bg-fuchsia-500/5 dark:bg-fuchsia-500/10 border-fuchsia-500 text-slate-800 dark:text-slate-100" 
+                          : "bg-white dark:bg-slate-800 border-slate-100 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-slate-200 dark:hover:border-slate-600"
+                      )}
+                    >
+                      <div className={cn(
+                        "w-5 h-5 rounded-md flex items-center justify-center border-2 flex-shrink-0 mt-0.5 transition-all",
+                        isChecked ? "bg-fuchsia-500 border-fuchsia-500 text-white" : "border-slate-300 dark:border-slate-600"
+                      )}>
+                        {isChecked && <Check className="w-3.5 h-3.5" />}
+                      </div>
+                      <div className="min-w-0">
+                        <p className="font-bold text-sm text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                          {skill.name || skill.id}
+                          <span className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 rounded">
+                            {skill.category || 'general'}
+                          </span>
+                        </p>
+                        <p className="text-xs text-slate-400 dark:text-slate-500 leading-relaxed mt-0.5 line-clamp-2">{skill.description}</p>
+                      </div>
+                    </button>
+                  );
+                })}
+              {availableSkills.filter(s => {
+                const matchSearch = s.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                                   s.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                   s.description.toLowerCase().includes(searchQuery.toLowerCase());
+                const matchCat = selectedCategory === 'All' || s.category === selectedCategory || s.tags?.includes(selectedCategory);
+                return matchSearch && matchCat;
+              }).length === 0 && (
+                <div className="text-center py-8 text-slate-400 italic text-sm">
+                  Không tìm thấy kỹ năng nào phù hợp.
+                </div>
+              )}
+            </div>
+
+            {/* Footer */}
+            <div className="p-4 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-3">
+              <button 
+                onClick={() => setShowTrainingModal(false)}
+                className="px-4 py-2 text-sm font-bold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors cursor-pointer"
+              >
+                Hủy
+              </button>
+              <button 
+                onClick={() => setShowTrainingModal(false)}
+                className="px-6 py-2 text-sm font-bold bg-primary text-white rounded-xl hover:opacity-90 transition-all shadow-md cursor-pointer"
+              >
+                Hoàn tất Huấn luyện
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
