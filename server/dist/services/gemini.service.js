@@ -92,6 +92,98 @@ class GeminiService {
             }
         }
     }
+    static cachedSkills = null;
+    /**
+     * Lazy load and cache skills index from skills_index.json for fast fuzzy RAG search
+     */
+    static getSkillsIndex() {
+        if (GeminiService.cachedSkills) {
+            return GeminiService.cachedSkills;
+        }
+        try {
+            const possibleIndexPaths = [
+                path_1.default.join(process.cwd(), '../antigravity-awesome-skills/skills_index.json'),
+                path_1.default.join(__dirname, '../../../antigravity-awesome-skills/skills_index.json'),
+                path_1.default.join(__dirname, '../../../../antigravity-awesome-skills/skills_index.json'),
+                path_1.default.join(process.cwd(), 'antigravity-awesome-skills/skills_index.json'),
+            ];
+            let indexPath = '';
+            for (const p of possibleIndexPaths) {
+                if (fs_1.default.existsSync(p) && fs_1.default.statSync(p).isFile()) {
+                    indexPath = p;
+                    break;
+                }
+            }
+            if (indexPath) {
+                const raw = fs_1.default.readFileSync(indexPath, 'utf8');
+                const parsed = JSON.parse(raw);
+                if (Array.isArray(parsed)) {
+                    // Map to compact footprint
+                    GeminiService.cachedSkills = parsed.map((item) => ({
+                        id: item.id || item.name || '',
+                        name: item.name || '',
+                        description: item.description || '',
+                        category: item.category || '',
+                        tags: Array.isArray(item.tags) ? item.tags : []
+                    }));
+                    console.log(`[GeminiService] Successfully cached ${GeminiService.cachedSkills.length} skills from index.`);
+                    return GeminiService.cachedSkills;
+                }
+            }
+        }
+        catch (err) {
+            console.error('[GeminiService] Error loading skills_index.json:', err);
+        }
+        GeminiService.cachedSkills = [];
+        return [];
+    }
+    /**
+     * Retrieve exact contents of specifically requested trained skills from client
+     */
+    static async retrieveSpecificSkillsContext(skills) {
+        try {
+            const possiblePaths = [
+                path_1.default.join(process.cwd(), '../antigravity-awesome-skills/skills'),
+                path_1.default.join(__dirname, '../../../antigravity-awesome-skills/skills'),
+                path_1.default.join(__dirname, '../../../../antigravity-awesome-skills/skills'),
+                path_1.default.join(process.cwd(), 'antigravity-awesome-skills/skills'),
+            ];
+            let skillsDir = '';
+            for (const p of possiblePaths) {
+                if (fs_1.default.existsSync(p) && fs_1.default.statSync(p).isDirectory()) {
+                    skillsDir = p;
+                    break;
+                }
+            }
+            if (!skillsDir) {
+                console.warn('[GeminiService] Could not find skills directory for specific retrieval.');
+                return '';
+            }
+            let context = '\n═══════════════════════════════════\n🎓 TRAINED ADVANCED AI SKILLS CONTEXT\n═══════════════════════════════════\n';
+            let loadedCount = 0;
+            for (const skillId of skills) {
+                const safeSkillId = path_1.default.basename(skillId);
+                const dirPath = path_1.default.join(skillsDir, safeSkillId);
+                if (fs_1.default.existsSync(dirPath) && fs_1.default.statSync(dirPath).isDirectory()) {
+                    const files = fs_1.default.readdirSync(dirPath);
+                    const mdFile = files.find(f => f.toLowerCase() === 'skill.md' || f.toLowerCase() === 'readme.md' || f.endsWith('.md'));
+                    if (mdFile) {
+                        const filePath = path_1.default.join(dirPath, mdFile);
+                        const content = fs_1.default.readFileSync(filePath, 'utf8');
+                        const cleanedContent = content.replace(/^---[\s\S]*?---/, '').trim();
+                        context += `\n[Trained Skill: ${safeSkillId.toUpperCase()}]\n${cleanedContent.substring(0, 4500)}\n`;
+                        loadedCount++;
+                    }
+                }
+            }
+            context += '\n═══════════════════════════════════\n';
+            return loadedCount > 0 ? context : '';
+        }
+        catch (err) {
+            console.error('[GeminiService] Error retrieving specific skills context:', err);
+            return '';
+        }
+    }
     /**
      * Dynamically search and retrieve relevant skill contents from antigravity-awesome-skills
      */
@@ -117,88 +209,96 @@ class GeminiService {
             const dirs = fs_1.default.readdirSync(skillsDir);
             const matchedDirs = [];
             const normalizedMessage = message.toLowerCase();
-            for (const dir of dirs) {
-                const dirLower = dir.toLowerCase();
-                if (normalizedMessage.includes(dirLower)) {
-                    matchedDirs.push(dir);
+            // Part 1: Smart index relevance scorer (TF-IDF/BM25 approximation)
+            const stopwords = new Set(['a', 'an', 'the', 'and', 'or', 'in', 'of', 'to', 'for', 'with', 'on', 'at', 'by', 'from', 'about', 'how', 'why', 'what', 'where']);
+            const queryWords = normalizedMessage.split(/[^a-zA-Z0-9_\-]+/).filter(w => w.length > 1 && !stopwords.has(w));
+            const skills = GeminiService.getSkillsIndex();
+            const scoredSkills = [];
+            for (const skill of skills) {
+                let score = 0;
+                const skillIdLower = skill.id.toLowerCase();
+                const skillNameLower = skill.name.toLowerCase();
+                const skillDescLower = skill.description.toLowerCase();
+                // Exact skill ID match in query
+                if (normalizedMessage.includes(skillIdLower)) {
+                    score += 15;
                 }
-                else if (dir.includes('-')) {
-                    const parts = dirLower.split('-');
-                    const minMatch = parts.length > 3 ? 2 : parts.length;
-                    let matchCount = 0;
-                    for (const part of parts) {
-                        if (part.length <= 3) {
-                            const regex = new RegExp(`\\b${part}\\b`, 'i');
-                            if (regex.test(normalizedMessage))
-                                matchCount++;
-                        }
-                        else {
-                            if (normalizedMessage.includes(part))
-                                matchCount++;
-                        }
+                for (const word of queryWords) {
+                    if (skillIdLower.includes(word) || skillNameLower.includes(word)) {
+                        score += 5;
                     }
-                    if (matchCount >= minMatch) {
-                        matchedDirs.push(dir);
+                    if (skill.tags.some((t) => t.toLowerCase() === word)) {
+                        score += 6;
                     }
+                    if (skillDescLower.includes(word)) {
+                        score += 2;
+                    }
+                }
+                if (score > 0) {
+                    scoredSkills.push({ id: skill.id, score });
                 }
             }
-            // Alias map matching (always run to collect all relevant context)
-            const aliasMap = {
-                'agent': 'ai-agents-architect',
-                'rag': 'ai-engineering-toolkit',
-                'prompt': 'ai-engineering-toolkit',
-                'seo': 'ai-seo',
-                'brainstorming': 'brainstorming',
-                'brainstorm': 'brainstorming',
-                'clean code': 'clean-code',
-                'clean-code': 'clean-code',
-                'codebase cleanup': 'codebase-cleanup-refactor-clean',
-                'refactor': 'codebase-cleanup-refactor-clean',
-                'codebase design': 'codebase-design',
-                'copywriting': 'copywriting',
-                'data engineer': 'data-engineer',
-                'debugger': 'debugger',
-                'debugging strategies': 'debugging-strategies',
-                'debugging': 'debugging-strategies',
-                'design it': 'design-it',
-                'frontend developer': 'frontend-developer',
-                'frontend': 'frontend-developer',
-                'ai assistant': 'llm-application-dev-ai-assistant',
-                'llm assistant': 'llm-application-dev-ai-assistant',
-                'app patterns': 'llm-app-patterns',
-                'llm app': 'llm-app-patterns',
-                'structured output': 'llm-structured-output',
-                'logic fix': 'logic-fix-all',
-                'logic-fix': 'logic-fix-all',
-                'n8n': 'n8n-code-javascript',
-                'n8n javascript': 'n8n-code-javascript',
-                'senior fullstack': 'senior-fullstack',
-                'fullstack': 'senior-fullstack',
-                'skill developer': 'skill-developer',
-                'ui skills': 'ui-skills',
-                'ui-ux pro': 'ui-ux-pro-max',
-                'ui ux pro': 'ui-ux-pro-max',
-                'web project': 'web-project-brainstorming',
-                'wrapper': 'ai-wrapper-product',
-                'mcp': 'ai-dev-jobs-mcp',
-                'jobs': 'ai-dev-jobs-mcp',
-                'loop': 'ai-loop',
-                'md': 'ai-md',
-                'ml': 'ai-ml',
-                'cli': 'ai-native-cli',
-                'native': 'ai-native-cli',
-                'product': 'ai-product',
-                'studio': 'ai-studio-image',
-                'image': 'ai-studio-image',
-            };
-            for (const [key, dirName] of Object.entries(aliasMap)) {
-                if (normalizedMessage.includes(key)) {
-                    matchedDirs.push(dirName);
+            // Sort by score desc and take top matches
+            scoredSkills.sort((a, b) => b.score - a.score);
+            matchedDirs.push(...scoredSkills.slice(0, 3).map(s => s.id));
+            // Part 2: Fallback keyword matching (original logic as guardrail)
+            if (matchedDirs.length === 0) {
+                for (const dir of dirs) {
+                    const dirLower = dir.toLowerCase();
+                    if (normalizedMessage.includes(dirLower)) {
+                        matchedDirs.push(dir);
+                    }
+                    else if (dir.includes('-')) {
+                        const parts = dirLower.split('-');
+                        const minMatch = parts.length > 3 ? 2 : parts.length;
+                        let matchCount = 0;
+                        for (const part of parts) {
+                            if (part.length <= 3) {
+                                const regex = new RegExp(`\\b${part}\\b`, 'i');
+                                if (regex.test(normalizedMessage))
+                                    matchCount++;
+                            }
+                            else {
+                                if (normalizedMessage.includes(part))
+                                    matchCount++;
+                            }
+                        }
+                        if (matchCount >= minMatch) {
+                            matchedDirs.push(dir);
+                        }
+                    }
+                }
+                // Hardcoded alias matching as final safety
+                const aliasMap = {
+                    'agent': 'ai-agents-architect',
+                    'rag': 'ai-engineering-toolkit',
+                    'prompt': 'ai-engineering-toolkit',
+                    'seo': 'ai-seo',
+                    'brainstorm': 'brainstorming',
+                    'clean code': 'clean-code',
+                    'refactor': 'codebase-cleanup-refactor-clean',
+                    'responsive': 'ai-wrapper-product',
+                    'ui/ux': 'ai-wrapper-product',
+                    'ml': 'ai-ml',
+                    'mcp': 'ai-dev-jobs-mcp',
+                    'jobs': 'ai-dev-jobs-mcp',
+                    'loop': 'ai-loop',
+                    'md': 'ai-md',
+                    'markdown': 'ai-md',
+                    'cli': 'ai-native-cli',
+                    'product': 'ai-product',
+                    'studio': 'ai-studio-image',
+                    'image': 'ai-studio-image',
+                    'wrapper': 'ai-wrapper-product',
+                };
+                for (const [key, dirName] of Object.entries(aliasMap)) {
+                    if (normalizedMessage.includes(key)) {
+                        matchedDirs.push(dirName);
+                    }
                 }
             }
             if (matchedDirs.length === 0)
                 return '';
-            // De-duplicate matched directories
             const uniqueMatched = Array.from(new Set(matchedDirs)).slice(0, 3);
             let context = '\n═══════════════════════════════════\n💡 DYNAMIC SKILL KNOWLEDGE BASE CONTEXT (RAG)\n═══════════════════════════════════\n';
             for (const dir of uniqueMatched) {
@@ -209,7 +309,6 @@ class GeminiService {
                     if (mdFile) {
                         const filePath = path_1.default.join(dirPath, mdFile);
                         const content = fs_1.default.readFileSync(filePath, 'utf8');
-                        // Clean frontmatter from the skill markdown content to save tokens
                         const cleanedContent = content.replace(/^---[\s\S]*?---/, '').trim();
                         context += `\n[Skill Module: ${dir.toUpperCase()}]\n${cleanedContent.substring(0, 4500)}\n`;
                     }
@@ -291,7 +390,7 @@ class GeminiService {
     /**
      * AI Chat Roleplay using EngBot
      */
-    static async generateChatResponse(messages, persona, scenario, userId) {
+    static async generateChatResponse(messages, persona, scenario, userId, trainedSkills) {
         try {
             // Build proper Gemini chat history from previous messages (excluding the latest user message)
             let chatHistory = messages.slice(0, -1).map(m => ({
@@ -305,7 +404,12 @@ class GeminiService {
             }
             const lastUserMessage = messages[messages.length - 1]?.content || "";
             const searchKey = `${lastUserMessage} ${persona} ${scenario}`;
+            // Load both dynamic skills and specifically trained skills
             const skillContext = await GeminiService.retrieveSkillContext(searchKey);
+            let specificSkillsContext = '';
+            if (trainedSkills && trainedSkills.length > 0) {
+                specificSkillsContext = await GeminiService.retrieveSpecificSkillsContext(trainedSkills);
+            }
             let systemInstruction = `
 Bạn là EngBot — Chuyên Gia Ngôn Ngữ & Huấn Luyện Viên Tiếng Anh Học Thuật/Giao Tiếp Quốc Tế. Bạn được huấn luyện chuyên sâu theo các phương pháp giảng dạy hiện đại (CLT - Communicative Language Teaching, Lexical Approach, và Task-Based Learning). Nhiệm vụ của bạn là hướng dẫn người học từ cấp độ cơ bản đến làm việc thực tế trong các môi trường doanh nghiệp quốc tế và chuyên ngành công nghệ cao.
 
@@ -434,6 +538,9 @@ Chỉ trả về JSON thuần túy, không chứa ký tự hay wrapper markdown 
 `;
             if (skillContext) {
                 systemInstruction += `\n${skillContext}\nLƯU Ý QUAN TRỌNG: Người dùng đang thảo luận/hỏi về các khía cạnh kỹ thuật trong Skill Module ở trên. Hãy sử dụng thông tin và nguyên tắc trong phần DYNAMIC SKILL KNOWLEDGE BASE CONTEXT này để trả lời và phân tích chi tiết, sâu sắc nhất có thể.`;
+            }
+            if (specificSkillsContext) {
+                systemInstruction += `\n${specificSkillsContext}\nLƯU Ý QUAN TRỌNG: Người dùng đã chủ động TUYỂN DỤNG/HUẤN LUYỆN các kỹ năng chuyên môn (Trained Skills) ở trên cho bạn. Hãy ưu tiên áp dụng các chỉ dẫn, quy chuẩn kỹ thuật và nguyên lý thiết kế từ các Trained Skills này để hỗ trợ người dùng ở mức độ cao cấp nhất.`;
             }
             // Try models in priority order for absolute stability
             const models = GeminiService.models;

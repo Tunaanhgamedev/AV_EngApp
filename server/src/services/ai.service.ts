@@ -13,7 +13,7 @@ export class AIService {
     return await GeminiService.explainWord(word);
   }
 
-  static async generateChatResponse(messages: any[], persona: string, scenario: string, userId?: string) {
-    return await GeminiService.generateChatResponse(messages, persona, scenario, userId);
+  static async generateChatResponse(messages: any[], persona: string, scenario: string, userId?: string, trainedSkills?: string[]) {
+    return await GeminiService.generateChatResponse(messages, persona, scenario, userId, trainedSkills);
   }
 }

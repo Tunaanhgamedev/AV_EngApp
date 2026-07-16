@@ -6,7 +6,8 @@ export const sendMessage = async (params: {
   message: string,
   persona: string,
   scenario: string,
-  history: any[]
+  history: any[],
+  trainedSkills?: string[]
 }, token?: string) => {
   try {
     const response = await fetch(`${API_URL}/chat/message`, {
@@ -42,6 +43,23 @@ export const getChatHistory = async (userId: string, sessionId: string, token?: 
     return await response.json();
   } catch (error) {
     console.error('API Error:', error);
+    throw error;
+  }
+};
+
+export const getAvailableSkills = async (token?: string) => {
+  try {
+    const response = await fetch(`${API_URL}/chat/skills`, {
+      headers: {
+        ...(token && { 'Authorization': `Bearer ${token}` })
+      }
+    });
+    if (!response.ok) {
+      throw new Error('Failed to fetch available skills');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('API Error in getAvailableSkills:', error);
     throw error;
   }
 };

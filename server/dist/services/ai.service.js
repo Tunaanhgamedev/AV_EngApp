@@ -13,8 +13,8 @@ class AIService {
     static async explainWord(word) {
         return await gemini_service_1.GeminiService.explainWord(word);
     }
-    static async generateChatResponse(messages, persona, scenario, userId) {
-        return await gemini_service_1.GeminiService.generateChatResponse(messages, persona, scenario, userId);
+    static async generateChatResponse(messages, persona, scenario, userId, trainedSkills) {
+        return await gemini_service_1.GeminiService.generateChatResponse(messages, persona, scenario, userId, trainedSkills);
     }
 }
 exports.AIService = AIService;
