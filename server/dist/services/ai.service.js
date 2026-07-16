@@ -7,8 +7,8 @@ const gemini_service_1 = require("./gemini.service");
  * Powered exclusively by Google Gemini
  */
 class AIService {
-    static async analyzeJournal(content) {
-        return await gemini_service_1.GeminiService.analyzeJournal(content);
+    static async analyzeJournal(content, trainedSkills) {
+        return await gemini_service_1.GeminiService.analyzeJournal(content, trainedSkills);
     }
     static async explainWord(word) {
         return await gemini_service_1.GeminiService.explainWord(word);

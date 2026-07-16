@@ -1,6 +1,6 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
-export const analyzeJournal = async (userId: string, content: string, title?: string, token?: string) => {
+export const analyzeJournal = async (userId: string, content: string, title?: string, token?: string, trainedSkills?: string[]) => {
   try {
     const response = await fetch(`${API_URL}/journal/analyze`, {
       method: 'POST',
@@ -8,7 +8,7 @@ export const analyzeJournal = async (userId: string, content: string, title?: st
         'Content-Type': 'application/json',
         ...(token && { 'Authorization': `Bearer ${token}` })
       },
-      body: JSON.stringify({ userId, content, title }),
+      body: JSON.stringify({ userId, content, title, trainedSkills }),
     });
 
     if (!response.ok) {

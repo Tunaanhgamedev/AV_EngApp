@@ -3,7 +3,7 @@ import prisma from '../lib/prisma';
 import { AIService } from '../services/ai.service';
 
 export const createJournalEntry = async (req: Request, res: Response) => {
-  const { userId, content, title } = req.body;
+  const { userId, content, title, trainedSkills } = req.body;
 
   if (!content) {
     return res.status(400).json({ error: 'Content is required' });
@@ -11,7 +11,7 @@ export const createJournalEntry = async (req: Request, res: Response) => {
 
   try {
     // 1. Get AI analysis
-    const analysis = await AIService.analyzeJournal(content);
+    const analysis = await AIService.analyzeJournal(content, trainedSkills);
 
     // 2. Save to database
     const entry = await prisma.journalEntry.create({

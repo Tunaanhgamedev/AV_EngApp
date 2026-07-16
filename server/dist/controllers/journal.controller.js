@@ -7,13 +7,13 @@ exports.getJournalHistory = exports.createJournalEntry = void 0;
 const prisma_1 = __importDefault(require("../lib/prisma"));
 const ai_service_1 = require("../services/ai.service");
 const createJournalEntry = async (req, res) => {
-    const { userId, content, title } = req.body;
+    const { userId, content, title, trainedSkills } = req.body;
     if (!content) {
         return res.status(400).json({ error: 'Content is required' });
     }
     try {
         // 1. Get AI analysis
-        const analysis = await ai_service_1.AIService.analyzeJournal(content);
+        const analysis = await ai_service_1.AIService.analyzeJournal(content, trainedSkills);
         // 2. Save to database
         const entry = await prisma_1.default.journalEntry.create({
             data: {

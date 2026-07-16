@@ -341,15 +341,25 @@ export class GeminiService {
     }
   }
 
-  /**
-   * Analyze journal using EngBot (Powered by Gemini)
-   */
-  static async analyzeJournal(content: string) {
+  static async analyzeJournal(content: string, trainedSkills?: string[]) {
     try {
+      let specificSkillsContext = '';
+      if (trainedSkills && trainedSkills.length > 0) {
+        specificSkillsContext = await GeminiService.retrieveSpecificSkillsContext(trainedSkills);
+      }
+
       const prompt = `
         You are EngBot, an expert AI English teacher. Analyze the following journal entry written by an English learner.
         
         Journal Content: "${content}"
+        
+        ${specificSkillsContext ? `
+        ═══════════════════════════════════
+        🎓 TRAINED SKILLS FOR JOURNAL ANALYSIS
+        ═══════════════════════════════════
+        Apply the following guidelines and instructions from the trained skills specifically for correcting, formatting, or optimizing this journal:
+        ${specificSkillsContext}
+        ` : ''}
         
         Please provide the following in JSON format:
         {

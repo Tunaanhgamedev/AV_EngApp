@@ -5,8 +5,8 @@ import { GeminiService } from './gemini.service';
  * Powered exclusively by Google Gemini
  */
 export class AIService {
-  static async analyzeJournal(content: string) {
-    return await GeminiService.analyzeJournal(content);
+  static async analyzeJournal(content: string, trainedSkills?: string[]) {
+    return await GeminiService.analyzeJournal(content, trainedSkills);
   }
 
   static async explainWord(word: string) {
