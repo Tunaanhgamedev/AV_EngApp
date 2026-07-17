@@ -152,6 +152,7 @@ export default function TranslatePage() {
   const [translatedText, setTranslatedText] = useState('');
   const [isTranslating, setIsTranslating] = useState(false);
   const [translationMode, setTranslationMode] = useState<'fast' | 'deep'>('deep');
+  const [modePreference, setModePreference] = useState<'auto' | 'fast' | 'deep'>('auto');
   const [isTyping, setIsTyping] = useState(false);
   const [sourceLang, setSourceLang] = useState('English');
   const [targetLang, setTargetLang] = useState('Vietnamese');
@@ -318,24 +319,35 @@ export default function TranslatePage() {
       return;
     }
 
-    // ── Fast mode timer (250ms debounce to avoid hammering on spaces) ──
+    // ── Fast mode timer ──
     if (fastDebounceRef.current) clearTimeout(fastDebounceRef.current);
-    fastDebounceRef.current = setTimeout(() => {
-      doTranslate(inputText, sourceLang, targetLang, 'fast');
-    }, 250);
+    if (modePreference === 'auto' || modePreference === 'fast') {
+      fastDebounceRef.current = setTimeout(() => {
+        doTranslate(inputText, sourceLang, targetLang, 'fast');
+      }, 120); // Ultra-fast response for typing (120ms)
+    }
 
-    // ── Deep mode timer (400ms debounce) ──
+    // ── Deep mode timer ──
     if (deepDebounceRef.current) clearTimeout(deepDebounceRef.current);
-    deepDebounceRef.current = setTimeout(() => {
-      setIsTyping(false); // Finished typing
-      doTranslate(inputText, sourceLang, targetLang, 'deep');
-    }, 400);
+    if (modePreference === 'auto' || modePreference === 'deep') {
+      const delay = modePreference === 'deep' ? 600 : 1200; // 1.2s delay for auto mode to prevent hammering Gemini API
+      deepDebounceRef.current = setTimeout(() => {
+        setIsTyping(false); // Finished typing
+        doTranslate(inputText, sourceLang, targetLang, 'deep');
+      }, delay);
+    } else {
+      // In purely fast mode, we finish typing immediately after fast translation
+      const delay = 150;
+      deepDebounceRef.current = setTimeout(() => {
+        setIsTyping(false);
+      }, delay);
+    }
 
     return () => {
       if (fastDebounceRef.current) clearTimeout(fastDebounceRef.current);
       if (deepDebounceRef.current) clearTimeout(deepDebounceRef.current);
     };
-  }, [inputText, sourceLang, targetLang, doTranslate, trainedSkills]);
+  }, [inputText, sourceLang, targetLang, doTranslate, trainedSkills, modePreference]);
 
   const fetchExplanation = async () => {
     if (!inputText.trim() || !translatedText.trim()) return;
@@ -498,6 +510,45 @@ export default function TranslatePage() {
         >
           <Sliders className="w-3.5 h-3.5" /> Huấn luyện AI
         </button>
+      </div>
+
+      {/* Mode Selector Pill Group */}
+      <div className="flex justify-center">
+        <div className="flex bg-slate-100 dark:bg-slate-800/80 p-1.5 rounded-2xl gap-1.5 border border-slate-200/50 dark:border-slate-800 shadow-sm max-w-sm w-full">
+          {(['auto', 'fast', 'deep'] as const).map(pref => {
+            const isActive = modePreference === pref;
+            let label = '';
+            if (pref === 'auto') {
+              label = '⚡ Tự động';
+            } else if (pref === 'fast') {
+              label = '🏃 Dịch nhanh';
+            } else {
+              label = '🧠 Dịch sâu (AI)';
+            }
+            return (
+              <button
+                key={pref}
+                onClick={() => {
+                  setModePreference(pref);
+                  // Trigger re-translation immediately on mode switch
+                  if (inputText.trim()) {
+                    // Reset cache refs to force refresh
+                    lastTranslatedRef.current = '';
+                    lastTranslatedModeRef.current = null;
+                  }
+                }}
+                className={cn(
+                  "flex-1 py-2 text-center text-xs font-bold rounded-xl transition-all cursor-pointer whitespace-nowrap",
+                  isActive
+                    ? "bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 shadow-sm border border-slate-200/20"
+                    : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+                )}
+              >
+                {label}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Main Grid */}
