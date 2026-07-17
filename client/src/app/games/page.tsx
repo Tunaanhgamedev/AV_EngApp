@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Gamepad2, Zap, Trophy, Target, Brain, Timer, Star, ChevronRight, Flame, Sparkles, X, CheckCircle2, RotateCcw, Play, RefreshCw, Loader2, ImageIcon, HelpCircle } from 'lucide-react';
+import { Gamepad2, Zap, Trophy, Target, Brain, Timer, Star, ChevronRight, Flame, Sparkles, X, CheckCircle2, RotateCcw, Play, RefreshCw, Loader2, ImageIcon, HelpCircle, Volume2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
 
@@ -174,8 +174,43 @@ const getCategoryLabel = (cat: string) => {
   }
 };
 
+function GameVocabularyRecap({ words, onSaveWord, savedWords, savingWord }: { words: any[]; onSaveWord: (word: any) => void; savedWords: Record<string, boolean>; savingWord: string | null; }) {
+  if (!words || words.length === 0) return null;
+  return (
+    <div className="mt-6 border-t border-slate-100 pt-5 space-y-3 text-left max-h-[280px] overflow-y-auto px-1">
+      <h4 className="text-sm font-black text-slate-700 flex items-center gap-1.5 px-2">
+        <Brain className="w-4 h-4 text-indigo-500 animate-pulse" /> Từ vựng đã ôn luyện trong lượt này
+      </h4>
+      <div className="grid grid-cols-1 gap-2">
+        {words.map((w, idx) => {
+          const isSaved = savedWords[w.word?.toLowerCase?.() || ''];
+          const isSaving = savingWord === w.word;
+          return (
+            <div key={idx} className="p-3 bg-slate-50 rounded-2xl border border-slate-100 flex items-center justify-between gap-3">
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2">
+                  <span className="font-black text-slate-800 text-sm truncate">{w.word}</span>
+                  {w.wordType && <span className="text-[9px] font-bold px-1.5 py-0.5 bg-slate-200 text-slate-500 rounded-md">{w.wordType}</span>}
+                </div>
+                {w.phonetic && <div className="text-[10px] font-bold text-slate-400 mt-0.5">{w.phonetic}</div>}
+                <div className="text-xs font-semibold text-slate-600 mt-0.5 line-clamp-1">{w.meaningVi}</div>
+              </div>
+              <div className="flex items-center gap-1.5 flex-shrink-0">
+                <button onClick={() => speak(w.word)} className="p-1.5 text-slate-400 hover:text-indigo-500 transition-colors bg-white rounded-lg border border-slate-100 hover:shadow-sm"><Volume2 className="w-3.5 h-3.5" /></button>
+                <button disabled={isSaved || isSaving} onClick={() => onSaveWord(w)} className={cn("px-2.5 py-1 rounded-lg font-bold text-[10px] border transition-all flex items-center gap-1", isSaved ? "bg-green-50 border-green-200 text-green-600" : "bg-white hover:bg-slate-50 border-slate-200 text-slate-600 cursor-pointer hover:shadow-sm")}>
+                  {isSaving ? <Loader2 className="w-3 h-3 animate-spin" /> : isSaved ? <>Đã lưu</> : <>Lưu sổ tay</>}
+                </button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 // ─── Vocabulary Match Game ────────────────────────────────────────────────────
-function VocabMatchGame({ dbWords, category, onClose, awardXp }: { dbWords: any[]; category: string; onClose: () => void; awardXp?: (amount: number, reason: string) => void }) {
+function VocabMatchGame({ dbWords, category, onClose, awardXp, onSaveWord, savedWords, savingWord }: { dbWords: any[]; category: string; onClose: () => void; awardXp?: (amount: number, reason: string) => void; onSaveWord: (word: any) => void; savedWords: Record<string, boolean>; savingWord: string | null; }) {
   const [cards, setCards] = useState<Card[]>([]);
   const [selected, setSelected] = useState<Card[]>([]);
   const [matches, setMatches] = useState(0);
@@ -183,21 +218,31 @@ function VocabMatchGame({ dbWords, category, onClose, awardXp }: { dbWords: any[
   const [timer, setTimer] = useState(0);
   const [running, setRunning] = useState(false);
   const [won, setWon] = useState(false);
-  const [pairCount, setPairCount] = useState(6);
+  const [pairCount, setPairCount] = useState(8);
+  const [sessionWords, setSessionWords] = useState<any[]>([]);
 
   const initGame = useCallback(() => {
     let pool = STATIC_WORD_PAIRS;
-    if (dbWords && dbWords.length >= 6) {
+    let fullWords: any[] = [];
+    if (dbWords && dbWords.length >= 8) {
       pool = dbWords.map(w => ({ en: w.word, vi: w.meaningVi }));
+      fullWords = dbWords;
     }
 
-    const selectedPairs = shuffle(pool).slice(0, 6);
+    const shuffledPool = shuffle(pool);
+    const selectedPairs = shuffledPool.slice(0, 8);
     const deck: Card[] = [];
     selectedPairs.forEach((p, idx) => {
       const pairId = idx + 1;
       deck.push({ id: pairId * 10, word: p.en, type: 'en', pairId, matched: false });
       deck.push({ id: pairId * 10 + 1, word: p.vi, type: 'vi', pairId, matched: false });
     });
+
+    if (fullWords.length > 0) {
+      setSessionWords(selectedPairs.map(p => fullWords.find(w => w.word === p.en)).filter(Boolean));
+    } else {
+      setSessionWords(selectedPairs.map(p => ({ word: p.en, meaningVi: p.vi, meaningEn: p.en, wordType: '', phonetic: '' })));
+    }
 
     setCards(shuffle(deck));
     setSelected([]);
@@ -263,7 +308,7 @@ function VocabMatchGame({ dbWords, category, onClose, awardXp }: { dbWords: any[
         </div>
 
         {won ? (
-          <div className="p-12 text-center space-y-6 animate-in zoom-in duration-500">
+          <div className="p-12 text-center space-y-6 animate-in zoom-in duration-500 max-h-[85vh] overflow-y-auto no-scrollbar">
             <div className="text-6xl animate-bounce">🎉</div>
             <h3 className="text-3xl font-black text-slate-800">Xuất Sắc!</h3>
             <p className="text-slate-500 font-medium">Hoàn thành trong <strong>{fmt(timer)}</strong> với <strong>{moves} lượt đi</strong></p>
@@ -271,6 +316,7 @@ function VocabMatchGame({ dbWords, category, onClose, awardXp }: { dbWords: any[
               <button onClick={initGame} className="px-8 py-3 bg-indigo-600 text-white rounded-2xl font-bold hover:opacity-90 transition-all flex items-center gap-2 shadow-lg shadow-indigo-600/30"><RotateCcw className="w-4 h-4" /> Chơi Lại</button>
               <button onClick={onClose} className="px-8 py-3 bg-slate-100 text-slate-700 rounded-2xl font-bold hover:bg-slate-200 transition-all">Quay Về</button>
             </div>
+            <GameVocabularyRecap words={sessionWords} onSaveWord={onSaveWord} savedWords={savedWords} savingWord={savingWord} />
           </div>
         ) : (
           <div className="p-8 grid grid-cols-4 gap-3">
@@ -304,13 +350,14 @@ function VocabMatchGame({ dbWords, category, onClose, awardXp }: { dbWords: any[
 }
 
 // ─── Speed Quiz Game ───────────────────────────────────────────────────────────
-function SpeedQuizGame({ dbWords, category, onClose, awardXp }: { dbWords: any[]; category: string; onClose: () => void; awardXp?: (amount: number, reason: string) => void }) {
+function SpeedQuizGame({ dbWords, category, onClose, awardXp, onSaveWord, savedWords, savingWord }: { dbWords: any[]; category: string; onClose: () => void; awardXp?: (amount: number, reason: string) => void; onSaveWord: (word: any) => void; savedWords: Record<string, boolean>; savingWord: string | null; }) {
   const [questions, setQuestions] = useState<any[]>([]);
   const [qIdx, setQIdx] = useState(0);
   const [score, setScore] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [timeLeft, setTimeLeft] = useState(15);
   const [done, setDone] = useState(false);
+  const [sessionWords, setSessionWords] = useState<any[]>([]);
 
   const initGame = useCallback(() => {
     let generated: any[] = [];
@@ -319,7 +366,9 @@ function SpeedQuizGame({ dbWords, category, onClose, awardXp }: { dbWords: any[]
     if (dbWords && dbWords.length >= 10) {
       const shuffledWords = shuffle(dbWords);
 
-      for (let index = 0; index < 5; index++) {
+      const selectedFullWords = shuffledWords.slice(0, 10);
+      setSessionWords(selectedFullWords);
+      for (let index = 0; index < 10; index++) {
         const target = shuffledWords[index];
         const isFillInBlank = Math.random() > 0.5 && target.example && target.example.toLowerCase().includes(target.word.toLowerCase());
 
@@ -357,7 +406,8 @@ function SpeedQuizGame({ dbWords, category, onClose, awardXp }: { dbWords: any[]
 
     // Fallback to static questions if no DB or empty database
     if (generated.length === 0) {
-      generated = shuffle(STATIC_QUIZ_QUESTIONS).slice(0, 5);
+      generated = shuffle(STATIC_QUIZ_QUESTIONS).slice(0, 10);
+      setSessionWords([]);
     }
 
     setQuestions(generated);
@@ -405,7 +455,7 @@ function SpeedQuizGame({ dbWords, category, onClose, awardXp }: { dbWords: any[]
 
   return (
     <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-300">
-      <div className="bg-white rounded-[2rem] shadow-2xl w-full max-w-lg overflow-hidden animate-in zoom-in-95 duration-300">
+      <div className="bg-white rounded-[2rem] shadow-2xl w-full max-w-xl overflow-hidden animate-in zoom-in-95 duration-300">
         <div className="px-8 py-5 bg-gradient-to-r from-rose-500 to-pink-600 text-white">
           <div className="flex justify-between items-center mb-1">
             <span className="text-sm font-black opacity-85">Câu hỏi {qIdx + 1}/{questions.length}</span>
@@ -419,7 +469,7 @@ function SpeedQuizGame({ dbWords, category, onClose, awardXp }: { dbWords: any[]
         </div>
 
         {done ? (
-          <div className="p-10 text-center space-y-5 animate-in zoom-in duration-500">
+          <div className="p-10 text-center space-y-5 animate-in zoom-in duration-500 max-h-[85vh] overflow-y-auto no-scrollbar">
             <div className="text-5xl">{score >= 4 ? '🏆' : score >= 3 ? '🎉' : '📚'}</div>
             <h3 className="text-2xl font-black text-slate-800">Trả lời đúng {score}/{questions.length} câu!</h3>
             <p className="text-slate-500 font-semibold">+{score * 20} XP</p>
@@ -427,6 +477,7 @@ function SpeedQuizGame({ dbWords, category, onClose, awardXp }: { dbWords: any[]
               <button onClick={initGame} className="px-6 py-3 bg-rose-500 text-white rounded-2xl font-bold flex items-center gap-1 shadow-lg shadow-rose-500/30 cursor-pointer"><RotateCcw className="w-4 h-4" />Chơi Lại</button>
               <button onClick={onClose} className="px-6 py-3 bg-slate-100 text-slate-700 rounded-2xl font-bold hover:bg-slate-200 transition-all">Quay Về</button>
             </div>
+            <GameVocabularyRecap words={sessionWords} onSaveWord={onSaveWord} savedWords={savedWords} savingWord={savingWord} />
           </div>
         ) : q ? (
           <div className="p-8 space-y-6">
@@ -457,7 +508,7 @@ function SpeedQuizGame({ dbWords, category, onClose, awardXp }: { dbWords: any[]
 }
 
 // ─── Word Scramble Game (Nối Chữ Thành Từ) ──────────────────────────────────────
-function WordScrambleGame({ dbWords, category, onClose, awardXp }: { dbWords: any[]; category: string; onClose: () => void; awardXp?: (amount: number, reason: string) => void }) {
+function WordScrambleGame({ dbWords, category, onClose, awardXp, onSaveWord, savedWords, savingWord }: { dbWords: any[]; category: string; onClose: () => void; awardXp?: (amount: number, reason: string) => void; onSaveWord: (word: any) => void; savedWords: Record<string, boolean>; savingWord: string | null; }) {
   const [scrambleList, setScrambleList] = useState<any[]>([]);
   const [wordIdx, setWordIdx] = useState(0);
   const [score, setScore] = useState(0);
@@ -465,17 +516,29 @@ function WordScrambleGame({ dbWords, category, onClose, awardXp }: { dbWords: an
   const [answer, setAnswer] = useState<{ char: string; poolIdx: number }[]>([]);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [done, setDone] = useState(false);
+  const [sessionWords, setSessionWords] = useState<any[]>([]);
 
   const initGame = useCallback(() => {
     let pool = STATIC_SCRAMBLE_WORDS;
+    let trackWords: any[] = [];
     if (dbWords && dbWords.length >= 8) {
       pool = dbWords.map(w => ({
         word: w.word.toUpperCase(),
         hint: `Từ loại: ${w.wordType || 'từ'}. Nghĩa Việt: ${w.meaningVi}${w.phonetic ? ` (Phiên âm: ${w.phonetic})` : ''}`
       }));
+      const shuffled = shuffle(pool).slice(0, 10);
+      const list = shuffled;
+      trackWords = shuffled.map(s => {
+        const orig = dbWords.find(d => d.word.toUpperCase() === s.word);
+        return orig || { word: s.word.charAt(0) + s.word.slice(1).toLowerCase(), meaningVi: s.hint, meaningEn: s.word, wordType: '', phonetic: '' };
+      });
+      setSessionWords(trackWords);
+      setScrambleList(list);
+    } else {
+      const list = shuffle(pool).slice(0, 10);
+      setSessionWords(list.map(s => ({ word: s.word.charAt(0) + s.word.slice(1).toLowerCase(), meaningVi: s.hint, meaningEn: s.word, wordType: 'Noun', phonetic: '' })));
+      setScrambleList(list);
     }
-    const list = shuffle(pool).slice(0, 6);
-    setScrambleList(list);
     setWordIdx(0);
     setScore(0);
     setDone(false);
@@ -556,7 +619,7 @@ function WordScrambleGame({ dbWords, category, onClose, awardXp }: { dbWords: an
         </div>
 
         {done ? (
-          <div className="p-10 text-center space-y-5 animate-in zoom-in duration-500">
+          <div className="p-10 text-center space-y-5 animate-in zoom-in duration-500 max-h-[85vh] overflow-y-auto no-scrollbar">
             <div className="text-5xl">🐝</div>
             <h3 className="text-2xl font-black text-slate-800">Hoàn Thành Ghép Chữ!</h3>
             <p className="text-slate-500 font-medium">Bạn đã ghép đúng {score}/{scrambleList.length} từ vựng.</p>
@@ -565,6 +628,7 @@ function WordScrambleGame({ dbWords, category, onClose, awardXp }: { dbWords: an
               <button onClick={initGame} className="px-6 py-3 bg-purple-600 text-white rounded-2xl font-bold flex items-center gap-1 shadow-lg shadow-purple-600/30 cursor-pointer"><RotateCcw className="w-4 h-4" />Chơi Lại</button>
               <button onClick={onClose} className="px-6 py-3 bg-slate-100 text-slate-700 rounded-2xl font-bold hover:bg-slate-200 transition-all">Quay Về</button>
             </div>
+            <GameVocabularyRecap words={sessionWords} onSaveWord={onSaveWord} savedWords={savedWords} savingWord={savingWord} />
           </div>
         ) : activeWord ? (
           <div className="p-8 space-y-6">
@@ -644,7 +708,7 @@ function WordScrambleGame({ dbWords, category, onClose, awardXp }: { dbWords: an
 }
 
 // ─── Sentence Builder Game (Nối Từ Thành Câu) ───────────────────────────────────
-function SentenceBuilderGame({ dbWords, category, onClose, awardXp }: { dbWords: any[]; category: string; onClose: () => void; awardXp?: (amount: number, reason: string) => void }) {
+function SentenceBuilderGame({ dbWords, category, onClose, awardXp, onSaveWord, savedWords, savingWord }: { dbWords: any[]; category: string; onClose: () => void; awardXp?: (amount: number, reason: string) => void; onSaveWord: (word: any) => void; savedWords: Record<string, boolean>; savingWord: string | null; }) {
   const [sentenceList, setSentenceList] = useState<any[]>([]);
   const [sentIdx, setSentIdx] = useState(0);
   const [score, setScore] = useState(0);
@@ -652,6 +716,7 @@ function SentenceBuilderGame({ dbWords, category, onClose, awardXp }: { dbWords:
   const [answer, setAnswer] = useState<{ word: string; poolIdx: number }[]>([]);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [done, setDone] = useState(false);
+  const [sessionWords, setSessionWords] = useState<any[]>([]);
 
   const initGame = useCallback(() => {
     let pool = STATIC_SCRAMBLE_SENTENCES;
@@ -674,7 +739,13 @@ function SentenceBuilderGame({ dbWords, category, onClose, awardXp }: { dbWords:
       }
     }
 
-    const list = shuffle(pool).slice(0, 5);
+    const list = shuffle(pool).slice(0, 8);
+    if (dbWords && dbWords.length >= 5) {
+      const usedWords = dbWords.filter(w => w.example && w.example.split(' ').length >= 4 && w.example.split(' ').length <= 10).slice(0, 8);
+      setSessionWords(usedWords);
+    } else {
+      setSessionWords([]);
+    }
     setSentenceList(list);
     setSentIdx(0);
     setScore(0);
@@ -757,7 +828,7 @@ function SentenceBuilderGame({ dbWords, category, onClose, awardXp }: { dbWords:
         </div>
 
         {done ? (
-          <div className="p-10 text-center space-y-5 animate-in zoom-in duration-500">
+          <div className="p-10 text-center space-y-5 animate-in zoom-in duration-500 max-h-[85vh] overflow-y-auto no-scrollbar">
             <div className="text-5xl">✍️</div>
             <h3 className="text-2xl font-black text-slate-800">Hoàn Thành Ghép Câu!</h3>
             <p className="text-slate-500 font-medium">Bạn đã sắp xếp đúng {score}/{sentenceList.length} câu hoàn chỉnh.</p>
@@ -766,6 +837,7 @@ function SentenceBuilderGame({ dbWords, category, onClose, awardXp }: { dbWords:
               <button onClick={initGame} className="px-6 py-3 bg-emerald-600 text-white rounded-2xl font-bold flex items-center gap-1 shadow-lg shadow-emerald-600/30 cursor-pointer"><RotateCcw className="w-4 h-4" />Chơi Lại</button>
               <button onClick={onClose} className="px-6 py-3 bg-slate-100 text-slate-700 rounded-2xl font-bold hover:bg-slate-200 transition-all">Quay Về</button>
             </div>
+            <GameVocabularyRecap words={sessionWords} onSaveWord={onSaveWord} savedWords={savedWords} savingWord={savingWord} />
           </div>
         ) : activeSent ? (
           <div className="p-8 space-y-6">
@@ -1749,11 +1821,170 @@ function ImageGuessGame({ onClose, awardXp }: { onClose: () => void; awardXp?: (
   );
 }
 
+// ─── Word Hunter Game (Hangman) ──────────────────────────────────────────────────
+function WordHunterGame({ 
+  dbWords, 
+  category, 
+  onClose, 
+  awardXp, 
+  onSaveWord, 
+  savedWords, 
+  savingWord 
+}: { 
+  dbWords: any[]; 
+  category: string; 
+  onClose: () => void; 
+  awardXp?: (amount: number, reason: string) => void; 
+  onSaveWord: (word: any) => void; 
+  savedWords: Record<string, boolean>; 
+  savingWord: string | null; 
+}) {
+  const [wordList, setWordList] = useState<any[]>([]);
+  const [wordIdx, setWordIdx] = useState(0);
+  const [guessedLetters, setGuessedLetters] = useState<Set<string>>(new Set());
+  const [wrongCount, setWrongCount] = useState(0);
+  const [score, setScore] = useState(0);
+  const [done, setDone] = useState(false);
+  const [roundResult, setRoundResult] = useState<'win' | 'lose' | null>(null);
+  const [sessionWords, setSessionWords] = useState<any[]>([]);
+  const MAX_WRONG = 6;
+  const TOTAL_WORDS = 8;
+
+  const initGame = useCallback(() => {
+    let pool: any[] = [];
+    if (dbWords && dbWords.length >= TOTAL_WORDS) {
+      pool = shuffle(dbWords).slice(0, TOTAL_WORDS);
+    } else {
+      pool = shuffle(STATIC_SCRAMBLE_WORDS).slice(0, TOTAL_WORDS).map(s => ({
+        word: s.word.charAt(0) + s.word.slice(1).toLowerCase(),
+        meaningVi: s.hint,
+        meaningEn: s.word,
+        wordType: 'Noun',
+        phonetic: ''
+      }));
+    }
+    setSessionWords(pool);
+    setWordList(pool);
+    setWordIdx(0);
+    setGuessedLetters(new Set());
+    setWrongCount(0);
+    setScore(0);
+    setDone(false);
+    setRoundResult(null);
+  }, [dbWords]);
+
+  useEffect(() => { initGame(); }, [initGame]);
+
+  const currentWord = wordList[wordIdx];
+  const targetWord = currentWord?.word?.toUpperCase() || '';
+  const isWordComplete = targetWord.split('').every((ch: string) => guessedLetters.has(ch) || !/[A-Z]/.test(ch));
+
+  useEffect(() => {
+    if (!currentWord || done) return;
+    if (isWordComplete) {
+      setRoundResult('win');
+      setScore(s => s + 1);
+      speak(currentWord.word);
+      setTimeout(nextWord, 2000);
+    } else if (wrongCount >= MAX_WRONG) {
+      setRoundResult('lose');
+      setTimeout(nextWord, 2500);
+    }
+  }, [guessedLetters, wrongCount]);
+
+  const nextWord = () => {
+    if (wordIdx < wordList.length - 1) {
+      setWordIdx(i => i + 1);
+      setGuessedLetters(new Set());
+      setWrongCount(0);
+      setRoundResult(null);
+    } else {
+      setDone(true);
+      if (score > 0) awardXp?.(score * 15, 'Word Hunter Game');
+    }
+  };
+
+  const guessLetter = (letter: string) => {
+    if (guessedLetters.has(letter) || roundResult) return;
+    const next = new Set(guessedLetters);
+    next.add(letter);
+    setGuessedLetters(next);
+    if (!targetWord.includes(letter)) setWrongCount(c => c + 1);
+  };
+
+  const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+
+  return (
+    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-300">
+      <div className="bg-white rounded-[2rem] shadow-2xl w-full max-w-xl overflow-hidden animate-in zoom-in-95 duration-300">
+        <div className="flex items-center justify-between px-8 py-5 border-b border-slate-100 bg-gradient-to-r from-rose-600 to-red-600 text-white">
+          <div>
+            <h2 className="text-xl font-black text-white">Word Hunter</h2>
+            <p className="text-rose-200 text-xs font-medium">Đoán từ ẩn - {wordIdx + 1}/{wordList.length} (Danh mục: {getCategoryLabel(category)})</p>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="text-sm font-black">❤️ {MAX_WRONG - wrongCount}/{MAX_WRONG}</span>
+            <button onClick={onClose} className="p-2 bg-white/10 rounded-full hover:bg-white/20 transition-all text-white"><X className="w-5 h-5" /></button>
+          </div>
+        </div>
+
+        {done ? (
+          <div className="p-10 text-center space-y-5 animate-in zoom-in duration-500 max-h-[85vh] overflow-y-auto no-scrollbar">
+            <div className="text-5xl">{score >= 6 ? '🏆' : score >= 4 ? '🎉' : '📚'}</div>
+            <h3 className="text-2xl font-black text-slate-800">Hoàn Thành Word Hunter!</h3>
+            <p className="text-slate-500 font-medium">Bạn đã đoán đúng {score}/{wordList.length} từ vựng.</p>
+            <p className="text-green-600 font-black">+{score * 15} XP</p>
+            <div className="flex gap-3 justify-center">
+              <button onClick={initGame} className="px-6 py-3 bg-rose-600 text-white rounded-2xl font-bold flex items-center gap-1 shadow-lg shadow-rose-600/30 cursor-pointer"><RotateCcw className="w-4 h-4" />Chơi Lại</button>
+              <button onClick={onClose} className="px-6 py-3 bg-slate-100 text-slate-700 rounded-2xl font-bold hover:bg-slate-200 transition-all">Quay Về</button>
+            </div>
+            <GameVocabularyRecap words={sessionWords} onSaveWord={onSaveWord} savedWords={savedWords} savingWord={savingWord} />
+          </div>
+        ) : currentWord ? (
+          <div className="p-8 space-y-6">
+            <div className="p-3 bg-rose-50 border border-rose-100 rounded-2xl text-rose-800 text-sm font-medium">
+              <span className="font-bold block text-xs uppercase tracking-wider text-rose-600 mb-1">Gợi ý</span>
+              {currentWord.meaningVi} {currentWord.wordType && <span className="text-rose-400">({currentWord.wordType})</span>}
+            </div>
+            <div className="flex justify-center gap-2 flex-wrap">
+              {targetWord.split('').map((ch: string, i: number) => (
+                <div key={i} className={cn("w-10 h-12 rounded-xl border-2 flex items-center justify-center text-xl font-black transition-all duration-300", /[A-Z]/.test(ch) ? (guessedLetters.has(ch) ? (roundResult === 'lose' && !guessedLetters.has(ch) ? 'bg-red-50 border-red-300 text-red-600' : 'bg-green-50 border-green-300 text-green-700 scale-105') : 'bg-slate-100 border-slate-200 text-transparent') : 'bg-transparent border-transparent text-slate-400')}>
+                  {/[A-Z]/.test(ch) ? (guessedLetters.has(ch) || roundResult === 'lose' ? ch : '_') : ch}
+                </div>
+              ))}
+            </div>
+            {roundResult && (
+              <div className={cn("text-center py-2 rounded-xl font-bold text-sm animate-in zoom-in", roundResult === 'win' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700')}>
+                {roundResult === 'win' ? '✅ Chính xác!' : `❌ Đáp án: ${targetWord}`}
+              </div>
+            )}
+            <div className="grid grid-cols-9 gap-1.5">
+              {ALPHABET.map(letter => {
+                const isGuessed = guessedLetters.has(letter);
+                const isInWord = targetWord.includes(letter);
+                return (
+                  <button key={letter} onClick={() => guessLetter(letter)} disabled={isGuessed || !!roundResult} className={cn("h-9 rounded-lg text-xs font-black transition-all border cursor-pointer", isGuessed ? (isInWord ? 'bg-green-100 border-green-300 text-green-700' : 'bg-red-50 border-red-200 text-red-400 opacity-50') : 'bg-white border-slate-200 text-slate-700 hover:bg-indigo-50 hover:border-indigo-300 hover:scale-110 active:scale-90')}>
+                    {letter}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ) : (
+          <div className="p-12 text-center text-slate-500">Đang chuẩn bị...</div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+
 // ─── Main Games Page ───────────────────────────────────────────────────────────
 const GAMES = [
   { id: 'vocab', title: "Vocabulary Match", description: "Ghép nối các từ vựng tiếng Anh với ý nghĩa tiếng Việt chính xác. Chinh phục thời gian ngắn nhất!", icon: <Target className="w-10 h-10" />, color: "bg-blue-500", shadow: "shadow-blue-500/20", xp: "+50 XP", players: "1.2k đang chơi" },
   { id: 'quiz', title: "Speed Quiz", description: "Đua thời gian trả lời trắc nghiệm nhanh. Chỉ 15 giây cho một câu hỏi thú vị!", icon: <Timer className="w-10 h-10" />, color: "bg-rose-500", shadow: "shadow-rose-500/20", xp: "+100 XP", players: "800 đang chơi" },
   { id: 'scram', title: "Word Scramble", description: "Nối chữ thành từ. Ghép các ký tự bị xáo trộn thành từ tiếng Anh hoàn chỉnh theo gợi ý!", icon: <Brain className="w-10 h-10" />, color: "bg-purple-500", shadow: "shadow-purple-500/20", xp: "+60 XP", players: "950 đang chơi" },
+  { id: 'wordHunter', title: "Word Hunter", description: "Đoán chữ cái ẩn (Hangman). Nhập các chữ cái để tìm ra từ vựng bí mật trước khi hết lượt chơi!", icon: <Target className="w-10 h-10" />, color: "bg-rose-600", shadow: "shadow-rose-600/20", xp: "+80 XP", players: "1.3k đang chơi" },
   { id: 'imageGuess', title: "Image Guessing", description: "Đoán từ qua hình ảnh. Nhìn hình ảnh thực tế và ghép các chữ cái thành từ tiếng Anh chuẩn xác!", icon: <ImageIcon className="w-10 h-10" />, color: "bg-amber-500", shadow: "shadow-amber-500/20", xp: "+100 XP", players: "1.5k đang chơi" },
   { id: 'sentence', title: "Sentence Builder", description: "Nối từ thành câu. Lắp ghép các từ vựng lộn xộn thành câu nói chuẩn ngữ pháp!", icon: <Zap className="w-10 h-10" />, color: "bg-emerald-500", shadow: "shadow-emerald-500/20", xp: "+75 XP", players: "1.1k đang chơi" },
   { id: 'idiom', title: "Idiom Connector", description: "Nối từ thành thành ngữ. Khám phá kho tàng thành ngữ tiếng Anh qua trò chơi ghép chữ lý thú!", icon: <Sparkles className="w-10 h-10" />, color: "bg-violet-500", shadow: "shadow-violet-500/20", xp: "+120 XP", players: "640 đang chơi" },
@@ -1767,6 +1998,36 @@ export default function GamesPage() {
   const [loading, setLoading] = useState(false);
   const [rank, setRank] = useState<string>('#-');
   const [xp, setXp] = useState<string>('0');
+  const [savingWord, setSavingWord] = useState<string | null>(null);
+  const [savedWords, setSavedWords] = useState<Record<string, boolean>>({});
+
+  const handleSaveToNotebook = async (word: any) => {
+    if (!user) return;
+    setSavingWord(word.word);
+    try {
+      const token = await user.getIdToken();
+      const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+      await fetch(`${API_BASE}/vocabulary/notebook`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          word: word.word,
+          meaningVi: word.meaningVi,
+          meaningEn: word.meaningEn || word.word,
+          wordType: word.wordType || '',
+          phonetic: word.phonetic || ''
+        })
+      });
+      setSavedWords(prev => ({ ...prev, [word.word.toLowerCase()]: true }));
+    } catch (err) {
+      console.error('Save to notebook failed:', err);
+    } finally {
+      setSavingWord(null);
+    }
+  };
 
   const handleAwardXp = async (amount: number, reason: string) => {
     if (!user) return;
@@ -1850,12 +2111,13 @@ export default function GamesPage() {
 
   return (
     <div className="space-y-10 animate-in fade-in duration-700">
-      {activeGame === 'vocab' && <VocabMatchGame dbWords={dbWords} category={selectedCategory} onClose={() => setActiveGame(null)} awardXp={handleAwardXp} />}
-      {activeGame === 'quiz' && <SpeedQuizGame dbWords={dbWords} category={selectedCategory} onClose={() => setActiveGame(null)} awardXp={handleAwardXp} />}
-      {activeGame === 'scram' && <WordScrambleGame dbWords={dbWords} category={selectedCategory} onClose={() => setActiveGame(null)} awardXp={handleAwardXp} />}
+      {activeGame === 'vocab' && <VocabMatchGame dbWords={dbWords} category={selectedCategory} onClose={() => setActiveGame(null)} awardXp={handleAwardXp} onSaveWord={handleSaveToNotebook} savedWords={savedWords} savingWord={savingWord} />}
+      {activeGame === 'quiz' && <SpeedQuizGame dbWords={dbWords} category={selectedCategory} onClose={() => setActiveGame(null)} awardXp={handleAwardXp} onSaveWord={handleSaveToNotebook} savedWords={savedWords} savingWord={savingWord} />}
+      {activeGame === 'scram' && <WordScrambleGame dbWords={dbWords} category={selectedCategory} onClose={() => setActiveGame(null)} awardXp={handleAwardXp} onSaveWord={handleSaveToNotebook} savedWords={savedWords} savingWord={savingWord} />}
       {activeGame === 'imageGuess' && <ImageGuessGame onClose={() => setActiveGame(null)} awardXp={handleAwardXp} />}
-      {activeGame === 'sentence' && <SentenceBuilderGame dbWords={dbWords} category={selectedCategory} onClose={() => setActiveGame(null)} awardXp={handleAwardXp} />}
+      {activeGame === 'sentence' && <SentenceBuilderGame dbWords={dbWords} category={selectedCategory} onClose={() => setActiveGame(null)} awardXp={handleAwardXp} onSaveWord={handleSaveToNotebook} savedWords={savedWords} savingWord={savingWord} />}
       {activeGame === 'idiom' && <IdiomConnectorGame onClose={() => setActiveGame(null)} awardXp={handleAwardXp} />}
+      {activeGame === 'wordHunter' && <WordHunterGame dbWords={dbWords} category={selectedCategory} onClose={() => setActiveGame(null)} awardXp={handleAwardXp} onSaveWord={handleSaveToNotebook} savedWords={savedWords} savingWord={savingWord} />}
 
       <header className="text-center space-y-4">
         <div className="inline-flex p-3 bg-indigo-100 rounded-2xl text-indigo-600 mb-2"><Gamepad2 className="w-8 h-8" /></div>
