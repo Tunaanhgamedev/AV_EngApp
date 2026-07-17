@@ -44,7 +44,25 @@ const STATIC_WORD_PAIRS = [
   { en: 'Vibrant', vi: 'Sôi động' },
   { en: 'Plentiful', vi: 'Dồi dào' },
   { en: 'Compassion', vi: 'Lòng trắc ẩn' },
-  { en: 'Endurance', vi: 'Sức chịu đựng' }
+  { en: 'Endurance', vi: 'Sức chịu đựng' },
+  { en: 'Collaborate', vi: 'Cộng tác' },
+  { en: 'Negotiate', vi: 'Thương lượng' },
+  { en: 'Revenue', vi: 'Doanh thu' },
+  { en: 'Delegate', vi: 'Ủy thác' },
+  { en: 'Invoice', vi: 'Hóa đơn' },
+  { en: 'Implement', vi: 'Triển khai' },
+  { en: 'Terminate', vi: 'Chấm dứt' },
+  { en: 'Compile', vi: 'Tổng hợp' },
+  { en: 'Advocate', vi: 'Ủng hộ' },
+  { en: 'Fluctuate', vi: 'Biến động' },
+  { en: 'Hypothesis', vi: 'Giả thuyết' },
+  { en: 'Synthesize', vi: 'Tổng hợp' },
+  { en: 'Validate', vi: 'Xác thực' },
+  { en: 'Coordinate', vi: 'Điều phối' },
+  { en: 'Empirical', vi: 'Thực chứng' },
+  { en: 'Paradigm', vi: 'Hình mẫu' },
+  { en: 'Qualitative', vi: 'Định tính' },
+  { en: 'Rational', vi: 'Hợp lý' }
 ];
 
 const STATIC_QUIZ_QUESTIONS = [
@@ -58,6 +76,16 @@ const STATIC_QUIZ_QUESTIONS = [
   { q: 'Trái nghĩa với từ "Impartial" (Công bằng, không thiên vị) là gì?', options: ['Biased (Thiên vị)', 'Fair (Công bằng)', 'Neutral (Trung lập)', 'Objective (Khách quan)'], answer: 0 },
   { q: 'Điền vào chỗ trống: "If it rains, we ___ at home."', options: ['would stay', 'will stay', 'stayed', 'staying'], answer: 1 },
   { q: 'Ý nghĩa của từ "Meticulous" là gì?', options: ['Cẩu thả', 'Nhanh chóng', 'Kỹ càng, tỉ mỉ', 'Lười biếng'], answer: 2 },
+  { q: 'Từ "Collaborate" có nghĩa là gì?', options: ['Cạnh tranh', 'Hợp tác, cộng tác', 'Phá hoại', 'Từ chối'], answer: 1 },
+  { q: 'Từ nào đồng nghĩa với "Revenue"?', options: ['Cost', 'Expense', 'Income/Profit', 'Loss'], answer: 2 },
+  { q: 'Điền từ: "We must ___ with the new rules."', options: ['comply', 'defy', 'ignore', 'reject'], answer: 0 },
+  { q: 'Ý nghĩa của từ "Advocate" là gì?', options: ['Phản đối', 'Ủng hộ công khai', 'Nghi ngờ', 'Tránh né'], answer: 1 },
+  { q: 'Từ "Fluctuate" chỉ trạng thái gì?', options: ['Không thay đổi', 'Biến động liên tục', 'Đứng yên', 'Tăng trưởng nhanh'], answer: 1 },
+  { q: 'Từ "Hypothesis" trong tiếng Việt nghĩa là gì?', options: ['Bằng chứng', 'Giả thuyết', 'Định luật', 'Thực tế'], answer: 1 },
+  { q: 'Chọn từ đồng nghĩa với "Rational":', options: ['Logical (Hợp lý)', 'Emotional (Cảm tính)', 'Crazy (Điên rồ)', 'Silly (Ngớ ngẩn)'], answer: 0 },
+  { q: 'Từ "Facilitate" mang ý nghĩa gì?', options: ['Gây cản trở', 'Tạo điều kiện thuận lợi', 'Bỏ qua', 'Chậm trễ'], answer: 1 },
+  { q: 'Chọn từ viết đúng chính tả:', options: ['Necessary', 'Neccessary', 'Necessery', 'Neccesery'], answer: 0 },
+  { q: 'Điền từ: "She has an ___ supply of books."', options: ['abundant', 'empty', 'lacking', 'few'], answer: 0 }
 ];
 
 const STATIC_SCRAMBLE_WORDS = [
@@ -70,7 +98,17 @@ const STATIC_SCRAMBLE_WORDS = [
   { word: 'JOURNAL', hint: 'Cuốn sổ ghi chép lại các sự kiện và nhật ký hàng ngày.' },
   { word: 'TEACHER', hint: 'Người truyền đạt kiến thức và hướng dẫn học sinh trên lớp.' },
   { word: 'LIBRARY', hint: 'Nơi lưu trữ và cho mượn hàng ngàn cuốn sách bổ ích.' },
-  { word: 'FRIEND', hint: 'Người đồng hành thân thiết, chia sẻ niềm vui nỗi buồn.' }
+  { word: 'FRIEND', hint: 'Người đồng hành thân thiết, chia sẻ niềm vui nỗi buồn.' },
+  { word: 'REVENUE', hint: 'Khoản doanh thu của một doanh nghiệp trong kỳ kế toán.' },
+  { word: 'STRATEGY', hint: 'Kế hoạch hành động dài hạn để đạt được mục tiêu lớn.' },
+  { word: 'ADVOCATE', hint: 'Hành động ủng hộ hoặc biện hộ cho một ý kiến công khai.' },
+  { word: 'EMPIRICAL', hint: 'Các bằng chứng thu được qua quan sát hoặc kinh nghiệm thực tế.' },
+  { word: 'VALUABLE', hint: 'Thứ gì đó có giá trị cao hoặc cực kỳ có ích.' },
+  { word: 'CREATIVE', hint: 'Khả năng sáng tạo ra những ý tưởng mới mẻ độc đáo.' },
+  { word: 'OPTIMISTIC', hint: 'Một tinh thần lạc quan, luôn tin tưởng vào tương lai tốt đẹp.' },
+  { word: 'RESILIENT', hint: 'Khả năng kiên cường, dễ phục hồi sau thất bại.' },
+  { word: 'DILIGENT', hint: 'Đức tính cần cù, siêng năng, làm việc có trách nhiệm.' },
+  { word: 'ACCURATE', hint: 'Độ chính xác cao, không có sai sót hay nhầm lẫn.' }
 ];
 
 const STATIC_SCRAMBLE_SENTENCES = [
@@ -82,7 +120,16 @@ const STATIC_SCRAMBLE_SENTENCES = [
   { sentence: 'He is playing soccer with his friends', hint: 'Anh ấy đang chơi bóng đá cùng với bạn bè của mình.' },
   { sentence: 'They will travel to Da Nang next week', hint: 'Họ sẽ đi du lịch đến Đà Nẵng vào tuần tới.' },
   { sentence: 'My mother cooks delicious meals for us', hint: 'Mẹ của tôi nấu những món ăn rất ngon cho chúng tôi.' },
-  { sentence: 'Learning vocabulary with games is fun', hint: 'Học từ vựng thông qua các trò chơi rất vui nhộn.' }
+  { sentence: 'Learning vocabulary with games is fun', hint: 'Học từ vựng thông qua các trò chơi rất vui nhộn.' },
+  { sentence: 'We must work together to succeed', hint: 'Chúng ta phải làm việc cùng nhau để thành công.' },
+  { sentence: 'Technology makes our lives much easier', hint: 'Công nghệ giúp cuộc sống của chúng ta dễ dàng hơn nhiều.' },
+  { sentence: 'He decided to accept the job offer', hint: 'Anh ấy đã quyết định nhận lời mời làm việc đó.' },
+  { sentence: 'Reading helps to expand your knowledge', hint: 'Đọc sách giúp mở rộng kiến thức của bạn.' },
+  { sentence: 'Please send the invoice to accounting', hint: 'Vui lòng gửi hóa đơn đến phòng kế toán.' },
+  { sentence: 'The company is growing very fast', hint: 'Công nghệ/Công ty này đang phát triển rất nhanh.' },
+  { sentence: 'They are discussing the project plans', hint: 'Họ đang thảo luận về các kế hoạch dự án.' },
+  { sentence: 'We need to implement the changes now', hint: 'Chúng ta cần triển khai các thay đổi ngay bây giờ.' },
+  { sentence: 'She gave an excellent presentation today', hint: 'Cô ấy đã có một bài thuyết trình xuất sắc hôm nay.' }
 ];
 
 const STATIC_SCRAMBLE_IDIOMS = [
@@ -95,6 +142,15 @@ const STATIC_SCRAMBLE_IDIOMS = [
   { idiom: 'Spill the beans', hint: 'Vô tình tiết lộ bí mật hoặc thông tin mật cho người khác biết.' },
   { idiom: 'Hit the nail on the head', hint: 'Nói hoặc làm điều gì đó hoàn toàn chính xác, trúng tim đen.' },
   { idiom: 'Let the cat out of the bag', hint: 'Để lộ bí mật một cách vô ý hoặc bất ngờ.' },
+  { idiom: 'Blessing in disguise', hint: 'Trong cái rủi có cái may, một chuyện tốt đẹp bắt nguồn từ khó khăn.' },
+  { idiom: 'Beat around the bush', hint: 'Nói vòng vo tam quốc, tránh né chủ đề chính không nói thẳng.' },
+  { idiom: 'Better late than never', hint: 'Muộn còn hơn không bao giờ hoàn thành.' },
+  { idiom: 'Call it a day', hint: 'Ngừng làm việc, kết thúc hoạt động của một ngày dài.' },
+  { idiom: 'Cut corners', hint: 'Đi tắt đón đầu, làm việc cẩu thả để tiết kiệm thời gian hoặc tiền bạc.' },
+  { idiom: 'Easy does it', hint: 'Làm việc gì đó một cách cẩn thận, chậm rãi, đừng vội vã.' },
+  { idiom: 'Get out of hand', hint: 'Mất kiểm soát, vượt quá tầm tay của mọi người.' },
+  { idiom: 'Hang in there', hint: 'Kiên trì lên, đừng bỏ cuộc trước thử thách khó khăn.' },
+  { idiom: 'No pain no gain', hint: 'Có làm thì mới có ăn, gian nan thử sức mới gặt hái thành công.' }
 ];
 
 // Helper to shuffle array
@@ -1695,6 +1751,7 @@ const GAMES = [
 export default function GamesPage() {
   const { user } = useAuth();
   const [activeGame, setActiveGame] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<'all' | 'oxford' | 'toeic' | 'ielts' | 'notebook'>('all');
   const [dbWords, setDbWords] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [rank, setRank] = useState<string>('#-');
@@ -1726,10 +1783,20 @@ export default function GamesPage() {
       try {
         setLoading(true);
         const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
-        const res = await fetch(`${API_BASE}/vocabulary/game-data?limit=40`);
+        const token = user ? await user.getIdToken() : '';
+        const headers: Record<string, string> = {
+          'Content-Type': 'application/json'
+        };
+        if (token) {
+          headers['Authorization'] = `Bearer ${token}`;
+        }
+
+        const res = await fetch(`${API_BASE}/vocabulary/game-data?limit=40&category=${selectedCategory}`, {
+          headers
+        });
         if (res.ok) {
           const data = await res.json();
-          if (data.words && data.words.length > 5) {
+          if (data.words) {
             setDbWords(data.words);
           }
         }
@@ -1741,7 +1808,7 @@ export default function GamesPage() {
     };
 
     fetchGameData();
-  }, []);
+  }, [selectedCategory, user]);
 
   useEffect(() => {
     const fetchUserRank = async () => {
@@ -1816,6 +1883,39 @@ export default function GamesPage() {
               <p className="text-2xl font-black mt-1 text-white">{xp}</p>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Category Selector */}
+      <section className="flex flex-col items-center gap-4">
+        <p className="text-sm font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest flex items-center gap-2">
+          <Brain className="w-4 h-4 text-primary animate-pulse" /> Chọn danh mục từ vựng học tập:
+        </p>
+        <div className="flex bg-slate-100 dark:bg-slate-800/80 p-1.5 rounded-2xl gap-2 border border-slate-200/50 dark:border-slate-800 shadow-sm max-w-2xl w-full overflow-x-auto no-scrollbar">
+          {[
+            { id: 'all', label: '🌐 Tất cả', desc: 'Từ ngẫu nhiên' },
+            { id: 'oxford', label: '📖 Oxford', desc: 'Từ thông dụng' },
+            { id: 'toeic', label: '💼 TOEIC', desc: 'Từ công sở' },
+            { id: 'ielts', label: '🎓 IELTS', desc: 'Từ học thuật' },
+            { id: 'notebook', label: '📓 Sổ tay', desc: 'Từ đã lưu' },
+          ].map(cat => {
+            const isActive = selectedCategory === cat.id;
+            return (
+              <button
+                key={cat.id}
+                onClick={() => setSelectedCategory(cat.id as any)}
+                className={cn(
+                  "flex-1 py-2 px-3 text-center rounded-xl transition-all cursor-pointer whitespace-nowrap min-w-[100px]",
+                  isActive
+                    ? "bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 shadow-sm border border-slate-200/20 font-black"
+                    : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 font-bold"
+                )}
+              >
+                <div className="text-xs">{cat.label}</div>
+                <div className="text-[9px] font-medium opacity-60 mt-0.5">{cat.desc}</div>
+              </button>
+            );
+          })}
         </div>
       </section>
 

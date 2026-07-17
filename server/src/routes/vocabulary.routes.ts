@@ -383,20 +383,136 @@ router.get('/wordlist', async (req, res) => {
   }
 });
 
+// Predefined fallbacks for game categories
+const FALLBACK_OXFORD_WORDS = [
+  { id: 'f-ox1', word: 'abundant', phonetic: '/əˈbʌndənt/', meaningEn: 'existing or available in large quantities; overflowing.', meaningVi: 'phong phú, dồi dào, nhiều.', wordType: 'Adjective', cefrLevel: 'B1', example: 'The river provides an abundant supply of fresh water.', exampleVi: 'Con sông cung cấp nguồn nước ngọt dồi dào.' },
+  { id: 'f-ox2', word: 'diligent', phonetic: '/ˈdɪlɪdʒənt/', meaningEn: 'having or showing care and conscientiousness in one\'s work or duties.', meaningVi: 'cần cũ, chăm chỉ, siêng năng.', wordType: 'Adjective', cefrLevel: 'B1', example: 'She is a diligent student who always completes her homework.', exampleVi: 'Cô ấy là một học sinh chăm chỉ luôn hoàn thành bài tập về nhà.' },
+  { id: 'f-ox3', word: 'resilient', phonetic: '/rɪˈzɪliənt/', meaningEn: 'able to withstand or recover quickly from difficult conditions.', meaningVi: 'kiên cường, nhanh phục hồi, đàn hồi.', wordType: 'Adjective', cefrLevel: 'B2', example: 'Babies are more resilient than people realize.', exampleVi: 'Trẻ em thường kiên cường hơn những gì mọi người nghĩ.' },
+  { id: 'f-ox4', word: 'eloquent', phonetic: '/ˈeləkwənt/', meaningEn: 'fluent or persuasive in speaking or writing.', meaningVi: 'hùng hồn, lưu loát, có tài hùng biến.', wordType: 'Adjective', cefrLevel: 'B2', example: 'His eloquent speech moved the audience to tears.', exampleVi: 'Bài phát biểu hùng hồn của anh ấy đã làm khán giả xúc động rơi nước mắt.' },
+  { id: 'f-ox5', word: 'sincere', phonetic: '/sɪnˈsɪr/', meaningEn: 'free from pretense or deceit; proceeding from genuine feelings.', meaningVi: 'chân thành, thật lòng.', wordType: 'Adjective', cefrLevel: 'B1', example: 'Please accept my sincere apologies for the mistake.', exampleVi: 'Xin vui lòng chấp nhận lời xin lỗi chân thành của tôi vì sai sót này.' },
+  { id: 'f-ox6', word: 'generous', phonetic: '/ˈdʒenərəs/', meaningEn: 'showing a readiness to give more of something than is strictly necessary.', meaningVi: 'hào phóng, rộng lượng.', wordType: 'Adjective', cefrLevel: 'A2', example: 'It was very generous of you to pay for the dinner.', exampleVi: 'Bạn thật hào phóng khi trả tiền cho bữa tối.' },
+  { id: 'f-ox7', word: 'ambiguous', phonetic: '/æmˈbɪɡjuəs/', meaningEn: 'open to more than one interpretation; having a double meaning.', meaningVi: 'mơ hồ, nước đôi, không rõ ràng.', wordType: 'Adjective', cefrLevel: 'B2', example: 'The instructions she left were ambiguous and confusing.', exampleVi: 'Những lời hướng dẫn cô ấy để lại rất mơ hồ và khó hiểu.' },
+  { id: 'f-ox8', word: 'benevolent', phonetic: '/bəˈnevələnt/', meaningEn: 'well meaning and kindly; serving a charitable purpose.', meaningVi: 'nhân từ, tốt bụng, từ thiện.', wordType: 'Adjective', cefrLevel: 'B2', example: 'The benevolent old man donated a lot of money to the orphanage.', exampleVi: 'Người đàn ông lớn tuổi nhân từ đã quyên góp nhiều tiền cho trại trẻ mồ côi.' },
+  { id: 'f-ox9', word: 'meticulous', phonetic: '/məˈtɪkjələs/', meaningEn: 'showing great attention to detail; very careful and precise.', meaningVi: 'tỉ mỉ, kỹ càng, quá kỹ lưỡng.', wordType: 'Adjective', cefrLevel: 'B2', example: 'He is meticulous in keeping his desk and papers clean.', exampleVi: 'Anh ấy rất tỉ mỉ trong việc giữ sạch sẽ bàn làm việc và các giấy tờ.' },
+  { id: 'f-ox10', word: 'optimistic', phonetic: '/ˌɑːptɪˈmɪstɪk/', meaningEn: 'hopeful and confident about the future.', meaningVi: 'lạc quan, tràn đầy hy vọng.', wordType: 'Adjective', cefrLevel: 'B1', example: 'She remains optimistic about the project\'s success.', exampleVi: 'Cô ấy vẫn lạc quan về cơ hội thành công của dự án.' },
+  { id: 'f-ox11', word: 'pragmatic', phonetic: '/præɡˈmætɪk/', meaningEn: 'dealing with things sensibly and realistically based on practical ideas.', meaningVi: 'thực tế, thực dụng.', wordType: 'Adjective', cefrLevel: 'B2', example: 'We need a pragmatic approach to solving this crisis.', exampleVi: 'Chúng ta cần một hướng tiếp cận thực tế để giải quyết cuộc khủng hoảng này.' },
+  { id: 'f-ox12', word: 'vibrant', phonetic: '/ˈvaɪbrənt/', meaningEn: 'full of energy and life; bright or vivid.', meaningVi: 'sôi động, đầy sức sống, rực rỡ.', wordType: 'Adjective', cefrLevel: 'B1', example: 'The city has a vibrant nightlife that attracts young tourists.', exampleVi: 'Thành phố có cuộc sống ban đêm sôi động thu hút các du khách trẻ.' },
+  { id: 'f-ox13', word: 'accurate', phonetic: '/ˈækjərət/', meaningEn: 'correct, exact, and without any mistakes.', meaningVi: 'chính xác, đúng đắn.', wordType: 'Adjective', cefrLevel: 'B1', example: 'She gave an accurate description of the suspect.', exampleVi: 'Cô ấy đã đưa ra một mô tả chính xác về nghi phạm.' },
+  { id: 'f-ox14', word: 'courageous', phonetic: '/kəˈreɪdʒəs/', meaningEn: 'not deterred by danger or pain; brave.', meaningVi: 'dũng cảm, quả cảm.', wordType: 'Adjective', cefrLevel: 'B1', example: 'The courageous firefighter saved the family from the burning building.', exampleVi: 'Người lính cứu hỏa dũng cảm đã cứu gia đình khỏi tòa nhà đang cháy.' },
+  { id: 'f-ox15', word: 'compassion', phonetic: '/kəmˈpæʃn/', meaningEn: 'sympathetic pity and concern for the sufferings or misfortunes of others.', meaningVi: 'lòng trắc ẩn, lòng thương cảm.', wordType: 'Noun', cefrLevel: 'B2', example: 'We must show compassion for the homeless and needy.', exampleVi: 'Chúng ta cần thể hiện lòng trắc ẩn đối với những người vô gia cư và khó khăn.' }
+];
+
+const FALLBACK_TOEIC_WORDS = [
+  { id: 'f-to1', word: 'collaborate', phonetic: '/kəˈlæbəreɪt/', meaningEn: 'work jointly on an activity or project.', meaningVi: 'hợp tác, cộng tác.', wordType: 'Verb', cefrLevel: 'B2', example: 'Our teams need to collaborate to solve this problem quickly.', exampleVi: 'Các đội ngũ của chúng ta cần hợp tác để giải quyết vấn đề này nhanh chóng.' },
+  { id: 'f-to2', word: 'negotiate', phonetic: '/nɪˈɡoʊʃieɪt/', meaningEn: 'obtain or bring about by discussion.', meaningVi: 'thương lượng, đàm phán.', wordType: 'Verb', cefrLevel: 'B2', example: 'He is trying to negotiate a better salary with his new manager.', exampleVi: 'Anh ấy đang cố gắng đàm phán một mức lương tốt hơn với quản lý mới.' },
+  { id: 'f-to3', word: 'revenue', phonetic: '/ˈrevənuː/', meaningEn: 'income, especially of a company or organization.', meaningVi: 'doanh thu, lợi tức.', wordType: 'Noun', cefrLevel: 'B2', example: 'The company\'s annual revenue increased by fifteen percent.', exampleVi: 'Doanh thu hàng năm của công ty đã tăng mười lăm phần trăm.' },
+  { id: 'f-to4', word: 'delegate', phonetic: '/ˈdelɪɡeɪt/', meaningEn: 'entrust (a task or responsibility) to another person.', meaningVi: 'ủy thác, giao phó công việc.', wordType: 'Verb', cefrLevel: 'B2', example: 'A good manager knows how to delegate tasks to team members.', exampleVi: 'Một quản lý tốt biết cách giao phó công việc cho các thành viên trong đội.' },
+  { id: 'f-to5', word: 'invoice', phonetic: '/ˈɪnvɔɪ/', meaningEn: 'a list of goods sent or services provided with the sum due.', meaningVi: 'hóa đơn thanh toán.', wordType: 'Noun', cefrLevel: 'B1', example: 'Please send the invoice to our accounting department directly.', exampleVi: 'Vui lòng gửi trực tiếp hóa đơn thanh toán đến bộ phận kế toán của chúng tôi.' },
+  { id: 'f-to6', word: 'implement', phonetic: '/ˈɪmplɪment/', meaningEn: 'put (a decision, plan, agreement, etc.) into effect.', meaningVi: 'thực thi, áp dụng, triển khai.', wordType: 'Verb', cefrLevel: 'B2', example: 'We will implement the new policy starting next Monday.', exampleVi: 'Chúng tôi sẽ triển khai chính sách mới bắt đầu từ thứ Hai tới.' },
+  { id: 'f-to7', word: 'terminate', phonetic: '/ˈtɜːrmɪneɪt/', meaningEn: 'bring to an end.', meaningVi: 'chấm dứt, kết thúc hợp đồng.', wordType: 'Verb', cefrLevel: 'B2', example: 'The client decided to terminate the contract earlier than expected.', exampleVi: 'Khách hàng quyết định chấm dứt hợp đồng sớm hơn dự kiến.' },
+  { id: 'f-to8', word: 'compile', phonetic: '/kəmˈpaɪl/', meaningEn: 'produce by assembling information collected from other sources.', meaningVi: 'biên soạn, thu thập, tổng hợp tài liệu.', wordType: 'Verb', cefrLevel: 'B2', example: 'She needs to compile all sales reports before the meeting.', exampleVi: 'Cô ấy cần tổng hợp tất cả báo cáo bán hàng trước cuộc họp.' },
+  { id: 'f-to9', word: 'executive', phonetic: '/ɪɡˈzekjətɪv/', meaningEn: 'having the power to put plans or actions into effect.', meaningVi: 'ủy viên ban điều hành, cấp quản lý.', wordType: 'Noun', cefrLevel: 'C1', example: 'The chief executive officer made the final decision.', exampleVi: 'Giám đốc điều hành đã đưa ra quyết định cuối cùng.' },
+  { id: 'f-to10', word: 'strategy', phonetic: '/ˈstrætədʒi/', meaningEn: 'a plan of action designed to achieve a major aim.', meaningVi: 'chiến lược.', wordType: 'Noun', cefrLevel: 'B1', example: 'We need a clear strategy to win market share.', exampleVi: 'Chúng ta cần một chiến lược rõ ràng để giành thị phần.' },
+  { id: 'f-to11', word: 'accumulate', phonetic: '/əˈkjuːmjəleɪt/', meaningEn: 'gather or build up a slowly larger amount of something.', meaningVi: 'tích lũy, gom góp.', wordType: 'Verb', cefrLevel: 'B2', example: 'We have managed to accumulate wealth over generations.', exampleVi: 'Chúng tôi đã có thể tích lũy tài sản qua nhiều thế hệ.' },
+  { id: 'f-to12', word: 'acquire', phonetic: '/əˈkwaɪər/', meaningEn: 'buy or obtain (an asset or object).', meaningVi: 'mua lại, đạt được.', wordType: 'Verb', cefrLevel: 'B2', example: 'The corporation plans to acquire two smaller software companies.', exampleVi: 'Tập đoàn có kế hoạch mua lại hai công ty phần mềm nhỏ hơn.' },
+  { id: 'f-to13', word: 'comply', phonetic: '/kəmˈplaɪ/', meaningEn: 'act in accordance with a wish or command.', meaningVi: 'tuân thủ, chấp hành.', wordType: 'Verb', cefrLevel: 'B2', example: 'All employees must comply with the new safety regulations.', exampleVi: 'Tất cả nhân viên phải tuân thủ các quy định an toàn mới.' },
+  { id: 'f-to14', word: 'franchise', phonetic: '/ˈfræntʃaɪz/', meaningEn: 'an authorization granted by a company to an individual enabling them to carry out specified commercial activities.', meaningVi: 'nhượng quyền thương hiệu.', wordType: 'Noun', cefrLevel: 'B2', example: 'They decided to open a fast-food franchise in the city center.', exampleVi: 'Họ quyết định mở một cửa hàng nhượng quyền đồ ăn nhanh ở trung tâm thành phố.' },
+  { id: 'f-to15', word: 'subsidiary', phonetic: '/səbˈsɪdieri/', meaningEn: 'a company controlled by a holding or parent company.', meaningVi: 'công ty con.', wordType: 'Noun', cefrLevel: 'C1', example: 'The German firm is a subsidiary of a larger multinational corporation.', exampleVi: 'Công ty Đức này là công ty con của một tập đoàn đa quốc gia lớn hơn.' }
+];
+
+const FALLBACK_IELTS_WORDS = [
+  { id: 'f-ie1', word: 'advocate', phonetic: '/ˈædvəkeɪt/', meaningEn: 'publicly recommend or support a particular cause or policy.', meaningVi: 'biện hộ, ủng hộ công khai.', wordType: 'Verb', cefrLevel: 'C1', example: 'Many environmentalists advocate using renewable energy sources.', exampleVi: 'Nhiều nhà môi trường học ủng hộ công khai việc sử dụng nguồn năng lượng tái tạo.' },
+  { id: 'f-ie2', word: 'fluctuate', phonetic: '/ˈflʌktʃueɪt/', meaningEn: 'rise and fall irregularly in number or amount.', meaningVi: 'dao động, biến động liên tục.', wordType: 'Verb', cefrLevel: 'B2', example: 'The stock prices fluctuate wildly based on political news.', exampleVi: 'Giá cổ phiếu biến động dữ dội dựa trên các tin tức chính trị.' },
+  { id: 'f-ie3', word: 'hypothesis', phonetic: '/haɪˈpɑːθəsɪs/', meaningEn: 'a proposed explanation made on the basis of limited evidence.', meaningVi: 'giả thuyết khoa học.', wordType: 'Noun', cefrLevel: 'C1', example: 'The researchers proposed a new hypothesis to explain the phenomenon.', exampleVi: 'Các nhà nghiên cứu đã đưa ra một giả thuyết mới để giải thích hiện tượng này.' },
+  { id: 'f-ie4', word: 'synthesize', phonetic: '/ˈsɪnθəsaɪz/', meaningEn: 'combine (a number of things) into a coherent whole.', meaningVi: 'tổng hợp, kết hợp các yếu tố.', wordType: 'Verb', cefrLevel: 'C1', example: 'In the essay, students must synthesize information from three sources.', exampleVi: 'Trong bài luận, học sinh phải tổng hợp thông tin từ ba nguồn tài liệu.' },
+  { id: 'f-ie5', word: 'validate', phonetic: '/ˈvælɪdeɪt/', meaningEn: 'check or prove the validity or accuracy of (something).', meaningVi: 'phê chuẩn, xác thực, làm cho có hiệu lực.', wordType: 'Verb', cefrLevel: 'C1', example: 'We need further experiments to validate these initial findings.', exampleVi: 'Chúng ta cần các thí nghiệm thêm để xác thực các kết quả ban đầu này.' },
+  { id: 'f-ie6', word: 'coordinate', phonetic: '/koʊˈɔːrdɪneɪt/', meaningEn: 'bring the different elements of a complex activity into harmony.', meaningVi: 'phối hợp, điều phối.', wordType: 'Verb', cefrLevel: 'B2', example: 'She was hired to coordinate the volunteer activities.', exampleVi: 'Cô ấy đã được thuê để điều phối các hoạt động tình nguyện.' },
+  { id: 'f-ie7', word: 'empirical', phonetic: '/ɪmˈpɪrɪkl/', meaningEn: 'based on observation or experience rather than theory or logic.', meaningVi: 'thực chứng, dựa trên kinh nghiệm thực tế.', wordType: 'Adjective', cefrLevel: 'C1', example: 'The scientist presented empirical evidence to support his theory.', exampleVi: 'Nhà khoa học đã trình bày bằng chứng thực chứng để hỗ trợ thuyết của mình.' },
+  { id: 'f-ie8', word: 'paradigm', phonetic: '/ˈpærədaɪm/', meaningEn: 'a typical example or pattern of something; a model.', meaningVi: 'mô hình, hệ hình mẫu.', wordType: 'Noun', cefrLevel: 'C2', example: 'This discovery represents a paradigm shift in physics research.', exampleVi: 'Phát hiện này đại diện cho một sự chuyển dịch hệ hình trong nghiên cứu vật lý.' },
+  { id: 'f-ie9', word: 'qualitative', phonetic: '/ˈkwɑːlɪteɪtɪv/', meaningEn: 'relating to the quality of something rather than quantity.', meaningVi: 'định tính, thuộc tính chất.', wordType: 'Adjective', cefrLevel: 'C1', example: 'The company conducted qualitative research on user experience.', exampleVi: 'Công ty đã thực hiện nghiên cứu định tính về trải nghiệm người dùng.' },
+  { id: 'f-ie10', word: 'rational', phonetic: '/ˈræʃnəl/', meaningEn: 'based on or in accordance with reason or logic.', meaningVi: 'hợp lý, có lý trí.', wordType: 'Adjective', cefrLevel: 'B2', example: 'Let\'s have a rational discussion instead of getting emotional.', exampleVi: 'Chúng ta hãy thảo luận có lý trí thay vì trở nên xúc động.' },
+  { id: 'f-ie11', word: 'diminish', phonetic: '/dɪˈmɪnɪʃ/', meaningEn: 'make or become less.', meaningVi: 'giảm bớt, thu nhỏ.', wordType: 'Verb', cefrLevel: 'C1', example: 'The threat of inflation has begun to diminish.', exampleVi: 'Mối đe dọa lạm phát đã bắt đầu giảm bớt.' },
+  { id: 'f-ie12', word: 'equivocal', phonetic: '/ɪˈkwɪvəkl/', meaningEn: 'open to more than one interpretation; ambiguous.', meaningVi: 'lập lờ, hai nghĩa, mơ hồ.', wordType: 'Adjective', cefrLevel: 'C2', example: 'The politician gave an equivocal answer to the journalist.', exampleVi: 'Chính trị gia đã đưa ra một câu trả lời lập lờ trước nhà báo.' },
+  { id: 'f-ie13', word: 'scrutinize', phonetic: '/ˈskruːtənaɪz/', meaningEn: 'examine or inspect closely and thoroughly.', meaningVi: 'xem xét kỹ lưỡng, săm soi.', wordType: 'Verb', cefrLevel: 'C1', example: 'Customers should scrutinize the terms of the agreement before signing.', exampleVi: 'Khách hàng nên xem xét kỹ lưỡng các điều khoản hợp đồng trước khi ký.' },
+  { id: 'f-ie14', word: 'deviate', phonetic: '/ˈdiːvieɪt/', meaningEn: 'depart from an established course.', meaningVi: 'lệch hướng, đi chệch khỏi quy chuẩn.', wordType: 'Verb', cefrLevel: 'C1', example: 'You must not deviate from the agreed safety plan.', exampleVi: 'Bạn tuyệt đối không được đi chệch khỏi kế hoạch an toàn đã thỏa thuận.' },
+  { id: 'f-ie15', word: 'facilitate', phonetic: '/fəˈsɪlɪteɪt/', meaningEn: 'make (an action or process) easy or easier.', meaningVi: 'tạo điều kiện thuận lợi.', wordType: 'Verb', cefrLevel: 'C1', example: 'Modern technology is designed to facilitate communication.', exampleVi: 'Công nghệ hiện đại được thiết kế để tạo điều kiện thuận lợi cho giao tiếp.' }
+];
+
 // GET random vocabulary words for games (Vocab Match, Speed Quiz, Word Scramble, Sentence Builder)
-router.get('/game-data', async (req, res) => {
+router.get('/game-data', authenticate, async (req: any, res) => {
   try {
     const limit = Math.min(Number(req.query.limit) || 35, 50);
-    
-    const { rows: words } = await pool.query(
-      `SELECT id, word, phonetic, meaning_en as "meaningEn", meaning_vi as "meaningVi", 
-              word_type as "wordType", cefr_level as "cefrLevel", example, example_vi as "exampleVi"
-       FROM vocabulary_words 
-       WHERE meaning_vi IS NOT NULL AND meaning_vi != '' AND meaning_vi != word AND example IS NOT NULL AND example != ''
-       ORDER BY RANDOM()
-       LIMIT $1`,
-      [limit]
-    );
+    const category = req.query.category as string || 'all';
+    const userId = req.user.uid;
+
+    let words: any[] = [];
+
+    if (category === 'notebook') {
+      // Fetch user's saved words from notebook
+      const dbUser = await prisma.user.findUnique({
+        where: { email: req.user.email }
+      });
+      if (dbUser) {
+        const entries = await prisma.userLearnedWord.findMany({
+          where: { userId: dbUser.id, isFavorite: true },
+          include: { word: true },
+          take: limit
+        });
+        words = entries.map((e: any) => ({
+          id: e.word.id,
+          word: e.word.word,
+          phonetic: e.word.phonetic,
+          meaningEn: e.word.meaningEn,
+          meaningVi: e.word.meaningVi,
+          wordType: e.word.wordType,
+          cefrLevel: e.word.cefrLevel,
+          example: e.word.example,
+          exampleVi: e.word.exampleVi
+        }));
+      }
+      
+      // If user's notebook has less than 10 words, mix in Oxford words to avoid empty game state
+      if (words.length < 10) {
+        const needed = 15 - words.length;
+        const extra = FALLBACK_OXFORD_WORDS.slice(0, needed);
+        words = [...words, ...extra];
+      }
+    } else {
+      // Query from global vocabulary list
+      let whereClause = `WHERE meaning_vi IS NOT NULL AND meaning_vi != '' AND meaning_vi != word AND example IS NOT NULL AND example != ''`;
+      
+      if (category === 'oxford') {
+        whereClause += ` AND cefr_level IN ('A1', 'A2', 'B1')`;
+      } else if (category === 'toeic') {
+        // Find business vocabulary or B1/B2
+        whereClause += ` AND cefr_level IN ('B1', 'B2')`;
+      } else if (category === 'ielts') {
+        // Academic advanced words
+        whereClause += ` AND cefr_level IN ('B2', 'C1', 'C2')`;
+      }
+
+      const { rows } = await pool.query(
+        `SELECT id, word, phonetic, meaning_en as "meaningEn", meaning_vi as "meaningVi", 
+                word_type as "wordType", cefr_level as "cefrLevel", example, example_vi as "exampleVi"
+         FROM vocabulary_words 
+         ${whereClause}
+         ORDER BY RANDOM()
+         LIMIT $1`,
+        [limit]
+      );
+      words = rows || [];
+
+      // Fallbacks if database is empty or has too few words matching criteria
+      if (words.length < 10) {
+        let fallbackPool = FALLBACK_OXFORD_WORDS;
+        if (category === 'toeic') fallbackPool = FALLBACK_TOEIC_WORDS;
+        else if (category === 'ielts') fallbackPool = FALLBACK_IELTS_WORDS;
+
+        const existingWords = new Set(words.map(w => w.word.toLowerCase()));
+        const extra = fallbackPool.filter(w => !existingWords.has(w.word.toLowerCase()));
+        words = [...words, ...extra].slice(0, limit);
+      }
+    }
 
     res.json({ words });
   } catch (error: any) {
