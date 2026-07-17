@@ -164,8 +164,18 @@ interface Card {
   matched: boolean;
 }
 
+const getCategoryLabel = (cat: string) => {
+  switch (cat) {
+    case 'oxford': return 'Oxford 3000';
+    case 'toeic': return 'TOEIC (Công sở)';
+    case 'ielts': return 'IELTS (Học thuật)';
+    case 'notebook': return 'Sổ tay của tôi';
+    default: return 'Tất cả từ vựng';
+  }
+};
+
 // ─── Vocabulary Match Game ────────────────────────────────────────────────────
-function VocabMatchGame({ dbWords, onClose, awardXp }: { dbWords: any[]; onClose: () => void; awardXp?: (amount: number, reason: string) => void }) {
+function VocabMatchGame({ dbWords, category, onClose, awardXp }: { dbWords: any[]; category: string; onClose: () => void; awardXp?: (amount: number, reason: string) => void }) {
   const [cards, setCards] = useState<Card[]>([]);
   const [selected, setSelected] = useState<Card[]>([]);
   const [matches, setMatches] = useState(0);
@@ -242,7 +252,7 @@ function VocabMatchGame({ dbWords, onClose, awardXp }: { dbWords: any[]; onClose
         <div className="flex items-center justify-between px-8 py-5 border-b border-slate-100 bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
           <div>
             <h2 className="text-xl font-black text-white">Vocabulary Match</h2>
-            <p className="text-blue-200 text-xs font-medium">Nối từ tiếng Anh với nghĩa tiếng Việt tương ứng (Từ ngẫu nhiên)</p>
+            <p className="text-blue-200 text-xs font-medium">Nối từ tiếng Anh với nghĩa tiếng Việt tương ứng (Danh mục: {getCategoryLabel(category)})</p>
           </div>
           <div className="flex items-center gap-6 text-sm font-black">
             <div className="text-center"><p className="text-blue-200 text-[10px] uppercase tracking-widest font-bold">Thời gian</p><p className="text-xl">{fmt(timer)}</p></div>
@@ -294,7 +304,7 @@ function VocabMatchGame({ dbWords, onClose, awardXp }: { dbWords: any[]; onClose
 }
 
 // ─── Speed Quiz Game ───────────────────────────────────────────────────────────
-function SpeedQuizGame({ dbWords, onClose, awardXp }: { dbWords: any[]; onClose: () => void; awardXp?: (amount: number, reason: string) => void }) {
+function SpeedQuizGame({ dbWords, category, onClose, awardXp }: { dbWords: any[]; category: string; onClose: () => void; awardXp?: (amount: number, reason: string) => void }) {
   const [questions, setQuestions] = useState<any[]>([]);
   const [qIdx, setQIdx] = useState(0);
   const [score, setScore] = useState(0);
@@ -397,11 +407,12 @@ function SpeedQuizGame({ dbWords, onClose, awardXp }: { dbWords: any[]; onClose:
     <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-300">
       <div className="bg-white rounded-[2rem] shadow-2xl w-full max-w-lg overflow-hidden animate-in zoom-in-95 duration-300">
         <div className="px-8 py-5 bg-gradient-to-r from-rose-500 to-pink-600 text-white">
-          <div className="flex justify-between items-center mb-3">
+          <div className="flex justify-between items-center mb-1">
             <span className="text-sm font-black opacity-85">Câu hỏi {qIdx + 1}/{questions.length}</span>
             <span className={cn("text-2xl font-black", timeLeft <= 5 && "animate-pulse text-yellow-300")}>{timeLeft}s</span>
             <button onClick={onClose} className="p-1.5 bg-white/20 rounded-full text-white"><X className="w-4 h-4" /></button>
           </div>
+          <p className="text-pink-100 text-[10px] font-bold uppercase tracking-widest mb-2">Danh mục: {getCategoryLabel(category)}</p>
           <div className="h-2 bg-white/20 rounded-full overflow-hidden">
             <div className="h-full bg-white rounded-full transition-all duration-1000" style={{ width: `${pct}%` }} />
           </div>
@@ -446,7 +457,7 @@ function SpeedQuizGame({ dbWords, onClose, awardXp }: { dbWords: any[]; onClose:
 }
 
 // ─── Word Scramble Game (Nối Chữ Thành Từ) ──────────────────────────────────────
-function WordScrambleGame({ dbWords, onClose, awardXp }: { dbWords: any[]; onClose: () => void; awardXp?: (amount: number, reason: string) => void }) {
+function WordScrambleGame({ dbWords, category, onClose, awardXp }: { dbWords: any[]; category: string; onClose: () => void; awardXp?: (amount: number, reason: string) => void }) {
   const [scrambleList, setScrambleList] = useState<any[]>([]);
   const [wordIdx, setWordIdx] = useState(0);
   const [score, setScore] = useState(0);
@@ -539,7 +550,7 @@ function WordScrambleGame({ dbWords, onClose, awardXp }: { dbWords: any[]; onClo
         <div className="flex items-center justify-between px-8 py-5 border-b border-slate-100 bg-gradient-to-r from-purple-600 to-indigo-600 text-white">
           <div>
             <h2 className="text-xl font-black text-white">Word Scramble</h2>
-            <p className="text-purple-200 text-xs font-medium">Ghép các chữ cái xáo trộn thành một từ có nghĩa (Ngẫu nhiên)</p>
+            <p className="text-purple-200 text-xs font-medium">Ghép các chữ cái xáo trộn thành một từ có nghĩa (Danh mục: {getCategoryLabel(category)})</p>
           </div>
           <button onClick={onClose} className="p-2 bg-white/10 rounded-full hover:bg-white/20 transition-all text-white"><X className="w-5 h-5" /></button>
         </div>
@@ -633,7 +644,7 @@ function WordScrambleGame({ dbWords, onClose, awardXp }: { dbWords: any[]; onClo
 }
 
 // ─── Sentence Builder Game (Nối Từ Thành Câu) ───────────────────────────────────
-function SentenceBuilderGame({ dbWords, onClose, awardXp }: { dbWords: any[]; onClose: () => void; awardXp?: (amount: number, reason: string) => void }) {
+function SentenceBuilderGame({ dbWords, category, onClose, awardXp }: { dbWords: any[]; category: string; onClose: () => void; awardXp?: (amount: number, reason: string) => void }) {
   const [sentenceList, setSentenceList] = useState<any[]>([]);
   const [sentIdx, setSentIdx] = useState(0);
   const [score, setScore] = useState(0);
@@ -740,7 +751,7 @@ function SentenceBuilderGame({ dbWords, onClose, awardXp }: { dbWords: any[]; on
         <div className="flex items-center justify-between px-8 py-5 border-b border-slate-100 bg-gradient-to-r from-emerald-600 to-teal-600 text-white">
           <div>
             <h2 className="text-xl font-black text-white">Sentence Builder</h2>
-            <p className="text-emerald-200 text-xs font-medium">Sắp xếp các từ xáo trộn để tạo thành câu hoàn chỉnh (Từ dữ liệu bài học)</p>
+            <p className="text-emerald-200 text-xs font-medium">Sắp xếp các từ xáo trộn để tạo thành câu hoàn chỉnh (Danh mục: {getCategoryLabel(category)})</p>
           </div>
           <button onClick={onClose} className="p-2 bg-white/10 rounded-full hover:bg-white/20 transition-all text-white"><X className="w-5 h-5" /></button>
         </div>
@@ -1839,11 +1850,11 @@ export default function GamesPage() {
 
   return (
     <div className="space-y-10 animate-in fade-in duration-700">
-      {activeGame === 'vocab' && <VocabMatchGame dbWords={dbWords} onClose={() => setActiveGame(null)} awardXp={handleAwardXp} />}
-      {activeGame === 'quiz' && <SpeedQuizGame dbWords={dbWords} onClose={() => setActiveGame(null)} awardXp={handleAwardXp} />}
-      {activeGame === 'scram' && <WordScrambleGame dbWords={dbWords} onClose={() => setActiveGame(null)} awardXp={handleAwardXp} />}
+      {activeGame === 'vocab' && <VocabMatchGame dbWords={dbWords} category={selectedCategory} onClose={() => setActiveGame(null)} awardXp={handleAwardXp} />}
+      {activeGame === 'quiz' && <SpeedQuizGame dbWords={dbWords} category={selectedCategory} onClose={() => setActiveGame(null)} awardXp={handleAwardXp} />}
+      {activeGame === 'scram' && <WordScrambleGame dbWords={dbWords} category={selectedCategory} onClose={() => setActiveGame(null)} awardXp={handleAwardXp} />}
       {activeGame === 'imageGuess' && <ImageGuessGame onClose={() => setActiveGame(null)} awardXp={handleAwardXp} />}
-      {activeGame === 'sentence' && <SentenceBuilderGame dbWords={dbWords} onClose={() => setActiveGame(null)} awardXp={handleAwardXp} />}
+      {activeGame === 'sentence' && <SentenceBuilderGame dbWords={dbWords} category={selectedCategory} onClose={() => setActiveGame(null)} awardXp={handleAwardXp} />}
       {activeGame === 'idiom' && <IdiomConnectorGame onClose={() => setActiveGame(null)} awardXp={handleAwardXp} />}
 
       <header className="text-center space-y-4">
@@ -1919,6 +1930,62 @@ export default function GamesPage() {
         </div>
       </section>
 
+      {/* Vocabulary Preview Panel */}
+      <section className="mx-auto max-w-4xl w-full px-6 py-5 bg-slate-50/50 dark:bg-slate-850/20 border border-slate-100 dark:border-slate-800/60 rounded-3xl space-y-4">
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-black text-slate-700 dark:text-slate-200 flex items-center gap-1.5">
+            <Sparkles className="w-4 h-4 text-amber-500 fill-amber-500/20" /> 
+            Từ vựng chuẩn bị ôn tập ({dbWords.length} từ)
+          </h3>
+          <span className="text-[10px] font-bold text-slate-450 dark:text-slate-400 uppercase tracking-widest bg-slate-100 dark:bg-slate-800/80 px-2 py-0.5 rounded-full">
+            {getCategoryLabel(selectedCategory)}
+          </span>
+        </div>
+
+        {loading ? (
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            {[1, 2, 3, 4].map(n => (
+              <div key={n} className="p-4 bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800/60 animate-pulse space-y-2">
+                <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-2/3"></div>
+                <div className="h-3 bg-slate-100 dark:bg-slate-800 rounded w-1/2"></div>
+              </div>
+            ))}
+          </div>
+        ) : dbWords.length === 0 ? (
+          <div className="p-6 text-center text-slate-500 text-xs font-semibold">
+            {selectedCategory === 'notebook' 
+              ? 'Sổ tay của bạn hiện đang trống. Hãy quay lại trang Từ Điển hoặc Chat để lưu thêm từ vựng!'
+              : 'Không tìm thấy từ vựng nào thuộc danh mục này.'}
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 overflow-x-auto no-scrollbar py-0.5">
+            {dbWords.slice(0, 4).map((w, idx) => (
+              <div 
+                key={w.id || idx} 
+                className="p-4 bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800/80 hover:shadow-md transition-all duration-300 flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center justify-between gap-1.5">
+                    <span className="font-black text-slate-800 dark:text-slate-100 text-sm truncate">{w.word}</span>
+                    {w.cefrLevel && (
+                      <span className="text-[9px] font-black px-1.5 py-0.5 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-md">
+                        {w.cefrLevel}
+                      </span>
+                    )}
+                  </div>
+                  <div className="text-[10px] font-bold text-slate-400 dark:text-slate-555 mt-0.5">
+                    {w.wordType && `[${w.wordType}]`} {w.phonetic || ''}
+                  </div>
+                </div>
+                <div className="text-xs font-bold text-slate-500 dark:text-slate-455 border-t border-slate-100 dark:border-slate-800/50 mt-2.5 pt-2.5 line-clamp-1">
+                  {w.meaningVi}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
+
       {/* Game Grid */}
       <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {GAMES.map((game) => (
@@ -1940,7 +2007,10 @@ export default function GamesPage() {
                 <div className="flex items-center justify-between pt-2">
                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{game.players}</span>
                   <button className="flex items-center gap-1 text-sm font-black transition-all text-primary group-hover:translate-x-1 cursor-pointer">
-                    Chơi Ngay <ChevronRight className="w-4 h-4" />
+                    {['vocab', 'quiz', 'scram', 'sentence'].includes(game.id)
+                      ? `Chơi (${getCategoryLabel(selectedCategory)})`
+                      : 'Chơi Ngay'} 
+                    <ChevronRight className="w-4 h-4" />
                   </button>
                 </div>
               </div>
