@@ -7,10 +7,13 @@ const prismaClientSingleton = () => {
     if (!process.env.DATABASE_URL) {
         throw new Error('DATABASE_URL is not defined in environment variables');
     }
-    // Khởi tạo kết nối PostgreSQL truyền thống
+    // Khởi tạo kết nối PostgreSQL truyền thống với cấu hình tối ưu hóa concurrency
     const pool = new pg_1.Pool({
         connectionString: process.env.DATABASE_URL,
-        ssl: { rejectUnauthorized: false }
+        ssl: { rejectUnauthorized: false },
+        max: 25, // Tăng giới hạn kết nối đồng thời từ 10 lên 25
+        idleTimeoutMillis: 30000, // Giải phóng socket nhàn rỗi sau 30 giây
+        connectionTimeoutMillis: 2000 // Hủy kết nối treo quá 2 giây để tránh kẹt hàng đợi
     });
     // Sử dụng Adapter để Prisma bản 7 có thể làm việc trực tiếp
     const adapter = new adapter_pg_1.PrismaPg(pool);

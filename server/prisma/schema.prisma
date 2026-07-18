@@ -75,6 +75,8 @@ model UserLearnedWord {
   @@unique([userId, wordId])
   @@map("user_learned_words")
   @@index([userId])
+  @@index([wordId])
+  @@index([userId, isFavorite])
 }
 
 model ReviewHistory {
@@ -91,6 +93,8 @@ model ReviewHistory {
 
   @@map("review_history")
   @@index([userId])
+  @@index([wordId])
+  @@index([reviewedAt])
 }
 
 model JournalEntry {
@@ -108,6 +112,8 @@ model JournalEntry {
   user            User     @relation(fields: [userId], references: [id])
 
   @@map("journal_entries")
+  @@index([userId])
+  @@index([createdAt])
 }
 
 model AIChatHistory {
@@ -121,6 +127,8 @@ model AIChatHistory {
   user        User     @relation(fields: [userId], references: [id])
 
   @@map("ai_chat_history")
+  @@index([userId])
+  @@index([createdAt])
 }
 
 model SpeakingPractice {
@@ -135,6 +143,8 @@ model SpeakingPractice {
   user               User     @relation(fields: [userId], references: [id])
 
   @@map("speaking_practice")
+  @@index([userId])
+  @@index([createdAt])
 }
 
 model Achievement {
@@ -193,6 +203,8 @@ model ToeicPracticeHistory {
   user           User     @relation(fields: [userId], references: [id])
 
   @@map("toeic_practice_history")
+  @@index([userId])
+  @@index([createdAt])
 }
 
 model IeltsPracticeHistory {
@@ -210,6 +222,8 @@ model IeltsPracticeHistory {
   user           User     @relation(fields: [userId], references: [id])
 
   @@map("ielts_practice_history")
+  @@index([userId])
+  @@index([createdAt])
 }
 
 model WordStressAnalysis {
@@ -252,5 +266,6 @@ model UnresolvedQuestion {
   createdAt    DateTime @default(now()) @map("created_at")
 
   @@map("unresolved_questions")
+  @@index([userId])
 }
 

@@ -2,6 +2,8 @@ import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import compression from 'compression';
+import rateLimit from 'express-rate-limit';
 import userRoutes from './routes/user.routes';
 import vocabularyRoutes from './routes/vocabulary.routes';
 import journalRoutes from './routes/journal.routes';
@@ -10,13 +12,23 @@ import aiRoutes from './routes/ai.routes';
 import toeicRoutes from './routes/toeic.routes';
 import ieltsRoutes from './routes/ielts.routes';
 
-
 const app: Application = express();
+
+// Rate limiter: Max 150 requests per minute per IP to protect the server
+const limiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 150,
+  message: { error: 'Quá nhiều yêu cầu từ địa chỉ IP này. Vui lòng thử lại sau.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 // Middleware
 app.use(helmet());
 app.use(cors());
+app.use(compression()); // Nén toàn bộ API JSON payload bằng Gzip/Brotli
 app.use(morgan('dev'));
+app.use('/api/', limiter); // Áp dụng rate limiting cho tất cả API routes
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
