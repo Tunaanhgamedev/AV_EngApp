@@ -6,6 +6,7 @@ import {
   User as FirebaseUser,
   GoogleAuthProvider,
   FacebookAuthProvider,
+  GithubAuthProvider,
   OAuthProvider,
   signInWithPopup,
   signInWithRedirect,
@@ -34,6 +35,7 @@ interface AuthContextType {
   signInWithGoogle: () => Promise<void>;
   signInWithFacebook: () => Promise<void>;
   signInWithApple: () => Promise<void>;
+  signInWithGithub: () => Promise<void>;
   signInWithEmail: (email: string, password: string) => Promise<void>;
   signUpWithEmail: (email: string, password: string, displayName: string) => Promise<void>;
   logout: () => Promise<void>;
@@ -299,6 +301,56 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const signInWithGithub = async () => {
+    const provider = new GithubAuthProvider();
+    try {
+      console.log("[Auth] Attempting GitHub signInWithPopup...");
+      const result = await signInWithPopup(auth, provider);
+      if (result.user) {
+        await fetchDbUser(result.user);
+      }
+    } catch (error: any) {
+      console.warn("[Auth] GitHub signInWithPopup failed:", error?.code || error?.message || error);
+      
+      if (error?.code === 'auth/unauthorized-domain') {
+        const currentDomain = typeof window !== 'undefined' ? window.location.hostname : '';
+        alert(
+          `Lỗi cấu hình Firebase:\nTên miền này (${currentDomain}) chưa được cấp phép (Authorized Domains) trong Firebase Console.\n\n` +
+          `Vui lòng truy cập Firebase Console -> Authentication -> Settings -> Authorized domains và thêm tên miền "${currentDomain}" để sử dụng chức năng đăng nhập GitHub.`
+        );
+        throw error;
+      }
+      
+      const isPopupBlocked = error?.code === 'auth/popup-blocked';
+      const isEnvNotSupported = error?.code === 'auth/operation-not-supported-in-this-environment';
+      const isCrossOriginOrFrameError = /cross-origin|iframe|closed|blocked/i.test(error?.message || '') || error?.code?.includes('iframe');
+      
+      const shouldRedirectFallback = isPopupBlocked || isEnvNotSupported || isCrossOriginOrFrameError;
+      
+      if (shouldRedirectFallback) {
+        console.log("[Auth] Popup blocked or not supported. Falling back to signInWithRedirect (GitHub)...");
+        try {
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('auth_redirect_pending', 'true');
+          }
+          await signInWithRedirect(auth, provider);
+        } catch (redirectError: any) {
+          if (typeof window !== 'undefined') {
+            localStorage.removeItem('auth_redirect_pending');
+          }
+          console.error("[Auth] Redirect fallback also failed:", redirectError);
+          alert(
+            "Không thể đăng nhập bằng GitHub.\n" +
+            "Vui lòng tắt các trình chặn Quảng cáo/Popup trên trình duyệt của bạn hoặc chọn 'Mở bằng Chrome/Safari' để tiếp tục."
+          );
+          throw redirectError;
+        }
+      } else {
+        throw error;
+      }
+    }
+  };
+
   const signInWithEmail = async (email: string, password: string) => {
     try {
       console.log("[Auth] Attempting signInWithEmailAndPassword...");
@@ -354,6 +406,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       signInWithGoogle, 
       signInWithFacebook, 
       signInWithApple, 
+      signInWithGithub,
       signInWithEmail, 
       signUpWithEmail, 
       logout, 
