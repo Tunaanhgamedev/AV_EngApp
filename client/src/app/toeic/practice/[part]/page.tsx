@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import {
   GraduationCap, Headphones, BookOpen, Clock, Target, ChevronRight,
   Sparkles, Brain, ArrowLeft, Loader2, Award, CheckCircle2, XCircle,
-  HelpCircle, ChevronDown, ChevronUp, Star, Lightbulb, Play
+  HelpCircle, ChevronDown, ChevronUp, Star, Lightbulb, Play, Volume2
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
@@ -35,6 +35,27 @@ export default function TOEICPracticePage() {
   const [scoreReport, setScoreReport] = useState<any>(null);
   const [submitting, setSubmitting] = useState(false);
   const [revealedExplanation, setRevealedExplanation] = useState<Record<string, boolean>>({});
+  const [playingId, setPlayingId] = useState<string | null>(null);
+
+  const handleSpeak = (text: string, id: string) => {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      if (playingId === id) {
+        setPlayingId(null);
+        return;
+      }
+      
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      utterance.onend = () => setPlayingId(null);
+      utterance.onerror = () => setPlayingId(null);
+      
+      setPlayingId(id);
+      window.speechSynthesis.speak(utterance);
+    } else {
+      alert('Trình duyệt của bạn không hỗ trợ đọc âm thanh tự động.');
+    }
+  };
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -210,8 +231,22 @@ export default function TOEICPracticePage() {
               {/* Listening Part description or context */}
               {q.audioDescription && (
                 <div className="p-4 bg-slate-50 border border-slate-100 rounded-2xl space-y-2">
-                  <div className="flex items-center gap-2 text-xs font-black text-slate-500 uppercase tracking-widest">
-                    <Headphones className="w-4 h-4 text-primary" /> Audio Simulation Script
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-xs font-black text-slate-500 uppercase tracking-widest">
+                      <Headphones className="w-4 h-4 text-primary" /> Audio Simulation Script
+                    </div>
+                    <button
+                      onClick={() => handleSpeak(q.audioDescription || '', q.id)}
+                      className={cn(
+                        "px-3 py-1.5 rounded-xl transition-all flex items-center gap-1.5 text-xs font-black uppercase tracking-wider",
+                        playingId === q.id 
+                          ? "bg-rose-100 text-rose-700 animate-pulse border border-rose-200" 
+                          : "bg-primary/10 text-primary hover:bg-primary/20 border border-primary/20"
+                      )}
+                    >
+                      <Volume2 className="w-3.5 h-3.5" />
+                      {playingId === q.id ? "Đang phát..." : "Nghe âm thanh"}
+                    </button>
                   </div>
                   <p className="text-slate-700 italic font-medium">{q.audioDescription}</p>
                 </div>
@@ -220,8 +255,24 @@ export default function TOEICPracticePage() {
               {/* Reading Passage Context */}
               {q.context && (
                 <div className="p-5 bg-slate-50 border border-slate-100 rounded-2xl space-y-2">
-                  <div className="flex items-center gap-2 text-xs font-black text-slate-500 uppercase tracking-widest">
-                    <BookOpen className="w-4 h-4 text-emerald-600" /> Passage / Dialogue Context
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-xs font-black text-slate-500 uppercase tracking-widest">
+                      <BookOpen className="w-4 h-4 text-emerald-600" /> Passage / Dialogue Context
+                    </div>
+                    {partNum <= 4 && (
+                      <button
+                        onClick={() => handleSpeak(q.context || '', q.id + '-context')}
+                        className={cn(
+                          "px-3 py-1.5 rounded-xl transition-all flex items-center gap-1.5 text-xs font-black uppercase tracking-wider",
+                          playingId === q.id + '-context'
+                            ? "bg-rose-100 text-rose-700 animate-pulse border border-rose-200" 
+                            : "bg-primary/10 text-primary hover:bg-primary/20 border border-primary/20"
+                        )}
+                      >
+                        <Volume2 className="w-3.5 h-3.5" />
+                        {playingId === q.id + '-context' ? "Đang phát..." : "Nghe hội thoại"}
+                      </button>
+                    )}
                   </div>
                   <p className="text-slate-800 font-medium whitespace-pre-line leading-relaxed">{q.context}</p>
                 </div>

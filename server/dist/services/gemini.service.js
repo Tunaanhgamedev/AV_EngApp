@@ -1797,16 +1797,16 @@ ${wordList}
     static async generateToeicPractice(part) {
         try {
             const prompt = `
-        Bạn là chuyên gia ra đề thi TOEIC. Hãy tạo một đề luyện tập TOEIC Part ${part} gồm 5 câu hỏi chất lượng cao, bám sát cấu trúc đề thi thật mới nhất.
+        Bạn là chuyên gia ra đề thi TOEIC hàng đầu. Hãy tạo một đề luyện tập TOEIC Part ${part} gồm ĐÚNG 10 câu hỏi nâng cao (Advanced), chất lượng cao, bám sát cấu trúc đề thi thật (New Format) mới nhất và có độ khó cao (từ 700-990 điểm).
         
-        Yêu cầu chi tiết cho Part ${part}:
-        ${part === 1 ? '- Part 1 (Photographs): Mô tả một bức ảnh sinh động bằng văn bản tiếng Anh trong trường "audioDescription" (Ví dụ: "A man is sitting at a desk, typing on a laptop..."). Tạo 4 đáp án A, B, C, D mô tả bức ảnh.' : ''}
-        ${part === 2 ? '- Part 2 (Question-Response): Tạo một câu hỏi/phát biểu tiếng Anh trong trường "audioDescription". Tạo 3 đáp án A, B, C (đáp án D để trống hoặc không tạo).' : ''}
-        ${part === 3 ? '- Part 3 (Conversations): Tạo một đoạn hội thoại tự nhiên từ 2-3 người bằng tiếng Anh trong trường "context". Tạo 3 câu hỏi liên quan, mỗi câu hỏi có 4 đáp án A, B, C, D.' : ''}
-        ${part === 4 ? '- Part 4 (Short Talks): Tạo một bài nói ngắn (thông báo, quảng cáo, tin nhắn thoại) bằng tiếng Anh trong trường "context". Tạo 3 câu hỏi liên quan, mỗi câu hỏi có 4 đáp án A, B, C, D.' : ''}
-        ${part === 5 ? '- Part 5 (Incomplete Sentences): Tạo một câu có chỗ trống (marked as "_______") bằng tiếng Anh trong trường "questionText". Tạo 4 lựa chọn A, B, C, D.' : ''}
-        ${part === 6 ? '- Part 6 (Text Completion): Tạo một đoạn văn ngắn bằng tiếng Anh trong trường "context" có các chỗ trống đánh số (1), (2), (3). Tạo 3 câu hỏi tương ứng với 3 chỗ trống, mỗi câu hỏi có 4 đáp án A, B, C, D.' : ''}
-        ${part === 7 ? '- Part 7 (Reading Comprehension): Tạo một hoặc hai văn bản (email, thư báo, quảng cáo) bằng tiếng Anh trong trường "context". Tạo 3 câu hỏi liên quan, mỗi câu có 4 đáp án A, B, C, D.' : ''}
+        Yêu cầu chi tiết nâng cao cho Part ${part}:
+        ${part === 1 ? '- Part 1 (Photographs): Mô tả các bức ảnh bằng văn bản tiếng Anh trong trường "audioDescription". Hãy mô tả các bối cảnh nâng cao, tập trung vào chi tiết nhỏ, hành động gián tiếp hoặc trạng thái của vật thể thay vì mô tả trực diện đơn giản. Tạo 4 đáp án A, B, C, D mô tả bức ảnh trong đó có các bẫy từ đồng âm hoặc bẫy sai hành động.' : ''}
+        ${part === 2 ? '- Part 2 (Question-Response): Tạo các câu hỏi/phát biểu trong trường "audioDescription". Sử dụng các câu trả lời gián tiếp nâng cao (Indirect/Evading answers), bẫy từ đồng âm hoặc đa nghĩa (ví dụ: coffee/copy, train/training), bẫy sai đại từ hoặc thì của động từ. Tạo 3 đáp án A, B, C (đáp án D để trống).' : ''}
+        ${part === 3 ? '- Part 3 (Conversations): Tạo 3-4 đoạn hội thoại tự nhiên từ 2-3 người về công sở, thương mại, dự án trong trường "context". Tạo các câu hỏi liên quan, mỗi câu hỏi có 4 đáp án A, B, C, D (Tổng cộng tạo đủ 10 câu hỏi).' : ''}
+        ${part === 4 ? '- Part 4 (Short Talks): Tạo 3-4 bài nói ngắn (thuyết trình, tin nhắn thoại, thông báo khẩn cấp, dự báo thời tiết) trong trường "context". Tạo các câu hỏi liên quan, mỗi câu hỏi có 4 đáp án A, B, C, D (Tổng cộng tạo đủ 10 câu hỏi).' : ''}
+        ${part === 5 ? '- Part 5 (Incomplete Sentences): Tạo các câu chứa chỗ trống (marked as "_______") trong trường "questionText". Tập trung vào các điểm ngữ pháp nâng cao (câu điều kiện trộn, mệnh đề quan hệ rút gọn, phân từ làm tính từ) hoặc collocations và từ vựng chuyên ngành C1/C2 thương mại. Tạo 4 lựa chọn A, B, C, D.' : ''}
+        ${part === 6 ? '- Part 6 (Text Completion): Tạo 2-3 đoạn văn công sở hoặc thông báo trong trường "context" có các chỗ trống đánh số (1), (2), (3)... Tạo các câu hỏi tương ứng với các chỗ trống, bao gồm cả câu hỏi điền từ, cụm từ và điền cả câu văn phù hợp ngữ cảnh. Tạo 4 đáp án A, B, C, D (Tổng cộng tạo đủ 10 câu hỏi).' : ''}
+        ${part === 7 ? '- Part 7 (Reading Comprehension): Tạo 2-3 văn bản đơn hoặc kép (double/triple passages như email + hóa đơn + phản hồi) trong trường "context". Tạo các câu hỏi nâng cao kiểm tra khả năng suy luận (Inference), liên kết thông tin giữa các văn bản, và tìm từ đồng nghĩa phù hợp ngữ cảnh. Tạo 4 đáp án A, B, C, D (Tổng cộng tạo đủ 10 câu hỏi).' : ''}
 
         Trả về ĐÚNG định dạng JSON sau (không chứa bất kỳ giải thích nào khác ngoài JSON):
         {
@@ -1819,7 +1819,7 @@ ${wordList}
               "questionText": "Câu hỏi cụ thể bằng tiếng Anh (ví dụ: 'What is the purpose of the email?') hoặc câu chứa chỗ trống cho Part 5",
               "choices": ["A. choice A", "B. choice B", "C. choice C", "D. choice D"],
               "correctAnswer": "A",
-              "explanation": "Lời giải thích chi tiết, dịch nghĩa của câu hỏi và đáp án bằng tiếng Việt."
+              "explanation": "Lời giải thích chi tiết cực kỳ sâu sắc, chỉ rõ tại sao các đáp án khác sai (ví dụ: bẫy từ đồng âm, bẫy sai thì), và dịch nghĩa câu hỏi + đáp án bằng tiếng Việt."
             }
           ]
         }

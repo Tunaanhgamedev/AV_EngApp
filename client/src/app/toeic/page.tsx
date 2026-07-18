@@ -1,15 +1,16 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   GraduationCap, Headphones, BookOpen, Clock, Target, ChevronRight,
   Sparkles, Brain, TrendingUp, Zap, ShieldCheck, Play, Star,
   Image as ImageIcon, MessageCircleQuestion, Users, Radio,
-  FileText, LetterText, BookOpenCheck, ArrowRight
+  FileText, LetterText, BookOpenCheck, ArrowRight, Loader2, Calendar
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
+import { getToeicHistory } from '@/services/toeic.service';
 
 const TOEIC_PARTS = [
   {
@@ -109,10 +110,29 @@ export default function TOEICPage() {
   const { user } = useAuth();
   const router = useRouter();
   const [hoveredPart, setHoveredPart] = useState<string | null>(null);
+  const [history, setHistory] = useState<any[]>([]);
+  const [loadingHistory, setLoadingHistory] = useState(false);
 
   const listeningParts = TOEIC_PARTS.filter(p => p.skill === 'Listening');
   const readingParts = TOEIC_PARTS.filter(p => p.skill === 'Reading');
   const totalQuestions = TOEIC_PARTS.reduce((sum, p) => sum + p.questions, 0);
+
+  useEffect(() => {
+    const fetchHistory = async () => {
+      if (!user) return;
+      try {
+        setLoadingHistory(true);
+        const token = await user.getIdToken();
+        const data = await getToeicHistory(user.uid, token);
+        setHistory(data || []);
+      } catch (err) {
+        console.error('Failed to fetch TOEIC history:', err);
+      } finally {
+        setLoadingHistory(false);
+      }
+    };
+    fetchHistory();
+  }, [user]);
 
   return (
     <div className="max-w-6xl mx-auto space-y-10 pb-20 animate-in fade-in duration-700">
@@ -371,6 +391,87 @@ export default function TOEICPage() {
           </div>
         </section>
       </div>
+
+      {/* Recent Practice History */}
+      <section className="space-y-6">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center">
+            <Clock className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <h2 className="text-2xl font-black text-slate-800">Lịch Sử Luyện Tập Gần Đây</h2>
+            <p className="text-sm text-slate-500 font-medium">Theo dõi các bài làm thử gần nhất của bạn</p>
+          </div>
+        </div>
+
+        {loadingHistory ? (
+          <div className="premium-card p-12 text-center text-slate-400 font-medium flex items-center justify-center gap-2">
+            <Loader2 className="w-5 h-5 animate-spin text-primary" /> Đang tải lịch sử làm bài...
+          </div>
+        ) : history.length === 0 ? (
+          <div className="premium-card p-12 text-center text-slate-400 font-medium border border-dashed border-slate-200">
+            <Target className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+            <p>Bạn chưa tham gia bài luyện tập hay thi thử TOEIC nào.</p>
+            <p className="text-xs text-slate-400 mt-1">Luyện tập từng Part ở trên hoặc bắt đầu một bài thi thử Full Test để tích lũy điểm số!</p>
+          </div>
+        ) : (
+          <div className="premium-card overflow-hidden border border-slate-100 shadow-xl rounded-3xl">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="bg-slate-50 border-b border-slate-100 text-[10px] font-black uppercase tracking-widest text-slate-400">
+                    <th className="py-4 px-6">Bài luyện tập</th>
+                    <th className="py-4 px-6">Ngày làm bài</th>
+                    <th className="py-4 px-6 text-center">Tỷ lệ đúng</th>
+                    <th className="py-4 px-6 text-center">Điểm ước lượng</th>
+                    <th className="py-4 px-6 text-right">Phần thưởng</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-50 text-sm font-semibold text-slate-600">
+                  {history.slice(0, 5).map((h: any) => {
+                    const isFullTest = h.part === null;
+                    const dateStr = h.createdAt ? new Date(h.createdAt).toLocaleDateString('vi-VN', {
+                      day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'
+                    }) : '-';
+                    const partInfo = isFullTest 
+                      ? { title: "TOEIC Full Practice Test", color: "text-indigo-600 bg-indigo-50 border-indigo-100" }
+                      : { title: `TOEIC Part ${h.part} - ${TOEIC_PARTS.find(p => p.part === h.part)?.title || 'Practice'}`, color: "text-blue-600 bg-blue-50 border-blue-100" };
+
+                    return (
+                      <tr key={h.id} className="hover:bg-slate-50/50 transition-colors">
+                        <td className="py-4 px-6">
+                          <div className="flex items-center gap-3">
+                            <span className={cn("px-2.5 py-1 rounded-lg text-[10px] font-black border uppercase tracking-wider", partInfo.color)}>
+                              {isFullTest ? "Full" : `Part ${h.part}`}
+                            </span>
+                            <span className="font-bold text-slate-800">{partInfo.title}</span>
+                          </div>
+                        </td>
+                        <td className="py-4 px-6 text-slate-400 font-medium text-xs">
+                          <div className="flex items-center gap-1.5">
+                            <Calendar className="w-3.5 h-3.5" /> {dateStr}
+                          </div>
+                        </td>
+                        <td className="py-4 px-6 text-center font-bold text-slate-700">
+                          {h.correctCount}/{h.totalQuestions}
+                        </td>
+                        <td className="py-4 px-6 text-center">
+                          <span className="font-black text-indigo-600 bg-indigo-50 px-3 py-1 rounded-xl text-xs">
+                            {h.totalScore} / 990
+                          </span>
+                        </td>
+                        <td className="py-4 px-6 text-right text-emerald-600 font-black text-xs">
+                          +{isFullTest ? 200 : h.correctCount * 10} XP
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+      </section>
 
       {/* Strategy Tips */}
       <section className="premium-card p-8 bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-100">
