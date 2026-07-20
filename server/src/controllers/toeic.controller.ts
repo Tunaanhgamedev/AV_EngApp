@@ -71,3 +71,41 @@ export const getHistory = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Failed to fetch history' });
   }
 };
+
+export const generateStudyPlan = async (req: Request, res: Response) => {
+  const { userId } = req.params;
+
+  try {
+    const history = await prisma.toeicPracticeHistory.findMany({
+      where: { userId: String(userId) },
+      orderBy: { createdAt: 'desc' }
+    });
+
+    // Initialize stats for Parts 1 to 7
+    const stats: Record<number, { part: number; attempts: number; correct: number; accuracy: number }> = {};
+    for (let i = 1; i <= 7; i++) {
+      stats[i] = { part: i, attempts: 0, correct: 0, accuracy: 0 };
+    }
+
+    // Populate stats from practice history
+    history.forEach(h => {
+      if (h.part !== null && h.part >= 1 && h.part <= 7) {
+        stats[h.part].attempts += h.totalQuestions;
+        stats[h.part].correct += h.correctCount;
+      }
+    });
+
+    // Calculate accuracy percentage
+    for (let i = 1; i <= 7; i++) {
+      if (stats[i].attempts > 0) {
+        stats[i].accuracy = Math.round((stats[i].correct / stats[i].attempts) * 100);
+      }
+    }
+
+    const studyPlan = await GeminiService.generateToeicStudyPlan(stats);
+    res.json(studyPlan);
+  } catch (error) {
+    console.error('TOEIC controller generate study plan error:', error);
+    res.status(500).json({ error: 'Failed to generate study plan' });
+  }
+};

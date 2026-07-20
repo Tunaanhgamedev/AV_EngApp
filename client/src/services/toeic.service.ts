@@ -68,3 +68,22 @@ export const getToeicHistory = async (userId: string, token?: string) => {
     throw error;
   }
 };
+
+export const getToeicStudyPlan = async (userId: string, token?: string) => {
+  try {
+    const response = await fetch(`${API_URL}/toeic/study-plan/${userId}`, {
+      headers: {
+        ...(token && { 'Authorization': `Bearer ${token}` })
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch TOEIC study plan');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('TOEIC Service study plan error:', error);
+    throw error;
+  }
+};

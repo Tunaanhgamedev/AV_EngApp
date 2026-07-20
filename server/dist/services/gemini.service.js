@@ -2029,5 +2029,106 @@ ${wordList}
             }
         }
     }
+    /**
+     * Generate TOEIC Study Plan based on accuracy statistics
+     */
+    static async generateToeicStudyPlan(stats) {
+        try {
+            const prompt = `
+        Bạn là chuyên gia tư vấn lộ trình học TOEIC hàng đầu. Hãy phân tích bảng thống kê kết quả luyện tập TOEIC của học viên sau đây để thiết kế một lộ trình học cá nhân hóa chi tiết 4 tuần bằng tiếng Việt.
+        
+        Bảng thống kê tỷ lệ làm đúng theo từng Part (từ Part 1 đến Part 7):
+        ${JSON.stringify(stats, null, 2)}
+        (Lưu ý: Nếu một Part có số câu đã làm là 0, nghĩa là học viên chưa bao giờ làm Part đó).
+
+        Hãy phân tích điểm mạnh, điểm yếu cụ thể, đề xuất mục tiêu điểm số và lên kế hoạch học tập chi tiết 4 tuần tiếp theo.
+        Kế hoạch phải tập trung cải thiện các Part yếu nhất (độ chính xác thấp nhất hoặc chưa luyện tập).
+
+        Trả về ĐÚNG định dạng JSON sau (không chứa bất kỳ giải thích nào khác ngoài JSON):
+        {
+          "summary": "Tóm tắt thế mạnh (ví dụ: nghe tốt Part 1, 2) và điểm yếu cần khắc phục gấp (ví dụ: yếu đọc hiểu Part 7, lúng túng ngữ pháp Part 5).",
+          "recommendedTarget": "Mục tiêu điểm số đề xuất (ví dụ: 650-750) dựa trên năng lực hiện tại.",
+          "weakestParts": [5, 7],
+          "weeks": [
+            {
+              "weekNumber": 1,
+              "theme": "Chủ đề tập trung của tuần 1 (ví dụ: Củng cố Ngữ pháp & Từ vựng Part 5)",
+              "focusParts": [5],
+              "actions": [
+                "Luyện gói chuyên đề ngữ pháp nâng cao Part 5 ít nhất 3 lần",
+                "Ghi lại 20 từ vựng collocations mới vào notebook và ôn tập lại cuối tuần"
+              ]
+            },
+            {
+              "weekNumber": 2,
+              "theme": "Chủ đề tuần 2...",
+              "focusParts": [2],
+              "actions": []
+            },
+            {
+              "weekNumber": 3,
+              "theme": "Chủ đề tuần 3...",
+              "focusParts": [7],
+              "actions": []
+            },
+            {
+              "weekNumber": 4,
+              "theme": "Chủ đề tuần 4...",
+              "focusParts": [1, 2, 3, 4, 5, 6, 7],
+              "actions": []
+            }
+          ]
+        }
+      `;
+            const { text } = await GeminiService.generateContentWithFallback(prompt, undefined, true);
+            return GeminiService.cleanAndParseJson(text);
+        }
+        catch (error) {
+            console.error('Failed to generate TOEIC study plan:', error);
+            return {
+                summary: "Dựa trên kết quả luyện tập của bạn, bạn cần tiếp tục củng cố đồng đều các phần nghe Part 2 và phần đọc hiểu Part 5, 7.",
+                recommendedTarget: "600 - 700",
+                weakestParts: [2, 5, 7],
+                weeks: [
+                    {
+                        "weekNumber": 1,
+                        "theme": "Củng cố Kỹ năng Nghe hiểu (Part 2)",
+                        "focusParts": [2],
+                        "actions": [
+                            "Thực hành gói bẫy âm thanh Part 2 ít nhất 3 lần để tránh bẫy đồng âm.",
+                            "Nghe đi nghe lại phần lời dịch giải thích của AI."
+                        ]
+                    },
+                    {
+                        "weekNumber": 2,
+                        "theme": "Nâng cấp Từ vựng & Ngữ pháp (Part 5)",
+                        "focusParts": [5],
+                        "actions": [
+                            "Luyện tập gói chuyên đề ngữ pháp và từ từ vựng công sở.",
+                            "Lưu các từ mới vào sổ từ vựng."
+                        ]
+                    },
+                    {
+                        "weekNumber": 3,
+                        "theme": "Tập trung Đọc hiểu liên kết đoạn văn (Part 7)",
+                        "focusParts": [7],
+                        "actions": [
+                            "Luyện gói đoạn văn kép và ba để rèn kỹ năng quét thông tin nhanh.",
+                            "Áp dụng quy tắc làm bài đọc không quá 1.5 phút/câu."
+                        ]
+                    },
+                    {
+                        "weekNumber": 4,
+                        "theme": "Thi thử Mock Test tổng hợp",
+                        "focusParts": [1, 2, 3, 4, 5, 6, 7],
+                        "actions": [
+                            "Thực hiện 2 đề thi thử Mini Mock Test.",
+                            "Thực hiện 1 đề thi thử Standard Mock Test đầy đủ."
+                        ]
+                    }
+                ]
+            };
+        }
+    }
 }
 exports.GeminiService = GeminiService;
