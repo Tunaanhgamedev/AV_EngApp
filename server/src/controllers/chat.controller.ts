@@ -57,7 +57,55 @@ export const getChatHistory = async (req: Request, res: Response) => {
 export const getAvailableSkills = async (req: Request, res: Response) => {
   try {
     const skills = GeminiService.getSkillsIndex();
-    res.json(skills);
+    const englishSkillIds = [
+      'beautiful-prose',
+      'avoid-ai-writing',
+      'professional-proofreader',
+      'copywriting',
+      'content-creator',
+      'explain-like-socrates',
+      'objection-preemptor',
+      'data-storytelling',
+      'copywriting-psychologist',
+      'headline-psychologist',
+      'subject-line-psychologist',
+      'scarcity-urgency-psychologist',
+      'loss-aversion-designer',
+      'emotional-arc-designer',
+      'social-proof-architect',
+      'trust-calibrator',
+      'awareness-stage-mapper',
+      'jobs-to-be-done-analyst',
+      'lesson-generator'
+    ];
+    const categoriesMap: Record<string, string> = {
+      'beautiful-prose': 'writing',
+      'avoid-ai-writing': 'writing',
+      'professional-proofreader': 'writing',
+      'content-creator': 'writing',
+      'lesson-generator': 'writing',
+      'copywriting': 'copywriting',
+      'copywriting-psychologist': 'copywriting',
+      'headline-psychologist': 'copywriting',
+      'subject-line-psychologist': 'copywriting',
+      'scarcity-urgency-psychologist': 'copywriting',
+      'loss-aversion-designer': 'copywriting',
+      'emotional-arc-designer': 'copywriting',
+      'social-proof-architect': 'copywriting',
+      'explain-like-socrates': 'communication',
+      'objection-preemptor': 'communication',
+      'data-storytelling': 'communication',
+      'trust-calibrator': 'communication',
+      'awareness-stage-mapper': 'communication',
+      'jobs-to-be-done-analyst': 'communication'
+    };
+    const filteredSkills = skills
+      .filter(s => englishSkillIds.includes(s.id))
+      .map(s => ({
+        ...s,
+        category: categoriesMap[s.id] || 'general'
+      }));
+    res.json(filteredSkills);
   } catch (error) {
     console.error('Failed to fetch available skills:', error);
     res.status(500).json({ error: 'Failed to fetch available skills' });

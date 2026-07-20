@@ -5,7 +5,8 @@ import {
   MessageSquare, Send, User as UserIcon, Bot, Sparkles, RotateCcw, 
   ChevronLeft, Coffee, Briefcase, Plane, ShoppingBag, Mic, MicOff,
   Loader2, LogIn, Zap, BookOpen, Languages, PenTool, GraduationCap,
-  Lightbulb, History, X, Trash2, Plus, Cpu, Check, Brain, Sliders, Search
+  Lightbulb, History, X, Trash2, Plus, Cpu, Check, Brain, Sliders, Search,
+  Volume2, Award, BookOpenCheck, Radio
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { sendMessage, getAvailableSkills } from '@/services/chat.service';
@@ -66,50 +67,49 @@ const SCENARIOS: Scenario[] = [
 
 const TECH_SCENARIOS: Scenario[] = [
   {
-    id: 'custom_trained_ai', title: 'Custom Trained AI', titleVi: 'Huấn luyện Trực tiếp AI',
+    id: 'custom_trained_ai', title: 'Huấn luyện Trực tiếp', titleVi: 'Custom Trained AI Coach',
     icon: Brain, color: 'from-fuchsia-500 to-rose-600',
-    persona: 'EngBot, your customized Advanced AI Technical Mentor, fully trained on your selected domain-specific skills.',
-    scenario: 'Trực tiếp lựa chọn và kích hoạt các cấu trúc tri thức chuyên ngành để huấn luyện trí thông minh của EngBot.'
+    persona: 'EngBot, your customized English Language Mentor, trained on specific writing and communication styles.',
+    scenario: 'Trực tiếp lựa chọn các bộ kỹ năng Ngôn ngữ, Viết lách và Tư duy Giao tiếp nâng cao để huấn luyện trí tuệ của EngBot.'
   },
   {
-    id: 'ai_agents_architect', title: 'AI Agents Architect', titleVi: 'Kiến trúc sư Agent AI',
-    icon: Cpu, color: 'from-violet-500 to-purple-600',
-    persona: 'EngBot, an expert AI Agent Systems Architect and technical coach.',
-    scenario: 'Luyện tập thảo luận và thiết kế hệ thống multi-agent, ReAct loop, supervisor pattern và checkpoint recovery theo tài liệu ai-agents-architect.'
+    id: 'pronunciation_coach', title: 'Pronunciation Coach', titleVi: 'Huấn luyện viên Phát âm & IPA',
+    icon: Radio, color: 'from-violet-500 to-purple-600',
+    persona: 'EngBot, an expert English Pronunciation Specialist focusing on acoustic patterns and phonetics.',
+    scenario: 'Luyện tập phát âm chuẩn IPA, cách nhấn trọng âm từ chính xác, nối âm (connected speech) và điều chỉnh ngữ điệu tự nhiên.'
   },
   {
-    id: 'senior_fullstack', title: 'Senior Fullstack Dev', titleVi: 'Lập trình viên Fullstack Cấp cao',
-    icon: Briefcase, color: 'from-indigo-500 to-blue-600',
-    persona: 'EngBot, a veteran Senior Fullstack Engineer and software architect.',
-    scenario: 'Thảo luận về kiến trúc phần mềm, nguyên tắc clean code, codebase design, và giải quyết nợ kỹ thuật (technical debt) trong dự án web hiện đại.'
+    id: 'grammar_mentor', title: 'Grammar & Style Mentor', titleVi: 'Cố vấn Ngữ pháp & Văn phong',
+    icon: BookOpenCheck, color: 'from-indigo-500 to-blue-600',
+    persona: 'EngBot, a supportive Grammar Coach who explains structural rules clearly in Vietnamese.',
+    scenario: 'Nhận diện lỗi sai về thì của động từ, cách dùng giới từ, và hướng dẫn sắp xếp cấu trúc câu tự nhiên, súc tích.'
   },
   {
-    id: 'ui_ux_pro', title: 'UI/UX Pro Max', titleVi: 'Thiết kế Giao diện Cao cấp',
-    icon: Sparkles, color: 'from-pink-500 to-rose-600',
-    persona: 'EngBot, a senior UI/UX Design Specialist and frontend reviewer.',
-    scenario: 'Thảo luận và thiết kế giao diện đa thiết bị, responsive layouts, micro-animations, glassmorphism và tối ưu hóa visual premium feel.'
+    id: 'ielts_examiner', title: 'IELTS Speaking Partner', titleVi: 'Giám khảo IELTS Speaking',
+    icon: Award, color: 'from-pink-500 to-rose-600',
+    persona: 'EngBot, an experienced IELTS Speaking Examiner who evaluates fluency, vocabulary, and range.',
+    scenario: 'Mô phỏng bài thi IELTS Speaking thực tế với Part 1, 2 và 3. Nhận phản hồi chuyên môn và ước lượng band điểm.'
   },
   {
-    id: 'n8n_automation', title: 'n8n Automation & JS', titleVi: 'Tự động hóa n8n & Javascript',
-    icon: Zap, color: 'from-amber-500 to-yellow-600',
-    persona: 'EngBot, a workflow automation expert and senior Javascript developer.',
-    scenario: 'Thảo luận về viết custom Javascript node trong n8n, tối ưu hóa bộ nhớ, xử lý error handling và quản lý state trong workflow tự động hóa.'
+    id: 'business_english', title: 'Business English Coach', titleVi: 'Tiếng Anh Công sở & Phỏng vấn',
+    icon: Briefcase, color: 'from-amber-500 to-yellow-600',
+    persona: 'EngBot, a corporate communications specialist guiding you to write and speak professionally.',
+    scenario: 'Luyện tập đàm phán thương lượng, viết email công vụ trang trọng, thuyết trình dự án và trả lời phỏng vấn xin việc.'
   },
   {
-    id: 'copywriting_seo', title: 'Copywriting & SEO', titleVi: 'Viết nội dung quảng cáo & SEO',
-    icon: BookOpen, color: 'from-teal-500 to-emerald-600',
-    persona: 'EngBot, a professional copywriter, digital marketer and SEO specialist.',
-    scenario: 'Luyện tập tối ưu hóa nội dung tiếp thị, viết blog post chuẩn SEO, meta descriptions và phân tích search intent của người dùng.'
+    id: 'vocabulary_builder', title: 'Vocabulary & Idioms Builder', titleVi: 'Tích lũy Từ vựng & Thành ngữ',
+    icon: Sparkles, color: 'from-teal-500 to-emerald-600',
+    persona: 'EngBot, a creative Lexical Tutor who teaches phrases, phrasal verbs, and collocations.',
+    scenario: 'Học cách kết hợp từ tự nhiên (Collocations), thành ngữ thông dụng (Idioms) và phrasal verbs trong giao tiếp.'
   }
 ];
 
 const QUICK_ACTIONS = [
   { label: 'Sửa ngữ pháp', prompt: 'Please correct my grammar in this sentence: ', icon: PenTool },
   { label: 'Dịch câu', prompt: 'How do you say this in English: ', icon: Languages },
-  { label: 'Thiết kế Agent Loop', prompt: 'Explain how to design an autonomous AI agent using the ReAct loop pattern or Supervisor pattern according to the ai-agents-architect skill.', icon: Sparkles },
-  { label: 'Đánh giá Prompt (Eval)', prompt: 'Review my prompt structure and explain how to design a robust evaluation criteria (LLM-as-a-judge) according to the ai-engineering-toolkit skill.', icon: PenTool },
-  { label: 'Tối ưu Vòng lặp AI (Latency)', prompt: 'Suggest strategies to minimize latency (e.g. streaming, prompt caching, fallback models) for an AI wrapper product according to the ai-wrapper-product skill.', icon: Lightbulb },
-  { label: 'Tối ưu UI/UX Đa thiết bị', prompt: 'Explain key design guidelines for responsive layouts, touch targets, and visual premium feel (glassmorphism, micro-animations) according to the frontend guidelines.', icon: Sparkles },
+  { label: 'Sửa phát âm IPA', prompt: 'Explain the correct IPA pronunciation, syllable stress, and natural intonation for: ', icon: Radio },
+  { label: 'Cụm từ tự nhiên (Collocation)', prompt: 'Suggest 5 natural collocations or phrasal verbs for the word: ', icon: Sparkles },
+  { label: 'Phỏng vấn thử', prompt: 'Let\'s practice a mock job interview in English. Ask me the first question for a role in: ', icon: Briefcase },
   { label: 'Hỏi dạng câu hỏi', prompt: 'Explain the 6 main English Question Types (Yes/No, Wh-, Tag, Negative, Indirect, Hypothetical) and how to master them.', icon: GraduationCap },
   { label: 'Câu hỏi phủ định', prompt: 'How do I answer negative questions correctly (e.g., "Aren\'t you coming?") without making mistakes?', icon: BookOpen },
   { label: 'Khung trả lời STAR/PREP', prompt: 'Give me an example of how to structure an answer using the STAR or PREP framework.', icon: Sparkles },
@@ -388,11 +388,11 @@ export default function ChatPage() {
         <div className="space-y-4 pt-6 border-t border-slate-100 dark:border-slate-800">
           <div className="space-y-1">
             <h2 className="text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
-              <Cpu className="w-5 h-5 text-indigo-500" />
-              Luyện tập Kỹ thuật & Chuyên môn (Awesome-Skills RAG)
+              <GraduationCap className="w-5 h-5 text-indigo-500" />
+              Huấn luyện & Luyện tập Ngôn ngữ Chuyên sâu (English-Skills RAG)
             </h2>
             <p className="text-xs text-slate-400 font-medium">
-              Các chủ đề này tự động nạp tri thức chuyên sâu từ tài liệu Awesome-Skills để phân tích và hỗ trợ bạn.
+              Các chủ đề này tự động nạp tri thức chuyên sâu từ tài liệu RAG để phân tích ngữ pháp, văn phong và hỗ trợ bạn giao tiếp tự nhiên.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
@@ -673,8 +673,14 @@ export default function ChatPage() {
 
               {/* Categories */}
               <div className="flex gap-1.5 overflow-x-auto no-scrollbar py-0.5">
-                {['All', 'ai', 'development', 'security', 'database', 'design', 'seo', 'automation'].map(cat => {
-                  const label = cat === 'All' ? 'Tất cả' : cat.toUpperCase();
+                {['All', 'writing', 'copywriting', 'communication'].map(cat => {
+                  const labels: Record<string, string> = {
+                    All: 'Tất cả',
+                    writing: 'Viết lách',
+                    copywriting: 'Văn phong Quảng cáo',
+                    communication: 'Tư duy Giao tiếp'
+                  };
+                  const label = labels[cat] || cat;
                   const isActive = selectedCategory === cat;
                   return (
                     <button
@@ -737,7 +743,7 @@ export default function ChatPage() {
                         <p className="font-bold text-sm text-slate-800 dark:text-slate-100 flex items-center gap-2">
                           {skill.name || skill.id}
                           <span className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 rounded">
-                            {skill.category || 'general'}
+                            {skill.category === 'writing' ? 'Viết lách' : skill.category === 'copywriting' ? 'Quảng cáo' : skill.category === 'communication' ? 'Giao tiếp' : 'Chung'}
                           </span>
                         </p>
                         <p className="text-xs text-slate-400 dark:text-slate-500 leading-relaxed mt-0.5 line-clamp-2">{skill.description}</p>
