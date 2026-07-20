@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import {
   GraduationCap, Headphones, BookOpen, Clock, Target, ChevronRight,
   Sparkles, Brain, ArrowLeft, Loader2, Award, CheckCircle2, XCircle,
@@ -21,12 +21,14 @@ interface Question {
   explanation: string;
 }
 
-export default function TOEICPracticePage() {
+function TOEICPracticeContent() {
   const { user } = useAuth();
   const router = useRouter();
   const params = useParams();
+  const searchParams = useSearchParams();
   const partStr = params.part as string; // 'part1' to 'part7'
   const partNum = parseInt(partStr.replace('part', ''));
+  const mode = searchParams.get('mode') || 'standard';
 
   const [loading, setLoading] = useState(true);
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -62,7 +64,7 @@ export default function TOEICPracticePage() {
       try {
         setLoading(true);
         const token = user ? await user.getIdToken() : undefined;
-        const data = await getToeicPractice(partNum, token);
+        const data = await getToeicPractice(partNum, token, mode);
         if (data && data.questions) {
           setQuestions(data.questions);
         }
@@ -73,10 +75,8 @@ export default function TOEICPracticePage() {
       }
     };
 
-    if (partNum) {
-      fetchQuestions();
-    }
-  }, [partNum, user]);
+    fetchQuestions();
+  }, [user, partNum, mode]);
 
   const handleSelectAnswer = (questionId: string, answer: string) => {
     if (submitted) return;
@@ -358,5 +358,18 @@ export default function TOEICPracticePage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function TOEICPracticePage() {
+  return (
+    <React.Suspense fallback={
+      <div className="min-h-[70vh] flex flex-col items-center justify-center space-y-4">
+        <Loader2 className="w-12 h-12 text-primary animate-spin" />
+        <p className="text-slate-500 font-bold">Đang tải câu hỏi luyện tập...</p>
+      </div>
+    }>
+      <TOEICPracticeContent />
+    </React.Suspense>
   );
 }

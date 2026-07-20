@@ -12,7 +12,8 @@ const generatePractice = async (req, res) => {
         return res.status(400).json({ error: 'Part must be between 1 and 7' });
     }
     try {
-        const data = await gemini_service_1.GeminiService.generateToeicPractice(part);
+        const mode = req.query.mode || 'standard';
+        const data = await gemini_service_1.GeminiService.generateToeicPractice(part, mode);
         res.json(data);
     }
     catch (error) {

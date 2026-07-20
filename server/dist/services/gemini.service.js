@@ -1791,19 +1791,34 @@ ${wordList}
     /**
      * Generate TOEIC Practice Questions using Gemini
      */
-    static async generateToeicPractice(part) {
+    static async generateToeicPractice(part, mode = 'standard') {
         try {
+            const count = mode === 'mini' ? 5 : 10;
+            let focusPrompt = '';
+            if (mode === 'grammar') {
+                focusPrompt = '\nTập trung 100% vào việc kiểm tra ngữ pháp nâng cao (verb tenses, word form, pronouns, relative clauses, subjunctive, active/passive voice, conditional types).';
+            }
+            else if (mode === 'vocabulary') {
+                focusPrompt = '\nTập trung 100% vào việc kiểm tra từ vựng nâng cao, business collocations, idioms thương mại, và prepositions chuyên ngành văn phòng.';
+            }
+            else if (mode === 'sound_traps') {
+                focusPrompt = '\nTập trung vào các bẫy phát âm lắt léo (đồng âm dị nghĩa, nhiễu âm tương tự nhau như copy/coffee, train/rain) và các câu trả lời gián tiếp hoặc né tránh (evading answers).';
+            }
+            else if (mode === 'double_passages') {
+                focusPrompt = '\nVăn bản đọc hiểu bắt buộc phải ở dạng văn bản kép (double passages) hoặc văn bản ba (triple passages) liên kết thông tin chặt chẽ giữa 2-3 tài liệu với nhau.';
+            }
             const prompt = `
-        Bạn là chuyên gia ra đề thi TOEIC hàng đầu. Hãy tạo một đề luyện tập TOEIC Part ${part} gồm ĐÚNG 10 câu hỏi nâng cao (Advanced), chất lượng cao, bám sát cấu trúc đề thi thật (New Format) mới nhất và có độ khó cao (từ 700-990 điểm).
+        Bạn là chuyên gia ra đề thi TOEIC hàng đầu. Hãy tạo một đề luyện tập TOEIC Part ${part} gồm ĐÚNG ${count} câu hỏi nâng cao (Advanced), chất lượng cao, bám sát cấu trúc đề thi thật (New Format) mới nhất và có độ khó cao (từ 700-990 điểm).
+        ${focusPrompt}
         
         Yêu cầu chi tiết nâng cao cho Part ${part}:
-        ${part === 1 ? '- Part 1 (Photographs): Mô tả các bức ảnh bằng văn bản tiếng Anh trong trường "audioDescription". Hãy mô tả các bối cảnh nâng cao, tập trung vào chi tiết nhỏ, hành động gián tiếp hoặc trạng thái của vật thể thay vì mô tả trực diện đơn giản. Tạo 4 đáp án A, B, C, D mô tả bức ảnh trong đó có các bẫy từ đồng âm hoặc bẫy sai hành động.' : ''}
-        ${part === 2 ? '- Part 2 (Question-Response): Tạo các câu hỏi/phát biểu trong trường "audioDescription". Sử dụng các câu trả lời gián tiếp nâng cao (Indirect/Evading answers), bẫy từ đồng âm hoặc đa nghĩa (ví dụ: coffee/copy, train/training), bẫy sai đại từ hoặc thì của động từ. Tạo 3 đáp án A, B, C (đáp án D để trống).' : ''}
-        ${part === 3 ? '- Part 3 (Conversations): Tạo 3-4 đoạn hội thoại tự nhiên từ 2-3 người về công sở, thương mại, dự án trong trường "context". Tạo các câu hỏi liên quan, mỗi câu hỏi có 4 đáp án A, B, C, D (Tổng cộng tạo đủ 10 câu hỏi).' : ''}
-        ${part === 4 ? '- Part 4 (Short Talks): Tạo 3-4 bài nói ngắn (thuyết trình, tin nhắn thoại, thông báo khẩn cấp, dự báo thời tiết) trong trường "context". Tạo các câu hỏi liên quan, mỗi câu hỏi có 4 đáp án A, B, C, D (Tổng cộng tạo đủ 10 câu hỏi).' : ''}
-        ${part === 5 ? '- Part 5 (Incomplete Sentences): Tạo các câu chứa chỗ trống (marked as "_______") trong trường "questionText". Tập trung vào các điểm ngữ pháp nâng cao (câu điều kiện trộn, mệnh đề quan hệ rút gọn, phân từ làm tính từ) hoặc collocations và từ vựng chuyên ngành C1/C2 thương mại. Tạo 4 lựa chọn A, B, C, D.' : ''}
-        ${part === 6 ? '- Part 6 (Text Completion): Tạo 2-3 đoạn văn công sở hoặc thông báo trong trường "context" có các chỗ trống đánh số (1), (2), (3)... Tạo các câu hỏi tương ứng với các chỗ trống, bao gồm cả câu hỏi điền từ, cụm từ và điền cả câu văn phù hợp ngữ cảnh. Tạo 4 đáp án A, B, C, D (Tổng cộng tạo đủ 10 câu hỏi).' : ''}
-        ${part === 7 ? '- Part 7 (Reading Comprehension): Tạo 2-3 văn bản đơn hoặc kép (double/triple passages như email + hóa đơn + phản hồi) trong trường "context". Tạo các câu hỏi nâng cao kiểm tra khả năng suy luận (Inference), liên kết thông tin giữa các văn bản, và tìm từ đồng nghĩa phù hợp ngữ cảnh. Tạo 4 đáp án A, B, C, D (Tổng cộng tạo đủ 10 câu hỏi).' : ''}
+        ${part === 1 ? `- Part 1 (Photographs): Mô tả các bức ảnh bằng văn bản tiếng Anh trong trường "audioDescription". Hãy mô tả các bối cảnh nâng cao, tập trung vào chi tiết nhỏ, trạng thái vật thể. Tạo 4 đáp án A, B, C, D mô tả bức ảnh (Tổng cộng tạo đủ ${count} câu hỏi).` : ''}
+        ${part === 2 ? `- Part 2 (Question-Response): Tạo các câu hỏi/phát biểu trong trường "audioDescription". Sử dụng các câu trả lời gián tiếp hoặc câu đồng âm/nhiễu âm. Tạo 3 đáp án A, B, C (đáp án D để trống) (Tổng cộng tạo đủ ${count} câu hỏi).` : ''}
+        ${part === 3 ? `- Part 3 (Conversations): Tạo các đoạn hội thoại tự nhiên từ 2-3 người về công sở, thương mại trong trường "context". Tạo các câu hỏi liên quan, mỗi câu hỏi có 4 đáp án A, B, C, D (Tổng cộng tạo đủ ${count} câu hỏi).` : ''}
+        ${part === 4 ? `- Part 4 (Short Talks): Tạo các bài nói ngắn (thuyết trình, tin nhắn thoại, thông báo, dự báo) trong trường "context". Tạo các câu hỏi liên quan, mỗi câu hỏi có 4 đáp án A, B, C, D (Tổng cộng tạo đủ ${count} câu hỏi).` : ''}
+        ${part === 5 ? `- Part 5 (Incomplete Sentences): Tạo các câu chứa chỗ trống (marked as "_______") trong trường "questionText". Tạo 4 lựa chọn A, B, C, D (Tổng cộng tạo đủ ${count} câu hỏi).` : ''}
+        ${part === 6 ? `- Part 6 (Text Completion): Tạo các đoạn văn công sở hoặc thông báo trong trường "context" có các chỗ trống đánh số. Tạo các câu hỏi tương ứng với các chỗ trống. Tạo 4 đáp án A, B, C, D (Tổng cộng tạo đủ ${count} câu hỏi).` : ''}
+        ${part === 7 ? `- Part 7 (Reading Comprehension): Tạo các văn bản trong trường "context" (đơn hoặc kép/ba tùy vào chế độ luyện tập). Tạo các câu hỏi liên quan, mỗi câu có 4 đáp án A, B, C, D (Tổng cộng tạo đủ ${count} câu hỏi).` : ''}
 
         Trả về ĐÚNG định dạng JSON sau (không chứa bất kỳ giải thích nào khác ngoài JSON):
         {

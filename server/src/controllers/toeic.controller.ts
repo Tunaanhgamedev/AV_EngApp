@@ -10,7 +10,8 @@ export const generatePractice = async (req: Request, res: Response) => {
   }
 
   try {
-    const data = await GeminiService.generateToeicPractice(part);
+    const mode = (req.query.mode as string) || 'standard';
+    const data = await GeminiService.generateToeicPractice(part, mode);
     res.json(data);
   } catch (error) {
     console.error('TOEIC controller generate error:', error);

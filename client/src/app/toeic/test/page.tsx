@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
   GraduationCap, Headphones, BookOpen, Clock, Target, Play, Award,
   CheckCircle2, XCircle, AlertTriangle, ArrowLeft, ArrowRight, ShieldCheck,
@@ -21,9 +21,13 @@ interface Question {
   explanation: string;
 }
 
-export default function TOEICFullTestPage() {
+function TOEICFullTestContent() {
   const { user } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const mode = searchParams.get('mode') || 'standard';
+  const isMini = mode === 'mini';
+  const initialTime = isMini ? 1800 : 3600;
 
   // Test State
   const [loading, setLoading] = useState(true);
@@ -33,7 +37,7 @@ export default function TOEICFullTestPage() {
   const [answers, setAnswers] = useState<Record<string, string>>({}); // { questionId: choiceLetter }
   
   // Timer state
-  const [timeLeft, setTimeLeft] = useState(1800); // 30 minutes in seconds
+  const [timeLeft, setTimeLeft] = useState(initialTime);
   const [isExamCompleted, setIsExamCompleted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
@@ -42,6 +46,11 @@ export default function TOEICFullTestPage() {
 
   // TTS Playing state
   const [playingId, setPlayingId] = useState<string | null>(null);
+
+  // Reset timer if mode changes
+  useEffect(() => {
+    setTimeLeft(isMini ? 1800 : 3600);
+  }, [mode, isMini]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -68,8 +77,8 @@ export default function TOEICFullTestPage() {
         setError(null);
         
         const token = user ? await user.getIdToken() : undefined;
-        // Fetch parts 1 to 7 concurrently
-        const fetchPromises = Array.from({ length: 7 }, (_, i) => getToeicPractice(i + 1, token));
+        // Fetch parts 1 to 7 concurrently with specific mode
+        const fetchPromises = Array.from({ length: 7 }, (_, i) => getToeicPractice(i + 1, token, mode));
         const partsResults = await Promise.all(fetchPromises);
         
         // Consolidate questions
@@ -100,7 +109,7 @@ export default function TOEICFullTestPage() {
       }
     }
     loadFullTest();
-  }, [user]);
+  }, [user, mode]);
 
   const handleSelectAnswer = (choice: string) => {
     // Extract letter (A, B, C, D) from choice string like "A. text"
@@ -658,5 +667,18 @@ export default function TOEICFullTestPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function TOEICFullTestPage() {
+  return (
+    <React.Suspense fallback={
+      <div className="min-h-[70vh] flex flex-col items-center justify-center space-y-4">
+        <Loader2 className="w-12 h-12 text-primary animate-spin" />
+        <p className="text-slate-500 font-bold">Đang tải đề thi...</p>
+      </div>
+    }>
+      <TOEICFullTestContent />
+    </React.Suspense>
   );
 }

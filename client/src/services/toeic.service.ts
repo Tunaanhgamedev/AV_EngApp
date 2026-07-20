@@ -1,8 +1,8 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
-export const getToeicPractice = async (part: number, token?: string) => {
+export const getToeicPractice = async (part: number, token?: string, mode: string = 'standard') => {
   try {
-    const response = await fetch(`${API_URL}/toeic/practice/${part}`, {
+    const response = await fetch(`${API_URL}/toeic/practice/${part}?mode=${mode}`, {
       headers: {
         ...(token && { 'Authorization': `Bearer ${token}` })
       }

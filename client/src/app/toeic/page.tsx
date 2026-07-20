@@ -174,7 +174,7 @@ export default function TOEICPage() {
 
               <div className="flex flex-wrap gap-4 justify-center md:justify-start pt-2">
                 <button
-                  onClick={() => router.push('/toeic/test')}
+                  onClick={() => router.push('/toeic/test?mode=standard')}
                   className="px-6 py-3.5 bg-gradient-to-r from-blue-500 to-cyan-400 text-white rounded-2xl font-black text-xs sm:text-sm hover:opacity-90 transition-all shadow-xl shadow-blue-500/30 flex items-center gap-2 group"
                 >
                   <Play className="w-5 h-5" />
@@ -391,6 +391,153 @@ export default function TOEICPage() {
           </div>
         </section>
       </div>
+
+      {/* Specialized TOEIC Packages */}
+      <section className="space-y-6">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
+            <Sparkles className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <h2 className="text-2xl font-black text-slate-800">Gói Luyện Thi TOEIC Đặc Biệt</h2>
+            <p className="text-sm text-slate-500 font-medium">Luyện tập tập trung theo mục tiêu và thời gian linh hoạt</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Grammar Focus Package */}
+          <div className="premium-card p-6 border-slate-100 hover:shadow-xl transition-all flex flex-col justify-between">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-indigo-100 text-indigo-700">
+                  Part 5 Grammar
+                </span>
+                <span className="text-xs font-bold text-emerald-600">+100 XP</span>
+              </div>
+              <h3 className="text-lg font-black text-slate-800">💡 Chuyên Đề Ngữ Pháp Nâng Cao</h3>
+              <p className="text-sm text-slate-500 font-medium leading-relaxed">
+                Đề thi 10 câu hỏi chuyên sâu về các cấu trúc ngữ pháp khó hay gặp: mệnh đề quan hệ rút gọn, câu giả định, câu điều kiện trộn.
+              </p>
+            </div>
+            <button 
+              onClick={() => router.push('/toeic/practice/part5?mode=grammar')}
+              className="mt-6 w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors"
+            >
+              Luyện ngay <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Vocabulary Focus Package */}
+          <div className="premium-card p-6 border-slate-100 hover:shadow-xl transition-all flex flex-col justify-between">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-sky-100 text-sky-700">
+                  Part 5 Vocab
+                </span>
+                <span className="text-xs font-bold text-emerald-600">+100 XP</span>
+              </div>
+              <h3 className="text-lg font-black text-slate-800">📚 Từ Vựng & Collocations Công Sở</h3>
+              <p className="text-sm text-slate-500 font-medium leading-relaxed">
+                Đề luyện 10 câu tập trung vào kết hợp từ (collocations) tự nhiên, giới từ thương mại và từ vựng chuyên ngành văn phòng.
+              </p>
+            </div>
+            <button 
+              onClick={() => router.push('/toeic/practice/part5?mode=vocabulary')}
+              className="mt-6 w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors"
+            >
+              Luyện ngay <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Listening Sound Traps Package */}
+          <div className="premium-card p-6 border-slate-100 hover:shadow-xl transition-all flex flex-col justify-between">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-amber-100 text-amber-700">
+                  Part 2 Listening
+                </span>
+                <span className="text-xs font-bold text-emerald-600">+100 XP</span>
+              </div>
+              <h3 className="text-lg font-black text-slate-800">🎧 Chinh Phục Bẫy Phát Âm</h3>
+              <p className="text-sm text-slate-500 font-medium leading-relaxed">
+                10 câu hỏi Part 2 chứa bẫy đồng âm dị nghĩa lắt léo và các câu trả lời gián tiếp né tránh thử thách khả năng nghe hiểu.
+              </p>
+            </div>
+            <button 
+              onClick={() => router.push('/toeic/practice/part2?mode=sound_traps')}
+              className="mt-6 w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors"
+            >
+              Luyện ngay <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Reading Double/Triple Passages Package */}
+          <div className="premium-card p-6 border-slate-100 hover:shadow-xl transition-all flex flex-col justify-between">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-rose-100 text-rose-700">
+                  Part 7 Reading
+                </span>
+                <span className="text-xs font-bold text-emerald-600">+100 XP</span>
+              </div>
+              <h3 className="text-lg font-black text-slate-800">📄 Đoạn Văn Kép & Ba</h3>
+              <p className="text-sm text-slate-500 font-medium leading-relaxed">
+                10 câu hỏi đọc hiểu phức tạp yêu cầu liên kết thông tin đa nguồn giữa email, bảng giá và mẫu khảo sát.
+              </p>
+            </div>
+            <button 
+              onClick={() => router.push('/toeic/practice/part7?mode=double_passages')}
+              className="mt-6 w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors"
+            >
+              Luyện ngay <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Mini Mock Test Package */}
+          <div className="premium-card p-6 bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200 hover:shadow-xl transition-all flex flex-col justify-between">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-blue-100 text-blue-700">
+                  30 Mins Mini Mock
+                </span>
+                <span className="text-xs font-bold text-indigo-600">+350 XP</span>
+              </div>
+              <h3 className="text-lg font-black text-slate-800">⚡ Đề Thi Thử Rút Gọn (Mini)</h3>
+              <p className="text-sm text-slate-500 font-medium leading-relaxed">
+                Đề thi rút gọn 35 câu hỏi bao quát đầy đủ 7 Part từ dễ đến khó. Giới hạn thời gian 30 phút, phù hợp để ôn tập nhanh hàng ngày.
+              </p>
+            </div>
+            <button 
+              onClick={() => router.push('/toeic/test?mode=mini')}
+              className="mt-6 w-full py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors shadow-md shadow-blue-500/20"
+            >
+              Thi thử ngay <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Standard Mock Test Package */}
+          <div className="premium-card p-6 bg-gradient-to-br from-indigo-50 to-purple-50 border-indigo-200 hover:shadow-xl transition-all flex flex-col justify-between">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-indigo-100 text-indigo-700">
+                  60 Mins Standard Mock
+                </span>
+                <span className="text-xs font-bold text-emerald-600">+700 XP</span>
+              </div>
+              <h3 className="text-lg font-black text-slate-800">🏆 Đề Thi Luyện Tập Tiêu Chuẩn</h3>
+              <p className="text-sm text-slate-500 font-medium leading-relaxed">
+                Đề thi 70 câu hỏi (10 câu mỗi Part) chuẩn hóa chuyên sâu giúp đánh giá năng lực một cách chính xác nhất. Thời gian làm bài 60 phút.
+              </p>
+            </div>
+            <button 
+              onClick={() => router.push('/toeic/test?mode=standard')}
+              className="mt-6 w-full py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors shadow-md shadow-indigo-500/20"
+            >
+              Thi thử ngay <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      </section>
 
       {/* Recent Practice History */}
       <section className="space-y-6">
