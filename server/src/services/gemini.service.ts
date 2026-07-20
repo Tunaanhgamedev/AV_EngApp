@@ -19,17 +19,15 @@ export class GeminiService {
     "gemini-pro"
   ];
 
-  /**
-   * Helper to execute content generation with a list of fallback models
-   */
-  private static async generateContentWithFallback(prompt: string, systemInstruction?: string): Promise<{ text: string; modelName: string }> {
+  private static async generateContentWithFallback(prompt: string, systemInstruction?: string, jsonMode: boolean = false): Promise<{ text: string; modelName: string }> {
     let lastError = null;
     for (const modelName of GeminiService.models) {
       try {
-        console.log(`[GeminiService] Attempting generateContent with model: ${modelName}`);
+        console.log(`[GeminiService] Attempting generateContent with model: ${modelName} (JSON: ${jsonMode})`);
         const model = genAI.getGenerativeModel({
           model: modelName,
-          ...(systemInstruction ? { systemInstruction } : {})
+          ...(systemInstruction ? { systemInstruction } : {}),
+          ...(jsonMode ? { generationConfig: { responseMimeType: "application/json" } } : {})
         });
         const result = await model.generateContent(prompt);
         const response = await result.response;
@@ -373,7 +371,7 @@ export class GeminiService {
         Respond ONLY with the JSON object.
       `;
 
-      const { text } = await GeminiService.generateContentWithFallback(prompt);
+      const { text } = await GeminiService.generateContentWithFallback(prompt, undefined, true);
       return GeminiService.cleanAndParseJson(text);
     } catch (error) {
       console.error('EngBot Analysis Error, using intelligent free fallback:', error);
@@ -450,7 +448,9 @@ export class GeminiService {
       }
 
       let systemInstruction = `
-Bạn là EngBot — Chuyên Gia Ngôn Ngữ & Huấn Luyện Viên Tiếng Anh Học Thuật/Giao Tiếp Quốc Tế. Bạn được huấn luyện chuyên sâu theo các phương pháp giảng dạy hiện đại (CLT - Communicative Language Teaching, Lexical Approach, và Task-Based Learning). Nhiệm vụ của bạn là hướng dẫn người học từ cấp độ cơ bản đến làm việc thực tế trong các môi trường doanh nghiệp quốc tế và chuyên ngành công nghệ cao.
+Bạn là EngBot — Siêu Trí Tuệ Học Thuật kiêm Cố Vấn Ngôn Ngữ Cấp Cao (C2 Mastery Level). Bạn phản xạ nhanh, sở hữu tư duy phân tích ngôn ngữ học sắc sảo, cấu trúc giải thích tối giản nhưng cực kỳ uyên bác. Bạn có khả năng phân tích mọi chủ đề tiếng Anh khó nhất, từ ngữ pháp cổ điển (Subjunctive mood, Inversion, Cleft sentences, Prepositional placement) đến sắc thái hội thoại hiện đại (Idiomatic registers, Corporate jargon, IELTS speaking/writing criteria).
+
+Nhiệm vụ của bạn là đưa ra các câu trả lời hóc búa nhất một cách rõ ràng, chặt chẽ, tối ưu cấu trúc từ vựng và chỉ ra các quy luật ngôn ngữ sâu sắc bằng Tiếng Việt. Khi giải thích ngữ pháp, hãy áp dụng phương pháp Phân Tích Cú Pháp Lâm Sàng (Syntactic Parsing) - cắt nhỏ các thành phần câu để người học hiểu tận gốc rễ cấu trúc.
 
 ═══════════════════════════════════
 🎭 VAI TRÒ CHUYÊN GIA & KỊCH BẢN
@@ -591,7 +591,10 @@ Chỉ trả về JSON thuần túy, không chứa ký tự hay wrapper markdown 
           console.log(`[AI Chat] Attempting chat response generation with model: ${modelName}`);
           const model = genAI.getGenerativeModel({ 
             model: modelName,
-            systemInstruction: systemInstruction
+            systemInstruction: systemInstruction,
+            generationConfig: {
+              responseMimeType: "application/json"
+            }
           });
           const chat = model.startChat({
             history: chatHistory,
@@ -1858,7 +1861,7 @@ ${wordList}
         }
       `;
 
-      const { text } = await GeminiService.generateContentWithFallback(prompt);
+      const { text } = await GeminiService.generateContentWithFallback(prompt, undefined, true);
       return GeminiService.cleanAndParseJson(text);
     } catch (error: any) {
       console.error(`Generate TOEIC Practice Part ${part} Error, using high-quality local fallback:`, error.message || error);
@@ -1956,7 +1959,7 @@ ${wordList}
         }
       `;
 
-      const { text } = await GeminiService.generateContentWithFallback(prompt);
+      const { text } = await GeminiService.generateContentWithFallback(prompt, undefined, true);
       return GeminiService.cleanAndParseJson(text);
     } catch (error: any) {
       console.error(`Generate IELTS Practice ${skill} Error, using local fallback:`, error.message || error);
