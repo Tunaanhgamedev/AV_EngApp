@@ -2130,5 +2130,108 @@ ${wordList}
             };
         }
     }
+    /**
+     * Generate TOEIC Writing challenge (Part 1: Write a Sentence Based on a Picture)
+     */
+    static async generateToeicWritingChallenge() {
+        try {
+            const photoIds = [
+                "photo-1497366216548-37526070297c",
+                "photo-1531538606174-0f90ff5dce83",
+                "photo-1454165804606-c3d57bc86b40",
+                "photo-1542744094-3a31f103e35f",
+                "photo-1522071820081-009f0129c71c",
+                "photo-1556761175-4b46a572b786",
+                "photo-1573497019940-1c28c88b4f3e",
+                "photo-1507537297725-24a1c029d3ca",
+                "photo-1519389950473-47ba0277781c",
+                "photo-1497215728101-856f4ea42174"
+            ];
+            const prompt = `
+        Bạn là chuyên gia thiết kế đề thi viết TOEIC (TOEIC Writing Section). Hãy tạo một đề bài viết mô tả tranh (Part 1: Write a Sentence Based on a Picture).
+        
+        Danh sách các mã ảnh Unsplash có sẵn:
+        \n${JSON.stringify(photoIds)}
+
+        Hãy chọn ngẫu nhiên một mã ảnh từ danh sách trên, và tạo:
+        1. Một mô tả chi tiết bằng tiếng Việt về bức ảnh này.
+        2. Từ 2 đến 3 từ khóa (keywords) liên quan trực tiếp đến bức ảnh mà người viết bắt buộc phải sử dụng (ở dạng danh từ, động từ, hoặc tính từ tiếng Anh).
+        3. Giới hạn số lượng từ tối thiểu (minWords - thường từ 12-15 từ) và tối đa (maxWords - từ 35-40 từ) cho câu viết.
+
+        Trả về ĐÚNG định dạng JSON sau (không chứa bất kỳ giải thích nào khác ngoài JSON):
+        {
+          "photoId": "Mã ảnh đã chọn",
+          "imageDescription": "Mô tả bức ảnh chi tiết bằng tiếng Việt",
+          "keywords": ["keyword1", "keyword2", "keyword3"],
+          "minWords": 12,
+          "maxWords": 35
+        }
+      `;
+            const { text } = await GeminiService.generateContentWithFallback(prompt, undefined, true);
+            return GeminiService.cleanAndParseJson(text);
+        }
+        catch (error) {
+            console.error('Failed to generate TOEIC writing challenge:', error);
+            return {
+                photoId: "photo-1497366216548-37526070297c",
+                imageDescription: "Một phòng họp hiện đại với các thành viên đang thảo luận công việc bên bàn tròn.",
+                keywords: ["discuss", "meeting", "laptop"],
+                minWords: 12,
+                maxWords: 35
+            };
+        }
+    }
+    /**
+     * Evaluate TOEIC Writing task based on 4 criteria
+     */
+    static async evaluateToeicWriting(challenge, userText) {
+        try {
+            const prompt = `
+        Bạn là giám khảo chấm thi TOEIC Writing quốc tế chuyên nghiệp. Hãy chấm điểm câu miêu tả tranh của học viên sau đây.
+
+        Đề bài:
+        - Bức ảnh mô tả: "${challenge.imageDescription}"
+        - Các từ khóa bắt buộc sử dụng: ${JSON.stringify(challenge.keywords)}
+        - Số từ yêu cầu: từ ${challenge.minWords} đến ${challenge.maxWords} từ.
+
+        Bài viết của học viên:
+        "${userText}"
+
+        Hãy đánh giá bài viết dựa trên các tiêu chí sau (mỗi tiêu chí chấm trên thang điểm 10):
+        1. **Grammar & Spelling (Đúng)**: Đúng ngữ pháp, chính tả, chia động từ, mạo từ, cấu trúc câu.
+        2. **Length (Dài)**: Đạt số lượng từ yêu cầu, không quá ngắn hoặc quá dài.
+        3. **Relevance (Hợp lý)**: Sự liên quan, miêu tả đúng nội dung bức ảnh một cách logic, không bịa đặt nội dung không có trong tranh.
+        4. **Style & Vocabulary (Hay)**: Cách dùng từ tự nhiên, từ vựng phong phú, liên kết từ tốt.
+
+        Hãy tính điểm tổng (Overall Score) trên thang điểm 100 bằng cách tính trung bình cộng của 4 tiêu chí nhân với 10.
+        Đồng thời cung cấp một bản sửa lỗi (correctedText) mượt mà hơn và nhận xét chi tiết bằng tiếng Việt.
+
+        Trả về ĐÚNG định dạng JSON sau (không chứa bất kỳ giải thích nào ngoài JSON):
+        {
+          "grammarScore": 8,
+          "lengthScore": 9,
+          "relevanceScore": 8,
+          "styleScore": 7,
+          "overallScore": 80,
+          "correctedText": "Bản sửa lỗi tối ưu hoặc đề xuất viết lại tự nhiên hơn",
+          "feedback": "Nhận xét chi tiết bằng tiếng Việt: phân tích điểm mạnh, chỉ rõ lỗi ngữ pháp/từ vựng (nếu có) và hướng dẫn cải thiện."
+        }
+      `;
+            const { text } = await GeminiService.generateContentWithFallback(prompt, undefined, true);
+            return GeminiService.cleanAndParseJson(text);
+        }
+        catch (error) {
+            console.error('Failed to evaluate TOEIC writing challenge:', error);
+            return {
+                grammarScore: 7,
+                lengthScore: 8,
+                relevanceScore: 7,
+                styleScore: 6,
+                overallScore: 70,
+                correctedText: userText,
+                feedback: "Lỗi kết nối máy chủ phân tích chấm điểm AI. Nhận xét chung: Bạn đã cố gắng hoàn thành bài viết, hãy chú ý viết đúng ngữ pháp và sử dụng đầy đủ các từ khóa yêu cầu."
+            };
+        }
+    }
 }
 exports.GeminiService = GeminiService;

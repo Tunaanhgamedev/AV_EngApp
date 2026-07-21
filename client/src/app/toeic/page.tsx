@@ -512,6 +512,28 @@ export default function TOEICPage() {
             </button>
           </div>
 
+          {/* TOEIC Writing Part 1 Package */}
+          <div className="premium-card p-6 border-slate-100 hover:shadow-xl transition-all flex flex-col justify-between">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-700">
+                  TOEIC Writing Part 1
+                </span>
+                <span className="text-xs font-bold text-emerald-600">+100 XP</span>
+              </div>
+              <h3 className="text-lg font-black text-slate-800">✍️ Luyện Viết Qua Tranh</h3>
+              <p className="text-sm text-slate-500 font-medium leading-relaxed">
+                Thử thách viết câu mô tả bức ảnh văn phòng/doanh nghiệp dựa trên 2-3 từ khóa gợi ý và nhận đánh giá chấm điểm AI tức thì.
+              </p>
+            </div>
+            <button 
+              onClick={() => router.push('/toeic/practice/writing')}
+              className="mt-6 w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors"
+            >
+              Luyện ngay <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+
           {/* Mini Mock Test Package */}
           <div className="premium-card p-6 bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200 hover:shadow-xl transition-all flex flex-col justify-between">
             <div className="space-y-3">

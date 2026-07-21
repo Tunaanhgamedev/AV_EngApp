@@ -16,6 +16,7 @@ const chat_routes_1 = __importDefault(require("./routes/chat.routes"));
 const ai_routes_1 = __importDefault(require("./routes/ai.routes"));
 const toeic_routes_1 = __importDefault(require("./routes/toeic.routes"));
 const ielts_routes_1 = __importDefault(require("./routes/ielts.routes"));
+const toeic_writing_routes_1 = __importDefault(require("./routes/toeic-writing.routes"));
 const app = (0, express_1.default)();
 // Rate limiter: Max 150 requests per minute per IP to protect the server
 const limiter = (0, express_rate_limit_1.default)({
@@ -40,6 +41,7 @@ app.use('/api/journal', journal_routes_1.default);
 app.use('/api/chat', chat_routes_1.default);
 app.use('/api/ai', ai_routes_1.default);
 app.use('/api/toeic', toeic_routes_1.default);
+app.use('/api/toeic-writing', toeic_writing_routes_1.default);
 app.use('/api/ielts', ielts_routes_1.default);
 // DB Fix: SSL authorized
 app.get('/', (req, res) => {
