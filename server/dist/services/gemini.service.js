@@ -1909,16 +1909,30 @@ ${wordList}
     /**
      * Generate IELTS Practice Questions using Gemini
      */
-    static async generateIeltsPractice(skill) {
+    static async generateIeltsPractice(skill, mode) {
         try {
+            let modeInstruction = '';
+            if (mode) {
+                const modeMap = {
+                    'task1_chart': 'Chỉ tạo đề bài IELTS Writing Task 1: Mô tả biểu đồ (Bar chart, Line graph, Pie chart, hoặc Table). Cung cấp dữ liệu biểu đồ chi tiết trong "context" và yêu cầu viết ít nhất 150 từ.',
+                    'task2_essay': 'Chỉ tạo đề bài IELTS Writing Task 2: Viết luận (Opinion Essay, Discussion Essay, hoặc Problem/Solution Essay). Đề bài phải rõ ràng và yêu cầu viết ít nhất 250 từ.',
+                    'speaking_part1': 'Chỉ tạo câu hỏi IELTS Speaking Part 1: 5 câu hỏi về chủ đề đời thường (nhà ở, công việc, sở thích, du lịch, ăn uống). Mỗi câu cần trả lời 2-3 câu.',
+                    'speaking_part2': 'Chỉ tạo đề bài IELTS Speaking Part 2 Cue Card: Describe a [topic]. You should say: [4 bullet points]. Thêm 2 câu hỏi Follow-up.',
+                    'speaking_part3': 'Chỉ tạo câu hỏi IELTS Speaking Part 3: 4-5 câu hỏi thảo luận trừu tượng liên quan đến chủ đề xã hội. Yêu cầu phân tích, so sánh, đưa ra quan điểm.',
+                    'reading_tfng': 'Chỉ tạo bài đọc IELTS với dạng câu hỏi True/False/Not Given. Đoạn văn dài ~400 từ về chủ đề học thuật. 5 câu hỏi T/F/NG.',
+                    'reading_matching': 'Chỉ tạo bài đọc IELTS với dạng câu hỏi Matching Headings. Đoạn văn dài ~400 từ chia thành 4-5 đoạn nhỏ. Cung cấp 6-7 tiêu đề để chọn ghép với từng đoạn.'
+                };
+                modeInstruction = modeMap[mode] || '';
+            }
             const prompt = `
-        Bạn là chuyên gia khảo thí IELTS quốc tế. Hãy tạo một bài luyện tập IELTS cho kĩ năng "${skill}" chất lượng cao, bám sát định dạng bài thi thật.
+        Bạn là chuyên gia khảo thí IELTS quốc tế cấp cao. Hãy tạo một bài luyện tập IELTS cho kĩ năng "${skill}" chất lượng cao, bám sát định dạng bài thi thật.
         
+        ${modeInstruction ? `CHỈ DẪN ĐẶC BIỆT: ${modeInstruction}` : `
         Yêu cầu chi tiết cho kĩ năng "${skill}":
         - Nếu skill là "listening": Tạo một đoạn script nghe bằng tiếng Anh trong trường "context". Tạo 5 câu hỏi trắc nghiệm hoặc điền từ liên quan.
         - Nếu skill là "reading": Tạo một đoạn văn học thuật khoảng 300 từ bằng tiếng Anh trong trường "context". Tạo 5 câu hỏi True/False/Not Given hoặc trắc nghiệm liên quan.
         - Nếu skill là "writing": Tạo đề bài viết IELTS Task 1 hoặc Task 2 trong trường "questionText". Trong trường "context", cung cấp dàn ý gợi ý (outline) và từ vựng nên dùng.
-        - Nếu skill là "speaking": Tạo đề bài nói IELTS Part 1, Part 2 (Cue card) hoặc Part 3 trong trường "questionText". Cung cấp các câu hỏi gợi ý và từ vựng hữu ích trong "context".
+        - Nếu skill là "speaking": Tạo đề bài nói IELTS Part 1, Part 2 (Cue card) hoặc Part 3 trong trường "questionText". Cung cấp các câu hỏi gợi ý và từ vựng hữu ích trong "context".`}
 
         Trả về ĐÚNG định dạng JSON sau (không chứa bất kỳ giải thích nào khác ngoài JSON):
         {
@@ -1986,6 +2000,61 @@ ${wordList}
                 ];
             }
             return fallbackData;
+        }
+    }
+    /**
+     * Generate personalized IELTS study plan based on historical band scores
+     */
+    static async generateIeltsStudyPlan(stats) {
+        try {
+            const prompt = `
+        Bạn là cố vấn học tập IELTS chuyên nghiệp. Dựa trên dữ liệu thống kê Band Score trung bình của học viên từ lịch sử luyện thi, hãy phân tích năng lực và thiết kế lộ trình ôn tập 4 tuần cá nhân hóa.
+
+        Thống kê band score trung bình hiện tại:
+        - Listening: ${stats.listening.toFixed(1)}
+        - Reading: ${stats.reading.toFixed(1)}
+        - Writing: ${stats.writing.toFixed(1)}
+        - Speaking: ${stats.speaking.toFixed(1)}
+        - Overall Average: ${stats.overallAvg.toFixed(1)}
+
+        Hãy phân tích:
+        1. Kỹ năng nào mạnh nhất, kỹ năng nào yếu nhất
+        2. Mục tiêu band score khuyến nghị cho 4 tuần tới (thực tế, tăng 0.5-1.0 band)
+        3. Lộ trình chi tiết 4 tuần ôn tập cụ thể
+
+        Trả về ĐÚNG định dạng JSON sau:
+        {
+          "summary": "Phân tích tổng quan năng lực hiện tại, điểm mạnh và điểm yếu cần cải thiện (bằng tiếng Việt, 2-3 câu)",
+          "recommendedTarget": "7.0",
+          "weeks": [
+            {
+              "weekNumber": 1,
+              "theme": "Tên chủ đề tuần bằng tiếng Việt",
+              "focusSkills": ["listening", "reading"],
+              "actions": [
+                "Hành động cụ thể 1",
+                "Hành động cụ thể 2",
+                "Hành động cụ thể 3"
+              ]
+            }
+          ]
+        }
+      `;
+            const { text } = await GeminiService.generateContentWithFallback(prompt, undefined, true);
+            return GeminiService.cleanAndParseJson(text);
+        }
+        catch (error) {
+            console.error('Failed to generate IELTS study plan:', error);
+            return {
+                summary: "Bạn đang có nền tảng tốt ở các kỹ năng tiếp nhận (Listening, Reading). Cần tập trung cải thiện Writing và Speaking để nâng band score tổng thể.",
+                recommendedTarget: "6.5",
+                weeks: [
+                    { weekNumber: 1, theme: "Nền tảng Listening & Reading", focusSkills: ["listening", "reading"], actions: ["Luyện nghe Dictation 30 phút/ngày", "Đọc 2 passage học thuật/ngày", "Ôn từ vựng chủ đề IELTS phổ biến"] },
+                    { weekNumber: 2, theme: "Tập trung Writing Task 1 & 2", focusSkills: ["writing"], actions: ["Viết 1 bài Task 1 mỗi ngày", "Viết 1 bài Task 2 mỗi 2 ngày", "Học cấu trúc câu phức và từ nối nâng cao"] },
+                    { weekNumber: 3, theme: "Nâng cao Speaking & Pronunciation", focusSkills: ["speaking"], actions: ["Luyện Speaking Part 2 Cue Card hàng ngày", "Thu âm và tự đánh giá phát âm", "Học thêm idioms và collocations"] },
+                    { weekNumber: 4, theme: "Thi thử tổng hợp", focusSkills: ["listening", "reading", "writing", "speaking"], actions: ["Thi thử Full Test 2 lần", "Đánh giá lại band score", "Ôn tập từ vựng và cấu trúc câu yếu"] }
+                ]
+            };
         }
     }
     /**

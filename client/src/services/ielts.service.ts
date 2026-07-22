@@ -1,8 +1,9 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
-export const getIeltsPractice = async (skill: string, token?: string) => {
+export const getIeltsPractice = async (skill: string, token?: string, mode?: string) => {
   try {
-    const response = await fetch(`${API_URL}/ielts/practice/${skill}`, {
+    const modeParam = mode ? `?mode=${mode}` : '';
+    const response = await fetch(`${API_URL}/ielts/practice/${skill}${modeParam}`, {
       headers: {
         ...(token && { 'Authorization': `Bearer ${token}` })
       }
@@ -64,6 +65,25 @@ export const getIeltsHistory = async (userId: string, token?: string) => {
     return await response.json();
   } catch (error) {
     console.error('IELTS Service history error:', error);
+    throw error;
+  }
+};
+
+export const getIeltsStudyPlan = async (userId: string, token?: string) => {
+  try {
+    const response = await fetch(`${API_URL}/ielts/study-plan/${userId}`, {
+      headers: {
+        ...(token && { 'Authorization': `Bearer ${token}` })
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to generate IELTS study plan');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('IELTS Service study plan error:', error);
     throw error;
   }
 };

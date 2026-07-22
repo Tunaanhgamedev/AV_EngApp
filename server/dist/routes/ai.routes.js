@@ -647,42 +647,70 @@ router.post('/analyze-ielts-constructive', async (req, res) => {
         return res.status(400).json({ error: 'Skill, questionText, and userAnswer are required' });
     }
     try {
+        const isWriting = skill.toLowerCase() === 'writing';
+        const criteriaLabels = isWriting
+            ? ['Task Achievement', 'Coherence & Cohesion', 'Lexical Resource', 'Grammatical Range & Accuracy']
+            : ['Fluency & Coherence', 'Lexical Resource', 'Grammatical Range & Accuracy', 'Pronunciation'];
         const prompt = `
-      You are an official certified IELTS examiner. Evaluate this student response for the given IELTS ${skill} test.
+      You are an official certified IELTS examiner with 15+ years experience. Evaluate this student response for the given IELTS ${skill} test with EXTREME PRECISION.
       
       IELTS Skill: ${skill.toUpperCase()}
       Exam Prompt: "${questionText}"
       Student Submission: "${userAnswer}"
       
-      Grade the response strictly according to the official IELTS criteria:
-      - For Writing: Task Achievement, Coherence & Cohesion, Lexical Resource, Grammatical Range & Accuracy.
-      - For Speaking: Fluency & Coherence, Lexical Resource, Grammatical Range & Accuracy, Pronunciation.
+      Grade the response strictly according to the official IELTS Band Descriptors for ${skill.toUpperCase()}:
+      ${criteriaLabels.map((c, i) => `${i + 1}. ${c}`).join('\n      ')}
       
-      Provide a Band Score (a float from 1.0 to 9.0 in increments of 0.5) and a highly detailed critique in Vietnamese, highlighting strengths, grammar errors to correct, and suggestions for advanced vocabulary.
+      For EACH criterion, provide a band score (float 1.0-9.0, increments of 0.5).
+      Calculate the Overall Band Score as the arithmetic mean of all 4 criteria, rounded to the nearest 0.5.
       
-      Return ONLY raw JSON format:
+      Also provide:
+      - A corrected/improved version of the student's text (correctedText).
+      - Detailed per-criterion feedback in Vietnamese explaining strengths, specific errors, and improvement strategies.
+      - A general summary feedback in Vietnamese.
+
+      Return ONLY valid JSON in this exact format:
       {
-        "bandScore": <number e.g. 6.5>,
-        "feedback": "Detailed evaluation, corrections, and improvement tips in Vietnamese."
+        "bandScore": 6.5,
+        "criteria": {
+          "${criteriaLabels[0]}": { "score": 6.5, "feedback": "Nhận xét chi tiết tiêu chí 1 bằng tiếng Việt" },
+          "${criteriaLabels[1]}": { "score": 6.0, "feedback": "Nhận xét chi tiết tiêu chí 2 bằng tiếng Việt" },
+          "${criteriaLabels[2]}": { "score": 7.0, "feedback": "Nhận xét chi tiết tiêu chí 3 bằng tiếng Việt" },
+          "${criteriaLabels[3]}": { "score": 6.0, "feedback": "Nhận xét chi tiết tiêu chí 4 bằng tiếng Việt" }
+        },
+        "correctedText": "Bản sửa lỗi hoàn chỉnh hoặc phiên bản nâng cấp tự nhiên hơn của bài viết/bài nói",
+        "feedback": "Tổng hợp nhận xét chung chi tiết bằng tiếng Việt: phân tích điểm mạnh, chỉ rõ lỗi ngữ pháp/từ vựng và hướng dẫn cải thiện."
       }
     `;
         const text = await generateContentWithModelFallback(prompt);
         const result = safeParseJSON(text);
-        // Validate band score is between 1.0 and 9.0 and a multiple of 0.5
+        // Validate overall band score
         let score = parseFloat(result.bandScore || 6.0);
-        if (isNaN(score) || score < 1.0 || score > 9.0) {
+        if (isNaN(score) || score < 1.0 || score > 9.0)
             score = 6.0;
-        }
-        // Round to nearest 0.5
         score = Math.round(score * 2) / 2;
+        // Validate individual criteria scores
+        const criteria = {};
+        for (const label of criteriaLabels) {
+            const raw = result.criteria?.[label];
+            let cScore = parseFloat(raw?.score || 6.0);
+            if (isNaN(cScore) || cScore < 1.0 || cScore > 9.0)
+                cScore = 6.0;
+            cScore = Math.round(cScore * 2) / 2;
+            criteria[label] = {
+                score: cScore,
+                feedback: raw?.feedback || 'Bạn cần luyện tập thêm ở tiêu chí này.'
+            };
+        }
         return res.json({
             bandScore: score,
+            criteria,
+            correctedText: result.correctedText || userAnswer,
             feedback: result.feedback || 'Bài làm tốt, có ý thức bám sát đề bài. Hãy trau dồi cấu trúc câu phức tạp hơn.'
         });
     }
     catch (error) {
         console.error('[AI] IELTS evaluation error, using localized heuristic:', error.message);
-        // Heuristic fallback score based on word count
         const words = userAnswer.trim().split(/\s+/).filter(Boolean).length;
         let score = 5.0;
         if (words > 250)
@@ -693,8 +721,16 @@ router.post('/analyze-ielts-constructive', async (req, res) => {
             score = 6.0;
         else if (words > 40)
             score = 5.5;
+        const isWriting = skill.toLowerCase() === 'writing';
+        const labels = isWriting
+            ? ['Task Achievement', 'Coherence & Cohesion', 'Lexical Resource', 'Grammatical Range & Accuracy']
+            : ['Fluency & Coherence', 'Lexical Resource', 'Grammatical Range & Accuracy', 'Pronunciation'];
+        const criteria = {};
+        labels.forEach(l => { criteria[l] = { score, feedback: 'Không thể phân tích chi tiết do lỗi kết nối AI.' }; });
         return res.json({
             bandScore: score,
+            criteria,
+            correctedText: userAnswer,
             feedback: `[Giáo viên AI Fallback] Bài làm của bạn dài ${words} từ. Bố cục rõ ràng, ý kiến có dẫn chứng cơ bản. Bạn nên cải thiện tính trôi chảy và sử dụng thêm các cụm từ nối (linking words) nâng cao để nâng band score.`
         });
     }

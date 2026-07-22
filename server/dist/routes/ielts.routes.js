@@ -7,4 +7,5 @@ const router = (0, express_1.Router)();
 router.get('/practice/:skill', auth_middleware_1.authenticate, ielts_controller_1.generatePractice);
 router.post('/submit', auth_middleware_1.authenticate, ielts_controller_1.submitPractice);
 router.get('/history/:userId', auth_middleware_1.authenticate, ielts_controller_1.getHistory);
+router.get('/study-plan/:userId', auth_middleware_1.authenticate, ielts_controller_1.generateStudyPlan);
 exports.default = router;

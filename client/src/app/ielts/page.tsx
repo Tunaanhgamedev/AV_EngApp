@@ -6,10 +6,11 @@ import {
   Award, Headphones, BookOpen, PenTool, Mic2, Clock, Target, ChevronRight,
   Sparkles, Brain, TrendingUp, Zap, ShieldCheck, Play, Star,
   ArrowRight, BarChart3, FileText, MessageSquare, ExternalLink, Notebook, Timer, Pause, Trash2, Info, Compass,
-  Search, CheckSquare, BookOpenCheck, Plus
+  Search, CheckSquare, BookOpenCheck, Plus, Loader2
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
+import { getIeltsStudyPlan } from '@/services/ielts.service';
 
 const IELTS_SKILLS = [
   {
@@ -403,6 +404,27 @@ export default function IELTSPage() {
   const router = useRouter();
   const [expandedSkill, setExpandedSkill] = useState<string | null>(null);
 
+  // AI Study Planner States
+  const [studyPlan, setStudyPlan] = useState<any>(null);
+  const [loadingPlan, setLoadingPlan] = useState(false);
+  const [errorPlan, setErrorPlan] = useState<string | null>(null);
+
+  const handleGenerateIeltsPlan = async () => {
+    if (!user || loadingPlan) return;
+    try {
+      setLoadingPlan(true);
+      setErrorPlan(null);
+      const token = await user.getIdToken();
+      const plan = await getIeltsStudyPlan(user.uid, token);
+      setStudyPlan(plan);
+    } catch (err: any) {
+      setErrorPlan('Không thể tạo lộ trình. Vui lòng thử lại sau.');
+      console.error(err);
+    } finally {
+      setLoadingPlan(false);
+    }
+  };
+
   const [knowledgeTab, setKnowledgeTab] = useState<string>('methods');
   const [knowledgeSearch, setKnowledgeSearch] = useState<string>('');
   const [checkedPlanItems, setCheckedPlanItems] = useState<string[]>([]);
@@ -718,6 +740,207 @@ export default function IELTSPage() {
           })}
         </div>
       </div>
+
+      {/* Specialized IELTS Practice Packages */}
+      <section className="space-y-6">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-purple-600 flex items-center justify-center shadow-lg shadow-violet-500/20">
+            <Zap className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <h2 className="text-xl font-black text-slate-800">Gói Luyện Thi IELTS Chuyên Sâu</h2>
+            <p className="text-xs text-slate-400 font-bold">Chuyên đề AI sinh đề theo dạng bài cụ thể — luyện trọng tâm, tiến bộ nhanh hơn</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Writing Task 1 */}
+          <div className="premium-card p-6 border-slate-100 hover:shadow-xl transition-all flex flex-col justify-between">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-amber-100 text-amber-700">Writing Task 1</span>
+                <span className="text-xs font-bold text-emerald-600">+100 XP</span>
+              </div>
+              <h3 className="text-lg font-black text-slate-800">📊 Mô Tả Biểu Đồ</h3>
+              <p className="text-sm text-slate-500 font-medium leading-relaxed">Luyện viết Task 1: mô tả Bar, Line, Pie chart hoặc Table. AI sinh dữ liệu biểu đồ ngẫu nhiên và chấm bài 4 tiêu chí.</p>
+            </div>
+            <button onClick={() => router.push('/ielts/practice/writing?mode=task1_chart')} className="mt-6 w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors">
+              Luyện ngay <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Writing Task 2 */}
+          <div className="premium-card p-6 border-slate-100 hover:shadow-xl transition-all flex flex-col justify-between">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-orange-100 text-orange-700">Writing Task 2</span>
+                <span className="text-xs font-bold text-emerald-600">+100 XP</span>
+              </div>
+              <h3 className="text-lg font-black text-slate-800">✍️ Viết Luận Học Thuật</h3>
+              <p className="text-sm text-slate-500 font-medium leading-relaxed">Luyện viết Task 2: Opinion, Discussion, Problem/Solution Essay. AI chấm điểm và sửa bài chi tiết từng tiêu chí.</p>
+            </div>
+            <button onClick={() => router.push('/ielts/practice/writing?mode=task2_essay')} className="mt-6 w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors">
+              Luyện ngay <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Speaking Part 1 */}
+          <div className="premium-card p-6 border-slate-100 hover:shadow-xl transition-all flex flex-col justify-between">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-rose-100 text-rose-700">Speaking Part 1</span>
+                <span className="text-xs font-bold text-emerald-600">+50 XP</span>
+              </div>
+              <h3 className="text-lg font-black text-slate-800">🎤 Hỏi Đáp Đời Thường</h3>
+              <p className="text-sm text-slate-500 font-medium leading-relaxed">5 câu hỏi Part 1 về chủ đề quen thuộc: nhà ở, công việc, sở thích, du lịch. Luyện trả lời nhanh 2-3 câu.</p>
+            </div>
+            <button onClick={() => router.push('/ielts/practice/speaking?mode=speaking_part1')} className="mt-6 w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors">
+              Luyện ngay <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Speaking Part 2 */}
+          <div className="premium-card p-6 border-slate-100 hover:shadow-xl transition-all flex flex-col justify-between">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-pink-100 text-pink-700">Speaking Part 2</span>
+                <span className="text-xs font-bold text-emerald-600">+80 XP</span>
+              </div>
+              <h3 className="text-lg font-black text-slate-800">🃏 Cue Card Monologue</h3>
+              <p className="text-sm text-slate-500 font-medium leading-relaxed">Luyện thuyết trình 2 phút theo Cue Card: Describe a person/place/event. AI chấm điểm 4 tiêu chí Speaking.</p>
+            </div>
+            <button onClick={() => router.push('/ielts/practice/speaking?mode=speaking_part2')} className="mt-6 w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors">
+              Luyện ngay <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Reading T/F/NG */}
+          <div className="premium-card p-6 border-slate-100 hover:shadow-xl transition-all flex flex-col justify-between">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-700">Reading T/F/NG</span>
+                <span className="text-xs font-bold text-emerald-600">+75 XP</span>
+              </div>
+              <h3 className="text-lg font-black text-slate-800">✅ True / False / Not Given</h3>
+              <p className="text-sm text-slate-500 font-medium leading-relaxed">Chuyên đề đọc hiểu dạng T/F/NG — dạng bài khó nhất IELTS Reading. Luyện phân biệt False vs Not Given.</p>
+            </div>
+            <button onClick={() => router.push('/ielts/practice/reading?mode=reading_tfng')} className="mt-6 w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors">
+              Luyện ngay <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Reading Matching Headings */}
+          <div className="premium-card p-6 border-slate-100 hover:shadow-xl transition-all flex flex-col justify-between">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-teal-100 text-teal-700">Matching Headings</span>
+                <span className="text-xs font-bold text-emerald-600">+75 XP</span>
+              </div>
+              <h3 className="text-lg font-black text-slate-800">🧩 Ghép Tiêu Đề Đoạn Văn</h3>
+              <p className="text-sm text-slate-500 font-medium leading-relaxed">Luyện dạng Matching Headings: đọc hiểu ý chính từng đoạn rồi ghép với tiêu đề phù hợp nhất từ danh sách.</p>
+            </div>
+            <button onClick={() => router.push('/ielts/practice/reading?mode=reading_matching')} className="mt-6 w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors">
+              Luyện ngay <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* AI Study Planner Advisor */}
+      <section className="premium-card p-6 bg-gradient-to-r from-violet-500/5 to-purple-500/5 border border-violet-100/50 rounded-3xl space-y-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-600 to-purple-600 flex items-center justify-center shadow-lg shadow-violet-500/20 flex-shrink-0">
+              <Brain className="w-6 h-6 text-white animate-pulse" />
+            </div>
+            <div>
+              <h2 className="text-xl font-black text-slate-800 flex items-center gap-2">
+                Cố Vấn Lộ Trình Học IELTS
+                <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase bg-violet-100 text-violet-700 animate-bounce">AI</span>
+              </h2>
+              <p className="text-sm text-slate-500 font-medium leading-relaxed">
+                Phân tích band score lịch sử 4 kỹ năng để thiết kế lộ trình ôn tập 4 tuần cá nhân hóa tối ưu nhất.
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={handleGenerateIeltsPlan}
+            disabled={loadingPlan || !user}
+            className="px-6 py-3 bg-gradient-to-r from-violet-600 to-purple-600 text-white font-black text-xs rounded-xl shadow-lg shadow-violet-500/20 hover:opacity-95 transition-all flex items-center gap-1.5 justify-center disabled:opacity-50 flex-shrink-0 cursor-pointer"
+          >
+            {loadingPlan ? (
+              <><Loader2 className="w-4 h-4 animate-spin" /> ĐANG PHÂN TÍCH...</>
+            ) : (
+              <><Sparkles className="w-4 h-4" /> THIẾT KẾ LỘ TRÌNH IELTS</>
+            )}
+          </button>
+        </div>
+
+        {errorPlan && (
+          <div className="p-4 bg-rose-50 border border-rose-100 rounded-2xl text-sm font-bold text-rose-600 flex items-center gap-2">
+            <span>⚠️</span> {errorPlan}
+          </div>
+        )}
+
+        {studyPlan && (
+          <div className="space-y-6 animate-in fade-in slide-in-from-top-4 duration-500 border-t border-slate-100 pt-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="p-5 bg-white border border-slate-100 rounded-2xl shadow-sm space-y-2 md:col-span-2">
+                <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest">Phân tích năng lực IELTS</h3>
+                <p className="text-sm text-slate-600 font-semibold leading-relaxed">{studyPlan.summary}</p>
+              </div>
+              <div className="p-5 bg-white border border-slate-100 rounded-2xl shadow-sm space-y-2 flex flex-col justify-center items-center text-center">
+                <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest">Mục tiêu Band Score</h3>
+                <div className="text-3xl font-black bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent mt-1">
+                  IELTS {studyPlan.recommendedTarget}
+                </div>
+                <p className="text-[10px] font-bold text-slate-400 mt-1">Lộ trình 4 tuần nâng band vượt bậc</p>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest">Lộ trình học tập chi tiết 4 tuần</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {studyPlan.weeks?.map((w: any) => (
+                  <div key={w.weekNumber} className="premium-card p-5 border-slate-100/60 bg-white hover:shadow-md transition-all flex flex-col justify-between">
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2">
+                        <span className="w-6 h-6 rounded-full bg-violet-100 text-violet-700 text-xs font-black flex items-center justify-center flex-shrink-0">
+                          {w.weekNumber}
+                        </span>
+                        <h4 className="text-sm font-black text-slate-800">{w.theme}</h4>
+                      </div>
+                      <div className="flex flex-wrap gap-1.5">
+                        {w.focusSkills?.map((s: string) => (
+                          <span key={s} className="px-2 py-0.5 rounded bg-slate-100 text-slate-600 font-extrabold text-[9px] uppercase tracking-wider">
+                            {s}
+                          </span>
+                        ))}
+                      </div>
+                      <ul className="space-y-1.5 text-xs text-slate-500 font-medium list-disc list-inside">
+                        {w.actions?.map((act: string, idx: number) => (
+                          <li key={idx} className="leading-relaxed">{act}</li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="mt-4 flex gap-2">
+                      {w.focusSkills?.slice(0, 2).map((s: string) => (
+                        <button
+                          key={s}
+                          onClick={() => router.push(`/ielts/practice/${s}`)}
+                          className="flex-1 py-1.5 bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200/60 font-bold rounded-lg text-[10px] transition-colors capitalize"
+                        >
+                          Luyện {s}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </section>
 
       {/* Band Score Guide */}
       <section className="premium-card p-8">

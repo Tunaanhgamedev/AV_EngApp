@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getHistory = exports.submitPractice = exports.generatePractice = void 0;
+exports.generateStudyPlan = exports.getHistory = exports.submitPractice = exports.generatePractice = void 0;
 const prisma_1 = __importDefault(require("../lib/prisma"));
 const gemini_service_1 = require("../services/gemini.service");
 const generatePractice = async (req, res) => {
@@ -12,7 +12,8 @@ const generatePractice = async (req, res) => {
         return res.status(400).json({ error: 'Skill must be listening, reading, writing, or speaking' });
     }
     try {
-        const data = await gemini_service_1.GeminiService.generateIeltsPractice(skill);
+        const mode = req.query.mode;
+        const data = await gemini_service_1.GeminiService.generateIeltsPractice(skill, mode);
         res.json(data);
     }
     catch (error) {
@@ -70,3 +71,35 @@ const getHistory = async (req, res) => {
     }
 };
 exports.getHistory = getHistory;
+const generateStudyPlan = async (req, res) => {
+    const userId = req.params.userId;
+    try {
+        // Aggregate band scores by skill from history
+        const history = await prisma_1.default.ieltsPracticeHistory.findMany({
+            where: { userId: String(userId) },
+            select: { skill: true, bandScore: true }
+        });
+        const skillScores = { listening: [], reading: [], writing: [], speaking: [] };
+        for (const entry of history) {
+            if (skillScores[entry.skill]) {
+                skillScores[entry.skill].push(entry.bandScore);
+            }
+        }
+        const avg = (arr) => arr.length > 0 ? arr.reduce((a, b) => a + b, 0) / arr.length : 5.0;
+        const stats = {
+            listening: avg(skillScores.listening),
+            reading: avg(skillScores.reading),
+            writing: avg(skillScores.writing),
+            speaking: avg(skillScores.speaking),
+            overallAvg: 0
+        };
+        stats.overallAvg = (stats.listening + stats.reading + stats.writing + stats.speaking) / 4;
+        const plan = await gemini_service_1.GeminiService.generateIeltsStudyPlan(stats);
+        res.json(plan);
+    }
+    catch (error) {
+        console.error('IELTS study plan error:', error);
+        res.status(500).json({ error: 'Failed to generate IELTS study plan' });
+    }
+};
+exports.generateStudyPlan = generateStudyPlan;

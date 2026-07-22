@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import {
   Award, Headphones, BookOpen, PenTool, Mic2, Clock, Target,
   Sparkles, Brain, ArrowLeft, Loader2, CheckCircle2, XCircle,
@@ -461,6 +461,8 @@ export default function IELTSPracticePage() {
   const { user } = useAuth();
   const router = useRouter();
   const params = useParams();
+  const searchParams = useSearchParams();
+  const mode = searchParams?.get('mode') || undefined;
   const skill = (params.skill as string) || 'listening'; // 'listening', 'reading', 'writing', 'speaking'
 
   const activeStyle = skillStyles[skill] || skillStyles.listening;
@@ -522,7 +524,7 @@ export default function IELTSPracticePage() {
         try {
           setLoading(true);
           const token = user ? await user.getIdToken() : undefined;
-          const data = await getIeltsPractice(skill, token);
+          const data = await getIeltsPractice(skill, token, mode);
           if (data && data.questions) {
             setQuestions(data.questions);
           } else {
@@ -544,7 +546,7 @@ export default function IELTSPracticePage() {
     };
 
     loadTopic();
-  }, [selectedTopicId, skill, user]);
+  }, [selectedTopicId, skill, user, mode]);
 
   // Speaking Recording Simulators
   const startRecording = () => {
