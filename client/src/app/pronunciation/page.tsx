@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { Volume2, BookOpen, Sparkles, ChevronDown, Mic, Target, Star, Play, Info, ArrowRight, HelpCircle, Hash, FileText, Search, Loader2, Calendar, Globe, MessageSquare, Zap, Palette, Users, Clock, ChevronRight, Trophy, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 // grammarData is imported dynamically inside the component
@@ -4083,6 +4084,25 @@ export default function PronunciationPage() {
 
                   {activeTopic.id === 'tenses' && activeTopic.content.tenses && (
                     <div className="space-y-4">
+                      {/* Premium AI Upgrade Banner */}
+                      <div className="p-5 bg-gradient-to-r from-emerald-500 to-indigo-650 rounded-2xl text-white flex flex-col sm:flex-row items-center justify-between gap-4 shadow-md">
+                        <div className="space-y-1">
+                          <h4 className="font-black text-sm flex items-center gap-1.5">
+                            <Sparkles className="w-4 h-4 text-yellow-300 animate-pulse fill-yellow-300" />
+                            Đã Có Cổng Học 5 Thì AI Chuyên Sâu!
+                          </h4>
+                          <p className="text-white/80 text-xs font-semibold">
+                            Học lý thuyết chi tiết, chấm điểm viết bằng AI và tham gia Tense Speedrun Game ⚡
+                          </p>
+                        </div>
+                        <Link
+                          href="/tenses"
+                          className="px-4 py-2 bg-white text-emerald-700 hover:bg-emerald-50 rounded-xl text-xs font-black transition-all whitespace-nowrap shadow-sm cursor-pointer text-center"
+                        >
+                          LUYỆN TẬP NGAY ➜
+                        </Link>
+                      </div>
+
                       {activeTopic.content.tenses.map((tense: any, i: number) => (
                         <div key={i} className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
                           <h4 className="text-sm font-black text-slate-800">{tense.name}</h4>
