@@ -1222,4 +1222,31 @@ router.post('/generate-listening', async (req, res) => {
   }
 });
 
+// AI Grammar Tense Verifier
+router.post('/verify-grammar-tense', async (req, res) => {
+  const { tenseName, userSentence } = req.body;
+  if (!tenseName || !userSentence) {
+    return res.status(400).json({ error: 'tenseName and userSentence are required' });
+  }
+  try {
+    const result = await GeminiService.verifyGrammarTense(tenseName, userSentence);
+    return res.json(result);
+  } catch (error: any) {
+    console.error('[AI] Verify Grammar Tense error:', error.message);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// AI Grammar Tense Quiz Generator
+router.post('/generate-tense-quiz', async (req, res) => {
+  const { tenses } = req.body;
+  try {
+    const quiz = await GeminiService.generateTenseQuiz(tenses);
+    return res.json(quiz);
+  } catch (error: any) {
+    console.error('[AI] Generate Tense Quiz error:', error.message);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 export default router;

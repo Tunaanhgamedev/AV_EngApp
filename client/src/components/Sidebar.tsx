@@ -24,7 +24,8 @@ import {
   FileText,
   Music,
   GraduationCap,
-  Award
+  Award,
+  Clock
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
@@ -83,6 +84,7 @@ export function Sidebar({ isOpen, onClose }: { isOpen?: boolean; onClose?: () =>
     { icon: FileText, label: 'Reading Room', href: '/reading' },
     { icon: Headphones, label: 'Listening Lab', href: '/listening' },
     { icon: Volume2, label: 'Pronunciation', href: '/pronunciation' },
+    { icon: Clock, label: '5 Tenses AI', href: '/tenses' },
     { icon: Mic2, label: 'Speaking AI', href: '/speaking' },
     { icon: PenTool, label: 'Writing Journal', href: '/journal' },
     { icon: MessageSquare, label: 'AI Chat', href: '/chat' },

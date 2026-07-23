@@ -2483,5 +2483,101 @@ ${wordList}
       };
     }
   }
+
+  /**
+   * Verify English Grammar and Tense Correctness
+   */
+  static async verifyGrammarTense(tenseName: string, userSentence: string) {
+    try {
+      const prompt = `
+        Bạn là cố vấn ngữ pháp tiếng Anh. Hãy phân tích câu sau đây của học viên:
+        - Câu của học viên: "${userSentence}"
+        - Thì tiếng Anh được chọn: "${tenseName}"
+
+        Nhiệm vụ của bạn:
+        1. Kiểm tra xem câu của học viên có đúng ngữ pháp tiếng Anh hay không.
+        2. Kiểm tra xem câu này có sử dụng ĐÚNG cấu trúc và ngữ cảnh của thì "${tenseName}" hay không.
+        3. Chấm điểm độ chính xác (score) từ 0 đến 100.
+        4. Viết một lời giải thích chi tiết, thân thiện bằng tiếng Việt chỉ rõ các lỗi sai (nếu có), quy tắc chia động từ, và cách sử dụng của thì này.
+        5. Đề xuất một phiên bản câu viết lại chính xác và tự nhiên hơn (correctedText).
+
+        Trả về ĐÚNG định dạng JSON sau:
+        {
+          "isCorrect": true/false (true nếu đúng hoàn toàn cả ngữ pháp và cách dùng thì, ngược lại là false),
+          "score": 0-100 (điểm số đánh giá),
+          "correctedText": "Phiên bản câu tiếng Anh chính xác và tự nhiên nhất",
+          "explanation": "Nhận xét chi tiết bằng tiếng Việt: phân tích cấu trúc câu, chỉ ra các lỗi sai cụ thể về chia động từ, giới từ, từ vựng nếu có, và giải thích tại sao dùng hoặc không dùng thì ${tenseName} trong câu này."
+        }
+
+        Lưu ý: Không trả về bất kỳ giải thích nào khác nằm ngoài cấu trúc JSON.
+      `;
+
+      const { text } = await GeminiService.generateContentWithFallback(prompt, undefined, true);
+      return GeminiService.cleanAndParseJson(text);
+    } catch (error) {
+      console.error('Failed to verify grammar tense:', error);
+      return {
+        isCorrect: false,
+        score: 50,
+        correctedText: userSentence,
+        explanation: "Lỗi kết nối máy chủ phân tích ngữ pháp AI. Vui lòng kiểm tra lại câu viết của bạn."
+      };
+    }
+  }
+
+  /**
+   * Generate Custom Tense Quiz Questions
+   */
+  static async generateTenseQuiz(tenses: string[]) {
+    try {
+      const selectedTensesStr = tenses && tenses.length > 0 ? tenses.join(', ') : 'Present Simple, Past Simple, Present Continuous, Future Simple, Present Perfect';
+      const prompt = `
+        Bạn là chuyên gia thiết kế câu hỏi trắc nghiệm tiếng Anh. Hãy tạo 5 câu hỏi trắc nghiệm điền khuyết về ngữ pháp tập trung vào các thì sau: ${selectedTensesStr}.
+
+        Yêu cầu câu hỏi:
+        - Mỗi câu hỏi hiển thị một câu tiếng Anh có chỗ trống dạng "___" và có động từ trong ngoặc làm gợi ý, ví dụ: "They ___ (go) to the cinema yesterday."
+        - Có 4 phương án lựa chọn A, B, C, D (ví dụ: ["go", "went", "going", "have gone"]).
+        - Cung cấp phương án trả lời đúng (phải khớp chính xác với 1 trong 4 lựa chọn).
+        - Cung cấp lời giải thích ngắn gọn, rõ ràng bằng tiếng Việt giải thích lý do chọn phương án đó dựa trên các trạng từ chỉ thời gian hoặc ngữ cảnh câu.
+
+        Trả về ĐÚNG định dạng JSON sau:
+        {
+          "quizzes": [
+            {
+              "question": "Câu hỏi tiếng Anh có chỗ trống ___ (động từ gợi ý)",
+              "options": ["Lựa chọn A", "Lựa chọn B", "Lựa chọn C", "Lựa chọn D"],
+              "answer": "Lựa chọn đúng (chữ ghi chính xác lựa chọn đó, ví dụ: 'went')",
+              "explanation": "Giải thích chi tiết bằng tiếng Việt về lý do chọn đáp án này và dấu hiệu nhận biết thì."
+            }
+          ]
+        }
+
+        Lưu ý:
+        - Tạo đúng 5 câu hỏi.
+        - Không trả về thêm bất kỳ chữ nào ngoài JSON.
+      `;
+
+      const { text } = await GeminiService.generateContentWithFallback(prompt, undefined, true);
+      return GeminiService.cleanAndParseJson(text);
+    } catch (error) {
+      console.error('Failed to generate tense quiz:', error);
+      return {
+        quizzes: [
+          {
+            question: "Every day, she ___ (go) to work by bus.",
+            options: ["go", "goes", "going", "went"],
+            answer: "goes",
+            explanation: "Thói quen hàng ngày (Every day) dùng thì hiện tại đơn. Chủ ngữ she (số ít) động từ thêm -es."
+          },
+          {
+            question: "Yesterday, they ___ (play) football in the park.",
+            options: ["play", "played", "playing", "plays"],
+            answer: "played",
+            explanation: "Thời gian quá khứ xác định (Yesterday) dùng thì quá khứ đơn. Động từ play thêm đuôi -ed."
+          }
+        ]
+      };
+    }
+  }
 }
 

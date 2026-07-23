@@ -339,7 +339,7 @@ export default function Dashboard() {
             <div className="absolute right-12 top-4 w-24 h-24 bg-white/10 rounded-full blur-2xl" />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Link href="/chat" className="premium-card p-6 hover:premium-card-hover cursor-pointer group">
               <div className="flex items-center justify-between mb-4">
                 <div className="p-3 bg-blue-50 rounded-xl">
@@ -359,6 +359,16 @@ export default function Dashboard() {
               </div>
               <h3 className="font-bold text-lg">Writing Journal</h3>
               <p className="text-sm text-slate-500 mt-1">Write your daily journal and let EngBot check your grammar.</p>
+            </Link>
+            <Link href="/tenses" className="premium-card p-6 hover:premium-card-hover cursor-pointer group">
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 bg-emerald-50 rounded-xl">
+                  <Clock className="w-6 h-6 text-emerald-500" />
+                </div>
+                <ChevronRight className="w-5 h-5 text-slate-300 group-hover:translate-x-1 transition-transform" />
+              </div>
+              <h3 className="font-bold text-lg">5 Tenses AI</h3>
+              <p className="text-sm text-slate-500 mt-1">Học 5 thì cốt lõi cơ bản đến nâng cao và phản xạ nhanh cùng AI.</p>
             </Link>
           </div>
         </div>
