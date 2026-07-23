@@ -2302,5 +2302,155 @@ ${wordList}
             };
         }
     }
+    /**
+     * Generate AI Reading Article
+     */
+    static async generateReadingArticle(level) {
+        try {
+            const targetLevel = level || 'B1';
+            const prompt = `
+        Bạn là chuyên gia giáo dục tiếng Anh. Hãy tạo một bài viết đọc hiểu (Reading Comprehension) bằng tiếng Anh chất lượng cao theo cấp độ CEFR "${targetLevel}".
+        
+        Bài viết phải có chủ đề thú vị và hiện đại (ví dụ: công nghệ, môi trường, cuộc sống đô thị, du lịch, sức khỏe, khoa học vũ trụ).
+        Đoạn văn nên dài khoảng 250-350 từ chia làm 3-4 đoạn nhỏ.
+
+        Yêu cầu trả về chính xác định dạng JSON sau:
+        {
+          "id": "art-ai-${Date.now()}",
+          "title": "Tiêu đề bài viết bằng tiếng Anh",
+          "category": "Chủ đề bài viết (ví dụ: Technology, Science, Business, Culture, Health)",
+          "level": "${targetLevel}",
+          "readTime": "Thời gian đọc ước tính (ví dụ: 4 min)",
+          "color": "Mã màu gradient CSS cho background (ví dụ: from-teal-500 to-emerald-600, from-orange-500 to-red-600, from-blue-500 to-indigo-650)",
+          "content": "Toàn bộ nội dung bài viết bằng tiếng Anh. Sử dụng dấu xuống dòng kép \\\\n\\\\n giữa các đoạn văn.",
+          "vocabulary": [
+            {
+              "word": "từ vựng quan trọng xuất hiện trong bài",
+              "meaning": "nghĩa tiếng Việt chính xác trong ngữ cảnh này",
+              "ipa": "phiên âm quốc tế IPA (ví dụ: /ˈfleksɪbl/)"
+            }
+          ],
+          "questions": [
+            {
+              "q": "Câu hỏi trắc nghiệm kiểm tra khả năng đọc hiểu bằng tiếng Anh",
+              "options": ["Lựa chọn A", "Lựa chọn B", "Lựa chọn C", "Lựa chọn D"],
+              "answer": 0 (Index của lựa chọn đúng: 0 cho A, 1 cho B, 2 cho C, 3 cho D)
+            }
+          ]
+        }
+
+        Lưu ý:
+        - Tạo đúng 6 từ vựng quan trọng nhất trong bài.
+        - Tạo đúng 3 câu hỏi trắc nghiệm liên quan đến nội dung bài viết.
+        - Không trả về thêm bất kỳ ký tự nào nằm ngoài định dạng JSON.
+      `;
+            const { text } = await GeminiService.generateContentWithFallback(prompt, undefined, true);
+            return GeminiService.cleanAndParseJson(text);
+        }
+        catch (error) {
+            console.error('Failed to generate AI reading article:', error);
+            // Clean fallback matching level
+            return {
+                id: `art-ai-fallback-${Date.now()}`,
+                title: "The Importance of Lifelong Learning",
+                category: "Education",
+                level: level,
+                readTime: "3 min",
+                color: "from-blue-500 to-cyan-600",
+                content: "Lifelong learning is the ongoing, voluntary, and self-motivated pursuit of knowledge for either personal or professional reasons. In today's rapidly changing world, the ability to learn new skills is more important than ever. Technology changes quickly, and jobs that exist today might not exist in ten years. Therefore, individuals must adapt by learning continuously. Lifelong learning not only enhances social inclusion, active citizenship, and personal development, but also self-sustainability, as well as competitiveness and employability.",
+                vocabulary: [
+                    { word: "voluntary", meaning: "tự nguyện", ipa: "/ˈvɒləntri/" },
+                    { word: "pursuit", meaning: "sự theo đuổi", ipa: "/pəˈsjuːt/" },
+                    { word: "sustainability", meaning: "sự bền vững", ipa: "/səˌsteɪnəˈbɪləti/" }
+                ],
+                questions: [
+                    { q: "What is lifelong learning?", options: ["Compulsory education", "Voluntary pursuit of knowledge", "Only for career advancement", "Learning only in childhood"], answer: 1 },
+                    { q: "Why is continuous learning important today?", options: ["Jobs are stable", "Technology changes quickly", "To pass exams", "Schools require it"], answer: 1 }
+                ]
+            };
+        }
+    }
+    /**
+     * Generate AI Listening Lesson
+     */
+    static async generateListeningLesson(level) {
+        try {
+            const targetLevel = level || 'B1';
+            const prompt = `
+        Bạn là chuyên gia giáo dục tiếng Anh. Hãy tạo một bài học luyện nghe tiếng Anh (Listening Lab Lesson) cấp độ CEFR "${targetLevel}".
+        
+        Bài nghe là một đoạn kịch bản hội thoại ngắn hoặc tin tức, độc thoại bằng tiếng Anh khoảng 5-7 câu.
+        Hãy tạo thời gian (mốc giây "time") cho từng câu phát âm một cách tự nhiên (bắt đầu từ 0 và cộng thêm khoảng 4-6 giây cho mỗi câu tiếp theo).
+
+        Yêu cầu trả về chính xác định dạng JSON sau:
+        {
+          "id": ${100 + Math.floor(Math.random() * 900)},
+          "title": "Tiêu đề bài nghe bằng tiếng Anh",
+          "category": "Chủ đề bài nghe (ví dụ: Travel, Lifestyle, Science, Economy, Environment)",
+          "level": "${targetLevel}",
+          "duration": "Thời gian (ví dụ: 1:15)",
+          "color": "Mã màu gradient CSS cho background (ví dụ: from-indigo-500 to-purple-600, from-rose-500 to-orange-600, from-cyan-500 to-blue-600)",
+          "transcript": [
+            {
+              "time": 0,
+              "text": "Câu nói thứ nhất bằng tiếng Anh",
+              "gapWord": "Một từ quan trọng trong câu nói thứ nhất được giấu đi để làm bài điền từ"
+            },
+            {
+              "time": 5,
+              "text": "Câu nói thứ hai bằng tiếng Anh",
+              "gapWord": "Một từ quan trọng trong câu nói thứ hai được giấu đi"
+            }
+          ],
+          "quizzes": [
+            {
+              "q": "Câu hỏi trắc nghiệm kiểm tra mức độ nghe hiểu bằng tiếng Anh",
+              "options": ["Lựa chọn A", "Lựa chọn B", "Lựa chọn C", "Lựa chọn D"],
+              "answer": 0 (Index của lựa chọn đúng: 0 cho A, 1 cho B, 2 cho C, 3 cho D)
+            }
+          ],
+          "vocabulary": [
+            {
+              "word": "từ vựng tiêu biểu xuất hiện trong bài",
+              "ipa": "phiên âm quốc tế IPA",
+              "type": "loại từ (noun, verb, adjective, adverb)",
+              "meaningVi": "nghĩa tiếng Việt chính xác trong ngữ cảnh này",
+              "example": "Câu ví dụ tiếng Anh có chứa từ vựng đó"
+            }
+          ]
+        }
+
+        Lưu ý:
+        - gapWord phải là một từ đơn xuất hiện CHÍNH XÁC trong trường "text" của dòng đó (phân biệt chữ hoa/thường, không chứa dấu câu).
+        - Tạo đúng 3 câu hỏi trắc nghiệm kiểm tra mức độ hiểu bài sau khi nghe.
+        - Tạo đúng 3 từ vựng nổi bật kèm ví dụ.
+        - Không trả về thêm bất kỳ ký tự nào ngoài định dạng JSON.
+      `;
+            const { text } = await GeminiService.generateContentWithFallback(prompt, undefined, true);
+            return GeminiService.cleanAndParseJson(text);
+        }
+        catch (error) {
+            console.error('Failed to generate AI listening lesson:', error);
+            return {
+                id: 999,
+                title: "A Short Break in Paris",
+                category: "Travel",
+                level: level,
+                duration: "0:30",
+                color: "from-rose-500 to-pink-600",
+                transcript: [
+                    { time: 0, text: "Paris is beautiful in the spring when flowers bloom.", gapWord: "beautiful" },
+                    { time: 6, text: "People sit outside cafes and enjoy the warm sunshine.", gapWord: "sunshine" },
+                    { time: 12, text: "The Eiffel Tower looks amazing against the blue sky.", gapWord: "Tower" }
+                ],
+                quizzes: [
+                    { q: "How is Paris in the spring?", options: ["Cold and wet", "Beautiful with flowers", "Very quiet", "Too hot"], answer: 1 }
+                ],
+                vocabulary: [
+                    { word: "bloom", ipa: "/bluːm/", type: "verb", meaningVi: "nở hoa", example: "Flowers bloom in early spring." }
+                ]
+            };
+        }
+    }
 }
 exports.GeminiService = GeminiService;

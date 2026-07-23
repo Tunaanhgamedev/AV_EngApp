@@ -5,9 +5,12 @@ import {
   Headphones, Play, Pause, SkipBack, SkipForward, Volume2, BookOpen, 
   ListMusic, Heart, CheckCircle2, XCircle, RotateCcw, ChevronRight, 
   Globe, ExternalLink, Radio, Mic, Sparkles, Clock, Search, 
-  Flame, Award, Check, Sparkle
+  Flame, Award, Check, Sparkle, Loader2
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/context/AuthContext';
+
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
 // ─── Interfaces & Types ──────────────────────────────────────────────────────
 interface TranscriptLine {
@@ -434,11 +437,51 @@ const EXTERNAL_RESOURCES = [
 ];
 
 export default function ListeningPage() {
+  const { user } = useAuth();
+  const [lessons, setLessons] = useState<Lesson[]>(LESSONS);
   const [selected, setSelected] = useState<Lesson>(LESSONS[0]);
+  const [aiGenerating, setAiGenerating] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [elapsed, setElapsed] = useState(0);
   const [activeLine, setActiveLine] = useState(0);
+
+  const generateAIListening = async () => {
+    if (!user || aiGenerating) {
+      if (!user) alert('Vui lòng đăng nhập để sử dụng tính năng tạo bài học bằng AI!');
+      return;
+    }
+    setAiGenerating(true);
+    try {
+      const token = await user.getIdToken();
+      const levelParam = filterLevel === 'All' ? 'B1' : filterLevel;
+      const res = await fetch(`${API_BASE}/ai/generate-listening`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ level: levelParam })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.lesson) {
+          setLessons(prev => {
+            if (prev.some(l => l.id === data.lesson.id)) return prev;
+            return [data.lesson, ...prev];
+          });
+          setSelected(data.lesson);
+          alert('Đã tạo thành công bài nghe AI!');
+        } else {
+          alert('Lỗi phản hồi dữ liệu bài nghe.');
+        }
+      } else {
+        alert('Tạo bài nghe bằng AI thất bại. Vui lòng thử lại!');
+      }
+    } catch (err) {
+      console.error('AI listening generation failed:', err);
+      alert('Lỗi kết nối máy chủ AI.');
+    } finally {
+      setAiGenerating(false);
+    }
+  };
   
   // Tabs & Modes
   const [tab, setTab] = useState<'transcript' | 'vocabulary' | 'quiz'>('transcript');
@@ -893,7 +936,7 @@ export default function ListeningPage() {
   };
 
   // Filter lessons based on level and search queries
-  const filteredLessons = LESSONS.filter(lesson => {
+  const filteredLessons = lessons.filter(lesson => {
     const matchesLevel = filterLevel === 'All' || lesson.level === filterLevel;
     const matchesSearch = lesson.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           lesson.category.toLowerCase().includes(searchQuery.toLowerCase());
@@ -1484,6 +1527,24 @@ export default function ListeningPage() {
               <span className="flex items-center gap-2"><ListMusic className="w-5 h-5 text-primary" />Danh Sách Bài Nghe</span>
               <span className="text-xs font-black text-slate-400 bg-slate-100 px-2.5 py-1 rounded-full">{filteredLessons.length}</span>
             </h3>
+
+            <button
+              onClick={generateAIListening}
+              disabled={aiGenerating}
+              className="w-full mb-4 py-2.5 bg-gradient-to-r from-primary to-indigo-650 hover:from-primary/95 hover:to-indigo-700 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition-all disabled:opacity-50"
+            >
+              {aiGenerating ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Đang tạo bài nghe AI...
+                </>
+              ) : (
+                <>
+                  <Sparkles className="w-4 h-4" />
+                  Tạo bài nghe AI ({filterLevel === 'All' ? 'B1' : filterLevel})
+                </>
+              )}
+            </button>
 
             <div className="space-y-3 max-h-[550px] overflow-y-auto pr-1">
               {filteredLessons.length > 0 ? (

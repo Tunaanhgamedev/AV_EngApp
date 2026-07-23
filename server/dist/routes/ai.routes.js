@@ -1117,4 +1117,28 @@ router.get('/tts', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+// AI Reading Article Generator
+router.post('/generate-reading', async (req, res) => {
+    const { level } = req.body;
+    try {
+        const article = await gemini_service_1.GeminiService.generateReadingArticle(level);
+        return res.json({ article });
+    }
+    catch (error) {
+        console.error('[AI] Generate Reading error:', error.message);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+// AI Listening Lesson Generator
+router.post('/generate-listening', async (req, res) => {
+    const { level } = req.body;
+    try {
+        const lesson = await gemini_service_1.GeminiService.generateListeningLesson(level);
+        return res.json({ lesson });
+    }
+    catch (error) {
+        console.error('[AI] Generate Listening error:', error.message);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 exports.default = router;

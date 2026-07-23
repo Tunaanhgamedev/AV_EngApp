@@ -161,7 +161,8 @@ const speak = (text: string) => {
 
 export default function ReadingPage() {
   const { user } = useAuth();
-  const [articles] = useState<Article[]>(BUILT_IN_ARTICLES);
+  const [articles, setArticles] = useState<Article[]>(BUILT_IN_ARTICLES);
+  const [filterLevel, setFilterLevel] = useState<string>('All');
   const [selected, setSelected] = useState<Article>(BUILT_IN_ARTICLES[0]);
   const [activeTab, setActiveTab] = useState<'read' | 'vocab' | 'quiz'>('read');
   const [quizAnswers, setQuizAnswers] = useState<(number | null)[]>([]);
@@ -185,27 +186,43 @@ export default function ReadingPage() {
   const quizScore = quizDone ? selected.questions.filter((q, i) => quizAnswers[i] === q.answer).length : 0;
 
   const generateAIArticle = async () => {
-    if (!user || aiGenerating) return;
+    if (!user || aiGenerating) {
+      if (!user) alert('Vui lòng đăng nhập để sử dụng tính năng tạo bài học bằng AI!');
+      return;
+    }
     setAiGenerating(true);
     try {
       const token = await user.getIdToken();
+      const levelParam = filterLevel === 'All' ? 'B1' : filterLevel;
       const res = await fetch(`${API_BASE}/ai/generate-reading`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ level: 'B1' })
+        body: JSON.stringify({ level: levelParam })
       });
       if (res.ok) {
         const data = await res.json();
         if (data.article) {
+          setArticles(prev => {
+            if (prev.some(a => a.id === data.article.id)) return prev;
+            return [data.article, ...prev];
+          });
           setSelected(data.article);
+          alert('Đã tạo thành công bài đọc AI!');
+        } else {
+          alert('Lỗi phản hồi dữ liệu bài đọc.');
         }
+      } else {
+        alert('Tạo bài đọc bằng AI thất bại. Vui lòng thử lại!');
       }
     } catch (err) {
       console.error('AI article generation failed:', err);
+      alert('Lỗi kết nối máy chủ AI.');
     } finally {
       setAiGenerating(false);
     }
   };
+
+  const filteredArticles = articles.filter(art => filterLevel === 'All' || art.level === filterLevel);
 
   return (
     <div className="space-y-8 animate-in fade-in duration-700 pb-10">
@@ -222,7 +239,18 @@ export default function ReadingPage() {
         <div className="flex items-center gap-2">
           <span className="text-sm font-bold text-slate-400 mr-2">Level:</span>
           {['All', 'A2', 'B1', 'B2'].map(f => (
-            <button key={f} className="px-3 py-1 bg-white border border-slate-200 rounded-lg text-xs font-bold hover:border-primary transition-all">{f}</button>
+            <button
+              key={f}
+              onClick={() => setFilterLevel(f)}
+              className={cn(
+                "px-3 py-1 border rounded-lg text-xs font-bold transition-all",
+                filterLevel === f
+                  ? "bg-primary text-white border-primary"
+                  : "bg-white border-slate-200 text-slate-600 hover:border-primary"
+              )}
+            >
+              {f}
+            </button>
           ))}
         </div>
       </header>
@@ -340,19 +368,42 @@ export default function ReadingPage() {
           {/* Article List */}
           <div className="premium-card p-6">
             <h3 className="font-bold text-lg mb-6 flex items-center gap-2"><BookOpen className="w-5 h-5 text-primary" />Bài Đọc</h3>
+            <button
+              onClick={generateAIArticle}
+              disabled={aiGenerating}
+              className="w-full mb-4 py-2.5 bg-gradient-to-r from-primary to-indigo-600 hover:from-primary/95 hover:to-indigo-650 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition-all disabled:opacity-50"
+            >
+              {aiGenerating ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Đang tạo bài đọc AI...
+                </>
+              ) : (
+                <>
+                  <Sparkles className="w-4 h-4" />
+                  Tạo bài đọc AI ({filterLevel === 'All' ? 'B1' : filterLevel})
+                </>
+              )}
+            </button>
             <div className="space-y-3">
-              {articles.map(article => (
-                <button key={article.id} onClick={() => setSelected(article)}
-                  className={cn("w-full flex gap-4 p-3 rounded-2xl transition-all text-left group",
-                    selected.id === article.id ? "bg-primary/5 ring-1 ring-primary/20 shadow-md" : "hover:bg-slate-50"
-                  )}>
-                  <div className={cn("w-14 h-14 rounded-xl bg-gradient-to-br flex items-center justify-center text-white font-black text-sm flex-shrink-0", article.color)}>{article.level}</div>
-                  <div className="flex-1 min-w-0 py-1">
-                    <h4 className="text-sm font-bold truncate group-hover:text-primary transition-colors">{article.title}</h4>
-                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">{article.category} · {article.readTime}</p>
-                  </div>
-                </button>
-              ))}
+              {filteredArticles.length === 0 ? (
+                <div className="text-center py-8 text-slate-400 text-sm">
+                  Chưa có bài đọc cấp độ này.
+                </div>
+              ) : (
+                filteredArticles.map(article => (
+                  <button key={article.id} onClick={() => setSelected(article)}
+                    className={cn("w-full flex gap-4 p-3 rounded-2xl transition-all text-left group",
+                      selected.id === article.id ? "bg-primary/5 ring-1 ring-primary/20 shadow-md" : "hover:bg-slate-50"
+                    )}>
+                    <div className={cn("w-14 h-14 rounded-xl bg-gradient-to-br flex items-center justify-center text-white font-black text-sm flex-shrink-0", article.color)}>{article.level}</div>
+                    <div className="flex-1 min-w-0 py-1">
+                      <h4 className="text-sm font-bold truncate group-hover:text-primary transition-colors">{article.title}</h4>
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">{article.category} · {article.readTime}</p>
+                    </div>
+                  </button>
+                ))
+              )}
             </div>
           </div>
 
