@@ -402,6 +402,7 @@ export default function TensesPage() {
   const [gameTime, setGameTime] = useState<number>(30);
   const [gameScore, setGameScore] = useState<number>(0);
   const [highScore, setHighScore] = useState<number>(0);
+  const [lastScore, setLastScore] = useState<number | null>(null);
   const [currentQuizIndex, setCurrentQuizIndex] = useState<number>(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [answerFeedback, setAnswerFeedback] = useState<'correct' | 'incorrect' | null>(null);
@@ -419,11 +420,10 @@ export default function TensesPage() {
 
   // Timer loop for Speedrun Game
   useEffect(() => {
-    if (gameActive && gameTime > 0) {
+    if (gameActive) {
       gameTimerRef.current = setInterval(() => {
         setGameTime(prev => {
           if (prev <= 1) {
-            endGame();
             return 0;
           }
           return prev - 1;
@@ -433,7 +433,14 @@ export default function TensesPage() {
     return () => {
       if (gameTimerRef.current) clearInterval(gameTimerRef.current);
     };
-  }, [gameActive, gameTime]);
+  }, [gameActive]);
+
+  // End game detector when gameTime hits 0
+  useEffect(() => {
+    if (gameActive && gameTime <= 0) {
+      endGame();
+    }
+  }, [gameTime, gameActive]);
 
   // Audio synthesis feedback
   const playSoundEffect = (type: 'correct' | 'incorrect' | 'gameover') => {
@@ -485,6 +492,7 @@ export default function TensesPage() {
     setGameTime(30);
     setSelectedAnswer(null);
     setAnswerFeedback(null);
+    setLastScore(null);
     setGameActive(true);
   };
 
@@ -493,6 +501,7 @@ export default function TensesPage() {
     setGameActive(false);
     if (gameTimerRef.current) clearInterval(gameTimerRef.current);
     playSoundEffect('gameover');
+    setLastScore(gameScore);
     setHighScore(prev => {
       const nextScore = Math.max(prev, gameScore);
       localStorage.setItem('tense_speedrun_highscore', String(nextScore));
@@ -923,33 +932,74 @@ export default function TensesPage() {
             <div className="absolute right-0 top-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
 
             {!gameActive ? (
-              // Start screen
-              <div className="text-center space-y-6 py-6 relative z-10">
-                <div className="w-20 h-20 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center mx-auto shadow-md">
-                  <Timer className="w-10 h-10 animate-pulse" />
-                </div>
-                <div className="space-y-2">
-                  <h2 className="text-2xl font-black text-slate-800">Tense Speedrun ⚡ (12 Thì)</h2>
-                  <p className="text-slate-500 text-sm max-w-md mx-auto">
-                    Thử thách phản xạ chia động từ nhanh trong vòng 30 giây. Mỗi câu đúng cộng 3 giây, câu sai bị trừ 5 giây. Đạt điểm cao nhất có thể!
-                  </p>
-                </div>
+              lastScore !== null ? (
+                // Results screen
+                <div className="text-center space-y-6 py-6 relative z-10">
+                  <div className="w-20 h-20 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center mx-auto shadow-md">
+                    <Award className="w-10 h-10 animate-bounce text-yellow-500 fill-yellow-500" />
+                  </div>
+                  <div className="space-y-2">
+                    <h2 className="text-2xl font-black text-slate-800">Kết Thúc Thử Thách!</h2>
+                    <p className="text-slate-500 text-sm">
+                      Thời gian đã hết! Bạn đã hoàn thành xuất sắc thử thách phản xạ ngữ pháp.
+                    </p>
+                  </div>
 
-                <div className="flex justify-center gap-6 text-sm font-black text-slate-700">
-                  <div className="bg-slate-50 px-6 py-3 rounded-2xl border border-slate-100 flex items-center gap-2">
-                    <Trophy className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-                    Kỷ Lục: <span className="text-emerald-600 text-lg font-black">{highScore}đ</span>
+                  <div className="grid grid-cols-2 gap-4 max-w-sm mx-auto text-sm font-black">
+                    <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 flex flex-col items-center">
+                      <span className="text-[10px] text-slate-400 uppercase">Điểm Vừa Đạt</span>
+                      <span className="text-2xl font-black text-emerald-600 mt-1">{lastScore}đ</span>
+                    </div>
+                    <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 flex flex-col items-center">
+                      <span className="text-[10px] text-slate-400 uppercase">Kỷ Lục Cá Nhân</span>
+                      <span className="text-2xl font-black text-amber-600 mt-1">{highScore}đ</span>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-sm mx-auto">
+                    <button
+                      onClick={startGame}
+                      className="w-full py-3 bg-gradient-to-r from-emerald-500 to-indigo-650 hover:from-emerald-600 hover:to-indigo-700 text-white rounded-2xl font-black text-sm shadow-md transition-all active:scale-95 cursor-pointer"
+                    >
+                      CHƠI LẠI ⚡
+                    </button>
+                    <button
+                      onClick={() => setLastScore(null)}
+                      className="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-2xl font-black text-sm transition-all active:scale-95 cursor-pointer"
+                    >
+                      QUAY LẠI
+                    </button>
                   </div>
                 </div>
+              ) : (
+                // Start screen
+                <div className="text-center space-y-6 py-6 relative z-10">
+                  <div className="w-20 h-20 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center mx-auto shadow-md">
+                    <Timer className="w-10 h-10 animate-pulse" />
+                  </div>
+                  <div className="space-y-2">
+                    <h2 className="text-2xl font-black text-slate-800">Tense Speedrun ⚡ (12 Thì)</h2>
+                    <p className="text-slate-500 text-sm max-w-md mx-auto">
+                      Thử thách phản xạ chia động từ nhanh trong vòng 30 giây. Mỗi câu đúng cộng 3 giây, câu sai bị trừ 5 giây. Đạt điểm cao nhất có thể!
+                    </p>
+                  </div>
 
-                <button
-                  onClick={startGame}
-                  className="px-10 py-3.5 bg-gradient-to-r from-emerald-500 to-indigo-650 hover:from-emerald-600 hover:to-indigo-700 text-white rounded-2xl font-black text-sm shadow-lg shadow-emerald-500/10 flex items-center gap-2 mx-auto transition-transform active:scale-95"
-                >
-                  <Play className="w-4 h-4 fill-white" />
-                  BẮT ĐẦU CHƠI NGAY
-                </button>
-              </div>
+                  <div className="flex justify-center gap-6 text-sm font-black text-slate-700">
+                    <div className="bg-slate-50 px-6 py-3 rounded-2xl border border-slate-100 flex items-center gap-2">
+                      <Trophy className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                      Kỷ Lục: <span className="text-emerald-600 text-lg font-black">{highScore}đ</span>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={startGame}
+                    className="px-10 py-3.5 bg-gradient-to-r from-emerald-500 to-indigo-650 hover:from-emerald-600 hover:to-indigo-700 text-white rounded-2xl font-black text-sm shadow-lg shadow-emerald-500/10 flex items-center gap-2 mx-auto transition-transform active:scale-95 cursor-pointer"
+                  >
+                    <Play className="w-4 h-4 fill-white" />
+                    BẮT ĐẦU CHƠI NGAY
+                  </button>
+                </div>
+              )
             ) : (
               // Game playing screen
               <div className="space-y-6 relative z-10">
