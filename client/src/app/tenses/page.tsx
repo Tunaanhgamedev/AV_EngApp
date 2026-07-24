@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { 
-  Clock, Sparkles, BookOpen, Timer, Award, CheckCircle2, XCircle, 
+  Clock, Sparkles, BookOpen, Timer, Award, CheckCircle2, 
   Play, Loader2, Trophy, HelpCircle, AlertCircle
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
