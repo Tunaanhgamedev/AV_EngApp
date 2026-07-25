@@ -8,7 +8,7 @@ import {
   ChevronRight, Volume2, Info, Loader2, Sparkles, FileText, Check, HelpCircle
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
-import { getIeltsPractice, submitIeltsPractice } from '@/services/ielts.service';
+import { getIeltsPractice, getFullIeltsTest, submitIeltsPractice } from '@/services/ielts.service';
 
 interface Question {
   id: string;
@@ -81,12 +81,26 @@ export default function IELTSFullTestPage() {
         setError(null);
 
         const token = user ? await user.getIdToken() : undefined;
-        const [listening, reading, writing, speaking] = await Promise.all([
-          getIeltsPractice('listening', token),
-          getIeltsPractice('reading', token),
-          getIeltsPractice('writing', token),
-          getIeltsPractice('speaking', token)
-        ]);
+        let listening, reading, writing, speaking;
+
+        try {
+          const fullTest = await getFullIeltsTest(token);
+          const skillsMap: Record<string, any> = {};
+          (fullTest.skills || []).forEach((s: any) => {
+            if (s.skill) skillsMap[s.skill] = s;
+          });
+          listening = skillsMap['listening'];
+          reading = skillsMap['reading'];
+          writing = skillsMap['writing'];
+          speaking = skillsMap['speaking'];
+        } catch {
+          [listening, reading, writing, speaking] = await Promise.all([
+            getIeltsPractice('listening', token),
+            getIeltsPractice('reading', token),
+            getIeltsPractice('writing', token),
+            getIeltsPractice('speaking', token)
+          ]);
+        }
 
         setListeningData(listening);
         setReadingData(reading);

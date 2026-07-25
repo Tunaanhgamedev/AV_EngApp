@@ -19,6 +19,17 @@ export const generatePractice = async (req: Request, res: Response) => {
   }
 };
 
+export const generateFullTest = async (req: Request, res: Response) => {
+  try {
+    const mode = req.query.mode as string | undefined;
+    const data = await GeminiService.generateIeltsFullTest(mode);
+    res.json(data);
+  } catch (error) {
+    console.error('IELTS controller generate full test error:', error);
+    res.status(500).json({ error: 'Failed to generate IELTS full test' });
+  }
+};
+
 export const submitPractice = async (req: Request, res: Response) => {
   const { userId, skill, bandScore, correctCount, totalQuestions, aiFeedback, details } = req.body;
 

@@ -20,6 +20,25 @@ export const getIeltsPractice = async (skill: string, token?: string, mode?: str
   }
 };
 
+export const getFullIeltsTest = async (token?: string, mode: string = 'standard') => {
+  try {
+    const response = await fetch(`${API_URL}/ielts/full-test?mode=${mode}`, {
+      headers: {
+        ...(token && { 'Authorization': `Bearer ${token}` })
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to generate full IELTS test');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('IELTS Service full test error:', error);
+    throw error;
+  }
+};
+
 export const submitIeltsPractice = async (data: {
   userId: string;
   skill: string;

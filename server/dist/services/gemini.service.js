@@ -21,6 +21,19 @@ class GeminiService {
         "gemini-1.5-flash",
         "gemini-pro"
     ];
+    static quizCache = new Map();
+    static CACHE_TTL_MS = 15 * 60 * 1000; // 15 minutes TTL
+    static getFromQuizCache(key) {
+        const entry = GeminiService.quizCache.get(key);
+        if (entry && (Date.now() - entry.timestamp) < GeminiService.CACHE_TTL_MS) {
+            console.log(`[GeminiService] Cache HIT for key: ${key}`);
+            return entry.data;
+        }
+        return null;
+    }
+    static setToQuizCache(key, data) {
+        GeminiService.quizCache.set(key, { data, timestamp: Date.now() });
+    }
     static async generateContentWithFallback(prompt, systemInstruction, jsonMode = false) {
         let lastError = null;
         for (const modelName of GeminiService.models) {
@@ -1792,9 +1805,13 @@ ${wordList}
         return results;
     }
     /**
-     * Generate TOEIC Practice Questions using Gemini
+     * Generate TOEIC Practice Questions using Gemini (with caching)
      */
     static async generateToeicPractice(part, mode = 'standard') {
+        const cacheKey = `toeic_${part}_${mode}`;
+        const cached = GeminiService.getFromQuizCache(cacheKey);
+        if (cached)
+            return cached;
         try {
             const count = mode === 'mini' ? 5 : 10;
             let focusPrompt = '';
@@ -1840,7 +1857,11 @@ ${wordList}
         }
       `;
             const { text } = await GeminiService.generateContentWithFallback(prompt, undefined, true);
-            return GeminiService.cleanAndParseJson(text);
+            const parsed = GeminiService.cleanAndParseJson(text);
+            if (parsed && parsed.questions && parsed.questions.length > 0) {
+                GeminiService.setToQuizCache(cacheKey, parsed);
+            }
+            return parsed;
         }
         catch (error) {
             console.error(`Generate TOEIC Practice Part ${part} Error, using high-quality local fallback:`, error.message || error);
@@ -1907,9 +1928,13 @@ ${wordList}
         }
     }
     /**
-     * Generate IELTS Practice Questions using Gemini
+     * Generate IELTS Practice Questions using Gemini (with caching)
      */
     static async generateIeltsPractice(skill, mode) {
+        const cacheKey = `ielts_${skill}_${mode || 'standard'}`;
+        const cached = GeminiService.getFromQuizCache(cacheKey);
+        if (cached)
+            return cached;
         try {
             let modeInstruction = '';
             if (mode) {
@@ -1950,7 +1975,11 @@ ${wordList}
         }
       `;
             const { text } = await GeminiService.generateContentWithFallback(prompt, undefined, true);
-            return GeminiService.cleanAndParseJson(text);
+            const parsed = GeminiService.cleanAndParseJson(text);
+            if (parsed && parsed.questions && parsed.questions.length > 0) {
+                GeminiService.setToQuizCache(cacheKey, parsed);
+            }
+            return parsed;
         }
         catch (error) {
             console.error(`Generate IELTS Practice ${skill} Error, using local fallback:`, error.message || error);
@@ -2001,6 +2030,34 @@ ${wordList}
             }
             return fallbackData;
         }
+    }
+    /**
+     * Generate Full TOEIC Test concurrently with cache fallback
+     */
+    static async generateToeicFullTest(mode = 'standard') {
+        const cacheKey = `toeic_full_test_${mode}`;
+        const cached = GeminiService.getFromQuizCache(cacheKey);
+        if (cached)
+            return cached;
+        const parts = mode === 'mini' ? [1, 3, 5, 7] : [1, 2, 3, 4, 5, 6, 7];
+        const results = await Promise.all(parts.map(part => GeminiService.generateToeicPractice(part, mode)));
+        const fullTest = { mode, parts: results };
+        GeminiService.setToQuizCache(cacheKey, fullTest);
+        return fullTest;
+    }
+    /**
+     * Generate Full IELTS Test concurrently with cache fallback
+     */
+    static async generateIeltsFullTest(mode = 'standard') {
+        const cacheKey = `ielts_full_test_${mode}`;
+        const cached = GeminiService.getFromQuizCache(cacheKey);
+        if (cached)
+            return cached;
+        const skills = ['listening', 'reading', 'writing', 'speaking'];
+        const results = await Promise.all(skills.map(skill => GeminiService.generateIeltsPractice(skill, mode)));
+        const fullTest = { mode, skills: results };
+        GeminiService.setToQuizCache(cacheKey, fullTest);
+        return fullTest;
     }
     /**
      * Generate personalized IELTS study plan based on historical band scores

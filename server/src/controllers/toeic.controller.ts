@@ -19,6 +19,17 @@ export const generatePractice = async (req: Request, res: Response) => {
   }
 };
 
+export const generateFullTest = async (req: Request, res: Response) => {
+  try {
+    const mode = (req.query.mode as string) || 'standard';
+    const data = await GeminiService.generateToeicFullTest(mode);
+    res.json(data);
+  } catch (error) {
+    console.error('TOEIC controller generate full test error:', error);
+    res.status(500).json({ error: 'Failed to generate TOEIC full test' });
+  }
+};
+
 export const submitPractice = async (req: Request, res: Response) => {
   const { userId, part, correctCount, totalQuestions, details, listeningScore, readingScore, totalScore } = req.body;
 

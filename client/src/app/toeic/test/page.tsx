@@ -8,7 +8,7 @@ import {
   ChevronRight, Volume2, Info, Loader2, BarChart2
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
-import { getToeicPractice, submitToeicPractice } from '@/services/toeic.service';
+import { getToeicPractice, getFullToeicTest, submitToeicPractice } from '@/services/toeic.service';
 
 interface Question {
   id: string;
@@ -77,9 +77,14 @@ function TOEICFullTestContent() {
         setError(null);
         
         const token = user ? await user.getIdToken() : undefined;
-        // Fetch parts 1 to 7 concurrently with specific mode
-        const fetchPromises = Array.from({ length: 7 }, (_, i) => getToeicPractice(i + 1, token, mode));
-        const partsResults = await Promise.all(fetchPromises);
+        let partsResults: any[] = [];
+        try {
+          const fullTestData = await getFullToeicTest(token, mode);
+          partsResults = fullTestData.parts || [];
+        } catch {
+          const fetchPromises = Array.from({ length: 7 }, (_, i) => getToeicPractice(i + 1, token, mode));
+          partsResults = await Promise.all(fetchPromises);
+        }
         
         // Consolidate questions
         const consolidatedQuestions: Question[] = [];

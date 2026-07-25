@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.generateStudyPlan = exports.getHistory = exports.submitPractice = exports.generatePractice = void 0;
+exports.generateStudyPlan = exports.getHistory = exports.submitPractice = exports.generateFullTest = exports.generatePractice = void 0;
 const prisma_1 = __importDefault(require("../lib/prisma"));
 const gemini_service_1 = require("../services/gemini.service");
 const generatePractice = async (req, res) => {
@@ -22,6 +22,18 @@ const generatePractice = async (req, res) => {
     }
 };
 exports.generatePractice = generatePractice;
+const generateFullTest = async (req, res) => {
+    try {
+        const mode = req.query.mode || 'standard';
+        const data = await gemini_service_1.GeminiService.generateToeicFullTest(mode);
+        res.json(data);
+    }
+    catch (error) {
+        console.error('TOEIC controller generate full test error:', error);
+        res.status(500).json({ error: 'Failed to generate TOEIC full test' });
+    }
+};
+exports.generateFullTest = generateFullTest;
 const submitPractice = async (req, res) => {
     const { userId, part, correctCount, totalQuestions, details, listeningScore, readingScore, totalScore } = req.body;
     if (!userId || isNaN(correctCount) || isNaN(totalQuestions)) {

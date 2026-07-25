@@ -19,6 +19,25 @@ export const getToeicPractice = async (part: number, token?: string, mode: strin
   }
 };
 
+export const getFullToeicTest = async (token?: string, mode: string = 'standard') => {
+  try {
+    const response = await fetch(`${API_URL}/toeic/full-test?mode=${mode}`, {
+      headers: {
+        ...(token && { 'Authorization': `Bearer ${token}` })
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to generate full TOEIC test');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('TOEIC Service full test error:', error);
+    throw error;
+  }
+};
+
 export const submitToeicPractice = async (data: {
   userId: string;
   part: number | null;
