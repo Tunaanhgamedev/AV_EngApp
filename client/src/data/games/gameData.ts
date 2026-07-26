@@ -34,7 +34,15 @@ export const STATIC_WORD_PAIRS = [
   { en: 'Empirical', vi: 'Thực chứng' },
   { en: 'Paradigm', vi: 'Hình mẫu' },
   { en: 'Qualitative', vi: 'Định tính' },
-  { en: 'Rational', vi: 'Hợp lý' }
+  { en: 'Rational', vi: 'Hợp lý' },
+  { en: 'Substantial', vi: 'Đáng kể' },
+  { en: 'Unanimous', vi: 'Nhất trí' },
+  { en: 'Versatile', vi: 'Linh hoạt' },
+  { en: 'Scrutinize', vi: 'Xem xét kỹ' },
+  { en: 'Reconcile', vi: 'Hòa giải' },
+  { en: 'Compensate', vi: 'Bồi thường' },
+  { en: 'Incentive', vi: 'Khuyến khích' },
+  { en: 'Linger', vi: 'Nán lại' }
 ];
 
 export const STATIC_QUIZ_QUESTIONS = [
@@ -57,7 +65,10 @@ export const STATIC_QUIZ_QUESTIONS = [
   { q: 'Chọn từ đồng nghĩa với "Rational":', options: ['Logical (Hợp lý)', 'Emotional (Cảm tính)', 'Crazy (Điên rồ)', 'Silly (Ngớ ngẩn)'], answer: 0 },
   { q: 'Từ "Facilitate" mang ý nghĩa gì?', options: ['Gây cản trở', 'Tạo điều kiện thuận lợi', 'Bỏ qua', 'Chậm trễ'], answer: 1 },
   { q: 'Chọn từ viết đúng chính tả:', options: ['Necessary', 'Neccessary', 'Necessery', 'Neccesery'], answer: 0 },
-  { q: 'Điền từ: "She has an ___ supply of books."', options: ['abundant', 'empty', 'lacking', 'few'], answer: 0 }
+  { q: 'Điền từ: "She has an ___ supply of books."', options: ['abundant', 'empty', 'lacking', 'few'], answer: 0 },
+  { q: 'Từ "Unanimous" biểu thị điều gì trong cuộc họp?', options: ['Tất cả nhất trí 100%', 'Bất đồng ý kiến', 'Hủy bỏ cuộc họp', 'Tranh cãi gay gắt'], answer: 0 },
+  { q: 'Ý nghĩa của từ "Scrutinize" trong công việc là gì?', options: ['Xem xét hời hợt', 'Ký duyệt ngay', 'Săm soi, kiểm tra cực kỳ kỹ lưỡng', 'Bỏ qua lỗi'], answer: 2 },
+  { q: 'Từ nào đồng nghĩa với "Compensate"?', options: ['Reimburse/Pay (Bồi thường)', 'Steal (Trộm)', 'Demand (Yêu cầu)', 'Refuse (Từ chối)'], answer: 0 }
 ];
 
 export const STATIC_SCRAMBLE_WORDS = [
