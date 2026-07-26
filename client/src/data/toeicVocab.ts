@@ -26,6 +26,1061 @@ export interface TOEICCategory {
 }
 
 export const TOEIC_VOCAB_DATA: TOEICCategory[] = [
+{
+  "id": "target800",
+  "title": "Target 800+ (Cao Cấp & Chuyên Gia)",
+  "description": "Bộ từ vựng cao cấp dành cho chuyên gia thương mại quốc tế, sở hữu trí tuệ, tự động hóa và phân tích dữ liệu lớn.",
+  "difficulty": "Nâng Cao",
+  "color": "from-purple-600 to-indigo-600",
+  "lists": [
+    {
+      "id": "target800_list1",
+      "name": "List 1: International Trade & Import-Export",
+      "description": "Từ vựng quy trình xuất nhập khẩu, hải quan và vận tải biển quốc tế.",
+      "words": [
+        {
+          "id": "t800_1",
+          "word": "bill of lading",
+          "phonetic": "/bɪl əv ˈleɪ.dɪŋ/",
+          "wordType": "noun phrase",
+          "meaningVi": "vận đơn đường biển",
+          "meaningEn": "a detailed list of a shipment of goods in the form of a receipt given by the carrier to the person consigning the goods",
+          "example": "The customs officer requested the original bill of lading before clearing the cargo.",
+          "exampleVi": "Cán bộ hải quan yêu cầu vận đơn gốc trước khi thông quan hàng hóa."
+        },
+        {
+          "id": "t800_2",
+          "word": "customs duty",
+          "phonetic": "/ˈkʌs.təmz ˌdjuː.ti/",
+          "wordType": "noun phrase",
+          "meaningVi": "thuế nhập khẩu / thuế hải quan",
+          "meaningEn": "a tax imposed on imports and exports of goods",
+          "example": "The new trade treaty reduced customs duty on electronic components to zero.",
+          "exampleVi": "Hiệp định thương mại mới đã giảm thuế hải quan đối với linh kiện điện tử xuống 0%."
+        },
+        {
+          "id": "t800_3",
+          "word": "consignee",
+          "phonetic": "/ˌkɒn.saɪˈniː/",
+          "wordType": "noun",
+          "meaningVi": "người nhận hàng",
+          "meaningEn": "the person or company to whom goods are declared and delivered",
+          "example": "The freight forwarder delivered the container directly to the consignee's warehouse.",
+          "exampleVi": "Công ty giao nhận đã giao container trực tiếp đến kho của người nhận hàng."
+        },
+        {
+          "id": "t800_4",
+          "word": "embargo",
+          "phonetic": "/ɪmˈbɑː.ɡəʊ/",
+          "wordType": "noun/verb",
+          "meaningVi": "lệnh cấm vận thương mại",
+          "meaningEn": "an official ban on trade or other commercial activity with a particular country",
+          "example": "The United Nations lifted the trade embargo after peace negotiations succeeded.",
+          "exampleVi": "Liên Hợp Quốc đã dỡ bỏ lệnh cấm vận thương mại sau khi các cuộc đàm phán hòa bình thành công."
+        },
+        {
+          "id": "t800_5",
+          "word": "tariff",
+          "phonetic": "/ˈtær.ɪf/",
+          "wordType": "noun",
+          "meaningVi": "thuế quan",
+          "meaningEn": "a tax or duty to be paid on a particular class of imports or exports",
+          "example": "Increased tariffs on imported steel encouraged domestic production.",
+          "exampleVi": "Thuế quan tăng đối với thép nhập khẩu đã khuyến khích sản xuất trong nước."
+        },
+        {
+          "id": "t800_6",
+          "word": "freight forwarder",
+          "phonetic": "/freɪt ˈfɔː.wə.dər/",
+          "wordType": "noun phrase",
+          "meaningVi": "đại lý giao nhận hàng hóa",
+          "meaningEn": "a person or company that organizes shipments for individuals or corporations",
+          "example": "Our freight forwarder handles all documentation and customs clearance for overseas orders.",
+          "exampleVi": "Đại lý giao nhận của chúng tôi xử lý tất cả chứng từ và thủ tục hải quan cho các đơn hàng nước ngoài."
+        },
+        {
+          "id": "t800_7",
+          "word": "incoterms",
+          "phonetic": "/ˈɪn.kəʊ.tɜːmz/",
+          "wordType": "noun",
+          "meaningVi": "các điều khoản thương mại quốc tế",
+          "meaningEn": "a series of predefined commercial terms relating to international commercial law",
+          "example": "The sales contract clearly specified FOB Shanghai under standard Incoterms.",
+          "exampleVi": "Hợp đồng mua bán ghi rõ điều kiện FOB Thượng Hải theo các điều khoản Incoterms chuẩn."
+        },
+        {
+          "id": "t800_8",
+          "word": "manifest",
+          "phonetic": "/ˈmæn.ɪ.fest/",
+          "wordType": "noun",
+          "meaningVi": "bản kê khai hàng hóa vận chuyển",
+          "meaningEn": "a document listing the cargo, passengers, and crew of a ship or aircraft",
+          "example": "The vessel's cargo manifest confirmed the shipment of 500 tons of coffee beans.",
+          "exampleVi": "Bản kê khai hàng hóa của tàu xác nhận lô hàng 500 tấn hạt cà phê."
+        },
+        {
+          "id": "t800_9",
+          "word": "demurrage",
+          "phonetic": "/dɪˈmʌr.ɪdʒ/",
+          "wordType": "noun",
+          "meaningVi": "phí lưu container tại cảng quá hạn",
+          "meaningEn": "a charge payable to the owner of a chartered ship in respect of failure to load or unload within the time allowed",
+          "example": "Prompt customs inspection helped the importer avoid steep demurrage charges.",
+          "exampleVi": "Kiểm tra hải quan nhanh chóng giúp nhà nhập khẩu tránh được phí lưu container đắt đỏ."
+        },
+        {
+          "id": "t800_10",
+          "word": "certificate of origin",
+          "phonetic": "/səˈtɪf.ɪ.kət əv ˈɒr.ɪ.dʒɪn/",
+          "wordType": "noun phrase",
+          "meaningVi": "giấy chứng nhận xuất xứ hàng hóa (C/O)",
+          "meaningEn": "a document declaring in which country a commodity or good was manufactured",
+          "example": "A valid Certificate of Origin is required to qualify for preferential tariff rates.",
+          "exampleVi": "Giấy chứng nhận xuất xứ hợp lệ là bắt buộc để đủ điều kiện hưởng mức thuế ưu đãi."
+        },
+        {
+          "id": "t800_11",
+          "word": "bonded warehouse",
+          "phonetic": "/ˈbɒn.dɪd ˈweə.haʊs/",
+          "wordType": "noun phrase",
+          "meaningVi": "kho ngoại quan",
+          "meaningEn": "a building in which dutiable goods may be stored, manipulated, or undergo manufacturing operations without payment of duty",
+          "example": "Imported wine is stored in a temperature-controlled bonded warehouse prior to tax payment.",
+          "exampleVi": "Rượu nhập khẩu được bảo quản trong kho ngoại quan kiểm soát nhiệt độ trước khi nộp thuế."
+        },
+        {
+          "id": "t800_12",
+          "word": "letter of credit",
+          "phonetic": "/ˈlet.ər əv ˈkred.ɪt/",
+          "wordType": "noun phrase",
+          "meaningVi": "thư tín dụng (L/C)",
+          "meaningEn": "a letter issued by a bank to another bank to serve as a guarantee for payments made to a specified person",
+          "example": "The exporter agreed to ship the machinery upon receipt of an irrevocable letter of credit.",
+          "exampleVi": "Nhà xuất khẩu đồng ý giao máy móc ngay khi nhận được thư tín dụng không thể hủy bỏ."
+        },
+        {
+          "id": "t800_13",
+          "word": "quarantine",
+          "phonetic": "/ˈkwɒr.ən.tiːn/",
+          "wordType": "noun/verb",
+          "meaningVi": "sự kiểm dịch động thực vật",
+          "meaningEn": "a state, period, or place of isolation in which animals or plants are kept to prevent disease spread",
+          "example": "Agricultural shipments undergo strict biosecurity quarantine upon arrival.",
+          "exampleVi": "Các lô hàng nông nghiệp phải trải qua kiểm dịch an toàn sinh học nghiêm ngặt khi đến nơi."
+        },
+        {
+          "id": "t800_14",
+          "word": "cabotage",
+          "phonetic": "/ˈkæb.ə.tɑːʒ/",
+          "wordType": "noun",
+          "meaningVi": "vận tải nội địa của phương tiện nước ngoài",
+          "meaningEn": "the transport of goods or passengers between two places in the same country by a transport operator from another country",
+          "example": "National maritime laws restrict cabotage rights to domestically flagged vessels.",
+          "exampleVi": "Luật hàng hải quốc gia hạn chế quyền vận tải nội địa cho các tàu mang cờ trong nước."
+        },
+        {
+          "id": "t800_15",
+          "word": "transshipment",
+          "phonetic": "/trænˈʃɪp.mənt/",
+          "wordType": "noun",
+          "meaningVi": "sự trung chuyển hàng hóa qua cảng thứ 3",
+          "meaningEn": "the shipment of goods or containers to an intermediate destination, then to another destination",
+          "example": "Singapore serves as a major global hub for maritime container transshipment.",
+          "exampleVi": "Singapore đóng vai trò là trung tâm toàn cầu lớn về trung chuyển container đường biển."
+        },
+        {
+          "id": "t800_16",
+          "word": "stevedore",
+          "phonetic": "/ˈstiː.və.dɔːr/",
+          "wordType": "noun",
+          "meaningVi": "công nhân / đơn vị bốc xếp cảng",
+          "meaningEn": "a person employed at a dock to load and unload ships",
+          "example": "Stevedores operated heavy cranes to offload the cargo vessel overnight.",
+          "exampleVi": "Công nhân bốc xếp đã vận hành cần cẩu hạng nặng để dỡ hàng khỏi tàu suốt đêm."
+        },
+        {
+          "id": "t800_17",
+          "word": "consignor",
+          "phonetic": "/kənˈsaɪ.nər/",
+          "wordType": "noun",
+          "meaningVi": "người gửi hàng",
+          "meaningEn": "the person or company sending goods by land, sea, or air",
+          "example": "The consignor is responsible for securely packing fragile items.",
+          "exampleVi": "Người gửi hàng chịu trách nhiệm đóng gói an toàn các mặt hàng dễ vỡ."
+        },
+        {
+          "id": "t800_18",
+          "word": "surcharge",
+          "phonetic": "/ˈsɜː.tʃɑːdʒ/",
+          "wordType": "noun",
+          "meaningVi": "phụ phí vận tải",
+          "meaningEn": "an additional charge or payment",
+          "example": "Ocean carriers introduced a fuel surcharge due to rising oil prices.",
+          "exampleVi": "Các hãng vận tải biển đã áp dụng phụ phí nhiên liệu do giá dầu tăng."
+        },
+        {
+          "id": "t800_19",
+          "word": "drayage",
+          "phonetic": "/ˈdreɪ.ɪdʒ/",
+          "wordType": "noun",
+          "meaningVi": "dịch vụ vận chuyển container chặng ngắn",
+          "meaningEn": "the transport of goods over a short distance, often as part of a longer overall move",
+          "example": "Port drayage services moved the freight from the dock to the nearby rail yard.",
+          "exampleVi": "Dịch vụ drayage tại cảng đã chuyển hàng hóa từ cầu cảng đến bãi đường sắt lân cận."
+        },
+        {
+          "id": "t800_20",
+          "word": "ad valorem",
+          "phonetic": "/ˌæd vəˈlɔː.rəm/",
+          "wordType": "adjective",
+          "meaningVi": "theo giá trị hàng hóa (thuế)",
+          "meaningEn": "levied on the value of a transaction or property",
+          "example": "An ad valorem tax of 5% was levied on luxury imported automobiles.",
+          "exampleVi": "Mức thuế theo giá trị 5% đã được đánh vào ô tô hạng sang nhập khẩu."
+        }
+      ]
+    },
+    {
+      "id": "target800_list2",
+      "name": "List 2: Intellectual Property & Compliance",
+      "description": "Từ vựng quyền sở hữu trí tuệ, bằng sáng chế, bản quyền và tuân thủ pháp lý.",
+      "words": [
+        {
+          "id": "t800_21",
+          "word": "patent infringement",
+          "phonetic": "/ˈpeɪ.tənt ɪnˈfrɪndʒ.mənt/",
+          "wordType": "noun phrase",
+          "meaningVi": "sự vi phạm bằng sáng chế",
+          "meaningEn": "the unauthorized manufacture, use, sale, or offer for sale of a patented invention",
+          "example": "The tech giant filed a lawsuit alleging patent infringement over smartphone sensors.",
+          "exampleVi": "Gã khổng lồ công nghệ đã đệ đơn kiện cáo buộc vi phạm bằng sáng chế cảm biến smartphone."
+        },
+        {
+          "id": "t800_22",
+          "word": "trademark",
+          "phonetic": "/ˈtreɪd.mɑːk/",
+          "wordType": "noun/verb",
+          "meaningVi": "nhãn hiệu thương mại đăng ký",
+          "meaningEn": "a symbol, word, or words legally registered as representing a company or product",
+          "example": "The distinctive corporate logo is protected as a registered trademark worldwide.",
+          "exampleVi": "Logo doanh nghiệp đặc trưng được bảo hộ như một nhãn hiệu thương mại đăng ký trên toàn cầu."
+        },
+        {
+          "id": "t800_23",
+          "word": "copyright",
+          "phonetic": "/ˈkɒp.i.raɪt/",
+          "wordType": "noun/verb",
+          "meaningVi": "bản quyền tác giả",
+          "meaningEn": "the exclusive legal right to print, publish, perform, film, or record literary, artistic, or musical material",
+          "example": "All educational software code is protected under international copyright law.",
+          "exampleVi": "Toàn bộ mã phần mềm giáo dục đều được bảo hộ theo luật bản quyền quốc tế."
+        },
+        {
+          "id": "t800_24",
+          "word": "non-disclosure agreement",
+          "phonetic": "/nɒn.dɪˈskləʊ.ʒər əˈɡriː.mənt/",
+          "wordType": "noun phrase",
+          "meaningVi": "thỏa thuận bảo mật thông tin (NDA)",
+          "meaningEn": "a legal contract between parties that outlines confidential material, knowledge, or information",
+          "example": "Engineers signed a non-disclosure agreement before accessing the confidential project files.",
+          "exampleVi": "Các kỹ sư đã ký thỏa thuận bảo mật thông tin trước khi truy cập tài liệu dự án mật."
+        },
+        {
+          "id": "t800_25",
+          "word": "royalty",
+          "phonetic": "/ˈrɔɪ.əl.ti/",
+          "wordType": "noun",
+          "meaningVi": "tiền nhuận bút / tiền bản quyền",
+          "meaningEn": "a sum of money paid to a patentee or author for the use of a patent or copyrighted work",
+          "example": "The inventor receives a 5% royalty on every unit sold globally.",
+          "exampleVi": "Nhà sáng chế nhận 5% tiền bản quyền trên mỗi sản phẩm bán ra toàn cầu."
+        },
+        {
+          "id": "t800_26",
+          "word": "jurisdiction",
+          "phonetic": "/ˌdʒʊə.rɪsˈdɪk.ʃən/",
+          "wordType": "noun",
+          "meaningVi": "thẩm quyền tài phán pháp lý",
+          "meaningEn": "the official power to make legal decisions and judgments",
+          "example": "The commercial dispute falls under the legal jurisdiction of the high court.",
+          "exampleVi": "Tranh chấp thương mại thuộc thẩm quyền tài phán pháp lý của tòa án cấp cao."
+        },
+        {
+          "id": "t800_27",
+          "word": "litigation",
+          "phonetic": "/ˌlɪt.ɪˈɡeɪ.ʃən/",
+          "wordType": "noun",
+          "meaningVi": "sự tranh chấp tụng tụng tại tòa",
+          "meaningEn": "the process of taking legal action",
+          "example": "Protracted litigation depleted the startup's financial reserves.",
+          "exampleVi": "Vụ kiện tụng kéo dài đã làm cạn kiệt nguồn dự trữ tài chính của công ty khởi nghiệp."
+        },
+        {
+          "id": "t800_28",
+          "word": "compliance officer",
+          "phonetic": "/kəmˈplaɪ.əns ˈɒf.ɪ.sər/",
+          "wordType": "noun phrase",
+          "meaningVi": "chuyên viên giám sát tuân thủ",
+          "meaningEn": "an individual who ensures a company conducts its business in conformity with laws",
+          "example": "The chief compliance officer updated the firm's anti-corruption policies.",
+          "exampleVi": "Trưởng bộ phận tuân thủ đã cập nhật các chính sách chống tham nhũng của công ty."
+        },
+        {
+          "id": "t800_29",
+          "word": "breach of contract",
+          "phonetic": "/briːtʃ əv ˈkɒn.trækt/",
+          "wordType": "noun phrase",
+          "meaningVi": "sự vi phạm hợp đồng",
+          "meaningEn": "an act of breaking the terms of a contract",
+          "example": "Failure to deliver the materials on schedule constituted a material breach of contract.",
+          "exampleVi": "Không giao vật tư đúng hạn cấu thành việc vi phạm hợp đồng nghiêm trọng."
+        },
+        {
+          "id": "t800_30",
+          "word": "arbitration",
+          "phonetic": "/ˌɑː.bɪˈtreɪ.ʃən/",
+          "wordType": "noun",
+          "meaningVi": "sự trọng tài giải quyết tranh chấp",
+          "meaningEn": "the use of an arbitrator to settle a dispute",
+          "example": "Both corporations agreed to resolve the breach via binding international arbitration.",
+          "exampleVi": "Cả hai tập đoàn đồng ý giải quyết vi phạm thông qua trọng tài quốc tế có tính ràng buộc."
+        },
+        {
+          "id": "t800_31",
+          "word": "plagiarism",
+          "phonetic": "/ˈpleɪ.dʒər.ɪ.zəm/",
+          "wordType": "noun",
+          "meaningVi": "sự đạo văn, sao chép tác phẩm",
+          "meaningEn": "the practice of taking someone else's work or ideas and passing them off as one's own",
+          "example": "The publisher introduced automated software to detect plagiarism in submissions.",
+          "exampleVi": "Nhà xuất bản đã đưa vào phần mềm tự động để phát hiện đạo văn trong các bản thảo."
+        },
+        {
+          "id": "t800_32",
+          "word": "trade secret",
+          "phonetic": "/ˈtreɪd ˌsiː.krət/",
+          "wordType": "noun phrase",
+          "meaningVi": "bí mật kinh doanh",
+          "meaningEn": "a secret technique, process, or formula used by a company in manufacturing its products",
+          "example": "The proprietary soft drink recipe is guarded as a valuable trade secret.",
+          "exampleVi": "Công thức nước giải khát độc quyền được bảo vệ như một bí mật kinh doanh quý giá."
+        },
+        {
+          "id": "t800_33",
+          "word": "liability",
+          "phonetic": "/ˌlaɪ.əˈbɪl.ə.ti/",
+          "wordType": "noun",
+          "meaningVi": "trách nhiệm pháp lý / nghĩa vụ nợ",
+          "meaningEn": "the state of being responsible for something, especially by law",
+          "example": "The manufacturer accepted product liability for the recalled battery units.",
+          "exampleVi": "Nhà sản xuất đã chấp nhận trách nhiệm pháp lý sản phẩm đối với các bộ pin bị thu hồi."
+        },
+        {
+          "id": "t800_34",
+          "word": "statute",
+          "phonetic": "/ˈstætʃ.uːt/",
+          "wordType": "noun",
+          "meaningVi": "đạo luật, quy định pháp lý",
+          "meaningEn": "a written law passed by a legislative body",
+          "example": "The new data privacy statute mandates heavy fines for unencrypted customer data leaks.",
+          "exampleVi": "Đạo luật quyền riêng tư dữ liệu mới quy định mức phạt nặng cho các vụ rò rỉ dữ liệu không mã hóa."
+        },
+        {
+          "id": "t800_35",
+          "word": "sanction",
+          "phonetic": "/ˈsæŋk.ʃən/",
+          "wordType": "noun/verb",
+          "meaningVi": "hình phạt pháp lý / sự phê chuẩn",
+          "meaningEn": "a threatened penalty for disobeying a law or rule",
+          "example": "Regulatory authorities imposed financial sanctions on the bank for non-compliance.",
+          "exampleVi": "Các cơ quan quản lý đã áp đặt các hình phạt tài chính lên ngân hàng do không tuân thủ."
+        },
+        {
+          "id": "t800_36",
+          "word": "whistleblower",
+          "phonetic": "/ˈwɪs.əlˌbləʊ.ər/",
+          "wordType": "noun",
+          "meaningVi": "người tố giác sai phạm nội bộ",
+          "meaningEn": "a person who informs on a person or organization regarded as engaging in an unlawful activity",
+          "example": "Whistleblower protection policies encourage employees to report ethical breaches safely.",
+          "exampleVi": "Các chính sách bảo vệ người tố giác khuyến khích nhân viên báo cáo sai phạm đạo đức một cách an toàn."
+        },
+        {
+          "id": "t800_37",
+          "word": "probity",
+          "phonetic": "/ˈprəʊ.bə.ti/",
+          "wordType": "noun",
+          "meaningVi": "sự liêm chính, minh bạch",
+          "meaningEn": "the quality of having strong moral principles; honesty and decency",
+          "example": "Financial probity is mandatory for all officials managing government procurement funds.",
+          "exampleVi": "Sự minh bạch tài chính là bắt buộc đối với tất cả các quan chức quản lý quỹ mua sắm chính phủ."
+        },
+        {
+          "id": "t800_38",
+          "word": "indictment",
+          "phonetic": "/ɪnˈdaɪt.mənt/",
+          "wordType": "noun",
+          "meaningVi": "sự truy tố chính thức",
+          "meaningEn": "a formal charge or accusation of a serious crime",
+          "example": "The prosecutor handed down an indictment against corporate executives for insider trading.",
+          "exampleVi": "Công tố viên đã đưa ra cáo trạng truy tố các giám đốc điều hành về tội giao dịch nội gián."
+        },
+        {
+          "id": "t800_39",
+          "word": "adjudicate",
+          "phonetic": "/əˈdʒuː.dɪ.keɪt/",
+          "wordType": "verb",
+          "meaningVi": "xét xử, phân xử tranh chấp",
+          "meaningEn": "make a formal judgment or decision about a disputed matter",
+          "example": "A specialized commercial panel was appointed to adjudicate the intellectual property dispute.",
+          "exampleVi": "Một hội đồng thương mại chuyên trách đã được bổ nhiệm để phân xử tranh chấp sở hữu trí tuệ."
+        },
+        {
+          "id": "t800_40",
+          "word": "statutory",
+          "phonetic": "/ˈstætʃ.ə.tər.i/",
+          "wordType": "adjective",
+          "meaningVi": "được quy định bởi luật pháp",
+          "meaningEn": "decided or controlled by law",
+          "example": "The company fulfilled all statutory tax reporting requirements on time.",
+          "exampleVi": "Công ty đã hoàn thành tất cả các yêu cầu báo cáo thuế do luật định đúng hạn."
+        }
+      ]
+    }
+  ]
+},
+
+{
+  "id": "target600",
+  "title": "Target 600+ (Trung Cấp & Công Sở)",
+  "description": "Bộ từ vựng trung cấp mở rộng về giao dịch ngân hàng, nhân sự, bất động sản, quan hệ công chúng và vận tải.",
+  "difficulty": "Trung Bình",
+  "color": "from-blue-600 to-cyan-500",
+  "lists": [
+    {
+      "id": "target600_list1",
+      "name": "List 1: Banking & Financial Transactions",
+      "description": "Từ vựng giao dịch tài chính, tài khoản và tín dụng ngân hàng.",
+      "words": [
+        {
+          "id": "t600_1",
+          "word": "deposit",
+          "phonetic": "/dɪˈpɒz.ɪt/",
+          "wordType": "noun/verb",
+          "meaningVi": "tiền gửi, đặt cọc",
+          "meaningEn": "a sum of money placed or kept in a bank account",
+          "example": "You need to make a 10% deposit before reserving the conference hall.",
+          "exampleVi": "Bạn cần đặt cọc 10% trước khi đặt phòng hội nghị."
+        },
+        {
+          "id": "t600_2",
+          "word": "withdrawal",
+          "phonetic": "/wɪðˈdrɔː.əl/",
+          "wordType": "noun",
+          "meaningVi": "sự rút tiền khỏi tài khoản",
+          "meaningEn": "an act of taking money out of an account",
+          "example": "ATM cash withdrawals are limited to $1,000 per day.",
+          "exampleVi": "Rút tiền mặt qua ATM bị giới hạn ở mức $1,000 mỗi ngày."
+        },
+        {
+          "id": "t600_3",
+          "word": "interest rate",
+          "phonetic": "/ˈɪn.trəst reɪt/",
+          "wordType": "noun phrase",
+          "meaningVi": "lãi suất ngân hàng",
+          "meaningEn": "the proportion of a loan that is charged as interest to the borrower",
+          "example": "The central bank lowered the benchmark interest rate by 0.5%.",
+          "exampleVi": "Ngân hàng trung ương đã hạ lãi suất cơ bản xuống 0.5%."
+        },
+        {
+          "id": "t600_4",
+          "word": "mortgage",
+          "phonetic": "/ˈmɔː.ɡɪdʒ/",
+          "wordType": "noun/verb",
+          "meaningVi": "khoản thế chấp mua nhà",
+          "meaningEn": "a legal agreement by which a bank lends money at interest in exchange for taking title of the debtor's property",
+          "example": "They applied for a 30-year fixed mortgage to purchase their first home.",
+          "exampleVi": "Họ đã nộp đơn xin vay thế chấp cố định 30 năm để mua căn nhà đầu tiên."
+        },
+        {
+          "id": "t600_5",
+          "word": "overdraft",
+          "phonetic": "/ˈəʊ.və.drɑːft/",
+          "wordType": "noun",
+          "meaningVi": "sự thấu chi tài khoản",
+          "meaningEn": "a deficit in a bank account caused by drawing more money than the account holds",
+          "example": "The account incurred an overdraft fee due to insufficient funds.",
+          "exampleVi": "Tài khoản bị chịu phí thấu chi do không đủ tiền."
+        },
+        {
+          "id": "t600_6",
+          "word": "wire transfer",
+          "phonetic": "/ˈwaɪə ˌtræns.fɜːr/",
+          "wordType": "noun phrase",
+          "meaningVi": "chuyển khoản điện tử",
+          "meaningEn": "an electronic transfer of funds across a network administered by banks",
+          "example": "International wire transfers usually take two to three business days.",
+          "exampleVi": "Chuyển khoản điện tử quốc tế thường mất hai đến ba ngày làm việc."
+        },
+        {
+          "id": "t600_7",
+          "word": "statement",
+          "phonetic": "/ˈsteɪt.mənt/",
+          "wordType": "noun",
+          "meaningVi": "sao kê tài khoản",
+          "meaningEn": "a printed record of the balance in a bank account and the amounts that have been paid into it and withdrawn",
+          "example": "Please review your monthly bank statement for any unauthorized transactions.",
+          "exampleVi": "Vui lòng xem lại sao kê ngân hàng hàng tháng để tìm các giao dịch bất thường."
+        },
+        {
+          "id": "t600_8",
+          "word": "collateral",
+          "phonetic": "/kəˈlæt.ər.əl/",
+          "wordType": "noun",
+          "meaningVi": "tài sản thế chấp",
+          "meaningEn": "something pledged as security for repayment of a loan",
+          "example": "Commercial real estate was used as collateral for the business expansion loan.",
+          "exampleVi": "Bất động sản thương mại đã được dùng làm tài sản thế chấp cho khoản vay mở rộng kinh doanh."
+        },
+        {
+          "id": "t600_9",
+          "word": "credit score",
+          "phonetic": "/ˈkred.ɪt skɔːr/",
+          "wordType": "noun phrase",
+          "meaningVi": "điểm tín dụng",
+          "meaningEn": "a number assigned to a person that indicates to lenders their capacity to repay a loan",
+          "example": "A high credit score enables borrowers to secure lower interest rates.",
+          "exampleVi": "Điểm tín dụng cao giúp người vay có được lãi suất thấp hơn."
+        },
+        {
+          "id": "t600_10",
+          "word": "beneficiary",
+          "phonetic": "/ˌben.əˈfɪʃ.ər.i/",
+          "wordType": "noun",
+          "meaningVi": "người thụ hưởng",
+          "meaningEn": "a person who derives advantage from something, especially a trust or insurance policy",
+          "example": "Please state the full name of the beneficiary on the payment form.",
+          "exampleVi": "Vui lòng ghi rõ họ tên người thụ hưởng trên phiếu thanh toán."
+        },
+        {
+          "id": "t600_11",
+          "word": "transaction",
+          "phonetic": "/trænˈzæk.ʃən/",
+          "wordType": "noun",
+          "meaningVi": "giao dịch",
+          "meaningEn": "an instance of buying or selling something; a business deal",
+          "example": "All financial transactions are encrypted with 256-bit security.",
+          "exampleVi": "Tất cả các giao dịch tài chính đều được mã hóa với bảo mật 256-bit."
+        },
+        {
+          "id": "t600_12",
+          "word": "audit",
+          "phonetic": "/ˈɔː.dɪt/",
+          "wordType": "noun/verb",
+          "meaningVi": "kiểm toán, kiểm tra sổ sách",
+          "meaningEn": "an official inspection of an individual's or organization's accounts",
+          "example": "The firm undergoes an independent financial audit every autumn.",
+          "exampleVi": "Công ty trải qua một kỳ kiểm toán tài chính độc lập vào mỗi mùa thu."
+        },
+        {
+          "id": "t600_13",
+          "word": "portfolio",
+          "phonetic": "/pɔːtˈfəʊ.li.əʊ/",
+          "wordType": "noun",
+          "meaningVi": "danh mục đầu tư",
+          "meaningEn": "a range of investments held by a person or organization",
+          "example": "The wealth manager diversified the investor's portfolio across tech stocks and bonds.",
+          "exampleVi": "Quản lý tài sản đã đa dạng hóa danh mục đầu tư vào cổ phiếu công nghệ và trái phiếu."
+        },
+        {
+          "id": "t600_14",
+          "word": "yield",
+          "phonetic": "/jiːld/",
+          "wordType": "noun/verb",
+          "meaningVi": "lợi suất, sinh lời",
+          "meaningEn": "produce or provide a natural, agricultural, or financial result or product",
+          "example": "High-yield savings accounts offer better returns than traditional accounts.",
+          "exampleVi": "Tài khoản tiết kiệm lợi suất cao mang lại lợi nhuận tốt hơn tài khoản truyền thống."
+        },
+        {
+          "id": "t600_15",
+          "word": "capital",
+          "phonetic": "/ˈkæp.ɪ.təl/",
+          "wordType": "noun",
+          "meaningVi": "vốn kinh doanh",
+          "meaningEn": "wealth in the form of money or other assets owned by a person or organization",
+          "example": "The startup raised $5 million in Series A venture capital funding.",
+          "exampleVi": "Công ty khởi nghiệp đã huy động được 5 triệu đô la vốn đầu tư mạo hiểm vòng Series A."
+        },
+        {
+          "id": "t600_16",
+          "word": "equity",
+          "phonetic": "/ˈek.wɪ.ti/",
+          "wordType": "noun",
+          "meaningVi": "vốn chủ sở hữu, cổ phần",
+          "meaningEn": "the value of the shares issued by a company",
+          "example": "Employees were offered company equity as part of their compensation plan.",
+          "exampleVi": "Nhân viên được cung cấp cổ phần công ty như một phần của kế hoạch đãi ngộ."
+        },
+        {
+          "id": "t600_17",
+          "word": "dividend",
+          "phonetic": "/ˈdɪv.ɪ.dend/",
+          "wordType": "noun",
+          "meaningVi": "cổ tức",
+          "meaningEn": "a sum of money paid regularly by a company to its shareholders out of its profits",
+          "example": "Shareholders receive a quarterly dividend of $0.45 per share.",
+          "exampleVi": "Các cổ đông nhận được cổ tức hàng quý là $0.45 cho mỗi cổ phiếu."
+        },
+        {
+          "id": "t600_18",
+          "word": "maturity date",
+          "phonetic": "/məˈtʃʊə.rə.ti deɪt/",
+          "wordType": "noun phrase",
+          "meaningVi": "ngày đáo hạn",
+          "meaningEn": "the date on which the principal amount of a note, draft, acceptance bond or other debt instrument becomes due",
+          "example": "Upon the bond's maturity date, the principal will be fully returned.",
+          "exampleVi": "Vào ngày đáo hạn trái phiếu, tiền gốc sẽ được hoàn trả đầy đủ."
+        },
+        {
+          "id": "t600_19",
+          "word": "liquidity",
+          "phonetic": "/lɪˈkwɪd.ə.ti/",
+          "wordType": "noun",
+          "meaningVi": "tính thanh khoản",
+          "meaningEn": "the availability of liquid assets to a market or company",
+          "example": "Maintaining sufficient cash liquidity is essential for meeting operational expenses.",
+          "exampleVi": "Duy trì đủ thanh khoản tiền mặt là điều cần thiết để chi trả chi phí vận hành."
+        },
+        {
+          "id": "t600_20",
+          "word": "default",
+          "phonetic": "/dɪˈfɒlt/",
+          "wordType": "noun/verb",
+          "meaningVi": "sự vỡ nợ, không thực hiện nghĩa vụ",
+          "meaningEn": "failure to fulfill an obligation, especially to repay a loan",
+          "example": "Late payment notices were issued to prevent loan default.",
+          "exampleVi": "Các thông báo thanh toán trễ đã được gửi đi để ngăn chặn tình trạng vỡ nợ."
+        }
+      ]
+    },
+    {
+      "id": "target600_list2",
+      "name": "List 2: Human Resources & Recruitment",
+      "description": "Từ vựng tuyển dụng, quản lý nhân sự và đào tạo công sở.",
+      "words": [
+        {
+          "id": "t600_21",
+          "word": "onboarding",
+          "phonetic": "/ˈɒnˌbɔː.dɪŋ/",
+          "wordType": "noun",
+          "meaningVi": "quá trình hội nhập nhân viên mới",
+          "meaningEn": "the action or process of integrating a new employee into an organization",
+          "example": "The HR team streamlined the onboarding process with interactive e-learning modules.",
+          "exampleVi": "Đội ngũ nhân sự đã tối ưu hóa quá trình hội nhập bằng các bài học điện tử tương tác."
+        },
+        {
+          "id": "t600_22",
+          "word": "probation",
+          "phonetic": "/prəˈbeɪ.ʃən/",
+          "wordType": "noun",
+          "meaningVi": "thời gian thử việc",
+          "meaningEn": "a period of time at the start of a job when an employee is tested",
+          "example": "New hires complete a two-month probation period before receiving full benefits.",
+          "exampleVi": "Nhân viên mới hoàn thành 2 tháng thử việc trước khi nhận đầy đủ phúc lợi."
+        },
+        {
+          "id": "t600_23",
+          "word": "attrition",
+          "phonetic": "/əˈtrɪʃ.ən/",
+          "wordType": "noun",
+          "meaningVi": "sự giảm biến động nhân sự tự nhiên",
+          "meaningEn": "the gradual reduction of a workforce through retirement, resignation, or death",
+          "example": "The company aims to lower its annual employee attrition rate to below 5%.",
+          "exampleVi": "Công ty nhằm mục đích hạ tỷ lệ biến động nhân sự hàng năm xuống dưới 5%."
+        },
+        {
+          "id": "t600_24",
+          "word": "incentive",
+          "phonetic": "/ɪnˈsen.tɪv/",
+          "wordType": "noun",
+          "meaningVi": "phần thưởng khuyến khích",
+          "meaningEn": "a thing that motivates or encourages someone to do something",
+          "example": "Performance-based bonuses serve as a strong incentive for the sales force.",
+          "exampleVi": "Tiền thưởng theo hiệu suất đóng vai trò như động lực mạnh mẽ cho đội ngũ bán hàng."
+        },
+        {
+          "id": "t600_25",
+          "word": "appraisal",
+          "phonetic": "/əˈpreɪ.zəl/",
+          "wordType": "noun",
+          "meaningVi": "sự đánh giá hiệu suất công việc",
+          "meaningEn": "an act of assessing something or someone, especially an employee's job performance",
+          "example": "Annual performance appraisals determine promotion eligibility and salary increments.",
+          "exampleVi": "Đánh giá hiệu suất hàng năm quyết định khả năng thăng tiến và tăng lương."
+        },
+        {
+          "id": "t600_26",
+          "word": "headcount",
+          "phonetic": "/ˈhed.kaʊnt/",
+          "wordType": "noun",
+          "meaningVi": "tổng số lượng nhân sự",
+          "meaningEn": "the total number of people employed in an organization",
+          "example": "Management planned to increase the R&D department headcount by 20%.",
+          "exampleVi": "Ban quản lý đã lên kế hoạch tăng 20% nhân sự phòng nghiên cứu và phát triển."
+        },
+        {
+          "id": "t600_27",
+          "word": "turnover",
+          "phonetic": "/ˈtɜːnˌəʊ.vər/",
+          "wordType": "noun",
+          "meaningVi": "tỷ lệ luân chuyển nhân sự",
+          "meaningEn": "the rate at which employees leave a workforce and are replaced",
+          "example": "High staff turnover negatively impacts overall team productivity.",
+          "exampleVi": "Tỷ lệ luân chuyển nhân sự cao gây ảnh hưởng tiêu cực đến năng suất chung của đội ngũ."
+        },
+        {
+          "id": "t600_28",
+          "word": "payroll",
+          "phonetic": "/ˈpeɪ.rəʊl/",
+          "wordType": "noun",
+          "meaningVi": "bảng lương, tổng quỹ lương",
+          "meaningEn": "a list of a company's employees and the amount of money to be paid to each of them",
+          "example": "All overtime hours must be approved before processing the monthly payroll.",
+          "exampleVi": "Mọi giờ làm thêm phải được phê duyệt trước khi xử lý bảng lương hàng tháng."
+        },
+        {
+          "id": "t600_29",
+          "word": "severance",
+          "phonetic": "/ˈsev.ər.əns/",
+          "wordType": "noun",
+          "meaningVi": "tiền trợ cấp thôi việc",
+          "meaningEn": "an amount paid to an employee upon dismissal or resignation",
+          "example": "Laid-off workers received a generous severance package based on years of service.",
+          "exampleVi": "Công nhân bị sa thải đã nhận được gói trợ cấp thôi việc hậu đĩnh dựa trên số năm làm việc."
+        },
+        {
+          "id": "t600_30",
+          "word": "grievance",
+          "phonetic": "/ˈɡriː.vəns/",
+          "wordType": "noun",
+          "meaningVi": "sự bất bình, khiếu nại lao động",
+          "meaningEn": "an official statement of a complaint about something felt to be unfair",
+          "example": "Employees can submit formal grievances confidentially to the HR ombudsman.",
+          "exampleVi": "Nhân viên có thể gửi các khiếu nại chính thức một cách bảo mật tới thanh tra nhân sự."
+        },
+        {
+          "id": "t600_31",
+          "word": "credential",
+          "phonetic": "/krɪˈden.ʃəl/",
+          "wordType": "noun",
+          "meaningVi": "chứng chỉ, bằng cấp chuyên môn",
+          "meaningEn": "a qualification, achievement, personal quality, or aspect of a person's background",
+          "example": "Candidates must present their academic credentials during the interview.",
+          "exampleVi": "Ứng viên phải xuất trình bằng cấp học thuật trong buổi phỏng vấn."
+        },
+        {
+          "id": "t600_32",
+          "word": "headhunter",
+          "phonetic": "/ˈhedˌhʌn.tər/",
+          "wordType": "noun",
+          "meaningVi": "chuyên viên săn đầu người",
+          "meaningEn": "a recruiter who seeks out suitable candidates for executive positions",
+          "example": "The board hired an executive headhunter to find a new Chief Financial Officer.",
+          "exampleVi": "Hội đồng quản trị đã thuê một chuyên viên săn đầu người để tìm Giám đốc Tài chính mới."
+        },
+        {
+          "id": "t600_33",
+          "word": "workplace culture",
+          "phonetic": "/ˈwɜːk.pleɪs ˈkʌl.tʃər/",
+          "wordType": "noun phrase",
+          "meaningVi": "văn hóa doanh nghiệp",
+          "meaningEn": "the shared values, belief systems, attitudes and set of assumptions in an office",
+          "example": "A positive workplace culture boosts employee morale and collaboration.",
+          "exampleVi": "Văn hóa doanh nghiệp tích cực nâng cao tinh thần làm việc và sự hợp tác của nhân viên."
+        },
+        {
+          "id": "t600_34",
+          "word": "telecommute",
+          "phonetic": "/ˈtel.ɪ.kə-mjuːt/",
+          "wordType": "verb",
+          "meaningVi": "làm việc từ xa qua mạng",
+          "meaningEn": "work from home, making use of the internet, email, and the telephone",
+          "example": "Many software engineers prefer to telecommute three days a week.",
+          "exampleVi": "Nhiều kỹ sư phần mềm thích làm việc từ xa ba ngày một tuần."
+        },
+        {
+          "id": "t600_35",
+          "word": "reprimand",
+          "phonetic": "/ˈrep.rɪ.mɑːnd/",
+          "wordType": "verb/noun",
+          "meaningVi": "khiển trách, cảnh cáo",
+          "meaningEn": "a formal expression of disapproval",
+          "example": "The supervisor issued a written reprimand for chronic tardiness.",
+          "exampleVi": "Người giám sát đã phát ra bản khiển trách bằng văn bản vì tội đi trễ mãn tính."
+        },
+        {
+          "id": "t600_36",
+          "word": "shortlist",
+          "phonetic": "/ˈʃɔːt.lɪst/",
+          "wordType": "noun/verb",
+          "meaningVi": "danh sách ứng viên thu gọn",
+          "meaningEn": "a list of selected candidates chosen from a longer group",
+          "example": "HR selected five top applicants for the final interview shortlist.",
+          "exampleVi": "Bộ phận Nhân sự đã chọn ra năm ứng viên xuất sắc nhất vào danh sách phỏng vấn cuối cùng."
+        },
+        {
+          "id": "t600_37",
+          "word": "flexitime",
+          "phonetic": "/ˈflek.si.taɪm/",
+          "wordType": "noun",
+          "meaningVi": "chế độ giờ làm việc linh hoạt",
+          "meaningEn": "a system of working a set number of hours with the starting and finishing times chosen by the employee",
+          "example": "Flexitime arrangements help parents balance career and childcare responsibilities.",
+          "exampleVi": "Chế độ giờ làm linh hoạt giúp các bậc phụ huynh cân bằng sự nghiệp và chăm sóc con cái."
+        },
+        {
+          "id": "t600_38",
+          "word": "competency",
+          "phonetic": "/ˈkɒm.pɪ.tən.si/",
+          "wordType": "noun",
+          "meaningVi": "năng lực chuyên môn",
+          "meaningEn": "the ability to do something successfully or efficiently",
+          "example": "Digital marketing competency is a key requirement for the regional manager role.",
+          "exampleVi": "Năng lực marketing kỹ thuật số là yêu cầu then chốt đối với vị trí quản lý vùng."
+        },
+        {
+          "id": "t600_39",
+          "word": "upskill",
+          "phonetic": "/ˈʌp.skɪl/",
+          "wordType": "verb",
+          "meaningVi": "nâng cao kỹ năng nghề nghiệp",
+          "meaningEn": "teach an employee additional skills",
+          "example": "The company invested in workshops to upskill its workforce in cloud technologies.",
+          "exampleVi": "Công ty đã đầu tư vào các buổi hội thảo để nâng cao kỹ năng công nghệ điện toán đám mây cho nhân viên."
+        },
+        {
+          "id": "t600_40",
+          "word": "redundancy",
+          "phonetic": "/rɪˈdʌn.dən.si/",
+          "wordType": "noun",
+          "meaningVi": "sự dôi dư nhân sự, tinh giảm",
+          "meaningEn": "the state of no longer being needed or useful, leading to dismissal",
+          "example": "Factory automation unfortunately led to several staff redundancies.",
+          "exampleVi": "Tự động hóa nhà máy tiếc thay đã dẫn đến việc tinh giảm một số nhân sự."
+        }
+      ]
+    },
+    {
+      "id": "target600_list3",
+      "name": "List 3: Real Estate & Property Management",
+      "description": "Từ vựng hợp đồng thuê mua bất động sản và quản lý tài sản công nghiệp.",
+      "words": [
+        {
+          "id": "t600_41",
+          "word": "lease agreement",
+          "phonetic": "/liːs əˈɡriː.mənt/",
+          "wordType": "noun phrase",
+          "meaningVi": "hợp đồng cho thuê bất động sản",
+          "meaningEn": "a contractual arrangement calling for the lessee to pay the lessor for use of an asset",
+          "example": "The commercial lease agreement spans five years with an option to renew.",
+          "exampleVi": "Hợp đồng cho thuê thương mại kéo dài năm năm với tùy chọn gia hạn."
+        },
+        {
+          "id": "t600_42",
+          "word": "tenant",
+          "phonetic": "/ˈten.ənt/",
+          "wordType": "noun",
+          "meaningVi": "người thuê nhà / văn phòng",
+          "meaningEn": "a person who occupies land or property rented from a landlord",
+          "example": "Tenants must provide written notice 60 days prior to vacating the suite.",
+          "exampleVi": "Người thuê phải gửi thông báo bằng văn bản 60 ngày trước khi trả văn phòng."
+        },
+        {
+          "id": "t600_43",
+          "word": "landlord",
+          "phonetic": "/ˈlænd.lɔːd/",
+          "wordType": "noun",
+          "meaningVi": "chủ nhà, chủ cho thuê",
+          "meaningEn": "a person who rents land, a building, or an apartment to a tenant",
+          "example": "The landlord agreed to renovate the lobby before the new lease began.",
+          "exampleVi": "Chủ nhà đã đồng ý cải tạo sảnh trước khi hợp đồng thuê mới bắt đầu."
+        },
+        {
+          "id": "t600_44",
+          "word": "premises",
+          "phonetic": "/ˈprem.ɪ.sɪz/",
+          "wordType": "noun",
+          "meaningVi": "cơ sở hạ tầng, mặt bằng kinh doanh",
+          "meaningEn": "a house or building, together with its land and outbuildings, occupied by a business",
+          "example": "Smoking is strictly prohibited on the corporate premises.",
+          "exampleVi": "Hút thuốc bị nghiêm cấm hoàn toàn trên toàn bộ mặt bằng công ty."
+        },
+        {
+          "id": "t600_45",
+          "word": "eviction",
+          "phonetic": "/ɪˈvɪk.ʃən/",
+          "wordType": "noun",
+          "meaningVi": "sự thu hồi mặt bằng, trục xuất",
+          "meaningEn": "the action of expelling someone, especially a tenant, from a property",
+          "example": "Non-payment of rent for three consecutive months triggered an eviction notice.",
+          "exampleVi": "Không trả tiền thuê ba tháng liên tiếp đã dẫn đến thông báo thu hồi mặt bằng."
+        },
+        {
+          "id": "t600_46",
+          "word": "vacancy rate",
+          "phonetic": "/ˈveɪ.kən.si reɪt/",
+          "wordType": "noun phrase",
+          "meaningVi": "tỷ lệ phòng/văn phòng trống",
+          "meaningEn": "the percentage of all available units in a rental property that are vacant",
+          "example": "The downtown office building boasts a low vacancy rate of under 3%.",
+          "exampleVi": "Tòa nhà văn phòng trung tâm sở hữu tỷ lệ trống thấp dưới 3%."
+        },
+        {
+          "id": "t600_47",
+          "word": "amenity",
+          "phonetic": "/əˈmiː.nə.ti/",
+          "wordType": "noun",
+          "meaningVi": "tiện ích tòa nhà",
+          "meaningEn": "a desirable or useful feature or facility of a building or place",
+          "example": "Building amenities include an underground parking garage and a 24-hour gym.",
+          "exampleVi": "Các tiện ích tòa nhà bao gồm hầm gửi xe và phòng gym mở cửa 24/7."
+        },
+        {
+          "id": "t600_48",
+          "word": "zoning laws",
+          "phonetic": "/ˈzəʊ.nɪŋ lɔːz/",
+          "wordType": "noun phrase",
+          "meaningVi": "quy hoạch đô thị",
+          "meaningEn": "municipal regulations determining how property in specific geographic zones can be used",
+          "example": "Local zoning laws prevent heavy industrial construction near residential districts.",
+          "exampleVi": "Luật quy hoạch địa phương ngăn cấm xây dựng công nghiệp nặng gần khu dân cư."
+        },
+        {
+          "id": "t600_49",
+          "word": "appraisal",
+          "phonetic": "/əˈpreɪ.zəl/",
+          "wordType": "noun",
+          "meaningVi": "sự định giá bất động sản",
+          "meaningEn": "an expert estimate of the value of something, especially property",
+          "example": "An independent property appraisal valued the commercial tower at $45 million.",
+          "exampleVi": "Định giá bất động sản độc lập đã định giá tòa tháp thương mại ở mức 45 triệu USD."
+        },
+        {
+          "id": "t600_50",
+          "word": "realtor",
+          "phonetic": "/ˈrɪəl.tər/",
+          "wordType": "noun",
+          "meaningVi": "môi giới bất động sản",
+          "meaningEn": "a person who acts as an agent for the sale and purchase of buildings and land",
+          "example": "The experienced realtor guided the firm through office selection and negotiations.",
+          "exampleVi": "Nhà môi giới giàu kinh nghiệm đã hướng dẫn công ty chọn vị trí văn phòng và đàm phán."
+        },
+        {
+          "id": "t600_51",
+          "word": "sublet",
+          "phonetic": "/ˌsʌbˈlet/",
+          "wordType": "verb",
+          "meaningVi": "cho thuê lại mặt bằng",
+          "meaningEn": "lease (property) to a subtenant",
+          "example": "The company decided to sublet its unused third-floor office space.",
+          "exampleVi": "Công ty quyết định cho thuê lại không gian văn phòng tầng 3 không sử dụng."
+        },
+        {
+          "id": "t600_52",
+          "word": "refurbish",
+          "phonetic": "/ˌriːˈfɜː.bɪʃ/",
+          "wordType": "verb",
+          "meaningVi": "tân trang, nâng cấp tòa nhà",
+          "meaningEn": "renovate and redecorate (something, especially a building)",
+          "example": "The developer spent $2 million to refurbish the historic office building.",
+          "exampleVi": "Nhà phát triển đã chi 2 triệu USD để tân trang lại tòa nhà văn phòng di sản."
+        },
+        {
+          "id": "t600_53",
+          "word": "occupancy",
+          "phonetic": "/ˈɒk.jə.pən.si/",
+          "wordType": "noun",
+          "meaningVi": "tỷ lệ lấp đầy, số người ở",
+          "meaningEn": "the action or fact of occupying a place",
+          "example": "Hotel room occupancy reached 95% during the international trade fair.",
+          "exampleVi": "Tỷ lệ lấp đầy phòng khách sạn đạt 95% trong suốt hội chợ thương mại quốc tế."
+        },
+        {
+          "id": "t600_54",
+          "word": "real estate",
+          "phonetic": "/ˈrɪəl ɪˌsteɪt/",
+          "wordType": "noun phrase",
+          "meaningVi": "bất động sản",
+          "meaningEn": "property consisting of land or buildings",
+          "example": "Commercial real estate investments generated steady rental income.",
+          "exampleVi": "Đầu tư bất động sản thương mại đã tạo ra thu nhập cho thuê ổn định."
+        },
+        {
+          "id": "t600_55",
+          "word": "deed",
+          "phonetic": "/diːd/",
+          "wordType": "noun",
+          "meaningVi": "sổ đỏ, văn bản quyền sở hữu",
+          "meaningEn": "a legal document that is signed and delivered, especially one regarding the ownership of property",
+          "example": "Ownership was legally transferred once the property deed was signed.",
+          "exampleVi": "Quyền sở hữu đã được chuyển giao hợp pháp ngay khi sổ đỏ bất động sản được ký."
+        },
+        {
+          "id": "t600_56",
+          "word": "mortgage rate",
+          "phonetic": "/ˈmɔː.ɡɪdʒ reɪt/",
+          "wordType": "noun phrase",
+          "meaningVi": "lãi suất vay mua nhà",
+          "meaningEn": "the rate of interest charged on a mortgage",
+          "example": "Rising mortgage rates dampened home buying demand across the country.",
+          "exampleVi": "Lãi suất thế chấp tăng cao đã làm dịu nhu cầu mua nhà trên toàn quốc."
+        },
+        {
+          "id": "t600_57",
+          "word": "refinance",
+          "phonetic": "/ˌriː.faɪˈnæns/",
+          "wordType": "verb",
+          "meaningVi": "tái tài trợ khoản vay",
+          "meaningEn": "finance (something) again, typically with a new loan at a lower rate of interest",
+          "example": "Homeowners took advantage of low interest rates to refinance their mortgages.",
+          "exampleVi": "Chủ nhà đã tận dụng lãi suất thấp để tái tài trợ các khoản thế chấp của mình."
+        },
+        {
+          "id": "t600_58",
+          "word": "asset management",
+          "phonetic": "/ˈæs.et ˌmæn.ɪdʒ.mənt/",
+          "wordType": "noun phrase",
+          "meaningVi": "quản lý tài sản",
+          "meaningEn": "the management of property or financial investments on behalf of clients",
+          "example": "The asset management firm oversees a $10 billion commercial real estate portfolio.",
+          "exampleVi": "Công ty quản lý tài sản giám sát danh mục bất động sản thương mại trị giá 10 tỷ USD."
+        },
+        {
+          "id": "t600_59",
+          "word": "square footage",
+          "phonetic": "/skweər ˈfʊt.ɪdʒ/",
+          "wordType": "noun phrase",
+          "meaningVi": "diện tích tính bằng foot vuông",
+          "meaningEn": "an area measurement in square feet",
+          "example": "The new warehouse doubled the company's total logistics square footage.",
+          "exampleVi": "Kho hàng mới đã tăng gấp đôi tổng diện tích vận tải tính theo foot vuông của công ty."
+        },
+        {
+          "id": "t600_60",
+          "word": "easement",
+          "phonetic": "/ˈiːz.mənt/",
+          "wordType": "noun",
+          "meaningVi": "quyền sử dụng đất nhờ (quyền địa dịch)",
+          "meaningEn": "a right to cross or otherwise use someone else's land for a specified purpose",
+          "example": "The utility company acquired a legal easement to install underground fiber cables.",
+          "exampleVi": "Công ty điện nước đã có được quyền địa dịch để lắp đặt cáp quang ngầm."
+        }
+      ]
+    }
+  ]
+},
+
   {
     id: "target300",
     title: "Target 300+ (Mới Bắt Đầu)",
