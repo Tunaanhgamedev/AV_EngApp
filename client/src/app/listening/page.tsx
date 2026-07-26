@@ -157,10 +157,9 @@ export default function ListeningPage() {
     return () => stopAudio();
   }, []);
 
-  // Playback timer effect to increment elapsed time smoothly
+  // Playback timer effect
   useEffect(() => {
     let intervalId: ReturnType<typeof setInterval> | null = null;
-    
     if (isPlaying) {
       intervalId = setInterval(() => {
         setElapsed(prev => {
@@ -176,10 +175,7 @@ export default function ListeningPage() {
         });
       }, 1000);
     }
-    
-    return () => {
-      if (intervalId) clearInterval(intervalId);
-    };
+    return () => { if (intervalId) clearInterval(intervalId); };
   }, [isPlaying, selected]);
 
   const stopAudio = () => {
@@ -204,12 +200,6 @@ export default function ListeningPage() {
     setIsSimulatedAudio(false);
   };
 
-  // Convert duration like "1:20" to seconds
-  const getDurationInSeconds = (dur: string) => {
-    const [m, s] = dur.split(':').map(Number);
-    return m * 60 + s;
-  };
-
   const getLessonDurationInSeconds = (les: Lesson) => {
     if (!les.transcript || les.transcript.length === 0) return 0;
     const lastLine = les.transcript[les.transcript.length - 1];
@@ -221,25 +211,19 @@ export default function ListeningPage() {
   const getLineIndexForTime = (sec: number) => {
     let activeIdx = 0;
     for (let i = 0; i < selected.transcript.length; i++) {
-      if (selected.transcript[i].time <= sec) {
-        activeIdx = i;
-      } else {
-        break;
-      }
+      if (selected.transcript[i].time <= sec) activeIdx = i;
+      else break;
     }
     return activeIdx;
   };
 
-  // Speak single word in Vocabulary Tab
   const speakSingleWord = (word: string) => {
     stopAudio();
     if (typeof window !== 'undefined' && window.speechSynthesis && !(window as any).__FORCE_SIMULATED_AUDIO__) {
       const newUtt = new SpeechSynthesisUtterance(word);
       newUtt.lang = 'en-US';
       newUtt.rate = 0.9;
-      newUtt.onerror = () => {
-        playSingleWordFallback(word);
-      };
+      newUtt.onerror = () => playSingleWordFallback(word);
       window.speechSynthesis.speak(newUtt);
     } else {
       playSingleWordFallback(word);
@@ -247,27 +231,17 @@ export default function ListeningPage() {
   };
 
   const playSingleWordFallback = (word: string) => {
-    const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
-    const url = `${apiBase}/ai/tts?text=${encodeURIComponent(word)}`;
+    const url = `${API_BASE}/ai/tts?text=${encodeURIComponent(word)}`;
     const audio = new Audio(url);
     audioRef.current = audio;
-    audio.play().catch(err => {
-      console.warn("Failed to play word pronunciation fallback:", err);
-    });
+    audio.play().catch(err => console.warn("Failed to play word pronunciation fallback:", err));
   };
 
-  // Play simulated speech / subtitles when audio engines are blocked or unavailable
   const playSimulated = (text: string, index: number) => {
-    console.log("Playing simulated audio for:", text);
     setIsSimulatedAudio(true);
     const wordCount = text.split(/\s+/).length;
-    // Estimate reading speed: 300ms per word + base 2 seconds
     const durationMs = Math.max(2200, Math.min(8000, wordCount * 320));
-
-    if (simulatedTimerRef.current) {
-      clearTimeout(simulatedTimerRef.current);
-    }
-
+    if (simulatedTimerRef.current) clearTimeout(simulatedTimerRef.current);
     simulatedTimerRef.current = setTimeout(() => {
       if (index + 1 < selected.transcript.length) {
         playLine(index + 1);
@@ -285,19 +259,14 @@ export default function ListeningPage() {
     }, durationMs);
   };
 
-  // Play line by line recursively
   const playLine = (index: number) => {
     if (typeof window === 'undefined') return;
-    
-    // Stop any ongoing playback resources before starting a new line
     stopAudio();
-
     setActiveLine(index);
     const totalSec = getLessonDurationInSeconds(selected);
     const lineTime = selected.transcript[index].time;
     setElapsed(lineTime);
     setProgress(totalSec > 0 ? Math.min(100, Math.round((lineTime / totalSec) * 100)) : 0);
-
     const lineText = selected.transcript[index].text;
 
     if (window.speechSynthesis && !(window as any).__FORCE_SIMULATED_AUDIO__) {
@@ -305,14 +274,11 @@ export default function ListeningPage() {
       utteranceRef.current = utterance;
       utterance.lang = 'en-US';
       utterance.rate = playbackRate;
-      
       const voices = window.speechSynthesis.getVoices();
-      // Prioritize Google or high-quality US voices
       const voice = voices.find(v => v.lang.startsWith('en-US') && v.name.includes('Google'))
         || voices.find(v => v.lang.startsWith('en-US'))
         || voices[0];
       if (voice) utterance.voice = voice;
-
       utterance.onend = () => {
         setIsSimulatedAudio(false);
         if (index + 1 < selected.transcript.length) {
@@ -321,20 +287,14 @@ export default function ListeningPage() {
           setIsPlaying(false);
           setProgress(100);
           setElapsed(getLessonDurationInSeconds(selected));
-          // Mark lesson complete
           if (!completedLessons.includes(selected.id)) {
             const updated = [...completedLessons, selected.id];
             saveCompleted(updated);
-            saveXp(userXp + 50); // Earn 50 XP
+            saveXp(userXp + 50);
           }
         }
       };
-
-      utterance.onerror = (e) => {
-        console.warn("speechSynthesis error, playing Google Translate TTS fallback:", e);
-        playGoogleTts(lineText, index);
-      };
-
+      utterance.onerror = () => playGoogleTts(lineText, index);
       window.speechSynthesis.speak(utterance);
     } else {
       playGoogleTts(lineText, index);
@@ -342,12 +302,10 @@ export default function ListeningPage() {
   };
 
   const playGoogleTts = (text: string, index: number) => {
-    const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
-    const url = `${apiBase}/ai/tts?text=${encodeURIComponent(text)}`;
+    const url = `${API_BASE}/ai/tts?text=${encodeURIComponent(text)}`;
     const audio = new Audio(url);
     audioRef.current = audio;
     audio.playbackRate = playbackRate;
-    
     audio.onended = () => {
       setIsSimulatedAudio(false);
       if (index + 1 < selected.transcript.length) {
@@ -363,14 +321,8 @@ export default function ListeningPage() {
         }
       }
     };
-    audio.onerror = (err) => {
-      console.warn("Audio load error, falling back to simulated subtitles:", err);
-      playSimulated(text, index);
-    };
-    audio.play().catch((err) => {
-      console.warn("Audio play blocked/error, falling back to simulated subtitles:", err);
-      playSimulated(text, index);
-    });
+    audio.onerror = () => playSimulated(text, index);
+    audio.play().catch(() => playSimulated(text, index));
   };
 
   const togglePlay = () => {
@@ -406,9 +358,7 @@ export default function ListeningPage() {
       const nextTime = selected.transcript[next].time;
       setElapsed(nextTime);
       setProgress(totalSec > 0 ? Math.min(100, Math.round((nextTime / totalSec) * 100)) : 0);
-      if (isPlaying) {
-        playLine(next);
-      }
+      if (isPlaying) playLine(next);
     }
   };
 
@@ -420,15 +370,12 @@ export default function ListeningPage() {
       const prevTime = selected.transcript[prev].time;
       setElapsed(prevTime);
       setProgress(totalSec > 0 ? Math.min(100, Math.round((prevTime / totalSec) * 100)) : 0);
-      if (isPlaying) {
-        playLine(prev);
-      }
+      if (isPlaying) playLine(prev);
     } else {
       handleRestart();
     }
   };
 
-  // Speak one single line directly from transcript click and continue playback
   const handleLineClick = (text: string, index: number) => {
     stopAudio();
     setActiveLine(index);
@@ -440,31 +387,21 @@ export default function ListeningPage() {
     playLine(index);
   };
 
-  // ─── Dictation check ────────────────────────────────────────────────────────
-  const cleanWordForComparison = (word: string) => {
-    return word.trim().toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, "");
-  };
+  const cleanWordForComparison = (word: string) => word.trim().toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, "");
 
   const handleCheckDictation = () => {
     setDictationChecked(true);
     let correctCount = 0;
     selected.transcript.forEach((line, index) => {
-      if (cleanWordForComparison(dictationInputs[index]) === cleanWordForComparison(line.gapWord)) {
-        correctCount++;
-      }
+      if (cleanWordForComparison(dictationInputs[index]) === cleanWordForComparison(line.gapWord)) correctCount++;
     });
-
     const scorePct = Math.round((correctCount / selected.transcript.length) * 100);
     const updatedScores = { ...dictationScores, [selected.id]: scorePct };
     setDictationScores(updatedScores);
     localStorage.setItem('listening_dictation_scores', JSON.stringify(updatedScores));
-
-    if (correctCount === selected.transcript.length) {
-      saveXp(userXp + 50); // Perfect score bonus XP
-    }
+    if (correctCount === selected.transcript.length) saveXp(userXp + 50);
   };
 
-  // ─── Quiz actions ───────────────────────────────────────────────────────────
   const handleQuizAnswer = (qi: number, ai: number) => {
     if (quizAns[qi] !== null) return;
     const next = [...quizAns];
@@ -473,24 +410,17 @@ export default function ListeningPage() {
     if (next.every(a => a !== null)) {
       setTimeout(() => setQuizDone(true), 600);
       const score = selected.quizzes.filter((q, idx) => next[idx] === q.answer).length;
-      if (score === selected.quizzes.length) {
-        saveXp(userXp + 30); // 30 XP for perfect quiz
-      }
+      if (score === selected.quizzes.length) saveXp(userXp + 30);
     }
   };
 
-  // ─── Shadowing simulation ───────────────────────────────────────────────────
   const startShadowing = (index: number) => {
     if (shadowingInterval.current) clearInterval(shadowingInterval.current);
     stopAudio();
     setShadowingActive(index);
     setShadowingProgress(0);
     setShadowingScore(null);
-
-    // Speak the prompt first
     handleLineClick(selected.transcript[index].text, index);
-
-    // Give some time to listen before recording
     setTimeout(() => {
       let currentProgress = 0;
       shadowingInterval.current = setInterval(() => {
@@ -498,22 +428,20 @@ export default function ListeningPage() {
         setShadowingProgress(currentProgress);
         if (currentProgress >= 100) {
           if (shadowingInterval.current) clearInterval(shadowingInterval.current);
-          const mockScore = Math.floor(Math.random() * 20) + 80; // Generate score 80-99
+          const mockScore = Math.floor(Math.random() * 20) + 80;
           setShadowingScore(mockScore);
-          saveXp(userXp + 20); // Earn 20 XP
+          saveXp(userXp + 20);
         }
       }, 300);
     }, 2000);
   };
 
-  // Format second duration as MM:SS
   const formatTime = (secondsCount: number) => {
     const m = Math.floor(secondsCount / 60);
     const s = secondsCount % 60;
     return `${m}:${String(s).padStart(2, '0')}`;
   };
 
-  // Filter lessons based on level and search queries
   const filteredLessons = lessons.filter(lesson => {
     const matchesLevel = filterLevel === 'All' || lesson.level === filterLevel;
     const matchesSearch = lesson.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -538,8 +466,6 @@ export default function ListeningPage() {
             </p>
           </div>
         </div>
-
-        {/* User Stats Board */}
         <div className="flex items-center gap-3 self-start xl:self-center bg-slate-50 p-3 rounded-2xl border border-slate-100">
           <div className="flex items-center gap-2 px-3 border-r border-slate-200">
             <Flame className="w-5 h-5 text-orange-500 fill-orange-500" />
@@ -570,7 +496,6 @@ export default function ListeningPage() {
             className="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
           />
         </div>
-
         <div className="flex items-center gap-2 flex-wrap w-full md:w-auto justify-end">
           <span className="text-xs font-bold text-slate-400 uppercase tracking-wider mr-2">Level:</span>
           {['All', 'A1', 'A2', 'B1', 'B2', 'C1'].map(level => (
@@ -633,8 +558,6 @@ export default function ListeningPage() {
             {/* Audio Wave Gradient Card */}
             <div className={cn("relative p-8 bg-gradient-to-br text-white flex flex-col justify-between min-h-[220px] transition-all duration-500", selected.color)}>
               <div className="absolute inset-0 bg-black/10 mix-blend-overlay" />
-              
-              {/* Header inside Card */}
               <div className="relative z-10 flex items-start justify-between">
                 <div className="flex gap-2 flex-wrap">
                   <span className="px-3 py-1 bg-white/20 backdrop-blur-md text-white text-[10px] font-black rounded-lg uppercase tracking-wider">{selected.level}</span>
@@ -648,7 +571,6 @@ export default function ListeningPage() {
                     </span>
                   )}
                 </div>
-                
                 <button 
                   onClick={() => {
                     const isLiked = liked.includes(selected.id);
@@ -660,15 +582,11 @@ export default function ListeningPage() {
                   <Heart className={cn("w-5 h-5 transition-transform duration-300", liked.includes(selected.id) ? "fill-rose-500 text-rose-500 scale-110" : "text-white")} />
                 </button>
               </div>
-
-              {/* Title & Animated Sound Wave */}
               <div className="relative z-10 flex items-end justify-between mt-6">
                 <div className="space-y-1 max-w-[70%]">
                   <span className="text-white/80 text-xs font-bold tracking-widest uppercase">Now Playing</span>
                   <h2 className="text-2xl md:text-3xl font-black leading-tight tracking-tight">{selected.title}</h2>
                 </div>
-
-                {/* SVG Animated Audio Bar Graphs */}
                 {isPlaying && (
                   <div className="flex items-end gap-1 h-12 px-3">
                     {[1, 2, 3, 4, 5, 6].map(bar => (
@@ -692,7 +610,6 @@ export default function ListeningPage() {
 
             {/* Controller Elements */}
             <div className="p-8 space-y-6">
-              
               {/* Progress Slider */}
               <div className="space-y-2.5">
                 <div className="flex justify-between text-xs font-black text-slate-400">
@@ -706,64 +623,34 @@ export default function ListeningPage() {
                     const pct = ((e.clientX - rect.left) / rect.width);
                     const totalSec = getLessonDurationInSeconds(selected);
                     const clickedSec = Math.max(0, Math.min(totalSec, Math.round(pct * totalSec)));
-                    
                     const finalLine = getLineIndexForTime(clickedSec);
-                    
                     setActiveLine(finalLine);
                     setElapsed(clickedSec);
                     setProgress(totalSec > 0 ? Math.min(100, Math.round((clickedSec / totalSec) * 100)) : 0);
-                    
-                    if (isPlaying) {
-                      playLine(finalLine);
-                    }
+                    if (isPlaying) playLine(finalLine);
                   }}
                 >
-                  <div 
-                    className="absolute h-full bg-primary rounded-full transition-all duration-300 group-hover:brightness-95" 
-                    style={{ width: `${progress}%` }} 
-                  />
-                  <div 
-                    className="absolute w-4 h-4 bg-white border-2 border-primary rounded-full -top-1 shadow-md scale-0 group-hover:scale-100 transition-all duration-300"
-                    style={{ left: `calc(${progress}% - 8px)` }}
-                  />
+                  <div className="absolute h-full bg-primary rounded-full transition-all duration-300 group-hover:brightness-95" style={{ width: `${progress}%` }} />
+                  <div className="absolute w-4 h-4 bg-white border-2 border-primary rounded-full -top-1 shadow-md scale-0 group-hover:scale-100 transition-all duration-300" style={{ left: `calc(${progress}% - 8px)` }} />
                 </div>
               </div>
 
               {/* Main Player Buttons */}
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pt-2 border-b border-slate-100 pb-6">
-                
-                {/* Play controls */}
                 <div className="flex items-center gap-6 justify-center md:justify-start">
-                  <button 
-                    onClick={handleSkipBack} 
-                    className="p-3 text-slate-400 hover:text-primary hover:bg-slate-50 rounded-full transition-all active:scale-95"
-                    title="Quay lại câu trước"
-                  >
+                  <button onClick={handleSkipBack} className="p-3 text-slate-400 hover:text-primary hover:bg-slate-50 rounded-full transition-all active:scale-95" title="Quay lại câu trước">
                     <SkipBack className="w-6 h-6 fill-current" />
                   </button>
-                  <button 
-                    onClick={togglePlay} 
-                    className="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center shadow-xl shadow-primary/30 hover:scale-105 hover:bg-indigo-600 transition-all active:scale-95"
-                  >
+                  <button onClick={togglePlay} className="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center shadow-xl shadow-primary/30 hover:scale-105 hover:bg-indigo-600 transition-all active:scale-95">
                     {isPlaying ? <Pause className="w-8 h-8 fill-white" /> : <Play className="w-8 h-8 fill-white ml-1" />}
                   </button>
-                  <button 
-                    onClick={handleSkipForward} 
-                    className="p-3 text-slate-400 hover:text-primary hover:bg-slate-50 rounded-full transition-all active:scale-95"
-                    title="Bỏ qua câu tiếp theo"
-                  >
+                  <button onClick={handleSkipForward} className="p-3 text-slate-400 hover:text-primary hover:bg-slate-50 rounded-full transition-all active:scale-95" title="Bỏ qua câu tiếp theo">
                     <SkipForward className="w-6 h-6 fill-current" />
                   </button>
-                  <button 
-                    onClick={handleRestart} 
-                    className="p-3 text-slate-400 hover:text-primary hover:bg-slate-50 rounded-full transition-all active:scale-95"
-                    title="Khởi động lại từ đầu"
-                  >
+                  <button onClick={handleRestart} className="p-3 text-slate-400 hover:text-primary hover:bg-slate-50 rounded-full transition-all active:scale-95" title="Khởi động lại từ đầu">
                     <RotateCcw className="w-5 h-5" />
                   </button>
                 </div>
-
-                {/* Speed Controls */}
                 <div className="flex items-center gap-2 justify-center">
                   <span className="text-xs font-bold text-slate-400 uppercase tracking-widest mr-2">Tốc độ:</span>
                   {[0.8, 1.0, 1.2].map(speed => (
@@ -771,16 +658,10 @@ export default function ListeningPage() {
                       key={speed}
                       onClick={() => {
                         setPlaybackRate(speed);
-                        if (isPlaying) {
-                          stopAudio();
-                          playLine(activeLine);
-                        }
+                        if (isPlaying) { stopAudio(); playLine(activeLine); }
                       }}
-                      className={cn(
-                        "px-3 py-1.5 rounded-lg text-xs font-black transition-all",
-                        playbackRate === speed
-                          ? "bg-slate-800 text-white shadow-sm"
-                          : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                      className={cn("px-3 py-1.5 rounded-lg text-xs font-black transition-all",
+                        playbackRate === speed ? "bg-slate-800 text-white shadow-sm" : "bg-slate-100 text-slate-600 hover:bg-slate-200"
                       )}
                     >
                       {speed === 1.0 ? 'Normal' : `${speed}x`}
@@ -821,8 +702,6 @@ export default function ListeningPage() {
 
               {/* Interactive Tabs under Player */}
               <div className="space-y-4">
-                
-                {/* Tabs Nav Header */}
                 <div className="flex border-b border-slate-100 gap-6">
                   {(['transcript', 'vocabulary', 'quiz'] as const).map(tName => (
                     <button
@@ -830,9 +709,7 @@ export default function ListeningPage() {
                       onClick={() => setTab(tName)}
                       className={cn(
                         "pb-3 text-sm font-black transition-all border-b-2 capitalize relative",
-                        tab === tName 
-                          ? "border-primary text-slate-800" 
-                          : "border-transparent text-slate-400 hover:text-slate-600"
+                        tab === tName ? "border-primary text-slate-800" : "border-transparent text-slate-400 hover:text-slate-600"
                       )}
                     >
                       {tName === 'transcript' ? 'Lời thoại (Transcript)' : tName === 'vocabulary' ? 'Từ vựng (Vocabulary)' : 'Trắc nghiệm (Quiz)'}
@@ -846,8 +723,6 @@ export default function ListeningPage() {
                 {/* Tab Content 1: Transcript */}
                 {tab === 'transcript' && (
                   <div className="space-y-4 max-h-[360px] overflow-y-auto pr-2">
-                    
-                    {/* Normal listening transcript view */}
                     {playMode === 'listening' && selected.transcript.map((line, idx) => (
                       <div 
                         key={idx}
@@ -870,24 +745,17 @@ export default function ListeningPage() {
                       </div>
                     ))}
 
-                    {/* Dictation Mode view */}
                     {playMode === 'dictation' && (
                       <div className="space-y-4">
                         <div className="bg-violet-50/50 p-4 rounded-2xl border border-violet-100 text-xs text-violet-800 font-medium">
                           Nghe từng câu thoại và nhập từ còn thiếu vào ô trống bên dưới. Nhấp vào nút kiểm tra khi bạn làm xong!
                         </div>
-
                         {selected.transcript.map((line, idx) => {
                           const words = line.text.split(" ");
-                          // Find matching index of the gapWord (case insensitive check)
                           const wordIndex = words.findIndex(w => cleanWordForComparison(w) === cleanWordForComparison(line.gapWord));
-                          
-                          // Format output display string: replace gap word with a placeholder
                           let sentenceBefore = words.slice(0, wordIndex).join(" ");
                           let sentenceAfter = words.slice(wordIndex + 1).join(" ");
-                          
                           const isInputCorrect = dictationChecked && cleanWordForComparison(dictationInputs[idx]) === cleanWordForComparison(line.gapWord);
-
                           return (
                             <div key={idx} className="flex flex-col gap-2.5 p-4 bg-white border border-slate-100 rounded-2xl hover:shadow-sm transition-all">
                               <div className="flex items-center gap-3">
@@ -900,7 +768,6 @@ export default function ListeningPage() {
                                 </button>
                                 <span className="text-xs text-slate-400 font-bold">Line {idx + 1}</span>
                               </div>
-
                               <div className="text-base text-slate-700 font-bold leading-relaxed flex items-center flex-wrap gap-x-2 gap-y-1.5">
                                 <span>{sentenceBefore}</span>
                                 <input 
@@ -922,7 +789,6 @@ export default function ListeningPage() {
                                 />
                                 <span>{sentenceAfter}</span>
                               </div>
-
                               {dictationChecked && !isInputCorrect && (
                                 <p className="text-xs text-rose-600 font-semibold mt-1">
                                   Đáp án đúng: <span className="font-extrabold">{line.gapWord}</span>
@@ -931,7 +797,6 @@ export default function ListeningPage() {
                             </div>
                           );
                         })}
-
                         <div className="pt-2 flex justify-end gap-3">
                           {dictationChecked && (
                             <button
@@ -955,19 +820,15 @@ export default function ListeningPage() {
                       </div>
                     )}
 
-                    {/* Shadowing Mode view */}
                     {playMode === 'shadowing' && (
                       <div className="space-y-4">
                         <div className="bg-rose-50/50 p-4 rounded-2xl border border-rose-100 text-xs text-rose-800 font-medium">
                           Bấm nút micro cạnh mỗi câu thoại để luyện nói. Hệ thống sẽ phát âm mẫu câu, sau đó ghi âm giọng đọc của bạn để chấm điểm!
                         </div>
-
                         {selected.transcript.map((line, idx) => (
                           <div key={idx} className="flex flex-col gap-3 p-4 bg-white border border-slate-100 rounded-2xl hover:shadow-sm transition-all">
                             <div className="flex items-start justify-between gap-4">
-                              <p className="text-base text-slate-700 font-semibold leading-relaxed">
-                                {line.text}
-                              </p>
+                              <p className="text-base text-slate-700 font-semibold leading-relaxed">{line.text}</p>
                               <button
                                 onClick={() => startShadowing(idx)}
                                 className={cn(
@@ -980,7 +841,6 @@ export default function ListeningPage() {
                                 <Mic className="w-4 h-4" />
                               </button>
                             </div>
-
                             {shadowingActive === idx && (
                               <div className="space-y-2 mt-2 bg-slate-50 p-3 rounded-xl border border-slate-100">
                                 <div className="flex items-center justify-between text-xs font-bold text-slate-500">
@@ -990,8 +850,6 @@ export default function ListeningPage() {
                                 <div className="h-1.5 bg-slate-200 rounded-full overflow-hidden">
                                   <div className="h-full bg-rose-500 transition-all duration-300" style={{ width: `${shadowingProgress}%` }} />
                                 </div>
-
-                                {/* Animated voice wave graph */}
                                 {shadowingProgress < 100 && (
                                   <div className="flex items-center justify-center gap-0.5 h-6">
                                     {[...Array(12)].map((_, i) => (
@@ -1003,7 +861,6 @@ export default function ListeningPage() {
                                     ))}
                                   </div>
                                 )}
-
                                 {shadowingScore !== null && (
                                   <div className="flex items-center justify-between pt-2 border-t border-slate-200/50 mt-1">
                                     <span className="text-xs font-black text-rose-600 flex items-center gap-1">
@@ -1018,7 +875,6 @@ export default function ListeningPage() {
                         ))}
                       </div>
                     )}
-
                   </div>
                 )}
 
@@ -1034,7 +890,6 @@ export default function ListeningPage() {
                         >
                           <Volume2 className="w-4 h-4" />
                         </button>
-
                         <div className="flex-1 space-y-1">
                           <div className="flex items-center gap-2 flex-wrap">
                             <h4 className="text-base font-black text-slate-800">{vocab.word}</h4>
@@ -1042,7 +897,7 @@ export default function ListeningPage() {
                             <span className="px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-black rounded-md uppercase tracking-wider">{vocab.type}</span>
                           </div>
                           <p className="text-sm font-bold text-slate-600">{vocab.meaningVi}</p>
-                          <p className="text-xs text-slate-400 italic">e.g. "{vocab.example}"</p>
+                          <p className="text-xs text-slate-400 italic">e.g. &quot;{vocab.example}&quot;</p>
                         </div>
                       </div>
                     ))}
@@ -1090,7 +945,6 @@ export default function ListeningPage() {
                     )}
                   </div>
                 )}
-
               </div>
             </div>
           </div>
@@ -1098,55 +952,39 @@ export default function ListeningPage() {
 
         {/* Sidebar Panel (1 Column) */}
         <div className="space-y-6">
-          
-          {/* Lessons List container */}
           <div className="bg-white rounded-3xl border border-slate-100 p-6 shadow-sm">
             <h3 className="font-black text-slate-800 text-lg mb-4 flex items-center justify-between">
               <span className="flex items-center gap-2"><ListMusic className="w-5 h-5 text-primary" />Danh Sách Bài Nghe</span>
               <span className="text-xs font-black text-slate-400 bg-slate-100 px-2.5 py-1 rounded-full">{filteredLessons.length}</span>
             </h3>
-
             <button
               onClick={generateAIListening}
               disabled={aiGenerating}
               className="w-full mb-4 py-2.5 bg-gradient-to-r from-primary to-indigo-650 hover:from-primary/95 hover:to-indigo-700 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition-all disabled:opacity-50"
             >
               {aiGenerating ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  Đang tạo bài nghe AI...
-                </>
+                <><Loader2 className="w-4 h-4 animate-spin" />Đang tạo bài nghe AI...</>
               ) : (
-                <>
-                  <Sparkles className="w-4 h-4" />
-                  Tạo bài nghe AI ({filterLevel === 'All' ? 'B1' : filterLevel})
-                </>
+                <><Sparkles className="w-4 h-4" />Tạo bài nghe AI ({filterLevel === 'All' ? 'B1' : filterLevel})</>
               )}
             </button>
-
             <div className="space-y-3 max-h-[550px] overflow-y-auto pr-1">
               {filteredLessons.length > 0 ? (
                 filteredLessons.map(lesson => {
                   const isCompleted = completedLessons.includes(lesson.id);
                   const isLiked = liked.includes(lesson.id);
                   const score = dictationScores[lesson.id];
-
                   return (
                     <button 
                       key={lesson.id} 
                       onClick={() => setSelected(lesson)}
                       className={cn("w-full flex gap-4 p-3 rounded-2xl transition-all text-left group border border-transparent",
-                        selected.id === lesson.id 
-                          ? "bg-primary/5 border-primary/10 shadow-sm" 
-                          : "hover:bg-slate-50"
+                        selected.id === lesson.id ? "bg-primary/5 border-primary/10 shadow-sm" : "hover:bg-slate-50"
                       )}
                     >
-                      {/* Left Badge */}
                       <div className={cn("w-12 h-12 rounded-xl bg-gradient-to-br flex items-center justify-center text-white font-black text-xs flex-shrink-0 shadow-sm", lesson.color)}>
                         {lesson.level}
                       </div>
-
-                      {/* Main details */}
                       <div className="flex-1 min-w-0 py-0.5">
                         <div className="flex items-center gap-1.5">
                           <h4 className="text-sm font-bold text-slate-800 group-hover:text-primary transition-colors truncate">{lesson.title}</h4>
@@ -1165,8 +1003,6 @@ export default function ListeningPage() {
                           </span>
                         )}
                       </div>
-
-                      {/* Right Indicator (Heart) */}
                       {isLiked && (
                         <Heart className="w-4 h-4 text-rose-500 fill-rose-500 flex-shrink-0 mt-3" />
                       )}
@@ -1188,31 +1024,22 @@ export default function ListeningPage() {
                 <Radio className="w-5 h-5 text-primary" /> Mục tiêu tuần này
               </h3>
               <p className="text-slate-400 text-xs leading-relaxed">
-                Hoàn thành 3 bài nghe để đạt được huy chương "Tai Vàng Học Thuật".
+                Hoàn thành 3 bài nghe để đạt được huy chương &quot;Tai Vàng Học Thuật&quot;.
               </p>
-              
               <div className="space-y-1.5">
                 <div className="flex justify-between text-xs font-black text-primary">
                   <span>Tiến trình:</span>
                   <span>{completedLessons.length} / 3 Bài</span>
                 </div>
                 <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
-                  <div 
-                    className="h-full bg-primary transition-all duration-500" 
-                    style={{ width: `${Math.min(100, (completedLessons.length / 3) * 100)}%` }} 
-                  />
+                  <div className="h-full bg-primary transition-all duration-500" style={{ width: `${Math.min(100, (completedLessons.length / 3) * 100)}%` }} />
                 </div>
               </div>
             </div>
-            
-            {/* Ambient visual badge */}
             <Volume2 className="absolute -right-6 -bottom-6 w-24 h-24 text-white/5 opacity-10 pointer-events-none" />
           </div>
-
         </div>
-
       </div>
-
     </div>
   );
 }
