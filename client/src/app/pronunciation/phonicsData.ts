@@ -638,3 +638,44 @@ export const SENTENCE_STRESS_RULES = [
     ]
   }
 ];
+
+export const MINIMAL_PAIRS = [
+  { sound1: '/iː/', sound2: '/ɪ/', word1: 'sheep', word2: 'ship', ipa1: '/ʃiːp/', ipa2: '/ʃɪp/', focusSound: '/iː/ vs /ɪ/', type: 'vowel' },
+  { sound1: '/e/', sound2: '/æ/', word1: 'pen', word2: 'pan', ipa1: '/pen/', ipa2: '/pæn/', focusSound: '/e/ vs /æ/', type: 'vowel' },
+  { sound1: '/uː/', sound2: '/ʊ/', word1: 'fool', word2: 'full', ipa1: '/fuːl/', ipa2: '/fʊl/', focusSound: '/uː/ vs /ʊ/', type: 'vowel' },
+  { sound1: '/p/', sound2: '/b/', word1: 'pat', word2: 'bat', ipa1: '/pæt/', ipa2: '/bæt/', focusSound: '/p/ vs /b/', type: 'consonant' },
+  { sound1: '/t/', sound2: '/d/', word1: 'ten', word2: 'den', ipa1: '/ten/', ipa2: '/den/', focusSound: '/t/ vs /d/', type: 'consonant' },
+  { sound1: '/k/', sound2: '/ɡ/', word1: 'coat', word2: 'goat', ipa1: '/koʊt/', ipa2: '/ɡoʊt/', focusSound: '/k/ vs /ɡ/', type: 'consonant' }
+];
+
+export const PHONICS_BLENDS = [
+  { blend: 'bl', examples: ['black', 'blue', 'block'] },
+  { blend: 'cl', examples: ['clean', 'class', 'clock'] },
+  { blend: 'fl', examples: ['fly', 'flat', 'flower'] },
+  { blend: 'gr', examples: ['green', 'great', 'grass'] },
+  { blend: 'st', examples: ['stop', 'star', 'step'] }
+];
+
+export const DIGRAPHS = [
+  { digraph: 'ch', sound: 'tʃ', examples: ['chair', 'cheese', 'child'] },
+  { digraph: 'sh', sound: 'ʃ', examples: ['shoe', 'ship', 'shop'] },
+  { digraph: 'th', sound: 'θ', examples: ['think', 'three', 'thanks'] },
+  { digraph: 'ph', sound: 'f', examples: ['phone', 'photo', 'phrase'] }
+];
+
+export const SILENT_LETTERS = [
+  { letter: 'b', examples: ['climb', 'comb', 'doubt'] },
+  { letter: 'k', examples: ['know', 'knife', 'knee'] },
+  { letter: 'w', examples: ['write', 'wrong', 'wrist'] }
+];
+
+export const COMPOUND_WORDS = [
+  { word: 'sunflower', parts: ['sun', 'flower'] },
+  { word: 'rainbow', parts: ['rain', 'bow'] }
+];
+
+export const CONSONANT_VOWEL_LINKING = [];
+export const VOWEL_VOWEL_LINKING = [];
+export const ASSIMILATION_RULES = [];
+export const ELISION_RULES = [];
+
