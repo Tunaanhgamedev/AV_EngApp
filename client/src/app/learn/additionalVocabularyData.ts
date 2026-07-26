@@ -322,7 +322,52 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "example": "He cut a slice of fresh bread.",
         "exampleVi": "Anh ấy cắt một lát bánh mì tươi."
       }
-    ],
+    ,
+{
+  "word": "barbecue",
+  "phonetic": "/ˈbɑː.bɪ.kjuː/",
+  "wordType": "noun/verb",
+  "meaningVi": "tiệc nướng ngoài trời",
+  "meaningEn": "a meal cooked outdoors over an open fire",
+  "example": "We hosted a weekend barbecue with neighbors.",
+  "exampleVi": "Chúng tôi tổ chức tiệc nướng cuối tuần với hàng xóm."
+},
+{
+  "word": "beverage",
+  "phonetic": "/ˈbev.ər.ɪdʒ/",
+  "wordType": "noun",
+  "meaningVi": "đồ uống các loại",
+  "meaningEn": "a drink, especially one other than water",
+  "example": "Cold beverages were served on arrival.",
+  "exampleVi": "Đồ uống lạnh đã được phục vụ khi khách đến."
+},
+{
+  "word": "buffet",
+  "phonetic": "/ˈbʊf.eɪ/",
+  "wordType": "noun",
+  "meaningVi": "bữa ăn tự chọn",
+  "meaningEn": "a meal consisting of several dishes from which guests serve themselves",
+  "example": "The hotel offers a lavish breakfast buffet.",
+  "exampleVi": "Khách sạn cung cấp bữa ăn tự chọn buổi sáng phong phú."
+},
+{
+  "word": "cuisine",
+  "phonetic": "/kwɪˈziːn/",
+  "wordType": "noun",
+  "meaningVi": "phong cách ẩm thực",
+  "meaningEn": "a style or method of cooking",
+  "example": "Italian cuisine is famous for pasta and pizza.",
+  "exampleVi": "Ẩm thực Ý nổi tiếng với mì pasta và bánh pizza."
+},
+{
+  "word": "flavor",
+  "phonetic": "/ˈfleɪ.vər/",
+  "wordType": "noun",
+  "meaningVi": "hương vị đồ ăn",
+  "meaningEn": "the distinctive taste of a food or drink",
+  "example": "Vanilla is my favorite ice cream flavor.",
+  "exampleVi": "Vani là hương vị kem yêu thích của tôi."
+}],
     "advanced": [
       {
         "word": "nutritious",
@@ -639,7 +684,52 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "example": "They prepare simple, wholesome family meals.",
         "exampleVi": "Họ chuẩn bị các bữa ăn gia đình đơn giản, bổ dưỡng."
       }
-    ]
+    ,
+{
+  "word": "gastronomy",
+  "phonetic": "/ɡæsˈtrɒn.ə.mi/",
+  "wordType": "noun",
+  "meaningVi": "nghệ thuật và khoa học ẩm thực",
+  "meaningEn": "the practice or art of choosing, cooking, and eating good food",
+  "example": "Paris is considered the global capital of gastronomy.",
+  "exampleVi": "Paris được xem là thủ đô nghệ thuật ẩm thực của thế giới."
+},
+{
+  "word": "sommelier",
+  "phonetic": "/səˈmel.ieɪ/",
+  "wordType": "noun",
+  "meaningVi": "chuyên gia thử và nếm rượu vang",
+  "meaningEn": "a wine steward or trained wine professional",
+  "example": "The sommelier paired a vintage red wine with the steak.",
+  "exampleVi": "Chuyên gia thử rượu đã kết hợp một chai rượu đỏ cao cấp với món bít tết."
+},
+{
+  "word": "delicacy",
+  "phonetic": "/ˈdel.ɪ.kə.si/",
+  "wordType": "noun",
+  "meaningVi": "món ăn cao cấp quý hiếm",
+  "meaningEn": "something delightful or pleasing, especially a choice food",
+  "example": "Caviar is regarded as a rare seafood delicacy.",
+  "exampleVi": "Trứng cá tầm được coi là một món ăn hải sản quý hiếm."
+},
+{
+  "word": "fermentation",
+  "phonetic": "/ˌfɜː.menˈteɪ.ʃən/",
+  "wordType": "noun",
+  "meaningVi": "quá trình lên men thực phẩm",
+  "meaningEn": "the chemical breakdown of a substance by bacteria or yeasts",
+  "example": "Fermentation transforms cabbage into kimchi.",
+  "exampleVi": "Quá trình lên men biến bắp cải thành kim chi."
+},
+{
+  "word": "savor",
+  "phonetic": "/ˈseɪ.vər/",
+  "wordType": "verb",
+  "meaningVi": "thưởng thức nhâm nhi hương vị",
+  "meaningEn": "taste food or drink and enjoy it completely",
+  "example": "Savor every bite of the artisan dessert.",
+  "exampleVi": "Hãy thưởng thức từng miếng của món tráng miệng thủ công."
+}]
   },
   {
     "id": "health",
@@ -962,7 +1052,52 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "example": "Make sure to get eight hours of sleep.",
         "exampleVi": "Hãy chắc chắn ngủ đủ tám tiếng."
       }
-    ],
+    ,
+{
+  "word": "allergy",
+  "phonetic": "/ˈæl.ə.dʒi/",
+  "wordType": "noun",
+  "meaningVi": "bệnh dị ứng",
+  "meaningEn": "a damaging immune response by the body to a substance",
+  "example": "He has a severe peanut allergy.",
+  "exampleVi": "Anh ấy bị dị ứng đậu phộng nặng."
+},
+{
+  "word": "bandage",
+  "phonetic": "/ˈbæn.dɪdʒ/",
+  "wordType": "noun",
+  "meaningVi": "băng gạc y tế",
+  "meaningEn": "a strip of material used to bind a wound",
+  "example": "Apply a sterile bandage to the cut.",
+  "exampleVi": "Dán một miếng băng gạc vô trùng lên vết cắt."
+},
+{
+  "word": "checkup",
+  "phonetic": "/ˈtʃek.ʌp/",
+  "wordType": "noun",
+  "meaningVi": "buổi khám sức khỏe định kỳ",
+  "meaningEn": "a thorough medical examination",
+  "example": "Schedule an annual medical checkup with your physician.",
+  "exampleVi": "Lên lịch khám sức khỏe định kỳ hàng năm với bác sĩ của bạn."
+},
+{
+  "word": "dietitian",
+  "phonetic": "/ˌdaɪ.əˈtɪʃ.ən/",
+  "wordType": "noun",
+  "meaningVi": "chuyên gia dinh dưỡng",
+  "meaningEn": "an expert on diet and nutrition",
+  "example": "The dietitian designed a balanced meal plan.",
+  "exampleVi": "Chuyên gia dinh dưỡng đã thiết kế một kế hoạch bữa ăn cân đối."
+},
+{
+  "word": "epidemic",
+  "phonetic": "/ˌep.ɪˈdem.ɪk/",
+  "wordType": "noun",
+  "meaningVi": "dịch bệnh bùng phát",
+  "meaningEn": "a widespread occurrence of an infectious disease in a community",
+  "example": "Health authorities controlled the flu epidemic rapidly.",
+  "exampleVi": "Các cơ quan y tế đã kiểm soát dịch cúm bùng phát một cách nhanh chóng."
+}],
     "advanced": [
       {
         "word": "treatment",
@@ -1279,7 +1414,52 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "example": "He went to rehabilitation for his knee.",
         "exampleVi": "Anh ấy đã đi phục hồi chức năng cho khớp gối của mình."
       }
-    ]
+    ,
+{
+  "word": "pathogen",
+  "phonetic": "/ˈpæθ.ə.dʒən/",
+  "wordType": "noun",
+  "meaningVi": "mầm bệnh / vi sinh vật gây bệnh",
+  "meaningEn": "a bacterium, virus, or microorganism that can cause disease",
+  "example": "Air filtration traps airborne pathogens in hospitals.",
+  "exampleVi": "Hệ thống lọc không khí giữ lại các mầm bệnh trong không khí bệnh viện."
+},
+{
+  "word": "prophylaxis",
+  "phonetic": "/ˌprɒf.ɪˈlæk.sɪs/",
+  "wordType": "noun",
+  "meaningVi": "biện pháp phòng bệnh",
+  "meaningEn": "action taken to prevent disease",
+  "example": "Vaccination serves as primary infection prophylaxis.",
+  "exampleVi": "Tiêm chủng đóng vai trò là biện pháp phòng bệnh nhiễm trùng chính."
+},
+{
+  "word": "symptomatic",
+  "phonetic": "/ˌsɪmp.təˈmæt.ɪk/",
+  "wordType": "adj",
+  "meaningVi": "có biểu hiện triệu chứng",
+  "meaningEn": "showing symptoms of a particular medical condition",
+  "example": "Symptomatic patients received immediate antiviral treatment.",
+  "exampleVi": "Bệnh nhân có triệu chứng đã nhận điều trị kháng virus ngay lập tức."
+},
+{
+  "word": "immunology",
+  "phonetic": "/ˌɪm.jəˈnɒl.ə.dʒi/",
+  "wordType": "noun",
+  "meaningVi": "miễn dịch học",
+  "meaningEn": "the branch of medicine concerned with immunity",
+  "example": "Immunology research led to novel cancer vaccines.",
+  "exampleVi": "Nghiên cứu miễn dịch học đã dẫn đến các vắc-xin ung thư mới."
+},
+{
+  "word": "metastasis",
+  "phonetic": "/məˈtæs.tə.sɪs/",
+  "wordType": "noun",
+  "meaningVi": "sự di căn của tế bào bệnh",
+  "meaningEn": "the development of secondary malignant growths at a distance from a primary site",
+  "example": "Early detection prevents tumor metastasis to other organs.",
+  "exampleVi": "Phát hiện sớm ngăn ngừa tế bào khối u di căn sang các cơ quan khác."
+}]
   },
   {
     "id": "travel",
@@ -12131,5 +12311,1325 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
         "exampleVi": "Quyền nối ngôi hoàng gia đã được tranh luận tại nghị viện."
       }
     ]
-  }
+  },
+  {
+    "id": "ai_deeplearning",
+  "title": "Trí tuệ nhân tạo & Máy học (AI & Deep Learning)",
+  "desc": "Từ vựng chuyên sâu về mạng nơ-ron, học máy, xử lý ngôn ngữ tự nhiên và mô hình trí tuệ nhân tạo.",
+  "color": "border-purple-200 bg-purple-50/50 text-purple-850 hover:border-purple-400 dark:bg-slate-900/50 dark:border-slate-800 dark:text-purple-400",
+  "beginner": [
+    {
+      "word": "algorithm",
+      "phonetic": "/ˈæl.ɡə.rɪ.ðəm/",
+      "wordType": "noun",
+      "meaningEn": "a process or set of rules to be followed in calculations",
+      "meaningVi": "thuật toán",
+      "example": "The search engine uses a complex algorithm.",
+      "exampleVi": "Công cụ tìm kiếm sử dụng một thuật toán phức tạp."
+    },
+    {
+      "word": "automation",
+      "phonetic": "/ˌɔː.təˈmeɪ.ʃən/",
+      "wordType": "noun",
+      "meaningEn": "the use of largely automatic equipment in a system",
+      "meaningVi": "sự tự động hóa",
+      "example": "Automation speeds up production lines.",
+      "exampleVi": "Tự động hóa giúp tăng tốc các dây chuyền sản xuất."
+    },
+    {
+      "word": "dataset",
+      "phonetic": "/ˈdeɪ.tə.set/",
+      "wordType": "noun",
+      "meaningEn": "a collection of related sets of information",
+      "meaningVi": "tập dữ liệu",
+      "example": "We trained the AI model on a massive dataset.",
+      "exampleVi": "Chúng tôi đã huấn luyện mô hình AI trên một tập dữ liệu khổng lồ."
+    },
+    {
+      "word": "predictor",
+      "phonetic": "/prɪˈdɪk.tər/",
+      "wordType": "noun",
+      "meaningVi": "yếu tố / mô hình dự đoán",
+      "meaningEn": "a variable or model used to predict an outcome",
+      "example": "Past behavior is a good predictor of future actions.",
+      "exampleVi": "Hành vi trong quá khứ là yếu tố dự đoán tốt cho hành động tương lai."
+    },
+    {
+      "word": "robotics",
+      "phonetic": "/rəʊˈbɒt.ɪks/",
+      "wordType": "noun",
+      "meaningVi": "ngành khoa học robot",
+      "meaningEn": "the branch of technology that deals with robots",
+      "example": "Robotics is transforming modern manufacturing.",
+      "exampleVi": "Ngành robot đang thay đổi ngành sản xuất hiện đại."
+    },
+    {
+      "word": "chatbot",
+      "phonetic": "/ˈtʃæt.bɒt/",
+      "wordType": "noun",
+      "meaningVi": "trợ lý ảo tự động / chatbot",
+      "meaningEn": "a computer program designed to simulate conversation with human users",
+      "example": "The customer service chatbot answers FAQs 24/7.",
+      "exampleVi": "Chatbot dịch vụ khách hàng trả lời thắc mắc 24/7."
+    },
+    {
+      "word": "processing",
+      "phonetic": "/ˈprəʊ.ses.ɪŋ/",
+      "wordType": "noun",
+      "meaningVi": "sự xử lý thông tin/dữ liệu",
+      "meaningEn": "the action of processing data",
+      "example": "High-speed graphics cards excel at parallel processing.",
+      "exampleVi": "Card đồ họa tốc độ cao xử lý song song rất xuất sắc."
+    },
+    {
+      "word": "pattern",
+      "phonetic": "/ˈpæt.ən/",
+      "wordType": "noun",
+      "meaningVi": "mẫu hình / quy luật",
+      "meaningEn": "a repeated decorative design or recognizable sequence",
+      "example": "Machine learning algorithms detect hidden patterns in data.",
+      "exampleVi": "Thuật toán học máy phát hiện các quy luật ẩn trong dữ liệu."
+    },
+    {
+      "word": "training",
+      "phonetic": "/ˈtreɪ.nɪŋ/",
+      "wordType": "noun",
+      "meaningVi": "quá trình huấn luyện mô hình",
+      "meaningEn": "the process of teaching an AI model using data",
+      "example": "Model training required three days on GPU clusters.",
+      "exampleVi": "Quá trình huấn luyện mô hình mất ba ngày trên cụm GPU."
+    },
+    {
+      "word": "inference",
+      "phonetic": "/ˈɪn.fər.əns/",
+      "wordType": "noun",
+      "meaningVi": "sự suy luận của AI",
+      "meaningEn": "the process of using a trained model to make predictions",
+      "example": "Real-time inference must respond in under 50 milliseconds.",
+      "exampleVi": "Suy luận thời gian thực phải phản hồi dưới 50 mili giây."
+    },
+    {
+      "word": "neural",
+      "phonetic": "/ˈnjʊə.rəl/",
+      "wordType": "adj",
+      "meaningVi": "thuộc hệ thần kinh / nơ-ron",
+      "meaningEn": "relating to a nerve or the nervous system",
+      "example": "Neural networks mimic human brain connections.",
+      "exampleVi": "Mạng nơ-ron mô phỏng các kết nối não bộ con người."
+    },
+    {
+      "word": "accuracy",
+      "phonetic": "/ˈæk.jə.rə.si/",
+      "wordType": "noun",
+      "meaningVi": "độ chính xác",
+      "meaningEn": "the quality or state of being correct or precise",
+      "example": "The model achieved 98% accuracy on test samples.",
+      "exampleVi": "Mô hình đạt độ chính xác 98% trên các mẫu thử."
+    },
+    {
+      "word": "bias",
+      "phonetic": "/ˈbaɪ.əs/",
+      "wordType": "noun",
+      "meaningVi": "độ lệch / sự thiên vị dữ liệu",
+      "meaningEn": "systematic distortion in data collection or modeling",
+      "example": "Engineers worked to eliminate algorithmic bias.",
+      "exampleVi": "Các kỹ sư đã nỗ lực loại bỏ độ lệch thuật toán."
+    },
+    {
+      "word": "parameter",
+      "phonetic": "/pəˈræm.ɪ.tər/",
+      "wordType": "noun",
+      "meaningVi": "tham số mô hình",
+      "meaningEn": "a numerical value that defines a model's state",
+      "example": "Large language models contain billions of parameters.",
+      "exampleVi": "Các mô hình ngôn ngữ lớn chứa hàng tỷ tham số."
+    },
+    {
+      "word": "vision",
+      "phonetic": "/ˈvɪʒ.ən/",
+      "wordType": "noun",
+      "meaningVi": "thị giác máy tính (Computer Vision)",
+      "meaningEn": "the ability of computers to interpret visual information",
+      "example": "Computer vision detects objects in real-time camera feeds.",
+      "exampleVi": "Thị giác máy tính phát hiện vật thể trong luồng camera thời gian thực."
+    }
+  ],
+  "advanced": [
+    {
+      "word": "hyperparameter",
+      "phonetic": "/ˌhaɪ.pə.pəˈræm.ɪ.tər/",
+      "wordType": "noun",
+      "meaningVi": "siêu tham số huấn luyện",
+      "meaningEn": "a parameter whose value is set before the learning process begins",
+      "example": "Tuning hyperparameters significantly improved model convergence.",
+      "exampleVi": "Tinh chỉnh siêu tham số giúp cải thiện đáng kể sự hội tụ của mô hình."
+    },
+    {
+      "word": "backpropagation",
+      "phonetic": "/ˌbæk.prɒp.əˈɡeɪ.ʃən/",
+      "wordType": "noun",
+      "meaningVi": "thuật toán lan truyền ngược",
+      "meaningEn": "an algorithm used in artificial neural networks to calculate error gradients",
+      "example": "Backpropagation updates weight matrices across all hidden layers.",
+      "exampleVi": "Lan truyền ngược cập nhật ma trận trọng số qua tất cả các lớp ẩn."
+    },
+    {
+      "word": "transformer",
+      "phonetic": "/trænsˈfɔː.mər/",
+      "wordType": "noun",
+      "meaningVi": "kiến trúc mô hình Transformer",
+      "meaningEn": "a deep learning architecture relying on self-attention mechanisms",
+      "example": "Transformers revolutionized natural language processing tasks.",
+      "exampleVi": "Kiến trúc Transformer đã cách mạng hóa các tác vụ xử lý ngôn ngữ tự nhiên."
+    },
+    {
+      "word": "tokenization",
+      "phonetic": "/ˌtəʊ.kən.aɪˈzeɪ.ʃən/",
+      "wordType": "noun",
+      "meaningVi": "sự phân tách từ / mã hóa token",
+      "meaningEn": "the process of breaking text into smaller units called tokens",
+      "example": "Subword tokenization handles rare words efficiently.",
+      "exampleVi": "Mã hóa token dưới dạng từ phụ xử lý các từ hiếm một cách hiệu quả."
+    },
+    {
+      "word": "overfitting",
+      "phonetic": "/ˌəʊ.vəˈfɪt.ɪŋ/",
+      "wordType": "noun",
+      "meaningVi": "hiện tượng quá khớp dữ liệu",
+      "meaningEn": "the production of an analysis that corresponds too closely to a specific set of data",
+      "example": "Regularization techniques prevent overfitting on noisy training data.",
+      "exampleVi": "Các kỹ thuật chuẩn hóa giúp ngăn chặn hiện tượng quá khớp trên dữ liệu nhiễu."
+    },
+    {
+      "word": "embeddings",
+      "phonetic": "/ɪmˈbed.ɪŋz/",
+      "wordType": "noun",
+      "meaningVi": "vecoer nhúng ngữ nghĩa",
+      "meaningEn": "dense vector representations of text or objects in continuous space",
+      "example": "Vector embeddings capture semantic relationships between words.",
+      "exampleVi": "Vector nhúng ghi lại các mối quan hệ ngữ nghĩa giữa các từ."
+    },
+    {
+      "word": "fine-tuning",
+      "phonetic": "/faɪn ˈtjuː.nɪŋ/",
+      "wordType": "noun phrase",
+      "meaningVi": "sự tinh chỉnh mô hình tiền huấn luyện",
+      "meaningEn": "adapting a pre-trained model to a specific domain task",
+      "example": "Fine-tuning a base model on medical records enhanced diagnostic accuracy.",
+      "exampleVi": "Tinh chỉnh mô hình nền tảng trên hồ sơ y tế đã tăng độ chính xác chẩn đoán."
+    },
+    {
+      "word": "hallucination",
+      "phonetic": "/həˌluː.sɪˈneɪ.ʃən/",
+      "wordType": "noun",
+      "meaningVi": "hiện tượng AI bịa đặt thông tin",
+      "meaningEn": "a confident response by an AI that is not grounded in training data",
+      "example": "Retrieval-augmented generation mitigates LLM hallucination risks.",
+      "exampleVi": "Kỹ thuật RAG giúp giảm thiểu rủi ro AI bịa đặt thông tin."
+    },
+    {
+      "word": "multimodal",
+      "phonetic": "/ˌmʌl.tiˈməʊ.dəl/",
+      "wordType": "adj",
+      "meaningVi": "đa phương thức (văn bản, hình ảnh, âm thanh)",
+      "meaningEn": "combining multiple sensory or communication modes",
+      "example": "Multimodal AI models process text, images, and audio simultaneously.",
+      "exampleVi": "Mô hình AI đa phương thức xử lý đồng thời văn bản, hình ảnh và âm thanh."
+    },
+    {
+      "word": "discriminator",
+      "phonetic": "/dɪˈskrɪm.ɪ.neɪ.tər/",
+      "wordType": "noun",
+      "meaningVi": "mạng phân biệt (trong GAN)",
+      "meaningEn": "the network in GANs that evaluates if data is real or generated",
+      "example": "The discriminator competes with the generator to refine outputs.",
+      "exampleVi": "Mạng phân biệt cạnh tranh với mạng sinh để tinh chỉnh kết quả."
+    },
+    {
+      "word": "quantization",
+      "phonetic": "/ˌkwɒn.taɪˈzeɪ.ʃən/",
+      "wordType": "noun",
+      "meaningVi": "sự lượng hóa giảm dung lượng mô hình",
+      "meaningEn": "reducing precision of weights to compress models for edge devices",
+      "example": "8-bit quantization reduced memory footprint by 75%.",
+      "exampleVi": "Lượng hóa 8-bit đã giảm dung lượng bộ nhớ tiêu thụ đi 75%."
+    },
+    {
+      "word": "latent space",
+      "phonetic": "/ˈleɪ.tənt speɪs/",
+      "wordType": "noun phrase",
+      "meaningVi": "không gian ẩn của mô hình",
+      "meaningEn": "a compressed manifold where similar data points are clustered",
+      "example": "Diffusion models navigate latent space to synthesize high-resolution images.",
+      "exampleVi": "Các mô hình khuếch tán điều hướng không gian ẩn để tổng hợp ảnh độ phân giải cao."
+    },
+    {
+      "word": "attention mechanism",
+      "phonetic": "/əˈten.ʃən ˈmek.ə.nɪ.zəm/",
+      "wordType": "noun phrase",
+      "meaningVi": "cơ chế chú ý (Self-Attention)",
+      "meaningEn": "a technique enabling models to focus on relevant context words",
+      "example": "Self-attention mechanisms allow long-range dependency modeling.",
+      "exampleVi": "Cơ chế tự chú ý cho phép mô hình hóa các phụ thuộc khoảng cách xa."
+    },
+    {
+      "word": "convolution",
+      "phonetic": "/ˌkɒn.vəˈluː.ʃən/",
+      "wordType": "noun",
+      "meaningVi": "phép tích chập (trong CNN)",
+      "meaningEn": "a mathematical operation on two functions to produce a third",
+      "example": "Convolutional layers extract spatial feature maps from raw pixels.",
+      "exampleVi": "Các lớp tích chập trích xuất bản đồ đặc trưng không gian từ điểm ảnh thô."
+    },
+    {
+      "word": "stochastic",
+      "phonetic": "/stəˈkæs.tɪk/",
+      "wordType": "adj",
+      "meaningVi": "ngẫu nhiên / mang tính xác suất",
+      "meaningEn": "having a random probability distribution or pattern",
+      "example": "Stochastic gradient descent optimizes weights efficiently.",
+      "exampleVi": "Giảm đạo hàm ngẫu nhiên tối ưu hóa trọng số một cách hiệu quả."
+    }
+  ]
+},
+{
+  "id": "cybersecurity",
+  "title": "An ninh mạng & Bảo mật (Cybersecurity & Privacy)",
+  "desc": "Từ vựng mã hóa, phòng thủ mã độc, tường lửa và an toàn thông tin doanh nghiệp.",
+  "color": "border-red-200 bg-red-50/50 text-red-850 hover:border-red-400 dark:bg-slate-900/50 dark:border-slate-800 dark:text-red-400",
+  "beginner": [
+    {
+      "word": "encryption",
+      "phonetic": "/ɪnˈkrɪp.ʃən/",
+      "wordType": "noun",
+      "meaningVi": "sự mã hóa dữ liệu",
+      "meaningEn": "the process of converting information into secret code",
+      "example": "End-to-end encryption protects messaging privacy.",
+      "exampleVi": "Mã hóa đầu-cuối bảo vệ quyền riêng tư tin nhắn."
+    },
+    {
+      "word": "firewall",
+      "phonetic": "/ˈfaɪə.wɔːl/",
+      "wordType": "noun",
+      "meaningVi": "tường lửa bảo mật",
+      "meaningEn": "a security system that monitors network traffic",
+      "example": "The network firewall blocked unauthorized connection attempts.",
+      "exampleVi": "Tường lửa mạng đã ngăn chặn các nỗ lực kết nối trái phép."
+    },
+    {
+      "word": "malware",
+      "phonetic": "/ˈmæl.weər/",
+      "wordType": "noun",
+      "meaningVi": "mã độc / phần mềm độc hại",
+      "meaningEn": "software designed to disrupt or gain unauthorized access to computer systems",
+      "example": "Antivirus software detected a ransomware malware variant.",
+      "exampleVi": "Phần mềm diệt virus đã phát hiện một biến thể mã độc tống tiền."
+    },
+    {
+      "word": "phishing",
+      "phonetic": "/ˈfɪʃ.ɪŋ/",
+      "wordType": "noun",
+      "meaningVi": "lừa đảo trực tuyến qua email/link",
+      "meaningEn": "fraudulent attempts to obtain sensitive information by disguising as trustworthy entities",
+      "example": "Employees received training to identify phishing emails.",
+      "exampleVi": "Nhân viên đã nhận được đào tạo để nhận biết email lừa đảo."
+    },
+    {
+      "word": "authentication",
+      "phonetic": "/ɔːˌθen.tɪˈkeɪ.ʃən/",
+      "wordType": "noun",
+      "meaningVi": "sự xác thực danh tính",
+      "meaningEn": "the process of verifying who a user is",
+      "example": "Two-factor authentication adds an extra layer of security.",
+      "exampleVi": "Xác thực hai yếu tố bổ sung một lớp bảo mật phụ."
+    },
+    {
+      "word": "vulnerability",
+      "phonetic": "/ˌvʌl.nər.əˈbɪl.ə.ti/",
+      "wordType": "noun",
+      "meaningVi": "lỗ hổng bảo mật",
+      "meaningEn": "a weakness in a system that can be exploited by threats",
+      "example": "Security researchers reported a critical zero-day vulnerability.",
+      "exampleVi": "Các nhà nghiên cứu bảo mật đã báo cáo một lỗ hổng zero-day nghiêm trọng."
+    },
+    {
+      "word": "password",
+      "phonetic": "/ˈpɑːs.wɜːd/",
+      "wordType": "noun",
+      "meaningVi": "mật khẩu truy cập",
+      "meaningEn": "a secret word or phrase used to gain admission",
+      "example": "Use strong passwords combining letters, numbers, and symbols.",
+      "exampleVi": "Sử dụng mật khẩu mạnh kết hợp chữ cái, chữ số và ký tự đặc biệt."
+    },
+    {
+      "word": "breach",
+      "phonetic": "/briːtʃ/",
+      "wordType": "noun/verb",
+      "meaningVi": "sự vi phạm / rò rỉ dữ liệu",
+      "meaningEn": "an act of breaking law or security system",
+      "example": "The data breach exposed millions of customer records.",
+      "exampleVi": "Vụ rò rỉ dữ liệu đã làm lộ hàng triệu hồ sơ khách hàng."
+    },
+    {
+      "word": "biometrics",
+      "phonetic": "/ˌbaɪ.əʊˈmet.rɪks/",
+      "wordType": "noun",
+      "meaningVi": "sinh trắc học (vân tay, khuôn mặt)",
+      "meaningEn": "metrics related to human biological characteristics",
+      "example": "Fingerprint biometrics unlock smartphones securely.",
+      "exampleVi": "Sinh trắc học vân tay mở khóa điện thoại thông minh an toàn."
+    },
+    {
+      "word": "credential",
+      "phonetic": "/krɪˈden.ʃəl/",
+      "wordType": "noun",
+      "meaningVi": "thông tin đăng nhập / chứng thư",
+      "meaningEn": "a qualification, achievement, or user login detail",
+      "example": "Never share login credentials over unencrypted channels.",
+      "exampleVi": "Không bao giờ chia sẻ thông tin đăng nhập qua kênh không mã hóa."
+    },
+    {
+      "word": "backdoor",
+      "phonetic": "/ˈbæk.dɔːr/",
+      "wordType": "noun",
+      "meaningVi": "cửa sau bí mật trong phần mềm",
+      "meaningEn": "a covert method of bypassing normal authentication in a computer system",
+      "example": "Hacking tools installed a hidden backdoor for persistent access.",
+      "exampleVi": "Công cụ hack đã cài cửa sau ẩn để truy cập lâu dài."
+    },
+    {
+      "word": "quarantine",
+      "phonetic": "/ˈkwɒr.ən.tiːn/",
+      "wordType": "verb/noun",
+      "meaningVi": "sự cách ly tệp tin nghi nhiễm độc",
+      "meaningEn": "isolate suspicious files to prevent spread",
+      "example": "The security program quarantined infected email attachments.",
+      "exampleVi": "Chương trình bảo mật đã cách ly các tệp email đính kèm bị nhiễm độc."
+    },
+    {
+      "word": "patch",
+      "phonetic": "/pætʃ/",
+      "wordType": "noun/verb",
+      "meaningVi": "bản vá lỗi phần mềm",
+      "meaningEn": "a piece of software designed to update or fix computer programs",
+      "example": "Install software patches immediately to fix security flaws.",
+      "exampleVi": "Cài đặt các bản vá phần mềm ngay lập tức để sửa lỗi bảo mật."
+    },
+    {
+      "word": "decryption",
+      "phonetic": "/diːˈkrɪp.ʃən/",
+      "wordType": "noun",
+      "meaningVi": "sự giải mã dữ liệu",
+      "meaningEn": "the process of converting encrypted code back into unencrypted text",
+      "example": "Decryption keys were safely backed up in hardware security modules.",
+      "exampleVi": "Các khóa giải mã được sao lưu an toàn trong mô-đun bảo mật phần cứng."
+    },
+    {
+      "word": "trojan",
+      "phonetic": "/ˈtrəʊ.dʒən/",
+      "wordType": "noun",
+      "meaningVi": "virus Trojan độc hại",
+      "meaningEn": "malicious code disguising as legitimate software",
+      "example": "The downloaded application contained a disguised trojan horse.",
+      "exampleVi": "Ứng dụng đã tải xuống chứa một virus trojan ngụy trang."
+    }
+  ],
+  "advanced": [
+    {
+      "word": "steganography",
+      "phonetic": "/ˌsteɡ.əˈnɒɡ.rə.fi/",
+      "wordType": "noun",
+      "meaningVi": "kỹ thuật giấu tin trong hình ảnh/tệp",
+      "meaningEn": "the practice of concealing a secret message within another ordinary file",
+      "example": "Steganography hid encrypted text inside audio file noise.",
+      "exampleVi": "Kỹ thuật giấu tin đã ẩn văn bản mã hóa bên trong tạp âm tệp âm thanh."
+    },
+    {
+      "word": "ransomware",
+      "phonetic": "/ˈræn.səm.weər/",
+      "wordType": "noun",
+      "meaningVi": "mã độc tống tiền",
+      "meaningEn": "malicious software designed to block access to a computer until money is paid",
+      "example": "Ransomware attacks encrypted hospital patient databases.",
+      "exampleVi": "Các cuộc tấn công mã độc tống tiền đã mã hóa cơ sở dữ liệu bệnh nhân bệnh viện."
+    },
+    {
+      "word": "exfiltration",
+      "phonetic": "/ˌeks.fɪlˈtreɪ.ʃən/",
+      "wordType": "noun",
+      "meaningVi": "sự đánh cắp / trích xuất dữ liệu ra ngoài",
+      "meaningEn": "the unauthorized transfer of data from a computer or network",
+      "example": "DLP software detected unauthorized data exfiltration over DNS tunnels.",
+      "exampleVi": "Phần mềm chống rò rỉ dữ liệu đã phát hiện sự trích xuất dữ liệu trái phép qua đường hầm DNS."
+    },
+    {
+      "word": "zero-trust",
+      "phonetic": "/ˈzɪə.rəʊ ˈtrʌst/",
+      "wordType": "noun phrase",
+      "meaningVi": "mô hình kiến trúc bảo mật Không Tin Ai",
+      "meaningEn": "a security framework requiring strict identity verification for every user and device",
+      "example": "Zero-trust architecture assumes network perimeters are inherently compromised.",
+      "exampleVi": "Kiến trúc Không Tin Ai giả định ranh giới mạng luôn có nguy cơ bị xâm nhập."
+    },
+    {
+      "word": "cryptography",
+      "phonetic": "/krɪpˈtɒɡ.rə.fi/",
+      "wordType": "noun",
+      "meaningVi": "mật mã học",
+      "meaningEn": "the study of techniques for secure communication in the presence of third parties",
+      "example": "Asymmetric cryptography powers modern digital signatures.",
+      "exampleVi": "Mật mã học bất đối xứng đứng sau các chữ ký số hiện đại."
+    },
+    {
+      "word": "penetration testing",
+      "phonetic": "/ˌpen.ɪˈtreɪ.ʃən ˈtes.tɪŋ/",
+      "wordType": "noun phrase",
+      "meaningVi": "thử nghiệm xâm nhập kiểm tra bảo mật (Pentest)",
+      "meaningEn": "simulating cyberattacks to evaluate system security strength",
+      "example": "Annual penetration testing identified open ports in cloud firewalls.",
+      "exampleVi": "Thử nghiệm xâm nhập hàng năm đã xác định các cổng mở trong tường lửa đám mây."
+    },
+    {
+      "word": "obfuscation",
+      "phonetic": "/ˌɒb.fʌsˈkeɪ.ʃən/",
+      "wordType": "noun",
+      "meaningVi": "sự làm xáo trộn / che giấu mã nguồn",
+      "meaningEn": "making code obscure or unintelligible to prevent reverse engineering",
+      "example": "Code obfuscation protected proprietary algorithms from decompilation.",
+      "exampleVi": "Làm xáo trộn mã đã bảo vệ các thuật toán độc quyền khỏi bị dịch ngược."
+    },
+    {
+      "word": "honeypot",
+      "phonetic": "/ˈhʌn.i.pɒt/",
+      "wordType": "noun",
+      "meaningVi": "bẫy mật ngọt dụ kẻ tấn công",
+      "meaningEn": "a decoy computer system intended to attract cyberattacks and study threats",
+      "example": "Security teams deployed a honeypot to capture attacker TTPs.",
+      "exampleVi": "Đội ngũ bảo mật đã triển khai bẫy mật ngọt để thu thập phương thức tấn công."
+    },
+    {
+      "word": "rootkit",
+      "phonetic": "/ˈruːt.kɪt/",
+      "wordType": "noun",
+      "meaningVi": "bộ công cụ chiếm quyền điều khiển gốc ẩn",
+      "meaningEn": "a collection of software designed to give unauthorized access to a computer",
+      "example": "The kernel-level rootkit bypassed traditional antivirus detection.",
+      "exampleVi": "Rootkit cấp nhân hệ điều hành đã qua mặt sự phát hiện của diệt virus truyền thống."
+    },
+    {
+      "word": "exploit",
+      "phonetic": "/ˈek.splɔɪt/",
+      "wordType": "noun/verb",
+      "meaningVi": "mã khai thác lỗ hổng bảo mật",
+      "meaningEn": "a piece of software or chunk of data that takes advantage of a flaw",
+      "example": "Attackers crafted a buffer overflow exploit targeting web servers.",
+      "exampleVi": "Kẻ tấn công đã chế tạo mã khai thác tràn bộ đệm nhắm vào máy chủ web."
+    },
+    {
+      "word": "sybil attack",
+      "phonetic": "/ˈsɪb.ɪl əˈtæk/",
+      "wordType": "noun phrase",
+      "meaningVi": "tấn công giả mạo nhiều danh tính mạng (Sybil)",
+      "meaningEn": "an attack wherein a reputation system is subverted by creating fake identities",
+      "example": "Proof-of-work consensus protocols defend peer-to-peer networks against Sybil attacks.",
+      "exampleVi": "Giao thức đồng thuận Bằng chứng công việc bảo vệ mạng P2P khỏi tấn công Sybil."
+    },
+    {
+      "word": "keylogger",
+      "phonetic": "/ˈkiːˌlɒɡ.ər/",
+      "wordType": "noun",
+      "meaningVi": "phần mềm theo dõi gõ bàn phím",
+      "meaningEn": "surveillance software designed to record keystrokes made by a user",
+      "example": "A hidden keylogger captured online banking passwords.",
+      "exampleVi": "Một phần mềm theo dõi gõ bàn phím ẩn đã ghi lại mật khẩu ngân hàng trực tuyến."
+    },
+    {
+      "word": "sandbox",
+      "phonetic": "/ˈsænd.bɒks/",
+      "wordType": "noun",
+      "meaningVi": "môi trường cô lập thử nghiệm an toàn",
+      "meaningEn": "an isolated environment for executing unverified software safely",
+      "example": "The browser executed untrusted JavaScript code inside a secure sandbox.",
+      "exampleVi": "Trình duyệt đã thực thi mã JavaScript không tin cậy bên trong một sandbox an toàn."
+    },
+    {
+      "word": "salting",
+      "phonetic": "/ˈsɔːl.tɪŋ/",
+      "wordType": "noun",
+      "meaningVi": "kỹ thuật thêm muối ngẫu nhiên vào mật khẩu mã hóa",
+      "meaningEn": "adding random data to passwords before hashing to protect against rainbow tables",
+      "example": "Password salting prevents hash cracking using precomputed tables.",
+      "exampleVi": "Kỹ thuật thêm muối mật khẩu ngăn chặn bẻ khóa bằng bảng tính sẵn."
+    },
+    {
+      "word": "air-gapping",
+      "phonetic": "/ˈeə.ɡæp.ɪŋ/",
+      "wordType": "noun",
+      "meaningVi": "biện pháp ngắt kết nối mạng vật lý hoàn toàn",
+      "meaningEn": "securing computers by physically isolating them from all network connections",
+      "example": "Nuclear power control systems use air-gapping for maximum isolation.",
+      "exampleVi": "Hệ thống điều khiển nhà máy điện hạt nhân áp dụng ngắt kết nối mạng vật lý để cô lập tối đa."
+    }
+  ]
+},
+{
+  "id": "ecommerce_marketing",
+  "title": "Thương mại điện tử & Digital Marketing (E-Commerce & Marketing)",
+  "desc": "Từ vựng tối ưu chuyển đổi, bán hàng trực tuyến, quảng cáo số và tiếp thị đa kênh.",
+  "color": "border-emerald-200 bg-emerald-50/50 text-emerald-850 hover:border-emerald-400 dark:bg-slate-900/50 dark:border-slate-800 dark:text-emerald-400",
+  "beginner": [
+    {
+      "word": "conversion",
+      "phonetic": "/kənˈvɜː.ʃən/",
+      "wordType": "noun",
+      "meaningVi": "tỷ lệ chuyển đổi khách hàng",
+      "meaningEn": "the process of converting visitors into paying customers",
+      "example": "Optimizing the checkout page increased conversion rates.",
+      "exampleVi": "Tối ưu hóa trang thanh toán đã tăng tỷ lệ chuyển đổi."
+    },
+    {
+      "word": "analytics",
+      "phonetic": "/ˌæn.əlˈɪt.ɪks/",
+      "wordType": "noun",
+      "meaningVi": "phân tích dữ liệu web/tiếp thị",
+      "meaningEn": "systematic computational analysis of data or statistics",
+      "example": "Google Analytics tracks website visitor behavior.",
+      "exampleVi": "Google Analytics theo dõi hành vi của người truy cập trang web."
+    },
+    {
+      "word": "campaign",
+      "phonetic": "/kæmˈpeɪn/",
+      "wordType": "noun",
+      "meaningVi": "chiến dịch quảng cáo",
+      "meaningEn": "an organized course of action to achieve a goal",
+      "example": "The summer marketing campaign boosted sales by 40%.",
+      "exampleVi": "Chiến dịch tiếp thị mùa hè đã tăng doanh số thêm 40%."
+    },
+    {
+      "word": "checkout",
+      "phonetic": "/ˈtʃek.aʊt/",
+      "wordType": "noun",
+      "meaningVi": "quy trình thanh toán đơn hàng",
+      "meaningEn": "the point at which a customer pays for goods",
+      "example": "Express checkout allows one-click ordering.",
+      "exampleVi": "Thanh toán siêu tốc cho phép đặt hàng chỉ bằng một cú nhấp chuột."
+    },
+    {
+      "word": "affiliate",
+      "phonetic": "/əˈfɪl.i.ət/",
+      "wordType": "noun/adj",
+      "meaningVi": "tiếp thị liên kết (Affiliate)",
+      "meaningEn": "a marketing arrangement by which an online retailer pays commission",
+      "example": "Affiliate marketers earn commissions per successful referral.",
+      "exampleVi": "Nhà tiếp thị liên kết nhận hoa hồng trên mỗi lượt giới thiệu thành công."
+    },
+    {
+      "word": "retargeting",
+      "phonetic": "/riːˈtɑː.ɡɪt.ɪŋ/",
+      "wordType": "noun",
+      "meaningVi": "quảng cáo bám đuổi / nhắm lại",
+      "meaningEn": "online advertising targeted to consumers based on previous web actions",
+      "example": "Dynamic retargeting ads showed recently viewed items.",
+      "exampleVi": "Quảng cáo nhắm lại động đã hiển thị các sản phẩm được xem gần đây."
+    },
+    {
+      "word": "funnel",
+      "phonetic": "/ˈfʌn.əl/",
+      "wordType": "noun",
+      "meaningVi": "phễu bán hàng (Sales Funnel)",
+      "meaningEn": "the journey potential customers go through from awareness to purchase",
+      "example": "Lead generation sits at the top of the sales funnel.",
+      "exampleVi": "Thu hút khách hàng tiềm năng nằm ở đỉnh của phễu bán hàng."
+    },
+    {
+      "word": "CTR (Click-Through Rate)",
+      "phonetic": "/ˌsiː.tiːˈɑːr/",
+      "wordType": "noun phrase",
+      "meaningVi": "tỷ lệ nhấp chuột quảng cáo",
+      "meaningEn": "the percentage of people who click on a specific link",
+      "example": "A compelling headline improved email CTR.",
+      "exampleVi": "Tiêu đề hấp dẫn đã cải thiện tỷ lệ nhấp chuột của email."
+    },
+    {
+      "word": "inventory",
+      "phonetic": "/ˈɪn.vən.tr i/",
+      "wordType": "noun",
+      "meaningVi": "hàng tồn kho",
+      "meaningEn": "a complete list of items such as property, goods in stock",
+      "example": "Automated systems manage real-time inventory levels.",
+      "exampleVi": "Hệ thống tự động quản lý mức hàng tồn kho theo thời gian thực."
+    },
+    {
+      "word": "fulfillment",
+      "phonetic": "/fʊlˈfɪl.mənt/",
+      "wordType": "noun",
+      "meaningVi": "quy trình xử lý và đóng gói đơn hàng",
+      "meaningEn": "the process of receiving, packaging, and shipping orders",
+      "example": "Third-party logistics handled order fulfillment overnight.",
+      "exampleVi": "Đơn vị logistics bên thứ ba đã xử lý đóng gói và giao đơn hàng suốt đêm."
+    },
+    {
+      "word": "SEO (Search Engine Optimization)",
+      "phonetic": "/ˌes.iːˈəʊ/",
+      "wordType": "noun phrase",
+      "meaningVi": "tối ưu hóa công cụ tìm kiếm",
+      "meaningEn": "improving site traffic from search engines",
+      "example": "On-page SEO optimization improved Google rankings.",
+      "exampleVi": "Tối ưu hóa SEO trên trang đã cải thiện thứ hạng trên Google."
+    },
+    {
+      "word": "ROI (Return on Investment)",
+      "phonetic": "/ˌɑːr.əʊˈaɪ/",
+      "wordType": "noun phrase",
+      "meaningVi": "tỷ lệ lợi nhuận trên vốn đầu tư",
+      "meaningEn": "a performance measure used to evaluate investment efficiency",
+      "example": "Social ads yielded a 300% ROI.",
+      "exampleVi": "Quảng cáo mạng xã hội đem lại tỷ lệ ROI 300%."
+    },
+    {
+      "word": "impression",
+      "phonetic": "/ɪmˈpreʃ.ən/",
+      "wordType": "noun",
+      "meaningVi": "lượt hiển thị quảng cáo",
+      "meaningEn": "an instance of a pop-up or other web advertisement being seen",
+      "example": "The ad banner reached 1 million impressions in a week.",
+      "exampleVi": "Banner quảng cáo đã đạt 1 triệu lượt hiển thị trong một tuần."
+    },
+    {
+      "word": "influencer",
+      "phonetic": "/ˈɪn.flu.ən.sər/",
+      "wordType": "noun",
+      "meaningVi": "người có ảnh hưởng trên mạng xã hội",
+      "meaningEn": "a person with the ability to influence potential buyers",
+      "example": "Influencer collaborations drove brand awareness among Gen Z.",
+      "exampleVi": "Hợp tác với người có ảnh hưởng đã thúc đẩy độ nhận diện thương hiệu trong Gen Z."
+    },
+    {
+      "word": "segmentation",
+      "phonetic": "/ˌseɡ.menˈteɪ.ʃən/",
+      "wordType": "noun",
+      "meaningVi": "sự phân khúc khách hàng",
+      "meaningEn": "dividing a broad target market into subsets of consumers",
+      "example": "Audience segmentation allows highly tailored messaging.",
+      "exampleVi": "Phân khúc khán giả cho phép gửi thông điệp cá nhân hóa cao."
+    }
+  ],
+  "advanced": [
+    {
+      "word": "omnichannel",
+      "phonetic": "/ˌɒm.nɪˈtʃæn.əl/",
+      "wordType": "adj",
+      "meaningVi": "bán hàng đa kênh hợp nhất",
+      "meaningEn": "providing a seamless customer experience across all channels",
+      "example": "Omnichannel retailing syncs physical stores with mobile apps.",
+      "exampleVi": "Bán hàng đa kênh đồng bộ hóa cửa hàng vật lý với ứng dụng di động."
+    },
+    {
+      "word": "churn rate",
+      "phonetic": "/tʃɜːn reɪt/",
+      "wordType": "noun phrase",
+      "meaningVi": "tỷ lệ khách hàng rời bỏ dịch vụ",
+      "meaningEn": "the percentage of subscribers who stop subscribing during a given timeframe",
+      "example": "Improving onboarding flow reduced monthly customer churn rate.",
+      "exampleVi": "Cải thiện quy trình hỗ trợ ban đầu đã giảm tỷ lệ khách hàng rời bỏ hàng tháng."
+    },
+    {
+      "word": "LTV (Lifetime Value)",
+      "phonetic": "/ˈlaɪf.taɪm ˈvæl.juː/",
+      "wordType": "noun phrase",
+      "meaningVi": "giá trị vòng đời khách hàng",
+      "meaningEn": "the total revenue a business can expect from a single customer account",
+      "example": "High customer LTV justifies higher acquisition costs.",
+      "exampleVi": "Giá trị vòng đời khách hàng cao biện minh cho chi phí thu hút khách hàng cao hơn."
+    },
+    {
+      "word": "programmatic",
+      "phonetic": "/ˌprəʊ.ɡræmˈæt.ɪk/",
+      "wordType": "adj",
+      "meaningVi": "quảng cáo tự động hóa qua thuật toán",
+      "meaningEn": "automated buying and selling of online advertising space",
+      "example": "Programmatic ad auctions select winning banners in milliseconds.",
+      "exampleVi": "Các phiên đấu giá quảng cáo tự động chọn banner chiến thắng trong vài mili giây."
+    },
+    {
+      "word": "attribution",
+      "phonetic": "/ˌæt.rɪˈbjuː.ʃən/",
+      "wordType": "noun",
+      "meaningVi": "mô hình phân bổ điểm chạm tiếp thị",
+      "meaningEn": "determining which marketing touchpoints contribute to sales",
+      "example": "Multi-touch attribution gives credit across the entire buyer journey.",
+      "exampleVi": "Mô hình phân bổ đa điểm chạm ghi nhận đóng góp trên toàn bộ hành trình người mua."
+    },
+    {
+      "word": "copywriting",
+      "phonetic": "/ˈkɒp.i.raɪ.tɪŋ/",
+      "wordType": "noun",
+      "meaningVi": "nghệ thuật viết nội dung quảng cáo",
+      "meaningEn": "writing text for the purpose of advertising or marketing",
+      "example": "Persuasive copywriting quadrupled email campaign response rates.",
+      "exampleVi": "Kỹ năng viết nội dung quảng cáo thuyết phục đã tăng gấp 4 lần tỷ lệ phản hồi email."
+    },
+    {
+      "word": "bounce rate",
+      "phonetic": "/baʊns reɪt/",
+      "wordType": "noun phrase",
+      "meaningVi": "tỷ lệ thoát trang web ngay tức thì",
+      "meaningEn": "the percentage of visitors who enter the site and then leave without viewing other pages",
+      "example": "Faster page loading times dropped the landing page bounce rate by 20%.",
+      "exampleVi": "Thời gian tải trang nhanh hơn đã làm giảm tỷ lệ thoát trang đích đi 20%."
+    },
+    {
+      "word": "dropshipping",
+      "phonetic": "/ˈdrɒp.ʃɪp.ɪŋ/",
+      "wordType": "noun",
+      "meaningVi": "mô hình bán hàng bỏ qua khâu kho vận",
+      "meaningEn": "shipping goods directly from manufacturer to customer without storing inventory",
+      "example": "Dropshipping lowers upfront capital requirements for new e-commerce stores.",
+      "exampleVi": "Bán hàng bỏ khâu kho vận giúp giảm yêu cầu vốn ban đầu cho các cửa hàng online."
+    },
+    {
+      "word": "CAC (Customer Acquisition Cost)",
+      "phonetic": "/siː-eɪ-siː/",
+      "wordType": "noun phrase",
+      "meaningVi": "chi phí thu hút 1 khách hàng mới",
+      "meaningEn": "the total cost of convincing a potential customer to buy a product",
+      "example": "Referral programs significantly lowered average CAC.",
+      "exampleVi": "Chương trình giới thiệu đã giúp giảm đáng kể chi phí thu hút khách hàng trung bình."
+    },
+    {
+      "word": "cross-selling",
+      "phonetic": "/krɒs ˈsel.ɪŋ/",
+      "wordType": "noun",
+      "meaningVi": "bán chéo sản phẩm liên quan",
+      "meaningEn": "selling an additional product or service to an existing customer",
+      "example": "Amazon excels at automated cross-selling recommended accessories.",
+      "exampleVi": "Amazon rất xuất sắc trong việc tự động bán chéo các phụ kiện được đề xuất."
+    },
+    {
+      "word": "upselling",
+      "phonetic": "/ˈʌp.sel.ɪŋ/",
+      "wordType": "noun",
+      "meaningVi": "bán nâng cấp phiên bản cao hơn",
+      "meaningEn": "persuading a customer to buy a more expensive version of an item",
+      "example": "Tiered pricing plans encourage upselling to premium features.",
+      "exampleVi": "Các gói giá phân cấp khuyến khích việc bán nâng cấp lên các tính năng cao cấp."
+    },
+    {
+      "word": "freemium",
+      "phonetic": "/ˈfriː.mi.əm/",
+      "wordType": "noun/adj",
+      "meaningVi": "mô hình sản phẩm dùng thử miễn phí nâng cấp",
+      "meaningEn": "offering basic services for free while charging for advanced features",
+      "example": "The freemium model converted 5% of free users into paid subscribers.",
+      "exampleVi": "Mô hình dùng thử miễn phí đã chuyển đổi 5% người dùng miễn phí thành người đăng ký trả phí."
+    },
+    {
+      "word": "scalability",
+      "phonetic": "/ˌskeɪ.ləˈbɪl.ə.ti/",
+      "wordType": "noun",
+      "meaningVi": "khả năng mở rộng quy mô",
+      "meaningEn": "the capacity to be changed in size or scale",
+      "example": "Cloud infrastructure ensures platform scalability during Black Friday sales traffic.",
+      "exampleVi": "Hạ tầng đám mây đảm bảo khả năng mở rộng nền tảng trong lượng truy cập đợt sale Black Friday."
+    },
+    {
+      "word": "churn",
+      "phonetic": "/tʃɜːn/",
+      "wordType": "verb/noun",
+      "meaningVi": "sự biến động rời bỏ của người dùng",
+      "meaningEn": "lose subscribers or customers over time",
+      "example": "Proactive customer support prevented high monthly churn.",
+      "exampleVi": "Hỗ trợ khách hàng chủ động đã ngăn chặn tình trạng khách hàng rời bỏ cao hàng tháng."
+    },
+    {
+      "word": "call-to-action (CTA)",
+      "phonetic": "/kɔːl tu ˈæk.ʃən/",
+      "wordType": "noun phrase",
+      "meaningVi": "nút / lời kêu gọi hành động",
+      "meaningEn": "an instruction to the audience designed to prompt an immediate response",
+      "example": "A bright orange 'BUY NOW' button served as an effective CTA.",
+      "exampleVi": "Nút 'MUA NGAY' màu cam sáng đóng vai trò là lời kêu gọi hành động hiệu quả."
+    }
+  ]
+},
+{
+  "id": "space_astrophysics",
+  "title": "Vũ trụ & Thiên văn học (Space & Astrophysics)",
+  "desc": "Từ vựng về hành tinh, thiên hà, các sứ mệnh vũ trụ và vật lý thiên văn.",
+  "color": "border-indigo-200 bg-indigo-50/50 text-indigo-850 hover:border-indigo-400 dark:bg-slate-900/50 dark:border-slate-800 dark:text-indigo-400",
+  "beginner": [
+    {
+      "word": "galaxy",
+      "phonetic": "/ˈɡæl.ək.si/",
+      "wordType": "noun",
+      "meaningVi": "thiên hà",
+      "meaningEn": "a system of millions or billions of stars, together with gas and dust",
+      "example": "The Milky Way is our home galaxy.",
+      "exampleVi": "Dải Ngân Hà là thiên hà quê hương của chúng ta."
+    },
+    {
+      "word": "orbit",
+      "phonetic": "/ˈɔː.bɪt/",
+      "wordType": "noun/verb",
+      "meaningVi": "quỹ đạo / quay quanh quỹ đạo",
+      "meaningEn": "the curved path of a celestial object around a star or planet",
+      "example": "The International Space Station orbits Earth every 90 minutes.",
+      "exampleVi": "Trạm Vũ trụ Quốc tế quay quanh Trái Đất mỗi 90 phút."
+    },
+    {
+      "word": "constellation",
+      "phonetic": "/ˌkɒn.stəˈleɪ.ʃən/",
+      "wordType": "noun",
+      "meaningVi": "chòm sao",
+      "meaningEn": "a group of stars forming a recognizable pattern",
+      "example": "Orion is one of the brightest constellations in the night sky.",
+      "exampleVi": "Chòm sao Lạp Hộ là một trong những chòm sao sáng nhất trên bầu trời đêm."
+    },
+    {
+      "word": "satellite",
+      "phonetic": "/ˈsæt.əl.aɪt/",
+      "wordType": "noun",
+      "meaningVi": "vệ tinh nhân tạo / vệ tinh tự nhiên",
+      "meaningEn": "an artificial or natural body placed in orbit round a planet",
+      "example": "Weather satellites relay storm monitoring images.",
+      "exampleVi": "Các vệ tinh thời tiết truyền hình ảnh giám sát bão."
+    },
+    {
+      "word": "eclipse",
+      "phonetic": "/ɪˈklɪps/",
+      "wordType": "noun",
+      "meaningVi": "sự nhật thực / nguyệt thực",
+      "meaningEn": "an obscuring of the light from one celestial body by the passage of another",
+      "example": "Millions observed the total solar eclipse.",
+      "exampleVi": "Hàng triệu người đã quan sát nhật thực toàn phần."
+    },
+    {
+      "word": "telescope",
+      "phonetic": "/ˈtel.ɪ.skəʊp/",
+      "wordType": "noun",
+      "meaningVi": "kính thiên văn",
+      "meaningEn": "an optical instrument designed to make distant objects appear nearer",
+      "example": "The James Webb Space Telescope captured deep space galaxies.",
+      "exampleVi": "Kính thiên văn không gian James Webb đã chụp các thiên hà vũ trụ sâu."
+    },
+    {
+      "word": "meteor",
+      "phonetic": "/ˈmiː.ti.ɔːr/",
+      "wordType": "noun",
+      "meaningVi": "sao băng / thiên thạch",
+      "meaningEn": "a small body of matter from outer space that enters the earth's atmosphere",
+      "example": "A brilliant meteor streaked across the midnight sky.",
+      "exampleVi": "Một ngọn sao băng rực rỡ đã vạch qua bầu trời nửa đêm."
+    },
+    {
+      "word": "atmosphere",
+      "phonetic": "/ˈæt.məs.fɪər/",
+      "wordType": "noun",
+      "meaningVi": "khí quyển",
+      "meaningEn": "the envelope of gases surrounding the earth or another planet",
+      "example": "Mars has a very thin atmosphere composed mostly of carbon dioxide.",
+      "exampleVi": "Sao Hỏa có khí quyển rất mỏng gồm chủ yếu là carbon dioxide."
+    },
+    {
+      "word": "gravity",
+      "phonetic": "/ˈɡræv.ə.ti/",
+      "wordType": "noun",
+      "meaningVi": "trọng lực / lực hấp dẫn",
+      "meaningEn": "the force that attracts a body toward the center of the earth",
+      "example": "Lunar gravity is roughly one-sixth of Earth's gravity.",
+      "exampleVi": "Trọng lực Mặt Trăng bằng khoảng 1/6 trọng lực Trái Đất."
+    },
+    {
+      "word": "exoplanet",
+      "phonetic": "/ˈek.səʊˌplæn.ɪt/",
+      "wordType": "noun",
+      "meaningVi": "hành tinh ngoài hệ Mặt Trời",
+      "meaningEn": "a planet that orbits a star outside the solar system",
+      "example": "Astronomers discovered an Earth-sized exoplanet in the habitable zone.",
+      "exampleVi": "Các nhà thiên văn đã phát hiện một hành tinh ngoài hệ Mặt Trời cỡ Trái Đất trong vùng sống được."
+    },
+    {
+      "word": "asteroid",
+      "phonetic": "/ˈæs.tər.ɔɪd/",
+      "wordType": "noun",
+      "meaningVi": "tiểu hành tinh",
+      "meaningEn": "a small rocky body orbiting the sun",
+      "example": "The asteroid belt lies between Mars and Jupiter.",
+      "exampleVi": "Vành đai tiểu hành tinh nằm giữa Sao Hỏa và Sao Mộc."
+    },
+    {
+      "word": "nebula",
+      "phonetic": "/ˈneb.jə.lə/",
+      "wordType": "noun",
+      "meaningVi": "tinh vân (đám mây bụi vũ trụ)",
+      "meaningEn": "a cloud of gas and dust in outer space",
+      "example": "New stars are born inside interstellar nebulae.",
+      "exampleVi": "Các ngôi sao mới được sinh ra bên trong các tinh vân liên sao."
+    },
+    {
+      "word": "black hole",
+      "phonetic": "/blæk həʊl/",
+      "wordType": "noun phrase",
+      "meaningVi": "hố đen vũ trụ",
+      "meaningEn": "a region of space having a gravitational field so intense no matter can escape",
+      "example": "Light cannot escape the intense gravitational pull of a black hole.",
+      "exampleVi": "Ánh sáng không thể thoát khỏi lực hấp dẫn mãnh liệt của một hố đen."
+    },
+    {
+      "word": "supernova",
+      "phonetic": "/ˌsuː.pəˈnəʊ.və/",
+      "wordType": "noun",
+      "meaningVi": "vụ nổ siêu tân星 (Supernova)",
+      "meaningEn": "a star that suddenly increases greatly in brightness because of a catastrophic explosion",
+      "example": "A dying massive star ends its life in a brilliant supernova.",
+      "exampleVi": "Một ngôi sao khổng lồ sắp chết kết thúc cuộc đời trong vụ nổ siêu tân星 rực rỡ."
+    },
+    {
+      "word": "spacewalk",
+      "phonetic": "/ˈspeɪs.wɔːk/",
+      "wordType": "noun/verb",
+      "meaningVi": "chuyến đi bộ ngoài không gian",
+      "meaningEn": "an activity performed by an astronaut outside a spacecraft in space",
+      "example": "Astronauts completed a 6-hour spacewalk to replace solar panels.",
+      "exampleVi": "Các phi hành gia đã hoàn thành chuyến đi bộ ngoài không gian 6 giờ để thay thế pin mặt trời."
+    }
+  ],
+  "advanced": [
+    {
+      "word": "singularity",
+      "phonetic": "/ˌsɪŋ.ɡjəˈlær.ə.ti/",
+      "wordType": "noun",
+      "meaningVi": "điểm kỳ dị vũ trụ (ở tâm hố đen)",
+      "meaningEn": "a point at which matter is infinitely dense",
+      "example": "General relativity predicts an infinite density singularity at a black hole center.",
+      "exampleVi": "Thuyết tương đối tổng quát dự đoán một điểm kỳ dị mật độ vô hạn tại tâm hố đen."
+    },
+    {
+      "word": "event horizon",
+      "phonetic": "/ɪˈvent həˈraɪ.zən/",
+      "wordType": "noun phrase",
+      "meaningVi": "chân trời sự kiện (biên hố đen)",
+      "meaningEn": "a boundary around a black hole beyond which no light can escape",
+      "example": "Anything crossing the event horizon is forever trapped.",
+      "exampleVi": "Bất cứ thứ gì vượt qua chân trời sự kiện đều bị kẹt vĩnh viễn."
+    },
+    {
+      "word": "gravitational lensing",
+      "phonetic": "/ˌɡræv.ɪˈteɪ.ʃən.əl ˈlen.zɪŋ/",
+      "wordType": "noun phrase",
+      "meaningVi": "thấu kính hấp dẫn",
+      "meaningEn": "the bending of light from a distant star by a massive foreground object",
+      "example": "Gravitational lensing magnified faint galaxies hidden behind galaxy clusters.",
+      "exampleVi": "Thấu kính hấp dẫn đã phóng đại các thiên hà mờ ẩn đằng sau các cụm thiên hà."
+    },
+    {
+      "word": "spaghettification",
+      "phonetic": "/spəˌɡet.ɪ.fɪˈkeɪ.ʃən/",
+      "wordType": "noun",
+      "meaningVi": "hiện tượng kéo giãn dạng mì spaghetti khi rơi vào hố đen",
+      "meaningEn": "the vertical stretching and horizontal compression of objects into long thin shapes in extreme gravitational fields",
+      "example": "Extreme tidal forces cause spaghettification near stellar-mass black holes.",
+      "exampleVi": "Lực thủy triều cực đại gây ra hiện tượng kéo giãn dạng mì gần các hố đen khối lượng sao."
+    },
+    {
+      "word": "dark matter",
+      "phonetic": "/dɑːk ˈmæt.ər/",
+      "wordType": "noun phrase",
+      "meaningVi": "vật chất tối",
+      "meaningEn": "hypothetical form of matter thought to account for approximately 85% of matter in the universe",
+      "example": "Dark matter exerts gravitational forces without emitting light.",
+      "exampleVi": "Vật chất tối tác dụng lực hấp dẫn mà không phát ra ánh sáng."
+    },
+    {
+      "word": "redshift",
+      "phonetic": "/ˈred.ʃɪft/",
+      "wordType": "noun",
+      "meaningVi": "sự dịch chuyển đỏ của ánh sáng thiên văn",
+      "meaningEn": "displacement of spectral lines toward longer wavelengths in radiation from distant galaxies",
+      "example": "Cosmological redshift proves the universe is expanding at an accelerating rate.",
+      "exampleVi": "Sự dịch chuyển đỏ vũ trụ chứng minh vũ trụ đang giãn nở với tốc độ gia tốc."
+    },
+    {
+      "word": "pulsar",
+      "phonetic": "/ˈpʌl.sɑːr/",
+      "wordType": "noun",
+      "meaningVi": "sao xung (Neutron star phát ra xung radio)",
+      "meaningEn": "a highly magnetized rotating neutron star that emits beams of electromagnetic radiation",
+      "example": "Pulsars spin hundreds of times per second with atomic clock precision.",
+      "exampleVi": "Các sao xung quay hàng trăm vòng mỗi giây với độ chính xác của đồng hồ nguyên tử."
+    },
+    {
+      "word": "cosmic microwave background",
+      "phonetic": "/ˈkɒz.mɪk ˈmaɪ.krəʊ.weɪv/",
+      "wordType": "noun phrase",
+      "meaningVi": "bức xạ nền vi sóng vũ trụ (CMB)",
+      "meaningEn": "thermal radiation left over from the time of recombination in Big Bang cosmology",
+      "example": "The CMB provides a snapshot of the newborn universe 380,000 years after the Big Bang.",
+      "exampleVi": "Bức xạ nền CMB cung cấp bức ảnh chụp vũ trụ sơ sinh 380.000 năm sau vụ nổ Big Bang."
+    },
+    {
+      "word": "quasars",
+      "phonetic": "/ˈkweɪ.zɑːz/",
+      "wordType": "noun",
+      "meaningVi": "chuẩn tinh (Quasar - vật thể sáng nhất vũ trụ)",
+      "meaningEn": "extremely luminous active galactic nuclei powered by supermassive black holes",
+      "example": "Quasars outshine entire galaxies containing hundreds of billions of stars.",
+      "exampleVi": "Các chuẩn tinh tỏa sáng hơn cả những thiên hà chứa hàng trăm tỷ ngôi sao."
+    },
+    {
+      "word": "magnetar",
+      "phonetic": "/ˈmæɡ.nə.tɑːr/",
+      "wordType": "noun",
+      "meaningVi": "sao từ (Neutron star có từ trường cực đại)",
+      "meaningEn": "a type of neutron star with an extremely powerful magnetic field",
+      "example": "A magnetar magnetic field is a trillion times stronger than Earth's.",
+      "exampleVi": "Từ trường của một sao từ mạnh hơn một nghìn tỷ lần từ trường Trái Đất."
+    },
+    {
+      "word": "inflation",
+      "phonetic": "/ɪnˈfleɪ.ʃən/",
+      "wordType": "noun",
+      "meaningVi": "sự lạm phát vũ trụ (giai đoạn giãn nở cực nhanh)",
+      "meaningEn": "a theory of exponential expansion of space in the early universe",
+      "example": "Cosmic inflation explains why the universe appears flat and isotropic.",
+      "exampleVi": "Lạm phát vũ trụ giải thích tại sao vũ trụ có vẻ phẳng và đồng nhất."
+    },
+    {
+      "word": "baryon",
+      "phonetic": "/ˈbær.i.ɒn/",
+      "wordType": "noun",
+      "meaningVi": "hạt baryon (protons & neutrons)",
+      "meaningEn": "a subatomic particle, such as a proton or neutron",
+      "example": "Baryonic matter constitutes only 5% of total cosmic energy density.",
+      "exampleVi": "Vật chất baryon chỉ chiếm 5% tổng mật độ năng lượng vũ trụ."
+    },
+    {
+      "word": "parallax",
+      "phonetic": "/ˈpær.ə.læks/",
+      "wordType": "noun",
+      "meaningVi": "thị sai đo khoảng cách sao",
+      "meaningEn": "the apparent displacement of an observed object due to a change in the position of the observer",
+      "example": "Stellar parallax allows direct measurement of distances to nearby stars.",
+      "exampleVi": "Thị sai sao cho phép đo trực tiếp khoảng cách đến các ngôi sao gần đó."
+    },
+    {
+      "word": "interstellar",
+      "phonetic": "/ˌɪn.təˈstel.ər/",
+      "wordType": "adj",
+      "meaningVi": "liên sao (giữa các hệ ngôi sao)",
+      "meaningEn": "occurring or situated between stars",
+      "example": "Voyager 1 crossed the heliopause into interstellar space.",
+      "exampleVi": "Tàu Voyager 1 đã vượt qua ranh giới thái dương để vào không gian liên sao."
+    },
+    {
+      "word": "heliosphere",
+      "phonetic": "/ˈhiː.li.əʊ.sfɪər/",
+      "wordType": "noun",
+      "meaningVi": "nhật quyển (vùng ảnh hưởng của Mặt Trời)",
+      "meaningEn": "the region of space surrounding the Sun inflated by solar wind",
+      "example": "The heliosphere shields the solar system from cosmic ray radiation.",
+      "exampleVi": "Nhật quyển bảo vệ hệ Mặt Trời khỏi bức xạ tia vũ trụ."
+    }
+  ]
+},
+{
+  "id": "renewable_energy",
+  "title": "Năng lượng tái tạo & Công nghệ xanh (Green Tech & Renewables)",
+  "desc": "Từ vựng về năng lượng mặt trời, điện gió, xe điện và công nghệ trung hòa carbon.",
+  "color": "border-teal-200 bg-teal-50/50 text-teal-850 hover:border-teal-400 dark:bg-slate-900/50 dark:border-slate-800 dark:text-teal-400",
+  "beginner": [
+    {
+      "word": "photovoltaic",
+      "phonetic": "/ˌfəʊ.təʊ.vɒlˈteɪ.ɪk/",
+      "wordType": "adj",
+      "meaningVi": "thuộc quang điện mặt trời",
+      "meaningEn": "relating to the production of electric current at the junction of two substances exposed to light",
+      "example": "Rooftop photovoltaic panels convert sunlight into electricity.",
+      "exampleVi": "Các tấm quang điện mặt trời trên mái nhà chuyển đổi ánh sáng thành điện năng."
+    },
+    {
+      "word": "turbine",
+      "phonetic": "/ˈtɜː.baɪn/",
+      "wordType": "noun",
+      "meaningVi": "tua-bin gió / thủy điện",
+      "meaningEn": "a machine for producing continuous power in which a wheel or rotor is made to revolve",
+      "example": "Offshore wind turbines generate clean electricity.",
+      "exampleVi": "Các tua-bin gió ngoài khơi tạo ra điện sạch."
+    },
+    {
+      "word": "geothermal",
+      "phonetic": "/ˌdʒiː.əʊˈθɜː.məl/",
+      "wordType": "adj",
+      "meaningVi": "thuộc địa nhiệt",
+      "meaningEn": "relating to or produced by the internal heat of the earth",
+      "example": "Geothermal power stations harness steam from volcanic rock.",
+      "exampleVi": "Các nhà máy điện địa nhiệt khai thác hơi nước từ đá núi lửa."
+    },
+    {
+      "word": "biodegradable",
+      "phonetic": "/ˌbaɪ.əʊ.dɪˈɡreɪ.də.bəl/",
+      "wordType": "adj",
+      "meaningVi": "có khả năng phân hủy sinh học",
+      "meaningEn": "capable of being decomposed by bacteria or other living organisms",
+      "example": "The café replaced plastic cups with biodegradable paper alternatives.",
+      "exampleVi": "Quán cà phê đã thay ly nhựa bằng các sản phẩm giấy phân hủy sinh học."
+    },
+    {
+      "word": "sustainability",
+      "phonetic": "/səˌsteɪ.nəˈbɪl.ə.ti/",
+      "wordType": "noun",
+      "meaningVi": "sự phát triển bền vững",
+      "meaningEn": "the ability to be maintained at a certain rate or level",
+      "example": "Environmental sustainability is a core corporate responsibility.",
+      "exampleVi": "Bền vững môi trường là trách nhiệm cốt lõi của doanh nghiệp."
+    }
+  ],
+  "advanced": [
+    {
+      "word": "decarbonization",
+      "phonetic": "/diːˌkɑː.bən.aɪˈzeɪ.ʃən/",
+      "wordType": "noun",
+      "meaningVi": "sự khử carbon / giảm phát thải",
+      "meaningEn": "the reduction or removal of carbon dioxide emissions from energy sources",
+      "example": "The country committed to full industrial decarbonization by 2050.",
+      "exampleVi": "Quốc gia cam kết khử carbon công nghiệp hoàn toàn vào năm 2050."
+    },
+    {
+      "word": "decentralized grid",
+      "phonetic": "/diːˈsen.trə.laɪzd ɡrɪd/",
+      "wordType": "noun phrase",
+      "meaningVi": "lưới điện phân tán thông minh",
+      "meaningEn": "an electrical grid that generates electricity from many small sources",
+      "example": "Microgrids enable decentralized energy distribution during power outages.",
+      "exampleVi": "Lưới điện nhỏ cho phép phân phối năng lượng phân tán khi mất điện."
+    },
+    {
+      "word": "carbon offset",
+      "phonetic": "/ˈkɑː.bən ˈɒf.set/",
+      "wordType": "noun phrase",
+      "meaningVi": "tín chỉ bù đắp lượng carbon",
+      "meaningEn": "a reduction in emissions of carbon dioxide made in order to compensate for emissions made elsewhere",
+      "example": "Airlines offer carbon offset options to passengers.",
+      "exampleVi": "Các hãng hàng không cung cấp tùy chọn tín chỉ bù đắp carbon cho hành khách."
+    },
+    {
+      "word": "electrolyzer",
+      "phonetic": "/ɪˈlek.trə.laɪ.zər/",
+      "wordType": "noun",
+      "meaningVi": "máy điện phân sản xuất hydro xanh",
+      "meaningEn": "an apparatus that produces hydrogen through chemical electrolysis of water",
+      "example": "Green hydrogen is generated using water electrolyzers powered by solar energy.",
+      "exampleVi": "Hydro xanh được tạo ra bằng máy điện phân nước chạy năng lượng mặt trời."
+    },
+    {
+      "word": "circular economy",
+      "phonetic": "/ˈsɜː.kjə.lər iˈkɒn.ə.mi/",
+      "wordType": "noun phrase",
+      "meaningVi": "mô hình kinh tế tuần hoàn",
+      "meaningEn": "an economic system aimed at eliminating waste and the continual use of resources",
+      "example": "Recycling lithium batteries is essential for a circular economy.",
+      "exampleVi": "Tái chế pin lithium là thiết yếu cho mô hình kinh tế tuần hoàn."
+    }
+  ]
+},
+{
+  "id": "blockchain_crypto",
+  "title": "Blockchain & Tài chính phi tập trung (DeFi & Crypto)",
+  "desc": "Từ vựng về công nghệ sổ cái phân tán, hợp đồng thông minh và tiền mã hóa.",
+  "color": "border-amber-200 bg-amber-50/50 text-amber-850 hover:border-amber-400 dark:bg-slate-900/50 dark:border-slate-800 dark:text-amber-400",
+  "beginner": [
+    {
+      "word": "ledger",
+      "phonetic": "/ˈledʒ.ər/",
+      "wordType": "noun",
+      "meaningVi": "sổ cái kế toán / sổ cái blockchain",
+      "meaningEn": "a book or computer file in which financial accounts are recorded",
+      "example": "Transactions are permanently recorded on a public ledger.",
+      "exampleVi": "Các giao dịch được ghi vĩnh viễn trên sổ cái công khai."
+    },
+    {
+      "word": "cryptocurrency",
+      "phonetic": "/ˈkrɪp.təʊˌkʌr.ən.si/",
+      "wordType": "noun",
+      "meaningVi": "tiền mã hóa / tiền điện tử",
+      "meaningEn": "a digital currency in which transactions are verified by a decentralized system",
+      "example": "Bitcoin is the most valuable cryptocurrency by market capitalization.",
+      "exampleVi": "Bitcoin là tiền mã hóa có giá trị nhất theo vốn hóa thị trường."
+    },
+    {
+      "word": "mining",
+      "phonetic": "/ˈmaɪ.nɪŋ/",
+      "wordType": "noun",
+      "meaningVi": "việc đào coin / giải mã thuật toán",
+      "meaningEn": "the process by which new cryptocurrency coins are entered into circulation",
+      "example": "Cryptocurrency mining consumes substantial electrical power.",
+      "exampleVi": "Việc đào tiền mã hóa tiêu thụ lượng điện năng đáng kể."
+    },
+    {
+      "word": "wallet",
+      "phonetic": "/ˈwɒl.ɪt/",
+      "wordType": "noun",
+      "meaningVi": "ví lưu trữ tiền mã hóa",
+      "meaningEn": "a software program or hardware device that stores private keys",
+      "example": "Hardware wallets offer offline cold storage protection.",
+      "exampleVi": "Ví phần cứng cung cấp sự bảo vệ lưu trữ lạnh ngoại tuyến."
+    },
+    {
+      "word": "consensus",
+      "phonetic": "/kənˈsen.səs/",
+      "wordType": "noun",
+      "meaningVi": "giao thức đồng thuận mạng",
+      "meaningEn": "a general agreement among nodes in a network",
+      "example": "Proof-of-stake achieved network consensus efficiently.",
+      "exampleVi": "Giao thức bằng chứng cổ phần đã đạt được đồng thuận mạng một cách hiệu quả."
+    }
+  ],
+  "advanced": [
+    {
+      "word": "smart contract",
+      "phonetic": "/smɑːt ˈkɒn.trækt/",
+      "wordType": "noun phrase",
+      "meaningVi": "hợp đồng thông minh tự động thi hành",
+      "meaningEn": "a self-executing contract with the terms directly written into code",
+      "example": "Smart contracts execute automatically when conditions are met.",
+      "exampleVi": "Hợp đồng thông minh tự động thi hành khi các điều kiện được đáp ứng."
+    },
+    {
+      "word": "interoperability",
+      "phonetic": "/ˌɪn.tər.ɒp.ər.əˈbɪl.ə.ti/",
+      "wordType": "noun",
+      "meaningVi": "khả năng tương tác giữa các mạng blockchain",
+      "meaningEn": "the ability of different computer systems to exchange and make use of information",
+      "example": "Cross-chain bridges facilitate interoperability between Ethereum and Solana.",
+      "exampleVi": "Cầu nối liên chuỗi tạo điều kiện cho khả năng tương tác giữa Ethereum và Solana."
+    },
+    {
+      "word": "tokenomics",
+      "phonetic": "/ˌtəʊ.kənˈɒm.ɪks/",
+      "wordType": "noun",
+      "meaningVi": "mô hình kinh tế học token",
+      "meaningEn": "the study of the supply, demand, distribution, and economics of crypto tokens",
+      "example": "Analysing tokenomics helps evaluate a crypto project's long-term viability.",
+      "exampleVi": "Phân tích kinh tế học token giúp đánh giá khả năng tồn tại lâu dài của dự án crypto."
+    },
+    {
+      "word": "zero-knowledge proof",
+      "phonetic": "/ˈzɪə.rəʊ ˈnɒl.ɪdʒ pruːf/",
+      "wordType": "noun phrase",
+      "meaningVi": "bằng chứng không tiết lộ thông tin (ZK-Proof)",
+      "meaningEn": "a cryptographic method by which one party can prove to another that a statement is true without revealing information",
+      "example": "ZK-proofs allow private transactions while retaining verification auditability.",
+      "exampleVi": "Bằng chứng ZK cho phép giao dịch riêng tư mà vẫn duy trì khả năng kiểm toán xác thực."
+    },
+    {
+      "word": "oracle",
+      "phonetic": "/ˈɒr.ə.kəl/",
+      "wordType": "noun",
+      "meaningVi": "nguồn cấp dữ liệu thực tế cho blockchain (Oracle)",
+      "meaningEn": "a third-party service that connects smart contracts with real-world data",
+      "example": "Chainlink acts as a decentralized oracle providing price feeds to DeFi protocols.",
+      "exampleVi": "Chainlink đóng vai trò là nguồn dữ liệu phi tập trung cung cấp dữ liệu giá cho các giao thức DeFi."
+    }
+  ]
+},
 ];
