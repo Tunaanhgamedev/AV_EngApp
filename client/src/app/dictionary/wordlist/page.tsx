@@ -17,6 +17,8 @@ import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 
+import { DICTIONARY_TOPICS } from '../page';
+
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 const LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
@@ -30,6 +32,7 @@ export default function WordlistPage() {
   const [totalPages, setTotalPages] = useState(1);
   const [selectedLetter, setSelectedLetter] = useState<string | null>(null);
   const [selectedLevel, setSelectedLevel] = useState<string | null>(null);
+  const [selectedTopicId, setSelectedTopicId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [savingId, setSavingId] = useState<string | null>(null);
   const [savedIds, setSavedIds] = useState<Set<string>>(new Set());
@@ -114,6 +117,50 @@ export default function WordlistPage() {
 
       {/* Filters Section */}
       <div className="premium-card p-6 space-y-6">
+        {/* Topics Quick Filter Bar */}
+        <div className="space-y-2">
+          <p className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+            <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+            Lọc Theo Chủ Đề (Topic Filter):
+          </p>
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => { setSelectedTopicId(null); setSearchTerm(''); setPage(1); }}
+              className={cn(
+                "px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all border",
+                selectedTopicId === null ? "bg-[#002147] text-white border-[#002147]" : "bg-white text-slate-500 border-slate-200 hover:border-[#002147]"
+              )}
+            >
+              Tất cả chủ đề
+            </button>
+            {DICTIONARY_TOPICS.map(topic => {
+              const isSelected = selectedTopicId === topic.id;
+              return (
+                <button
+                  key={topic.id}
+                  onClick={() => {
+                    if (isSelected) {
+                      setSelectedTopicId(null);
+                      setSearchTerm('');
+                    } else {
+                      setSelectedTopicId(topic.id);
+                      setSearchTerm(topic.query);
+                    }
+                    setPage(1);
+                  }}
+                  className={cn(
+                    "px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all border flex items-center gap-1.5",
+                    isSelected ? "bg-[#002147] text-white border-[#002147] shadow-sm" : "bg-white text-slate-600 border-slate-200 hover:border-[#002147]"
+                  )}
+                >
+                  <span>{topic.icon}</span>
+                  <span>{topic.name}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
         <form onSubmit={handleSearch} className="relative group">
           <input 
             type="text" 
