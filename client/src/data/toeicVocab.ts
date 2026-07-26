@@ -1702,5 +1702,178 @@ export const TOEIC_VOCAB_DATA: TOEICCategory[] = [
         ]
       }
     ]
+  },
+  {
+    id: "target990",
+    title: "Target 990 (Master & Executive)",
+    description: "Bộ từ vựng và cụm từ chuyên sâu dành cho cấp điều hành, sáp nhập doanh nghiệp và phân tích tài chính quốc tế.",
+    difficulty: "Thách Thức",
+    color: "from-amber-600 to-rose-600",
+    lists: [
+      {
+        id: "target990_list1",
+        name: "List 1: Corporate Governance & Mergers",
+        description: "Từ vựng về quản trị doanh nghiệp, sáp nhập & thâu tóm (M&A) và chiến lược cấp cao.",
+        words: [
+          {
+            id: "t990_1",
+            word: "acquisition",
+            phonetic: "/ˌæk.wɪˈzɪʃ.ən/",
+            wordType: "noun",
+            meaningVi: "sự thâu tóm, mua lại doanh nghiệp",
+            meaningEn: "an asset or object bought or obtained, typically by a business",
+            example: "The board unanimously approved the acquisition of the rival tech firm.",
+            exampleVi: "Hội đồng quản trị đã nhất trí thông qua việc mua lại công ty công nghệ đối thủ."
+          },
+          {
+            id: "t990_2",
+            word: "amalgamation",
+            phonetic: "/əˌmæl.ɡəˈmeɪ.ʃən/",
+            wordType: "noun",
+            meaningVi: "sự hợp nhất, liên kết nhiều doanh nghiệp",
+            meaningEn: "the action, process, or result of combining or uniting multiple organizations",
+            example: "The amalgamation of the two logistics giants resulted in a 40% increase in market share.",
+            exampleVi: "Sự hợp nhất của hai gã khổng lồ vận tải đã dẫn đến mức tăng 40% thị phần."
+          },
+          {
+            id: "t990_3",
+            word: "conglomerate",
+            phonetic: "/kənˈɡlɒm.ər.ət/",
+            wordType: "noun",
+            meaningVi: "tập đoàn đa ngành",
+            meaningEn: "a corporation that is made up of a number of different, seemingly unrelated businesses",
+            example: "The multinational conglomerate operates divisions in energy, retail, and telecommunications.",
+            exampleVi: "Tập đoàn đa quốc gia này vận hành các chi nhánh trong ngành năng lượng, bán lẻ và viễn thông."
+          },
+          {
+            id: "t990_4",
+            word: "fiduciary",
+            phonetic: "/fɪˈdʒuː.ʃər.i/",
+            wordType: "adjective/noun",
+            meaningVi: "ủy thác, thuộc về trách nhiệm tài chính",
+            meaningEn: "involving trust, especially with regard to the relationship between a trustee and a beneficiary",
+            example: "Executives have a fiduciary duty to act in the best financial interest of shareholders.",
+            exampleVi: "Các giám đốc điều hành có trách nhiệm ủy thác phải hành động vì lợi ích tài chính tốt nhất của cổ đông."
+          },
+          {
+            id: "t990_5",
+            word: "remuneration",
+            phonetic: "/rɪˌmjuː.nərˈeɪ.ʃən/",
+            wordType: "noun",
+            meaningVi: "thù lao, tiền thù lao quản lý",
+            meaningEn: "money paid for work or a service",
+            example: "Executive remuneration packages often include stock options and annual bonuses.",
+            exampleVi: "Các gói thù lao điều hành thường bao gồm quyền chọn cổ phiếu và thưởng hàng năm."
+          },
+          {
+            id: "t990_6",
+            word: "discrepancy",
+            phonetic: "/dɪˈskrep.ən.si/",
+            wordType: "noun",
+            meaningVi: "sự sai lệch, không thống nhất",
+            meaningEn: "an illogical or surprising lack of compatibility between two or more facts",
+            example: "Auditors uncovered a minor discrepancy between reported revenue and bank deposits.",
+            exampleVi: "Các kiểm toán viên đã phát hiện một sự sai lệch nhỏ giữa doanh thu báo cáo và tiền gửi ngân hàng."
+          },
+          {
+            id: "t990_7",
+            word: "insolvency",
+            phonetic: "/ɪnˈsɒl.vən.si/",
+            wordType: "noun",
+            meaningVi: "tình trạng mất khả năng thanh toán",
+            meaningEn: "the state of being unable to pay the money owed, by a person or company",
+            example: "The company avoided insolvency by restructuring its debt repayment schedule.",
+            exampleVi: "Công ty đã tránh được tình trạng mất khả năng thanh toán bằng cách tái cấu trúc lịch trả nợ."
+          },
+          {
+            id: "t990_8",
+            word: "depreciation",
+            phonetic: "/dɪˌpriː.ʃiˈeɪ.ʃən/",
+            wordType: "noun",
+            meaningVi: "sự khấu hao tài sản",
+            meaningEn: "a reduction in the value of an asset with the passage of time",
+            example: "Machinery depreciation must be factored into the annual financial statements.",
+            exampleVi: "Khấu hao máy móc phải được tính vào báo cáo tài chính hàng năm."
+          },
+          {
+            id: "t990_9",
+            word: "subsidiary",
+            phonetic: "/səbˈsɪd.i.ə.ri/",
+            wordType: "noun/adjective",
+            meaningVi: "công ty con, phụ thuộc",
+            meaningEn: "a company controlled by a holding or parent company",
+            example: "The European subsidiary contributed nearly half of total global sales.",
+            exampleVi: "Công ty con tại Châu Âu đã đóng góp gần một nửa tổng doanh số toàn cầu."
+          },
+          {
+            id: "t990_10",
+            word: "synergy",
+            phonetic: "/ˈsɪn.ə.dʒi/",
+            wordType: "noun",
+            meaningVi: "sự cộng hưởng, hiệu ứng kết hợp",
+            meaningEn: "the interaction or cooperation of two or more organizations to produce a combined effect greater than the sum of their separate effects",
+            example: "The partnership created substantial financial synergy across both distribution networks.",
+            exampleVi: "Mối quan hệ hợp tác đã tạo ra sự cộng hưởng tài chính đáng kể trên cả hai mạng lưới phân phối."
+          }
+        ]
+      },
+      {
+        id: "target990_list2",
+        name: "List 2: Financial Auditing & Trade Protocols",
+        description: "Từ vựng kiểm toán nâng cao, thỏa thuận thương mại và đàm phán hợp đồng.",
+        words: [
+          {
+            id: "t990_11",
+            word: "stipulate",
+            phonetic: "/ˈstɪp.jə.leɪt/",
+            wordType: "verb",
+            meaningVi: "quy định, quy ước rõ ràng trong hợp đồng",
+            meaningEn: "specify a requirement, typically as part of a bargain or agreement",
+            example: "Clause 5 stipulates that payments must be settled within 30 business days.",
+            exampleVi: "Điều 5 quy định rằng các khoản thanh toán phải được thanh toán trong vòng 30 ngày làm việc."
+          },
+          {
+            id: "t990_12",
+            word: "indemnify",
+            phonetic: "/ɪnˈdem.nɪ.faɪ/",
+            wordType: "verb",
+            meaningVi: "bồi thường, bảo đảm thiệt hại",
+            meaningEn: "compensate someone for harm or loss",
+            example: "The supplier agreed to indemnify the buyer against any shipping damages.",
+            exampleVi: "Nhà cung cấp đã đồng ý bồi thường cho bên mua đối với bất kỳ thiệt hại vận chuyển nào."
+          },
+          {
+            id: "t990_13",
+            word: "default on",
+            phonetic: "/dɪˈfɒlt ɒn/",
+            wordType: "phrase/verb",
+            meaningVi: "vỡ nợ, không trả đúng hạn khoản nợ",
+            meaningEn: "fail to fulfill an obligation, especially to repay a loan",
+            example: "If the firm defaults on its bond payments, its credit rating will drop drastically.",
+            exampleVi: "Nếu công ty vỡ nợ các khoản thanh toán trái phiếu, xếp hạng tín dụng sẽ giảm mạnh."
+          },
+          {
+            id: "t990_14",
+            word: "benchmark",
+            phonetic: "/ˈbentʃ.mɑːk/",
+            wordType: "noun/verb",
+            meaningVi: "tiêu chuẩn so sánh, chuẩn mực",
+            meaningEn: "a standard or point of reference against which things may be compared or assessed",
+            example: "Our customer retention rate serves as an industry benchmark for quality service.",
+            exampleVi: "Tỷ lệ giữ chân khách hàng của chúng tôi đóng vai trò là chuẩn mực ngành về chất lượng dịch vụ."
+          },
+          {
+            id: "t990_15",
+            word: "liquidate",
+            phonetic: "/ˈlɪk.wɪ.deɪt/",
+            wordType: "verb",
+            meaningVi: "thanh lý tài sản, giải thể",
+            meaningEn: "wind up the affairs of a business or cause to be dissolved, turning assets into cash",
+            example: "The retailer was forced to liquidate its physical stores after declaring bankruptcy.",
+            exampleVi: "Nhà bán lẻ buộc phải thanh lý các cửa hàng vật lý sau khi tuyên bố phá sản."
+          }
+        ]
+      }
+    ]
   }
 ];
