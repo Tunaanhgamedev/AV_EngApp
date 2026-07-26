@@ -297,6 +297,40 @@ export const PRACTICE_DATABASE: Record<string, Topic[]> = {
           explanation: "Đoạn văn chỉ ra rặng san hô 'support over 25% of all marine life' (hỗ trợ hơn 25% sinh vật biển), tương đương 'over a quarter'. Vì vậy, phát biểu trên là True (Chọn A)."
         }
       ]
+    },
+    {
+      id: 'read-4',
+      title: 'Topic 4: Artificial Intelligence in Medical Diagnostics',
+      difficulty: 'Khó',
+      type: 'Technology & Science',
+      questions: [
+        {
+          id: 'read-4-q1',
+          context: "Reading Passage:\nArtificial Intelligence (AI) algorithms are revolutionizing healthcare by enabling rapid, highly accurate analysis of medical imaging. Machine learning models trained on millions of radiological scans can now detect early-stage malignant tumors in lung X-rays with diagnostic precision exceeding human radiologists. However, medical ethicists warn that reliance on AI introduces risks, particularly regarding data privacy and the 'black box' problem—where the underlying decision-making pathways of deep neural networks remain inscrutable to human physicians. Consequently, current regulatory frameworks mandate that AI diagnostic tools act solely as supportive decision aids rather than autonomous medical practitioners.",
+          questionText: "According to the passage, how do AI algorithms assist in medical diagnostics?",
+          choices: [
+            "A. By performing complex surgical procedures independently",
+            "B. By analyzing medical imaging with high speed and precision",
+            "C. By replacing human radiologists entirely in emergency rooms",
+            "D. By prescribing customized pharmaceuticals automatically"
+          ],
+          correctAnswer: "B",
+          explanation: "Đoạn văn cho biết AI thuật toán giúp phân tích hình ảnh y khoa một cách nhanh chóng và chính xác cao: 'enabling rapid, highly accurate analysis of medical imaging' (Chọn B)."
+        },
+        {
+          id: 'read-4-q2',
+          context: "Reading Passage:\n(Same passage as above)",
+          questionText: "What is referred to as the 'black box' problem in AI healthcare applications?",
+          choices: [
+            "A. The high cost of medical imaging equipment",
+            "B. The lack of internet connectivity in rural hospitals",
+            "C. The inscrutable decision-making pathways of deep neural networks",
+            "D. The physical damage caused to X-ray storage hardware"
+          ],
+          correctAnswer: "C",
+          explanation: "Đoạn văn định nghĩa vấn đề 'black box' là con đường ra quyết định của mạng thần kinh nhân tạo bị bí ẩn/không thể thấu suốt bởi bác sĩ con người: 'the underlying decision-making pathways of deep neural networks remain inscrutable' (Chọn C)."
+        }
+      ]
     }
   ],
   writing: [
