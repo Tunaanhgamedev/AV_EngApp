@@ -365,7 +365,17 @@ export const SPEEDRUN_QUIZZES = [
   { question: "By 10 PM, I ___ (finish) my homework.", options: ["finish", "will finish", "will have finished", "have finished"], answer: "will have finished", explanation: '"By 10 PM" biểu thị mốc tương lai hoàn thành, hành động sẽ xong trước mốc đó.' },
   { question: "By the end of next month, they ___ (complete) the building.", options: ["complete", "will complete", "will have completed", "have completed"], answer: "will have completed", explanation: "Hành động sẽ hoàn tất trước một thời hạn tương lai, dùng Tương lai hoàn thành." },
   // Future Perfect Continuous
-  { question: "By next month, I ___ (work) here for three years.", options: ["will be working", "will have been working", "have worked", "work"], answer: "will have been working", explanation: "Hành động kéo dài liên tục đến một mốc thời gian trong tương lai, dùng Tương lai hoàn thành tiếp diễn." }
+  { question: "By next month, I ___ (work) here for three years.", options: ["will be working", "will have been working", "have worked", "work"], answer: "will have been working", explanation: "Hành động kéo dài liên tục đến một mốc thời gian trong tương lai, dùng Tương lai hoàn thành tiếp diễn." },
+  // Advanced & Mixed Tenses
+  { question: "Hardly ___ (enter) the room when the lights went out.", options: ["had he entered", "he entered", "was he entering", "has he entered"], answer: "had he entered", explanation: "Cấu trúc đảo ngữ với 'Hardly... when': Hardly + had + S + V3/ed + when + Past Simple." },
+  { question: "No sooner ___ (arrive) than the rain began to fall.", options: ["did he arrive", "had he arrived", "was he arriving", "has he arrived"], answer: "had he arrived", explanation: "Cấu trúc đảo ngữ với 'No sooner... than': No sooner + had + S + V3/ed + than + Past Simple." },
+  { question: "It is high time you ___ (start) working on your thesis.", options: ["start", "started", "will start", "have started"], answer: "started", explanation: "Cấu trúc 'It is high time + S + V-past' (Đã đến lúc ai đó nên làm gì)." },
+  { question: "I would rather you ___ (not tell) anyone about our meeting yesterday.", options: ["didn't tell", "hadn't told", "won't tell", "don't tell"], answer: "hadn't told", explanation: "Giả định việc trong quá khứ với 'would rather S + had V3/ed'." },
+  { question: "By the time the ambulance arrived, the patient ___ (pass) out.", options: ["passed", "had passed", "was passing", "has passed"], answer: "had passed", explanation: "Mới mốc 'By the time + Past Simple', mệnh đề chính dùng Quá khứ hoàn thành." },
+  { question: "As soon as I get the contract, I ___ (email) you immediately.", options: ["email", "emailed", "will email", "have emailed"], answer: "will email", explanation: "Mệnh đề thời gian 'As soon as + Present Simple' đi với mệnh đề chính Tương lai đơn." },
+  { question: "She spoke as if she ___ (know) everything about the secret project.", options: ["knows", "knew", "has known", "will know"], answer: "knew", explanation: "Giả định không có thật ở hiện tại với 'as if / as though + Past Simple'." },
+  { question: "Never before ___ (see) such an extraordinary laser show.", options: ["I have seen", "have I seen", "had I seen", "did I see"], answer: "have I seen", explanation: "Cấu trúc đảo ngữ 'Never before + have/has + S + V3/ed' (Chưa bao giờ từng xem...)." },
+  { question: "If you ___ (listen) to my advice yesterday, you wouldn't be in trouble now.", options: ["listened", "had listened", "were listening", "listen"], answer: "had listened", explanation: "Câu điều kiện trộn (Mixed Conditional): Mệnh đề If quá khứ (had V3) tác động kết quả hiện tại." }
 ];
 
 // Tense groups for DRY sidebar rendering
