@@ -27,6 +27,230 @@ export interface TOEICCategory {
 
 export const TOEIC_VOCAB_DATA: TOEICCategory[] = [
 {
+  "id": "target_executive",
+  "title": "Target Executive (Quản Trị Cao Cấp & CEO Level)",
+  "description": "Từ vựng cấp độ điều hành doanh nghiệp, tái cấu trúc tài chính, chiến lược toàn cầu và quản trị rủi ro.",
+  "difficulty": "Chuyên Gia",
+  "color": "from-amber-600 to-red-600",
+  "lists": [
+    {
+      "id": "exec_list1",
+      "name": "List 1: Corporate Restructuring & Insolvency",
+      "description": "Từ vựng sáp nhập, giải thể, tái cấu trúc nợ và thanh lý tài sản.",
+      "words": [
+        {
+          "id": "exec_1",
+          "word": "divestiture",
+          "phonetic": "/daɪˈves.tɪ.tʃər/",
+          "wordType": "noun",
+          "meaningVi": "sự thoái vốn / bán bớt tài sản",
+          "meaningEn": "the action of selling off subsidiary business interests or investments",
+          "example": "The conglomerate announced the divestiture of its retail arm.",
+          "exampleVi": "Tập đoàn thông báo thoái vốn khỏi mảng bán lẻ."
+        },
+        {
+          "id": "exec_2",
+          "word": "receivership",
+          "phonetic": "/rɪˈsiː.və.ʃɪp/",
+          "wordType": "noun",
+          "meaningVi": "tình trạng tiếp quản quản lý tài sản nợ",
+          "meaningEn": "the state of being dealt with by a receiver in bankruptcy",
+          "example": "The insolvent airline was placed into receivership by creditors.",
+          "exampleVi": "Hãng hàng không mất khả năng thanh toán đã bị các chủ nợ đưa vào tình trạng tiếp quản."
+        },
+        {
+          "id": "exec_3",
+          "word": "solvent",
+          "phonetic": "/ˈsɒl.vənt/",
+          "wordType": "adjective",
+          "meaningVi": "có khả năng thanh toán nợ",
+          "meaningEn": "having assets excess of liabilities; able to pay one's debts",
+          "example": "Capital injection ensured the firm remained solvent.",
+          "exampleVi": "Việc bơm vốn đã đảm bảo công ty duy trì khả năng thanh toán."
+        },
+        {
+          "id": "exec_4",
+          "word": "subordinated debt",
+          "phonetic": "/səˈbɔː.dɪ.neɪ.tɪd det/",
+          "wordType": "noun phrase",
+          "meaningVi": "nợ thứ cấp (trả sau nợ ưu tiên)",
+          "meaningEn": "unsecured debt that ranks below other debts regarding claims on assets",
+          "example": "Subordinated debt carries higher interest to offset default risks.",
+          "exampleVi": "Nợ thứ cấp có lãi suất cao hơn để bù đắp rủi ro vỡ nợ."
+        },
+        {
+          "id": "exec_5",
+          "word": "workout agreement",
+          "phonetic": "/ˈwɜːk.aʊt əˈɡriː.mənt/",
+          "wordType": "noun phrase",
+          "meaningVi": "thỏa thuận cơ cấu lại nợ ngoài tòa",
+          "meaningEn": "an out-of-court agreement between a debtor and creditors to re-negotiate terms",
+          "example": "Lenders signed a debt workout agreement to avoid formal bankruptcy.",
+          "exampleVi": "Các bên cho vay đã ký thỏa thuận cơ cấu lại nợ để tránh phá sản chính thức."
+        },
+        {
+          "id": "exec_6",
+          "word": "covenant",
+          "phonetic": "/ˈkʌv.ən.ənt/",
+          "wordType": "noun",
+          "meaningVi": "dải điều khoản cam kết tài chính",
+          "meaningEn": "a formal agreement or promise in a debt contract",
+          "example": "The company breached its debt service coverage ratio covenant.",
+          "exampleVi": "Công ty đã vi phạm điều khoản cam kết về hệ số khả năng trả nợ."
+        },
+        {
+          "id": "exec_7",
+          "word": "clawback",
+          "phonetic": "/ˈklɔː.bæk/",
+          "wordType": "noun",
+          "meaningVi": "sự thu hồi lại tiền thưởng / cổ tức",
+          "meaningEn": "the recovery of money already paid out, typically as a penalty",
+          "example": "The board enforced a bonus clawback following accounting restatements.",
+          "exampleVi": "Hội đồng quản trị đã thực thi thu hồi tiền thưởng sau khi điều chỉnh lại báo cáo kế toán."
+        },
+        {
+          "id": "exec_8",
+          "word": "spinoff",
+          "phonetic": "/ˈspɪn.ɒf/",
+          "wordType": "noun",
+          "meaningVi": "việc tách ra thành công ty độc lập",
+          "meaningEn": "a new independent company formed through the sale or distribution of new shares",
+          "example": "The tech division was launched as an independent spinoff company.",
+          "exampleVi": "Bộ phận công nghệ được tách ra thành một công ty độc lập mới."
+        },
+        {
+          "id": "exec_9",
+          "word": "poison pill",
+          "phonetic": "/ˈpɔɪ.zən pɪl/",
+          "wordType": "noun phrase",
+          "meaningVi": "chiến thuật viên thuốc độc chống thâu tóm",
+          "meaningEn": "a tactic used by a company to discourage a hostile takeover",
+          "example": "Shareholders approved a poison pill provision to block hostile bids.",
+          "exampleVi": "Cổ đông đã phê duyệt điều khoản viên thuốc độc để ngăn chặn đề xuất thâu tóm thù địch."
+        },
+        {
+          "id": "exec_10",
+          "word": "golden parachute",
+          "phonetic": "/ˈɡəʊl.dən ˈpær.ə.ʃuːt/",
+          "wordType": "noun phrase",
+          "meaningVi": "gói bồi thường hậu hĩnh khi thôi việc CEO",
+          "meaningEn": "a large payment guaranteed to a senior executive upon termination",
+          "example": "The ousted CEO received a $20 million golden parachute severance package.",
+          "exampleVi": "Giám đốc điều hành bị bãi nhiệm đã nhận gói bồi thường thôi việc 20 triệu USD."
+        }
+      ]
+    },
+    {
+      "id": "exec_list2",
+      "name": "List 2: Macroeconomics & Monetary Policy",
+      "description": "Từ vựng chính sách tiền tệ, lạm phát, lãi suất ngân hàng trung ương và kinh tế vĩ mô.",
+      "words": [
+        {
+          "id": "exec_11",
+          "word": "quantitative easing",
+          "phonetic": "/ˈkwɒn.tɪ.tə.tɪv ˈiː.zɪŋ/",
+          "wordType": "noun phrase",
+          "meaningVi": "gói nới lỏng định lượng tiền tệ (QE)",
+          "meaningEn": "monetary policy where a central bank buys government bonds to inject liquidity",
+          "example": "The central bank introduced quantitative easing to stimulate economic recovery.",
+          "exampleVi": "Ngân hàng trung ương đã áp dụng gói nới lỏng định lượng để kích thích phục hồi kinh tế."
+        },
+        {
+          "id": "exec_12",
+          "word": "hyperinflation",
+          "phonetic": "/ˌhaɪ.pər.ɪnˈfleɪ.ʃən/",
+          "wordType": "noun",
+          "meaningVi": "siêu lạm phát",
+          "meaningEn": "extremely rapid or out-of-control inflation",
+          "example": "Hyperinflation eroded the purchasing power of the local currency overnight.",
+          "exampleVi": "Siêu lạm phát làm xói mòn sức mua của đồng nội tệ chỉ sau một đêm."
+        },
+        {
+          "id": "exec_13",
+          "word": "stagflation",
+          "phonetic": "/stæɡˈfleɪ.ʃən/",
+          "wordType": "noun",
+          "meaningVi": "tình trạng lạm phát kèm đình đốn kinh tế",
+          "meaningEn": "persistent high inflation combined with high unemployment and stagnant demand",
+          "example": "Rising energy prices triggered concerns of global stagflation.",
+          "exampleVi": "Giá năng lượng tăng cao dấy lên lo ngại về tình trạng lạm phát kèm đình đốn toàn cầu."
+        },
+        {
+          "id": "exec_14",
+          "word": "fiscal stimulus",
+          "phonetic": "/ˈfɪs.kəl ˈstɪm.jə.ləs/",
+          "wordType": "noun phrase",
+          "meaningVi": "gói kích thích tài khóa của chính phủ",
+          "meaningEn": "government spending or tax cuts designed to boost economic activity",
+          "example": "Congress passed a massive fiscal stimulus package for infrastructure projects.",
+          "exampleVi": "Quốc hội đã thông qua gói kích thích tài khóa lớn cho các dự án hạ tầng."
+        },
+        {
+          "id": "exec_15",
+          "word": "sovereign debt",
+          "phonetic": "/ˈsɒv.rɪn det/",
+          "wordType": "noun phrase",
+          "meaningVi": "nợ công / nợ quốc gia",
+          "meaningEn": "bonds issued by a national government in a foreign currency",
+          "example": "International rating agencies downgraded the country's sovereign debt.",
+          "exampleVi": "Các tổ chức xếp hạng quốc tế đã hạ bậc nợ công của quốc gia này."
+        },
+        {
+          "id": "exec_16",
+          "word": "yield curve",
+          "phonetic": "/jiːld kɜːv/",
+          "wordType": "noun phrase",
+          "meaningVi": "đường cong lợi suất trái phiếu",
+          "meaningEn": "a graph showing interest rates on bonds of different maturity dates",
+          "example": "An inverted yield curve often signals an impending economic recession.",
+          "exampleVi": "Đường cong lợi suất đảo ngược thường báo hiệu một cuộc suy thoái kinh tế sắp tới."
+        },
+        {
+          "id": "exec_17",
+          "word": "devaluation",
+          "phonetic": "/ˌdiː.væl.juˈeɪ.ʃən/",
+          "wordType": "noun",
+          "meaningVi": "sự phá giá đồng tiền",
+          "meaningEn": "an official lowering of the value of a country's currency within a fixed exchange-rate system",
+          "example": "Currency devaluation made domestic exports more competitive abroad.",
+          "exampleVi": "Việc phá giá đồng tiền làm cho xuất khẩu trong nước trở nên cạnh tranh hơn ở nước ngoài."
+        },
+        {
+          "id": "exec_18",
+          "word": "liquidity trap",
+          "phonetic": "/lɪˈkwɪd.ə.ti træp/",
+          "wordType": "noun phrase",
+          "meaningVi": "bẫy thanh khoản tiền tệ",
+          "meaningEn": "a situation where interest rates are low and savings rates are high, rendering monetary policy ineffective",
+          "example": "Near-zero interest rates led the economy into a liquidity trap.",
+          "exampleVi": "Lãi suất gần bằng 0 đã đẩy nền kinh tế vào bẫy thanh khoản."
+        },
+        {
+          "id": "exec_19",
+          "word": "remittance",
+          "phonetic": "/rɪˈmɪt.əns/",
+          "wordType": "noun",
+          "meaningVi": "kiều hối / tiền chuyển về nước",
+          "meaningEn": "a sum of money sent in payment or as a gift back home",
+          "example": "Overseas workers sent record remittance flows to their home countries.",
+          "exampleVi": "Lao động ngoài nước đã gửi dòng kiều hối kỷ lục về quê hương."
+        },
+        {
+          "id": "exec_20",
+          "word": "austerity",
+          "phonetic": "/ɒsˈter.ə.ti/",
+          "wordType": "noun",
+          "meaningVi": "chính sách thắt lưng buộc bụng tài chính",
+          "meaningEn": "sternness or severity of attitude or budget cuts",
+          "example": "Government austerity measures reduced public healthcare funding.",
+          "exampleVi": "Các biện pháp thắt lưng buộc bụng của chính phủ đã giảm ngân sách y tế công cộng."
+        }
+      ]
+    }
+  ]
+},
+
+{
   "id": "target800",
   "title": "Target 800+ (Cao Cấp & Chuyên Gia)",
   "description": "Bộ từ vựng cao cấp dành cho chuyên gia thương mại quốc tế, sở hữu trí tuệ, tự động hóa và phân tích dữ liệu lớn.",
