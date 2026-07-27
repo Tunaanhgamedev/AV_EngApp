@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { Trophy, Medal, Crown, TrendingUp, Users, ChevronUp, ChevronDown, Timer, Sparkles, Globe } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
@@ -33,12 +33,44 @@ const AVATAR_COLORS = [
   "bg-teal-100 text-teal-600"
 ];
 
+// Memoized timer badge to isolate 1s tick re-renders from the main leaderboard table & podium
+const CountdownBadge = memo(function CountdownBadge() {
+  const [countdown, setCountdown] = useState({ d: 4, h: 18, m: 35, s: 42 });
+
+  useEffect(() => {
+    const t = setInterval(() => {
+      setCountdown(prev => {
+        let { d, h, m, s } = prev;
+        s--; if (s < 0) { s = 59; m--; }
+        if (m < 0) { m = 59; h--; }
+        if (h < 0) { h = 23; d--; }
+        if (d < 0) { d = 0; h = 0; m = 0; s = 0; }
+        return { d, h, m, s };
+      });
+    }, 1000);
+    return () => clearInterval(t);
+  }, []);
+
+  const fmt = (n: number) => String(n).padStart(2, '0');
+
+  return (
+    <div className="px-5 py-3 bg-rose-50 text-rose-600 rounded-2xl border border-rose-100 flex items-center gap-3">
+      <Timer className="w-5 h-5 text-rose-500 animate-spin-slow" />
+      <div>
+        <p className="text-[9px] font-black uppercase tracking-widest text-rose-400">Giải đấu kết thúc sau</p>
+        <p className="text-lg font-black tabular-nums">
+          {countdown.d}d {fmt(countdown.h)}:{fmt(countdown.m)}:{fmt(countdown.s)}
+        </p>
+      </div>
+    </div>
+  );
+});
+
 export default function LeaderboardPage() {
   const { user } = useAuth();
   const [tab, setTab] = useState('Global');
   const [loading, setLoading] = useState(true);
   const [leaderboard, setLeaderboard] = useState<LeaderboardUser[]>([]);
-  const [countdown, setCountdown] = useState({ d: 4, h: 18, m: 35, s: 42 });
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
@@ -60,13 +92,12 @@ export default function LeaderboardPage() {
           // Sort by XP descending
           const sortedUsers = [...dbUsers].sort((a, b) => b.xp - a.xp);
 
-          // Map display fields (colors, initials, trend, isMe flags)
+          // Map display fields
           const mappedUsers = sortedUsers.map((u, i) => {
             const initials = u.username ? u.username.charAt(0).toUpperCase() : 'U';
             const color = AVATAR_COLORS[i % AVATAR_COLORS.length];
             const isMe = user ? (u.id === user.uid || u.email === user.email) : false;
             
-            // Random trend simulation for visual premium feedback
             let trend = 'same';
             if (i === 0 || i % 3 === 0) trend = 'up';
             else if (i % 4 === 0) trend = 'down';
@@ -92,24 +123,8 @@ export default function LeaderboardPage() {
     fetchLeaderboard();
   }, [user]);
 
-  // Live countdown timer
-  useEffect(() => {
-    const t = setInterval(() => {
-      setCountdown(prev => {
-        let { d, h, m, s } = prev;
-        s--; if (s < 0) { s = 59; m--; }
-        if (m < 0) { m = 59; h--; }
-        if (h < 0) { h = 23; d--; }
-        if (d < 0) { d = 0; h = 0; m = 0; s = 0; }
-        return { d, h, m, s };
-      });
-    }, 1000);
-    return () => clearInterval(t);
-  }, []);
-
   const myRank = leaderboard.find(p => p.isMe);
   const myIndex = leaderboard.findIndex(p => p.isMe);
-  const fmt = (n: number) => String(n).padStart(2, '0');
 
   if (loading) {
     return (
@@ -136,15 +151,7 @@ export default function LeaderboardPage() {
           <p className="text-slate-500 font-medium">Bảng vinh danh trực tiếp từ cơ sở dữ liệu học viên!</p>
         </div>
         <div className="flex items-center gap-4">
-          <div className="px-5 py-3 bg-rose-50 text-rose-600 rounded-2xl border border-rose-100 flex items-center gap-3">
-            <Timer className="w-5 h-5 text-rose-500 animate-spin-slow" />
-            <div>
-              <p className="text-[9px] font-black uppercase tracking-widest text-rose-400">Giải đấu kết thúc sau</p>
-              <p className="text-lg font-black tabular-nums">
-                {countdown.d}d {fmt(countdown.h)}:{fmt(countdown.m)}:{fmt(countdown.s)}
-              </p>
-            </div>
-          </div>
+          <CountdownBadge />
         </div>
       </header>
 
@@ -269,7 +276,7 @@ export default function LeaderboardPage() {
           <div className="flex gap-1">
             {TABS.map(t => (
               <button key={t} onClick={() => setTab(t)}
-                className={cn("px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center gap-1",
+                className={cn("px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center gap-1 cursor-pointer",
                   tab === t ? "bg-primary text-white shadow-md" : "text-slate-400 hover:text-slate-700"
                 )}>
                 {t === 'Global' ? <Globe className="w-3 h-3" /> : t === 'Weekly' ? <Timer className="w-3 h-3" /> : <Users className="w-3 h-3" />}
@@ -331,7 +338,7 @@ export default function LeaderboardPage() {
                 </p>
               </div>
             </div>
-            <button className="px-6 py-3 bg-primary text-white rounded-xl font-bold text-sm hover:opacity-90 transition-all flex items-center gap-2">
+            <button className="px-6 py-3 bg-primary text-white rounded-xl font-bold text-sm hover:opacity-90 transition-all flex items-center gap-2 cursor-pointer">
               Chia sẻ thành tích <Sparkles className="w-4 h-4" />
             </button>
           </div>

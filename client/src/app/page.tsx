@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { memo } from 'react';
 import { 
   Flame, 
   Target, 
@@ -9,53 +9,19 @@ import {
   TrendingUp, 
   ChevronRight,
   BookOpen,
-  Mic2,
-  MessageSquare,
   PenTool,
   Sparkles, 
   ArrowRight,
-  Calendar
+  MessageSquare
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-export default function Dashboard() {
-  const { user, dbUser, signInWithGoogle, loading } = useAuth();
-  const router = useRouter();
-
-  const [stats, setStats] = React.useState({ wordsLearned: 0, oxfordLearned: 0, totalOxford: 3000 });
+// Memoized ICT Clock Widget to prevent whole dashboard re-rendering every 1 second
+const IctClockWidget = memo(function IctClockWidget() {
   const [vietnamTime, setVietnamTime] = React.useState<Date | null>(null);
-  const [reviewDue, setReviewDue] = React.useState(0);
-  const [needsReview, setNeedsReview] = React.useState(false);
-  const [checkedIn, setCheckedIn] = React.useState(false);
-  const [checkingIn, setCheckingIn] = React.useState(false);
-  const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
-
-  const handleCheckin = async () => {
-    if (!user || checkingIn || checkedIn) return;
-    try {
-      setCheckingIn(true);
-      const token = await user.getIdToken();
-      const res = await fetch(`${API_BASE}/users/checkin`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      if (res.ok) {
-        setCheckedIn(true);
-        // Refresh local view to update level/streak/XP stats dynamically
-        window.location.reload();
-      }
-    } catch (err) {
-      console.warn('Failed to checkin:', err);
-    } finally {
-      setCheckingIn(false);
-    }
-  };
 
   React.useEffect(() => {
     const updateTime = () => {
@@ -114,35 +80,91 @@ export default function Dashboard() {
     );
   };
 
+  return (
+    <div className="premium-card p-6 space-y-4">
+      <div className="flex items-center justify-between">
+        <h3 className="font-black text-slate-800 text-xs flex items-center gap-1.5 uppercase tracking-wider">
+          <Clock className="w-4 h-4 text-primary animate-pulse" /> Giờ Việt Nam (ICT)
+        </h3>
+        <span className="text-[8px] font-black text-primary bg-primary/10 px-2 py-0.5 rounded uppercase tracking-wider">
+          UTC+7
+        </span>
+      </div>
+      
+      <div className="bg-slate-900 text-white rounded-2xl p-4 text-center relative overflow-hidden shadow-inner">
+        <span className="text-3xl font-black tabular-nums tracking-widest block">
+          {vietnamTime ? vietnamTime.toLocaleTimeString('vi-VN') : '--:--:--'}
+        </span>
+        <span className="text-[9px] font-bold text-slate-400 block mt-1">
+          {vietnamTime ? vietnamTime.toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : ''}
+        </span>
+        <div className="absolute -right-6 -bottom-6 w-16 h-16 bg-primary/10 rounded-full blur-xl" />
+      </div>
+
+      <div className="border-t border-slate-100 pt-4">
+        {vietnamTime && renderMiniCalendar(vietnamTime)}
+      </div>
+
+      <Link href="/checkin" className="w-full text-center block py-2.5 bg-slate-50 border border-slate-100 hover:bg-slate-100 rounded-xl text-xs font-black uppercase tracking-widest text-slate-600 transition-all">
+        Lịch sử điểm danh ➜
+      </Link>
+    </div>
+  );
+});
+
+export default function Dashboard() {
+  const { user, dbUser, refreshDbUser, loading } = useAuth();
+  const router = useRouter();
+
+  const [stats, setStats] = React.useState({ wordsLearned: 0, oxfordLearned: 0, totalOxford: 3000 });
+  const [reviewDue, setReviewDue] = React.useState(0);
+  const [needsReview, setNeedsReview] = React.useState(false);
+  const [checkedIn, setCheckedIn] = React.useState(false);
+  const [checkingIn, setCheckingIn] = React.useState(false);
+  const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+
+  const handleCheckin = async () => {
+    if (!user || checkingIn || checkedIn) return;
+    try {
+      setCheckingIn(true);
+      const token = await user.getIdToken();
+      const res = await fetch(`${API_BASE}/users/checkin`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (res.ok) {
+        setCheckedIn(true);
+        // Smoothly refresh DB user state without heavy browser reload
+        if (refreshDbUser) refreshDbUser();
+      }
+    } catch (err) {
+      console.warn('Failed to checkin:', err);
+    } finally {
+      setCheckingIn(false);
+    }
+  };
+
+  // Parallel data fetching for fast load
   React.useEffect(() => {
     if (user) {
       user.getIdToken().then(token => {
-        // Fetch Stats
-        fetch(`${API_BASE}/vocabulary/stats`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        })
-        .then(res => res.json())
-        .then(data => setStats(data))
-        .catch(err => console.warn("Failed to fetch vocabulary stats:", err?.message || err));
+        const headers = { 'Authorization': `Bearer ${token}` };
 
-        // Fetch Review Status (uses dedicated API, not notebook)
-        fetch(`${API_BASE}/vocabulary/daily-review-status`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        })
-        .then(res => res.json())
-        .then(data => {
-          setReviewDue(data.dueCount || 0);
-          setNeedsReview(data.needsReminder || false);
-        })
-        .catch(err => console.warn("Failed to fetch daily review status:", err?.message || err));
-
-        // Fetch Check-in Status
-        fetch(`${API_BASE}/users/checkin-status`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        })
-        .then(res => res.json())
-        .then(data => setCheckedIn(data.checkedIn))
-        .catch(err => console.warn("Failed to fetch checkin status:", err?.message || err));
+        Promise.all([
+          fetch(`${API_BASE}/vocabulary/stats`, { headers }).then(r => r.ok ? r.json() : null),
+          fetch(`${API_BASE}/vocabulary/daily-review-status`, { headers }).then(r => r.ok ? r.json() : null),
+          fetch(`${API_BASE}/users/checkin-status`, { headers }).then(r => r.ok ? r.json() : null)
+        ]).then(([statsData, reviewData, checkinData]) => {
+          if (statsData) setStats(statsData);
+          if (reviewData) {
+            setReviewDue(reviewData.dueCount || 0);
+            setNeedsReview(reviewData.needsReminder || false);
+          }
+          if (checkinData) setCheckedIn(checkinData.checkedIn);
+        }).catch(err => console.warn("Dashboard fetch error:", err));
       });
     }
   }, [user, API_BASE]);
@@ -232,7 +254,7 @@ export default function Dashboard() {
           <button 
             onClick={handleCheckin} 
             disabled={checkingIn}
-            className="px-8 py-3 bg-white text-orange-600 rounded-2xl font-black text-sm hover:bg-orange-50 transition-all shadow-md relative z-10 disabled:opacity-50"
+            className="px-8 py-3 bg-white text-orange-600 rounded-2xl font-black text-sm hover:bg-orange-50 transition-all shadow-md relative z-10 disabled:opacity-50 cursor-pointer"
           >
             {checkingIn ? 'ĐANG ĐIỂM DANH...' : 'ĐIỂM DANH NGAY'}
           </button>
@@ -376,34 +398,7 @@ export default function Dashboard() {
         {/* Right Sidebar */}
         <div className="space-y-6">
           {/* Vietnam Time & Calendar Widget */}
-          <div className="premium-card p-6 space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="font-black text-slate-800 text-xs flex items-center gap-1.5 uppercase tracking-wider">
-                <Clock className="w-4 h-4 text-primary animate-pulse" /> Giờ Việt Nam (ICT)
-              </h3>
-              <span className="text-[8px] font-black text-primary bg-primary/10 px-2 py-0.5 rounded uppercase tracking-wider">
-                UTC+7
-              </span>
-            </div>
-            
-            <div className="bg-slate-900 text-white rounded-2xl p-4 text-center relative overflow-hidden shadow-inner">
-              <span className="text-3xl font-black tabular-nums tracking-widest block">
-                {vietnamTime ? vietnamTime.toLocaleTimeString('vi-VN') : '--:--:--'}
-              </span>
-              <span className="text-[9px] font-bold text-slate-400 block mt-1">
-                {vietnamTime ? vietnamTime.toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : ''}
-              </span>
-              <div className="absolute -right-6 -bottom-6 w-16 h-16 bg-primary/10 rounded-full blur-xl" />
-            </div>
-
-            <div className="border-t border-slate-100 pt-4">
-              {vietnamTime && renderMiniCalendar(vietnamTime)}
-            </div>
-
-            <Link href="/checkin" className="w-full text-center block py-2.5 bg-slate-50 border border-slate-100 hover:bg-slate-100 rounded-xl text-xs font-black uppercase tracking-widest text-slate-600 transition-all">
-              Lịch sử điểm danh ➜
-            </Link>
-          </div>
+          <IctClockWidget />
 
           <div className="premium-card p-6">
             <div className="flex items-center justify-between mb-6">
