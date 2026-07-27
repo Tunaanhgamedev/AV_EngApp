@@ -1,6 +1,6 @@
 'use client';
 
-import React, { memo } from 'react';
+import React, { memo, useMemo, useState, useEffect } from 'react';
 import { 
   Flame, 
   Target, 
@@ -19,23 +19,9 @@ import { useAuth } from '@/context/AuthContext';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-// Memoized ICT Clock Widget to prevent whole dashboard re-rendering every 1 second
-const IctClockWidget = memo(function IctClockWidget() {
-  const [vietnamTime, setVietnamTime] = React.useState<Date | null>(null);
-
-  React.useEffect(() => {
-    const updateTime = () => {
-      const d = new Date();
-      const utc = d.getTime() + (d.getTimezoneOffset() * 60000);
-      const ictTime = new Date(utc + (3600000 * 7));
-      setVietnamTime(ictTime);
-    };
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const renderMiniCalendar = (ictDate: Date) => {
+// Memoized Mini Calendar component - only re-renders when date changes
+const MiniCalendar = memo(function MiniCalendar({ ictDate }: { ictDate: Date }) {
+  const days = useMemo(() => {
     const year = ictDate.getFullYear();
     const month = ictDate.getMonth();
     const todayDate = ictDate.getDate();
@@ -45,15 +31,15 @@ const IctClockWidget = memo(function IctClockWidget() {
     startDayOfWeek = startDayOfWeek === 0 ? 6 : startDayOfWeek - 1;
 
     const totalDays = new Date(year, month + 1, 0).getDate();
-    const days = [];
+    const daysArr = [];
 
     for (let i = 0; i < startDayOfWeek; i++) {
-      days.push(<div key={`empty-${i}`} className="w-6 h-6" />);
+      daysArr.push(<div key={`empty-${i}`} className="w-6 h-6" />);
     }
 
     for (let d = 1; d <= totalDays; d++) {
       const isToday = d === todayDate;
-      days.push(
+      daysArr.push(
         <div 
           key={d} 
           className={cn(
@@ -67,18 +53,36 @@ const IctClockWidget = memo(function IctClockWidget() {
         </div>
       );
     }
+    return daysArr;
+  }, [ictDate.toDateString()]);
 
-    return (
-      <div className="space-y-2">
-        <div className="grid grid-cols-7 gap-1 text-[8px] font-bold text-slate-400 text-center uppercase tracking-wider">
-          <span>T2</span><span>T3</span><span>T4</span><span>T5</span><span>T6</span><span>T7</span><span>CN</span>
-        </div>
-        <div className="grid grid-cols-7 gap-1 text-center">
-          {days}
-        </div>
+  return (
+    <div className="space-y-2">
+      <div className="grid grid-cols-7 gap-1 text-[8px] font-bold text-slate-400 text-center uppercase tracking-wider">
+        <span>T2</span><span>T3</span><span>T4</span><span>T5</span><span>T6</span><span>T7</span><span>CN</span>
       </div>
-    );
-  };
+      <div className="grid grid-cols-7 gap-1 text-center">
+        {days}
+      </div>
+    </div>
+  );
+});
+
+// Memoized ICT Clock Widget
+const IctClockWidget = memo(function IctClockWidget() {
+  const [vietnamTime, setVietnamTime] = useState<Date | null>(null);
+
+  useEffect(() => {
+    const updateTime = () => {
+      const d = new Date();
+      const utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+      const ictTime = new Date(utc + (3600000 * 7));
+      setVietnamTime(ictTime);
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="premium-card p-6 space-y-4">
@@ -102,7 +106,7 @@ const IctClockWidget = memo(function IctClockWidget() {
       </div>
 
       <div className="border-t border-slate-100 pt-4">
-        {vietnamTime && renderMiniCalendar(vietnamTime)}
+        {vietnamTime && <MiniCalendar ictDate={vietnamTime} />}
       </div>
 
       <Link href="/checkin" className="w-full text-center block py-2.5 bg-slate-50 border border-slate-100 hover:bg-slate-100 rounded-xl text-xs font-black uppercase tracking-widest text-slate-600 transition-all">
@@ -116,11 +120,32 @@ export default function Dashboard() {
   const { user, dbUser, refreshDbUser, loading } = useAuth();
   const router = useRouter();
 
-  const [stats, setStats] = React.useState({ wordsLearned: 0, oxfordLearned: 0, totalOxford: 3000 });
-  const [reviewDue, setReviewDue] = React.useState(0);
-  const [needsReview, setNeedsReview] = React.useState(false);
-  const [checkedIn, setCheckedIn] = React.useState(false);
-  const [checkingIn, setCheckingIn] = React.useState(false);
+  // Instant 0ms load with LocalStorage caching
+  const [stats, setStats] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const cached = localStorage.getItem('dash_stats');
+      if (cached) try { return JSON.parse(cached); } catch (e) {}
+    }
+    return { wordsLearned: 0, oxfordLearned: 0, totalOxford: 3000 };
+  });
+
+  const [reviewDue, setReviewDue] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return Number(localStorage.getItem('dash_review_due') || 0);
+    }
+    return 0;
+  });
+
+  const [needsReview, setNeedsReview] = useState(false);
+
+  const [checkedIn, setCheckedIn] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('dash_checked_in') === 'true';
+    }
+    return false;
+  });
+
+  const [checkingIn, setCheckingIn] = useState(false);
   const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
   const handleCheckin = async () => {
@@ -137,7 +162,7 @@ export default function Dashboard() {
       });
       if (res.ok) {
         setCheckedIn(true);
-        // Smoothly refresh DB user state without heavy browser reload
+        if (typeof window !== 'undefined') localStorage.setItem('dash_checked_in', 'true');
         if (refreshDbUser) refreshDbUser();
       }
     } catch (err) {
@@ -147,10 +172,10 @@ export default function Dashboard() {
     }
   };
 
-  // Parallel data fetching for fast load
-  React.useEffect(() => {
+  // Instant background data sync
+  useEffect(() => {
     if (user) {
-      user.getIdToken().then(token => {
+      user.getIdToken(false).then(token => {
         const headers = { 'Authorization': `Bearer ${token}` };
 
         Promise.all([
@@ -158,22 +183,37 @@ export default function Dashboard() {
           fetch(`${API_BASE}/vocabulary/daily-review-status`, { headers }).then(r => r.ok ? r.json() : null),
           fetch(`${API_BASE}/users/checkin-status`, { headers }).then(r => r.ok ? r.json() : null)
         ]).then(([statsData, reviewData, checkinData]) => {
-          if (statsData) setStats(statsData);
+          if (statsData) {
+            setStats(statsData);
+            if (typeof window !== 'undefined') localStorage.setItem('dash_stats', JSON.stringify(statsData));
+          }
           if (reviewData) {
             setReviewDue(reviewData.dueCount || 0);
             setNeedsReview(reviewData.needsReminder || false);
+            if (typeof window !== 'undefined') localStorage.setItem('dash_review_due', String(reviewData.dueCount || 0));
           }
-          if (checkinData) setCheckedIn(checkinData.checkedIn);
+          if (checkinData) {
+            setCheckedIn(checkinData.checkedIn);
+            if (typeof window !== 'undefined') localStorage.setItem('dash_checked_in', String(checkinData.checkedIn));
+          }
         }).catch(err => console.warn("Dashboard fetch error:", err));
       });
     }
   }, [user, API_BASE]);
 
-  if (loading) {
+  const oxfordPct = useMemo(() => {
+    return (((stats?.oxfordLearned || 0) / 3000) * 100).toFixed(1);
+  }, [stats?.oxfordLearned]);
+
+  const oxfordStrokeDash = useMemo(() => {
+    return `${((stats?.oxfordLearned || 0) / 3000) * 326.7} 326.7`;
+  }, [stats?.oxfordLearned]);
+
+  if (loading && !user) {
     return (
-      <div className="flex flex-col items-center justify-center h-[60vh] space-y-4">
-        <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-slate-500 font-medium">Loading your profile...</p>
+      <div className="flex flex-col items-center justify-center h-[50vh] space-y-4">
+        <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-slate-400 font-bold text-xs">Đang tải nhanh dữ liệu bảng điều khiển...</p>
       </div>
     );
   }
@@ -196,12 +236,12 @@ export default function Dashboard() {
           <div className="flex flex-wrap justify-center gap-4 pt-6">
             <button 
               onClick={() => router.push('/login')}
-              className="px-8 py-4 bg-slate-900 text-white rounded-2xl font-bold text-lg hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/20 flex items-center gap-2 group"
+              className="px-8 py-4 bg-slate-900 text-white rounded-2xl font-bold text-lg hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/20 flex items-center gap-2 group cursor-pointer"
             >
               Get Started for Free
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
-            <button className="px-8 py-4 glass border rounded-2xl font-bold text-lg hover:bg-slate-50 transition-all">
+            <button className="px-8 py-4 glass border rounded-2xl font-bold text-lg hover:bg-slate-50 transition-all cursor-pointer">
               Watch Demo
             </button>
           </div>
@@ -235,7 +275,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-700">
+    <div className="space-y-8 animate-in fade-in duration-500">
       {/* Daily Check-in Notification */}
       {!checkedIn ? (
         <div className="premium-card p-6 bg-gradient-to-r from-amber-500 to-orange-600 text-white flex flex-col md:flex-row items-center justify-between gap-4 animate-in slide-in-from-top-4 relative overflow-hidden shadow-xl shadow-orange-500/20">
@@ -323,7 +363,7 @@ export default function Dashboard() {
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {[
           { label: 'Words Learned', value: (stats?.wordsLearned ?? 0).toString(), sub: 'Total saved words', icon: BookOpen, color: 'text-blue-500', bg: 'bg-blue-50' },
-          { label: 'Oxford 3000™', value: `${(((stats?.oxfordLearned || 0) / 3000) * 100).toFixed(1)}%`, sub: `${stats?.oxfordLearned || 0} / 3000 learned`, icon: Target, color: 'text-rose-500', bg: 'bg-rose-50' },
+          { label: 'Oxford 3000™', value: `${oxfordPct}%`, sub: `${stats?.oxfordLearned || 0} / 3000 learned`, icon: Target, color: 'text-rose-500', bg: 'bg-rose-50' },
           { label: 'XP Points', value: dbUser?.xp?.toLocaleString() || '0', sub: 'Ranking...', icon: TrendingUp, color: 'text-purple-500', bg: 'bg-purple-50' },
           { label: 'Learning Time', value: '1.5h', sub: 'This week', icon: Clock, color: 'text-green-500', bg: 'bg-green-50' },
         ].map((stat, i) => (
@@ -416,7 +456,7 @@ export default function Dashboard() {
                   <circle 
                     cx="60" cy="60" r="52" fill="none" 
                     stroke="url(#progressGrad)" strokeWidth="10" strokeLinecap="round"
-                    strokeDasharray={`${((stats?.oxfordLearned || 0) / 3000) * 326.7} 326.7`}
+                    strokeDasharray={oxfordStrokeDash}
                     className="transition-all duration-1000 ease-out"
                   />
                   <defs>
@@ -428,7 +468,7 @@ export default function Dashboard() {
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
                   <span className="text-3xl font-black text-slate-800">
-                    {(((stats?.oxfordLearned || 0) / 3000) * 100).toFixed(0)}%
+                    {Math.round(Number(oxfordPct))}%
                   </span>
                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Complete</span>
                 </div>
