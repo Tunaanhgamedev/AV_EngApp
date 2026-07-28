@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, Suspense, lazy } from 'react';
-import { Gamepad2, Zap, Trophy, Target, Brain, Timer, Star, ChevronRight, Flame, Sparkles, Loader2, ImageIcon } from 'lucide-react';
+import { Gamepad2, Zap, Trophy, Target, Brain, Timer, Star, ChevronRight, Flame, Sparkles, Loader2, ImageIcon, Swords } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
 import { GAME_CATALOG_DATA } from '@/data/games/gameData';
@@ -15,18 +15,20 @@ const SentenceBuilderGame = lazy(() => import('./components/SentenceBuilderGame'
 const IdiomConnectorGame = lazy(() => import('./components/IdiomConnectorGame'));
 const ImageGuessGame = lazy(() => import('./components/ImageGuessGame'));
 const WordHunterGame = lazy(() => import('./components/WordHunterGame'));
+const WordBossBattleGame = lazy(() => import('./components/WordBossBattleGame'));
 
 const GameLoading = () => (
   <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center">
-    <div className="bg-white rounded-3xl p-12 shadow-2xl text-center space-y-4">
+    <div className="bg-white dark:bg-slate-900 rounded-3xl p-12 shadow-2xl text-center space-y-4 border border-slate-100 dark:border-slate-800">
       <Loader2 className="w-10 h-10 animate-spin text-indigo-500 mx-auto" />
-      <p className="text-sm font-bold text-slate-500">Đang tải trò chơi...</p>
+      <p className="text-sm font-bold text-slate-500 dark:text-slate-400">Đang tải trò chơi...</p>
     </div>
   </div>
 );
 
 const getGameIcon = (id: string) => {
   switch (id) {
+    case 'bossBattle': return <Swords className="w-10 h-10 text-yellow-300" />;
     case 'vocab': return <Target className="w-10 h-10" />;
     case 'quiz': return <Timer className="w-10 h-10" />;
     case 'scram': return <Brain className="w-10 h-10" />;
@@ -99,54 +101,64 @@ export default function GamesPage() {
   };
 
   useEffect(() => {
-    const fetchGameData = async () => {
+    const fetchCategoryWords = async () => {
+      setLoading(true);
       try {
-        setLoading(true);
         const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
-        const token = user ? await user.getIdToken() : '';
-        const headers: Record<string, string> = {
-          'Content-Type': 'application/json'
-        };
-        if (token) {
-          headers['Authorization'] = `Bearer ${token}`;
-        }
+        let url = `${API_BASE}/vocabulary/words?limit=50`;
+        if (selectedCategory === 'oxford') url += '&topic=Oxford3000';
+        if (selectedCategory === 'toeic') url += '&category=toeic';
+        if (selectedCategory === 'ielts') url += '&category=ielts';
 
-        const res = await fetch(`${API_BASE}/vocabulary/game-data?limit=40&category=${selectedCategory}`, {
-          headers
-        });
-        if (res.ok) {
-          const data = await res.json();
-          if (data.words) {
-            setDbWords(data.words);
+        if (selectedCategory === 'notebook' && user) {
+          const token = await user.getIdToken();
+          const notebookRes = await fetch(`${API_BASE}/vocabulary/notebook`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          if (notebookRes.ok) {
+            const nData = await notebookRes.json();
+            setDbWords(nData.map((item: any) => ({
+              id: item.id,
+              word: item.word,
+              meaningVi: item.meaningVi,
+              meaningEn: item.meaningEn,
+              wordType: item.wordType,
+              phonetic: item.phonetic
+            })));
+            return;
           }
         }
+
+        const res = await fetch(url);
+        if (res.ok) {
+          const data = await res.json();
+          setDbWords(data.words || []);
+        }
       } catch (err) {
-        console.error('Failed to load dynamic game vocabulary words:', err);
+        console.error("Failed to load category words:", err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchGameData();
+    fetchCategoryWords();
   }, [selectedCategory, user]);
 
   useEffect(() => {
     const fetchUserRank = async () => {
       if (!user) return;
       try {
-        const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
         const token = await user.getIdToken();
+        const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
         const res = await fetch(`${API_BASE}/users/leaderboard`, {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { 'Authorization': `Bearer ${token}` }
         });
         if (res.ok) {
-          const dbUsers: any[] = await res.json();
-          const sorted = [...dbUsers].sort((a, b) => b.xp - a.xp);
-          const myIndex = sorted.findIndex(u => u.id === user.uid || u.email === user.email);
-          const myUser = sorted[myIndex];
-          if (myIndex !== -1 && myUser) {
-            setRank(`#${myIndex + 1}`);
-            setXp(myUser.xp.toLocaleString());
+          const data = await res.json();
+          const currentUser = data.find((u: any) => u.firebaseUid === user.uid || u.email === user.email);
+          if (currentUser) {
+            setRank(`#${currentUser.rank || '-'}`);
+            setXp(`${currentUser.xp ? currentUser.xp.toLocaleString() : 0}`);
           }
         }
       } catch (err) {
@@ -163,6 +175,7 @@ export default function GamesPage() {
   return (
     <div className="space-y-10 animate-in fade-in duration-700">
       <Suspense fallback={<GameLoading />}>
+        {activeGame === 'bossBattle' && <WordBossBattleGame {...gameProps} />}
         {activeGame === 'vocab' && <VocabMatchGame {...gameProps} />}
         {activeGame === 'quiz' && <SpeedQuizGame {...gameProps} />}
         {activeGame === 'scram' && <WordScrambleGame {...gameProps} />}
@@ -173,9 +186,9 @@ export default function GamesPage() {
       </Suspense>
 
       <header className="text-center space-y-4">
-        <div className="inline-flex p-3 bg-indigo-100 rounded-2xl text-indigo-600 mb-2"><Gamepad2 className="w-8 h-8" /></div>
+        <div className="inline-flex p-3 bg-indigo-100 dark:bg-indigo-900/30 rounded-2xl text-indigo-600 dark:text-indigo-400 mb-2"><Gamepad2 className="w-8 h-8" /></div>
         <h1 className="text-4xl font-black tracking-tight">Quiz & Games</h1>
-        <p className="text-slate-500 max-w-lg mx-auto font-medium">Học mà chơi, chơi mà học. Tích lũy điểm kinh nghiệm XP, vượt qua các thử thách ghép câu và từ vựng thú vị!</p>
+        <p className="text-slate-500 dark:text-slate-400 max-w-lg mx-auto font-medium">Học mà chơi, chơi mà học. Tích lũy điểm kinh nghiệm XP, thi đấu Trùm Ngữ Pháp và vượt qua các thử thách ghép từ độc lạ!</p>
 
         {loading && (
           <div className="flex items-center justify-center gap-2 text-xs font-bold text-slate-400">
@@ -309,20 +322,20 @@ export default function GamesPage() {
             className="premium-card p-1 group cursor-pointer hover:shadow-2xl transition-all duration-500"
             onClick={() => setActiveGame(game.id)}
           >
-            <div className="bg-white rounded-[22px] p-6 flex items-start gap-6 h-full">
+            <div className="bg-white dark:bg-slate-900 rounded-[22px] p-6 flex items-start gap-6 h-full border border-slate-100 dark:border-slate-800">
               <div className={cn("w-20 h-20 rounded-3xl flex items-center justify-center text-white flex-shrink-0 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6", game.color, game.shadow)}>
                 {getGameIcon(game.id)}
               </div>
               <div className="flex-1 space-y-3">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-xl font-black text-slate-800">{game.title}</h3>
+                  <h3 className="text-xl font-black text-slate-800 dark:text-slate-100">{game.title}</h3>
                   <span className="text-xs font-black text-green-500">{game.xp}</span>
                 </div>
-                <p className="text-sm text-slate-500 font-medium leading-relaxed">{game.description}</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed">{game.description}</p>
                 <div className="flex items-center justify-between pt-2">
                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{game.players}</span>
                   <button className="flex items-center gap-1 text-sm font-black transition-all text-primary group-hover:translate-x-1 cursor-pointer">
-                    {['vocab', 'quiz', 'scram', 'sentence'].includes(game.id)
+                    {['vocab', 'quiz', 'scram', 'sentence', 'bossBattle'].includes(game.id)
                       ? `Chơi (${getCategoryLabel(selectedCategory)})`
                       : 'Chơi Ngay'} 
                     <ChevronRight className="w-4 h-4" />
@@ -336,15 +349,15 @@ export default function GamesPage() {
 
       {/* Achievements */}
       <section className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 premium-card p-8 bg-slate-50 border-slate-100">
+        <div className="lg:col-span-2 premium-card p-8 bg-slate-50 dark:bg-slate-900 border-slate-100 dark:border-slate-800">
           <div className="flex items-center justify-between mb-8">
-            <h3 className="text-xl font-bold flex items-center gap-2 text-slate-800"><Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />Huy Hiệu Trò Chơi</h3>
+            <h3 className="text-xl font-bold flex items-center gap-2 text-slate-800 dark:text-slate-100"><Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />Huy Hiệu Trò Chơi</h3>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
-            {[{ label: 'Sát Thủ Tốc Độ', value: 'Cấp 4', icon: '⚡' }, { label: 'Vua Chính Tả', value: 'Cấp 2', icon: '👑' }, { label: 'Ghép Cặp Tài Ba', value: 'Cấp 5', icon: '🤝' }, { label: 'Cao Thủ Ngữ Pháp', value: 'Cấp 1', icon: '🎓' }].map((b, i) => (
-              <div key={i} className="text-center space-y-3 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
+            {[{ label: 'Dũng Sĩ Diệt Trùm', value: 'Cấp 1', icon: '⚔️' }, { label: 'Sát Thủ Tốc Độ', value: 'Cấp 4', icon: '⚡' }, { label: 'Vua Chính Tả', value: 'Cấp 2', icon: '👑' }, { label: 'Ghép Cặp Tài Ba', value: 'Cấp 5', icon: '🤝' }].map((b, i) => (
+              <div key={i} className="text-center space-y-3 p-4 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
                 <div className="text-3xl">{b.icon}</div>
-                <div><p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{b.label}</p><p className="font-bold text-slate-800">{b.value}</p></div>
+                <div><p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{b.label}</p><p className="font-bold text-slate-800 dark:text-slate-100">{b.value}</p></div>
               </div>
             ))}
           </div>

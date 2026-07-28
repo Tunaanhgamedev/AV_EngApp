@@ -68,7 +68,23 @@ export const STATIC_QUIZ_QUESTIONS = [
   { q: 'Điền từ: "She has an ___ supply of books."', options: ['abundant', 'empty', 'lacking', 'few'], answer: 0 },
   { q: 'Từ "Unanimous" biểu thị điều gì trong cuộc họp?', options: ['Tất cả nhất trí 100%', 'Bất đồng ý kiến', 'Hủy bỏ cuộc họp', 'Tranh cãi gay gắt'], answer: 0 },
   { q: 'Ý nghĩa của từ "Scrutinize" trong công việc là gì?', options: ['Xem xét hời hợt', 'Ký duyệt ngay', 'Săm soi, kiểm tra cực kỳ kỹ lưỡng', 'Bỏ qua lỗi'], answer: 2 },
-  { q: 'Từ nào đồng nghĩa với "Compensate"?', options: ['Reimburse/Pay (Bồi thường)', 'Steal (Trộm)', 'Demand (Yêu cầu)', 'Refuse (Từ chối)'], answer: 0 }
+  { q: 'Từ nào đồng nghĩa với "Compensate"?', options: ['Reimburse/Pay (Bồi thường)', 'Steal (Trộm)', 'Demand (Yêu cầu)', 'Refuse (Từ chối)'], answer: 0 },
+  // --- EXPANDED QUIZ QUESTIONS (TOEIC / IELTS / Advanced Vocab) ---
+  { q: 'Trái nghĩa với từ "Ambiguous" (Mơ hồ) là gì?', options: ['Clear / Explicit (Rõ ràng)', 'Vague', 'Obscure', 'Uncertain'], answer: 0 },
+  { q: 'Từ "Pragmatic" miêu tả nét tính cách nào?', options: ['Thực tế, trọng hiệu quả', 'Mơ mộng', 'Lý thuyết suông', 'Tự phụ'], answer: 0 },
+  { q: 'Điền phrasal verb: "I need to ___ the report before submitting."', options: ['look over (Đọc rà soát)', 'look down', 'look up to', 'look into to'], answer: 0 },
+  { q: 'Từ "Resilient" đồng nghĩa với từ nào?', options: ['Tough / Adaptable (Kiên cường)', 'Fragile', 'Weak', 'Sensitive'], answer: 0 },
+  { q: 'Trong kinh doanh, "Incentive" có nghĩa là gì?', options: ['Sự khuyến khích / Phần thưởng động viên', 'Hình phạt', 'Nợ nần', 'Thuế thu nhập'], answer: 0 },
+  { q: 'Từ "Eloquent" miêu tả khả năng gì?', options: ['Hùng biện, ăn nói lưu loát', 'Viết nhanh', 'Lắng nghe tốt', 'Tính toán giỏi'], answer: 0 },
+  { q: 'Điền từ: "The board of directors agreed to ___ the merger."', options: ['approve (Phê duyệt)', 'dismiss', 'ignore', 'cancel'], answer: 0 },
+  { q: 'Ý nghĩa của idiom "Back to the drawing board" là gì?', options: ['Làm lại từ đầu sau khi thất bại', 'Vẽ tranh nghệ thuật', 'Bỏ cuộc hẳn', 'Hoàn thành công việc'], answer: 0 },
+  { q: 'Từ "Versatile" dùng để tả một người như thế nào?', options: ['Đa năng, linh hoạt', 'Chỉ làm được một việc', 'Cứng nhắc', 'Chậm chạp'], answer: 0 },
+  { q: 'Điền cấu trúc: "Hardly had I arrived home ___ it started to rain."', options: ['when', 'than', 'after', 'while'], answer: 0 },
+  { q: 'Từ "Substantial" trong "Substantial growth" nghĩa là gì?', options: ['Đáng kể, lớn lao', 'Nhỏ bé', 'Không quan trọng', 'Tạm thời'], answer: 0 },
+  { q: 'Idiom "Burn the midnight oil" nghĩa là gì?', options: ['Thức khuya làm việc/học bài', 'Đốt đèn dầu', 'Tốn tiền điện', 'Đi ngủ sớm'], answer: 0 },
+  { q: 'Từ "Synthesize" có nghĩa là gì trong nghiên cứu?', options: ['Tổng hợp thông tin', 'Phân tích riêng lẻ', 'Xóa dữ liệu', 'Sao chép'], answer: 0 },
+  { q: 'Chọn dạng đúng của động từ: "I regret ___ you that the event is canceled."', options: ['to inform', 'informing', 'informed', 'inform'], answer: 0 },
+  { q: 'Ý nghĩa của từ "Reconcile" là gì?', options: ['Hòa giải, làm hòa', 'Gây xung đột', 'Chia rẽ', 'Tranh chấp'], answer: 0 }
 ];
 
 export const STATIC_SCRAMBLE_WORDS = [
@@ -199,7 +215,21 @@ export const IMAGE_GUESS_POOL = [
   }
 ];
 
+export const BOSS_BATTLE_SPELLS = [
+  { id: 'strike', name: 'Lexical Strike', desc: 'Đòn đánh thường bằng từ vựng', damage: 150, mp: 0, icon: '⚔️' },
+  { id: 'crit', name: 'Synonym Blast', desc: 'Sát thương chí mạng với từ đồng nghĩa', damage: 300, mp: 30, icon: '⚡' },
+  { id: 'shield', name: 'Grammar Shield', desc: 'Hồi 50 Giáp & 30 Máu với câu hỏi ngữ pháp', damage: 100, mp: 20, icon: '🛡️' },
+  { id: 'ultimate', name: 'Antonym Nova', desc: 'Chiêu cuối tiêu diệt với từ trái nghĩa', damage: 500, mp: 50, icon: '💥' }
+];
+
+export const BOSS_MONSTERS = [
+  { id: 'monster1', name: 'Grammar Titan', title: 'Khổng Lồ Ngữ Pháp', hp: 800, maxHp: 800, avatar: '👹', color: 'from-rose-600 to-red-800' },
+  { id: 'monster2', name: 'Lexicon Dragon', title: 'Rồng Từ Vựng Thượng Cổ', hp: 1200, maxHp: 1200, avatar: '🐉', color: 'from-amber-600 to-orange-800' },
+  { id: 'monster3', name: 'Phonetic Shadow', title: 'Bóng Ma Phát Âm', hp: 1500, maxHp: 1500, avatar: '💀', color: 'from-purple-700 to-slate-900' }
+];
+
 export const GAME_CATALOG_DATA = [
+  { id: 'bossBattle', title: "Word Boss Battle 🔥 NEW", description: "Đấu Trùm Từ Vựng RPG! Thi triển chiêu thức Lexical Strike, Antonym Nova đánh gục Quái Vật Ngữ Pháp!", color: "bg-gradient-to-r from-red-600 to-amber-600", shadow: "shadow-red-500/30", xp: "+200 XP", players: "HOT 🔥 2.4k đang đấu" },
   { id: 'vocab', title: "Vocabulary Match", description: "Ghép nối các từ vựng tiếng Anh với ý nghĩa tiếng Việt chính xác. Chinh phục thời gian ngắn nhất!", color: "bg-blue-500", shadow: "shadow-blue-500/20", xp: "+50 XP", players: "1.2k đang chơi" },
   { id: 'quiz', title: "Speed Quiz", description: "Đua thời gian trả lời trắc nghiệm nhanh. Chỉ 15 giây cho một câu hỏi thú vị!", color: "bg-rose-500", shadow: "shadow-rose-500/20", xp: "+100 XP", players: "800 đang chơi" },
   { id: 'scram', title: "Word Scramble", description: "Nối chữ thành từ. Ghép các ký tự bị xáo trộn thành từ tiếng Anh hoàn chỉnh theo gợi ý!", color: "bg-purple-500", shadow: "shadow-purple-500/20", xp: "+60 XP", players: "950 đang chơi" },
