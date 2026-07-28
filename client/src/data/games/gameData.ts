@@ -69,7 +69,6 @@ export const STATIC_QUIZ_QUESTIONS = [
   { q: 'Từ "Unanimous" biểu thị điều gì trong cuộc họp?', options: ['Tất cả nhất trí 100%', 'Bất đồng ý kiến', 'Hủy bỏ cuộc họp', 'Tranh cãi gay gắt'], answer: 0 },
   { q: 'Ý nghĩa của từ "Scrutinize" trong công việc là gì?', options: ['Xem xét hời hợt', 'Ký duyệt ngay', 'Săm soi, kiểm tra cực kỳ kỹ lưỡng', 'Bỏ qua lỗi'], answer: 2 },
   { q: 'Từ nào đồng nghĩa với "Compensate"?', options: ['Reimburse/Pay (Bồi thường)', 'Steal (Trộm)', 'Demand (Yêu cầu)', 'Refuse (Từ chối)'], answer: 0 },
-  // --- EXPANDED QUIZ QUESTIONS (TOEIC / IELTS / Advanced Vocab) ---
   { q: 'Trái nghĩa với từ "Ambiguous" (Mơ hồ) là gì?', options: ['Clear / Explicit (Rõ ràng)', 'Vague', 'Obscure', 'Uncertain'], answer: 0 },
   { q: 'Từ "Pragmatic" miêu tả nét tính cách nào?', options: ['Thực tế, trọng hiệu quả', 'Mơ mộng', 'Lý thuyết suông', 'Tự phụ'], answer: 0 },
   { q: 'Điền phrasal verb: "I need to ___ the report before submitting."', options: ['look over (Đọc rà soát)', 'look down', 'look up to', 'look into to'], answer: 0 },
@@ -212,6 +211,127 @@ export const IMAGE_GUESS_POOL = [
     vi: 'Xe đạp',
     hint: 'Phương tiện hai bánh di chuyển bằng sức đạp của chân.',
     imageUrl: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=600&auto=format&fit=crop'
+  },
+  // --- EXPANDED IMAGE GUESS POOL (Animals, Foods, Science, Tech, Nature) ---
+  {
+    word: 'LION',
+    vi: 'Sư tử',
+    hint: 'Chúa tể rừng xanh với bờm dày uy phong.',
+    imageUrl: 'https://images.unsplash.com/photo-1614027164847-1b28cfe1df60?w=600&auto=format&fit=crop'
+  },
+  {
+    word: 'PENGUIN',
+    vi: 'Chim cánh cụt',
+    hint: 'Loài chim không biết bay sống ở vùng Nam Cực băng giá.',
+    imageUrl: 'https://images.unsplash.com/photo-1598439210625-5067c578f3f6?w=600&auto=format&fit=crop'
+  },
+  {
+    word: 'BUTTERFLY',
+    vi: 'Con bướm',
+    hint: 'Côn trùng có đôi cánh nhiều màu sắc rực rỡ hút mật hoa.',
+    imageUrl: 'https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?w=600&auto=format&fit=crop'
+  },
+  {
+    word: 'PIZZA',
+    vi: 'Bánh Pizza',
+    hint: 'Món ăn Ý nổi tiếng hình tròn có lớp phô mai tan chảy.',
+    imageUrl: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600&auto=format&fit=crop'
+  },
+  {
+    word: 'COFFEE',
+    vi: 'Cà phê',
+    hint: 'Thức uống thơm nồng giúp tỉnh táo vào mỗi buổi sáng.',
+    imageUrl: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&auto=format&fit=crop'
+  },
+  {
+    word: 'STRAWBERRY',
+    vi: 'Quả dâu tây',
+    hint: 'Trái cây nhỏ màu đỏ mọng có chấm nhỏ bên ngoài, vị chua ngọt.',
+    imageUrl: 'https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=600&auto=format&fit=crop'
+  },
+  {
+    word: 'MOUNTAIN',
+    vi: 'Ngọn núi',
+    hint: 'Địa hình tự nhiên nhô cao hùng vĩ so với mặt đất.',
+    imageUrl: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&auto=format&fit=crop'
+  },
+  {
+    word: 'BEACH',
+    vi: 'Bãi biển',
+    hint: 'Bờ cát trải dài với sóng biển rì rào vào mùa hè.',
+    imageUrl: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&auto=format&fit=crop'
+  },
+  {
+    word: 'TELESCOPE',
+    vi: 'Kính thiên văn',
+    hint: 'Dụng cụ quang học dùng để quan sát các vì sao và hành tinh.',
+    imageUrl: 'https://images.unsplash.com/photo-1543722530-d2c3201371e7?w=600&auto=format&fit=crop'
+  },
+  {
+    word: 'CAMERA',
+    vi: 'Máy ảnh',
+    hint: 'Thiết bị dùng để ghi lại những bức hình khoảnh khắc.',
+    imageUrl: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=600&auto=format&fit=crop'
+  },
+  {
+    word: 'ROBOT',
+    vi: 'Rô-bốt',
+    hint: 'Cỗ máy tự động được lập trình để hỗ trợ con người.',
+    imageUrl: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=600&auto=format&fit=crop'
+  },
+  {
+    word: 'HELICOPTER',
+    vi: 'Máy bay trực thăng',
+    hint: 'Phương tiện bay có cánh quạt lớn phía trên nóc.',
+    imageUrl: 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?w=600&auto=format&fit=crop'
+  },
+  {
+    word: 'WATERMELON',
+    vi: 'Quả dưa hấu',
+    hint: 'Trái cây vỏ xanh ruột đỏ hạt đen giải nhiệt ngày hè.',
+    imageUrl: 'https://images.unsplash.com/photo-1587049352847-4a222e784d38?w=600&auto=format&fit=crop'
+  },
+  {
+    word: 'HEADPHONES',
+    vi: 'Tai nghe',
+    hint: 'Thiết bị đeo vào tai để thưởng thức âm nhạc riêng tư.',
+    imageUrl: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&auto=format&fit=crop'
+  },
+  {
+    word: 'RAINBOW',
+    vi: 'Cầu vồng',
+    hint: 'Dải vòng cung 7 màu rực rỡ xuất hiện sau cơn mưa.',
+    imageUrl: 'https://images.unsplash.com/photo-1508624217470-5ef0f947d8be?w=600&auto=format&fit=crop'
+  },
+  {
+    word: 'DOLPHIN',
+    vi: 'Cá thần thông/Cá heo',
+    hint: 'Loài động vật thông minh dưới biển thích nhảy tung tăng.',
+    imageUrl: 'https://images.unsplash.com/photo-1570481662006-a3a1374699e8?w=600&auto=format&fit=crop'
+  },
+  {
+    word: 'HAMBURGER',
+    vi: 'Bánh mì kẹp thịt',
+    hint: 'Món ăn nhanh gồm hai miếng bánh kẹp thịt nướng phô mai.',
+    imageUrl: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&auto=format&fit=crop'
+  },
+  {
+    word: 'VOLCANO',
+    vi: 'Núi lửa',
+    hint: 'Ngọn núi phun trào dung nham đỏ rực nóng bỏng.',
+    imageUrl: 'https://images.unsplash.com/photo-1541845157-a6d2d100c931?w=600&auto=format&fit=crop'
+  },
+  {
+    word: 'ROCKET',
+    vi: 'Tên lửa',
+    hint: 'Phương tiện đẩy du hành vũ trụ tiến vào không gian.',
+    imageUrl: 'https://images.unsplash.com/photo-1517976487492-5750f3195933?w=600&auto=format&fit=crop'
+  },
+  {
+    word: 'UMBRELLA',
+    vi: 'Cây dù / Ô',
+    hint: 'Vật dụng che nắng che mưa cầm tay tiện lợi.',
+    imageUrl: 'https://images.unsplash.com/photo-1517479149777-5f3b7771d4fb?w=600&auto=format&fit=crop'
   }
 ];
 
