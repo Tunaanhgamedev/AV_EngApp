@@ -13632,4 +13632,232 @@ export const ADDITIONAL_VOCABULARY_TOPICS: VocabTopic[] = [
     }
   ]
 },
+  {
+    "id": "medical_psychology",
+    "title": "Sức khỏe Tâm thần & Tâm lý học (Mental Health & Psychology)",
+    "desc": "Từ vựng về sức khỏe tinh thần, nhận thức, hội chứng và phương pháp trị liệu tâm lý.",
+    "color": "border-teal-200 bg-teal-50/50 text-teal-850 hover:border-teal-400 dark:bg-slate-900/50 dark:border-slate-800 dark:text-teal-450",
+    "beginner": [
+      {
+        "word": "anxiety",
+        "phonetic": "/æŋˈzaɪ.ə.ti/",
+        "wordType": "noun",
+        "meaningVi": "sự lo âu, cảm giác bất an",
+        "meaningEn": "a feeling of worry, nervousness, or unease",
+        "example": "Regular exercise can help reduce anxiety.",
+        "exampleVi": "Tập thể dục thường xuyên có thể giúp giảm sự lo âu."
+      },
+      {
+        "word": "depression",
+        "phonetic": "/dɪˈpreʃ.ən/",
+        "wordType": "noun",
+        "meaningVi": "chứng trầm cảm, sự suy sụp tinh thần",
+        "meaningEn": "a mental state characterized by severe feelings of sadness and hopelessness",
+        "example": "Cognitive therapy is effective in treating depression.",
+        "exampleVi": "Liệu pháp nhận thức rất hiệu quả trong điều trị trầm cảm."
+      },
+      {
+        "word": "mindfulness",
+        "phonetic": "/ˈmaɪnd.fəl.nəs/",
+        "wordType": "noun",
+        "meaningVi": "sự chánh niệm, sự tập trung vào hiện tại",
+        "meaningEn": "the practice of maintaining a non-judgmental state of heightened awareness",
+        "example": "Mindfulness meditation improves emotional regulation.",
+        "exampleVi": "Thiền chánh niệm cải thiện khả năng điều hòa cảm xúc."
+      },
+      {
+        "word": "resilience",
+        "phonetic": "/rɪˈzɪl.jəns/",
+        "wordType": "noun",
+        "meaningVi": "khả năng phục hồi, sự kiên cường tâm lý",
+        "meaningEn": "the capacity to recover quickly from difficulties; toughness",
+        "example": "Emotional resilience helps people navigate life's challenges.",
+        "exampleVi": "Sự kiên cường cảm xúc giúp con người vượt qua các thử thách trong cuộc sống."
+      },
+      {
+        "word": "empathy",
+        "phonetic": "/ˈem.pə.θi/",
+        "wordType": "noun",
+        "meaningVi": "sự thấu cảm, khả năng đặt mình vào vị trí người khác",
+        "meaningEn": "the ability to understand and share the feelings of another",
+        "example": "Empathy is essential for building strong relationships.",
+        "exampleVi": "Sự thấu cảm là điều thiết yếu để xây dựng các mối quan hệ vững chắc."
+      },
+      {
+        "word": "burnout",
+        "phonetic": "/ˈbɜːn.aʊt/",
+        "wordType": "noun",
+        "meaningVi": "tình trạng kiệt sức do áp lực kéo dài",
+        "meaningEn": "state of emotional, physical, and mental exhaustion caused by excessive stress",
+        "example": "Working 80 hours a week eventually led to severe burnout.",
+        "exampleVi": "Làm việc 80 giờ một tuần cuối cùng đã dẫn đến tình trạng kiệt sức nghiêm trọng."
+      },
+      {
+        "word": "therapy",
+        "phonetic": "/ˈθer.ə.pi/",
+        "wordType": "noun",
+        "meaningVi": "liệu pháp điều trị, tư vấn tâm lý",
+        "meaningEn": "treatment intended to relieve or heal a mental or physical disorder",
+        "example": "She attends weekly therapy sessions to process her trauma.",
+        "exampleVi": "Cô ấy tham gia các buổi trị liệu hàng tuần để giải tỏa tổn thương."
+      },
+      {
+        "word": "insomnia",
+        "phonetic": "/ɪnˈsɒm.ni.ə/",
+        "wordType": "noun",
+        "meaningVi": "chứng mất ngủ mãn tính",
+        "meaningEn": "habitual sleeplessness; inability to sleep",
+        "example": "Chronic insomnia significantly impacts daytime productivity.",
+        "exampleVi": "Chứng mất ngủ mãn tính ảnh hưởng đáng kể đến năng suất ban ngày."
+      },
+      {
+        "word": "trauma",
+        "phonetic": "/ˈtrɔː.mə/",
+        "wordType": "noun",
+        "meaningVi": "chấn thương tâm lý, chấn thương tinh thần",
+        "meaningEn": "a deeply distressing or disturbing experience",
+        "example": "Psychological trauma requires specialized clinical care.",
+        "exampleVi": "Chấn thương tâm lý đòi hỏi sự chăm sóc lâm sàng chuyên biệt."
+      },
+      {
+        "word": "well-being",
+        "phonetic": "/ˌwelˈbiː.ɪŋ/",
+        "wordType": "noun",
+        "meaningVi": "trạng thái sức khỏe và hạnh phúc toàn diện",
+        "meaningEn": "the state of being comfortable, healthy, or happy",
+        "example": "Workplace wellness programs promote employee mental well-being.",
+        "exampleVi": "Các chương trình sức khỏe tại nơi làm việc thúc đẩy trạng thái hạnh phúc của nhân viên."
+      }
+    ],
+    "advanced": [
+      {
+        "word": "neuroplasticity",
+        "phonetic": "/ˌnjʊə.rəʊ.plæsˈtɪs.ə.ti/",
+        "wordType": "noun",
+        "meaningVi": "khả năng dẻo dai và tự tái cấu trúc của não bộ",
+        "meaningEn": "the ability of the brain to form and reorganize synaptic connections",
+        "example": "Neuroplasticity allows the brain to recover functions after strokes.",
+        "exampleVi": "Khả năng dẻo dai của não cho phép não phục hồi chức năng sau đột quỵ."
+      },
+      {
+        "word": "cognitive dissonance",
+        "phonetic": "/ˈkɒɡ.nə.tɪv ˈdɪs.ən.əns/",
+        "wordType": "noun phrase",
+        "meaningVi": "sự bất hòa nhận thức (xung đột niềm tin và hành vi)",
+        "meaningEn": "the mental discomfort experienced by a person holding contradictory beliefs",
+        "example": "Smoking despite knowing its health risks creates cognitive dissonance.",
+        "exampleVi": "Hút thuốc mặc dù biết rủi ro sức khỏe tạo ra sự bất hòa nhận thức."
+      },
+      {
+        "word": "psychoanalysis",
+        "phonetic": "/ˌsaɪ.kəʊ.əˈnæl.ə.sɪs/",
+        "wordType": "noun",
+        "meaningVi": "phương pháp tâm phân học",
+        "meaningEn": "a system of psychological theory aimed at treating mental disorders by investigating unconscious elements",
+        "example": "Freudian psychoanalysis focuses on dreams and unconscious desires.",
+        "exampleVi": "Tâm phân học Freud tập trung vào giấc mơ và những khao khát vô thức."
+      },
+      {
+        "word": "subconscious",
+        "phonetic": "/ˌsʌbˈkɒn.ʃəs/",
+        "wordType": "adjective / noun",
+        "meaningVi": "tiềm thức, phần tâm trí dưới ngưỡng ý thức",
+        "meaningEn": "concerning the part of the mind of which one is not fully aware",
+        "example": "Subconscious biases often influence decision-making without our knowledge.",
+        "exampleVi": "Định kiến tiềm thức thường ảnh hưởng đến việc đưa ra quyết định mà ta không hay biết."
+      },
+      {
+        "word": "psychosomatic",
+        "phonetic": "/ˌsaɪ.kəʊ.səˈmæt.ɪk/",
+        "wordType": "adjective",
+        "meaningVi": "thuộc về bệnh tâm thể (bệnh thể chất do yếu tố tâm lý)",
+        "meaningEn": "caused or aggravated by a mental factor such as internal conflict or stress",
+        "example": "His chronic stomach pain was diagnosed as a psychosomatic symptom of stress.",
+        "exampleVi": "Đau dạ dày mãn tính của anh ấy được chẩn đoán là triệu chứng tâm thể do căng thẳng."
+      }
+    ]
+  },
+  {
+    "id": "smart_cities",
+    "title": "Đô thị thông minh & Hạ tầng hiện đại (Smart Cities & Infrastructure)",
+    "desc": "Từ vựng về quy hoạch đô thị, giao thông xanh, hạ tầng thông minh và công nghệ Internet vạn vật.",
+    "color": "border-cyan-200 bg-cyan-50/50 text-cyan-850 hover:border-cyan-400 dark:bg-slate-900/50 dark:border-slate-800 dark:text-cyan-450",
+    "beginner": [
+      {
+        "word": "infrastructure",
+        "phonetic": "/ˈɪn.frəˌstrʌk.tʃər/",
+        "wordType": "noun",
+        "meaningVi": "hạ tầng cơ sở",
+        "meaningEn": "the basic physical structures needed for the operation of a society",
+        "example": "Investing in modern transportation infrastructure boosts economic growth.",
+        "exampleVi": "Đầu tư vào hạ tầng giao thông hiện đại thúc đẩy tăng trưởng kinh tế."
+      },
+      {
+        "word": "urbanization",
+        "phonetic": "/ˌɜː.bən.aɪˈzeɪ.ʃən/",
+        "wordType": "noun",
+        "meaningVi": "quá trình đô thị hóa",
+        "meaningEn": "the process of making an area more urban and developed",
+        "example": "Rapid urbanization requires efficient public transit systems.",
+        "exampleVi": "Đô thị hóa nhanh chóng đòi hỏi hệ thống giao thông công cộng hiệu quả."
+      },
+      {
+        "word": "sustainability",
+        "phonetic": "/səˌsteɪ.nəˈbɪl.ə.ti/",
+        "wordType": "noun",
+        "meaningVi": "sự phát triển bền vững",
+        "meaningEn": "avoidance of the depletion of natural resources in order to maintain an ecological balance",
+        "example": "Smart cities prioritize environmental sustainability in urban design.",
+        "exampleVi": "Các đô thị thông minh ưu tiên sự phát triển bền vững về môi trường trong thiết kế đô thị."
+      },
+      {
+        "word": "congestion",
+        "phonetic": "/kənˈdʒes.tʃən/",
+        "wordType": "noun",
+        "meaningVi": "sự ùn tắc giao thông",
+        "meaningEn": "state of being overcrowded or blocked with traffic",
+        "example": "Intelligent traffic lights help mitigate morning gridlock congestion.",
+        "exampleVi": "Đèn giao thông thông minh giúp giảm bớt sự ùn tắc vào giờ cao điểm buổi sáng."
+      },
+      {
+        "word": "automation",
+        "phonetic": "/ˌɔː.təˈmeɪ.ʃən/",
+        "wordType": "noun",
+        "meaningVi": "sự tự động hóa",
+        "meaningEn": "the use of largely automatic equipment in a system or operation",
+        "example": "Building automation reduces energy consumption significantly.",
+        "exampleVi": "Tự động hóa tòa nhà làm giảm đáng kể lượng tiêu thụ năng lượng."
+      }
+    ],
+    "advanced": [
+      {
+        "word": "transit-oriented development",
+        "phonetic": "/ˈtræn.zɪt ˈɔː.ri.en.tɪd dɪˈvel.əp.mənt/",
+        "wordType": "noun phrase",
+        "meaningVi": "phát triển đô thị gắn kết với giao thông công cộng (TOD)",
+        "meaningEn": "urban development that maximizes the amount of residential and commercial space within walking distance of public transport",
+        "example": "TOD principles encourage walkable communities around metro stations.",
+        "exampleVi": "Các nguyên tắc TOD khuyến khích các cộng đồng có thể đi bộ xung quanh các ga tàu điện ngầm."
+      },
+      {
+        "word": "smart grid",
+        "phonetic": "/smɑːt ɡrɪd/",
+        "wordType": "noun phrase",
+        "meaningVi": "lưới điện thông minh",
+        "meaningEn": "an electricity supply network that uses digital technology to detect and react to local changes in usage",
+        "example": "Smart grids integrate renewable power sources efficiently.",
+        "exampleVi": "Lưới điện thông minh tích hợp hiệu quả các nguồn năng lượng tái tạo."
+      },
+      {
+        "word": "digital twin",
+        "phonetic": "/ˈdɪdʒ.ɪ.təl twɪn/",
+        "wordType": "noun phrase",
+        "meaningVi": "mô hình sao chép số của đô thị (Digital Twin)",
+        "meaningEn": "a virtual representation of an object or system that spans its lifecycle",
+        "example": "City planners use a digital twin to simulate traffic management strategies.",
+        "exampleVi": "Các nhà quy hoạch thành phố sử dụng mô hình sao chép số để mô phỏng chiến lược quản lý giao thông."
+      }
+    ]
+  }
+
 ];
