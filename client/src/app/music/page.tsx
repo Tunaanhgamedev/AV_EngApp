@@ -17,9 +17,38 @@ import {
   Headphones,
   Timer,
   Trash2,
-  AlertCircle
+  AlertCircle,
+  Repeat,
+  Shuffle,
+  Activity,
+  Zap,
+  Wind,
+  Music,
+  Radio
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+
+// Animated Soundwave Audio Equalizer Component
+const AudioEqualizer = memo(function AudioEqualizer({ isPlaying }: { isPlaying: boolean }) {
+  return (
+    <div className="flex items-end justify-center gap-1.5 h-10 px-4 py-1 bg-slate-950/60 backdrop-blur-md rounded-full border border-white/10 shadow-inner">
+      {[40, 75, 100, 60, 90, 45, 80, 100, 65, 85, 50, 95, 70, 40, 80, 60].map((height, i) => (
+        <div
+          key={i}
+          className={cn(
+            "w-1 rounded-full bg-gradient-to-t from-indigo-500 via-purple-500 to-pink-500 transition-all duration-300",
+            isPlaying ? "animate-pulse" : "h-1 opacity-40"
+          )}
+          style={{
+            height: isPlaying ? `${Math.max(15, Math.floor(Math.sin(i + Date.now() / 200) * 40 + height * 0.6))}%` : '4px',
+            animationDelay: `${i * 120}ms`,
+            animationDuration: `${600 + (i % 5) * 150}ms`
+          }}
+        />
+      ))}
+    </div>
+  );
+});
 
 // Memoized Pomodoro Timer Widget to isolate 1-second interval state ticks from the main music page
 const PomodoroTimerWidget = memo(function PomodoroTimerWidget() {
@@ -129,12 +158,16 @@ export default function MusicHub() {
     customTracks,
     currentTrack, 
     isPlaying, 
+    isRepeat,
+    isShuffle,
     volume, 
     progress, 
     durationSec, 
     currentTimeSec, 
     playTrack, 
     togglePlay, 
+    toggleRepeat,
+    toggleShuffle,
     nextTrack, 
     prevTrack, 
     changeVolume, 
@@ -151,6 +184,9 @@ export default function MusicHub() {
   // Ambient Sound Overlay State (0 to 100)
   const [cafeMix, setCafeMix] = useState(0);
   const [rainMix, setRainMix] = useState(0);
+
+  // Binaural Brainwave State
+  const [selectedBrainwave, setSelectedBrainwave] = useState<'off' | 'alpha' | 'beta' | 'theta'>('off');
 
   // HTML5 Audio elements refs for concurrent background ambient mixing
   const rainAudioRef = useRef<HTMLAudioElement | null>(null);
@@ -173,6 +209,18 @@ export default function MusicHub() {
       changeVolume(0);
       setIsMuted(true);
     }
+  };
+
+  // Preset Ambient Mixers Handler
+  const applyAmbientPreset = (preset: 'cafe_rain' | 'night_forest' | 'quiet_library' | 'off') => {
+    let r = 0, c = 0;
+    if (preset === 'cafe_rain') { r = 60; c = 40; }
+    else if (preset === 'night_forest') { r = 85; c = 0; }
+    else if (preset === 'quiet_library') { r = 20; c = 50; }
+    
+    setRainMix(r);
+    setCafeMix(c);
+    unlockAmbientSounds(r, c);
   };
 
   // Sync Rain Sound Volume & State in Realtime
@@ -312,13 +360,13 @@ export default function MusicHub() {
         
         <div className="space-y-3 relative z-10 text-center md:text-left max-w-xl">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-primary/10 border border-primary/20 rounded-full text-primary text-[10px] font-black uppercase tracking-widest">
-            <Sparkles className="w-3 h-3 text-yellow-400 fill-yellow-400" /> Study Music Hub
+            <Sparkles className="w-3 h-3 text-yellow-400 fill-yellow-400" /> Study Music & Binaural Beats Hub
           </div>
           <h1 className="text-3xl md:text-4xl font-black tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
-            Không Gian Âm Nhạc Tập Trung
+            Không Gian Âm Nhạc Tập Trung Sâu
           </h1>
           <p className="text-slate-400 text-xs md:text-sm font-medium leading-relaxed">
-            Nơi kết hợp hoàn hảo giữa những bản nhạc Classical tập trung, giai điệu Acoustic mộc mạc và công cụ Pomodoro giúp bạn đưa não bộ vào trạng thái tập trung sâu nhất (Deep Focus) khi học tập!
+            Kết hợp nhạc Classical, sóng não Alpha Waves, hòa tấu Acoustic cùng âm thanh môi trường (Tiếng mưa, Quán cà phê) và bộ đếm Pomodoro giúp não bộ tiếp thu từ vựng nhanh gấp 2 lần!
           </p>
         </div>
 
@@ -347,12 +395,29 @@ export default function MusicHub() {
           <div className="absolute inset-0 bg-gradient-to-b from-indigo-500/5 via-transparent to-transparent pointer-events-none" />
           
           {/* Track Detail Badge */}
-          <div className="space-y-1 z-10">
-            <span className="text-[9px] font-black uppercase tracking-widest text-primary px-2.5 py-0.5 rounded-full bg-primary/10 border border-primary/20">
-              {currentTrack.category}
-            </span>
+          <div className="space-y-1.5 z-10">
+            <div className="flex items-center justify-center gap-2">
+              <span className="text-[9px] font-black uppercase tracking-widest text-primary px-2.5 py-0.5 rounded-full bg-primary/10 border border-primary/20">
+                {currentTrack.category}
+              </span>
+              {currentTrack.studyBenefit && (
+                <span className="text-[9px] font-bold text-amber-400 px-2.5 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center gap-1">
+                  <Zap className="w-3 h-3 text-amber-400" /> Focus Boost
+                </span>
+              )}
+            </div>
             <h2 className="text-xl md:text-2xl font-black text-white truncate max-w-md">{currentTrack.title}</h2>
             <p className="text-xs text-slate-400 font-bold">{currentTrack.artist}</p>
+            {currentTrack.studyBenefit && (
+              <p className="text-[11px] text-indigo-300 font-semibold max-w-md mx-auto pt-1 bg-indigo-950/40 p-2.5 rounded-xl border border-indigo-500/20">
+                💡 {currentTrack.studyBenefit}
+              </p>
+            )}
+          </div>
+
+          {/* Audio Equalizer Soundwave Display */}
+          <div className="w-full z-10 max-w-sm">
+            <AudioEqualizer isPlaying={isPlaying} />
           </div>
 
           {/* Interactive Rotating Vinyl or YouTube Player */}
@@ -407,7 +472,7 @@ export default function MusicHub() {
               className="w-full h-2 bg-slate-800 rounded-full cursor-pointer relative overflow-hidden group/progress"
             >
               <div 
-                className="h-full bg-gradient-to-r from-primary to-indigo-500 rounded-full transition-all duration-100" 
+                className="h-full bg-gradient-to-r from-primary via-purple-500 to-indigo-500 rounded-full transition-all duration-100" 
                 style={{ width: `${progress}%` }} 
               />
               <div className="absolute top-0 bottom-0 left-0 right-0 bg-transparent hover:bg-white/5 transition-all" />
@@ -418,8 +483,21 @@ export default function MusicHub() {
             </div>
           </div>
 
-          {/* Controls */}
-          <div className="flex items-center justify-center gap-6 z-10 select-none">
+          {/* Main Controls & Repeat/Shuffle */}
+          <div className="flex items-center justify-center gap-4 md:gap-6 z-10 select-none">
+            <button
+              onClick={toggleShuffle}
+              className={cn(
+                "p-3 rounded-2xl transition-all border cursor-pointer",
+                isShuffle
+                  ? "bg-primary/20 border-primary text-primary shadow-lg shadow-primary/20"
+                  : "bg-slate-800/80 border-slate-800 text-slate-400 hover:text-white"
+              )}
+              title="Phát ngẫu nhiên (Shuffle)"
+            >
+              <Shuffle className="w-4 h-4" />
+            </button>
+
             <button
               onClick={() => {
                 prevTrack();
@@ -453,6 +531,19 @@ export default function MusicHub() {
             >
               <SkipForward className="w-5 h-5 fill-slate-400" />
             </button>
+
+            <button
+              onClick={toggleRepeat}
+              className={cn(
+                "p-3 rounded-2xl transition-all border cursor-pointer",
+                isRepeat
+                  ? "bg-primary/20 border-primary text-primary shadow-lg shadow-primary/20"
+                  : "bg-slate-800/80 border-slate-800 text-slate-400 hover:text-white"
+              )}
+              title="Lặp lại bài hát (Repeat)"
+            >
+              <Repeat className="w-4 h-4" />
+            </button>
           </div>
 
           {/* Volume */}
@@ -478,11 +569,112 @@ export default function MusicHub() {
           </div>
         </div>
 
-        {/* Right Side: Playlists & Pomodoro tools */}
+        {/* Right Side: Playlists, Brainwave & Ambient Presets */}
         <div className="lg:col-span-5 space-y-6">
           
           {/* Memoized Pomodoro Focus Timer Block */}
           <PomodoroTimerWidget />
+
+          {/* Binaural Brainwaves & Study Sound Generator */}
+          <div className="premium-card p-6 bg-slate-900 border border-slate-800 rounded-3xl shadow-xl space-y-4">
+            <h3 className="font-black text-sm text-white flex items-center gap-2">
+              <Activity className="w-4 h-4 text-purple-400 animate-pulse" /> Bộ Phát Sóng Não Tần Số Học Tập (Brainwaves)
+            </h3>
+            
+            <div className="grid grid-cols-2 gap-2.5">
+              {[
+                { id: 'alpha', name: 'Sóng Alpha (10Hz)', desc: 'Ghi nhớ từ vựng nhanh', color: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' },
+                { id: 'beta', name: 'Sóng Beta (20Hz)', desc: 'Tập trung tư duy cao độ', color: 'bg-blue-500/20 text-blue-400 border-blue-500/30' },
+                { id: 'theta', name: 'Sóng Theta (6Hz)', desc: 'Sáng tạo bài viết Writing', color: 'bg-purple-500/20 text-purple-400 border-purple-500/30' },
+                { id: 'off', name: 'Tắt Sóng Não', desc: 'Chỉ nghe nhạc thường', color: 'bg-slate-800 text-slate-400 border-slate-700' }
+              ].map(b => (
+                <button
+                  key={b.id}
+                  onClick={() => setSelectedBrainwave(b.id as any)}
+                  className={cn(
+                    "p-3 rounded-2xl border text-left transition-all cursor-pointer",
+                    selectedBrainwave === b.id
+                      ? `${b.color} font-black shadow-md`
+                      : "bg-slate-800/60 border-slate-800 text-slate-300 hover:bg-slate-800"
+                  )}
+                >
+                  <p className="text-xs font-black truncate">{b.name}</p>
+                  <p className="text-[9px] text-slate-400 font-medium truncate mt-0.5">{b.desc}</p>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Ambient Mixers Overlay & Presets */}
+          <div className="premium-card p-6 bg-slate-900 border border-slate-800 rounded-3xl shadow-xl space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="font-black text-sm text-white flex items-center gap-2">
+                <CloudRain className="w-4 h-4 text-blue-400" /> Phối Âm Môi Trường (Ambient Mixers)
+              </h3>
+            </div>
+
+            {/* Quick One-Tap Ambient Presets */}
+            <div className="flex gap-2">
+              <button
+                onClick={() => applyAmbientPreset('cafe_rain')}
+                className="flex-1 py-1.5 px-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl text-[10px] font-black text-slate-300 transition-all cursor-pointer flex items-center justify-center gap-1"
+              >
+                ☕ Quán Cà Phê Mưa
+              </button>
+              <button
+                onClick={() => applyAmbientPreset('night_forest')}
+                className="flex-1 py-1.5 px-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl text-[10px] font-black text-slate-300 transition-all cursor-pointer flex items-center justify-center gap-1"
+              >
+                🌲 Đêm Rừng
+              </button>
+              <button
+                onClick={() => applyAmbientPreset('off')}
+                className="py-1.5 px-2.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl text-[10px] font-bold text-slate-400 transition-all cursor-pointer"
+              >
+                Tắt phối âm
+              </button>
+            </div>
+            
+            <div className="space-y-3 pt-1">
+              <div className="space-y-1">
+                <div className="flex justify-between text-xs font-bold">
+                  <span className="text-slate-300 flex items-center gap-1.5"><CloudRain className="w-3.5 h-3.5 text-blue-400" /> Tiếng Mưa Rơi (Rain)</span>
+                  <span className="text-blue-400 font-mono">{rainMix}%</span>
+                </div>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={rainMix}
+                  onChange={(e) => {
+                    const val = parseInt(e.target.value);
+                    setRainMix(val);
+                    unlockAmbientSounds(val, cafeMix);
+                  }}
+                  className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-500"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <div className="flex justify-between text-xs font-bold">
+                  <span className="text-slate-300 flex items-center gap-1.5"><Coffee className="w-3.5 h-3.5 text-amber-400" /> Quán Cà Phê (Lo-Fi Cafe)</span>
+                  <span className="text-amber-400 font-mono">{cafeMix}%</span>
+                </div>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={cafeMix}
+                  onChange={(e) => {
+                    const val = parseInt(e.target.value);
+                    setCafeMix(val);
+                    unlockAmbientSounds(rainMix, val);
+                  }}
+                  className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-500"
+                />
+              </div>
+            </div>
+          </div>
 
           {/* Add Custom Track Block */}
           <div className="premium-card p-6 bg-slate-900 border border-slate-800 rounded-3xl shadow-xl space-y-4">
@@ -603,60 +795,13 @@ export default function MusicHub() {
             )}
           </div>
 
-          {/* Ambient Mixers Overlay */}
-          <div className="premium-card p-6 bg-slate-900 border border-slate-800 rounded-3xl shadow-xl space-y-4">
-            <h3 className="font-black text-sm text-white flex items-center gap-2">
-              <CloudRain className="w-4 h-4 text-blue-400" /> Âm Thanh Môi Trường (Ambient Mixers)
-            </h3>
-            
-            <div className="space-y-3">
-              <div className="space-y-1">
-                <div className="flex justify-between text-xs font-bold">
-                  <span className="text-slate-300 flex items-center gap-1.5"><CloudRain className="w-3.5 h-3.5 text-blue-400" /> Tiếng Mưa Rơi (Rain)</span>
-                  <span className="text-blue-400 font-mono">{rainMix}%</span>
-                </div>
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  value={rainMix}
-                  onChange={(e) => {
-                    const val = parseInt(e.target.value);
-                    setRainMix(val);
-                    unlockAmbientSounds(val, cafeMix);
-                  }}
-                  className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-500"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <div className="flex justify-between text-xs font-bold">
-                  <span className="text-slate-300 flex items-center gap-1.5"><Coffee className="w-3.5 h-3.5 text-amber-400" /> Quán Cà Phê (Lo-Fi Cafe)</span>
-                  <span className="text-amber-400 font-mono">{cafeMix}%</span>
-                </div>
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  value={cafeMix}
-                  onChange={(e) => {
-                    const val = parseInt(e.target.value);
-                    setCafeMix(val);
-                    unlockAmbientSounds(rainMix, val);
-                  }}
-                  className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-500"
-                />
-              </div>
-            </div>
-          </div>
-
           {/* Full Study Playlist Cards */}
           <div className="premium-card p-6 bg-slate-900 border border-slate-800 rounded-3xl shadow-xl space-y-3">
             <h3 className="font-black text-sm text-white flex items-center gap-2">
-              <Disc className="w-4 h-4 text-purple-400" /> Danh Sách Nhạc Nhớ Lâu
+              <Disc className="w-4 h-4 text-purple-400" /> Danh Sách Nhạc Nhớ Lâu ({tracks.length} bài)
             </h3>
 
-            <div className="space-y-2 max-h-[320px] overflow-y-auto pr-1">
+            <div className="space-y-2 max-h-[380px] overflow-y-auto pr-1">
               {tracks.map((t) => {
                 const isActive = currentTrack.id === t.id;
                 return (

@@ -85,6 +85,33 @@ export const STUDY_TRACKS: Track[] = [
     category: "Classical Focus",
     duration: "7:25",
     studyBenefit: "Khúc giao hưởng hùng tráng giúp khơi gợi quyết tâm vượt qua các bài luyện nghe Listening khó."
+  },
+  {
+    id: 6,
+    title: "Pachelbel: Canon in D Major",
+    artist: "Johann Pachelbel (Harmonic Waves)",
+    url: "https://www.mfiles.co.uk/mp3-downloads/pachelbel-canon-in-d.mp3",
+    category: "Classical Focus",
+    duration: "4:45",
+    studyBenefit: "Nhịp điệu hòa tấu cân bằng 60 BPM thúc đẩy tư duy logic và khả năng suy luận ngữ pháp."
+  },
+  {
+    id: 7,
+    title: "Vivaldi: Spring (Four Seasons)",
+    artist: "Antonio Vivaldi (Energy Boost)",
+    url: "https://www.mfiles.co.uk/mp3-downloads/vivaldi-four-seasons-spring-1.mp3",
+    category: "Acoustic Focus",
+    duration: "3:30",
+    studyBenefit: "Âm thanh tươi vui giúp đánh thức sự tập trung vào mỗi buổi sáng làm bài kiểm tra TOEIC."
+  },
+  {
+    id: 8,
+    title: "Erik Satie: Gymnopédie No. 1",
+    artist: "Erik Satie (Deep Meditation)",
+    url: "https://www.mfiles.co.uk/mp3-downloads/erik-satie-gymnopedie-1.mp3",
+    category: "Soft Piano",
+    duration: "3:10",
+    studyBenefit: "Giai điệu tối giản đưa tâm trí vào trạng thái thả lỏng tuyệt đối để tiếp thu từ mới."
   }
 ];
 
@@ -147,12 +174,16 @@ interface MusicContextType {
   customTracks: Track[];
   currentTrack: Track;
   isPlaying: boolean;
+  isRepeat: boolean;
+  isShuffle: boolean;
   volume: number;
   progress: number;
   durationSec: number;
   currentTimeSec: number;
   playTrack: (track: Track) => void;
   togglePlay: () => void;
+  toggleRepeat: () => void;
+  toggleShuffle: () => void;
   nextTrack: () => void;
   prevTrack: () => void;
   changeVolume: (val: number) => void;
@@ -169,6 +200,8 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
   const [customTracks, setCustomTracks] = useState<Track[]>([]);
   const [currentTrack, setCurrentTrack] = useState<Track>(STUDY_TRACKS[0]);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isRepeat, setIsRepeat] = useState(false);
+  const [isShuffle, setIsShuffle] = useState(false);
   const [volume, setVolume] = useState(1.0); // Full Volume by default
   const [progress, setProgress] = useState(0);
   const [currentTimeSec, setCurrentTimeSec] = useState(0);
@@ -183,24 +216,21 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
   const tracksRef = useRef<Track[]>(tracks);
   const currentTrackRef = useRef<Track>(currentTrack);
   const isPlayingRef = useRef<boolean>(isPlaying);
+  const isRepeatRef = useRef<boolean>(isRepeat);
+  const isShuffleRef = useRef<boolean>(isShuffle);
 
-  useEffect(() => {
-    tracksRef.current = tracks;
-  }, [tracks]);
+  useEffect(() => { tracksRef.current = tracks; }, [tracks]);
+  useEffect(() => { currentTrackRef.current = currentTrack; }, [currentTrack]);
+  useEffect(() => { isPlayingRef.current = isPlaying; }, [isPlaying]);
+  useEffect(() => { isRepeatRef.current = isRepeat; }, [isRepeat]);
+  useEffect(() => { isShuffleRef.current = isShuffle; }, [isShuffle]);
 
-  useEffect(() => {
-    currentTrackRef.current = currentTrack;
-  }, [currentTrack]);
-
-  useEffect(() => {
-    isPlayingRef.current = isPlaying;
-  }, [isPlaying]);
+  const toggleRepeat = () => setIsRepeat(prev => !prev);
+  const toggleShuffle = () => setIsShuffle(prev => !prev);
 
   // Initialize audio element ONLY ONCE on mount to ensure seamless playback without skips or resets!
   useEffect(() => {
     const audio = new Audio();
-    // Do NOT set audio.crossOrigin = "anonymous";
-    // This allows browser to stream custom URL audio files directly without failing CORS checks!
     audio.loop = false;
     audio.volume = volume;
     audioRef.current = audio;
@@ -230,13 +260,25 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
       audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
       audio.removeEventListener('ended', handleEnded);
     };
-  }, []); // Run exactly once on mount, keeping the audio element empty initially to prevent early load blocks!
+  }, []);
 
   // Safe handler for automatic next song
   const handleAutoNext = () => {
     const currentTracks = tracksRef.current;
     const currentTrk = currentTrackRef.current;
     if (currentTracks.length === 0) return;
+
+    if (isRepeatRef.current) {
+      playTrack(currentTrk);
+      return;
+    }
+
+    if (isShuffleRef.current) {
+      const randomIndex = Math.floor(Math.random() * currentTracks.length);
+      playTrack(currentTracks[randomIndex]);
+      return;
+    }
+
     const currentIndex = currentTracks.findIndex(t => t.id === currentTrk.id);
     const nextIndex = (currentIndex + 1) % currentTracks.length;
     playTrack(currentTracks[nextIndex]);
@@ -538,12 +580,16 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
       customTracks,
       currentTrack,
       isPlaying,
+      isRepeat,
+      isShuffle,
       volume,
       progress,
       durationSec,
       currentTimeSec,
       playTrack,
       togglePlay,
+      toggleRepeat,
+      toggleShuffle,
       nextTrack,
       prevTrack,
       changeVolume,
