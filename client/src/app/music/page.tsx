@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef, memo } from 'react';
+import React, { useState, useEffect, useRef, memo, useMemo } from 'react';
 import { useMusic, Track, getYouTubeId } from '@/context/MusicContext';
 import { useAuth } from '@/context/AuthContext';
 import { 
@@ -21,18 +21,16 @@ import {
   Repeat,
   Shuffle,
   Activity,
-  Zap,
-  Wind,
-  Music,
-  Radio
+  Zap
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-// Animated Soundwave Audio Equalizer Component
+// Pure GPU-accelerated Audio Equalizer Component
 const AudioEqualizer = memo(function AudioEqualizer({ isPlaying }: { isPlaying: boolean }) {
+  const bars = [40, 75, 100, 60, 90, 45, 80, 100, 65, 85, 50, 95, 70, 40, 80, 60];
   return (
     <div className="flex items-end justify-center gap-1.5 h-10 px-4 py-1 bg-slate-950/60 backdrop-blur-md rounded-full border border-white/10 shadow-inner">
-      {[40, 75, 100, 60, 90, 45, 80, 100, 65, 85, 50, 95, 70, 40, 80, 60].map((height, i) => (
+      {bars.map((height, i) => (
         <div
           key={i}
           className={cn(
@@ -40,9 +38,9 @@ const AudioEqualizer = memo(function AudioEqualizer({ isPlaying }: { isPlaying: 
             isPlaying ? "animate-pulse" : "h-1 opacity-40"
           )}
           style={{
-            height: isPlaying ? `${Math.max(15, Math.floor(Math.sin(i + Date.now() / 200) * 40 + height * 0.6))}%` : '4px',
-            animationDelay: `${i * 120}ms`,
-            animationDuration: `${600 + (i % 5) * 150}ms`
+            height: isPlaying ? `${height}%` : '4px',
+            animationDelay: `${i * 100}ms`,
+            animationDuration: `${700 + (i % 4) * 200}ms`
           }}
         />
       ))}
@@ -50,7 +48,7 @@ const AudioEqualizer = memo(function AudioEqualizer({ isPlaying }: { isPlaying: 
   );
 });
 
-// Memoized Pomodoro Timer Widget to isolate 1-second interval state ticks from the main music page
+// Memoized Pomodoro Timer Widget
 const PomodoroTimerWidget = memo(function PomodoroTimerWidget() {
   const [pomodoroTime, setPomodoroTime] = useState(25 * 60);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
@@ -108,7 +106,6 @@ const PomodoroTimerWidget = memo(function PomodoroTimerWidget() {
         <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Thời gian tập trung</p>
       </div>
 
-      {/* Presets Row */}
       <div className="flex justify-center gap-2">
         {[15, 25, 45].map((mins) => (
           <button
@@ -126,7 +123,6 @@ const PomodoroTimerWidget = memo(function PomodoroTimerWidget() {
         ))}
       </div>
 
-      {/* Action Buttons */}
       <div className="grid grid-cols-2 gap-3 pt-2">
         <button
           onClick={handleStartTimer}
@@ -146,6 +142,193 @@ const PomodoroTimerWidget = memo(function PomodoroTimerWidget() {
           Reset
         </button>
       </div>
+    </div>
+  );
+});
+
+// Memoized Brainwave Selector
+const BrainwaveSelectorWidget = memo(function BrainwaveSelectorWidget() {
+  const [selectedBrainwave, setSelectedBrainwave] = useState<'off' | 'alpha' | 'beta' | 'theta'>('off');
+
+  return (
+    <div className="premium-card p-6 bg-slate-900 border border-slate-800 rounded-3xl shadow-xl space-y-4">
+      <h3 className="font-black text-sm text-white flex items-center gap-2">
+        <Activity className="w-4 h-4 text-purple-400 animate-pulse" /> Bộ Phát Sóng Não Tần Số Học Tập (Brainwaves)
+      </h3>
+      
+      <div className="grid grid-cols-2 gap-2.5">
+        {[
+          { id: 'alpha', name: 'Sóng Alpha (10Hz)', desc: 'Ghi nhớ từ vựng nhanh', color: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' },
+          { id: 'beta', name: 'Sóng Beta (20Hz)', desc: 'Tập trung tư duy cao độ', color: 'bg-blue-500/20 text-blue-400 border-blue-500/30' },
+          { id: 'theta', name: 'Sóng Theta (6Hz)', desc: 'Sáng tạo bài viết Writing', color: 'bg-purple-500/20 text-purple-400 border-purple-500/30' },
+          { id: 'off', name: 'Tắt Sóng Não', desc: 'Chỉ nghe nhạc thường', color: 'bg-slate-800 text-slate-400 border-slate-700' }
+        ].map(b => (
+          <button
+            key={b.id}
+            onClick={() => setSelectedBrainwave(b.id as any)}
+            className={cn(
+              "p-3 rounded-2xl border text-left transition-all cursor-pointer",
+              selectedBrainwave === b.id
+                ? `${b.color} font-black shadow-md`
+                : "bg-slate-800/60 border-slate-800 text-slate-300 hover:bg-slate-800"
+            )}
+          >
+            <p className="text-xs font-black truncate">{b.name}</p>
+            <p className="text-[9px] text-slate-400 font-medium truncate mt-0.5">{b.desc}</p>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+});
+
+// Memoized Add Custom Song Form
+const AddCustomTrackWidget = memo(function AddCustomTrackWidget({ user, addCustomTrack, customTracks, deleteCustomTrack }: {
+  user: any;
+  addCustomTrack: (title: string, artist: string, url: string, category?: string, file?: Blob) => Promise<void>;
+  customTracks: Track[];
+  deleteCustomTrack: (id: number) => Promise<void>;
+}) {
+  const [newTitle, setNewTitle] = useState("");
+  const [newArtist, setNewArtist] = useState("");
+  const [newUrl, setNewUrl] = useState("");
+  const [addMode, setAddMode] = useState<'url' | 'file'>('url');
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setSelectedFile(file);
+      if (!newTitle) {
+        const nameWithoutExt = file.name.replace(/\.[^/.]+$/, "");
+        setNewTitle(nameWithoutExt);
+      }
+    }
+  };
+
+  const handleAddCustomSong = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (addMode === 'url') {
+      if (!newUrl.trim()) return;
+      await addCustomTrack(newTitle, newArtist || "Mạng Internet", newUrl, "Custom Track");
+    } else {
+      if (!selectedFile) return;
+      await addCustomTrack(newTitle, newArtist || "File nhạc của tôi", "", "Local File", selectedFile);
+    }
+    setNewTitle("");
+    setNewArtist("");
+    setNewUrl("");
+    setSelectedFile(null);
+  };
+
+  return (
+    <div className="premium-card p-6 bg-slate-900 border border-slate-800 rounded-3xl shadow-xl space-y-4">
+      <h3 className="font-black text-sm text-white flex items-center gap-2">
+        <Sparkles className="w-4 h-4 text-primary" /> Nhạc Cá Nhân Của Bạn
+      </h3>
+      
+      {user ? (
+        <form onSubmit={handleAddCustomSong} className="space-y-3.5">
+          <p className="text-[10px] text-slate-400 leading-relaxed font-semibold">
+            Tải file nhạc (.mp3) từ thiết bị hoặc dán link phát nhạc trực tiếp để thêm danh sách phát của riêng bạn!
+          </p>
+
+          <div className="flex bg-slate-800 p-1 rounded-xl gap-1 border border-slate-700">
+            <button
+              type="button"
+              onClick={() => setAddMode('url')}
+              className={cn(
+                "flex-1 py-1.5 text-center text-[10px] font-black rounded-lg transition-all cursor-pointer",
+                addMode === 'url' ? "bg-primary text-white" : "text-slate-400 hover:text-white"
+              )}
+            >
+              Dán Link MP3 / YouTube
+            </button>
+            <button
+              type="button"
+              onClick={() => setAddMode('file')}
+              className={cn(
+                "flex-1 py-1.5 text-center text-[10px] font-black rounded-lg transition-all cursor-pointer",
+                addMode === 'file' ? "bg-primary text-white" : "text-slate-400 hover:text-white"
+              )}
+            >
+              Tải File Từ Máy (.mp3)
+            </button>
+          </div>
+
+          <div className="space-y-2">
+            <input
+              type="text"
+              placeholder="Tên bài hát..."
+              value={newTitle}
+              onChange={(e) => setNewTitle(e.target.value)}
+              required
+              className="w-full px-3.5 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-primary"
+            />
+
+            <input
+              type="text"
+              placeholder="Ca sĩ / Tác giả..."
+              value={newArtist}
+              onChange={(e) => setNewArtist(e.target.value)}
+              className="w-full px-3.5 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-primary"
+            />
+
+            {addMode === 'url' ? (
+              <input
+                type="url"
+                placeholder="Link nhạc MP3 hoặc YouTube URL..."
+                value={newUrl}
+                onChange={(e) => setNewUrl(e.target.value)}
+                required
+                className="w-full px-3.5 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-primary"
+              />
+            ) : (
+              <div className="relative">
+                <input
+                  type="file"
+                  accept="audio/*"
+                  onChange={handleFileChange}
+                  required
+                  className="w-full text-xs text-slate-400 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-slate-800 file:text-primary hover:file:bg-slate-700 cursor-pointer"
+                />
+              </div>
+            )}
+          </div>
+
+          <button
+            type="submit"
+            className="w-full py-2.5 bg-primary text-white font-black text-xs rounded-xl shadow-md shadow-primary/20 hover:opacity-90 transition-all cursor-pointer"
+          >
+            Thêm Bài Hát
+          </button>
+        </form>
+      ) : (
+        <div className="p-4 bg-slate-800/60 rounded-2xl border border-slate-700/50 text-center space-y-2">
+          <AlertCircle className="w-5 h-5 text-amber-400 mx-auto" />
+          <p className="text-xs text-slate-300 font-bold">Vui lòng đăng nhập để lưu bài hát cá nhân!</p>
+        </div>
+      )}
+
+      {customTracks.length > 0 && (
+        <div className="space-y-2 pt-2 border-t border-slate-800">
+          <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Bài Hát Đã Thêm ({customTracks.length})</h4>
+          <div className="space-y-1.5 max-h-40 overflow-y-auto pr-1">
+            {customTracks.map((ct) => (
+              <div key={ct.id} className="flex items-center justify-between p-2 bg-slate-800/80 rounded-xl border border-slate-700 text-xs">
+                <span className="flex-1 font-bold text-white truncate">{ct.title}</span>
+                <button
+                  onClick={() => deleteCustomTrack(ct.id)}
+                  className="p-1 text-slate-500 hover:text-rose-400 transition-colors cursor-pointer ml-2"
+                  title="Xóa bài hát"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 });
@@ -176,30 +359,17 @@ export default function MusicHub() {
     deleteCustomTrack
   } = useMusic();
 
-  const ytVideoId = getYouTubeId(currentTrack.url);
+  const ytVideoId = useMemo(() => getYouTubeId(currentTrack.url), [currentTrack.url]);
 
   const [isMuted, setIsMuted] = useState(false);
   const [prevVolume, setPrevVolume] = useState(volume);
   
-  // Ambient Sound Overlay State (0 to 100)
   const [cafeMix, setCafeMix] = useState(0);
   const [rainMix, setRainMix] = useState(0);
 
-  // Binaural Brainwave State
-  const [selectedBrainwave, setSelectedBrainwave] = useState<'off' | 'alpha' | 'beta' | 'theta'>('off');
-
-  // HTML5 Audio elements refs for concurrent background ambient mixing
   const rainAudioRef = useRef<HTMLAudioElement | null>(null);
   const cafeAudioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Form states for adding custom songs
-  const [newTitle, setNewTitle] = useState("");
-  const [newArtist, setNewArtist] = useState("");
-  const [newUrl, setNewUrl] = useState("");
-  const [addMode, setAddMode] = useState<'url' | 'file'>('url');
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
-  // Sync mute state
   const handleMuteToggle = () => {
     if (isMuted) {
       changeVolume(prevVolume);
@@ -211,7 +381,6 @@ export default function MusicHub() {
     }
   };
 
-  // Preset Ambient Mixers Handler
   const applyAmbientPreset = (preset: 'cafe_rain' | 'night_forest' | 'quiet_library' | 'off') => {
     let r = 0, c = 0;
     if (preset === 'cafe_rain') { r = 60; c = 40; }
@@ -223,7 +392,6 @@ export default function MusicHub() {
     unlockAmbientSounds(r, c);
   };
 
-  // Sync Rain Sound Volume & State in Realtime
   useEffect(() => {
     if (typeof window === 'undefined') return;
     
@@ -244,7 +412,6 @@ export default function MusicHub() {
     }
   }, [rainMix, isPlaying]);
 
-  // Sync Cafe Sound Volume & State in Realtime
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
@@ -265,7 +432,6 @@ export default function MusicHub() {
     }
   }, [cafeMix, isPlaying]);
 
-  // Clean up ambient audios on unmount
   useEffect(() => {
     return () => {
       if (rainAudioRef.current) rainAudioRef.current.pause();
@@ -324,40 +490,11 @@ export default function MusicHub() {
     seek(pct * durationSec);
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setSelectedFile(file);
-      if (!newTitle) {
-        const nameWithoutExt = file.name.replace(/\.[^/.]+$/, "");
-        setNewTitle(nameWithoutExt);
-      }
-    }
-  };
-
-  const handleAddCustomSong = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (addMode === 'url') {
-      if (!newUrl.trim()) return;
-      await addCustomTrack(newTitle, newArtist || "Mạng Internet", newUrl, "Custom Track");
-    } else {
-      if (!selectedFile) return;
-      await addCustomTrack(newTitle, newArtist || "File nhạc của tôi", "", "Local File", selectedFile);
-    }
-    setNewTitle("");
-    setNewArtist("");
-    setNewUrl("");
-    setSelectedFile(null);
-  };
-
   return (
     <div className="space-y-8 animate-in fade-in duration-500 max-w-6xl mx-auto pb-16">
       
-      {/* Premium Ambient Header */}
+      {/* Header */}
       <div className="relative overflow-hidden bg-slate-900 text-white rounded-3xl p-8 md:p-10 border border-slate-800 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-6">
-        <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-600/10 rounded-full blur-3xl pointer-events-none" />
-        
         <div className="space-y-3 relative z-10 text-center md:text-left max-w-xl">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-primary/10 border border-primary/20 rounded-full text-primary text-[10px] font-black uppercase tracking-widest">
             <Sparkles className="w-3 h-3 text-yellow-400 fill-yellow-400" /> Study Music & Binaural Beats Hub
@@ -366,7 +503,7 @@ export default function MusicHub() {
             Không Gian Âm Nhạc Tập Trung Sâu
           </h1>
           <p className="text-slate-400 text-xs md:text-sm font-medium leading-relaxed">
-            Kết hợp nhạc Classical, sóng não Alpha Waves, hòa tấu Acoustic cùng âm thanh môi trường (Tiếng mưa, Quán cà phê) và bộ đếm Pomodoro giúp não bộ tiếp thu từ vựng nhanh gấp 2 lần!
+            Nhạc Classical, sóng não Alpha Waves, hòa tấu Acoustic cùng âm thanh môi trường (Tiếng mưa, Quán cà phê) giúp tiếp thu từ vựng nhanh gấp 2 lần!
           </p>
         </div>
 
@@ -380,9 +517,6 @@ export default function MusicHub() {
             <p className="text-[10px] text-slate-400 font-bold max-w-[150px] leading-relaxed">
               *Nhạc vẫn chạy ngầm mượt mà khi bạn chuyển sang các trang học khác!
             </p>
-            <p className="text-[9px] text-amber-400 font-bold max-w-[150px] leading-relaxed border-t border-white/5 pt-1.5 mt-1.5">
-              📱 <strong>iOS/Android:</strong> Hãy tắt nút gạt im lặng (chế độ rung) của điện thoại để nghe tiếng nhạc.
-            </p>
           </div>
         </div>
       </div>
@@ -392,9 +526,7 @@ export default function MusicHub() {
         
         {/* Left Side: Center-Stage Vinyl Player */}
         <div className="lg:col-span-7 premium-card p-6 md:p-10 bg-slate-900 border border-slate-800 rounded-3xl shadow-xl space-y-8 flex flex-col items-center justify-center text-center relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-indigo-500/5 via-transparent to-transparent pointer-events-none" />
           
-          {/* Track Detail Badge */}
           <div className="space-y-1.5 z-10">
             <div className="flex items-center justify-center gap-2">
               <span className="text-[9px] font-black uppercase tracking-widest text-primary px-2.5 py-0.5 rounded-full bg-primary/10 border border-primary/20">
@@ -415,12 +547,10 @@ export default function MusicHub() {
             )}
           </div>
 
-          {/* Audio Equalizer Soundwave Display */}
           <div className="w-full z-10 max-w-sm">
             <AudioEqualizer isPlaying={isPlaying} />
           </div>
 
-          {/* Interactive Rotating Vinyl or YouTube Player */}
           {ytVideoId ? (
             <div className="relative w-full aspect-video md:w-[480px] rounded-2xl overflow-hidden shadow-2xl border border-slate-800 z-10">
               <iframe
@@ -435,11 +565,6 @@ export default function MusicHub() {
           ) : (
             <div className="relative w-56 h-56 md:w-64 md:h-64 shrink-0 flex items-center justify-center z-10">
               <div className={cn(
-                "absolute inset-0 rounded-full bg-indigo-500/10 blur-xl transition-all duration-1000",
-                isPlaying ? "scale-105 opacity-100 animate-pulse" : "scale-95 opacity-50"
-              )} />
-              
-              <div className={cn(
                 "w-full h-full rounded-full bg-slate-950 border-4 border-slate-800 shadow-2xl relative flex items-center justify-center transition-all overflow-hidden duration-1000",
                 isPlaying ? "animate-spin [animation-duration:15s]" : ""
               )}>
@@ -451,16 +576,6 @@ export default function MusicHub() {
                 <div className="absolute inset-20 rounded-full bg-gradient-to-tr from-purple-600 via-pink-500 to-indigo-500 flex items-center justify-center border-2 border-slate-800">
                   <Disc className="w-10 h-10 text-white/95 animate-pulse" />
                 </div>
-              </div>
-
-              <div 
-                className={cn(
-                  "absolute top-[-10px] right-[40px] w-24 h-24 origin-top-right transition-transform duration-700 pointer-events-none z-20",
-                  isPlaying ? "rotate-[15deg]" : "rotate-[0deg]"
-                )}
-              >
-                <div className="w-2 h-20 bg-gradient-to-b from-slate-400 to-slate-200 rounded-full shadow-md ml-16" />
-                <div className="w-4 h-6 bg-slate-800 border border-slate-700 rounded shadow-md ml-15 mt-[-5px]" />
               </div>
             </div>
           )}
@@ -475,7 +590,6 @@ export default function MusicHub() {
                 className="h-full bg-gradient-to-r from-primary via-purple-500 to-indigo-500 rounded-full transition-all duration-100" 
                 style={{ width: `${progress}%` }} 
               />
-              <div className="absolute top-0 bottom-0 left-0 right-0 bg-transparent hover:bg-white/5 transition-all" />
             </div>
             <div className="flex justify-between text-[10px] font-bold text-slate-400 select-none">
               <span>{formatTime(currentTimeSec)}</span>
@@ -483,7 +597,7 @@ export default function MusicHub() {
             </div>
           </div>
 
-          {/* Main Controls & Repeat/Shuffle */}
+          {/* Controls */}
           <div className="flex items-center justify-center gap-4 md:gap-6 z-10 select-none">
             <button
               onClick={toggleShuffle}
@@ -493,7 +607,6 @@ export default function MusicHub() {
                   ? "bg-primary/20 border-primary text-primary shadow-lg shadow-primary/20"
                   : "bg-slate-800/80 border-slate-800 text-slate-400 hover:text-white"
               )}
-              title="Phát ngẫu nhiên (Shuffle)"
             >
               <Shuffle className="w-4 h-4" />
             </button>
@@ -540,7 +653,6 @@ export default function MusicHub() {
                   ? "bg-primary/20 border-primary text-primary shadow-lg shadow-primary/20"
                   : "bg-slate-800/80 border-slate-800 text-slate-400 hover:text-white"
               )}
-              title="Lặp lại bài hát (Repeat)"
             >
               <Repeat className="w-4 h-4" />
             </button>
@@ -548,10 +660,7 @@ export default function MusicHub() {
 
           {/* Volume */}
           <div className="flex items-center justify-center gap-3 w-64 z-10 select-none">
-            <button
-              onClick={handleMuteToggle}
-              className="text-slate-400 hover:text-white transition-all cursor-pointer"
-            >
+            <button onClick={handleMuteToggle} className="text-slate-400 hover:text-white transition-all cursor-pointer">
               {isMuted || volume === 0 ? <VolumeX className="w-4 h-4 text-rose-400" /> : <Volume2 className="w-4 h-4 text-primary" />}
             </button>
             <input
@@ -569,61 +678,27 @@ export default function MusicHub() {
           </div>
         </div>
 
-        {/* Right Side: Playlists, Brainwave & Ambient Presets */}
+        {/* Right Side Tools */}
         <div className="lg:col-span-5 space-y-6">
-          
-          {/* Memoized Pomodoro Focus Timer Block */}
           <PomodoroTimerWidget />
-
-          {/* Binaural Brainwaves & Study Sound Generator */}
-          <div className="premium-card p-6 bg-slate-900 border border-slate-800 rounded-3xl shadow-xl space-y-4">
-            <h3 className="font-black text-sm text-white flex items-center gap-2">
-              <Activity className="w-4 h-4 text-purple-400 animate-pulse" /> Bộ Phát Sóng Não Tần Số Học Tập (Brainwaves)
-            </h3>
-            
-            <div className="grid grid-cols-2 gap-2.5">
-              {[
-                { id: 'alpha', name: 'Sóng Alpha (10Hz)', desc: 'Ghi nhớ từ vựng nhanh', color: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' },
-                { id: 'beta', name: 'Sóng Beta (20Hz)', desc: 'Tập trung tư duy cao độ', color: 'bg-blue-500/20 text-blue-400 border-blue-500/30' },
-                { id: 'theta', name: 'Sóng Theta (6Hz)', desc: 'Sáng tạo bài viết Writing', color: 'bg-purple-500/20 text-purple-400 border-purple-500/30' },
-                { id: 'off', name: 'Tắt Sóng Não', desc: 'Chỉ nghe nhạc thường', color: 'bg-slate-800 text-slate-400 border-slate-700' }
-              ].map(b => (
-                <button
-                  key={b.id}
-                  onClick={() => setSelectedBrainwave(b.id as any)}
-                  className={cn(
-                    "p-3 rounded-2xl border text-left transition-all cursor-pointer",
-                    selectedBrainwave === b.id
-                      ? `${b.color} font-black shadow-md`
-                      : "bg-slate-800/60 border-slate-800 text-slate-300 hover:bg-slate-800"
-                  )}
-                >
-                  <p className="text-xs font-black truncate">{b.name}</p>
-                  <p className="text-[9px] text-slate-400 font-medium truncate mt-0.5">{b.desc}</p>
-                </button>
-              ))}
-            </div>
-          </div>
+          <BrainwaveSelectorWidget />
 
           {/* Ambient Mixers Overlay & Presets */}
           <div className="premium-card p-6 bg-slate-900 border border-slate-800 rounded-3xl shadow-xl space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="font-black text-sm text-white flex items-center gap-2">
-                <CloudRain className="w-4 h-4 text-blue-400" /> Phối Âm Môi Trường (Ambient Mixers)
-              </h3>
-            </div>
+            <h3 className="font-black text-sm text-white flex items-center gap-2">
+              <CloudRain className="w-4 h-4 text-blue-400" /> Phối Âm Môi Trường (Ambient Mixers)
+            </h3>
 
-            {/* Quick One-Tap Ambient Presets */}
             <div className="flex gap-2">
               <button
                 onClick={() => applyAmbientPreset('cafe_rain')}
-                className="flex-1 py-1.5 px-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl text-[10px] font-black text-slate-300 transition-all cursor-pointer flex items-center justify-center gap-1"
+                className="flex-1 py-1.5 px-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl text-[10px] font-black text-slate-300 transition-all cursor-pointer"
               >
                 ☕ Quán Cà Phê Mưa
               </button>
               <button
                 onClick={() => applyAmbientPreset('night_forest')}
-                className="flex-1 py-1.5 px-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl text-[10px] font-black text-slate-300 transition-all cursor-pointer flex items-center justify-center gap-1"
+                className="flex-1 py-1.5 px-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl text-[10px] font-black text-slate-300 transition-all cursor-pointer"
               >
                 🌲 Đêm Rừng
               </button>
@@ -676,124 +751,12 @@ export default function MusicHub() {
             </div>
           </div>
 
-          {/* Add Custom Track Block */}
-          <div className="premium-card p-6 bg-slate-900 border border-slate-800 rounded-3xl shadow-xl space-y-4">
-            <h3 className="font-black text-sm text-white flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-primary" /> Nhạc Cá Nhân Của Bạn
-            </h3>
-            
-            {user ? (
-              <form onSubmit={handleAddCustomSong} className="space-y-3.5">
-                <p className="text-[10px] text-slate-400 leading-relaxed font-semibold">
-                  Tải file nhạc (.mp3) từ thiết bị hoặc dán link phát nhạc trực tiếp để thêm danh sách phát của riêng bạn!
-                </p>
-
-                <div className="flex bg-slate-800 p-1 rounded-xl gap-1 border border-slate-700">
-                  <button
-                    type="button"
-                    onClick={() => setAddMode('url')}
-                    className={cn(
-                      "flex-1 py-1.5 text-center text-[10px] font-black rounded-lg transition-all cursor-pointer",
-                      addMode === 'url' ? "bg-primary text-white" : "text-slate-400 hover:text-white"
-                    )}
-                  >
-                    Dán Link MP3 / YouTube
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setAddMode('file')}
-                    className={cn(
-                      "flex-1 py-1.5 text-center text-[10px] font-black rounded-lg transition-all cursor-pointer",
-                      addMode === 'file' ? "bg-primary text-white" : "text-slate-400 hover:text-white"
-                    )}
-                  >
-                    Tải File Từ Máy (.mp3)
-                  </button>
-                </div>
-
-                <div className="space-y-2">
-                  <input
-                    type="text"
-                    placeholder="Tên bài hát..."
-                    value={newTitle}
-                    onChange={(e) => setNewTitle(e.target.value)}
-                    required
-                    className="w-full px-3.5 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-primary"
-                  />
-
-                  <input
-                    type="text"
-                    placeholder="Ca sĩ / Tác giả..."
-                    value={newArtist}
-                    onChange={(e) => setNewArtist(e.target.value)}
-                    className="w-full px-3.5 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-primary"
-                  />
-
-                  {addMode === 'url' ? (
-                    <input
-                      type="url"
-                      placeholder="Link nhạc MP3 hoặc YouTube URL..."
-                      value={newUrl}
-                      onChange={(e) => setNewUrl(e.target.value)}
-                      required
-                      className="w-full px-3.5 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-primary"
-                    />
-                  ) : (
-                    <div className="relative">
-                      <input
-                        type="file"
-                        accept="audio/*"
-                        onChange={handleFileChange}
-                        required
-                        className="w-full text-xs text-slate-400 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-slate-800 file:text-primary hover:file:bg-slate-700 cursor-pointer"
-                      />
-                    </div>
-                  )}
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full py-2.5 bg-primary text-white font-black text-xs rounded-xl shadow-md shadow-primary/20 hover:opacity-90 transition-all cursor-pointer"
-                >
-                  Thêm Bài Hát
-                </button>
-              </form>
-            ) : (
-              <div className="p-4 bg-slate-800/60 rounded-2xl border border-slate-700/50 text-center space-y-2">
-                <AlertCircle className="w-5 h-5 text-amber-400 mx-auto" />
-                <p className="text-xs text-slate-300 font-bold">Vui lòng đăng nhập để lưu bài hát cá nhân!</p>
-              </div>
-            )}
-
-            {/* Custom Track List */}
-            {customTracks.length > 0 && (
-              <div className="space-y-2 pt-2 border-t border-slate-800">
-                <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Bài Hát Đã Thêm ({customTracks.length})</h4>
-                <div className="space-y-1.5 max-h-40 overflow-y-auto pr-1">
-                  {customTracks.map((ct) => (
-                    <div key={ct.id} className="flex items-center justify-between p-2 bg-slate-800/80 rounded-xl border border-slate-700 text-xs">
-                      <button
-                        onClick={() => {
-                          playTrack(ct);
-                          unlockAmbientSounds(rainMix, cafeMix, true);
-                        }}
-                        className="flex-1 text-left font-bold text-white truncate hover:text-primary transition-colors cursor-pointer"
-                      >
-                        {ct.title}
-                      </button>
-                      <button
-                        onClick={() => deleteCustomTrack(ct.id)}
-                        className="p-1 text-slate-500 hover:text-rose-400 transition-colors cursor-pointer ml-2"
-                        title="Xóa bài hát"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
+          <AddCustomTrackWidget
+            user={user}
+            addCustomTrack={addCustomTrack}
+            customTracks={customTracks}
+            deleteCustomTrack={deleteCustomTrack}
+          />
 
           {/* Full Study Playlist Cards */}
           <div className="premium-card p-6 bg-slate-900 border border-slate-800 rounded-3xl shadow-xl space-y-3">
