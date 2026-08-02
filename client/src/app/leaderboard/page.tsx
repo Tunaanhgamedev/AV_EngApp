@@ -1,7 +1,25 @@
 'use client';
 
-import React, { useState, useEffect, memo } from 'react';
-import { Trophy, Medal, Crown, TrendingUp, Users, ChevronUp, ChevronDown, Timer, Sparkles, Globe } from 'lucide-react';
+import React, { useState, useEffect, memo, useMemo } from 'react';
+import { 
+  Trophy, 
+  Medal, 
+  Crown, 
+  TrendingUp, 
+  Users, 
+  ChevronUp, 
+  ChevronDown, 
+  Timer, 
+  Sparkles, 
+  Globe,
+  Search,
+  Flame,
+  Zap,
+  ShieldAlert,
+  Award,
+  ArrowUpRight,
+  Filter
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
 
@@ -19,18 +37,16 @@ interface LeaderboardUser {
   isMe?: boolean;
 }
 
-const TABS = ['Global', 'Weekly', 'Classmates'];
-
 const AVATAR_COLORS = [
-  "bg-amber-100 text-amber-600",
-  "bg-slate-100 text-slate-600",
-  "bg-orange-100 text-orange-600",
-  "bg-blue-100 text-blue-600",
-  "bg-purple-100 text-purple-600",
-  "bg-pink-100 text-pink-600",
-  "bg-green-100 text-green-600",
-  "bg-indigo-100 text-indigo-600",
-  "bg-teal-100 text-teal-600"
+  "bg-amber-100 text-amber-600 border-amber-300",
+  "bg-slate-100 text-slate-600 border-slate-300",
+  "bg-orange-100 text-orange-600 border-orange-300",
+  "bg-blue-100 text-blue-600 border-blue-300",
+  "bg-purple-100 text-purple-600 border-purple-300",
+  "bg-pink-100 text-pink-600 border-pink-300",
+  "bg-emerald-100 text-emerald-600 border-emerald-300",
+  "bg-indigo-100 text-indigo-600 border-indigo-300",
+  "bg-teal-100 text-teal-600 border-teal-300"
 ];
 
 // Memoized timer badge to isolate 1s tick re-renders from the main leaderboard table & podium
@@ -54,11 +70,12 @@ const CountdownBadge = memo(function CountdownBadge() {
   const fmt = (n: number) => String(n).padStart(2, '0');
 
   return (
-    <div className="px-5 py-3 bg-rose-50 text-rose-600 rounded-2xl border border-rose-100 flex items-center gap-3">
+    <div className="px-5 py-3 bg-slate-900 text-white rounded-2xl border border-slate-800 flex items-center gap-3 shadow-xl relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-16 h-16 bg-rose-500/10 rounded-full blur-xl pointer-events-none" />
       <Timer className="w-5 h-5 text-rose-500 animate-spin-slow" />
       <div>
-        <p className="text-[9px] font-black uppercase tracking-widest text-rose-400">Giải đấu kết thúc sau</p>
-        <p className="text-lg font-black tabular-nums">
+        <p className="text-[9px] font-black uppercase tracking-widest text-slate-400">Giải Đấu Mùa 12 Kết Thúc Sau</p>
+        <p className="text-base font-black font-mono text-rose-400 tracking-wider">
           {countdown.d}d {fmt(countdown.h)}:{fmt(countdown.m)}:{fmt(countdown.s)}
         </p>
       </div>
@@ -66,9 +83,239 @@ const CountdownBadge = memo(function CountdownBadge() {
   );
 });
 
+// Memoized League Tier Banner Component
+const LeagueTierBanner = memo(function LeagueTierBanner() {
+  return (
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      {[
+        { name: "Diamond League", range: "Top 1 - 3", color: "from-blue-600 to-cyan-500", icon: "💎", badge: "Thăng Hạng Rạng Rỡ" },
+        { name: "Emerald League", range: "Top 4 - 10", color: "from-emerald-600 to-teal-500", icon: "❇️", badge: "Trụ Hạng Vững Vàng" },
+        { name: "Ruby League", range: "Top 11 - 20", color: "from-rose-600 to-pink-500", icon: "🔴", badge: "Khu Vực An Toàn" },
+        { name: "Gold League", range: "Top 21+", color: "from-amber-600 to-yellow-500", icon: "🪙", badge: "Khu Vực Cố Gắng" }
+      ].map((tier, idx) => (
+        <div key={idx} className="premium-card p-4 bg-slate-900 border border-slate-800 rounded-2xl text-white relative overflow-hidden flex flex-col justify-between space-y-2 group hover:border-slate-700 transition-all">
+          <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${tier.color}`} />
+          <div className="flex items-center justify-between">
+            <span className="text-xl">{tier.icon}</span>
+            <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 bg-slate-800 text-slate-300 rounded-md border border-slate-700">
+              {tier.range}
+            </span>
+          </div>
+          <div>
+            <h4 className="text-xs font-black text-white group-hover:text-primary transition-colors">{tier.name}</h4>
+            <p className="text-[10px] text-slate-400 font-medium">{tier.badge}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+});
+
+// Memoized Podium Top 3 Component
+const PodiumWidget = memo(function PodiumWidget({ top1, top2, top3 }: {
+  top1: LeaderboardUser | null;
+  top2: LeaderboardUser | null;
+  top3: LeaderboardUser | null;
+}) {
+  return (
+    <section className="grid grid-cols-3 gap-3 md:gap-8 items-end pt-12 pb-6 px-2 md:px-4">
+      
+      {/* Rank 2 (Silver Podium) */}
+      <div className="flex flex-col items-center space-y-4">
+        <div className="relative">
+          {top2 ? (
+            <>
+              <div className={cn("w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center text-2xl font-black border-4 border-slate-300 shadow-xl overflow-hidden relative", top2.color)}>
+                {top2.avatarUrl ? <img src={top2.avatarUrl} className="w-full h-full object-cover" alt="" /> : top2.avatar}
+              </div>
+              <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-slate-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-black border-2 border-white text-xs shadow-md">
+                2
+              </div>
+            </>
+          ) : (
+            <div className="w-20 h-20 md:w-24 md:h-24 rounded-full border-4 border-dashed border-slate-300 flex items-center justify-center text-slate-400 font-bold bg-slate-100">
+              -
+            </div>
+          )}
+        </div>
+        <div className="text-center min-h-[44px]">
+          {top2 ? (
+            <>
+              <p className="font-black text-slate-800 text-xs md:text-sm truncate max-w-[100px] md:max-w-[120px]">{top2.username}</p>
+              <p className="text-[11px] font-black text-primary">{top2.xp.toLocaleString()} XP</p>
+              {top2.streak > 0 && <p className="text-[10px] font-bold text-amber-500">🔥 {top2.streak} ngày</p>}
+            </>
+          ) : (
+            <p className="text-xs text-slate-400 italic font-medium">Trống</p>
+          )}
+        </div>
+        <div className="w-full h-24 md:h-32 bg-gradient-to-b from-slate-200 via-slate-100 to-slate-50 rounded-t-3xl border-t-4 border-slate-300 shadow-lg flex flex-col items-center justify-center p-2">
+          <Medal className="w-8 h-8 text-slate-400 opacity-60" />
+          <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest mt-1">Á Quân</span>
+        </div>
+      </div>
+      
+      {/* Rank 1 (Gold Champion Podium) */}
+      <div className="flex flex-col items-center space-y-4 scale-105 md:scale-115 z-10">
+        <div className="relative">
+          {top1 ? (
+            <>
+              <div className="absolute -top-10 left-1/2 -translate-x-1/2 animate-bounce">
+                <Crown className="w-10 h-10 text-yellow-500 fill-yellow-500 filter drop-shadow-[0_0_8px_rgba(234,179,8,0.6)]" />
+              </div>
+              <div className={cn("w-24 h-24 md:w-32 md:h-32 rounded-full flex items-center justify-center text-3xl font-black border-4 border-yellow-400 shadow-2xl shadow-yellow-400/40 overflow-hidden relative", top1.color)}>
+                {top1.avatarUrl ? <img src={top1.avatarUrl} className="w-full h-full object-cover" alt="" /> : top1.avatar}
+              </div>
+              <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-yellow-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-black border-2 border-white shadow-xl text-sm">
+                1
+              </div>
+            </>
+          ) : (
+            <div className="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-dashed border-slate-300 flex items-center justify-center text-slate-400 font-bold bg-slate-100">
+              -
+            </div>
+          )}
+        </div>
+        <div className="text-center min-h-[44px]">
+          {top1 ? (
+            <>
+              <p className="font-black text-slate-900 text-sm md:text-base truncate max-w-[120px] md:max-w-[140px]">{top1.username}</p>
+              <p className="text-xs md:text-sm font-black text-primary">{top1.xp.toLocaleString()} XP</p>
+              {top1.streak > 0 && <p className="text-[10px] font-bold text-amber-500">🔥 {top1.streak} ngày</p>}
+            </>
+          ) : (
+            <p className="text-xs text-slate-400 italic font-medium">Trống</p>
+          )}
+        </div>
+        <div className="w-full h-32 md:h-40 bg-gradient-to-b from-yellow-200 via-amber-100 to-yellow-50 rounded-t-3xl border-t-4 border-yellow-400 shadow-2xl flex flex-col items-center justify-center p-2">
+          <Trophy className="w-10 h-10 text-yellow-600 filter drop-shadow-sm" />
+          <span className="text-[10px] font-black text-yellow-800 uppercase tracking-widest mt-1">Quán Quân</span>
+        </div>
+      </div>
+
+      {/* Rank 3 (Bronze Podium) */}
+      <div className="flex flex-col items-center space-y-4">
+        <div className="relative">
+          {top3 ? (
+            <>
+              <div className={cn("w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center text-2xl font-black border-4 border-amber-600/40 shadow-xl overflow-hidden relative", top3.color)}>
+                {top3.avatarUrl ? <img src={top3.avatarUrl} className="w-full h-full object-cover" alt="" /> : top3.avatar}
+              </div>
+              <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-amber-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-black border-2 border-white text-xs shadow-md">
+                3
+              </div>
+            </>
+          ) : (
+            <div className="w-20 h-20 md:w-24 md:h-24 rounded-full border-4 border-dashed border-slate-300 flex items-center justify-center text-slate-400 font-bold bg-slate-100">
+              -
+            </div>
+          )}
+        </div>
+        <div className="text-center min-h-[44px]">
+          {top3 ? (
+            <>
+              <p className="font-black text-slate-800 text-xs md:text-sm truncate max-w-[100px] md:max-w-[120px]">{top3.username}</p>
+              <p className="text-[11px] font-black text-primary">{top3.xp.toLocaleString()} XP</p>
+              {top3.streak > 0 && <p className="text-[10px] font-bold text-amber-500">🔥 {top3.streak} ngày</p>}
+            </>
+          ) : (
+            <p className="text-xs text-slate-400 italic font-medium">Trống</p>
+          )}
+        </div>
+        <div className="w-full h-16 md:h-24 bg-gradient-to-b from-amber-100 via-orange-100 to-amber-50 rounded-t-3xl border-t-4 border-amber-600/50 shadow-lg flex flex-col items-center justify-center p-2">
+          <Medal className="w-7 h-7 text-amber-700 opacity-70" />
+          <span className="text-[10px] font-black text-amber-800 uppercase tracking-widest mt-1">Hạng 3</span>
+        </div>
+      </div>
+    </section>
+  );
+});
+
+// Memoized User Leaderboard Row Component
+const UserRankRow = memo(function UserRankRow({ player, rankIndex, maxXP }: {
+  player: LeaderboardUser;
+  rankIndex: number;
+  maxXP: number;
+}) {
+  const isTop3 = rankIndex < 3;
+  const progressPct = Math.min(100, Math.max(8, (player.xp / (maxXP || 1)) * 100));
+
+  return (
+    <div 
+      id={player.isMe ? "my-rank-row" : undefined}
+      className={cn(
+        "p-4 md:p-5 flex items-center gap-4 transition-all duration-200 group border-b border-slate-100",
+        player.isMe 
+          ? "bg-primary/10 border-l-4 border-l-primary shadow-sm" 
+          : "hover:bg-slate-50/80"
+      )}
+    >
+      {/* Rank Position Badge */}
+      <div className="w-9 text-center font-black text-slate-400 group-hover:text-primary transition-colors text-base md:text-lg shrink-0">
+        {rankIndex === 0 ? "🥇" : rankIndex === 1 ? "🥈" : rankIndex === 2 ? "🥉" : `#${rankIndex + 1}`}
+      </div>
+
+      {/* Rank Movement Trend */}
+      <div className="w-6 flex justify-center shrink-0">
+        {player.trend === 'up' && <ChevronUp className="w-4 h-4 text-emerald-500 animate-bounce" />}
+        {player.trend === 'down' && <ChevronDown className="w-4 h-4 text-rose-500" />}
+        {player.trend === 'same' && <div className="w-1.5 h-1.5 rounded-full bg-slate-300" />}
+      </div>
+
+      {/* User Avatar */}
+      <div className={cn("w-12 h-12 rounded-2xl flex items-center justify-center font-black text-lg shadow-sm border-2 overflow-hidden shrink-0", player.color)}>
+        {player.avatarUrl ? <img src={player.avatarUrl} className="w-full h-full object-cover" alt="" /> : player.avatar}
+      </div>
+
+      {/* User Info */}
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-2">
+          <h4 className="font-black text-slate-800 text-sm md:text-base truncate">{player.username}</h4>
+          {player.isMe && (
+            <span className="px-2 py-0.5 bg-primary text-white text-[8px] font-black rounded-md uppercase tracking-wider">
+              BẠN
+            </span>
+          )}
+          {player.streak >= 7 && (
+            <span className="px-2 py-0.5 bg-amber-500/10 text-amber-600 text-[9px] font-bold rounded-md border border-amber-500/20 flex items-center gap-1">
+              <Flame className="w-3 h-3 text-amber-500 fill-amber-500" /> Hot Streak
+            </span>
+          )}
+        </div>
+        
+        <div className="flex items-center gap-3 mt-1">
+          <span className="text-xs font-extrabold text-slate-400">Lv {player.level}</span>
+          <span className="text-xs font-bold text-slate-300">·</span>
+          <span className="text-xs font-extrabold text-amber-500 flex items-center gap-1">
+            🔥 {player.streak} ngày
+          </span>
+        </div>
+      </div>
+
+      {/* Progress XP Bar (Desktop) */}
+      <div className="hidden md:block w-36 shrink-0">
+        <div className="h-2 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200">
+          <div 
+            className="h-full bg-gradient-to-r from-primary via-purple-500 to-indigo-500 rounded-full transition-all duration-700" 
+            style={{ width: `${progressPct}%` }} 
+          />
+        </div>
+      </div>
+
+      {/* XP Points Score */}
+      <div className="text-right shrink-0">
+        <p className="text-base md:text-lg font-black text-slate-900">{player.xp.toLocaleString()}</p>
+        <p className="text-[9px] font-black text-primary uppercase tracking-widest">XP Points</p>
+      </div>
+    </div>
+  );
+});
+
 export default function LeaderboardPage() {
   const { user } = useAuth();
-  const [tab, setTab] = useState('Global');
+  
+  const [tab, setTab] = useState<'Global' | 'Weekly' | 'Streak'>('Global');
+  const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
   const [leaderboard, setLeaderboard] = useState<LeaderboardUser[]>([]);
 
@@ -89,10 +336,8 @@ export default function LeaderboardPage() {
         if (res.ok) {
           const dbUsers: LeaderboardUser[] = await res.json();
           
-          // Sort by XP descending
           const sortedUsers = [...dbUsers].sort((a, b) => b.xp - a.xp);
 
-          // Map display fields
           const mappedUsers = sortedUsers.map((u, i) => {
             const initials = u.username ? u.username.charAt(0).toUpperCase() : 'U';
             const color = AVATAR_COLORS[i % AVATAR_COLORS.length];
@@ -123,228 +368,207 @@ export default function LeaderboardPage() {
     fetchLeaderboard();
   }, [user]);
 
-  const myRank = leaderboard.find(p => p.isMe);
-  const myIndex = leaderboard.findIndex(p => p.isMe);
+  // Filtered & Sorted Leaderboard
+  const filteredUsers = useMemo(() => {
+    let result = [...leaderboard];
+
+    if (tab === 'Streak') {
+      result.sort((a, b) => b.streak - a.streak);
+    } else if (tab === 'Weekly') {
+      result.sort((a, b) => b.xp - a.xp);
+    }
+
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase().trim();
+      result = result.filter(u => u.username.toLowerCase().includes(q));
+    }
+
+    return result;
+  }, [leaderboard, tab, searchQuery]);
+
+  const myRankIndex = leaderboard.findIndex(p => p.isMe);
+  const myRank = leaderboard[myRankIndex] || null;
+
+  const scrollToMyRank = () => {
+    const el = document.getElementById("my-rank-row");
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
 
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center h-[50vh] space-y-4">
         <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-slate-500 font-bold">Tải bảng xếp hạng trực tiếp...</p>
+        <p className="text-slate-500 font-bold">Đang tải bảng vinh danh trực tiếp từ hệ thống...</p>
       </div>
     );
   }
 
-  // Define top 3 podium slots from actual database users
   const top1 = leaderboard[0] || null;
   const top2 = leaderboard[1] || null;
   const top3 = leaderboard[2] || null;
+  const maxXP = top1?.xp || 1;
 
   return (
-    <div className="max-w-4xl mx-auto space-y-10 py-6 animate-in fade-in duration-700">
-      {/* Header */}
+    <div className="max-w-5xl mx-auto space-y-8 py-6 animate-in fade-in duration-500 pb-20">
+      
+      {/* Header Banner */}
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="space-y-1">
-          <h1 className="text-3xl font-black flex items-center gap-3">
-            <Trophy className="w-8 h-8 text-yellow-500 fill-yellow-500 animate-pulse" />Bảng Xếp Hạng Ruby
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-yellow-500/10 border border-yellow-500/20 rounded-full text-yellow-600 text-[10px] font-black uppercase tracking-widest">
+            <Sparkles className="w-3 h-3 text-yellow-500 fill-yellow-500" /> Diamond Hall of Fame
+          </div>
+          <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight flex items-center gap-3">
+            <Trophy className="w-8 h-8 text-yellow-500 fill-yellow-500 animate-pulse" /> Bảng Vinh Danh Học Viên
           </h1>
-          <p className="text-slate-500 font-medium">Bảng vinh danh trực tiếp từ cơ sở dữ liệu học viên!</p>
+          <p className="text-slate-500 text-xs md:text-sm font-semibold">
+            Bảng xếp hạng thời gian thực ghi nhận nỗ lực học từ vựng, luyện nghe và làm bài test hàng ngày!
+          </p>
         </div>
-        <div className="flex items-center gap-4">
+
+        <div className="flex items-center gap-3">
           <CountdownBadge />
         </div>
       </header>
 
-      {/* My Card */}
+      {/* League Division Tier Banner */}
+      <LeagueTierBanner />
+
+      {/* My Rank Summary Card */}
       {myRank && (
-        <section className="premium-card p-6 bg-gradient-to-r from-primary/10 to-indigo-50 border-primary/20 flex items-center gap-6 animate-in slide-in-from-bottom-2 duration-500">
-          <div className={cn("w-16 h-16 rounded-2xl flex items-center justify-center font-black text-2xl shadow-sm border-2 border-white", myRank.color)}>
-            {myRank.avatarUrl ? <img src={myRank.avatarUrl} className="w-full h-full rounded-2xl object-cover" alt="" /> : myRank.avatar}
-          </div>
-          <div className="flex-1">
-            <div className="flex items-center gap-2">
-              <h3 className="font-black text-slate-800">{myRank.username}</h3>
-              <span className="px-2 py-0.5 bg-primary text-white text-[8px] font-black rounded uppercase tracking-widest">BẠN</span>
+        <section className="premium-card p-6 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white border border-slate-800 rounded-3xl shadow-xl flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
+          
+          <div className="flex items-center gap-5 w-full md:w-auto">
+            <div className={cn("w-16 h-16 rounded-2xl flex items-center justify-center font-black text-2xl shadow-xl border-2 overflow-hidden shrink-0", myRank.color)}>
+              {myRank.avatarUrl ? <img src={myRank.avatarUrl} className="w-full h-full object-cover" alt="" /> : myRank.avatar}
             </div>
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Cấp độ {myRank.level} · 🔥 {myRank.streak} ngày liên tục</p>
+            
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <h3 className="font-black text-lg text-white">{myRank.username}</h3>
+                <span className="px-2 py-0.5 bg-primary text-white text-[8px] font-black rounded uppercase tracking-widest">
+                  BẠN
+                </span>
+              </div>
+              <p className="text-xs text-slate-300 font-bold">
+                Cấp độ {myRank.level} · 🔥 {myRank.streak} ngày liên tục
+              </p>
+            </div>
           </div>
-          <div className="text-center hidden md:block">
-            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Hạng của bạn</p>
-            <p className="text-4xl font-black text-primary">#{myIndex + 1}</p>
-          </div>
-          <div className="text-center">
-            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Tổng Điểm XP</p>
-            <p className="text-2xl font-black text-slate-800">{myRank.xp.toLocaleString()}</p>
+
+          <div className="flex items-center justify-between md:justify-end gap-6 w-full md:w-auto border-t md:border-t-0 border-white/10 pt-4 md:pt-0">
+            <div className="text-center">
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Vị Trí Hiện Tại</p>
+              <p className="text-3xl font-black text-yellow-400">#{myRankIndex + 1}</p>
+            </div>
+
+            <div className="text-center">
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Tổng XP</p>
+              <p className="text-2xl font-black text-white">{myRank.xp.toLocaleString()}</p>
+            </div>
+
+            <button
+              onClick={scrollToMyRank}
+              className="px-4 py-2.5 bg-primary hover:bg-primary/90 text-white rounded-xl text-xs font-black transition-all flex items-center gap-1.5 shadow-lg shadow-primary/30 cursor-pointer"
+            >
+              Xem Vị Trí <ArrowUpRight className="w-4 h-4" />
+            </button>
           </div>
         </section>
       )}
 
-      {/* Podium Top 3 */}
-      <section className="grid grid-cols-3 gap-4 md:gap-8 items-end pt-10 pb-6 px-4">
-        {/* Rank 2 */}
-        <div className="flex flex-col items-center space-y-4">
-          <div className="relative">
-            {top2 ? (
-              <>
-                <div className={cn("w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center text-2xl font-black border-4 border-white shadow-xl overflow-hidden", top2.color)}>
-                  {top2.avatarUrl ? <img src={top2.avatarUrl} className="w-full h-full object-cover" alt="" /> : top2.avatar}
-                </div>
-                <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-slate-400 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold border-2 border-white text-sm shadow-md">2</div>
-              </>
-            ) : (
-              <div className="w-20 h-20 md:w-24 md:h-24 rounded-full border-4 border-dashed border-slate-200 flex items-center justify-center text-slate-300 font-bold bg-slate-50">
-                -
-              </div>
-            )}
-          </div>
-          <div className="text-center min-h-[40px]">
-            {top2 ? (
-              <>
-                <p className="font-bold text-slate-800 truncate max-w-[100px]">{top2.username}</p>
-                <p className="text-xs font-black text-primary">{top2.xp.toLocaleString()} XP</p>
-              </>
-            ) : (
-              <p className="text-xs text-slate-400 italic font-medium">Trống</p>
-            )}
-          </div>
-          <div className="w-full h-24 md:h-32 bg-slate-100/50 rounded-t-3xl border-t-2 border-slate-200/50 shadow-inner" />
-        </div>
+      {/* Top 3 Podium Winners Arena */}
+      <PodiumWidget top1={top1} top2={top2} top3={top3} />
+
+      {/* Full Leaderboard List Table */}
+      <section className="premium-card overflow-hidden bg-white border border-slate-200/80 rounded-3xl shadow-xl">
         
-        {/* Rank 1 */}
-        <div className="flex flex-col items-center space-y-4 scale-110 md:scale-125 z-10">
-          <div className="relative">
-            {top1 ? (
-              <>
-                <div className="absolute -top-10 left-1/2 -translate-x-1/2 animate-bounce"><Crown className="w-10 h-10 text-yellow-500 fill-yellow-500" /></div>
-                <div className={cn("w-24 h-24 md:w-32 md:h-32 rounded-full flex items-center justify-center text-3xl font-black border-4 border-yellow-400 shadow-2xl shadow-yellow-200 overflow-hidden", top1.color)}>
-                  {top1.avatarUrl ? <img src={top1.avatarUrl} className="w-full h-full object-cover" alt="" /> : top1.avatar}
-                </div>
-                <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-yellow-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold border-2 border-white shadow-lg">1</div>
-              </>
-            ) : (
-              <div className="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-dashed border-slate-200 flex items-center justify-center text-slate-300 font-bold bg-slate-50">
-                -
-              </div>
-            )}
+        {/* Filter Tabs & Search Bar Header */}
+        <div className="p-5 border-b border-slate-100 bg-slate-50/80 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex bg-slate-200/70 p-1 rounded-2xl gap-1">
+            {[
+              { id: 'Global', label: 'Toàn Cầu', icon: Globe },
+              { id: 'Weekly', label: 'Tuần Phong Độ', icon: Timer },
+              { id: 'Streak', label: 'Chuỗi Ngày 🔥', icon: Flame }
+            ].map(t => {
+              const Icon = t.icon;
+              return (
+                <button
+                  key={t.id}
+                  onClick={() => setTab(t.id as any)}
+                  className={cn(
+                    "px-4 py-2 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer select-none",
+                    tab === t.id
+                      ? "bg-white text-slate-900 shadow-md"
+                      : "text-slate-500 hover:text-slate-800"
+                  )}
+                >
+                  <Icon className="w-3.5 h-3.5" />
+                  {t.label}
+                </button>
+              );
+            })}
           </div>
-          <div className="text-center min-h-[40px]">
-            {top1 ? (
-              <>
-                <p className="font-black text-slate-900 truncate max-w-[120px]">{top1.username}</p>
-                <p className="text-sm font-black text-primary">{top1.xp.toLocaleString()} XP</p>
-              </>
-            ) : (
-              <p className="text-xs text-slate-400 italic font-medium">Trống</p>
-            )}
+
+          {/* Search Input Bar */}
+          <div className="relative w-full md:w-64">
+            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              placeholder="Tìm tên học viên..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-primary transition-all"
+            />
           </div>
-          <div className="w-full h-32 md:h-40 bg-gradient-to-b from-yellow-100/50 to-yellow-50/20 rounded-t-3xl border-t-2 border-yellow-200/50 shadow-inner" />
         </div>
 
-        {/* Rank 3 */}
-        <div className="flex flex-col items-center space-y-4">
-          <div className="relative">
-            {top3 ? (
-              <>
-                <div className={cn("w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center text-2xl font-black border-4 border-white shadow-xl overflow-hidden", top3.color)}>
-                  {top3.avatarUrl ? <img src={top3.avatarUrl} className="w-full h-full object-cover" alt="" /> : top3.avatar}
-                </div>
-                <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-orange-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold border-2 border-white text-sm shadow-md">3</div>
-              </>
-            ) : (
-              <div className="w-20 h-20 md:w-24 md:h-24 rounded-full border-4 border-dashed border-slate-200 flex items-center justify-center text-slate-300 font-bold bg-slate-50">
-                -
-              </div>
-            )}
-          </div>
-          <div className="text-center min-h-[40px]">
-            {top3 ? (
-              <>
-                <p className="font-bold text-slate-800 truncate max-w-[100px]">{top3.username}</p>
-                <p className="text-xs font-black text-primary">{top3.xp.toLocaleString()} XP</p>
-              </>
-            ) : (
-              <p className="text-xs text-slate-400 italic font-medium">Trống</p>
-            )}
-          </div>
-          <div className="w-full h-16 md:h-24 bg-orange-50/50 rounded-t-3xl border-t-2 border-orange-100/50 shadow-inner" />
-        </div>
-      </section>
-
-      {/* Full List */}
-      <section className="premium-card overflow-hidden bg-white">
-        <div className="p-6 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
-          <div className="flex gap-1">
-            {TABS.map(t => (
-              <button key={t} onClick={() => setTab(t)}
-                className={cn("px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center gap-1 cursor-pointer",
-                  tab === t ? "bg-primary text-white shadow-md" : "text-slate-400 hover:text-slate-700"
-                )}>
-                {t === 'Global' ? <Globe className="w-3 h-3" /> : t === 'Weekly' ? <Timer className="w-3 h-3" /> : <Users className="w-3 h-3" />}
-                {t}
-              </button>
-            ))}
-          </div>
-          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Đang cập nhật trực tiếp</p>
-        </div>
-
-        <div className="divide-y divide-slate-50">
-          {leaderboard.length === 0 ? (
-            <div className="p-12 text-center text-slate-400 font-medium">Chưa có người dùng nào trên bảng xếp hạng.</div>
+        {/* Leaderboard Table List */}
+        <div className="divide-y divide-slate-100">
+          {filteredUsers.length === 0 ? (
+            <div className="p-12 text-center text-slate-400 font-medium">
+              Không tìm thấy học viên nào phù hợp.
+            </div>
           ) : (
-            leaderboard.map((player, i) => (
-              <div key={player.id} className={cn("p-4 md:p-5 flex items-center gap-4 transition-all hover:bg-slate-50 group", player.isMe ? "bg-primary/5 ring-1 ring-inset ring-primary/10" : "")}>
-                <div className="w-8 text-center font-black text-slate-300 group-hover:text-primary transition-colors text-lg">{i + 1}</div>
-                <div className="w-8 flex justify-center">
-                  {player.trend === 'up' && <ChevronUp className="w-4 h-4 text-green-500 animate-bounce" />}
-                  {player.trend === 'down' && <ChevronDown className="w-4 h-4 text-rose-500" />}
-                  {player.trend === 'same' && <div className="w-1.5 h-1.5 rounded-full bg-slate-300" />}
-                </div>
-                <div className={cn("w-12 h-12 rounded-2xl flex items-center justify-center font-black text-lg shadow-sm border border-white overflow-hidden flex-shrink-0", player.color)}>
-                  {player.avatarUrl ? <img src={player.avatarUrl} className="w-full h-full object-cover" alt="" /> : player.avatar}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <h4 className="font-bold text-slate-800 truncate">{player.username}</h4>
-                    {player.isMe && <span className="px-2 py-0.5 bg-primary text-white text-[8px] font-black rounded uppercase tracking-wider">BẠN</span>}
-                  </div>
-                  <div className="flex items-center gap-3 mt-0.5">
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Lv {player.level}</p>
-                    <span className="text-xs text-orange-500 font-bold">🔥 {player.streak} ngày</span>
-                  </div>
-                </div>
-                <div className="hidden md:block w-32">
-                  <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                    <div className="h-full bg-gradient-to-r from-primary to-indigo-400 rounded-full transition-all duration-1000" style={{ width: `${Math.min(100, (player.xp / (leaderboard[0]?.xp || 1)) * 100)}%` }} />
-                  </div>
-                </div>
-                <div className="text-right">
-                  <p className="text-lg font-black text-slate-800">{player.xp.toLocaleString()}</p>
-                  <p className="text-[10px] font-black text-primary uppercase tracking-widest">XP</p>
-                </div>
-              </div>
+            filteredUsers.map((player, idx) => (
+              <UserRankRow
+                key={player.id}
+                player={player}
+                rankIndex={leaderboard.findIndex(u => u.id === player.id)}
+                maxXP={maxXP}
+              />
             ))
           )}
         </div>
 
-        {/* Footer CTA */}
+        {/* Leaderboard Footer Motivation Banner */}
         <div className="p-6 bg-slate-900 text-white relative overflow-hidden">
           <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center"><TrendingUp className="w-6 h-6 text-primary" /></div>
+              <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center shrink-0">
+                <TrendingUp className="w-6 h-6 text-yellow-400" />
+              </div>
               <div>
-                <h4 className="font-bold">Đua Top Tăng Tốc!</h4>
-                <p className="text-xs text-slate-400">
-                  Luyện tập từ vựng, viết nhật ký AI, hoặc chơi game ngay hôm nay để nhận thêm điểm XP và bảo vệ chuỗi ngày học tập của bạn!
+                <h4 className="font-black text-sm text-white">Đua Top Tăng Tốc Nhận Phần Thưởng!</h4>
+                <p className="text-xs text-slate-300 font-medium mt-0.5">
+                  Luyện tập từ vựng, viết nhật ký AI hoặc chiến Boss Game ngay hôm nay để tích lũy thêm điểm XP!
                 </p>
               </div>
             </div>
-            <button className="px-6 py-3 bg-primary text-white rounded-xl font-bold text-sm hover:opacity-90 transition-all flex items-center gap-2 cursor-pointer">
-              Chia sẻ thành tích <Sparkles className="w-4 h-4" />
+
+            <button
+              onClick={() => alert("🎉 Tính năng chia sẻ thành tích đã sẵn sàng! Hãy chụp màn hình để khoe bảng vàng nhé!")}
+              className="px-6 py-3 bg-primary text-white rounded-xl font-black text-xs hover:opacity-90 transition-all flex items-center gap-2 cursor-pointer shadow-lg shadow-primary/30 shrink-0"
+            >
+              Chia Sẻ Bảng Vàng <Sparkles className="w-4 h-4" />
             </button>
           </div>
-          <Medal className="absolute -right-4 -bottom-4 w-24 h-24 text-white/5 opacity-20" />
         </div>
+
       </section>
+
     </div>
   );
 }
