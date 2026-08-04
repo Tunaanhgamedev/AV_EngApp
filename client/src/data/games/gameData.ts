@@ -83,7 +83,26 @@ export const STATIC_QUIZ_QUESTIONS = [
   { q: 'Idiom "Burn the midnight oil" nghĩa là gì?', options: ['Thức khuya làm việc/học bài', 'Đốt đèn dầu', 'Tốn tiền điện', 'Đi ngủ sớm'], answer: 0 },
   { q: 'Từ "Synthesize" có nghĩa là gì trong nghiên cứu?', options: ['Tổng hợp thông tin', 'Phân tích riêng lẻ', 'Xóa dữ liệu', 'Sao chép'], answer: 0 },
   { q: 'Chọn dạng đúng của động từ: "I regret ___ you that the event is canceled."', options: ['to inform', 'informing', 'informed', 'inform'], answer: 0 },
-  { q: 'Ý nghĩa của từ "Reconcile" là gì?', options: ['Hòa giải, làm hòa', 'Gây xung đột', 'Chia rẽ', 'Tranh chấp'], answer: 0 }
+  { q: 'Ý nghĩa của từ "Reconcile" là gì?', options: ['Hòa giải, làm hòa', 'Gây xung đột', 'Chia rẽ', 'Tranh chấp'], answer: 0 },
+  { q: 'Trái nghĩa với từ "Optimistic" (Lạc quan) là gì?', options: ['Pessimistic (Bi quan)', 'Confident (Tự tin)', 'Careful (Cẩn thận)', 'Active (Năng động)'], answer: 0 },
+  { q: 'Chọn dạng đúng của từ: "He made a great ___ in his test results."', options: ['improve', 'improvement', 'improving', 'improved'], answer: 1 },
+  { q: 'Idiom "Break the ice" nghĩa là gì?', options: ['Đập tan băng giá', 'Làm quen, tạo không khí thoải mái ban đầu', 'Tranh cãi gay gắt', 'Bị cảm lạnh'], answer: 1 },
+  { q: 'Từ "Persistent" trong tiếng Việt có nghĩa là gì?', options: ['Cố chấp, kiên trì không bỏ cuộc', 'Do dự, chần chừ', 'Hào hứng', 'Chán nản'], answer: 0 },
+  { q: 'Điền từ thích hợp: "I look forward to ___ from you soon."', options: ['hear', 'hearing', 'heard', 'hears'], answer: 1 },
+  { q: 'Từ "Compulsory" đồng nghĩa với từ nào sau đây?', options: ['Optional (Tự chọn)', 'Mandatory (Bắt buộc)', 'Free (Tự do)', 'Flexible (Linh hoạt)'], answer: 1 },
+  { q: 'Từ nào sau đây là danh từ của "Decide"?', options: ['Decision', 'Decisive', 'Decidedly', 'Deciding'], answer: 0 },
+  { q: 'Idiom "Spill the beans" nghĩa là gì?', options: ['Đổ hạt đậu', 'Tiết lộ bí mật', 'Nấu ăn khéo léo', 'Gây rắc rối'], answer: 1 },
+  { q: 'Từ "Invaluable" có nghĩa là gì?', options: ['Không có giá trị', 'Vô giá, cực kỳ quý báu', 'Rẻ tiền', 'Bị hư hỏng'], answer: 1 },
+  { q: 'Điền liên từ thích hợp: "He worked hard, ___ he failed the exam."', options: ['so', 'because', 'yet / however', 'therefore'], answer: 2 },
+  { q: 'Từ "Simultaneous" nghĩa là gì?', options: ['Xảy ra đồng thời, cùng lúc', 'Xảy ra tuần tự', 'Bị gián đoạn', 'Diễn ra rất chậm'], answer: 0 },
+  { q: 'Trái nghĩa với từ "Generous" (Rộng lượng) là gì?', options: ['Stingy / Mean (Keo kiệt)', 'Kind', 'Polite', 'Friendly'], answer: 0 },
+  { q: 'Điền cấu trúc: "She suggested ___ to the cinema."', options: ['going', 'to go', 'go', 'went'], answer: 0 },
+  { q: 'Từ "Exaggerate" nghĩa là gì?', options: ['Phóng đại, nói quá', 'Nói thật', 'Tóm tắt', 'Giảm nhẹ'], answer: 0 },
+  { q: 'Idiom "Hit the sack" nghĩa là gì?', options: ['Đấm vào bao tải', 'Đi ngủ', 'Tập thể dục', 'Đi làm việc'], answer: 1 },
+  { q: 'Từ "Reluctant" miêu tả thái độ nào?', options: ['Hào hứng', 'Lưỡng lự, miễn cưỡng', 'Dũng cảm', 'Chắc chắn'], answer: 1 },
+  { q: 'Chọn từ đồng nghĩa với "Enormous":', options: ['Tiny', 'Huge / Massive', 'Small', 'Narrow'], answer: 1 },
+  { q: 'Điền giới từ: "She is interested ___ learning languages."', options: ['on', 'at', 'in', 'with'], answer: 2 },
+  { q: 'Phrasal verb "Turn down" nghĩa là gì trong "turn down the offer"?', options: ['Từ chối', 'Chấp nhận', 'Bỏ qua', 'Tăng lên'], answer: 0 }
 ];
 
 export const STATIC_SCRAMBLE_WORDS = [
@@ -345,7 +364,9 @@ export const BOSS_BATTLE_SPELLS = [
 export const BOSS_MONSTERS = [
   { id: 'monster1', name: 'Grammar Titan', title: 'Khổng Lồ Ngữ Pháp', hp: 800, maxHp: 800, avatar: '👹', color: 'from-rose-600 to-red-800' },
   { id: 'monster2', name: 'Lexicon Dragon', title: 'Rồng Từ Vựng Thượng Cổ', hp: 1200, maxHp: 1200, avatar: '🐉', color: 'from-amber-600 to-orange-800' },
-  { id: 'monster3', name: 'Phonetic Shadow', title: 'Bóng Ma Phát Âm', hp: 1500, maxHp: 1500, avatar: '💀', color: 'from-purple-700 to-slate-900' }
+  { id: 'monster3', name: 'Phonetic Shadow', title: 'Bóng Ma Phát Âm', hp: 1500, maxHp: 1500, avatar: '💀', color: 'from-purple-700 to-slate-900' },
+  { id: 'monster4', name: 'Syntax Overlord', title: 'Chúa Tể Cú Pháp', hp: 2000, maxHp: 2000, avatar: '🤖', color: 'from-blue-600 to-indigo-900' },
+  { id: 'monster5', name: 'Idiom Phoenix', title: 'Phượng Hoàng Thành Ngữ', hp: 2500, maxHp: 2500, avatar: '🦅', color: 'from-amber-500 to-yellow-700' }
 ];
 
 export const GAME_CATALOG_DATA = [
