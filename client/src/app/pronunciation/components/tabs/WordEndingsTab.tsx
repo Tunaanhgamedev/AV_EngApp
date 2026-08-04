@@ -12,11 +12,11 @@ export default function WordEndingsTab() {
         <div className="space-y-8">
           {/* -ed section */}
           <section className="space-y-4">
-            <div className="premium-card p-6 bg-gradient-to-r from-rose-50 to-orange-50 border-rose-200">
+            <div className="premium-card p-6 bg-gradient-to-r from-rose-50 dark:from-rose-950/30 to-orange-50 dark:to-orange-950/30 border-rose-200 dark:border-rose-800">
               <h3 className="text-lg font-black text-rose-800 flex items-center gap-2 mb-2">
-                <FileText className="w-5 h-5 text-rose-600" /> Cách phát âm đuôi -ED
+                <FileText className="w-5 h-5 text-rose-600 dark:text-rose-400" /> Cách phát âm đuôi -ED
               </h3>
-              <p className="text-sm text-rose-700 leading-relaxed font-medium">
+              <p className="text-sm text-rose-700 dark:text-rose-400 leading-relaxed font-medium">
                 Đuôi -ed (quá khứ đơn, phân từ) có 3 cách đọc: <strong>/t/</strong>, <strong>/d/</strong>, hoặc <strong>/ɪd/</strong> tùy thuộc vào âm cuối của động từ gốc.
               </p>
             </div>
@@ -24,14 +24,14 @@ export default function WordEndingsTab() {
               {ED_RULES.map((r, i) => (
                 <div key={i} className="premium-card p-6 hover:shadow-xl transition-all space-y-3">
                   <div className="flex items-center gap-2">
-                    <span className={cn("text-sm font-black px-3 py-1 rounded-full", i === 0 ? "bg-sky-100 text-sky-700" : i === 1 ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700")}>{r.rule}</span>
+                    <span className={cn("text-sm font-black px-3 py-1 rounded-full", i === 0 ? "bg-sky-100 text-sky-700 dark:text-sky-400" : i === 1 ? "bg-emerald-100 text-emerald-700 dark:text-emerald-400" : "bg-amber-100 text-amber-700 dark:text-amber-400")}>{r.rule}</span>
                   </div>
-                  <p className="text-xs text-slate-500 font-medium">{r.condition}</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">{r.condition}</p>
                   <div className="space-y-2">
                     {r.examples.map((ex: any, j: number) => (
-                      <button key={j} onClick={() => speak(ex.word)} className="group w-full flex items-center justify-between p-3 bg-slate-50 rounded-xl hover:bg-primary/5 transition-all cursor-pointer">
-                        <span className="font-bold text-sm text-slate-800">{ex.word}</span>
-                        <span className="text-xs font-mono text-slate-400">{ex.ipa}</span>
+                      <button key={j} onClick={() => speak(ex.word)} className="group w-full flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-xl hover:bg-primary/5 transition-all cursor-pointer">
+                        <span className="font-bold text-sm text-slate-800 dark:text-slate-100">{ex.word}</span>
+                        <span className="text-xs font-mono text-slate-400 dark:text-slate-500">{ex.ipa}</span>
                         <Play className="w-3 h-3 text-slate-300 group-hover:text-primary" />
                       </button>
                     ))}
@@ -43,11 +43,11 @@ export default function WordEndingsTab() {
 
           {/* -s/-es section */}
           <section className="space-y-4">
-            <div className="premium-card p-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
+            <div className="premium-card p-6 bg-gradient-to-r from-blue-50 dark:from-blue-950/30 to-indigo-50 dark:to-indigo-950/30 border-blue-200 dark:border-blue-800">
               <h3 className="text-lg font-black text-blue-800 flex items-center gap-2 mb-2">
-                <FileText className="w-5 h-5 text-blue-600" /> Cách phát âm đuôi -S / -ES
+                <FileText className="w-5 h-5 text-blue-600 dark:text-blue-400" /> Cách phát âm đuôi -S / -ES
               </h3>
-              <p className="text-sm text-blue-700 leading-relaxed font-medium">
+              <p className="text-sm text-blue-700 dark:text-blue-400 leading-relaxed font-medium">
                 Đuôi -s/-es (số nhiều, ngôi thứ 3 số ít) có 3 cách đọc: <strong>/s/</strong>, <strong>/z/</strong>, hoặc <strong>/ɪz/</strong> tùy thuộc vào âm cuối.
               </p>
             </div>
@@ -55,14 +55,14 @@ export default function WordEndingsTab() {
               {S_RULES.map((r, i) => (
                 <div key={i} className="premium-card p-6 hover:shadow-xl transition-all space-y-3">
                   <div className="flex items-center gap-2">
-                    <span className={cn("text-sm font-black px-3 py-1 rounded-full", i === 0 ? "bg-sky-100 text-sky-700" : i === 1 ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700")}>{r.rule}</span>
+                    <span className={cn("text-sm font-black px-3 py-1 rounded-full", i === 0 ? "bg-sky-100 text-sky-700 dark:text-sky-400" : i === 1 ? "bg-emerald-100 text-emerald-700 dark:text-emerald-400" : "bg-amber-100 text-amber-700 dark:text-amber-400")}>{r.rule}</span>
                   </div>
-                  <p className="text-xs text-slate-500 font-medium">{r.condition}</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">{r.condition}</p>
                   <div className="space-y-2">
                     {r.examples.map((ex, j) => (
-                      <button key={j} onClick={() => speak(ex.word)} className="group w-full flex items-center justify-between p-3 bg-slate-50 rounded-xl hover:bg-primary/5 transition-all cursor-pointer">
-                        <span className="font-bold text-sm text-slate-800">{ex.word}</span>
-                        <span className="text-xs font-mono text-slate-400">{ex.ipa}</span>
+                      <button key={j} onClick={() => speak(ex.word)} className="group w-full flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-xl hover:bg-primary/5 transition-all cursor-pointer">
+                        <span className="font-bold text-sm text-slate-800 dark:text-slate-100">{ex.word}</span>
+                        <span className="text-xs font-mono text-slate-400 dark:text-slate-500">{ex.ipa}</span>
                         <Play className="w-3 h-3 text-slate-300 group-hover:text-primary" />
                       </button>
                     ))}

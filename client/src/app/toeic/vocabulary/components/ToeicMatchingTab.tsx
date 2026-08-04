@@ -100,15 +100,15 @@ export default function ToeicMatchingTab({ selectedList }: Props) {
   };
 
   return (
-    <div className="premium-card p-5 bg-white border border-slate-100 shadow-xl rounded-3xl space-y-4">
-      <div className="flex justify-between items-center border-b border-slate-50 pb-2">
+    <div className="premium-card p-5 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-xl rounded-3xl space-y-4">
+      <div className="flex justify-between items-center border-b border-slate-50 dark:border-slate-800 pb-2">
         <div>
-          <h3 className="font-black text-sm text-slate-800">Ghép Cặp Thẻ Từ</h3>
-          <p className="text-[10px] text-slate-400 font-semibold">Ghép thẻ tiếng Anh tương ứng với nghĩa tiếng Việt.</p>
+          <h3 className="font-black text-sm text-slate-800 dark:text-slate-100">Ghép Cặp Thẻ Từ</h3>
+          <p className="text-[10px] text-slate-400 dark:text-slate-500 font-semibold">Ghép thẻ tiếng Anh tương ứng với nghĩa tiếng Việt.</p>
         </div>
         <div className="text-right">
-          <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest block">Lượt thử</span>
-          <span className="text-xs font-black text-slate-700">{matchTries} lần</span>
+          <span className="text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest block">Lượt thử</span>
+          <span className="text-xs font-black text-slate-700 dark:text-slate-300">{matchTries} lần</span>
         </div>
       </div>
 
@@ -121,12 +121,12 @@ export default function ToeicMatchingTab({ selectedList }: Props) {
               className={cn(
                 "h-20 sm:h-24 landscape:h-12 px-2.5 rounded-xl border-2 text-xs font-black transition-all flex items-center justify-center text-center leading-tight cursor-pointer select-none",
                 card.isMatched 
-                  ? "bg-emerald-50 border-emerald-250 text-emerald-800 opacity-0 pointer-events-none scale-90 duration-300"
+                  ? "bg-emerald-50 dark:bg-emerald-500/10 border-emerald-250 text-emerald-800 dark:text-emerald-400 opacity-0 pointer-events-none scale-90 duration-300"
                   : card.isSelected
                     ? "bg-primary border-primary text-white scale-[1.02] shadow-sm"
                     : card.type === 'word'
-                      ? "bg-slate-50 border-slate-200 text-slate-850 hover:border-primary/50"
-                      : "bg-orange-50/50 border-orange-200 text-orange-950 hover:border-primary/50"
+                      ? "bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-850 dark:text-slate-200 hover:border-primary/50"
+                      : "bg-orange-50/50 dark:bg-orange-500/10 border-orange-200 dark:border-orange-800/50 text-orange-950 dark:text-orange-200 hover:border-primary/50"
               )}
             >
               {card.text}
@@ -139,8 +139,8 @@ export default function ToeicMatchingTab({ selectedList }: Props) {
             <Trophy className="w-6 h-6" />
           </div>
           <div>
-            <h3 className="font-black text-base text-slate-850">Chơi Xong Rồi!</h3>
-            <p className="text-xs text-slate-400">Bạn đã hoàn thành sau <span className="font-black text-primary">{matchTries} lượt thử</span>.</p>
+            <h3 className="font-black text-base text-slate-850 dark:text-slate-100">Chơi Xong Rồi!</h3>
+            <p className="text-xs text-slate-400 dark:text-slate-500">Bạn đã hoàn thành sau <span className="font-black text-primary">{matchTries} lượt thử</span>.</p>
           </div>
           <button
             onClick={() => setupMatchingGame(selectedList)}

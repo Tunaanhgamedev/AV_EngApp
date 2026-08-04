@@ -12,9 +12,9 @@ const IeltsKnowledgeSection = lazy(() => import('./components/IeltsKnowledgeSect
 const IeltsCtaSection = lazy(() => import('./components/IeltsCtaSection'));
 
 const SectionLoader = () => (
-  <div className="p-8 text-center bg-slate-50/50 rounded-3xl border border-slate-100 animate-pulse">
-    <div className="h-6 bg-slate-200 rounded w-1/3 mx-auto mb-2" />
-    <div className="h-4 bg-slate-100 rounded w-1/2 mx-auto" />
+  <div className="p-8 text-center bg-slate-50/50 dark:bg-slate-800/50 rounded-3xl border border-slate-100 dark:border-slate-800 animate-pulse">
+    <div className="h-6 bg-slate-200 dark:bg-slate-700 rounded w-1/3 mx-auto mb-2" />
+    <div className="h-4 bg-slate-100 dark:bg-slate-800 rounded w-1/2 mx-auto" />
   </div>
 );
 

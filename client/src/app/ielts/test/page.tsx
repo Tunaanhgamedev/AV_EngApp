@@ -271,10 +271,10 @@ export default function IELTSFullTestPage() {
   if (loading) {
     return (
       <div className="min-h-[70vh] flex flex-col items-center justify-center space-y-6">
-        <Loader2 className="w-12 h-12 text-red-600 animate-spin" />
+        <Loader2 className="w-12 h-12 text-red-600 dark:text-red-400 animate-spin" />
         <div className="text-center space-y-2">
-          <h2 className="text-2xl font-black text-slate-800 animate-pulse">Đang tải đề thi IELTS Full Test...</h2>
-          <p className="text-sm text-slate-500 font-medium max-w-sm">
+          <h2 className="text-2xl font-black text-slate-800 dark:text-slate-100 animate-pulse">Đang tải đề thi IELTS Full Test...</h2>
+          <p className="text-sm text-slate-500 dark:text-slate-400 font-medium max-w-sm">
             Hệ thống đang nạp đồng thời bộ đề thi 4 kĩ năng: Listening, Reading, Writing, và Speaking từ AI.
           </p>
         </div>
@@ -285,22 +285,22 @@ export default function IELTSFullTestPage() {
   if (error) {
     return (
       <div className="min-h-[70vh] flex flex-col items-center justify-center space-y-6 max-w-md mx-auto text-center px-4">
-        <div className="w-16 h-16 rounded-full bg-rose-100 flex items-center justify-center text-rose-600">
+        <div className="w-16 h-16 rounded-full bg-rose-100 dark:bg-rose-500/10 flex items-center justify-center text-rose-600 dark:text-rose-400">
           <AlertTriangle className="w-8 h-8" />
         </div>
         <div className="space-y-2">
-          <h2 className="text-2xl font-black text-slate-800">Lỗi tải đề thi</h2>
-          <p className="text-sm text-slate-500 font-medium">{error}</p>
+          <h2 className="text-2xl font-black text-slate-800 dark:text-slate-100">Lỗi tải đề thi</h2>
+          <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">{error}</p>
         </div>
         <button
           onClick={() => window.location.reload()}
-          className="px-6 py-3 bg-red-600 text-white rounded-2xl font-bold shadow-lg shadow-red-600/20 hover:opacity-90 transition-all w-full"
+          className="px-6 py-3 bg-red-600 dark:bg-red-500 text-white rounded-2xl font-bold shadow-lg shadow-red-600/20 hover:opacity-90 transition-all w-full"
         >
           Thử tải lại đề thi
         </button>
         <button
           onClick={() => router.push('/ielts')}
-          className="text-sm font-bold text-slate-500 hover:text-slate-700 transition-colors"
+          className="text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
         >
           Quay lại IELTS Center
         </button>
@@ -382,23 +382,23 @@ export default function IELTSFullTestPage() {
                     router.push('/ielts');
                   }
                 }}
-                className="p-2 border border-slate-200 hover:bg-slate-50 rounded-xl transition-all"
+                className="p-2 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"
               >
-                <ArrowLeft className="w-4 h-4 text-slate-500" />
+                <ArrowLeft className="w-4 h-4 text-slate-500 dark:text-slate-400" />
               </button>
-              <h2 className="text-lg font-black text-slate-800 uppercase tracking-wide">IELTS MOCK EXAM</h2>
+              <h2 className="text-lg font-black text-slate-800 dark:text-slate-100 uppercase tracking-wide">IELTS MOCK EXAM</h2>
             </div>
 
             {/* Stages tabs */}
-            <div className="flex flex-wrap items-center gap-2 bg-slate-50 p-1.5 rounded-2xl border border-slate-200/50">
+            <div className="flex flex-wrap items-center gap-2 bg-slate-50 dark:bg-slate-800/50 p-1.5 rounded-2xl border border-slate-200/50 dark:border-slate-700/50">
               {(['listening', 'reading', 'writing', 'speaking'] as const).map((s) => (
                 <button
                   key={s}
                   onClick={() => setStage(s)}
                   className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all ${
                     stage === s
-                      ? 'bg-red-600 text-white shadow shadow-red-600/10'
-                      : 'text-slate-400 hover:text-slate-700'
+                      ? 'bg-red-600 dark:bg-red-500 text-white shadow shadow-red-600/10'
+                      : 'text-slate-400 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
                   }`}
                 >
                   {s}
@@ -407,7 +407,7 @@ export default function IELTSFullTestPage() {
             </div>
 
             <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2 px-3.5 py-1.5 bg-red-50 text-red-600 border border-red-100 rounded-xl font-black text-sm">
+              <div className="flex items-center gap-2 px-3.5 py-1.5 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 border border-red-100 dark:border-red-500/20 rounded-xl font-black text-sm">
                 <Clock className="w-4 h-4" />
                 <span>{formatTime(timeLeft)}</span>
               </div>
@@ -423,9 +423,9 @@ export default function IELTSFullTestPage() {
           </div>
 
           {/* Progress Indicator */}
-          <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+          <div className="w-full bg-slate-100 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
             <div
-              className="bg-red-600 h-full transition-all duration-300"
+              className="bg-red-600 dark:bg-red-500 h-full transition-all duration-300"
               style={{
                 width:
                   stage === 'listening'
@@ -446,20 +446,20 @@ export default function IELTSFullTestPage() {
             <div className="space-y-6">
               {listeningData?.questions.map((q, idx) => (
                 <div key={q.id} className="premium-card p-6 md:p-8 space-y-6">
-                  <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                  <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
                     <span className="text-xs font-black text-red-500 uppercase tracking-widest">Listening Task — Q{idx + 1}</span>
                   </div>
 
                   {/* Audio block */}
                   {q.context && (
-                    <div className="p-5 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div className="p-5 bg-gradient-to-r from-blue-50 dark:from-blue-950/30 to-indigo-50 dark:to-indigo-950/30 border border-blue-100 dark:border-blue-900/50 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-4">
                       <div className="flex items-center gap-2.5">
                         <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500">
                           <Headphones className="w-5 h-5" />
                         </div>
                         <div>
-                          <p className="text-sm font-black text-slate-800">IELTS Listening Simulation Script</p>
-                          <p className="text-xs text-slate-400 font-bold">Bấm nút để nghe máy đọc</p>
+                          <p className="text-sm font-black text-slate-800 dark:text-slate-100">IELTS Listening Simulation Script</p>
+                          <p className="text-xs text-slate-400 dark:text-slate-500 font-bold">Bấm nút để nghe máy đọc</p>
                         </div>
                       </div>
                       <button
@@ -476,7 +476,8 @@ export default function IELTSFullTestPage() {
                     </div>
                   )}
 
-                  <h3 className="text-base md:text-lg font-black text-slate-800">{q.questionText}</h3>
+                  {/* End Audio block */}
+                  <h3 className="text-base md:text-lg font-black text-slate-800 dark:text-slate-100">{q.questionText}</h3>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {q.choices.map((choice) => {
@@ -490,8 +491,8 @@ export default function IELTSFullTestPage() {
                           }
                           className={`p-4 rounded-xl border-2 text-left text-sm font-bold transition-all ${
                             isSelected
-                              ? 'border-red-500 bg-red-50/50 text-red-600'
-                              : 'border-slate-100 bg-slate-50 hover:bg-slate-100 text-slate-700'
+                              ? 'border-red-500 bg-red-50/50 dark:bg-red-950/30 text-red-600 dark:text-red-400'
+                              : 'border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300'
                           }`}
                         >
                           {choice}
@@ -520,8 +521,8 @@ export default function IELTSFullTestPage() {
               {/* Reading passage (Left pane) */}
               <div className="premium-card p-6 md:p-8 space-y-4">
                 <span className="text-xs font-black text-emerald-500 uppercase tracking-widest">Passage Text</span>
-                <h3 className="text-xl font-black text-slate-800">IELTS Academic Reading Passage</h3>
-                <div className="text-sm text-slate-600 font-medium leading-relaxed whitespace-pre-line overflow-y-auto max-h-[500px] border border-slate-100 p-4 rounded-xl bg-slate-50 shadow-inner">
+                <h3 className="text-xl font-black text-slate-800 dark:text-slate-100">IELTS Academic Reading Passage</h3>
+                <div className="text-sm text-slate-600 dark:text-slate-300 font-medium leading-relaxed whitespace-pre-line overflow-y-auto max-h-[500px] border border-slate-100 dark:border-slate-800 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 shadow-inner">
                   {readingData?.questions[0]?.context}
                 </div>
               </div>
@@ -530,8 +531,8 @@ export default function IELTSFullTestPage() {
               <div className="space-y-6">
                 {readingData?.questions.map((q, idx) => (
                   <div key={q.id} className="premium-card p-6 space-y-4">
-                    <span className="text-xs font-bold text-slate-400">Câu hỏi {idx + 1}</span>
-                    <h4 className="font-black text-slate-800 text-sm leading-relaxed">{q.questionText}</h4>
+                    <span className="text-xs font-bold text-slate-400 dark:text-slate-500">Câu hỏi {idx + 1}</span>
+                    <h4 className="font-black text-slate-800 dark:text-slate-100 text-sm leading-relaxed">{q.questionText}</h4>
 
                     <div className="grid grid-cols-1 gap-2">
                       {q.choices.map((choice) => {
@@ -544,8 +545,8 @@ export default function IELTSFullTestPage() {
                             }
                             className={`p-3 text-left rounded-xl border font-bold text-xs transition-all ${
                               isSelected
-                                ? 'border-red-500 bg-red-50/50 text-red-600'
-                                : 'border-slate-200 hover:bg-slate-50 text-slate-700'
+                                ? 'border-red-500 bg-red-50/50 dark:bg-red-950/30 text-red-600 dark:text-red-400'
+                                : 'border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300'
                             }`}
                           >
                             {choice}
@@ -559,7 +560,7 @@ export default function IELTSFullTestPage() {
                 <div className="flex justify-between pt-4">
                   <button
                     onClick={() => setStage('listening')}
-                    className="px-6 py-3 border border-slate-200 text-slate-500 rounded-xl font-bold text-xs hover:bg-slate-50 transition-all flex items-center gap-1.5"
+                    className="px-6 py-3 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 rounded-xl font-bold text-xs hover:bg-slate-50 dark:hover:bg-slate-800 transition-all flex items-center gap-1.5"
                   >
                     <ArrowLeft className="w-4 h-4" /> TRỞ LẠI LISTENING
                   </button>
@@ -579,45 +580,45 @@ export default function IELTSFullTestPage() {
           {/* ──────────────────────────────────────────────────────── */}
           {stage === 'writing' && (
             <div className="premium-card p-6 md:p-8 space-y-6">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
                 <span className="text-xs font-black text-amber-500 uppercase tracking-widest">Writing Task 2 Essay</span>
               </div>
 
-              <div className="p-5 bg-slate-50 border border-slate-100 rounded-2xl space-y-2">
-                <h4 className="font-black text-slate-800 text-sm">Đề bài luận:</h4>
-                <p className="text-sm font-medium text-slate-700 leading-relaxed whitespace-pre-line">
+              <div className="p-5 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-2xl space-y-2">
+                <h4 className="font-black text-slate-800 dark:text-slate-100 text-sm">Đề bài luận:</h4>
+                <p className="text-sm font-medium text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line">
                   {writingData?.questions[0]?.questionText}
                 </p>
               </div>
 
               {/* Suggestions */}
               {writingData?.questions[0]?.context && (
-                <div className="p-4 bg-amber-50 border border-amber-100 rounded-2xl space-y-1.5">
-                  <p className="text-xs font-black text-amber-700 uppercase tracking-wider">Từ vựng & Dàn ý gợi ý:</p>
-                  <p className="text-xs font-medium text-slate-600 whitespace-pre-line leading-relaxed">
+                <div className="p-4 bg-amber-50 dark:bg-amber-500/10 border border-amber-100 dark:border-amber-500/20 rounded-2xl space-y-1.5">
+                  <p className="text-xs font-black text-amber-700 dark:text-amber-400 uppercase tracking-wider">Từ vựng & Dàn ý gợi ý:</p>
+                  <p className="text-xs font-medium text-slate-600 dark:text-slate-300 whitespace-pre-line leading-relaxed">
                     {writingData.questions[0].context}
                   </p>
                 </div>
               )}
 
               <div className="space-y-2">
-                <label className="text-xs font-black text-slate-400 uppercase tracking-wider">Bài làm của bạn:</label>
+                <label className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider">Bài làm của bạn:</label>
                 <textarea
                   value={writingAnswer}
                   onChange={(e) => setWritingAnswer(e.target.value)}
                   placeholder="Nhập bài viết tối thiểu 150-250 từ của bạn tại đây..."
-                  className="w-full h-80 p-5 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-red-500 font-sans text-slate-800 leading-relaxed shadow-inner"
+                  className="w-full h-80 p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl focus:outline-none focus:ring-2 focus:ring-red-500 font-sans text-slate-800 dark:text-slate-100 placeholder:text-slate-300 dark:placeholder:text-slate-600 leading-relaxed shadow-inner"
                 />
-                <div className="flex items-center justify-between text-xs font-bold text-slate-400">
+                <div className="flex items-center justify-between text-xs font-bold text-slate-400 dark:text-slate-500">
                   <span>Số từ: {writingAnswer.split(/\s+/).filter(Boolean).length} từ</span>
                   <span>Khuyên dùng: {writingAnswer.split(/\s+/).filter(Boolean).length >= 250 ? 'Đạt độ dài luận chuẩn' : 'Tối thiểu 250 từ'}</span>
                 </div>
               </div>
 
-              <div className="flex justify-between border-t border-slate-100 pt-6">
+              <div className="flex justify-between border-t border-slate-100 dark:border-slate-800 pt-6">
                 <button
                   onClick={() => setStage('reading')}
-                  className="px-6 py-3 border border-slate-200 text-slate-500 rounded-xl font-bold text-xs hover:bg-slate-50 transition-all flex items-center gap-1.5"
+                  className="px-6 py-3 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 rounded-xl font-bold text-xs hover:bg-slate-50 dark:hover:bg-slate-800 transition-all flex items-center gap-1.5"
                 >
                   <ArrowLeft className="w-4 h-4" /> TRỞ LẠI READING
                 </button>
@@ -636,21 +637,21 @@ export default function IELTSFullTestPage() {
           {/* ──────────────────────────────────────────────────────── */}
           {stage === 'speaking' && (
             <div className="premium-card p-6 md:p-8 space-y-6">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
                 <span className="text-xs font-black text-rose-500 uppercase tracking-widest">Speaking Part 2 Cue Card</span>
               </div>
 
-              <div className="p-5 bg-slate-50 border border-slate-100 rounded-2xl space-y-2">
-                <h4 className="font-black text-slate-800 text-sm">Đề nói:</h4>
-                <p className="text-sm font-medium text-slate-700 leading-relaxed whitespace-pre-line">
+              <div className="p-5 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-2xl space-y-2">
+                <h4 className="font-black text-slate-800 dark:text-slate-100 text-sm">Đề nói:</h4>
+                <p className="text-sm font-medium text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line">
                   {speakingData?.questions[0]?.questionText}
                 </p>
               </div>
 
               {speakingData?.questions[0]?.context && (
-                <div className="p-4 bg-rose-50 border border-rose-100 rounded-2xl space-y-1.5">
-                  <p className="text-xs font-black text-rose-700 uppercase tracking-wider">Từ vựng nên dùng & câu hỏi gợi ý:</p>
-                  <p className="text-xs font-medium text-slate-600 whitespace-pre-line leading-relaxed">
+                <div className="p-4 bg-rose-50 dark:bg-rose-500/10 border border-rose-100 dark:border-rose-500/20 rounded-2xl space-y-1.5">
+                  <p className="text-xs font-black text-rose-700 dark:text-rose-400 uppercase tracking-wider">Từ vựng nên dùng & câu hỏi gợi ý:</p>
+                  <p className="text-xs font-medium text-slate-600 dark:text-slate-300 whitespace-pre-line leading-relaxed">
                     {speakingData.questions[0].context}
                   </p>
                 </div>
@@ -658,21 +659,21 @@ export default function IELTSFullTestPage() {
 
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-black text-slate-400 uppercase tracking-wider">Câu trả lời viết hoặc độc thoại của bạn:</label>
-                  <span className="px-2 py-0.5 bg-red-50 text-red-600 text-[10px] font-black rounded-lg">MÔ PHỎNG AUDIO TRANSCRIPT</span>
+                  <label className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider">Câu trả lời viết hoặc độc thoại của bạn:</label>
+                  <span className="px-2 py-0.5 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-[10px] font-black rounded-lg">MÔ PHỎNG AUDIO TRANSCRIPT</span>
                 </div>
                 <textarea
                   value={speakingAnswer}
                   onChange={(e) => setSpeakingAnswer(e.target.value)}
                   placeholder="Nhập nội dung bài nói tự do của bạn bằng tiếng Anh..."
-                  className="w-full h-48 p-5 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-red-500 font-sans text-slate-800 leading-relaxed shadow-inner"
+                  className="w-full h-48 p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl focus:outline-none focus:ring-2 focus:ring-red-500 font-sans text-slate-800 dark:text-slate-100 placeholder:text-slate-300 dark:placeholder:text-slate-600 leading-relaxed shadow-inner"
                 />
               </div>
 
-              <div className="flex justify-between border-t border-slate-100 pt-6">
+              <div className="flex justify-between border-t border-slate-100 dark:border-slate-800 pt-6">
                 <button
                   onClick={() => setStage('writing')}
-                  className="px-6 py-3 border border-slate-200 text-slate-500 rounded-xl font-bold text-xs hover:bg-slate-50 transition-all flex items-center gap-1.5"
+                  className="px-6 py-3 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 rounded-xl font-bold text-xs hover:bg-slate-50 dark:hover:bg-slate-800 transition-all flex items-center gap-1.5"
                 >
                   <ArrowLeft className="w-4 h-4" /> TRỞ LẠI WRITING
                 </button>
@@ -765,29 +766,29 @@ export default function IELTSFullTestPage() {
             
             {/* Writing feedback */}
             <div className="premium-card p-6 space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
                 <div className="flex items-center gap-2">
                   <PenTool className="w-5 h-5 text-amber-500" />
-                  <h3 className="font-black text-slate-800 text-base">Writing Task Feedback</h3>
+                  <h3 className="font-black text-slate-800 dark:text-slate-100 text-base">Writing Task Feedback</h3>
                 </div>
-                <span className="px-2.5 py-0.5 bg-amber-50 text-amber-700 rounded-lg text-xs font-black">
+                <span className="px-2.5 py-0.5 bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 rounded-lg text-xs font-black">
                   Band {result.writingBand.toFixed(1)}
                 </span>
               </div>
               <div className="space-y-3">
                 <div>
-                  <p className="text-xs font-bold text-slate-400">Đề bài:</p>
-                  <p className="text-xs text-slate-600 font-medium italic mt-0.5">{writingData?.questions[0]?.questionText}</p>
+                  <p className="text-xs font-bold text-slate-400 dark:text-slate-500">Đề bài:</p>
+                  <p className="text-xs text-slate-600 dark:text-slate-300 font-medium italic mt-0.5">{writingData?.questions[0]?.questionText}</p>
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-slate-400">Bài làm:</p>
-                  <p className="text-xs text-slate-600 font-medium whitespace-pre-line bg-slate-50 p-3 rounded-xl mt-0.5 border border-slate-100 shadow-inner max-h-[140px] overflow-y-auto">
+                  <p className="text-xs font-bold text-slate-400 dark:text-slate-500">Bài làm:</p>
+                  <p className="text-xs text-slate-600 dark:text-slate-300 font-medium whitespace-pre-line bg-slate-50 dark:bg-slate-800/50 p-3 rounded-xl mt-0.5 border border-slate-100 dark:border-slate-800 shadow-inner max-h-[140px] overflow-y-auto">
                     {result.details.writing.answer}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-slate-400">Nhận xét chi tiết từ giáo viên AI:</p>
-                  <p className="text-xs text-slate-600 font-medium leading-relaxed whitespace-pre-line bg-amber-50/50 p-4 rounded-xl mt-1 border border-amber-100">
+                  <p className="text-xs font-bold text-slate-400 dark:text-slate-500">Nhận xét chi tiết từ giáo viên AI:</p>
+                  <p className="text-xs text-slate-600 dark:text-slate-300 font-medium leading-relaxed whitespace-pre-line bg-amber-50/50 dark:bg-amber-500/10 p-4 rounded-xl mt-1 border border-amber-100 dark:border-amber-500/20">
                     {result.details.writing.feedback}
                   </p>
                 </div>
@@ -796,29 +797,29 @@ export default function IELTSFullTestPage() {
 
             {/* Speaking feedback */}
             <div className="premium-card p-6 space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
                 <div className="flex items-center gap-2">
                   <Mic2 className="w-5 h-5 text-rose-500" />
-                  <h3 className="font-black text-slate-800 text-base">Speaking Task Feedback</h3>
+                  <h3 className="font-black text-slate-800 dark:text-slate-100 text-base">Speaking Task Feedback</h3>
                 </div>
-                <span className="px-2.5 py-0.5 bg-rose-50 text-rose-700 rounded-lg text-xs font-black">
+                <span className="px-2.5 py-0.5 bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400 rounded-lg text-xs font-black">
                   Band {result.speakingBand.toFixed(1)}
                 </span>
               </div>
               <div className="space-y-3">
                 <div>
-                  <p className="text-xs font-bold text-slate-400">Đề nói:</p>
-                  <p className="text-xs text-slate-600 font-medium italic mt-0.5">{speakingData?.questions[0]?.questionText}</p>
+                  <p className="text-xs font-bold text-slate-400 dark:text-slate-500">Đề nói:</p>
+                  <p className="text-xs text-slate-600 dark:text-slate-300 font-medium italic mt-0.5">{speakingData?.questions[0]?.questionText}</p>
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-slate-400">Câu trả lời:</p>
-                  <p className="text-xs text-slate-600 font-medium whitespace-pre-line bg-slate-50 p-3 rounded-xl mt-0.5 border border-slate-100 shadow-inner max-h-[140px] overflow-y-auto">
+                  <p className="text-xs font-bold text-slate-400 dark:text-slate-500">Câu trả lời:</p>
+                  <p className="text-xs text-slate-600 dark:text-slate-300 font-medium whitespace-pre-line bg-slate-50 dark:bg-slate-800/50 p-3 rounded-xl mt-0.5 border border-slate-100 dark:border-slate-800 shadow-inner max-h-[140px] overflow-y-auto">
                     {result.details.speaking.answer}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-slate-400">Nhận xét chi tiết từ giáo viên AI:</p>
-                  <p className="text-xs text-slate-600 font-medium leading-relaxed whitespace-pre-line bg-rose-50/50 p-4 rounded-xl mt-1 border border-rose-100">
+                  <p className="text-xs font-bold text-slate-400 dark:text-slate-500">Nhận xét chi tiết từ giáo viên AI:</p>
+                  <p className="text-xs text-slate-600 dark:text-slate-300 font-medium leading-relaxed whitespace-pre-line bg-rose-50/50 dark:bg-rose-500/10 p-4 rounded-xl mt-1 border border-rose-100 dark:border-rose-500/20">
                     {result.details.speaking.feedback}
                   </p>
                 </div>
@@ -829,7 +830,7 @@ export default function IELTSFullTestPage() {
 
           {/* Receptive skills review */}
           <div className="premium-card p-6 space-y-6">
-            <h3 className="text-lg font-black text-slate-800">📋 Xem lại đáp án Listening & Reading</h3>
+            <h3 className="text-lg font-black text-slate-800 dark:text-slate-100">📋 Xem lại đáp án Listening & Reading</h3>
             
             <div className="space-y-6">
               {/* Listening section */}
@@ -839,40 +840,40 @@ export default function IELTSFullTestPage() {
                   const userAns = result.details.listening.answers[q.id] || 'None';
                   const isCorrect = userAns.charAt(0) === q.correctAnswer;
                   return (
-                    <div key={q.id} className="p-4 bg-slate-50 border border-slate-100 rounded-xl space-y-2">
+                    <div key={q.id} className="p-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-xl space-y-2">
                       <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-slate-500">Câu {i + 1}</span>
-                        <span className={`px-2 py-0.5 text-[10px] font-black rounded-lg ${isCorrect ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                        <span className="text-xs font-bold text-slate-500 dark:text-slate-400">Câu {i + 1}</span>
+                        <span className={`px-2 py-0.5 text-[10px] font-black rounded-lg ${isCorrect ? 'bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-400' : 'bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-400'}`}>
                           {isCorrect ? 'ĐÚNG' : 'SAI'}
                         </span>
                       </div>
-                      <p className="text-xs font-black text-slate-800">{q.questionText}</p>
-                      <p className="text-xs text-slate-500">Đáp án của bạn: <strong className={isCorrect ? 'text-green-600' : 'text-red-650'}>{userAns}</strong></p>
-                      <p className="text-xs text-slate-500">Đáp án đúng: <strong className="text-green-600">{q.correctAnswer}</strong></p>
-                      <p className="text-xs text-slate-400 italic bg-white p-2 rounded border border-slate-100 mt-2">{q.explanation}</p>
+                      <p className="text-xs font-black text-slate-800 dark:text-slate-100">{q.questionText}</p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400">Đáp án của bạn: <strong className={isCorrect ? 'text-green-600 dark:text-green-400' : 'text-red-650 dark:text-red-400'}>{userAns}</strong></p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400">Đáp án đúng: <strong className="text-green-600 dark:text-green-400">{q.correctAnswer}</strong></p>
+                      <p className="text-xs text-slate-400 dark:text-slate-500 italic bg-white dark:bg-slate-900 p-2 rounded border border-slate-100 dark:border-slate-800 mt-2">{q.explanation}</p>
                     </div>
                   );
                 })}
               </div>
 
               {/* Reading section */}
-              <div className="space-y-4 pt-4 border-t border-slate-100">
+              <div className="space-y-4 pt-4 border-t border-slate-100 dark:border-slate-800">
                 <span className="text-xs font-black text-emerald-500 uppercase tracking-widest block">Reading Section Reviews</span>
                 {readingData?.questions.map((q, i) => {
                   const userAns = result.details.reading.answers[q.id] || 'None';
                   const isCorrect = userAns.charAt(0) === q.correctAnswer;
                   return (
-                    <div key={q.id} className="p-4 bg-slate-50 border border-slate-100 rounded-xl space-y-2">
+                    <div key={q.id} className="p-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-xl space-y-2">
                       <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-slate-500">Câu {i + 1}</span>
-                        <span className={`px-2 py-0.5 text-[10px] font-black rounded-lg ${isCorrect ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                        <span className="text-xs font-bold text-slate-500 dark:text-slate-400">Câu {i + 1}</span>
+                        <span className={`px-2 py-0.5 text-[10px] font-black rounded-lg ${isCorrect ? 'bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-400' : 'bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-400'}`}>
                           {isCorrect ? 'ĐÚNG' : 'SAI'}
                         </span>
                       </div>
-                      <p className="text-xs font-black text-slate-800">{q.questionText}</p>
-                      <p className="text-xs text-slate-500">Đáp án của bạn: <strong className={isCorrect ? 'text-green-600' : 'text-red-650'}>{userAns}</strong></p>
-                      <p className="text-xs text-slate-500">Đáp án đúng: <strong className="text-green-600">{q.correctAnswer}</strong></p>
-                      <p className="text-xs text-slate-400 italic bg-white p-2 rounded border border-slate-100 mt-2">{q.explanation}</p>
+                      <p className="text-xs font-black text-slate-800 dark:text-slate-100">{q.questionText}</p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400">Đáp án của bạn: <strong className={isCorrect ? 'text-green-600 dark:text-green-400' : 'text-red-650 dark:text-red-400'}>{userAns}</strong></p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400">Đáp án đúng: <strong className="text-green-600 dark:text-green-400">{q.correctAnswer}</strong></p>
+                      <p className="text-xs text-slate-400 dark:text-slate-500 italic bg-white dark:bg-slate-900 p-2 rounded border border-slate-100 dark:border-slate-800 mt-2">{q.explanation}</p>
                     </div>
                   );
                 })}

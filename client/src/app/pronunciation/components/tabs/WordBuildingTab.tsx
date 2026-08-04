@@ -12,9 +12,9 @@ export default function WordBuildingTab() {
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="premium-card p-6 bg-gradient-to-r from-pink-50 to-rose-50 border-pink-200">
+      <div className="premium-card p-6 bg-gradient-to-r from-pink-50 dark:from-pink-950/30 to-rose-50 dark:to-rose-950/30 border-pink-200 dark:border-pink-800">
         <h3 className="text-lg font-black text-pink-900 flex items-center gap-2 mb-2">
-          <Palette className="w-5 h-5 text-pink-600" /> Ghép Âm, Nối Từ & Hiện Tượng Biến Âm (Word Building & Connected Speech)
+          <Palette className="w-5 h-5 text-pink-600 dark:text-pink-400" /> Ghép Âm, Nối Từ & Hiện Tượng Biến Âm (Word Building & Connected Speech)
         </h3>
         <p className="text-xs sm:text-sm text-pink-800 leading-relaxed font-medium">
           Tìm hiểu cách kết hợp phụ âm kép (Blends), âm ghép (Digraphs), âm câm (Silent letters) và các quy tắc nối âm tự nhiên của người bản xứ.
@@ -22,7 +22,7 @@ export default function WordBuildingTab() {
       </div>
 
       {/* Sub-navigation */}
-      <div className="flex flex-wrap gap-2 border-b border-slate-100 pb-3">
+      <div className="flex flex-wrap gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
         {[
           { id: 'blends' as const, label: 'Phụ âm ghép (Blends)' },
           { id: 'digraphs' as const, label: 'Âm ghép (Digraphs)' },
@@ -40,7 +40,7 @@ export default function WordBuildingTab() {
               "px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer",
               buildingSubTab === t.id
                 ? "bg-pink-600 text-white shadow-sm"
-                : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200"
             )}
           >
             {t.label}
@@ -51,15 +51,15 @@ export default function WordBuildingTab() {
       {/* Display Content */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {buildingSubTab === 'blends' && PHONICS_BLENDS.map((item, idx) => (
-          <div key={idx} className="p-5 bg-white border border-slate-200 rounded-3xl space-y-3 shadow-xs">
-            <h4 className="font-extrabold text-base text-pink-700 font-mono">{item.blend}</h4>
-            <p className="text-xs text-slate-500 font-bold">Ví dụ: {item.examples.join(', ')}</p>
+          <div key={idx} className="p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl space-y-3 shadow-xs">
+            <h4 className="font-extrabold text-base text-pink-700 dark:text-pink-400 font-mono">{item.blend}</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400 font-bold">Ví dụ: {item.examples.join(', ')}</p>
             <div className="flex flex-wrap gap-2 pt-1">
               {item.examples.map((ex, i) => (
                 <button
                   key={i}
                   onClick={() => speak(ex)}
-                  className="px-2.5 py-1 bg-pink-50 text-pink-700 font-bold text-xs rounded-xl hover:bg-pink-100 transition-all cursor-pointer"
+                  className="px-2.5 py-1 bg-pink-50 dark:bg-pink-500/10 text-pink-700 dark:text-pink-400 font-bold text-xs rounded-xl hover:bg-pink-100 transition-all cursor-pointer"
                 >
                   {ex}
                 </button>
@@ -69,15 +69,15 @@ export default function WordBuildingTab() {
         ))}
 
         {buildingSubTab === 'digraphs' && DIGRAPHS.map((item, idx) => (
-          <div key={idx} className="p-5 bg-white border border-slate-200 rounded-3xl space-y-3 shadow-xs">
-            <h4 className="font-extrabold text-base text-pink-700 font-mono">{item.digraph}</h4>
-            <p className="text-xs text-slate-500 font-bold font-mono">Phiên âm: /{item.sound}/</p>
+          <div key={idx} className="p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl space-y-3 shadow-xs">
+            <h4 className="font-extrabold text-base text-pink-700 dark:text-pink-400 font-mono">{item.digraph}</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400 font-bold font-mono">Phiên âm: /{item.sound}/</p>
             <div className="flex flex-wrap gap-2 pt-1">
               {item.examples.map((ex, i) => (
                 <button
                   key={i}
                   onClick={() => speak(ex)}
-                  className="px-2.5 py-1 bg-pink-50 text-pink-700 font-bold text-xs rounded-xl hover:bg-pink-100 transition-all cursor-pointer"
+                  className="px-2.5 py-1 bg-pink-50 dark:bg-pink-500/10 text-pink-700 dark:text-pink-400 font-bold text-xs rounded-xl hover:bg-pink-100 transition-all cursor-pointer"
                 >
                   {ex}
                 </button>

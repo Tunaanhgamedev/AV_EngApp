@@ -88,9 +88,9 @@ export default function VocabMatchGame({ dbWords, category, onClose, awardXp, on
 
   return (
     <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-300">
-      <div className="bg-white rounded-[2rem] shadow-2xl w-full max-w-2xl overflow-hidden animate-in zoom-in-95 duration-300">
+      <div className="bg-white dark:bg-slate-900 rounded-[2rem] shadow-2xl w-full max-w-2xl overflow-hidden animate-in zoom-in-95 duration-300">
         {/* Header */}
-        <div className="flex items-center justify-between px-8 py-5 border-b border-slate-100 bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
+        <div className="flex items-center justify-between px-8 py-5 border-b border-slate-100 dark:border-slate-800 bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
           <div>
             <h2 className="text-xl font-black text-white">Vocabulary Match</h2>
             <p className="text-blue-200 text-xs font-medium">Nối từ tiếng Anh với nghĩa tiếng Việt tương ứng (Danh mục: {getCategoryLabel(category)})</p>
@@ -106,11 +106,11 @@ export default function VocabMatchGame({ dbWords, category, onClose, awardXp, on
         {won ? (
           <div className="p-12 text-center space-y-6 animate-in zoom-in duration-500 max-h-[85vh] overflow-y-auto no-scrollbar">
             <div className="text-6xl animate-bounce">🎉</div>
-            <h3 className="text-3xl font-black text-slate-800">Xuất Sắc!</h3>
-            <p className="text-slate-500 font-medium">Hoàn thành trong <strong>{fmt(timer)}</strong> với <strong>{moves} lượt đi</strong></p>
+            <h3 className="text-3xl font-black text-slate-800 dark:text-slate-100">Xuất Sắc!</h3>
+            <p className="text-slate-500 dark:text-slate-400 font-medium">Hoàn thành trong <strong>{fmt(timer)}</strong> với <strong>{moves} lượt đi</strong></p>
             <div className="flex gap-4 justify-center">
               <button onClick={initGame} className="px-8 py-3 bg-indigo-600 text-white rounded-2xl font-bold hover:opacity-90 transition-all flex items-center gap-2 shadow-lg shadow-indigo-600/30"><RotateCcw className="w-4 h-4" /> Chơi Lại</button>
-              <button onClick={onClose} className="px-8 py-3 bg-slate-100 text-slate-700 rounded-2xl font-bold hover:bg-slate-200 transition-all">Quay Về</button>
+              <button onClick={onClose} className="px-8 py-3 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-2xl font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">Quay Về</button>
             </div>
             <GameVocabularyRecap words={sessionWords} onSaveWord={onSaveWord} savedWords={savedWords} savingWord={savingWord} />
           </div>
@@ -126,12 +126,12 @@ export default function VocabMatchGame({ dbWords, category, onClose, awardXp, on
                   className={cn(
                     "h-16 rounded-2xl font-bold text-sm transition-all duration-300 border-2 leading-tight px-2 cursor-pointer",
                     card.matched
-                      ? "bg-green-50 border-green-200 text-green-600 scale-95 cursor-default"
+                      ? "bg-green-50 dark:bg-green-500/10 border-green-200 dark:border-green-800 text-green-600 dark:text-green-400 scale-95 cursor-default"
                       : isSel
                         ? "bg-indigo-600 border-indigo-600 text-white scale-105 shadow-lg"
                         : card.type === 'en'
-                          ? "bg-slate-900 border-slate-700 text-white hover:scale-105 hover:shadow-md"
-                          : "bg-blue-50 border-blue-100 text-blue-800 hover:scale-105 hover:shadow-md"
+                          ? "bg-slate-900 dark:bg-slate-800 border-slate-700 dark:border-slate-600 text-white hover:scale-105 hover:shadow-md"
+                          : "bg-blue-50 dark:bg-blue-500/10 border-blue-100 dark:border-blue-800 text-blue-800 dark:text-blue-400 hover:scale-105 hover:shadow-md"
                   )}
                 >
                   {card.matched ? <CheckCircle2 className="w-5 h-5 mx-auto text-green-500" /> : card.word}

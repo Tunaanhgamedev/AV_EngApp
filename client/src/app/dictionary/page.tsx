@@ -361,10 +361,10 @@ function DictionaryContent() {
           <BookOpen className="w-5 h-5" />
           <span className="text-xs font-black uppercase tracking-widest">Oxford 3000™ Powered</span>
         </div>
-        <h1 className="text-6xl font-black tracking-tight text-slate-800">
-          EngBot <span className="text-[#002147]">Dictionary</span>
+        <h1 className="text-6xl font-black tracking-tight text-slate-800 dark:text-slate-100">
+          EngBot <span className="text-[#002147] dark:text-blue-400">Dictionary</span>
         </h1>
-        <p className="text-slate-500 max-w-xl mx-auto font-medium font-serif italic text-lg">
+        <p className="text-slate-500 dark:text-slate-400 max-w-xl mx-auto font-medium font-serif italic text-lg">
           Explore thousands of curated words with AI-enhanced definitions and instant Vietnamese translations.
         </p>
       </header>
@@ -375,12 +375,12 @@ function DictionaryContent() {
           <input
             type="text"
             placeholder="Search words... (e.g. 'abandon')"
-            className="w-full h-20 pl-16 pr-32 bg-white/80 backdrop-blur-xl border-2 border-[#002147]/10 rounded-3xl shadow-2xl shadow-[#002147]/5 focus:border-[#002147] focus:bg-white focus:ring-0 transition-all text-xl font-bold placeholder:text-slate-300"
+            className="w-full h-20 pl-16 pr-32 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-2 border-[#002147]/10 dark:border-slate-700 rounded-3xl shadow-2xl shadow-[#002147]/5 focus:border-[#002147] dark:focus:border-blue-400 focus:bg-white dark:focus:bg-slate-900 focus:ring-0 transition-all text-xl font-bold placeholder:text-slate-300 dark:placeholder:text-slate-600"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handlePreciseSearch(searchTerm)}
           />
-          <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-7 h-7 text-[#002147]/30 group-focus-within:text-[#002147] transition-colors" />
+          <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-7 h-7 text-[#002147]/30 dark:text-slate-500 group-focus-within:text-[#002147] dark:group-focus-within:text-blue-400 transition-colors" />
           <button
             onClick={() => handlePreciseSearch(searchTerm)}
             disabled={isSearching || !searchTerm.trim()}
@@ -394,18 +394,18 @@ function DictionaryContent() {
       {/* Exact Match Card (If found) */}
       {wordData && (
         <div className="max-w-2xl mx-auto animate-in zoom-in-95 duration-500">
-          <div className="bg-white border-t-8 border-t-[#002147] shadow-[0_32px_64px_-16px_rgba(0,33,71,0.2)] rounded-3xl overflow-hidden">
+          <div className="bg-white dark:bg-slate-900 border-t-8 border-t-[#002147] shadow-[0_32px_64px_-16px_rgba(0,33,71,0.2)] rounded-3xl overflow-hidden">
             <div className="p-10 space-y-8">
               <div className="flex justify-between items-start">
                 <div>
-                  <h2 className="text-5xl font-black text-[#002147] mb-2">{wordData.word}</h2>
+                  <h2 className="text-5xl font-black text-[#002147] dark:text-blue-400 mb-2">{wordData.word}</h2>
                   <div className="flex items-center gap-4 font-serif">
-                    <span className="italic text-[#e32b26] font-bold text-lg">({wordData.wordType})</span>
-                    <span className="text-slate-400 text-lg font-medium">{wordData.phonetic}</span>
+                    <span className="italic text-[#e32b26] dark:text-rose-400 font-bold text-lg">({wordData.wordType})</span>
+                    <span className="text-slate-400 dark:text-slate-500 text-lg font-medium">{wordData.phonetic}</span>
                     {wordData.audioUs || true && (
                       <button
                         onClick={() => playAudio(wordData.word, wordData.audioUs)}
-                        className="p-2 bg-slate-50 rounded-full hover:bg-[#002147] hover:text-white transition-all shadow-sm"
+                        className="p-2 bg-slate-50 dark:bg-slate-800 rounded-full hover:bg-[#002147] dark:hover:bg-blue-900 hover:text-white transition-all shadow-sm"
                       >
                         <Volume2 className="w-5 h-5" />
                       </button>
@@ -421,30 +421,30 @@ function DictionaryContent() {
 
               <div className="space-y-6">
                 <div className="relative pl-8">
-                  <span className="absolute left-0 top-0 text-2xl font-black text-[#002147]/10">01</span>
-                  <p className="text-xl text-slate-700 font-medium leading-relaxed">
+                  <span className="absolute left-0 top-0 text-2xl font-black text-[#002147]/10 dark:text-blue-400/10">01</span>
+                  <p className="text-xl text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
                     {wordData.meaningEn}
                   </p>
                   {wordData.meaningVi && (
-                    <p className="text-lg text-[#e32b26] font-serif italic mt-3 border-l-4 border-[#e32b26]/20 pl-4">
+                    <p className="text-lg text-[#e32b26] dark:text-rose-400 font-serif italic mt-3 border-l-4 border-[#e32b26]/20 dark:border-rose-400/20 pl-4">
                       " {wordData.meaningVi} "
                     </p>
                   )}
                 </div>
 
                 {wordData.usage && (
-                  <div className="p-6 bg-slate-50 rounded-2xl border border-slate-100 space-y-2">
-                    <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Usage Note</p>
-                    <p className="text-sm text-slate-600 font-medium">{wordData.usage}</p>
+                  <div className="p-6 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 space-y-2">
+                    <p className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Usage Note</p>
+                    <p className="text-sm text-slate-600 dark:text-slate-300 font-medium">{wordData.usage}</p>
                   </div>
                 )}
 
                 {wordData.example && (
-                  <div className="p-6 bg-blue-50/50 rounded-2xl border border-blue-100/50 space-y-2">
-                    <p className="text-xs font-black text-blue-400 uppercase tracking-widest">Example</p>
-                    <p className="text-sm text-slate-700 font-medium italic">"{wordData.example}"</p>
+                  <div className="p-6 bg-blue-50/50 dark:bg-blue-900/20 rounded-2xl border border-blue-100/50 dark:border-blue-800/50 space-y-2">
+                    <p className="text-xs font-black text-blue-400 dark:text-blue-300 uppercase tracking-widest">Example</p>
+                    <p className="text-sm text-slate-700 dark:text-slate-300 font-medium italic">"{wordData.example}"</p>
                     {wordData.exampleVi && (
-                      <p className="text-xs text-blue-500/70 italic mt-1">→ {wordData.exampleVi}</p>
+                      <p className="text-xs text-blue-500/70 dark:text-blue-400/70 italic mt-1">→ {wordData.exampleVi}</p>
                     )}
                   </div>
                 )}
@@ -469,7 +469,7 @@ function DictionaryContent() {
       )}
 
       {error && (
-        <div className="max-w-2xl mx-auto p-5 bg-rose-50 border border-rose-100 rounded-2xl flex items-center gap-4 text-rose-600 shadow-sm animate-in shake-in duration-300">
+        <div className="max-w-2xl mx-auto p-5 bg-rose-50 dark:bg-rose-500/10 border border-rose-100 dark:border-rose-500/20 rounded-2xl flex items-center gap-4 text-rose-600 dark:text-rose-400 shadow-sm animate-in shake-in duration-300">
           <AlertCircle className="w-6 h-6 shrink-0" />
           <p className="font-bold">{error}</p>
         </div>
@@ -480,14 +480,14 @@ function DictionaryContent() {
           {/* Topics Grid Section */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-xl font-black text-slate-800 flex items-center gap-2">
+              <h3 className="text-xl font-black text-slate-800 dark:text-slate-100 flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-amber-500" />
                 Chủ Đề Từ Vựng Từ Điển (Dictionary Topics)
               </h3>
               {selectedTopic && (
                 <button
                   onClick={() => setSelectedTopic(null)}
-                  className="text-xs font-bold text-slate-400 hover:text-slate-600 transition-colors"
+                  className="text-xs font-bold text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
                 >
                   Xóa chọn chủ đề
                 </button>
@@ -512,15 +512,15 @@ function DictionaryContent() {
                       "p-3.5 rounded-2xl border-2 transition-all text-left flex flex-col justify-between group cursor-pointer relative overflow-hidden",
                       isSelected
                         ? "border-[#002147] bg-[#002147] text-white shadow-xl shadow-[#002147]/20 scale-105"
-                        : "border-slate-100 bg-white hover:border-[#002147]/30 hover:shadow-md"
+                        : "border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-[#002147]/30 dark:hover:border-slate-700 hover:shadow-md"
                     )}
                   >
                     <div className="text-2xl mb-1 group-hover:scale-110 transition-transform">{topic.icon}</div>
                     <div>
-                      <h4 className={cn("text-xs font-extrabold line-clamp-1", isSelected ? "text-white" : "text-slate-800")}>
+                      <h4 className={cn("text-xs font-extrabold line-clamp-1", isSelected ? "text-white" : "text-slate-800 dark:text-slate-100")}>
                         {topic.name}
                       </h4>
-                      <p className={cn("text-[10px] font-medium mt-0.5", isSelected ? "text-slate-300" : "text-slate-400")}>
+                      <p className={cn("text-[10px] font-medium mt-0.5", isSelected ? "text-slate-300 dark:text-slate-600" : "text-slate-400 dark:text-slate-500")}>
                         {topic.count}
                       </p>
                     </div>
@@ -530,13 +530,13 @@ function DictionaryContent() {
             </div>
           </div>
 
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-slate-100 pb-8 pt-4">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-slate-100 dark:border-slate-800 pb-8 pt-4">
             <div className="space-y-1">
-              <h3 className="text-2xl font-black text-slate-800 flex items-center gap-2">
+              <h3 className="text-2xl font-black text-slate-800 dark:text-slate-100 flex items-center gap-2">
                 <Filter className="w-6 h-6 text-primary" />
                 Browse Wordlist
               </h3>
-              <p className="text-slate-400 text-sm font-medium">Filter by level or starting letter</p>
+              <p className="text-slate-400 dark:text-slate-500 text-sm font-medium">Filter by level or starting letter</p>
             </div>
 
             <div className="flex flex-wrap gap-2">
@@ -546,7 +546,7 @@ function DictionaryContent() {
                   onClick={() => setSelectedLevel(selectedLevel === lvl ? null : lvl)}
                   className={cn(
                     "px-6 py-2.5 rounded-xl text-sm font-black transition-all border-2",
-                    selectedLevel === lvl ? "bg-[#002147] text-white border-[#002147] shadow-lg shadow-[#002147]/20" : "bg-white text-slate-400 border-slate-100 hover:border-[#002147]/30"
+                    selectedLevel === lvl ? "bg-[#002147] text-white border-[#002147] shadow-lg shadow-[#002147]/20" : "bg-white dark:bg-slate-900 text-slate-400 dark:text-slate-500 border-slate-100 dark:border-slate-800 hover:border-[#002147]/30 dark:hover:border-slate-700"
                   )}
                 >
                   {lvl}
@@ -556,12 +556,12 @@ function DictionaryContent() {
           </div>
 
           {/* Alphabet Picker */}
-          <div className="flex flex-wrap gap-2 bg-slate-50/50 p-4 rounded-2xl">
+          <div className="flex flex-wrap gap-2 bg-slate-50/50 dark:bg-slate-800/50 p-4 rounded-2xl">
             <button
               onClick={() => setSelectedLetter(null)}
               className={cn(
                 "px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-tighter transition-all",
-                selectedLetter === null ? "bg-primary text-white" : "bg-white text-slate-400 hover:bg-slate-100"
+                selectedLetter === null ? "bg-primary text-white" : "bg-white dark:bg-slate-900 text-slate-400 dark:text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
               )}
             >
               ALL
@@ -572,7 +572,7 @@ function DictionaryContent() {
                 onClick={() => setSelectedLetter(l)}
                 className={cn(
                   "w-10 h-10 rounded-xl text-xs font-black transition-all",
-                  selectedLetter === l ? "bg-primary text-white shadow-md shadow-primary/20" : "bg-white text-slate-400 hover:bg-slate-100"
+                  selectedLetter === l ? "bg-primary text-white shadow-md shadow-primary/20" : "bg-white dark:bg-slate-900 text-slate-400 dark:text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
                 )}
               >
                 {l}
@@ -582,8 +582,8 @@ function DictionaryContent() {
 
           {/* Active Filters Indicator */}
           {(selectedLetter || selectedLevel || searchTerm || selectedTopic) && (
-            <div className="flex items-center gap-3 px-4 py-3 bg-[#002147]/5 rounded-2xl animate-in fade-in duration-300">
-              <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Đang lọc:</span>
+            <div className="flex items-center gap-3 px-4 py-3 bg-[#002147]/5 dark:bg-slate-800 rounded-2xl animate-in fade-in duration-300">
+              <span className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Đang lọc:</span>
               <div className="flex items-center gap-2 flex-wrap">
                 {selectedTopic && (
                   <span className="px-3 py-1 bg-amber-500 text-white text-xs font-bold rounded-lg flex items-center gap-1.5 shadow-sm">
@@ -604,7 +604,7 @@ function DictionaryContent() {
                   </span>
                 )}
                 {searchTerm && !selectedTopic && (
-                  <span className="px-3 py-1 bg-slate-700 text-white text-xs font-bold rounded-lg flex items-center gap-1.5">
+                  <span className="px-3 py-1 bg-slate-700 dark:bg-slate-600 text-white text-xs font-bold rounded-lg flex items-center gap-1.5">
                     "{searchTerm}"
                     <button onClick={() => setSearchTerm('')} className="hover:opacity-70">×</button>
                   </span>
@@ -612,7 +612,7 @@ function DictionaryContent() {
             </div>
             <button
               onClick={() => { setSelectedLetter(null); setSelectedLevel(null); setSearchTerm(''); }}
-              className="ml-auto text-xs font-bold text-slate-400 hover:text-rose-500 transition-colors"
+              className="ml-auto text-xs font-bold text-slate-400 dark:text-slate-500 hover:text-rose-500 transition-colors"
             >
               Xóa tất cả
             </button>
@@ -623,7 +623,7 @@ function DictionaryContent() {
         {loadingList ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 opacity-50 transition-opacity">
             {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="h-64 bg-slate-50 rounded-3xl animate-pulse" />
+              <div key={i} className="h-64 bg-slate-50 dark:bg-slate-800 rounded-3xl animate-pulse" />
             ))}
           </div>
         ) : (
@@ -631,40 +631,40 @@ function DictionaryContent() {
             {words.length > 0 ? words.map((word) => (
               <div
                 key={word.id}
-                className="premium-card p-6 flex flex-col justify-between group hover:-translate-y-2 transition-all relative overflow-hidden bg-white border-b-4 border-b-[#002147]/5 hover:border-b-[#002147]"
+                className="premium-card p-6 flex flex-col justify-between group hover:-translate-y-2 transition-all relative overflow-hidden bg-white dark:bg-slate-900 border-b-4 border-b-[#002147]/5 dark:border-b-slate-800 hover:border-b-[#002147]"
                 onClick={() => setSearchTerm(word.word)}
               >
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <h4 className="text-xl font-black text-[#002147] group-hover:text-primary transition-colors cursor-pointer">
+                    <h4 className="text-xl font-black text-[#002147] dark:text-blue-400 group-hover:text-primary transition-colors cursor-pointer">
                       {word.word}
                     </h4>
-                    <span className="text-[10px] font-black text-slate-400 bg-slate-50 px-2 py-0.5 rounded uppercase">
+                    <span className="text-[10px] font-black text-slate-400 dark:text-slate-500 bg-slate-50 dark:bg-slate-800 px-2 py-0.5 rounded uppercase">
                       {word.cefrLevel}
                     </span>
                   </div>
 
                   <div className="space-y-1">
-                    <div className="flex items-center gap-2 text-[10px] font-bold text-[#e32b26] uppercase tracking-widest">
+                    <div className="flex items-center gap-2 text-[10px] font-bold text-[#e32b26] dark:text-rose-400 uppercase tracking-widest">
                       <span>{word.wordType}</span>
-                      <span className="text-slate-300">•</span>
-                      <span className="text-slate-400 normal-case">{word.phonetic}</span>
+                      <span className="text-slate-300 dark:text-slate-600">•</span>
+                      <span className="text-slate-400 dark:text-slate-500 normal-case">{word.phonetic}</span>
                     </div>
-                    <p className="text-sm text-slate-600 line-clamp-2 font-medium leading-relaxed">
+                    <p className="text-sm text-slate-600 dark:text-slate-300 line-clamp-2 font-medium leading-relaxed">
                       {word.meaningEn}
                     </p>
                     {word.meaningVi && (
-                      <p className="text-xs text-primary/60 italic line-clamp-1 mt-1">
+                      <p className="text-xs text-primary/60 dark:text-primary/80 italic line-clamp-1 mt-1">
                         {word.meaningVi}
                       </p>
                     )}
                   </div>
                 </div>
 
-                <div className="mt-6 flex items-center justify-between pt-4 border-t border-slate-50">
+                <div className="mt-6 flex items-center justify-between pt-4 border-t border-slate-50 dark:border-slate-800">
                   <button
                     onClick={(e) => { e.stopPropagation(); playAudio(word.word, word.audioUs); }}
-                    className="p-2 bg-slate-50 rounded-lg hover:bg-[#002147]/10 text-slate-400 hover:text-[#002147] transition-all"
+                    className="p-2 bg-slate-50 dark:bg-slate-800 rounded-lg hover:bg-[#002147]/10 dark:hover:bg-slate-700 text-slate-400 dark:text-slate-500 hover:text-[#002147] dark:hover:text-blue-400 transition-all"
                   >
                     <Volume2 className="w-4 h-4" />
                   </button>
@@ -673,7 +673,7 @@ function DictionaryContent() {
                     disabled={savingId === word.id || savedIds.has(word.id)}
                     className={cn(
                       "p-2 rounded-lg transition-all",
-                      savedIds.has(word.id) ? "text-green-500 bg-green-50" : "text-slate-400 hover:bg-[#002147] hover:text-white bg-slate-50"
+                      savedIds.has(word.id) ? "text-green-500 bg-green-50 dark:bg-green-500/10" : "text-slate-400 dark:text-slate-500 hover:bg-[#002147] dark:hover:bg-blue-900 hover:text-white bg-slate-50 dark:bg-slate-800"
                     )}
                   >
                     {savingId === word.id ? <Loader2 className="w-4 h-4 animate-spin" /> : savedIds.has(word.id) ? <CheckCircle2 className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
@@ -682,12 +682,12 @@ function DictionaryContent() {
               </div>
             )) : (
               <div className="col-span-full py-20 text-center space-y-6">
-                <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto text-slate-200">
+                <div className="w-20 h-20 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto text-slate-200 dark:text-slate-700">
                   <Search className="w-10 h-10" />
                 </div>
                 <div className="space-y-2">
-                  <p className="text-xl font-black text-slate-800">No matches found</p>
-                  <p className="text-slate-400 font-medium">Try adjusting your filters or search term.</p>
+                  <p className="text-xl font-black text-slate-800 dark:text-slate-100">No matches found</p>
+                  <p className="text-slate-400 dark:text-slate-500 font-medium">Try adjusting your filters or search term.</p>
                 </div>
               </div>
             )}
@@ -701,7 +701,7 @@ function DictionaryContent() {
               <button
                 onClick={() => setPage(prev => Math.max(1, prev - 1))}
                 disabled={page === 1}
-                className="w-10 h-10 flex items-center justify-center bg-white border border-slate-100 rounded-xl disabled:opacity-30 hover:border-primary hover:text-primary transition-all shadow-sm"
+                className="w-10 h-10 flex items-center justify-center bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl disabled:opacity-30 hover:border-primary transition-all shadow-sm"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
@@ -728,13 +728,13 @@ function DictionaryContent() {
                         onClick={() => setPage(p)}
                         className={cn(
                           "w-10 h-10 rounded-xl font-black transition-all text-xs",
-                          page === p ? "bg-[#002147] text-white shadow-lg shadow-[#002147]/20" : "bg-white text-slate-400 hover:bg-slate-50 border border-slate-100"
+                          page === p ? "bg-[#002147] text-white shadow-lg shadow-[#002147]/20" : "bg-white dark:bg-slate-900 text-slate-400 dark:text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-100 dark:border-slate-800"
                         )}
                       >
                         {p}
                       </button>
                     ) : (
-                      <span key={i} className="text-slate-300 font-bold px-1 select-none">...</span>
+                      <span key={i} className="text-slate-300 dark:text-slate-600 font-bold px-1 select-none">...</span>
                     )
                   ));
                 })()}
@@ -743,13 +743,13 @@ function DictionaryContent() {
               <button
                 onClick={() => setPage(prev => Math.min(totalPages, prev + 1))}
                 disabled={page === totalPages}
-                className="w-10 h-10 flex items-center justify-center bg-white border border-slate-100 rounded-xl disabled:opacity-30 hover:border-primary hover:text-primary transition-all shadow-sm"
+                className="w-10 h-10 flex items-center justify-center bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl disabled:opacity-30 hover:border-primary transition-all shadow-sm"
               >
                 <ChevronRight className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] md:ml-4">
+            <div className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] md:ml-4">
               Showing Page {page} of {totalPages}
             </div>
           </div>
@@ -760,29 +760,29 @@ function DictionaryContent() {
       {user && (
         <div className="fixed bottom-6 right-6 z-50">
           {showEnrichPanel ? (
-            <div className="bg-white rounded-3xl shadow-2xl shadow-slate-900/20 border border-slate-100 p-6 w-80 space-y-4 animate-in slide-in-from-bottom-4 duration-300">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl shadow-slate-900/20 border border-slate-100 dark:border-slate-800 p-6 w-80 space-y-4 animate-in slide-in-from-bottom-4 duration-300">
               <div className="flex items-center justify-between">
-                <h4 className="font-black text-sm text-slate-800 flex items-center gap-2">
+                <h4 className="font-black text-sm text-slate-800 dark:text-slate-100 flex items-center gap-2">
                   <Database className="w-4 h-4 text-primary" />
                   Bổ sung từ vựng
                 </h4>
-                <button onClick={() => setShowEnrichPanel(false)} className="text-slate-400 hover:text-slate-600 text-lg">
+                <button onClick={() => setShowEnrichPanel(false)} className="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 text-lg">
                   ×
                 </button>
               </div>
 
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 Dùng AI để bổ sung và dịch tiếng Việt cho từ vựng Oxford3000.
               </p>
 
               {enrichResult && (
-                <div className="bg-slate-50 rounded-2xl p-4 space-y-2">
+                <div className="bg-slate-50 dark:bg-slate-800 rounded-2xl p-4 space-y-2">
                   <div className="flex justify-between text-xs">
-                    <span className="text-green-600 font-bold">✅ Đã xử lý: {enrichResult.enriched || enrichResult.translated || 0}</span>
-                    <span className="text-amber-600 font-bold">⏳ Còn lại: {enrichResult.remaining}</span>
+                    <span className="text-green-600 dark:text-green-400 font-bold">✅ Đã xử lý: {enrichResult.enriched || enrichResult.translated || 0}</span>
+                    <span className="text-amber-600 dark:text-amber-400 font-bold">⏳ Còn lại: {enrichResult.remaining}</span>
                   </div>
                   {enrichResult.remaining > 0 && (
-                    <div className="w-full bg-slate-200 rounded-full h-1.5">
+                    <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1.5">
                       <div
                         className="bg-green-500 h-1.5 rounded-full transition-all duration-500"
                         style={{ width: `${Math.max(5, 100 - (enrichResult.remaining / (enrichResult.remaining + (enrichResult.enriched || enrichResult.translated || 0)) * 100))}%` }}
@@ -792,7 +792,7 @@ function DictionaryContent() {
                   {enrichResult.results && enrichResult.results.length > 0 && (
                     <div className="max-h-32 overflow-y-auto space-y-1 mt-2">
                       {enrichResult.results.map((r: any, i: number) => (
-                        <div key={i} className="text-[10px] text-slate-500 flex justify-between">
+                        <div key={i} className="text-[10px] text-slate-500 dark:text-slate-400 flex justify-between">
                           <span className="font-bold">{r.word}</span>
                           <span>{r.meaningVi ? `→ ${r.meaningVi}` : r.status}</span>
                         </div>
@@ -827,19 +827,19 @@ function DictionaryContent() {
 
               {/* Detailed Enrich (1 word/call, full metadata) */}
               <div className="space-y-2">
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">🔍 Bổ sung chi tiết (1 từ/lần)</p>
+                <p className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">🔍 Bổ sung chi tiết (1 từ/lần)</p>
                 <div className="flex gap-2">
                   <button
                     onClick={() => handleBatchEnrich(5)}
                     disabled={enriching}
-                    className="flex-1 px-4 py-2.5 bg-slate-100 text-slate-700 rounded-xl font-bold text-xs hover:bg-slate-200 transition-all disabled:opacity-50 flex items-center justify-center gap-1"
+                    className="flex-1 px-4 py-2.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-bold text-xs hover:bg-slate-200 dark:hover:bg-slate-700 transition-all disabled:opacity-50 flex items-center justify-center gap-1"
                   >
                     5 từ
                   </button>
                   <button
                     onClick={() => handleBatchEnrich(10)}
                     disabled={enriching}
-                    className="flex-1 px-4 py-2.5 bg-slate-100 text-slate-700 rounded-xl font-bold text-xs hover:bg-slate-200 transition-all disabled:opacity-50 flex items-center justify-center gap-1"
+                    className="flex-1 px-4 py-2.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-bold text-xs hover:bg-slate-200 dark:hover:bg-slate-700 transition-all disabled:opacity-50 flex items-center justify-center gap-1"
                   >
                     10 từ
                   </button>
@@ -864,9 +864,9 @@ function DictionaryContent() {
 export default function DictionaryPage() {
   return (
     <React.Suspense fallback={
-      <div className="max-w-6xl mx-auto space-y-12 pb-20 p-8 text-center text-slate-500">
-        <Loader2 className="w-10 h-10 animate-spin mx-auto mb-2 text-[#002147]" />
-        <p className="font-bold text-slate-400">Loading dictionary...</p>
+      <div className="max-w-6xl mx-auto space-y-12 pb-20 p-8 text-center text-slate-500 dark:text-slate-400">
+        <Loader2 className="w-10 h-10 animate-spin mx-auto mb-2 text-[#002147] dark:text-blue-400" />
+        <p className="font-bold text-slate-400 dark:text-slate-500">Loading dictionary...</p>
       </div>
     }>
       <DictionaryContent />

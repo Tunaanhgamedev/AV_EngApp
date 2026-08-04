@@ -28,9 +28,9 @@ export default function MinimalPairsTab() {
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="premium-card p-6 bg-gradient-to-r from-emerald-50 to-teal-50 border-emerald-200">
+      <div className="premium-card p-6 bg-gradient-to-r from-emerald-50 dark:from-emerald-950/30 to-teal-50 dark:to-teal-950/30 border-emerald-200 dark:border-emerald-800">
         <h3 className="text-lg font-black text-emerald-900 flex items-center gap-2 mb-2">
-          <Target className="w-5 h-5 text-emerald-600" /> Cặp Âm Dễ Nhầm Lẫn (Minimal Pairs)
+          <Target className="w-5 h-5 text-emerald-600 dark:text-emerald-400" /> Cặp Âm Dễ Nhầm Lẫn (Minimal Pairs)
         </h3>
         <p className="text-xs sm:text-sm text-emerald-800 leading-relaxed font-medium">
           Luyện phân biệt các cặp từ chỉ khác nhau duy nhất 1 âm vị. Nhấp vào từ để nghe sự khác biệt rõ rệt.
@@ -51,7 +51,7 @@ export default function MinimalPairsTab() {
               "px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer",
               pairTypeFilter === t.id
                 ? "bg-emerald-600 text-white shadow-sm"
-                : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200"
             )}
           >
             {t.label}
@@ -62,26 +62,26 @@ export default function MinimalPairsTab() {
       {/* Pair Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {filteredPairs.map((pair, idx) => (
-          <div key={idx} className="p-5 bg-white border border-slate-200 rounded-3xl space-y-4 shadow-xs hover:border-emerald-300 transition-all">
-            <span className="text-[10px] font-black uppercase tracking-wider text-emerald-600 px-2.5 py-1 bg-emerald-50 rounded-full border border-emerald-100">
+          <div key={idx} className="p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl space-y-4 shadow-xs hover:border-emerald-300 transition-all">
+            <span className="text-[10px] font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400 px-2.5 py-1 bg-emerald-50 dark:bg-emerald-500/10 rounded-full border border-emerald-100 dark:border-emerald-800">
               {pair.focusSound}
             </span>
 
             <div className="grid grid-cols-2 gap-3 pt-1">
               <button
                 onClick={() => speak(pair.word1)}
-                className="p-3 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col items-center hover:bg-emerald-50 hover:border-emerald-200 transition-all cursor-pointer"
+                className="p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-800 rounded-2xl flex flex-col items-center hover:bg-emerald-50 dark:hover:bg-emerald-500/20 hover:border-emerald-200 transition-all cursor-pointer"
               >
-                <span className="font-extrabold text-sm text-slate-800">{pair.word1}</span>
-                <span className="text-[10px] font-mono text-slate-500 font-bold mt-0.5">{pair.ipa1}</span>
+                <span className="font-extrabold text-sm text-slate-800 dark:text-slate-100">{pair.word1}</span>
+                <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400 font-bold mt-0.5">{pair.ipa1}</span>
               </button>
 
               <button
                 onClick={() => speak(pair.word2)}
-                className="p-3 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col items-center hover:bg-emerald-50 hover:border-emerald-200 transition-all cursor-pointer"
+                className="p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-800 rounded-2xl flex flex-col items-center hover:bg-emerald-50 dark:hover:bg-emerald-500/20 hover:border-emerald-200 transition-all cursor-pointer"
               >
-                <span className="font-extrabold text-sm text-slate-800">{pair.word2}</span>
-                <span className="text-[10px] font-mono text-slate-500 font-bold mt-0.5">{pair.ipa2}</span>
+                <span className="font-extrabold text-sm text-slate-800 dark:text-slate-100">{pair.word2}</span>
+                <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400 font-bold mt-0.5">{pair.ipa2}</span>
               </button>
             </div>
           </div>

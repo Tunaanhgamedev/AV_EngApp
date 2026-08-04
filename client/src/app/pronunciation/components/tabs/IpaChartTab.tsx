@@ -13,12 +13,12 @@ function IPACell({ item, color, isActive, onClick }: { item: any; color: string;
       onClick={onClick}
       className={cn(
         "group relative flex flex-col items-center gap-1 p-3 sm:p-4 rounded-2xl border-2 transition-all duration-200",
-        "hover:shadow-lg hover:-translate-y-0.5 active:scale-95 text-slate-800 cursor-pointer",
+        "hover:shadow-lg hover:-translate-y-0.5 active:scale-95 text-slate-800 dark:text-slate-100 cursor-pointer",
         isActive ? "border-primary bg-primary/10 scale-[1.03] shadow-md shadow-primary/5" : color
       )}
     >
       <span className="text-xl sm:text-2xl font-black font-mono">{item.ipa}</span>
-      <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{item.example}</span>
+      <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">{item.example}</span>
       <div className="absolute -top-1 -right-1 opacity-0 group-hover:opacity-100 transition-opacity">
         <Volume2 className="w-4 h-4 text-primary animate-pulse" />
       </div>
@@ -33,17 +33,17 @@ export default function IpaChartTab() {
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="premium-card p-6 bg-gradient-to-r from-violet-50 via-purple-50 to-indigo-50 border-violet-200">
-        <h3 className="text-lg font-black text-violet-900 flex items-center gap-2 mb-2">
-          <BookOpen className="w-5 h-5 text-violet-600" /> Bảng phiên âm Quốc Tế IPA (International Phonetic Alphabet)
+      <div className="premium-card p-6 bg-gradient-to-r from-violet-50 dark:from-violet-950/30 via-purple-50 dark:via-purple-950/30 to-indigo-50 dark:to-indigo-950/30 border-violet-200 dark:border-violet-700">
+        <h3 className="text-lg font-black text-violet-900 dark:text-violet-400 flex items-center gap-2 mb-2">
+          <BookOpen className="w-5 h-5 text-violet-600 dark:text-violet-400" /> Bảng phiên âm Quốc Tế IPA (International Phonetic Alphabet)
         </h3>
-        <p className="text-xs sm:text-sm text-violet-800 leading-relaxed font-medium">
+        <p className="text-xs sm:text-sm text-violet-800 dark:text-violet-400 leading-relaxed font-medium">
           Gồm 44 âm chuẩn Anh-Mỹ: 12 Nguyên âm đơn (Monophthongs), 8 Nguyên âm đôi (Diphthongs) và 24 Phụ âm (Consonants). Nhấp vào từng ô để nghe âm thanh mẫu, xem hướng dẫn khẩu hình miệng và luyện đọc.
         </p>
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex flex-wrap items-center gap-2 border-b border-slate-100 pb-3">
+      <div className="flex flex-wrap items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
         {[
           { id: 'all' as const, label: 'Tất cả 44 âm' },
           { id: 'vowels' as const, label: 'Nguyên âm đơn (12)' },
@@ -56,8 +56,8 @@ export default function IpaChartTab() {
             className={cn(
               "px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer",
               chartTab === t.id
-                ? "bg-slate-900 text-white shadow-sm"
-                : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                ? "bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 shadow-sm"
+                : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
             )}
           >
             {t.label}
@@ -69,7 +69,7 @@ export default function IpaChartTab() {
       <div className="space-y-8">
         {(chartTab === 'all' || chartTab === 'vowels') && (
           <div>
-            <h4 className="text-xs font-black uppercase tracking-wider text-blue-600 mb-3 flex items-center gap-2">
+            <h4 className="text-xs font-black uppercase tracking-wider text-blue-600 dark:text-blue-400 mb-3 flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-blue-500" /> Nguyên âm đơn (Monophthongs)
             </h4>
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
@@ -77,7 +77,7 @@ export default function IpaChartTab() {
                 <IPACell
                   key={v.ipa}
                   item={v}
-                  color="bg-blue-50/50 border-blue-200 hover:border-blue-400"
+                  color="bg-blue-50/50 dark:bg-blue-500/10 border-blue-200 dark:border-blue-800 hover:border-blue-400 dark:hover:border-blue-600"
                   isActive={selectedIpa?.ipa === v.ipa}
                   onClick={() => { setSelectedIpa(v); speak(v.example); }}
                 />
@@ -88,7 +88,7 @@ export default function IpaChartTab() {
 
         {(chartTab === 'all' || chartTab === 'diphthongs') && (
           <div>
-            <h4 className="text-xs font-black uppercase tracking-wider text-amber-600 mb-3 flex items-center gap-2">
+            <h4 className="text-xs font-black uppercase tracking-wider text-amber-600 dark:text-amber-400 mb-3 flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-amber-500" /> Nguyên âm đôi (Diphthongs)
             </h4>
             <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 gap-3">
@@ -96,7 +96,7 @@ export default function IpaChartTab() {
                 <IPACell
                   key={d.ipa}
                   item={d}
-                  color="bg-amber-50/50 border-amber-200 hover:border-amber-400"
+                  color="bg-amber-50/50 dark:bg-amber-500/10 border-amber-200 dark:border-amber-800 hover:border-amber-400 dark:hover:border-amber-600"
                   isActive={selectedIpa?.ipa === d.ipa}
                   onClick={() => { setSelectedIpa(d); speak(d.example); }}
                 />
@@ -107,7 +107,7 @@ export default function IpaChartTab() {
 
         {(chartTab === 'all' || chartTab === 'consonants') && (
           <div>
-            <h4 className="text-xs font-black uppercase tracking-wider text-emerald-600 mb-3 flex items-center gap-2">
+            <h4 className="text-xs font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-3 flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-emerald-500" /> Phụ âm (Consonants)
             </h4>
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
@@ -115,7 +115,7 @@ export default function IpaChartTab() {
                 <IPACell
                   key={c.ipa}
                   item={c}
-                  color="bg-emerald-50/50 border-emerald-200 hover:border-emerald-400"
+                  color="bg-emerald-50/50 dark:bg-emerald-500/10 border-emerald-200 dark:border-emerald-800 hover:border-emerald-400 dark:hover:border-emerald-600"
                   isActive={selectedIpa?.ipa === c.ipa}
                   onClick={() => { setSelectedIpa(c); speak(c.example); }}
                 />

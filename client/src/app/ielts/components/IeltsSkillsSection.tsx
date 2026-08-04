@@ -17,8 +17,8 @@ export default function IeltsSkillsSection() {
           <Award className="w-5 h-5 text-white" />
         </div>
         <div>
-          <h2 className="text-2xl font-black text-slate-800">Bốn kĩ năng IELTS</h2>
-          <p className="text-sm text-slate-500 font-medium">Chọn kĩ năng để bắt đầu luyện tập chuyên sâu</p>
+          <h2 className="text-2xl font-black text-slate-800 dark:text-slate-100">Bốn kĩ năng IELTS</h2>
+          <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">Chọn kĩ năng để bắt đầu luyện tập chuyên sâu</p>
         </div>
       </div>
 
@@ -41,12 +41,12 @@ export default function IeltsSkillsSection() {
                       <skill.icon className="w-7 h-7 text-white" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-black text-slate-800 group-hover:text-primary transition-colors">
+                      <h3 className="text-xl font-black text-slate-800 dark:text-slate-100 group-hover:text-primary transition-colors">
                         {skill.title}
-                        <span className="text-sm font-bold text-slate-400 ml-2">({skill.titleVi})</span>
+                        <span className="text-sm font-bold text-slate-400 dark:text-slate-500 ml-2">({skill.titleVi})</span>
                       </h3>
-                      <p className="text-sm text-slate-500 font-medium mt-1">{skill.description}</p>
-                      <div className="flex items-center gap-4 mt-3 text-xs font-bold text-slate-400">
+                      <p className="text-sm text-slate-500 dark:text-slate-400 font-medium mt-1">{skill.description}</p>
+                      <div className="flex items-center gap-4 mt-3 text-xs font-bold text-slate-400 dark:text-slate-500">
                         <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> {skill.duration}</span>
                         <span className="flex items-center gap-1"><FileText className="w-3.5 h-3.5" /> {skill.sections} phần</span>
                         <span className="flex items-center gap-1"><MessageSquare className="w-3.5 h-3.5" /> {skill.questions} câu</span>
@@ -59,16 +59,16 @@ export default function IeltsSkillsSection() {
 
               {/* Expandable Detail */}
               <div className={cn("overflow-hidden transition-all duration-500", isExpanded ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0")}>
-                <div className={cn("p-6 pt-0 border-t border-slate-100")}>
+                <div className={cn("p-6 pt-0 border-t border-slate-100 dark:border-slate-800")}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6">
                     {/* Question Formats */}
                     <div className="space-y-3">
-                      <h4 className="text-sm font-black text-slate-800 uppercase tracking-wider">Dạng câu hỏi</h4>
+                      <h4 className="text-sm font-black text-slate-800 dark:text-slate-100 uppercase tracking-wider">Dạng câu hỏi</h4>
                       <div className="space-y-2">
                         {skill.formats.map((f, i) => (
-                          <div key={i} className="flex items-center gap-2 px-3 py-2 bg-slate-50 rounded-xl">
+                          <div key={i} className="flex items-center gap-2 px-3 py-2 bg-slate-50 dark:bg-slate-800 rounded-xl">
                             <div className={cn("w-2 h-2 rounded-full bg-gradient-to-r", skill.color)} />
-                            <span className="text-sm font-medium text-slate-600">{f}</span>
+                            <span className="text-sm font-medium text-slate-600 dark:text-slate-300">{f}</span>
                           </div>
                         ))}
                       </div>
@@ -76,12 +76,12 @@ export default function IeltsSkillsSection() {
 
                     {/* Tips */}
                     <div className="space-y-3">
-                      <h4 className="text-sm font-black text-slate-800 uppercase tracking-wider">Mẹo luyện thi</h4>
+                      <h4 className="text-sm font-black text-slate-800 dark:text-slate-100 uppercase tracking-wider">Mẹo luyện thi</h4>
                       <div className="space-y-2">
                         {skill.tips.map((t, i) => (
-                          <div key={i} className="flex items-start gap-2 px-3 py-2 bg-slate-50 rounded-xl">
+                          <div key={i} className="flex items-start gap-2 px-3 py-2 bg-slate-50 dark:bg-slate-800 rounded-xl">
                             <Brain className={cn("w-4 h-4 mt-0.5 flex-shrink-0", skill.textColor)} />
-                            <span className="text-sm font-medium text-slate-600">{t}</span>
+                            <span className="text-sm font-medium text-slate-600 dark:text-slate-300">{t}</span>
                           </div>
                         ))}
                       </div>

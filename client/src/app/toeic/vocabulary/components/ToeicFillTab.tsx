@@ -45,20 +45,20 @@ export default function ToeicFillTab({ selectedList, currentIndex, setCurrentInd
   if (!currentWord) return null;
 
   return (
-    <div className="premium-card p-5 sm:p-8 bg-white border border-slate-100 shadow-xl rounded-3xl space-y-4">
+    <div className="premium-card p-5 sm:p-8 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-xl rounded-3xl space-y-4">
       <div>
-        <span className="text-[9px] font-black uppercase tracking-widest text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100">
+        <span className="text-[9px] font-black uppercase tracking-widest text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-100 dark:border-emerald-800/50">
           Điền Từ Tiếng Anh
         </span>
-        <h3 className="text-base sm:text-lg font-black text-slate-800 mt-1">Dịch từ sau sang tiếng Anh</h3>
+        <h3 className="text-base sm:text-lg font-black text-slate-800 dark:text-slate-100 mt-1">Dịch từ sau sang tiếng Anh</h3>
       </div>
 
       <div className="flex flex-col landscape:flex-row gap-4">
         {/* Definition Box */}
-        <div className="flex-1 p-4 landscape:p-3 bg-slate-50 border border-slate-200/50 rounded-2xl text-center shadow-inner flex flex-col justify-center min-h-[90px] landscape:min-h-[130px]">
-          <span className="text-[9px] text-slate-400 font-black uppercase tracking-widest block font-mono">Từ loại: {currentWord.wordType}</span>
-          <h4 className="text-lg font-black text-slate-800 mt-1">&quot;{currentWord.meaningVi}&quot;</h4>
-          <p className="text-[11px] text-slate-450 italic mt-0.5 line-clamp-2">Định nghĩa: {currentWord.meaningEn}</p>
+        <div className="flex-1 p-4 landscape:p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200/50 dark:border-slate-700/50 rounded-2xl text-center shadow-inner flex flex-col justify-center min-h-[90px] landscape:min-h-[130px]">
+          <span className="text-[9px] text-slate-400 dark:text-slate-500 font-black uppercase tracking-widest block font-mono">Từ loại: {currentWord.wordType}</span>
+          <h4 className="text-lg font-black text-slate-800 dark:text-slate-100 mt-1">&quot;{currentWord.meaningVi}&quot;</h4>
+          <p className="text-[11px] text-slate-450 dark:text-slate-400 italic mt-0.5 line-clamp-2">Định nghĩa: {currentWord.meaningEn}</p>
         </div>
 
         {/* Input Fields */}
@@ -76,12 +76,12 @@ export default function ToeicFillTab({ selectedList, currentIndex, setCurrentInd
               }}
               placeholder="Gõ từ tại đây..."
               className={cn(
-                "w-full px-4 py-2.5 bg-slate-50 border-2 rounded-xl text-sm font-black focus:outline-none focus:bg-white transition-all shadow-inner",
+                "w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border-2 rounded-xl text-sm font-black focus:outline-none focus:bg-white dark:focus:bg-slate-900 transition-all shadow-inner",
                 inputFeedback === 'correct'
-                  ? "border-emerald-500 bg-emerald-50/10 text-emerald-800"
+                  ? "border-emerald-500 bg-emerald-50/10 dark:bg-emerald-500/10 text-emerald-800 dark:text-emerald-400"
                   : inputFeedback === 'wrong'
-                    ? "border-rose-500 bg-rose-50/10 text-rose-800 animate-shake"
-                    : "border-slate-200 focus:border-primary"
+                    ? "border-rose-500 bg-rose-50/10 dark:bg-rose-500/10 text-rose-800 dark:text-rose-400 animate-shake"
+                    : "border-slate-200 dark:border-slate-700 focus:border-primary"
               )}
             />
           </div>
@@ -95,7 +95,7 @@ export default function ToeicFillTab({ selectedList, currentIndex, setCurrentInd
           <div className="flex gap-2">
             <button
               onClick={() => setShowInputHint(true)}
-              className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-bold transition-all cursor-pointer"
+              className="px-3 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-lg text-xs font-bold transition-all cursor-pointer"
             >
               💡 Gợi ý
             </button>

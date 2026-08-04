@@ -231,8 +231,8 @@ function TOEICFullTestContent() {
       <div className="min-h-[70vh] flex flex-col items-center justify-center space-y-6">
         <Loader2 className="w-12 h-12 text-primary animate-spin" />
         <div className="text-center space-y-2">
-          <h2 className="text-2xl font-black text-slate-800 animate-pulse">EngBot đang biên soạn đề thi...</h2>
-          <p className="text-sm text-slate-500 font-medium max-w-sm">
+          <h2 className="text-2xl font-black text-slate-800 dark:text-slate-100 animate-pulse">EngBot đang biên soạn đề thi...</h2>
+          <p className="text-sm text-slate-500 dark:text-slate-400 font-medium max-w-sm">
             AI đang tải các câu hỏi thực tế của 7 Parts (Listening & Reading) để mô phỏng bài thi thực tế.
           </p>
         </div>
@@ -243,12 +243,12 @@ function TOEICFullTestContent() {
   if (error) {
     return (
       <div className="min-h-[70vh] flex flex-col items-center justify-center space-y-6 max-w-md mx-auto text-center px-4">
-        <div className="w-16 h-16 rounded-full bg-rose-100 flex items-center justify-center text-rose-600">
+        <div className="w-16 h-16 rounded-full bg-rose-50 dark:bg-rose-500/10 flex items-center justify-center text-rose-600 dark:text-rose-400">
           <AlertTriangle className="w-8 h-8" />
         </div>
         <div className="space-y-2">
-          <h2 className="text-2xl font-black text-slate-800">Không thể tải đề thi</h2>
-          <p className="text-sm text-slate-500 font-medium">{error}</p>
+          <h2 className="text-2xl font-black text-slate-800 dark:text-slate-100">Không thể tải đề thi</h2>
+          <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">{error}</p>
         </div>
         <button
           onClick={() => window.location.reload()}
@@ -258,7 +258,7 @@ function TOEICFullTestContent() {
         </button>
         <button
           onClick={() => router.push('/toeic')}
-          className="text-sm font-bold text-slate-500 hover:text-slate-700 transition-colors"
+          className="text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
         >
           Quay lại TOEIC Center
         </button>
@@ -294,13 +294,13 @@ function TOEICFullTestContent() {
                     router.push('/toeic');
                   }
                 }}
-                className="inline-flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-slate-800 transition-colors"
+                className="inline-flex items-center gap-2 text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-100 transition-colors"
               >
                 <ArrowLeft className="w-4 h-4" /> Thoát thi thử
               </button>
 
               <div className="flex items-center gap-6">
-                <div className="flex items-center gap-2 px-3.5 py-1.5 bg-blue-50 text-blue-600 rounded-xl font-black text-sm">
+                <div className="flex items-center gap-2 px-3.5 py-1.5 bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-xl font-black text-sm">
                   <Clock className="w-4 h-4" />
                   <span>{formatTime(timeLeft)}</span>
                 </div>
@@ -318,12 +318,12 @@ function TOEICFullTestContent() {
             {/* Question Details */}
             <div className="premium-card p-6 md:p-8 space-y-6">
               {/* Part Indicator */}
-              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+              <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
                 <div>
                   <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-[10px] font-black uppercase tracking-wider">
                     Part {currentQuestion.part}
                   </span>
-                  <h2 className="text-lg font-black text-slate-800 mt-2">
+                  <h2 className="text-lg font-black text-slate-800 dark:text-slate-100 mt-2">
                     {currentQuestion.part === 1 && 'Mô tả hình ảnh (Photographs)'}
                     {currentQuestion.part === 2 && 'Hỏi - Đáp (Question - Response)'}
                     {currentQuestion.part === 3 && 'Đoạn hội thoại (Conversations)'}
@@ -333,13 +333,13 @@ function TOEICFullTestContent() {
                     {currentQuestion.part === 7 && 'Đọc hiểu văn bản (Reading Comprehension)'}
                   </h2>
                 </div>
-                <span className="text-sm font-bold text-slate-400">
+                <span className="text-sm font-bold text-slate-400 dark:text-slate-500">
                   Câu {currentIdx + 1} / {questions.length}
                 </span>
               </div>
 
               {/* Progress bar */}
-              <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+              <div className="w-full bg-slate-100 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden">
                 <div
                   className="bg-primary h-full transition-all duration-300"
                   style={{ width: `${((currentIdx + 1) / questions.length) * 100}%` }}
@@ -350,7 +350,7 @@ function TOEICFullTestContent() {
               <div className="space-y-6">
                 {/* Listening audio simulation */}
                 {currentQuestion.part <= 4 && (currentQuestion.audioDescription || currentQuestion.context) && (
-                  <div className="p-5 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-2xl space-y-4">
+                  <div className="p-5 bg-gradient-to-r from-blue-50 dark:from-blue-950/30 to-indigo-50 dark:to-indigo-950/30 border border-blue-100 dark:border-blue-900/50 rounded-2xl space-y-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2 text-primary">
                         <Headphones className="w-5 h-5" />
@@ -369,7 +369,7 @@ function TOEICFullTestContent() {
                       </button>
                     </div>
 
-                    <div className="p-3 bg-white/70 backdrop-blur rounded-xl text-sm font-medium text-slate-600 border border-blue-50/50">
+                    <div className="p-3 bg-white/70 dark:bg-slate-800/70 backdrop-blur rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 border border-blue-50/50 dark:border-blue-900/50">
                       <p className="italic">
                         {currentQuestion.part === 1 || currentQuestion.part === 2
                           ? '[Bấm Play Audio để nghe mô tả hình ảnh hoặc câu hỏi phát biểu]'
@@ -381,12 +381,12 @@ function TOEICFullTestContent() {
 
                 {/* Reading / Text Context */}
                 {currentQuestion.part >= 6 && currentQuestion.context && (
-                  <div className="p-6 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
-                    <div className="flex items-center gap-2 text-slate-700 font-bold text-xs uppercase tracking-wider mb-2">
+                  <div className="p-6 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl space-y-2">
+                    <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300 font-bold text-xs uppercase tracking-wider mb-2">
                       <BookOpen className="w-4.5 h-4.5 text-primary" />
                       <span>Reading Context / Passage</span>
                     </div>
-                    <div className="text-sm font-medium text-slate-700 leading-relaxed whitespace-pre-line">
+                    <div className="text-sm font-medium text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line">
                       {currentQuestion.context}
                     </div>
                   </div>
@@ -394,7 +394,7 @@ function TOEICFullTestContent() {
 
                 {/* Question Prompt */}
                 <div className="space-y-3">
-                  <h3 className="text-base md:text-lg font-black text-slate-800 leading-relaxed">
+                  <h3 className="text-base md:text-lg font-black text-slate-800 dark:text-slate-100 leading-relaxed">
                     {currentQuestion.questionText}
                   </h3>
 
@@ -410,7 +410,7 @@ function TOEICFullTestContent() {
                           className={`w-full p-4 text-left rounded-xl border-2 font-medium text-sm transition-all flex items-center justify-between ${
                             isSelected
                               ? 'border-primary bg-primary/5 text-primary font-bold shadow-md shadow-primary/5'
-                              : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-700'
+                              : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300'
                           }`}
                         >
                           <span>{choice}</span>
@@ -427,11 +427,11 @@ function TOEICFullTestContent() {
               </div>
 
               {/* Bottom Nav actions */}
-              <div className="flex items-center justify-between border-t border-slate-100 pt-6">
+              <div className="flex items-center justify-between border-t border-slate-100 dark:border-slate-800 pt-6">
                 <button
                   onClick={() => setCurrentIdx((p) => Math.max(0, p - 1))}
                   disabled={currentIdx === 0}
-                  className="px-5 py-3 border border-slate-200 text-slate-500 rounded-xl font-bold text-xs hover:bg-slate-50 disabled:opacity-50 transition-all flex items-center gap-1.5"
+                  className="px-5 py-3 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 rounded-xl font-bold text-xs hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 transition-all flex items-center gap-1.5"
                 >
                   <ArrowLeft className="w-4 h-4" /> CÂU TRƯỚC
                 </button>
@@ -450,8 +450,8 @@ function TOEICFullTestContent() {
           {/* Question Navigator Sidebar (Right 1 column) */}
           <div className="premium-card p-6 space-y-6">
             <div className="space-y-1">
-              <h3 className="text-sm font-black text-slate-800 uppercase tracking-wider">Tiến độ bài thi</h3>
-              <p className="text-xs text-slate-400 font-bold">
+              <h3 className="text-sm font-black text-slate-800 dark:text-slate-100 uppercase tracking-wider">Tiến độ bài thi</h3>
+              <p className="text-xs text-slate-400 dark:text-slate-500 font-bold">
                 Đã làm: {Object.keys(answers).length} / {questions.length} câu
               </p>
             </div>
@@ -469,8 +469,8 @@ function TOEICFullTestContent() {
                       isCurrent
                         ? 'bg-primary text-white border-primary shadow-lg shadow-primary/25 scale-105'
                         : isAnswered
-                        ? 'bg-blue-50 text-blue-600 border-blue-200 font-bold'
-                        : 'bg-slate-50 text-slate-400 border-slate-200 hover:bg-slate-100'
+                        ? 'bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-900/50 font-bold'
+                        : 'bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-slate-500 border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700'
                     }`}
                   >
                     {i + 1}
@@ -479,17 +479,17 @@ function TOEICFullTestContent() {
               })}
             </div>
 
-            <div className="border-t border-slate-100 pt-4 text-xs font-medium text-slate-500 space-y-2">
+            <div className="border-t border-slate-100 dark:border-slate-800 pt-4 text-xs font-medium text-slate-500 dark:text-slate-400 space-y-2">
               <div className="flex items-center gap-2">
                 <div className="w-3.5 h-3.5 rounded-md bg-primary" />
                 <span>Câu đang xem</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3.5 h-3.5 rounded-md bg-blue-50 border border-blue-200" />
+                <div className="w-3.5 h-3.5 rounded-md bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-900/50" />
                 <span>Câu đã trả lời</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3.5 h-3.5 rounded-md bg-slate-50 border border-slate-200" />
+                <div className="w-3.5 h-3.5 rounded-md bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700" />
                 <span>Câu chưa trả lời</span>
               </div>
             </div>
@@ -531,12 +531,12 @@ function TOEICFullTestContent() {
                   <div className="bg-white/5 p-3 rounded-xl">
                     <p className="text-xs text-blue-300 font-bold uppercase tracking-widest mb-1">Listening Score</p>
                     <p className="text-lg font-black text-white">{result.listeningScore} / 495</p>
-                    <p className="text-xs text-slate-400 font-medium">Đúng: {result.correctListening}/{result.totalListening}</p>
+                    <p className="text-xs text-slate-400 dark:text-slate-500 font-medium">Đúng: {result.correctListening}/{result.totalListening}</p>
                   </div>
                   <div className="bg-white/5 p-3 rounded-xl">
                     <p className="text-xs text-cyan-300 font-bold uppercase tracking-widest mb-1">Reading Score</p>
                     <p className="text-lg font-black text-white">{result.readingScore} / 495</p>
-                    <p className="text-xs text-slate-400 font-medium">Đúng: {result.correctReading}/{result.totalReading}</p>
+                    <p className="text-xs text-slate-400 dark:text-slate-500 font-medium">Đúng: {result.correctReading}/{result.totalReading}</p>
                   </div>
                 </div>
 
@@ -560,7 +560,7 @@ function TOEICFullTestContent() {
 
           {/* Performance breakdown per Part */}
           <div className="premium-card p-6 md:p-8 space-y-6">
-            <h3 className="text-lg font-black text-slate-800 flex items-center gap-2">
+            <h3 className="text-lg font-black text-slate-800 dark:text-slate-100 flex items-center gap-2">
               <BarChart2 className="w-5 h-5 text-primary" /> Phân tích kết quả theo Part
             </h3>
             
@@ -569,13 +569,13 @@ function TOEICFullTestContent() {
                 const stats = getPartStats(part);
                 const percent = stats.total > 0 ? Math.round((stats.correct / stats.total) * 100) : 0;
                 return (
-                  <div key={part} className="p-4 bg-slate-50 border border-slate-100 rounded-2xl space-y-2">
+                  <div key={part} className="p-4 bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-800 rounded-2xl space-y-2">
                     <span className="text-[10px] font-black text-primary uppercase tracking-widest">Part {part}</span>
                     <div className="flex items-end justify-between">
-                      <span className="text-xl font-black text-slate-800">{percent}%</span>
-                      <span className="text-xs text-slate-400 font-bold">Đúng: {stats.correct}/{stats.total}</span>
+                      <span className="text-xl font-black text-slate-800 dark:text-slate-100">{percent}%</span>
+                      <span className="text-xs text-slate-400 dark:text-slate-500 font-bold">Đúng: {stats.correct}/{stats.total}</span>
                     </div>
-                    <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                    <div className="w-full bg-slate-200 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden">
                       <div
                         className={`h-full rounded-full transition-all duration-500 ${
                           percent >= 80 ? 'bg-green-500' : percent >= 50 ? 'bg-amber-500' : 'bg-red-500'
@@ -591,7 +591,7 @@ function TOEICFullTestContent() {
 
           {/* Review detailed answers */}
           <div className="space-y-6">
-            <h3 className="text-xl font-black text-slate-800">📋 Xem lại đáp án & Giải thích chi tiết</h3>
+            <h3 className="text-xl font-black text-slate-800 dark:text-slate-100">📋 Xem lại đáp án & Giải thích chi tiết</h3>
             
             <div className="space-y-4">
               {result.details.map((q: any, index: number) => (
@@ -601,19 +601,19 @@ function TOEICFullTestContent() {
 
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div className="flex items-center gap-2">
-                      <span className="px-2.5 py-0.5 bg-slate-100 text-slate-600 rounded-lg text-[10px] font-black uppercase">
+                      <span className="px-2.5 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-lg text-[10px] font-black uppercase">
                         Part {q.part}
                       </span>
-                      <span className="text-sm font-bold text-slate-400">Câu {index + 1}</span>
+                      <span className="text-sm font-bold text-slate-400 dark:text-slate-500">Câu {index + 1}</span>
                     </div>
 
                     <div className="flex items-center gap-2">
                       {q.isCorrect ? (
-                        <span className="px-3 py-1 bg-green-50 text-green-600 rounded-full text-xs font-black flex items-center gap-1">
+                        <span className="px-3 py-1 bg-green-50 dark:bg-green-500/10 text-green-600 dark:text-green-400 rounded-full text-xs font-black flex items-center gap-1">
                           <CheckCircle2 className="w-3.5 h-3.5" /> ĐÚNG
                         </span>
                       ) : (
-                        <span className="px-3 py-1 bg-rose-50 text-rose-600 rounded-full text-xs font-black flex items-center gap-1">
+                        <span className="px-3 py-1 bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 rounded-full text-xs font-black flex items-center gap-1">
                           <XCircle className="w-3.5 h-3.5" /> SAI
                         </span>
                       )}
@@ -622,13 +622,13 @@ function TOEICFullTestContent() {
 
                   {/* Context if available */}
                   {q.context && (
-                    <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-600 leading-relaxed whitespace-pre-line">
+                    <div className="p-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-medium text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-line">
                       {q.context}
                     </div>
                   )}
 
                   {/* Question Prompt */}
-                  <h4 className="font-black text-slate-800 text-sm leading-relaxed">{q.questionText}</h4>
+                  <h4 className="font-black text-slate-800 dark:text-slate-100 text-sm leading-relaxed">{q.questionText}</h4>
 
                   {/* Choices list */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs font-medium">
@@ -641,10 +641,10 @@ function TOEICFullTestContent() {
                           key={cIdx}
                           className={`p-3 rounded-lg border flex items-center justify-between ${
                             isCorrect
-                              ? 'border-green-300 bg-green-50 text-green-700 font-bold'
+                              ? 'border-green-300 bg-green-50 dark:bg-green-500/10 text-green-700 dark:text-green-400 font-bold'
                               : isUserChoice
-                              ? 'border-rose-300 bg-rose-50 text-rose-700 font-bold'
-                              : 'border-slate-100 bg-slate-50/50 text-slate-600'
+                              ? 'border-rose-300 bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400 font-bold'
+                              : 'border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 text-slate-600 dark:text-slate-300'
                           }`}
                         >
                           <span>{choice}</span>
@@ -656,12 +656,12 @@ function TOEICFullTestContent() {
                   </div>
 
                   {/* Explanation card */}
-                  <div className="p-4 bg-blue-50/50 border border-blue-100 rounded-xl space-y-2">
-                    <div className="flex items-center gap-1.5 text-blue-800 font-black text-xs uppercase tracking-wider">
+                  <div className="p-4 bg-blue-50/50 dark:bg-blue-500/10 border border-blue-100 dark:border-blue-900/50 rounded-xl space-y-2">
+                    <div className="flex items-center gap-1.5 text-blue-800 dark:text-blue-400 font-black text-xs uppercase tracking-wider">
                       <Info className="w-4.5 h-4.5" />
                       <span>Giải thích từ AI</span>
                     </div>
-                    <p className="text-xs font-medium text-slate-600 leading-relaxed whitespace-pre-line">
+                    <p className="text-xs font-medium text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-line">
                       {q.explanation}
                     </p>
                   </div>
@@ -680,7 +680,7 @@ export default function TOEICFullTestPage() {
     <React.Suspense fallback={
       <div className="min-h-[70vh] flex flex-col items-center justify-center space-y-4">
         <Loader2 className="w-12 h-12 text-primary animate-spin" />
-        <p className="text-slate-500 font-bold">Đang tải đề thi...</p>
+        <p className="text-slate-500 dark:text-slate-400 font-bold">Đang tải đề thi...</p>
       </div>
     }>
       <TOEICFullTestContent />

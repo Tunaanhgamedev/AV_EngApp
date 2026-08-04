@@ -191,7 +191,7 @@ export default function GamesPage() {
         <p className="text-slate-500 dark:text-slate-400 max-w-lg mx-auto font-medium">Học mà chơi, chơi mà học. Tích lũy điểm kinh nghiệm XP, thi đấu Trùm Ngữ Pháp và vượt qua các thử thách ghép từ độc lạ!</p>
 
         {loading && (
-          <div className="flex items-center justify-center gap-2 text-xs font-bold text-slate-400">
+          <div className="flex items-center justify-center gap-2 text-xs font-bold text-slate-400 dark:text-slate-500">
             <Loader2 className="w-4 h-4 animate-spin text-primary" /> Đang tối ưu hóa và đồng bộ kho từ vựng động...
           </div>
         )}
@@ -280,7 +280,7 @@ export default function GamesPage() {
             ))}
           </div>
         ) : dbWords.length === 0 ? (
-          <div className="p-6 text-center text-slate-500 text-xs font-semibold">
+          <div className="p-6 text-center text-slate-500 dark:text-slate-400 text-xs font-semibold">
             {selectedCategory === 'notebook' 
               ? 'Sổ tay của bạn hiện đang trống. Hãy quay lại trang Từ Điển hoặc Chat để lưu thêm từ vựng!'
               : 'Không tìm thấy từ vựng nào thuộc danh mục này.'}
@@ -301,11 +301,11 @@ export default function GamesPage() {
                       </span>
                     )}
                   </div>
-                  <div className="text-[10px] font-bold text-slate-400 dark:text-slate-555 mt-0.5">
+                  <div className="text-[10px] font-bold text-slate-400 dark:text-slate-500 mt-0.5">
                     {w.wordType && `[${w.wordType}]`} {w.phonetic || ''}
                   </div>
                 </div>
-                <div className="text-xs font-bold text-slate-500 dark:text-slate-455 border-t border-slate-100 dark:border-slate-800/50 mt-2.5 pt-2.5 line-clamp-1">
+                <div className="text-xs font-bold text-slate-500 dark:text-slate-400 border-t border-slate-100 dark:border-slate-800/50 mt-2.5 pt-2.5 line-clamp-1">
                   {w.meaningVi}
                 </div>
               </div>
@@ -333,7 +333,7 @@ export default function GamesPage() {
                 </div>
                 <p className="text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed">{game.description}</p>
                 <div className="flex items-center justify-between pt-2">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{game.players}</span>
+                  <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">{game.players}</span>
                   <button className="flex items-center gap-1 text-sm font-black transition-all text-primary group-hover:translate-x-1 cursor-pointer">
                     {['vocab', 'quiz', 'scram', 'sentence', 'bossBattle'].includes(game.id)
                       ? `Chơi (${getCategoryLabel(selectedCategory)})`
@@ -357,7 +357,7 @@ export default function GamesPage() {
             {[{ label: 'Dũng Sĩ Diệt Trùm', value: 'Cấp 1', icon: '⚔️' }, { label: 'Sát Thủ Tốc Độ', value: 'Cấp 4', icon: '⚡' }, { label: 'Vua Chính Tả', value: 'Cấp 2', icon: '👑' }, { label: 'Ghép Cặp Tài Ba', value: 'Cấp 5', icon: '🤝' }].map((b, i) => (
               <div key={i} className="text-center space-y-3 p-4 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
                 <div className="text-3xl">{b.icon}</div>
-                <div><p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{b.label}</p><p className="font-bold text-slate-800 dark:text-slate-100">{b.value}</p></div>
+                <div><p className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">{b.label}</p><p className="font-bold text-slate-800 dark:text-slate-100">{b.value}</p></div>
               </div>
             ))}
           </div>

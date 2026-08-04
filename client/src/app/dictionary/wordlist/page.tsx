@@ -105,7 +105,7 @@ export default function WordlistPage() {
             <BookOpen className="w-8 h-8 text-primary" />
             EngBot Wordlist
           </h1>
-          <p className="text-slate-500 font-medium italic">Based on Oxford 3000™ and 5000™ core vocabulary.</p>
+          <p className="text-slate-500 dark:text-slate-400 font-medium italic">Based on Oxford 3000™ and 5000™ core vocabulary.</p>
         </div>
         <div className="flex items-center gap-4">
           <div className="p-3 bg-primary/10 rounded-2xl text-primary flex items-center gap-2">
@@ -119,7 +119,7 @@ export default function WordlistPage() {
       <div className="premium-card p-6 space-y-6">
         {/* Topics Quick Filter Bar */}
         <div className="space-y-2">
-          <p className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+          <p className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-amber-500" />
             Lọc Theo Chủ Đề (Topic Filter):
           </p>
@@ -128,7 +128,7 @@ export default function WordlistPage() {
               onClick={() => { setSelectedTopicId(null); setSearchTerm(''); setPage(1); }}
               className={cn(
                 "px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all border",
-                selectedTopicId === null ? "bg-[#002147] text-white border-[#002147]" : "bg-white text-slate-500 border-slate-200 hover:border-[#002147]"
+                selectedTopicId === null ? "bg-[#002147] text-white border-[#002147]" : "bg-white dark:bg-slate-900 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:border-[#002147] dark:hover:border-slate-600"
               )}
             >
               Tất cả chủ đề
@@ -150,7 +150,7 @@ export default function WordlistPage() {
                   }}
                   className={cn(
                     "px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all border flex items-center gap-1.5",
-                    isSelected ? "bg-[#002147] text-white border-[#002147] shadow-sm" : "bg-white text-slate-600 border-slate-200 hover:border-[#002147]"
+                    isSelected ? "bg-[#002147] text-white border-[#002147] shadow-sm" : "bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-[#002147] dark:hover:border-slate-600"
                   )}
                 >
                   <span>{topic.icon}</span>
@@ -165,11 +165,11 @@ export default function WordlistPage() {
           <input 
             type="text" 
             placeholder="Search for a word (e.g. 'abandon')" 
-            className="w-full h-14 pl-12 pr-4 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-primary/20 transition-all font-medium"
+            className="w-full h-14 pl-12 pr-4 bg-slate-50 dark:bg-slate-800 border-none rounded-xl focus:ring-2 focus:ring-primary/20 transition-all font-medium placeholder:text-slate-300 dark:placeholder:text-slate-600"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-primary" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 dark:text-slate-500 group-focus-within:text-primary" />
         </form>
 
         <div className="space-y-4">
@@ -178,7 +178,7 @@ export default function WordlistPage() {
               onClick={() => { setSelectedLetter(null); setPage(1); }}
               className={cn(
                 "px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all",
-                selectedLetter === null ? "bg-primary text-white" : "bg-slate-50 text-slate-400 hover:bg-slate-100"
+                selectedLetter === null ? "bg-primary text-white" : "bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700"
               )}
             >
               All
@@ -189,7 +189,7 @@ export default function WordlistPage() {
                 onClick={() => { setSelectedLetter(l); setPage(1); }}
                 className={cn(
                   "w-10 h-10 rounded-xl text-xs font-black transition-all",
-                  selectedLetter === l ? "bg-primary text-white" : "bg-slate-50 text-slate-400 hover:bg-slate-100"
+                  selectedLetter === l ? "bg-primary text-white" : "bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700"
                 )}
               >
                 {l}
@@ -197,8 +197,8 @@ export default function WordlistPage() {
             ))}
           </div>
 
-          <div className="flex items-center gap-4 border-t border-slate-50 pt-4">
-            <Filter className="w-4 h-4 text-slate-300" />
+          <div className="flex items-center gap-4 border-t border-slate-50 dark:border-slate-800 pt-4">
+            <Filter className="w-4 h-4 text-slate-300 dark:text-slate-600" />
             <div className="flex gap-2">
               {LEVELS.map(lvl => (
                 <button 
@@ -206,7 +206,7 @@ export default function WordlistPage() {
                   onClick={() => { setSelectedLevel(selectedLevel === lvl ? null : lvl); setPage(1); }}
                   className={cn(
                     "px-4 py-1.5 rounded-lg text-xs font-bold transition-all border",
-                    selectedLevel === lvl ? "bg-slate-900 text-white border-slate-900" : "bg-white text-slate-500 border-slate-200 hover:border-primary"
+                    selectedLevel === lvl ? "bg-slate-900 text-white border-slate-900 dark:bg-slate-100 dark:text-slate-900 dark:border-slate-100" : "bg-white dark:bg-slate-900 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:border-primary dark:hover:border-primary"
                   )}
                 >
                   {lvl}
@@ -221,37 +221,37 @@ export default function WordlistPage() {
       {loading ? (
         <div className="flex flex-col items-center justify-center py-20 space-y-4">
           <Loader2 className="w-10 h-10 text-primary animate-spin" />
-          <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">Loading Oxford Wordlist...</p>
+          <p className="text-slate-400 dark:text-slate-500 font-bold uppercase tracking-widest text-xs">Loading Oxford Wordlist...</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {words && words.length > 0 ? words.map((word) => (
-            <div key={word.id} className="bg-white border-t-4 border-t-[#002147] shadow-sm hover:shadow-md p-6 flex flex-col justify-between group transition-all relative overflow-hidden">
+            <div key={word.id} className="bg-white dark:bg-slate-900 border-t-4 border-t-[#002147] shadow-sm hover:shadow-md p-6 flex flex-col justify-between group transition-all relative overflow-hidden">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-baseline gap-2">
-                    <h3 className="text-2xl font-bold text-[#002147] tracking-tight">{word.word}</h3>
+                    <h3 className="text-2xl font-bold text-[#002147] dark:text-blue-400 tracking-tight">{word.word}</h3>
                     <span className="text-xs font-bold text-white bg-[#002147] px-2 py-0.5 rounded-sm">
                       {word.cefrLevel}
                     </span>
                   </div>
                 </div>
                 
-                <div className="flex items-center gap-3 text-slate-500 font-serif">
-                  <span className="italic text-[#e32b26] font-bold text-sm">{word.wordType}</span>
-                  <span className="text-slate-600">{word.phonetic}</span>
-                  <button className="text-slate-400 hover:text-[#002147] transition-colors p-1">
+                <div className="flex items-center gap-3 text-slate-500 dark:text-slate-400 font-serif">
+                  <span className="italic text-[#e32b26] dark:text-rose-400 font-bold text-sm">{word.wordType}</span>
+                  <span className="text-slate-600 dark:text-slate-300">{word.phonetic}</span>
+                  <button className="text-slate-400 dark:text-slate-500 hover:text-[#002147] dark:hover:text-blue-400 transition-colors p-1">
                     <Volume2 className="w-4 h-4" />
                   </button>
                 </div>
                 
-                <div className="pt-2 border-t border-slate-100">
-                  <p className="text-slate-800 leading-relaxed font-serif">
-                    <span className="font-bold mr-2 text-[#002147]">1.</span> 
+                <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
+                  <p className="text-slate-800 dark:text-slate-100 leading-relaxed font-serif">
+                    <span className="font-bold mr-2 text-[#002147] dark:text-blue-400">1.</span> 
                     {word.meaningEn}
                   </p>
                   {word.meaningVi && (
-                    <p className="text-[#e32b26] font-serif text-sm mt-2 italic">
+                    <p className="text-[#e32b26] dark:text-rose-400 font-serif text-sm mt-2 italic">
                       " {word.meaningVi} "
                     </p>
                   )}
@@ -265,7 +265,7 @@ export default function WordlistPage() {
                   className={cn(
                     "px-4 py-2 text-xs font-bold uppercase tracking-wider rounded transition-all flex items-center gap-2",
                     savedIds.has(word.id) 
-                      ? "bg-green-50 text-green-700 border border-green-200" 
+                      ? "bg-green-50 dark:bg-green-500/10 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-700" 
                       : "bg-[#002147] text-white hover:bg-[#00316e]"
                   )}
                 >
@@ -281,8 +281,8 @@ export default function WordlistPage() {
             </div>
           )) : (
             <div className="col-span-full py-20 text-center space-y-4">
-              <BookOpen className="w-12 h-12 text-slate-200 mx-auto" />
-              <p className="text-slate-400 font-medium text-sm uppercase tracking-widest">No words found in Oxford list</p>
+              <BookOpen className="w-12 h-12 text-slate-200 dark:text-slate-700 mx-auto" />
+              <p className="text-slate-400 dark:text-slate-500 font-medium text-sm uppercase tracking-widest">No words found in Oxford list</p>
             </div>
           )}
         </div>
@@ -294,7 +294,7 @@ export default function WordlistPage() {
           <button 
             onClick={() => setPage(prev => Math.max(1, prev - 1))}
             disabled={page === 1}
-            className="p-3 glass border rounded-2xl disabled:opacity-30 hover:bg-slate-50 transition-all"
+            className="p-3 glass border rounded-2xl disabled:opacity-30 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
@@ -307,19 +307,19 @@ export default function WordlistPage() {
                   onClick={() => setPage(pageNum)}
                   className={cn(
                     "w-10 h-10 rounded-xl font-bold text-sm transition-all",
-                    page === pageNum ? "bg-primary text-white shadow-lg shadow-primary/20" : "bg-white text-slate-500 border border-slate-100 hover:border-primary"
+                    page === pageNum ? "bg-primary text-white shadow-lg shadow-primary/20" : "bg-white dark:bg-slate-900 text-slate-500 dark:text-slate-400 border border-slate-100 dark:border-slate-800 hover:border-primary dark:hover:border-primary"
                   )}
                 >
                   {pageNum}
                 </button>
               );
             })}
-            {totalPages > 5 && <span className="text-slate-300">...</span>}
+            {totalPages > 5 && <span className="text-slate-300 dark:text-slate-600">...</span>}
           </div>
           <button 
             onClick={() => setPage(prev => Math.min(totalPages, prev + 1))}
             disabled={page === totalPages}
-            className="p-3 glass border rounded-2xl disabled:opacity-30 hover:bg-slate-50 transition-all"
+            className="p-3 glass border rounded-2xl disabled:opacity-30 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all"
           >
             <ChevronRight className="w-5 h-5" />
           </button>

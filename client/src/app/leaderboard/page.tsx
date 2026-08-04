@@ -38,15 +38,15 @@ interface LeaderboardUser {
 }
 
 const AVATAR_COLORS = [
-  "bg-amber-100 text-amber-600 border-amber-300",
-  "bg-slate-100 text-slate-600 border-slate-300",
-  "bg-orange-100 text-orange-600 border-orange-300",
-  "bg-blue-100 text-blue-600 border-blue-300",
-  "bg-purple-100 text-purple-600 border-purple-300",
-  "bg-pink-100 text-pink-600 border-pink-300",
-  "bg-emerald-100 text-emerald-600 border-emerald-300",
-  "bg-indigo-100 text-indigo-600 border-indigo-300",
-  "bg-teal-100 text-teal-600 border-teal-300"
+  "bg-amber-100 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-300 dark:border-amber-700",
+  "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-300 dark:border-slate-700",
+  "bg-orange-100 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-300 dark:border-orange-700",
+  "bg-blue-100 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-300 dark:border-blue-700",
+  "bg-purple-100 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-300 dark:border-purple-700",
+  "bg-pink-100 dark:bg-pink-500/10 text-pink-600 dark:text-pink-400 border-pink-300 dark:border-pink-700",
+  "bg-emerald-100 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-300 dark:border-emerald-700",
+  "bg-indigo-100 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-300 dark:border-indigo-700",
+  "bg-teal-100 dark:bg-teal-500/10 text-teal-600 dark:text-teal-400 border-teal-300 dark:border-teal-700"
 ];
 
 // Memoized timer badge to isolate 1s tick re-renders from the main leaderboard table & podium
@@ -125,15 +125,15 @@ const PodiumWidget = memo(function PodiumWidget({ top1, top2, top3 }: {
         <div className="relative">
           {top2 ? (
             <>
-              <div className={cn("w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center text-2xl font-black border-4 border-slate-300 shadow-xl overflow-hidden relative", top2.color)}>
+              <div className={cn("w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center text-2xl font-black border-4 border-slate-300 dark:border-slate-700 shadow-xl overflow-hidden relative", top2.color)}>
                 {top2.avatarUrl ? <img src={top2.avatarUrl} className="w-full h-full object-cover" alt="" /> : top2.avatar}
               </div>
-              <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-slate-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-black border-2 border-white text-xs shadow-md">
+              <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-slate-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-black border-2 border-white dark:border-slate-800 text-xs shadow-md">
                 2
               </div>
             </>
           ) : (
-            <div className="w-20 h-20 md:w-24 md:h-24 rounded-full border-4 border-dashed border-slate-300 flex items-center justify-center text-slate-400 font-bold bg-slate-100">
+            <div className="w-20 h-20 md:w-24 md:h-24 rounded-full border-4 border-dashed border-slate-300 dark:border-slate-700 flex items-center justify-center text-slate-400 dark:text-slate-500 font-bold bg-slate-100 dark:bg-slate-800">
               -
             </div>
           )}
@@ -141,17 +141,17 @@ const PodiumWidget = memo(function PodiumWidget({ top1, top2, top3 }: {
         <div className="text-center min-h-[44px]">
           {top2 ? (
             <>
-              <p className="font-black text-slate-800 text-xs md:text-sm truncate max-w-[100px] md:max-w-[120px]">{top2.username}</p>
+              <p className="font-black text-slate-800 dark:text-slate-200 text-xs md:text-sm truncate max-w-[100px] md:max-w-[120px]">{top2.username}</p>
               <p className="text-[11px] font-black text-primary">{top2.xp.toLocaleString()} XP</p>
               {top2.streak > 0 && <p className="text-[10px] font-bold text-amber-500">🔥 {top2.streak} ngày</p>}
             </>
           ) : (
-            <p className="text-xs text-slate-400 italic font-medium">Trống</p>
+            <p className="text-xs text-slate-400 dark:text-slate-500 italic font-medium">Trống</p>
           )}
         </div>
-        <div className="w-full h-24 md:h-32 bg-gradient-to-b from-slate-200 via-slate-100 to-slate-50 rounded-t-3xl border-t-4 border-slate-300 shadow-lg flex flex-col items-center justify-center p-2">
-          <Medal className="w-8 h-8 text-slate-400 opacity-60" />
-          <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest mt-1">Á Quân</span>
+        <div className="w-full h-24 md:h-32 bg-gradient-to-b from-slate-200 dark:from-slate-800 via-slate-100 dark:via-slate-800/50 to-slate-50 dark:to-slate-900 rounded-t-3xl border-t-4 border-slate-300 dark:border-slate-700 shadow-lg flex flex-col items-center justify-center p-2">
+          <Medal className="w-8 h-8 text-slate-400 dark:text-slate-500 opacity-60" />
+          <span className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-1">Á Quân</span>
         </div>
       </div>
       
@@ -166,12 +166,12 @@ const PodiumWidget = memo(function PodiumWidget({ top1, top2, top3 }: {
               <div className={cn("w-24 h-24 md:w-32 md:h-32 rounded-full flex items-center justify-center text-3xl font-black border-4 border-yellow-400 shadow-2xl shadow-yellow-400/40 overflow-hidden relative", top1.color)}>
                 {top1.avatarUrl ? <img src={top1.avatarUrl} className="w-full h-full object-cover" alt="" /> : top1.avatar}
               </div>
-              <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-yellow-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-black border-2 border-white shadow-xl text-sm">
+              <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-yellow-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-black border-2 border-white dark:border-slate-800 shadow-xl text-sm">
                 1
               </div>
             </>
           ) : (
-            <div className="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-dashed border-slate-300 flex items-center justify-center text-slate-400 font-bold bg-slate-100">
+            <div className="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-dashed border-slate-300 dark:border-slate-700 flex items-center justify-center text-slate-400 dark:text-slate-500 font-bold bg-slate-100 dark:bg-slate-800">
               -
             </div>
           )}
@@ -179,15 +179,15 @@ const PodiumWidget = memo(function PodiumWidget({ top1, top2, top3 }: {
         <div className="text-center min-h-[44px]">
           {top1 ? (
             <>
-              <p className="font-black text-slate-900 text-sm md:text-base truncate max-w-[120px] md:max-w-[140px]">{top1.username}</p>
+              <p className="font-black text-slate-900 dark:text-slate-100 text-sm md:text-base truncate max-w-[120px] md:max-w-[140px]">{top1.username}</p>
               <p className="text-xs md:text-sm font-black text-primary">{top1.xp.toLocaleString()} XP</p>
               {top1.streak > 0 && <p className="text-[10px] font-bold text-amber-500">🔥 {top1.streak} ngày</p>}
             </>
           ) : (
-            <p className="text-xs text-slate-400 italic font-medium">Trống</p>
+            <p className="text-xs text-slate-400 dark:text-slate-500 italic font-medium">Trống</p>
           )}
         </div>
-        <div className="w-full h-32 md:h-40 bg-gradient-to-b from-yellow-200 via-amber-100 to-yellow-50 rounded-t-3xl border-t-4 border-yellow-400 shadow-2xl flex flex-col items-center justify-center p-2">
+        <div className="w-full h-32 md:h-40 bg-gradient-to-b from-yellow-200 dark:from-yellow-900/30 via-amber-100 dark:via-amber-900/20 to-yellow-50 dark:to-yellow-900/10 rounded-t-3xl border-t-4 border-yellow-400 shadow-2xl flex flex-col items-center justify-center p-2">
           <Trophy className="w-10 h-10 text-yellow-600 filter drop-shadow-sm" />
           <span className="text-[10px] font-black text-yellow-800 uppercase tracking-widest mt-1">Quán Quân</span>
         </div>
@@ -201,12 +201,12 @@ const PodiumWidget = memo(function PodiumWidget({ top1, top2, top3 }: {
               <div className={cn("w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center text-2xl font-black border-4 border-amber-600/40 shadow-xl overflow-hidden relative", top3.color)}>
                 {top3.avatarUrl ? <img src={top3.avatarUrl} className="w-full h-full object-cover" alt="" /> : top3.avatar}
               </div>
-              <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-amber-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-black border-2 border-white text-xs shadow-md">
+              <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-amber-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-black border-2 border-white dark:border-slate-800 text-xs shadow-md">
                 3
               </div>
             </>
           ) : (
-            <div className="w-20 h-20 md:w-24 md:h-24 rounded-full border-4 border-dashed border-slate-300 flex items-center justify-center text-slate-400 font-bold bg-slate-100">
+            <div className="w-20 h-20 md:w-24 md:h-24 rounded-full border-4 border-dashed border-slate-300 dark:border-slate-700 flex items-center justify-center text-slate-400 dark:text-slate-500 font-bold bg-slate-100 dark:bg-slate-800">
               -
             </div>
           )}
@@ -214,15 +214,15 @@ const PodiumWidget = memo(function PodiumWidget({ top1, top2, top3 }: {
         <div className="text-center min-h-[44px]">
           {top3 ? (
             <>
-              <p className="font-black text-slate-800 text-xs md:text-sm truncate max-w-[100px] md:max-w-[120px]">{top3.username}</p>
+              <p className="font-black text-slate-800 dark:text-slate-200 text-xs md:text-sm truncate max-w-[100px] md:max-w-[120px]">{top3.username}</p>
               <p className="text-[11px] font-black text-primary">{top3.xp.toLocaleString()} XP</p>
               {top3.streak > 0 && <p className="text-[10px] font-bold text-amber-500">🔥 {top3.streak} ngày</p>}
             </>
           ) : (
-            <p className="text-xs text-slate-400 italic font-medium">Trống</p>
+            <p className="text-xs text-slate-400 dark:text-slate-500 italic font-medium">Trống</p>
           )}
         </div>
-        <div className="w-full h-16 md:h-24 bg-gradient-to-b from-amber-100 via-orange-100 to-amber-50 rounded-t-3xl border-t-4 border-amber-600/50 shadow-lg flex flex-col items-center justify-center p-2">
+        <div className="w-full h-16 md:h-24 bg-gradient-to-b from-amber-100 dark:from-amber-900/30 via-orange-100 dark:via-orange-900/20 to-amber-50 dark:to-amber-900/10 rounded-t-3xl border-t-4 border-amber-600/50 shadow-lg flex flex-col items-center justify-center p-2">
           <Medal className="w-7 h-7 text-amber-700 opacity-70" />
           <span className="text-[10px] font-black text-amber-800 uppercase tracking-widest mt-1">Hạng 3</span>
         </div>
@@ -244,14 +244,14 @@ const UserRankRow = memo(function UserRankRow({ player, rankIndex, maxXP }: {
     <div 
       id={player.isMe ? "my-rank-row" : undefined}
       className={cn(
-        "p-4 md:p-5 flex items-center gap-4 transition-all duration-200 group border-b border-slate-100",
+        "p-4 md:p-5 flex items-center gap-4 transition-all duration-200 group border-b border-slate-100 dark:border-slate-800",
         player.isMe 
           ? "bg-primary/10 border-l-4 border-l-primary shadow-sm" 
-          : "hover:bg-slate-50/80"
+          : "hover:bg-slate-50 dark:hover:bg-slate-800/50"
       )}
     >
       {/* Rank Position Badge */}
-      <div className="w-9 text-center font-black text-slate-400 group-hover:text-primary transition-colors text-base md:text-lg shrink-0">
+      <div className="w-9 text-center font-black text-slate-400 dark:text-slate-500 group-hover:text-primary transition-colors text-base md:text-lg shrink-0">
         {rankIndex === 0 ? "🥇" : rankIndex === 1 ? "🥈" : rankIndex === 2 ? "🥉" : `#${rankIndex + 1}`}
       </div>
 
@@ -259,7 +259,7 @@ const UserRankRow = memo(function UserRankRow({ player, rankIndex, maxXP }: {
       <div className="w-6 flex justify-center shrink-0">
         {player.trend === 'up' && <ChevronUp className="w-4 h-4 text-emerald-500 animate-bounce" />}
         {player.trend === 'down' && <ChevronDown className="w-4 h-4 text-rose-500" />}
-        {player.trend === 'same' && <div className="w-1.5 h-1.5 rounded-full bg-slate-300" />}
+        {player.trend === 'same' && <div className="w-1.5 h-1.5 rounded-full bg-slate-300 dark:bg-slate-600" />}
       </div>
 
       {/* User Avatar */}
@@ -270,22 +270,22 @@ const UserRankRow = memo(function UserRankRow({ player, rankIndex, maxXP }: {
       {/* User Info */}
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
-          <h4 className="font-black text-slate-800 text-sm md:text-base truncate">{player.username}</h4>
+          <h4 className="font-black text-slate-800 dark:text-slate-200 text-sm md:text-base truncate">{player.username}</h4>
           {player.isMe && (
             <span className="px-2 py-0.5 bg-primary text-white text-[8px] font-black rounded-md uppercase tracking-wider">
               BẠN
             </span>
           )}
           {player.streak >= 7 && (
-            <span className="px-2 py-0.5 bg-amber-500/10 text-amber-600 text-[9px] font-bold rounded-md border border-amber-500/20 flex items-center gap-1">
+            <span className="px-2 py-0.5 bg-amber-500/10 text-amber-600 dark:text-amber-400 text-[9px] font-bold rounded-md border border-amber-500/20 flex items-center gap-1">
               <Flame className="w-3 h-3 text-amber-500 fill-amber-500" /> Hot Streak
             </span>
           )}
         </div>
         
         <div className="flex items-center gap-3 mt-1">
-          <span className="text-xs font-extrabold text-slate-400">Lv {player.level}</span>
-          <span className="text-xs font-bold text-slate-300">·</span>
+          <span className="text-xs font-extrabold text-slate-400 dark:text-slate-500">Lv {player.level}</span>
+          <span className="text-xs font-bold text-slate-300 dark:text-slate-600">·</span>
           <span className="text-xs font-extrabold text-amber-500 flex items-center gap-1">
             🔥 {player.streak} ngày
           </span>
@@ -294,7 +294,7 @@ const UserRankRow = memo(function UserRankRow({ player, rankIndex, maxXP }: {
 
       {/* Progress XP Bar (Desktop) */}
       <div className="hidden md:block w-36 shrink-0">
-        <div className="h-2 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200">
+        <div className="h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden p-0.5 border border-slate-200 dark:border-slate-600">
           <div 
             className="h-full bg-gradient-to-r from-primary via-purple-500 to-indigo-500 rounded-full transition-all duration-700" 
             style={{ width: `${progressPct}%` }} 
@@ -304,7 +304,7 @@ const UserRankRow = memo(function UserRankRow({ player, rankIndex, maxXP }: {
 
       {/* XP Points Score */}
       <div className="text-right shrink-0">
-        <p className="text-base md:text-lg font-black text-slate-900">{player.xp.toLocaleString()}</p>
+        <p className="text-base md:text-lg font-black text-slate-900 dark:text-slate-100">{player.xp.toLocaleString()}</p>
         <p className="text-[9px] font-black text-primary uppercase tracking-widest">XP Points</p>
       </div>
     </div>
@@ -400,7 +400,7 @@ export default function LeaderboardPage() {
     return (
       <div className="flex flex-col items-center justify-center h-[50vh] space-y-4">
         <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-slate-500 font-bold">Đang tải bảng vinh danh trực tiếp từ hệ thống...</p>
+        <p className="text-slate-500 dark:text-slate-400 font-bold">Đang tải bảng vinh danh trực tiếp từ hệ thống...</p>
       </div>
     );
   }
@@ -419,10 +419,10 @@ export default function LeaderboardPage() {
           <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-yellow-500/10 border border-yellow-500/20 rounded-full text-yellow-600 text-[10px] font-black uppercase tracking-widest">
             <Sparkles className="w-3 h-3 text-yellow-500 fill-yellow-500" /> Diamond Hall of Fame
           </div>
-          <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight flex items-center gap-3">
+          <h1 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-slate-100 tracking-tight flex items-center gap-3">
             <Trophy className="w-8 h-8 text-yellow-500 fill-yellow-500 animate-pulse" /> Bảng Vinh Danh Học Viên
           </h1>
-          <p className="text-slate-500 text-xs md:text-sm font-semibold">
+          <p className="text-slate-500 dark:text-slate-400 text-xs md:text-sm font-semibold">
             Bảng xếp hạng thời gian thực ghi nhận nỗ lực học từ vựng, luyện nghe và làm bài test hàng ngày!
           </p>
         </div>
@@ -483,11 +483,11 @@ export default function LeaderboardPage() {
       <PodiumWidget top1={top1} top2={top2} top3={top3} />
 
       {/* Full Leaderboard List Table */}
-      <section className="premium-card overflow-hidden bg-white border border-slate-200/80 rounded-3xl shadow-xl">
+      <section className="premium-card overflow-hidden bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-3xl shadow-xl">
         
         {/* Filter Tabs & Search Bar Header */}
-        <div className="p-5 border-b border-slate-100 bg-slate-50/80 flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="flex bg-slate-200/70 p-1 rounded-2xl gap-1">
+        <div className="p-5 border-b border-slate-100 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-800/50 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex bg-slate-200/70 dark:bg-slate-700/70 p-1 rounded-2xl gap-1">
             {[
               { id: 'Global', label: 'Toàn Cầu', icon: Globe },
               { id: 'Weekly', label: 'Tuần Phong Độ', icon: Timer },
@@ -501,8 +501,8 @@ export default function LeaderboardPage() {
                   className={cn(
                     "px-4 py-2 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer select-none",
                     tab === t.id
-                      ? "bg-white text-slate-900 shadow-md"
-                      : "text-slate-500 hover:text-slate-800"
+                      ? "bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 shadow-md"
+                      : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
                   )}
                 >
                   <Icon className="w-3.5 h-3.5" />
@@ -514,21 +514,21 @@ export default function LeaderboardPage() {
 
           {/* Search Input Bar */}
           <div className="relative w-full md:w-64">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               placeholder="Tìm tên học viên..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-primary transition-all"
+              className="w-full pl-9 pr-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-800 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-600 focus:outline-none focus:border-primary transition-all"
             />
           </div>
         </div>
 
         {/* Leaderboard Table List */}
-        <div className="divide-y divide-slate-100">
+        <div className="divide-y divide-slate-100 dark:divide-slate-800">
           {filteredUsers.length === 0 ? (
-            <div className="p-12 text-center text-slate-400 font-medium">
+            <div className="p-12 text-center text-slate-400 dark:text-slate-500 font-medium">
               Không tìm thấy học viên nào phù hợp.
             </div>
           ) : (

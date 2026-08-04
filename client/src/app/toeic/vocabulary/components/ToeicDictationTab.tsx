@@ -46,12 +46,12 @@ export default function ToeicDictationTab({ selectedList, currentIndex, setCurre
   if (!currentWord) return null;
 
   return (
-    <div className="premium-card p-5 sm:p-8 bg-white border border-slate-100 shadow-xl rounded-3xl space-y-4">
+    <div className="premium-card p-5 sm:p-8 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-xl rounded-3xl space-y-4">
       <div>
         <span className="text-[9px] font-black uppercase tracking-widest text-primary bg-primary/5 px-2.5 py-0.5 rounded-full border border-primary/10">
           Luyện Nghe Chính Tả
         </span>
-        <h3 className="text-base sm:text-lg font-black text-slate-800 mt-1">Nghe âm thanh và gõ lại từ vựng</h3>
+        <h3 className="text-base sm:text-lg font-black text-slate-800 dark:text-slate-100 mt-1">Nghe âm thanh và gõ lại từ vựng</h3>
       </div>
 
       <div className="flex flex-col landscape:flex-row gap-4">
@@ -89,18 +89,18 @@ export default function ToeicDictationTab({ selectedList, currentIndex, setCurre
             }}
             placeholder="Gõ từ nghe được..."
             className={cn(
-              "w-full px-4 py-2.5 bg-slate-50 border-2 rounded-xl text-sm font-black focus:outline-none focus:bg-white transition-all shadow-inner",
+              "w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border-2 rounded-xl text-sm font-black focus:outline-none focus:bg-white dark:focus:bg-slate-900 transition-all shadow-inner",
               inputFeedback === 'correct'
-                ? "border-emerald-500 bg-emerald-50/10 text-emerald-800"
+                ? "border-emerald-500 bg-emerald-50/10 dark:bg-emerald-500/10 text-emerald-800 dark:text-emerald-400"
                 : inputFeedback === 'wrong'
-                  ? "border-rose-500 bg-rose-50/10 text-rose-800 animate-shake"
-                  : "border-slate-200 focus:border-primary"
+                  ? "border-rose-500 bg-rose-50/10 dark:bg-rose-500/10 text-rose-800 dark:text-rose-400 animate-shake"
+                  : "border-slate-200 dark:border-slate-700 focus:border-primary"
             )}
           />
 
           {showInputHint && (
-            <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-100 text-[11px] space-y-0.5">
-              <p className="font-bold text-slate-500">Nghĩa tiếng Việt:</p>
+            <div className="p-2.5 bg-slate-50 dark:bg-slate-800 rounded-lg border border-slate-100 dark:border-slate-700 text-[11px] space-y-0.5">
+              <p className="font-bold text-slate-500 dark:text-slate-400">Nghĩa tiếng Việt:</p>
               <p className="font-black text-primary">&quot;{currentWord.meaningVi}&quot;</p>
             </div>
           )}
@@ -108,7 +108,7 @@ export default function ToeicDictationTab({ selectedList, currentIndex, setCurre
           <div className="flex gap-2">
             <button
               onClick={() => setShowInputHint(true)}
-              className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-bold transition-all cursor-pointer"
+              className="px-3 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-lg text-xs font-bold transition-all cursor-pointer"
             >
               💡 Gợi ý
             </button>

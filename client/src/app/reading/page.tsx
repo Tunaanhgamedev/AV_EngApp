@@ -232,12 +232,12 @@ export default function ReadingPage() {
           <h1 className="text-3xl font-black flex items-center gap-3">
             <BookOpen className="w-8 h-8 text-primary" />Reading Room
           </h1>
-          <p className="text-slate-500 font-medium">
+          <p className="text-slate-500 dark:text-slate-400 font-medium">
             Đọc hiểu bài viết tiếng Anh, học từ vựng trong ngữ cảnh và kiểm tra khả năng đọc hiểu.
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-sm font-bold text-slate-400 mr-2">Level:</span>
+          <span className="text-sm font-bold text-slate-400 dark:text-slate-500 mr-2">Level:</span>
           {['All', 'A2', 'B1', 'B2'].map(f => (
             <button
               key={f}
@@ -246,7 +246,7 @@ export default function ReadingPage() {
                 "px-3 py-1 border rounded-lg text-xs font-bold transition-all",
                 filterLevel === f
                   ? "bg-primary text-white border-primary"
-                  : "bg-white border-slate-200 text-slate-600 hover:border-primary"
+                  : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-primary"
               )}
             >
               {f}
@@ -273,7 +273,7 @@ export default function ReadingPage() {
             </div>
 
             {/* Tab navigation */}
-            <div className="flex border-b border-slate-100">
+            <div className="flex border-b border-slate-100 dark:border-slate-800">
               {[
                 { id: 'read' as const, label: 'Đọc Bài', icon: BookOpen },
                 { id: 'vocab' as const, label: `Từ Vựng (${selected.vocabulary.length})`, icon: BookMarked },
@@ -284,7 +284,7 @@ export default function ReadingPage() {
                   onClick={() => setActiveTab(tab.id)}
                   className={cn(
                     "flex-1 py-3 text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-1.5",
-                    activeTab === tab.id ? "text-primary border-b-2 border-primary bg-white" : "text-slate-400 hover:text-slate-600"
+                    activeTab === tab.id ? "text-primary border-b-2 border-primary bg-white dark:bg-slate-900" : "text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300"
                   )}
                 >
                   <tab.icon className="w-3.5 h-3.5" />
@@ -303,7 +303,7 @@ export default function ReadingPage() {
                     </button>
                   </div>
                   {selected.content.split('\n\n').map((para, i) => (
-                    <p key={i} className="text-base text-slate-700 leading-[1.9] font-medium">
+                    <p key={i} className="text-base text-slate-700 dark:text-slate-300 leading-[1.9] font-medium">
                       {para}
                     </p>
                   ))}
@@ -314,14 +314,14 @@ export default function ReadingPage() {
               {activeTab === 'vocab' && (
                 <div className="space-y-3">
                   {selected.vocabulary.map((v, i) => (
-                    <div key={i} className="flex items-center gap-4 p-4 rounded-2xl border border-slate-100 hover:border-primary/30 hover:bg-primary/5 transition-all group">
+                    <div key={i} className="flex items-center gap-4 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 hover:border-primary/30 hover:bg-primary/5 transition-all group">
                       <button onClick={() => speak(v.word)} className="p-2 bg-primary/10 rounded-full text-primary group-hover:bg-primary group-hover:text-white transition-all">
                         <Volume2 className="w-4 h-4" />
                       </button>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
-                          <span className="text-lg font-black text-slate-800">{v.word}</span>
-                          <span className="text-xs font-mono text-slate-400">{v.ipa}</span>
+                          <span className="text-lg font-black text-slate-800 dark:text-slate-200">{v.word}</span>
+                          <span className="text-xs font-mono text-slate-400 dark:text-slate-500">{v.ipa}</span>
                         </div>
                         <p className="text-sm text-primary/70 italic">{v.meaning}</p>
                       </div>
@@ -336,14 +336,14 @@ export default function ReadingPage() {
                   <h3 className="font-bold text-lg flex items-center gap-2">🧠 Comprehension Check</h3>
                   {selected.questions.map((q, qi) => (
                     <div key={qi} className="space-y-3">
-                      <p className="font-bold text-slate-700">{qi + 1}. {q.q}</p>
+                      <p className="font-bold text-slate-700 dark:text-slate-300">{qi + 1}. {q.q}</p>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                         {q.options.map((opt, ai) => (
                           <button key={ai} onClick={() => handleQuizAnswer(qi, ai)}
                             className={cn("p-3 rounded-xl text-sm font-bold border-2 text-left transition-all",
-                              quizAnswers[qi] === null ? "border-slate-100 hover:border-primary hover:bg-primary/5" :
-                              ai === q.answer ? "bg-green-50 border-green-400 text-green-700" :
-                              ai === quizAnswers[qi] ? "bg-rose-50 border-rose-400 text-rose-700" : "border-slate-100 opacity-40"
+                              quizAnswers[qi] === null ? "border-slate-100 dark:border-slate-800 hover:border-primary hover:bg-primary/5" :
+                              ai === q.answer ? "bg-green-50 dark:bg-green-500/10 border-green-400 dark:border-green-500/50 text-green-700 dark:text-green-400" :
+                              ai === quizAnswers[qi] ? "bg-rose-50 dark:bg-rose-500/10 border-rose-400 dark:border-rose-500/50 text-rose-700 dark:text-rose-400" : "border-slate-100 dark:border-slate-800 opacity-40"
                             )}>{opt}</button>
                         ))}
                       </div>
@@ -351,7 +351,7 @@ export default function ReadingPage() {
                   ))}
                   {quizDone && (
                     <div className={cn("p-5 rounded-2xl text-center font-black animate-in zoom-in duration-300",
-                      quizScore === selected.questions.length ? "bg-green-50 text-green-700" : "bg-amber-50 text-amber-700"
+                      quizScore === selected.questions.length ? "bg-green-50 dark:bg-green-500/10 text-green-700 dark:text-green-400" : "bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400"
                     )}>
                       {quizScore === selected.questions.length ? <CheckCircle2 className="w-8 h-8 mx-auto mb-2" /> : <XCircle className="w-8 h-8 mx-auto mb-2" />}
                       {quizScore}/{selected.questions.length} Correct · {quizScore === selected.questions.length ? 'Excellent! +50 XP 🎉' : 'Keep practicing!'}
@@ -387,19 +387,19 @@ export default function ReadingPage() {
             </button>
             <div className="space-y-3">
               {filteredArticles.length === 0 ? (
-                <div className="text-center py-8 text-slate-400 text-sm">
+                <div className="text-center py-8 text-slate-400 dark:text-slate-500 text-sm">
                   Chưa có bài đọc cấp độ này.
                 </div>
               ) : (
                 filteredArticles.map(article => (
                   <button key={article.id} onClick={() => setSelected(article)}
                     className={cn("w-full flex gap-4 p-3 rounded-2xl transition-all text-left group",
-                      selected.id === article.id ? "bg-primary/5 ring-1 ring-primary/20 shadow-md" : "hover:bg-slate-50"
+                      selected.id === article.id ? "bg-primary/5 ring-1 ring-primary/20 shadow-md" : "hover:bg-slate-50 dark:hover:bg-slate-800"
                     )}>
                     <div className={cn("w-14 h-14 rounded-xl bg-gradient-to-br flex items-center justify-center text-white font-black text-sm flex-shrink-0", article.color)}>{article.level}</div>
                     <div className="flex-1 min-w-0 py-1">
                       <h4 className="text-sm font-bold truncate group-hover:text-primary transition-colors">{article.title}</h4>
-                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">{article.category} · {article.readTime}</p>
+                      <p className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-1">{article.category} · {article.readTime}</p>
                     </div>
                   </button>
                 ))
@@ -417,12 +417,12 @@ export default function ReadingPage() {
                 { name: 'British Council', url: 'https://learnenglish.britishcouncil.org/skills/reading', desc: 'Bài đọc chính thống' },
               ].map(r => (
                 <a key={r.name} href={r.url} target="_blank" rel="noopener noreferrer"
-                  className="block p-3 rounded-xl border border-slate-100 hover:border-primary hover:bg-primary/5 transition-all group">
+                  className="block p-3 rounded-xl border border-slate-100 dark:border-slate-800 hover:border-primary hover:bg-primary/5 transition-all group">
                   <div className="flex items-center justify-between">
                     <h4 className="text-sm font-bold group-hover:text-primary transition-colors">{r.name}</h4>
-                    <ExternalLink className="w-3 h-3 text-slate-300 group-hover:text-primary" />
+                    <ExternalLink className="w-3 h-3 text-slate-300 dark:text-slate-600 group-hover:text-primary" />
                   </div>
-                  <p className="text-[10px] text-slate-400 mt-1">{r.desc}</p>
+                  <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-1">{r.desc}</p>
                 </a>
               ))}
             </div>

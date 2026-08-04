@@ -35,9 +35,9 @@ export default function StressRulesTab() {
   return (
     <div className="space-y-8">
       {/* Header Banner */}
-      <div className="premium-card p-6 bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200">
+      <div className="premium-card p-6 bg-gradient-to-r from-amber-50 dark:from-amber-950/30 to-orange-50 dark:to-orange-950/30 border-amber-200 dark:border-amber-800">
         <h3 className="text-lg font-black text-amber-900 flex items-center gap-2 mb-2">
-          <Zap className="w-5 h-5 text-amber-600" /> Quy Tắc Trọng Âm & Công Cụ Phân Tích AI
+          <Zap className="w-5 h-5 text-amber-600 dark:text-amber-400" /> Quy Tắc Trọng Âm & Công Cụ Phân Tích AI
         </h3>
         <p className="text-xs sm:text-sm text-amber-800 leading-relaxed font-medium">
           Trọng âm là việc phát âm một âm tiết to hơn, dài hơn và cao hơn các âm tiết còn lại. Nắm vững quy tắc trọng âm giúp người nghe hiểu chính xác từ bạn đang nói.
@@ -95,14 +95,14 @@ export default function StressRulesTab() {
       {/* Rules List */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {STRESS_RULES.map((rule: any, idx: number) => (
-          <div key={idx} className="premium-card p-6 bg-white border border-slate-200 rounded-3xl space-y-3 hover:border-slate-300 transition-all">
+          <div key={idx} className="premium-card p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl space-y-3 hover:border-slate-300 transition-all">
             <div className="flex items-center gap-3">
-              <span className="w-8 h-8 rounded-full bg-amber-100 text-amber-700 font-black text-xs flex items-center justify-center shrink-0">
+              <span className="w-8 h-8 rounded-full bg-amber-100 text-amber-700 dark:text-amber-400 font-black text-xs flex items-center justify-center shrink-0">
                 #{idx + 1}
               </span>
-              <h4 className="font-extrabold text-sm text-slate-800">{rule.title || rule.rule}</h4>
+              <h4 className="font-extrabold text-sm text-slate-800 dark:text-slate-100">{rule.title || rule.rule}</h4>
             </div>
-            <p className="text-xs text-slate-600 leading-relaxed font-medium">{rule.description || rule.pattern}</p>
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">{rule.description || rule.pattern}</p>
             {rule.examples && (
               <div className="flex flex-wrap gap-2 pt-1">
                 {rule.examples.map((ex: any, i: number) => {
@@ -112,9 +112,9 @@ export default function StressRulesTab() {
                     <button
                       key={i}
                       onClick={() => speak(wordStr)}
-                      className="px-2.5 py-1 bg-slate-50 border border-slate-200 hover:bg-amber-50 hover:border-amber-200 text-slate-700 text-xs font-bold rounded-xl flex items-center gap-1 transition-all cursor-pointer"
+                      className="px-2.5 py-1 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-800 hover:bg-amber-50 dark:hover:bg-amber-500/20 hover:border-amber-200 text-slate-700 dark:text-slate-300 text-xs font-bold rounded-xl flex items-center gap-1 transition-all cursor-pointer"
                     >
-                      {wordStr} {ipaStr && <span className="text-[10px] text-amber-600 font-mono">({ipaStr})</span>}
+                      {wordStr} {ipaStr && <span className="text-[10px] text-amber-600 dark:text-amber-400 font-mono">({ipaStr})</span>}
                     </button>
                   );
                 })}

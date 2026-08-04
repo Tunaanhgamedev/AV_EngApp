@@ -98,20 +98,20 @@ export default function ReviewPage() {
   if (loading) return (
     <div className="flex flex-col items-center justify-center h-[70vh] gap-4">
       <Loader2 className="w-12 h-12 animate-spin text-primary" />
-      <p className="font-black text-slate-400 uppercase tracking-widest animate-pulse text-sm">Chuẩn bị bài tập ôn tập...</p>
+      <p className="font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest animate-pulse text-sm">Chuẩn bị bài tập ôn tập...</p>
     </div>
   );
 
   if (words.length === 0) return (
     <div className="flex flex-col items-center justify-center h-[70vh] text-center space-y-6">
-      <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center text-green-500">
+      <div className="w-20 h-20 bg-green-50 dark:bg-green-500/10 rounded-full flex items-center justify-center text-green-500 dark:text-green-400">
         <CheckCircle2 className="w-10 h-10" />
       </div>
       <div>
-        <h1 className="text-2xl font-black">Tuyệt vời! Bạn đã hoàn thành hết bài tập</h1>
-        <p className="text-slate-500 mt-2">Hôm nay không còn từ vựng nào cần ôn tập. Hãy quay lại vào ngày mai nhé!</p>
+        <h1 className="text-2xl font-black dark:text-slate-100">Tuyệt vời! Bạn đã hoàn thành hết bài tập</h1>
+        <p className="text-slate-500 dark:text-slate-400 mt-2">Hôm nay không còn từ vựng nào cần ôn tập. Hãy quay lại vào ngày mai nhé!</p>
       </div>
-      <button onClick={() => router.push('/review')} className="px-8 py-3 bg-slate-900 text-white rounded-xl font-bold shadow-xl hover:scale-105 transition-all flex items-center gap-2">
+      <button onClick={() => router.push('/review')} className="px-8 py-3 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 rounded-xl font-bold shadow-xl hover:scale-105 transition-all flex items-center gap-2">
         <ArrowLeft className="w-5 h-5" /> Quay lại Dashboard
       </button>
     </div>
@@ -119,29 +119,29 @@ export default function ReviewPage() {
 
   if (completed) return (
     <div className="max-w-md mx-auto space-y-8 py-10 animate-in zoom-in-95 duration-500">
-      <div className="premium-card p-10 text-center space-y-6 bg-gradient-to-b from-white to-primary/5">
+      <div className="premium-card p-10 text-center space-y-6 bg-gradient-to-b from-white dark:from-slate-900 to-primary/5">
         <div className="relative inline-block">
           <Trophy className="w-20 h-20 text-yellow-400 mx-auto drop-shadow-xl" />
           <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="absolute -top-2 -right-2 bg-primary text-white text-xs font-black px-2 py-1 rounded-full shadow-lg">+{score * 10} XP</motion.div>
         </div>
         <div>
-          <h2 className="text-3xl font-black text-slate-800">Hoàn thành!</h2>
-          <p className="text-slate-500 font-medium mt-1">Bạn đã ôn tập được {words.length} từ vựng</p>
+          <h2 className="text-3xl font-black text-slate-800 dark:text-slate-100">Hoàn thành!</h2>
+          <p className="text-slate-500 dark:text-slate-400 font-medium mt-1">Bạn đã ôn tập được {words.length} từ vựng</p>
         </div>
         <div className="flex justify-center gap-4 py-4">
           <div className="text-center">
             <p className="text-3xl font-black text-primary">{score}</p>
-            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Đúng</p>
+            <p className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Đúng</p>
           </div>
-          <div className="w-px h-10 bg-slate-100" />
+          <div className="w-px h-10 bg-slate-100 dark:bg-slate-700" />
           <div className="text-center">
-            <p className="text-3xl font-black text-slate-300">{words.length - score}</p>
-            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Sai</p>
+            <p className="text-3xl font-black text-slate-300 dark:text-slate-600">{words.length - score}</p>
+            <p className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Sai</p>
           </div>
         </div>
         <div className="space-y-3 pt-4">
-          <button onClick={() => router.push('/review')} className="w-full py-4 bg-slate-900 text-white rounded-2xl font-black text-sm shadow-xl hover:scale-[1.02] active:scale-95 transition-all">TIẾP TỤC HỌC</button>
-          <button onClick={() => window.location.reload()} className="w-full py-4 bg-white border-2 border-slate-100 text-slate-600 rounded-2xl font-black text-sm hover:bg-slate-50 transition-all flex items-center justify-center gap-2">
+          <button onClick={() => router.push('/review')} className="w-full py-4 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 rounded-2xl font-black text-sm shadow-xl hover:scale-[1.02] active:scale-95 transition-all">TIẾP TỤC HỌC</button>
+          <button onClick={() => window.location.reload()} className="w-full py-4 bg-white dark:bg-slate-900 border-2 border-slate-100 dark:border-slate-800 text-slate-600 dark:text-slate-300 rounded-2xl font-black text-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition-all flex items-center justify-center gap-2">
             <RotateCcw className="w-4 h-4" /> ÔN LẠI LẦN NỮA
           </button>
         </div>
@@ -155,11 +155,11 @@ export default function ReviewPage() {
     <div className="max-w-2xl mx-auto space-y-8 py-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <button onClick={() => router.push('/review')} className="p-2 text-slate-400 hover:text-slate-600 transition-colors">
+        <button onClick={() => router.push('/review')} className="p-2 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
           <ArrowLeft className="w-6 h-6" />
         </button>
         <div className="flex-1 px-8">
-          <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden shadow-inner">
+          <div className="h-2 w-full bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden shadow-inner">
             <motion.div 
               initial={{ width: 0 }}
               animate={{ width: `${progress}%` }}
@@ -167,7 +167,7 @@ export default function ReviewPage() {
             />
           </div>
         </div>
-        <div className="text-sm font-black text-slate-400 font-mono">{currentIndex + 1}/{words.length}</div>
+        <div className="text-sm font-black text-slate-400 dark:text-slate-500 font-mono">{currentIndex + 1}/{words.length}</div>
       </div>
 
       <AnimatePresence mode="wait">
@@ -179,7 +179,7 @@ export default function ReviewPage() {
           className="space-y-8"
         >
           {/* Question Card */}
-          <div className="premium-card p-10 space-y-8 relative overflow-hidden">
+          <div className="premium-card p-10 space-y-8 relative overflow-hidden dark:bg-slate-900">
             <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
               <Brain className="w-32 h-32" />
             </div>
@@ -190,14 +190,14 @@ export default function ReviewPage() {
                 <span className="text-[10px] font-black uppercase tracking-widest">{currentWord.context ? 'Đọc ngữ cảnh & chọn đáp án' : 'Chọn nghĩa đúng'}</span>
               </div>
               {currentWord.context && (
-                <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 text-left">
-                  <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Ngữ cảnh tiếng Anh</p>
-                  <p className="text-lg font-semibold text-slate-700 leading-relaxed italic">
+                <div className="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-6 text-left">
+                  <p className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2">Ngữ cảnh tiếng Anh</p>
+                  <p className="text-lg font-semibold text-slate-700 dark:text-slate-300 leading-relaxed italic">
                     {currentWord.context}
                   </p>
                 </div>
               )}
-              <h2 className="text-xl font-bold text-slate-800 leading-relaxed">
+              <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 leading-relaxed">
                 {currentWord.question}
               </h2>
             </div>
@@ -212,13 +212,13 @@ export default function ReviewPage() {
                   className={cn(
                     "p-5 rounded-2xl border-2 text-left transition-all duration-300 font-bold flex items-center justify-between group",
                     selectedOption === option 
-                      ? "border-primary bg-primary/5 ring-4 ring-primary/10" 
-                      : "border-slate-100 hover:border-primary/30 hover:bg-slate-50",
-                    isAnswered && option?.trim().toLowerCase() === currentWord.meaningVi?.trim().toLowerCase() && "border-green-500 bg-green-50 text-green-700",
-                    isAnswered && selectedOption === option && option?.trim().toLowerCase() !== currentWord.meaningVi?.trim().toLowerCase() && "border-rose-500 bg-rose-50 text-rose-700"
+                      ? "border-primary bg-primary/5 ring-4 ring-primary/10 dark:ring-primary/20" 
+                      : "border-slate-100 dark:border-slate-700 hover:border-primary/30 dark:hover:border-primary/30 hover:bg-slate-50 dark:hover:bg-slate-800",
+                    isAnswered && option?.trim().toLowerCase() === currentWord.meaningVi?.trim().toLowerCase() && "border-green-500 bg-green-50 dark:bg-green-500/10 text-green-700 dark:text-green-400",
+                    isAnswered && selectedOption === option && option?.trim().toLowerCase() !== currentWord.meaningVi?.trim().toLowerCase() && "border-rose-500 bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400"
                   )}
                 >
-                  <span>{option}</span>
+                  <span className="dark:text-slate-200">{option}</span>
                   {isAnswered && option?.trim().toLowerCase() === currentWord.meaningVi?.trim().toLowerCase() && <CheckCircle2 className="w-5 h-5 text-green-500" />}
                   {isAnswered && selectedOption === option && option?.trim().toLowerCase() !== currentWord.meaningVi?.trim().toLowerCase() && <XCircle className="w-5 h-5 text-rose-500" />}
                 </button>
@@ -231,14 +231,14 @@ export default function ReviewPage() {
                 <motion.div 
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: 'auto', opacity: 1 }}
-                  className="pt-6 border-t border-slate-100 space-y-2"
+                  className="pt-6 border-t border-slate-100 dark:border-slate-800 space-y-2"
                 >
-                  <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Giải thích từ vựng</p>
+                  <p className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Giải thích từ vựng</p>
                   <div className="flex items-center gap-3">
-                    <div className="text-xl font-black text-slate-900">{currentWord.word}</div>
-                    <div className="text-sm font-mono text-slate-400">{currentWord.phonetic}</div>
+                    <div className="text-xl font-black text-slate-900 dark:text-slate-100">{currentWord.word}</div>
+                    <div className="text-sm font-mono text-slate-400 dark:text-slate-500">{currentWord.phonetic}</div>
                   </div>
-                  <p className="text-sm text-slate-600 font-medium">{currentWord.meaningEn}</p>
+                  <p className="text-sm text-slate-600 dark:text-slate-300 font-medium">{currentWord.meaningEn}</p>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -252,7 +252,7 @@ export default function ReviewPage() {
                 disabled={!selectedOption || submitting}
                 className={cn(
                   "flex-1 py-5 rounded-2xl font-black text-sm shadow-xl transition-all flex items-center justify-center gap-2",
-                  selectedOption ? "bg-slate-900 text-white hover:scale-[1.02]" : "bg-slate-100 text-slate-300 cursor-not-allowed"
+                  selectedOption ? "bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 hover:scale-[1.02]" : "bg-slate-100 dark:bg-slate-800 text-slate-300 dark:text-slate-600 cursor-not-allowed"
                 )}
               >
                 KIỂM TRA

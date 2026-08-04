@@ -8,9 +8,9 @@ const SpeakingPracticeTab = lazy(() => import('./components/SpeakingPracticeTab'
 const MouthShapeTab = lazy(() => import('./components/MouthShapeTab'));
 
 const TabLoader = () => (
-  <div className="p-12 text-center bg-white border border-slate-100 rounded-3xl shadow-lg space-y-4 my-8 animate-pulse">
+  <div className="p-12 text-center bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl shadow-lg space-y-4 my-8 animate-pulse">
     <Loader2 className="w-8 h-8 text-primary animate-spin mx-auto" />
-    <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Đang tải phòng luyện tập...</p>
+    <p className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Đang tải phòng luyện tập...</p>
   </div>
 );
 

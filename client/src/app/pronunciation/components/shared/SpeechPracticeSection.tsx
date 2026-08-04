@@ -59,14 +59,14 @@ export default function SpeechPracticeSection({ targetWord }: { targetWord: stri
   };
 
   return (
-    <div className="flex flex-col sm:flex-row items-center gap-4 p-4 bg-slate-50 border border-slate-100 rounded-2xl">
+    <div className="flex flex-col sm:flex-row items-center gap-4 p-4 bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-800 rounded-2xl">
       <div className="flex-1 min-w-0 text-left">
-        <h4 className="text-xs font-black text-violet-600 uppercase tracking-widest">Luyện phát âm AI</h4>
-        <p className="text-xs text-slate-500 mt-0.5 font-medium">Nhấp vào micro, đọc từ ví dụ <strong className="text-slate-800">"{targetWord}"</strong> để kiểm tra.</p>
+        <h4 className="text-xs font-black text-violet-600 dark:text-violet-400 uppercase tracking-widest">Luyện phát âm AI</h4>
+        <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 font-medium">Nhấp vào micro, đọc từ ví dụ <strong className="text-slate-800 dark:text-slate-100">"{targetWord}"</strong> để kiểm tra.</p>
 
         {resultText && (
-          <p className="text-xs text-slate-800 mt-2 font-semibold">
-            Bạn đã đọc: <span className="text-violet-600 font-bold">"{resultText}"</span>
+          <p className="text-xs text-slate-800 dark:text-slate-100 mt-2 font-semibold">
+            Bạn đã đọc: <span className="text-violet-600 dark:text-violet-400 font-bold">"{resultText}"</span>
           </p>
         )}
 
@@ -74,11 +74,11 @@ export default function SpeechPracticeSection({ targetWord }: { targetWord: stri
           <div className="flex flex-wrap items-center gap-2 mt-1.5">
             <span className={cn(
               "text-[10px] font-black px-2.5 py-0.5 rounded-full",
-              accuracy === 100 ? "bg-emerald-100 text-emerald-700" : accuracy >= 80 ? "bg-blue-100 text-blue-700" : "bg-rose-100 text-rose-700"
+              accuracy === 100 ? "bg-emerald-100 text-emerald-700 dark:text-emerald-400" : accuracy >= 80 ? "bg-blue-100 text-blue-700 dark:text-blue-400" : "bg-rose-100 text-rose-700 dark:text-rose-400"
             )}>
               Độ khớp: {accuracy}%
             </span>
-            <span className="text-xs font-bold text-slate-600">
+            <span className="text-xs font-bold text-slate-600 dark:text-slate-300">
               {accuracy === 100 ? 'Rất tuyệt vời! Phát âm hoàn hảo.' : accuracy >= 80 ? 'Khá tốt, gần chính xác!' : 'Chưa khớp lắm, hãy thử lại.'}
             </span>
           </div>
@@ -96,7 +96,7 @@ export default function SpeechPracticeSection({ targetWord }: { targetWord: stri
           "w-11 h-11 rounded-full flex items-center justify-center transition-all cursor-pointer shadow-md shrink-0",
           isRecording
             ? "bg-rose-600 text-white animate-pulse"
-            : "bg-violet-100 text-violet-600 border border-violet-200 hover:bg-violet-600 hover:text-white"
+            : "bg-violet-100 text-violet-600 dark:text-violet-400 border border-violet-200 dark:border-violet-800 hover:bg-violet-600 hover:text-white"
         )}
         title="Bấm để ghi âm"
       >

@@ -107,7 +107,7 @@ export function Sidebar({ isOpen, onClose }: { isOpen?: boolean; onClose?: () =>
           <div className="w-8 h-8 rounded-lg gradient-bg flex items-center justify-center text-white font-bold text-lg">E</div>
           <div>
             <h1 className="text-xl font-bold gradient-text leading-tight">EngBot</h1>
-            <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">AI English Mentor</p>
+            <p className="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">AI English Mentor</p>
           </div>
         </div>
       </div>
@@ -130,7 +130,7 @@ export function Sidebar({ isOpen, onClose }: { isOpen?: boolean; onClose?: () =>
                 >
                   <item.icon className={cn(
                     "w-5 h-5",
-                    isActive ? "text-white" : "text-slate-400 group-hover:text-primary"
+                    isActive ? "text-white" : "text-slate-400 dark:text-slate-500 group-hover:text-primary"
                   )} />
                   <span className="font-medium text-sm flex-1">{item.label}</span>
                   {item.badge && item.badge > 0 && (
@@ -172,14 +172,14 @@ export function Sidebar({ isOpen, onClose }: { isOpen?: boolean; onClose?: () =>
               )}
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold truncate">{user.displayName || 'Learner'}</p>
-                <p className="text-[10px] text-slate-500 truncate font-medium">
+                <p className="text-[10px] text-slate-500 dark:text-slate-400 truncate font-medium">
                   Lvl {dbUser?.level || 1} • {dbUser?.xp?.toLocaleString() || 0} XP
                 </p>
               </div>
             </Link>
             <button
               onClick={logout}
-              className="w-full flex items-center gap-3 px-3 py-2 text-sm text-slate-500 hover:text-red-500 transition-colors"
+              className="w-full flex items-center gap-3 px-3 py-2 text-sm text-slate-500 dark:text-slate-400 hover:text-red-500 transition-colors"
             >
               <LogOut className="w-4 h-4" />
               <span>Logout</span>

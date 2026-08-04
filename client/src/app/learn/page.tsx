@@ -306,7 +306,7 @@ export default function LearnPage() {
             onClick={() => setActiveMode('vocabulary')}
             className={cn(
               "px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer",
-              activeMode === 'vocabulary' ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-950 shadow-md" : "text-slate-500 dark:text-slate-400 hover:text-slate-800"
+              activeMode === 'vocabulary' ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-950 shadow-md" : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-300"
             )}
           >
             <BrainCircuit className="w-4 h-4" /> Từ Vựng CEFR
@@ -315,7 +315,7 @@ export default function LearnPage() {
             onClick={() => setActiveMode('topics')}
             className={cn(
               "px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer",
-              activeMode === 'topics' ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-950 shadow-md" : "text-slate-500 dark:text-slate-400 hover:text-slate-800"
+              activeMode === 'topics' ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-950 shadow-md" : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-300"
             )}
           >
             <BookOpen className="w-4 h-4" /> Chủ Đề
@@ -323,7 +323,7 @@ export default function LearnPage() {
         </div>
       </header>
 
-      <Suspense fallback={<div className="flex justify-center py-20"><span className="animate-spin rounded-full h-8 w-8 border-b-2 border-slate-900"></span></div>}>
+      <Suspense fallback={<div className="flex justify-center py-20"><span className="animate-spin rounded-full h-8 w-8 border-b-2 border-slate-900 dark:border-slate-100"></span></div>}>
         {activeMode === 'vocabulary' ? (
           !selectedLevel ? (
             <LevelSelector levels={levels} onSelectLevel={setSelectedLevel} />

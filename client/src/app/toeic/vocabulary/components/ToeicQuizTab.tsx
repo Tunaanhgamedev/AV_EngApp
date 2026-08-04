@@ -89,17 +89,17 @@ export default function ToeicQuizTab({
   if (!currentWord) return null;
 
   return (
-    <div className="premium-card p-5 sm:p-8 bg-white border border-slate-100 shadow-xl rounded-3xl space-y-4">
+    <div className="premium-card p-5 sm:p-8 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-xl rounded-3xl space-y-4">
       {/* Score Header */}
-      <div className="flex items-center justify-between border-b border-slate-50 pb-2">
+      <div className="flex items-center justify-between border-b border-slate-50 dark:border-slate-800 pb-2">
         <div>
-          <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest block">Điểm số</span>
+          <span className="text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest block">Điểm số</span>
           <span className="text-sm font-black text-primary">{quizScore} / {selectedList.words.length}</span>
         </div>
         
         <button
           onClick={toggleQuizMode}
-          className="px-2.5 py-1.5 bg-slate-50 hover:bg-slate-100 text-slate-600 border border-slate-200/50 rounded-lg text-[9px] font-black uppercase tracking-widest flex items-center gap-1 transition-all active:scale-95 cursor-pointer"
+          className="px-2.5 py-1.5 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200/50 dark:border-slate-700/50 rounded-lg text-[9px] font-black uppercase tracking-widest flex items-center gap-1 transition-all active:scale-95 cursor-pointer"
         >
           <RefreshCw className="w-3 h-3 text-primary" />
           Đổi chiều: {isReverseQuiz ? "Vi -> Eng" : "Eng -> Vi"}
@@ -111,7 +111,7 @@ export default function ToeicQuizTab({
         {/* Question Box */}
         <div className="flex-1 p-5 landscape:p-4 bg-slate-900 text-white rounded-2xl shadow-inner font-bold text-center flex flex-col justify-center relative overflow-hidden min-h-[100px] landscape:min-h-[140px]">
           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-primary/10 to-transparent pointer-events-none" />
-          <span className="text-[8px] text-slate-400 font-black uppercase tracking-widest block mb-1">Chọn nghĩa đúng</span>
+          <span className="text-[8px] text-slate-400 dark:text-slate-500 font-black uppercase tracking-widest block mb-1">Chọn nghĩa đúng</span>
           
           {isReverseQuiz ? (
             <span className="text-lg font-black text-primary block leading-snug">
@@ -120,7 +120,7 @@ export default function ToeicQuizTab({
           ) : (
             <div>
               <span className="text-xl sm:text-2xl landscape:text-lg font-black block leading-none">{currentWord.word}</span>
-              <span className="text-xs text-slate-400 font-serif font-bold mt-1 block">{currentWord.phonetic}</span>
+              <span className="text-xs text-slate-400 dark:text-slate-500 font-serif font-bold mt-1 block">{currentWord.phonetic}</span>
             </div>
           )}
         </div>
@@ -142,11 +142,11 @@ export default function ToeicQuizTab({
                   "p-3 rounded-xl border-2 text-xs font-black text-left transition-all active:scale-[0.98] cursor-pointer",
                   quizAnswered
                     ? isCorrect
-                      ? "bg-emerald-50 border-emerald-500 text-emerald-800"
+                      ? "bg-emerald-50 dark:bg-emerald-500/10 border-emerald-500 text-emerald-800 dark:text-emerald-400"
                       : isSelected
-                        ? "bg-rose-50 border-rose-500 text-rose-800"
-                        : "bg-white border-slate-100 text-slate-350"
-                    : "bg-white border-slate-100 hover:border-primary hover:bg-primary/5 text-slate-700"
+                        ? "bg-rose-50 dark:bg-rose-500/10 border-rose-500 text-rose-800 dark:text-rose-400"
+                        : "bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 text-slate-350 dark:text-slate-400"
+                    : "bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 hover:border-primary hover:bg-primary/5 dark:hover:bg-primary/20 text-slate-700 dark:text-slate-300"
                 )}
               >
                 {opt}
@@ -161,13 +161,13 @@ export default function ToeicQuizTab({
         <div className={cn(
           "p-3 rounded-xl border animate-in slide-in-from-top-2 duration-300 text-xs",
           selectedOpt === (isReverseQuiz ? currentWord.word : currentWord.meaningVi)
-            ? "bg-emerald-50/40 border-emerald-200/20 text-emerald-800"
-            : "bg-rose-50/40 border-rose-200/20 text-rose-800"
+            ? "bg-emerald-50/40 dark:bg-emerald-500/10 border-emerald-200/20 text-emerald-800 dark:text-emerald-400"
+            : "bg-rose-50/40 dark:bg-rose-500/10 border-rose-200/20 text-rose-800 dark:text-rose-400"
         )}>
           <h4 className="font-black uppercase tracking-wider">
             {selectedOpt === (isReverseQuiz ? currentWord.word : currentWord.meaningVi) ? "🎉 Đáp án chính xác!" : "⚠️ Sai rồi!"}
           </h4>
-          <p className="font-bold text-slate-700 mt-0.5">
+          <p className="font-bold text-slate-700 dark:text-slate-300 mt-0.5">
             {currentWord.word} ({currentWord.wordType}): {currentWord.meaningVi}
           </p>
         </div>

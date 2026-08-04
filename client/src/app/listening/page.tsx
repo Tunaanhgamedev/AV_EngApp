@@ -452,33 +452,33 @@ export default function ListeningPage() {
   return (
     <div className="space-y-8 animate-in fade-in duration-500 pb-10">
       {/* Header Panel */}
-      <header className="flex flex-col xl:flex-row xl:items-center justify-between gap-6 bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
+      <header className="flex flex-col xl:flex-row xl:items-center justify-between gap-6 bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm">
         <div className="flex items-center gap-4">
           <div className="p-4 bg-gradient-to-tr from-primary to-indigo-500 text-white rounded-2xl shadow-md">
             <Headphones className="w-8 h-8" />
           </div>
           <div>
-            <h1 className="text-3xl font-black tracking-tight text-slate-800 flex items-center gap-2">
+            <h1 className="text-3xl font-black tracking-tight text-slate-800 dark:text-slate-100 flex items-center gap-2">
               Listening Lab <Sparkle className="w-5 h-5 text-amber-500 fill-amber-500" />
             </h1>
-            <p className="text-slate-500 text-sm mt-0.5">
+            <p className="text-slate-500 dark:text-slate-400 text-sm mt-0.5">
               Luyện nghe tiếng Anh đa phương thức với {LESSONS.length} bài nghe. Tích hợp Dictation (Chép chính tả) & Shadowing (Nói nhại).
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-3 self-start xl:self-center bg-slate-50 p-3 rounded-2xl border border-slate-100">
-          <div className="flex items-center gap-2 px-3 border-r border-slate-200">
+        <div className="flex items-center gap-3 self-start xl:self-center bg-slate-50 dark:bg-slate-800 p-3 rounded-2xl border border-slate-100 dark:border-slate-800">
+          <div className="flex items-center gap-2 px-3 border-r border-slate-200 dark:border-slate-700">
             <Flame className="w-5 h-5 text-orange-500 fill-orange-500" />
             <div className="text-left">
-              <p className="text-[10px] font-bold text-slate-400 uppercase">Streak</p>
-              <p className="text-sm font-black text-slate-800">{streakDays} Days</p>
+              <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase">Streak</p>
+              <p className="text-sm font-black text-slate-800 dark:text-slate-100">{streakDays} Days</p>
             </div>
           </div>
           <div className="flex items-center gap-2 px-3">
             <Award className="w-5 h-5 text-primary fill-primary/20" />
             <div className="text-left">
-              <p className="text-[10px] font-bold text-slate-400 uppercase">Total XP</p>
-              <p className="text-sm font-black text-slate-800">{userXp} XP</p>
+              <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase">Total XP</p>
+              <p className="text-sm font-black text-slate-800 dark:text-slate-100">{userXp} XP</p>
             </div>
           </div>
         </div>
@@ -487,17 +487,17 @@ export default function ListeningPage() {
       {/* Filter and Search Bar */}
       <div className="flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="relative w-full md:w-80">
-          <Search className="absolute left-3 top-3.5 w-4 h-4 text-slate-400" />
+          <Search className="absolute left-3 top-3.5 w-4 h-4 text-slate-400 dark:text-slate-500" />
           <input 
             type="text" 
             placeholder="Tìm kiếm bài nghe..." 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+            className="w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
           />
         </div>
         <div className="flex items-center gap-2 flex-wrap w-full md:w-auto justify-end">
-          <span className="text-xs font-bold text-slate-400 uppercase tracking-wider mr-2">Level:</span>
+          <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mr-2">Level:</span>
           {['All', 'A1', 'A2', 'B1', 'B2', 'C1'].map(level => (
             <button 
               key={level} 
@@ -505,7 +505,7 @@ export default function ListeningPage() {
               className={cn("px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm",
                 filterLevel === level 
                   ? "bg-primary text-white shadow-primary/20" 
-                  : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"
+                  : "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:bg-slate-800"
               )}
             >
               {level}
@@ -513,7 +513,7 @@ export default function ListeningPage() {
           ))}
           <button 
             onClick={() => setShowResources(!showResources)}
-            className="flex items-center gap-1.5 px-4 py-2 bg-amber-50 border border-amber-200 text-amber-700 rounded-xl text-xs font-bold hover:bg-amber-100 transition-all shadow-sm"
+            className="flex items-center gap-1.5 px-4 py-2 bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-700 text-amber-700 dark:text-amber-400 rounded-xl text-xs font-bold hover:bg-amber-100 transition-all shadow-sm"
           >
             <Globe className="w-3.5 h-3.5" /> Tài nguyên học tập
           </button>
@@ -522,8 +522,8 @@ export default function ListeningPage() {
 
       {/* External Resources Panel */}
       {showResources && (
-        <div className="p-6 bg-gradient-to-r from-amber-50/60 to-orange-50/60 border border-amber-200 rounded-3xl animate-in slide-in-from-top-4 duration-300">
-          <h3 className="font-black text-slate-800 text-lg flex items-center gap-2 mb-4">
+        <div className="p-6 bg-gradient-to-r from-amber-50/60 dark:from-amber-950/30 to-orange-50/60 dark:to-orange-950/30 border border-amber-200 dark:border-amber-700 rounded-3xl animate-in slide-in-from-top-4 duration-300">
+          <h3 className="font-black text-slate-800 dark:text-slate-100 text-lg flex items-center gap-2 mb-4">
             <Globe className="w-5 h-5 text-amber-600" /> Kênh Luyện Nghe Tiếng Anh Ngoài Hệ Thống
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -533,15 +533,15 @@ export default function ListeningPage() {
                 href={res.url} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="flex items-start gap-4 p-4 bg-white rounded-2xl border border-amber-100 hover:border-amber-300 hover:shadow-md transition-all group shadow-sm"
+                className="flex items-start gap-4 p-4 bg-white dark:bg-slate-900 rounded-2xl border border-amber-100 dark:border-amber-800 hover:border-amber-300 hover:shadow-md transition-all group shadow-sm"
               >
-                <span className="text-3xl p-2 bg-slate-50 rounded-xl">{res.icon}</span>
+                <span className="text-3xl p-2 bg-slate-50 dark:bg-slate-800 rounded-xl">{res.icon}</span>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1.5">
-                    <h4 className="text-sm font-bold text-slate-800 group-hover:text-amber-700 transition-colors truncate">{res.name}</h4>
+                    <h4 className="text-sm font-bold text-slate-800 dark:text-slate-100 group-hover:text-amber-700 dark:text-amber-400 transition-colors truncate">{res.name}</h4>
                     <ExternalLink className="w-3.5 h-3.5 text-slate-300 flex-shrink-0" />
                   </div>
-                  <p className="text-xs text-slate-500 mt-1 line-clamp-2">{res.desc}</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">{res.desc}</p>
                 </div>
               </a>
             ))}
@@ -554,15 +554,15 @@ export default function ListeningPage() {
         
         {/* Playback Hub (2 Columns) */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-white rounded-3xl border border-slate-100 overflow-hidden shadow-sm">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 overflow-hidden shadow-sm">
             {/* Audio Wave Gradient Card */}
             <div className={cn("relative p-8 bg-gradient-to-br text-white flex flex-col justify-between min-h-[220px] transition-all duration-500", selected.color)}>
               <div className="absolute inset-0 bg-black/10 mix-blend-overlay" />
               <div className="relative z-10 flex items-start justify-between">
                 <div className="flex gap-2 flex-wrap">
-                  <span className="px-3 py-1 bg-white/20 backdrop-blur-md text-white text-[10px] font-black rounded-lg uppercase tracking-wider">{selected.level}</span>
-                  <span className="px-3 py-1 bg-white/20 backdrop-blur-md text-white text-[10px] font-black rounded-lg uppercase tracking-wider">{selected.category}</span>
-                  <span className="px-3 py-1 bg-white/20 backdrop-blur-md text-white text-[10px] font-black rounded-lg uppercase tracking-wider flex items-center gap-1">
+                  <span className="px-3 py-1 bg-white/20 dark:bg-slate-900/20 backdrop-blur-md text-white text-[10px] font-black rounded-lg uppercase tracking-wider">{selected.level}</span>
+                  <span className="px-3 py-1 bg-white/20 dark:bg-slate-900/20 backdrop-blur-md text-white text-[10px] font-black rounded-lg uppercase tracking-wider">{selected.category}</span>
+                  <span className="px-3 py-1 bg-white/20 dark:bg-slate-900/20 backdrop-blur-md text-white text-[10px] font-black rounded-lg uppercase tracking-wider flex items-center gap-1">
                     <Clock className="w-3 h-3" /> {formatTime(getLessonDurationInSeconds(selected))}
                   </span>
                   {isSimulatedAudio && (
@@ -577,7 +577,7 @@ export default function ListeningPage() {
                     const updated = isLiked ? liked.filter(id => id !== selected.id) : [...liked, selected.id];
                     saveLiked(updated);
                   }}
-                  className="p-3 bg-white/20 backdrop-blur-md rounded-full border border-white/20 hover:bg-white/30 transition-all active:scale-95 shadow-sm"
+                  className="p-3 bg-white/20 dark:bg-slate-900/20 backdrop-blur-md rounded-full border border-white/20 hover:bg-white/30 dark:bg-slate-900/30 transition-all active:scale-95 shadow-sm"
                 >
                   <Heart className={cn("w-5 h-5 transition-transform duration-300", liked.includes(selected.id) ? "fill-rose-500 text-rose-500 scale-110" : "text-white")} />
                 </button>
@@ -593,7 +593,7 @@ export default function ListeningPage() {
                       <span 
                         key={bar} 
                         className={cn(
-                          "w-1.5 bg-white rounded-full transition-all animate-bounce",
+                          "w-1.5 bg-white dark:bg-slate-900 rounded-full transition-all animate-bounce",
                           bar === 1 && "h-8 duration-300 delay-75",
                           bar === 2 && "h-5 duration-500 delay-100",
                           bar === 3 && "h-10 duration-200 delay-150",
@@ -612,12 +612,12 @@ export default function ListeningPage() {
             <div className="p-8 space-y-6">
               {/* Progress Slider */}
               <div className="space-y-2.5">
-                <div className="flex justify-between text-xs font-black text-slate-400">
+                <div className="flex justify-between text-xs font-black text-slate-400 dark:text-slate-500">
                   <span>{formatTime(elapsed)}</span>
                   <span>{formatTime(getLessonDurationInSeconds(selected))}</span>
                 </div>
                 <div 
-                  className="relative h-2 bg-slate-100 rounded-full cursor-pointer group" 
+                  className="relative h-2 bg-slate-100 dark:bg-slate-700 rounded-full cursor-pointer group" 
                   onClick={(e) => {
                     const rect = e.currentTarget.getBoundingClientRect();
                     const pct = ((e.clientX - rect.left) / rect.width);
@@ -631,28 +631,28 @@ export default function ListeningPage() {
                   }}
                 >
                   <div className="absolute h-full bg-primary rounded-full transition-all duration-300 group-hover:brightness-95" style={{ width: `${progress}%` }} />
-                  <div className="absolute w-4 h-4 bg-white border-2 border-primary rounded-full -top-1 shadow-md scale-0 group-hover:scale-100 transition-all duration-300" style={{ left: `calc(${progress}% - 8px)` }} />
+                  <div className="absolute w-4 h-4 bg-white dark:bg-slate-900 border-2 border-primary rounded-full -top-1 shadow-md scale-0 group-hover:scale-100 transition-all duration-300" style={{ left: `calc(${progress}% - 8px)` }} />
                 </div>
               </div>
 
               {/* Main Player Buttons */}
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pt-2 border-b border-slate-100 pb-6">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pt-2 border-b border-slate-100 dark:border-slate-800 pb-6">
                 <div className="flex items-center gap-6 justify-center md:justify-start">
-                  <button onClick={handleSkipBack} className="p-3 text-slate-400 hover:text-primary hover:bg-slate-50 rounded-full transition-all active:scale-95" title="Quay lại câu trước">
+                  <button onClick={handleSkipBack} className="p-3 text-slate-400 dark:text-slate-500 hover:text-primary hover:bg-slate-50 dark:bg-slate-800 rounded-full transition-all active:scale-95" title="Quay lại câu trước">
                     <SkipBack className="w-6 h-6 fill-current" />
                   </button>
                   <button onClick={togglePlay} className="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center shadow-xl shadow-primary/30 hover:scale-105 hover:bg-indigo-600 transition-all active:scale-95">
                     {isPlaying ? <Pause className="w-8 h-8 fill-white" /> : <Play className="w-8 h-8 fill-white ml-1" />}
                   </button>
-                  <button onClick={handleSkipForward} className="p-3 text-slate-400 hover:text-primary hover:bg-slate-50 rounded-full transition-all active:scale-95" title="Bỏ qua câu tiếp theo">
+                  <button onClick={handleSkipForward} className="p-3 text-slate-400 dark:text-slate-500 hover:text-primary hover:bg-slate-50 dark:bg-slate-800 rounded-full transition-all active:scale-95" title="Bỏ qua câu tiếp theo">
                     <SkipForward className="w-6 h-6 fill-current" />
                   </button>
-                  <button onClick={handleRestart} className="p-3 text-slate-400 hover:text-primary hover:bg-slate-50 rounded-full transition-all active:scale-95" title="Khởi động lại từ đầu">
+                  <button onClick={handleRestart} className="p-3 text-slate-400 dark:text-slate-500 hover:text-primary hover:bg-slate-50 dark:bg-slate-800 rounded-full transition-all active:scale-95" title="Khởi động lại từ đầu">
                     <RotateCcw className="w-5 h-5" />
                   </button>
                 </div>
                 <div className="flex items-center gap-2 justify-center">
-                  <span className="text-xs font-bold text-slate-400 uppercase tracking-widest mr-2">Tốc độ:</span>
+                  <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mr-2">Tốc độ:</span>
                   {[0.8, 1.0, 1.2].map(speed => (
                     <button
                       key={speed}
@@ -661,7 +661,7 @@ export default function ListeningPage() {
                         if (isPlaying) { stopAudio(); playLine(activeLine); }
                       }}
                       className={cn("px-3 py-1.5 rounded-lg text-xs font-black transition-all",
-                        playbackRate === speed ? "bg-slate-800 text-white shadow-sm" : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                        playbackRate === speed ? "bg-slate-800 text-white shadow-sm" : "bg-slate-100 dark:bg-slate-800/50 text-slate-600 dark:text-slate-300 hover:bg-slate-200"
                       )}
                     >
                       {speed === 1.0 ? 'Normal' : `${speed}x`}
@@ -671,12 +671,12 @@ export default function ListeningPage() {
               </div>
 
               {/* Mode Selectors */}
-              <div className="flex items-center justify-between flex-wrap gap-4 bg-slate-50 p-2.5 rounded-2xl border border-slate-100">
+              <div className="flex items-center justify-between flex-wrap gap-4 bg-slate-50 dark:bg-slate-800 p-2.5 rounded-2xl border border-slate-100 dark:border-slate-800">
                 <div className="flex items-center gap-1.5 w-full sm:w-auto">
                   <button 
                     onClick={() => { setPlayMode('listening'); stopAudio(); setIsPlaying(false); }}
                     className={cn("flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold transition-all",
-                      playMode === 'listening' ? "bg-white text-slate-800 shadow-sm" : "text-slate-500 hover:text-slate-800"
+                      playMode === 'listening' ? "bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 shadow-sm" : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:text-slate-100"
                     )}
                   >
                     <Volume2 className="w-4 h-4 text-primary" /> Luyện nghe
@@ -684,7 +684,7 @@ export default function ListeningPage() {
                   <button 
                     onClick={() => { setPlayMode('dictation'); stopAudio(); setIsPlaying(false); }}
                     className={cn("flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold transition-all",
-                      playMode === 'dictation' ? "bg-white text-slate-800 shadow-sm" : "text-slate-500 hover:text-slate-800"
+                      playMode === 'dictation' ? "bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 shadow-sm" : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:text-slate-100"
                     )}
                   >
                     <BookOpen className="w-4 h-4 text-violet-500" /> Chép chính tả
@@ -692,7 +692,7 @@ export default function ListeningPage() {
                   <button 
                     onClick={() => { setPlayMode('shadowing'); stopAudio(); setIsPlaying(false); }}
                     className={cn("flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold transition-all",
-                      playMode === 'shadowing' ? "bg-white text-slate-800 shadow-sm" : "text-slate-500 hover:text-slate-800"
+                      playMode === 'shadowing' ? "bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 shadow-sm" : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:text-slate-100"
                     )}
                   >
                     <Mic className="w-4 h-4 text-rose-500" /> Nói nhại (Shadowing)
@@ -702,14 +702,14 @@ export default function ListeningPage() {
 
               {/* Interactive Tabs under Player */}
               <div className="space-y-4">
-                <div className="flex border-b border-slate-100 gap-6">
+                <div className="flex border-b border-slate-100 dark:border-slate-800 gap-6">
                   {(['transcript', 'vocabulary', 'quiz'] as const).map(tName => (
                     <button
                       key={tName}
                       onClick={() => setTab(tName)}
                       className={cn(
                         "pb-3 text-sm font-black transition-all border-b-2 capitalize relative",
-                        tab === tName ? "border-primary text-slate-800" : "border-transparent text-slate-400 hover:text-slate-600"
+                        tab === tName ? "border-primary text-slate-800 dark:text-slate-100" : "border-transparent text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:text-slate-300"
                       )}
                     >
                       {tName === 'transcript' ? 'Lời thoại (Transcript)' : tName === 'vocabulary' ? 'Từ vựng (Vocabulary)' : 'Trắc nghiệm (Quiz)'}
@@ -731,14 +731,14 @@ export default function ListeningPage() {
                           "flex items-start gap-4 p-3 rounded-2xl cursor-pointer transition-all duration-300 border border-transparent",
                           idx === activeLine && isPlaying
                             ? "bg-primary/5 border-primary/20 ring-1 ring-primary/10 shadow-sm" 
-                            : "hover:bg-slate-50"
+                            : "hover:bg-slate-50 dark:bg-slate-800"
                         )}
                       >
-                        <span className="mt-1 flex-shrink-0 w-8 h-8 rounded-xl bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-500">
+                        <span className="mt-1 flex-shrink-0 w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800/50 flex items-center justify-center text-xs font-bold text-slate-500 dark:text-slate-400">
                           {formatTime(line.time)}
                         </span>
                         <p className={cn("text-base leading-relaxed font-semibold transition-colors duration-300",
-                          idx === activeLine && isPlaying ? "text-primary font-extrabold" : "text-slate-600"
+                          idx === activeLine && isPlaying ? "text-primary font-extrabold" : "text-slate-600 dark:text-slate-300"
                         )}>
                           {line.text}
                         </p>
@@ -747,7 +747,7 @@ export default function ListeningPage() {
 
                     {playMode === 'dictation' && (
                       <div className="space-y-4">
-                        <div className="bg-violet-50/50 p-4 rounded-2xl border border-violet-100 text-xs text-violet-800 font-medium">
+                        <div className="bg-violet-50 dark:bg-violet-500/10/50 p-4 rounded-2xl border border-violet-100 dark:border-violet-800 text-xs text-violet-800 dark:text-violet-400 font-medium">
                           Nghe từng câu thoại và nhập từ còn thiếu vào ô trống bên dưới. Nhấp vào nút kiểm tra khi bạn làm xong!
                         </div>
                         {selected.transcript.map((line, idx) => {
@@ -757,18 +757,18 @@ export default function ListeningPage() {
                           let sentenceAfter = words.slice(wordIndex + 1).join(" ");
                           const isInputCorrect = dictationChecked && cleanWordForComparison(dictationInputs[idx]) === cleanWordForComparison(line.gapWord);
                           return (
-                            <div key={idx} className="flex flex-col gap-2.5 p-4 bg-white border border-slate-100 rounded-2xl hover:shadow-sm transition-all">
+                            <div key={idx} className="flex flex-col gap-2.5 p-4 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl hover:shadow-sm transition-all">
                               <div className="flex items-center gap-3">
                                 <button 
                                   onClick={() => handleLineClick(line.text, idx)}
-                                  className="w-8 h-8 rounded-xl bg-violet-100 hover:bg-violet-200 text-violet-700 flex items-center justify-center flex-shrink-0 transition-colors"
+                                  className="w-8 h-8 rounded-xl bg-violet-100 hover:bg-violet-200 text-violet-700 dark:text-violet-400 flex items-center justify-center flex-shrink-0 transition-colors"
                                   title="Nghe câu này"
                                 >
                                   <Play className="w-3.5 h-3.5 fill-current" />
                                 </button>
-                                <span className="text-xs text-slate-400 font-bold">Line {idx + 1}</span>
+                                <span className="text-xs text-slate-400 dark:text-slate-500 font-bold">Line {idx + 1}</span>
                               </div>
-                              <div className="text-base text-slate-700 font-bold leading-relaxed flex items-center flex-wrap gap-x-2 gap-y-1.5">
+                              <div className="text-base text-slate-700 dark:text-slate-300 font-bold leading-relaxed flex items-center flex-wrap gap-x-2 gap-y-1.5">
                                 <span>{sentenceBefore}</span>
                                 <input 
                                   type="text"
@@ -782,9 +782,9 @@ export default function ListeningPage() {
                                   placeholder="[Điền từ]"
                                   className={cn(
                                     "px-2.5 py-1.5 text-sm font-black border-2 rounded-xl w-32 text-center transition-all focus:outline-none focus:ring-1 focus:ring-primary",
-                                    !dictationChecked && "border-slate-200 focus:border-primary",
-                                    dictationChecked && isInputCorrect && "bg-green-50 border-green-500 text-green-700",
-                                    dictationChecked && !isInputCorrect && "bg-rose-50 border-rose-500 text-rose-700"
+                                    !dictationChecked && "border-slate-200 dark:border-slate-700 focus:border-primary",
+                                    dictationChecked && isInputCorrect && "bg-green-50 dark:bg-green-500/10 border-green-500 dark:border-green-800 text-green-700 dark:text-green-400",
+                                    dictationChecked && !isInputCorrect && "bg-rose-50 dark:bg-rose-500/10 border-rose-500 text-rose-700 dark:text-rose-400"
                                   )}
                                 />
                                 <span>{sentenceAfter}</span>
@@ -804,7 +804,7 @@ export default function ListeningPage() {
                                 setDictationInputs(new Array(selected.transcript.length).fill(""));
                                 setDictationChecked(false);
                               }}
-                              className="px-5 py-3 border border-slate-200 hover:bg-slate-50 text-slate-600 font-black rounded-2xl text-xs transition-all"
+                              className="px-5 py-3 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-black rounded-2xl text-xs transition-all"
                             >
                               Làm Lại
                             </button>
@@ -822,13 +822,13 @@ export default function ListeningPage() {
 
                     {playMode === 'shadowing' && (
                       <div className="space-y-4">
-                        <div className="bg-rose-50/50 p-4 rounded-2xl border border-rose-100 text-xs text-rose-800 font-medium">
+                        <div className="bg-rose-50 dark:bg-rose-500/10/50 p-4 rounded-2xl border border-rose-100 dark:border-rose-800 text-xs text-rose-800 dark:text-rose-400 font-medium">
                           Bấm nút micro cạnh mỗi câu thoại để luyện nói. Hệ thống sẽ phát âm mẫu câu, sau đó ghi âm giọng đọc của bạn để chấm điểm!
                         </div>
                         {selected.transcript.map((line, idx) => (
-                          <div key={idx} className="flex flex-col gap-3 p-4 bg-white border border-slate-100 rounded-2xl hover:shadow-sm transition-all">
+                          <div key={idx} className="flex flex-col gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl hover:shadow-sm transition-all">
                             <div className="flex items-start justify-between gap-4">
-                              <p className="text-base text-slate-700 font-semibold leading-relaxed">{line.text}</p>
+                              <p className="text-base text-slate-700 dark:text-slate-300 font-semibold leading-relaxed">{line.text}</p>
                               <button
                                 onClick={() => startShadowing(idx)}
                                 className={cn(
@@ -842,8 +842,8 @@ export default function ListeningPage() {
                               </button>
                             </div>
                             {shadowingActive === idx && (
-                              <div className="space-y-2 mt-2 bg-slate-50 p-3 rounded-xl border border-slate-100">
-                                <div className="flex items-center justify-between text-xs font-bold text-slate-500">
+                              <div className="space-y-2 mt-2 bg-slate-50 dark:bg-slate-800 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
+                                <div className="flex items-center justify-between text-xs font-bold text-slate-500 dark:text-slate-400">
                                   <span>{shadowingProgress < 100 ? "Listening & Recording..." : "Analysis complete!"}</span>
                                   <span>{shadowingProgress}%</span>
                                 </div>
@@ -862,11 +862,11 @@ export default function ListeningPage() {
                                   </div>
                                 )}
                                 {shadowingScore !== null && (
-                                  <div className="flex items-center justify-between pt-2 border-t border-slate-200/50 mt-1">
+                                  <div className="flex items-center justify-between pt-2 border-t border-slate-200 dark:border-slate-700/50 mt-1">
                                     <span className="text-xs font-black text-rose-600 flex items-center gap-1">
                                       <Sparkles className="w-3.5 h-3.5 fill-current" /> Điểm phát âm:
                                     </span>
-                                    <span className="text-sm font-black text-slate-800">{shadowingScore}/100</span>
+                                    <span className="text-sm font-black text-slate-800 dark:text-slate-100">{shadowingScore}/100</span>
                                   </div>
                                 )}
                               </div>
@@ -882,22 +882,22 @@ export default function ListeningPage() {
                 {tab === 'vocabulary' && (
                   <div className="space-y-4">
                     {selected.vocabulary.map((vocab, idx) => (
-                      <div key={idx} className="p-4 bg-slate-50 rounded-2xl border border-slate-100 flex items-start gap-4">
+                      <div key={idx} className="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-800 flex items-start gap-4">
                         <button
                           onClick={() => speakSingleWord(vocab.word)}
-                          className="w-10 h-10 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-slate-500 flex items-center justify-center flex-shrink-0 transition-colors shadow-sm"
+                          className="w-10 h-10 rounded-xl bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 flex items-center justify-center flex-shrink-0 transition-colors shadow-sm"
                           title="Nghe phát âm từ này"
                         >
                           <Volume2 className="w-4 h-4" />
                         </button>
                         <div className="flex-1 space-y-1">
                           <div className="flex items-center gap-2 flex-wrap">
-                            <h4 className="text-base font-black text-slate-800">{vocab.word}</h4>
-                            <span className="text-xs text-slate-400 font-bold">{vocab.ipa}</span>
+                            <h4 className="text-base font-black text-slate-800 dark:text-slate-100">{vocab.word}</h4>
+                            <span className="text-xs text-slate-400 dark:text-slate-500 font-bold">{vocab.ipa}</span>
                             <span className="px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-black rounded-md uppercase tracking-wider">{vocab.type}</span>
                           </div>
-                          <p className="text-sm font-bold text-slate-600">{vocab.meaningVi}</p>
-                          <p className="text-xs text-slate-400 italic">e.g. &quot;{vocab.example}&quot;</p>
+                          <p className="text-sm font-bold text-slate-600 dark:text-slate-300">{vocab.meaningVi}</p>
+                          <p className="text-xs text-slate-400 dark:text-slate-500 italic">e.g. &quot;{vocab.example}&quot;</p>
                         </div>
                       </div>
                     ))}
@@ -909,16 +909,16 @@ export default function ListeningPage() {
                   <div className="space-y-5">
                     {selected.quizzes.map((q, qi) => (
                       <div key={qi} className="space-y-3">
-                        <p className="font-extrabold text-slate-700">{qi + 1}. {q.q}</p>
+                        <p className="font-extrabold text-slate-700 dark:text-slate-300">{qi + 1}. {q.q}</p>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                           {q.options.map((opt, ai) => (
                             <button 
                               key={ai} 
                               onClick={() => handleQuizAnswer(qi, ai)}
                               className={cn("p-3.5 rounded-2xl text-xs font-black border text-left transition-all shadow-sm",
-                                quizAns[qi] === null ? "bg-white border-slate-200 hover:border-primary hover:bg-primary/5 text-slate-600" :
-                                ai === q.answer ? "bg-green-50 border-green-500 text-green-700" :
-                                ai === quizAns[qi] ? "bg-rose-50 border-rose-500 text-rose-700" : "bg-white border-slate-100 opacity-40 text-slate-400"
+                                quizAns[qi] === null ? "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 hover:border-primary hover:bg-primary/5 text-slate-600 dark:text-slate-300" :
+                                ai === q.answer ? "bg-green-50 dark:bg-green-500/10 border-green-500 dark:border-green-800 text-green-700 dark:text-green-400" :
+                                ai === quizAns[qi] ? "bg-rose-50 dark:bg-rose-500/10 border-rose-500 text-rose-700 dark:text-rose-400" : "bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 opacity-40 text-slate-400 dark:text-slate-500"
                               )}
                             >
                               {opt}
@@ -929,7 +929,7 @@ export default function ListeningPage() {
                     ))}
                     {quizDone && (
                       <div className={cn("p-5 rounded-2xl text-center font-black animate-in zoom-in duration-300", 
-                        quizAns.every((ans, i) => ans === selected.quizzes[i].answer) ? "bg-green-50 text-green-700" : "bg-amber-50 text-amber-700"
+                        quizAns.every((ans, i) => ans === selected.quizzes[i].answer) ? "bg-green-50 dark:bg-green-500/10 text-green-700 dark:text-green-400" : "bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400"
                       )}>
                         <div className="flex items-center justify-center gap-2 mb-1">
                           {quizAns.every((ans, i) => ans === selected.quizzes[i].answer) 
@@ -952,10 +952,10 @@ export default function ListeningPage() {
 
         {/* Sidebar Panel (1 Column) */}
         <div className="space-y-6">
-          <div className="bg-white rounded-3xl border border-slate-100 p-6 shadow-sm">
-            <h3 className="font-black text-slate-800 text-lg mb-4 flex items-center justify-between">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 p-6 shadow-sm">
+            <h3 className="font-black text-slate-800 dark:text-slate-100 text-lg mb-4 flex items-center justify-between">
               <span className="flex items-center gap-2"><ListMusic className="w-5 h-5 text-primary" />Danh Sách Bài Nghe</span>
-              <span className="text-xs font-black text-slate-400 bg-slate-100 px-2.5 py-1 rounded-full">{filteredLessons.length}</span>
+              <span className="text-xs font-black text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-800/50 px-2.5 py-1 rounded-full">{filteredLessons.length}</span>
             </h3>
             <button
               onClick={generateAIListening}
@@ -979,7 +979,7 @@ export default function ListeningPage() {
                       key={lesson.id} 
                       onClick={() => setSelected(lesson)}
                       className={cn("w-full flex gap-4 p-3 rounded-2xl transition-all text-left group border border-transparent",
-                        selected.id === lesson.id ? "bg-primary/5 border-primary/10 shadow-sm" : "hover:bg-slate-50"
+                        selected.id === lesson.id ? "bg-primary/5 border-primary/10 shadow-sm" : "hover:bg-slate-50 dark:bg-slate-800"
                       )}
                     >
                       <div className={cn("w-12 h-12 rounded-xl bg-gradient-to-br flex items-center justify-center text-white font-black text-xs flex-shrink-0 shadow-sm", lesson.color)}>
@@ -987,18 +987,18 @@ export default function ListeningPage() {
                       </div>
                       <div className="flex-1 min-w-0 py-0.5">
                         <div className="flex items-center gap-1.5">
-                          <h4 className="text-sm font-bold text-slate-800 group-hover:text-primary transition-colors truncate">{lesson.title}</h4>
+                          <h4 className="text-sm font-bold text-slate-800 dark:text-slate-100 group-hover:text-primary transition-colors truncate">{lesson.title}</h4>
                           {isCompleted && (
                             <span className="flex-shrink-0 w-4 h-4 bg-green-500 rounded-full flex items-center justify-center text-white" title="Hoàn thành">
                               <Check className="w-2.5 h-2.5" />
                             </span>
                           )}
                         </div>
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-wider mt-1">
+                        <p className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider mt-1">
                           {lesson.category} · {formatTime(getLessonDurationInSeconds(lesson))}
                         </p>
                         {score !== undefined && (
-                          <span className="inline-block mt-1 text-[9px] font-black bg-violet-100 text-violet-700 px-1.5 py-0.5 rounded">
+                          <span className="inline-block mt-1 text-[9px] font-black bg-violet-100 text-violet-700 dark:text-violet-400 px-1.5 py-0.5 rounded">
                             Chép chính tả: {score}%
                           </span>
                         )}
@@ -1010,7 +1010,7 @@ export default function ListeningPage() {
                   );
                 })
               ) : (
-                <div className="p-8 text-center text-slate-400 text-sm font-bold">
+                <div className="p-8 text-center text-slate-400 dark:text-slate-500 text-sm font-bold">
                   Không tìm thấy bài nghe phù hợp.
                 </div>
               )}
@@ -1023,7 +1023,7 @@ export default function ListeningPage() {
               <h3 className="font-black text-lg flex items-center gap-2">
                 <Radio className="w-5 h-5 text-primary" /> Mục tiêu tuần này
               </h3>
-              <p className="text-slate-400 text-xs leading-relaxed">
+              <p className="text-slate-400 dark:text-slate-500 text-xs leading-relaxed">
                 Hoàn thành 3 bài nghe để đạt được huy chương &quot;Tai Vàng Học Thuật&quot;.
               </p>
               <div className="space-y-1.5">
@@ -1031,7 +1031,7 @@ export default function ListeningPage() {
                   <span>Tiến trình:</span>
                   <span>{completedLessons.length} / 3 Bài</span>
                 </div>
-                <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+                <div className="w-full h-2 bg-white dark:bg-slate-900/10 rounded-full overflow-hidden">
                   <div className="h-full bg-primary transition-all duration-500" style={{ width: `${Math.min(100, (completedLessons.length / 3) * 100)}%` }} />
                 </div>
               </div>

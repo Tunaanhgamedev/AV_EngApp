@@ -160,23 +160,23 @@ export default function TOEICPage() {
       </section>
 
       {/* Vocabulary Feature Section */}
-      <section className="premium-card p-1 rounded-3xl overflow-hidden shadow-xl border border-slate-100 bg-gradient-to-r from-amber-50 to-orange-50">
+      <section className="premium-card p-1 rounded-3xl overflow-hidden shadow-xl border border-slate-100 dark:border-slate-800 bg-gradient-to-r from-amber-50 dark:from-amber-950/30 to-orange-50 dark:to-orange-950/30">
         <div className="p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-400 flex items-center justify-center shadow-lg shadow-orange-500/20 text-white flex-shrink-0">
               <BookOpen className="w-7 h-7" />
             </div>
             <div className="space-y-1">
-              <span className="text-[10px] font-black text-orange-600 bg-orange-100 px-2.5 py-0.5 rounded-full uppercase tracking-wider">MỚI RA MẮT</span>
-              <h2 className="text-xl font-black text-slate-800">Kho Từ Vựng TOEIC 5 Chiều</h2>
-              <p className="text-xs text-slate-500 font-semibold max-w-xl">
+              <span className="text-[10px] font-black text-orange-600 dark:text-orange-400 bg-orange-100 dark:bg-orange-900/30 px-2.5 py-0.5 rounded-full uppercase tracking-wider">MỚI RA MẮT</span>
+              <h2 className="text-xl font-black text-slate-800 dark:text-slate-100">Kho Từ Vựng TOEIC 5 Chiều</h2>
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-semibold max-w-xl">
                 Khám phá kho từ vựng chia theo mục tiêu điểm số (500+, 700+, 900+), phần thi Part 1 và cụm collocations Part 5. Học sâu nhớ lâu thông qua 5 chế độ tương tác cao cấp.
               </p>
             </div>
           </div>
           <button
             onClick={() => router.push('/toeic/vocabulary')}
-            className="w-full md:w-auto px-6 py-3.5 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl text-xs font-black uppercase tracking-widest transition-all active:scale-95 shadow-lg flex items-center justify-center gap-2 shrink-0 cursor-pointer"
+            className="w-full md:w-auto px-6 py-3.5 bg-slate-900 dark:bg-slate-100 hover:bg-slate-800 dark:hover:bg-slate-200 text-white dark:text-slate-900 rounded-2xl text-xs font-black uppercase tracking-widest transition-all active:scale-95 shadow-lg flex items-center justify-center gap-2 shrink-0 cursor-pointer"
           >
             Bắt đầu học ngay <ArrowRight className="w-4 h-4 text-orange-400" />
           </button>
@@ -192,8 +192,8 @@ export default function TOEICPage() {
               <Headphones className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h2 className="text-2xl font-black text-slate-800">Listening Comprehension</h2>
-              <p className="text-sm text-slate-500 font-medium">Part 1 — 4 • 100 câu hỏi • 45 phút</p>
+              <h2 className="text-2xl font-black text-slate-800 dark:text-slate-100">Listening Comprehension</h2>
+              <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">Part 1 — 4 • 100 câu hỏi • 45 phút</p>
             </div>
           </div>
 
@@ -217,32 +217,32 @@ export default function TOEICPage() {
                     </div>
                     <span className={cn(
                       "px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider",
-                      part.difficulty === 'Dễ' && "bg-green-100 text-green-600",
-                      part.difficulty === 'Trung bình' && "bg-amber-100 text-amber-600",
-                      part.difficulty === 'Khó' && "bg-rose-100 text-rose-600",
-                      part.difficulty === 'Rất khó' && "bg-purple-100 text-purple-600"
+                      part.difficulty === 'Dễ' && "bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400",
+                      part.difficulty === 'Trung bình' && "bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400",
+                      part.difficulty === 'Khó' && "bg-rose-100 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400",
+                      part.difficulty === 'Rất khó' && "bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400"
                     )}>{part.difficulty}</span>
                   </div>
 
                   <div>
                     <div className="flex items-center gap-2 mb-1">
                       <span className="text-[10px] font-black text-primary uppercase tracking-widest">Part {part.part}</span>
-                      <span className="text-slate-300">•</span>
-                      <span className="text-[10px] font-bold text-slate-400">{part.questions} câu</span>
+                      <span className="text-slate-300 dark:text-slate-600">•</span>
+                      <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500">{part.questions} câu</span>
                     </div>
-                    <h3 className="text-lg font-black text-slate-800 group-hover:text-primary transition-colors">{part.title}</h3>
-                    <p className="text-sm text-slate-500 font-medium mt-1">{part.description}</p>
+                    <h3 className="text-lg font-black text-slate-800 dark:text-slate-100 group-hover:text-primary transition-colors">{part.title}</h3>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 font-medium mt-1">{part.description}</p>
                   </div>
 
-                  <div className="flex items-center gap-2 px-3 py-2 bg-slate-50 rounded-xl">
+                  <div className="flex items-center gap-2 px-3 py-2 bg-slate-50 dark:bg-slate-800 rounded-xl">
                     <Brain className="w-3.5 h-3.5 text-primary" />
-                    <p className="text-xs text-slate-600 font-medium">{part.tip}</p>
+                    <p className="text-xs text-slate-600 dark:text-slate-300 font-medium">{part.tip}</p>
                   </div>
 
                   <div className="flex items-center justify-between pt-1">
                     <div className="flex items-center gap-1">
                       {[1, 2, 3, 4, 5].map(s => (
-                        <Star key={s} className={cn("w-3.5 h-3.5", s <= (part.part <= 2 ? 2 : part.part <= 4 ? 3 : part.part <= 6 ? 4 : 5) ? "text-amber-400 fill-amber-400" : "text-slate-200")} />
+                        <Star key={s} className={cn("w-3.5 h-3.5", s <= (part.part <= 2 ? 2 : part.part <= 4 ? 3 : part.part <= 6 ? 4 : 5) ? "text-amber-400 fill-amber-400" : "text-slate-200 dark:text-slate-700")} />
                       ))}
                     </div>
                     <span className="text-xs font-black text-primary flex items-center gap-1 group-hover:gap-2 transition-all">
@@ -262,8 +262,8 @@ export default function TOEICPage() {
               <BookOpen className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h2 className="text-2xl font-black text-slate-800">Reading Comprehension</h2>
-              <p className="text-sm text-slate-500 font-medium">Part 5 — 7 • 100 câu hỏi • 75 phút</p>
+              <h2 className="text-2xl font-black text-slate-800 dark:text-slate-100">Reading Comprehension</h2>
+              <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">Part 5 — 7 • 100 câu hỏi • 75 phút</p>
             </div>
           </div>
 
@@ -287,28 +287,28 @@ export default function TOEICPage() {
                     </div>
                     <span className={cn(
                       "px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider",
-                      part.difficulty === 'Trung bình' && "bg-amber-100 text-amber-600",
-                      part.difficulty === 'Khó' && "bg-rose-100 text-rose-600",
-                      part.difficulty === 'Rất khó' && "bg-purple-100 text-purple-600"
+                      part.difficulty === 'Trung bình' && "bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400",
+                      part.difficulty === 'Khó' && "bg-rose-100 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400",
+                      part.difficulty === 'Rất khó' && "bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400"
                     )}>{part.difficulty}</span>
                   </div>
 
                   <div>
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Part {part.part}</span>
-                      <span className="text-slate-300">•</span>
-                      <span className="text-[10px] font-bold text-slate-400">{part.questions} câu</span>
+                      <span className="text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest">Part {part.part}</span>
+                      <span className="text-slate-300 dark:text-slate-600">•</span>
+                      <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500">{part.questions} câu</span>
                     </div>
-                    <h3 className="text-lg font-black text-slate-800 group-hover:text-emerald-600 transition-colors">{part.title}</h3>
-                    <p className="text-sm text-slate-500 font-medium mt-1">{part.description}</p>
+                    <h3 className="text-lg font-black text-slate-800 dark:text-slate-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">{part.title}</h3>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 font-medium mt-1">{part.description}</p>
                   </div>
 
-                  <div className="flex items-center gap-2 px-3 py-2 bg-slate-50 rounded-xl">
-                    <Brain className="w-3.5 h-3.5 text-emerald-600" />
-                    <p className="text-xs text-slate-600 font-medium">{part.tip}</p>
+                  <div className="flex items-center gap-2 px-3 py-2 bg-slate-50 dark:bg-slate-800 rounded-xl">
+                    <Brain className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                    <p className="text-xs text-slate-600 dark:text-slate-300 font-medium">{part.tip}</p>
                   </div>
 
-                  <span className="text-xs font-black text-emerald-600 flex items-center gap-1 group-hover:gap-2 transition-all">
+                  <span className="text-xs font-black text-emerald-600 dark:text-emerald-400 flex items-center gap-1 group-hover:gap-2 transition-all">
                     Luyện tập <ArrowRight className="w-4 h-4" />
                   </span>
                 </div>
@@ -325,133 +325,133 @@ export default function TOEICPage() {
             <Sparkles className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h2 className="text-2xl font-black text-slate-800">Gói Luyện Thi TOEIC Đặc Biệt</h2>
-            <p className="text-sm text-slate-500 font-medium">Luyện tập tập trung theo mục tiêu và thời gian linh hoạt</p>
+            <h2 className="text-2xl font-black text-slate-800 dark:text-slate-100">Gói Luyện Thi TOEIC Đặc Biệt</h2>
+            <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">Luyện tập tập trung theo mục tiêu và thời gian linh hoạt</p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Grammar Focus Package */}
-          <div className="premium-card p-6 border-slate-100 hover:shadow-xl transition-all flex flex-col justify-between">
+          <div className="premium-card p-6 border-slate-100 dark:border-slate-800 hover:shadow-xl transition-all flex flex-col justify-between">
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-indigo-100 text-indigo-700">
+                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400">
                   Part 5 Grammar
                 </span>
-                <span className="text-xs font-bold text-emerald-600">+100 XP</span>
+                <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">+100 XP</span>
               </div>
-              <h3 className="text-lg font-black text-slate-800">💡 Chuyên Đề Ngữ Pháp Nâng Cao</h3>
-              <p className="text-sm text-slate-500 font-medium leading-relaxed">
+              <h3 className="text-lg font-black text-slate-800 dark:text-slate-100">💡 Chuyên Đề Ngữ Pháp Nâng Cao</h3>
+              <p className="text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
                 Đề thi 10 câu hỏi chuyên sâu về các cấu trúc ngữ pháp khó hay gặp: mệnh đề quan hệ rút gọn, câu giả định, câu điều kiện trộn.
               </p>
             </div>
             <button 
               onClick={() => router.push('/toeic/practice/part5?mode=grammar')}
-              className="mt-6 w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors"
+              className="mt-6 w-full py-2.5 bg-slate-900 dark:bg-slate-100 hover:bg-slate-800 dark:hover:bg-slate-200 text-white dark:text-slate-900 font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors"
             >
               Luyện ngay <ArrowRight className="w-4 h-4" />
             </button>
           </div>
 
           {/* Vocabulary Focus Package */}
-          <div className="premium-card p-6 border-slate-100 hover:shadow-xl transition-all flex flex-col justify-between">
+          <div className="premium-card p-6 border-slate-100 dark:border-slate-800 hover:shadow-xl transition-all flex flex-col justify-between">
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-sky-100 text-sky-700">
+                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-400">
                   Part 5 Vocab
                 </span>
-                <span className="text-xs font-bold text-emerald-600">+100 XP</span>
+                <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">+100 XP</span>
               </div>
-              <h3 className="text-lg font-black text-slate-800">📚 Từ Vựng & Collocations Công Sở</h3>
-              <p className="text-sm text-slate-500 font-medium leading-relaxed">
+              <h3 className="text-lg font-black text-slate-800 dark:text-slate-100">📚 Từ Vựng & Collocations Công Sở</h3>
+              <p className="text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
                 Đề luyện 10 câu tập trung vào kết hợp từ (collocations) tự nhiên, giới từ thương mại và từ vựng chuyên ngành văn phòng.
               </p>
             </div>
             <button 
               onClick={() => router.push('/toeic/practice/part5?mode=vocabulary')}
-              className="mt-6 w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors"
+              className="mt-6 w-full py-2.5 bg-slate-900 dark:bg-slate-100 hover:bg-slate-800 dark:hover:bg-slate-200 text-white dark:text-slate-900 font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors"
             >
               Luyện ngay <ArrowRight className="w-4 h-4" />
             </button>
           </div>
 
           {/* Listening Sound Traps Package */}
-          <div className="premium-card p-6 border-slate-100 hover:shadow-xl transition-all flex flex-col justify-between">
+          <div className="premium-card p-6 border-slate-100 dark:border-slate-800 hover:shadow-xl transition-all flex flex-col justify-between">
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-amber-100 text-amber-700">
+                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400">
                   Part 2 Listening
                 </span>
-                <span className="text-xs font-bold text-emerald-600">+100 XP</span>
+                <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">+100 XP</span>
               </div>
-              <h3 className="text-lg font-black text-slate-800">🎧 Chinh Phục Bẫy Phát Âm</h3>
-              <p className="text-sm text-slate-500 font-medium leading-relaxed">
+              <h3 className="text-lg font-black text-slate-800 dark:text-slate-100">🎧 Chinh Phục Bẫy Phát Âm</h3>
+              <p className="text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
                 10 câu hỏi Part 2 chứa bẫy đồng âm dị nghĩa lắt léo và các câu trả lời gián tiếp né tránh thử thách khả năng nghe hiểu.
               </p>
             </div>
             <button 
               onClick={() => router.push('/toeic/practice/part2?mode=sound_traps')}
-              className="mt-6 w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors"
+              className="mt-6 w-full py-2.5 bg-slate-900 dark:bg-slate-100 hover:bg-slate-800 dark:hover:bg-slate-200 text-white dark:text-slate-900 font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors"
             >
               Luyện ngay <ArrowRight className="w-4 h-4" />
             </button>
           </div>
 
           {/* Reading Double/Triple Passages Package */}
-          <div className="premium-card p-6 border-slate-100 hover:shadow-xl transition-all flex flex-col justify-between">
+          <div className="premium-card p-6 border-slate-100 dark:border-slate-800 hover:shadow-xl transition-all flex flex-col justify-between">
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-rose-100 text-rose-700">
+                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400">
                   Part 7 Reading
                 </span>
-                <span className="text-xs font-bold text-emerald-600">+100 XP</span>
+                <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">+100 XP</span>
               </div>
-              <h3 className="text-lg font-black text-slate-800">📄 Đoạn Văn Kép & Ba</h3>
-              <p className="text-sm text-slate-500 font-medium leading-relaxed">
+              <h3 className="text-lg font-black text-slate-800 dark:text-slate-100">📄 Đoạn Văn Kép & Ba</h3>
+              <p className="text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
                 10 câu hỏi đọc hiểu phức tạp yêu cầu liên kết thông tin đa nguồn giữa email, bảng giá và mẫu khảo sát.
               </p>
             </div>
             <button 
               onClick={() => router.push('/toeic/practice/part7?mode=double_passages')}
-              className="mt-6 w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors"
+              className="mt-6 w-full py-2.5 bg-slate-900 dark:bg-slate-100 hover:bg-slate-800 dark:hover:bg-slate-200 text-white dark:text-slate-900 font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors"
             >
               Luyện ngay <ArrowRight className="w-4 h-4" />
             </button>
           </div>
 
           {/* TOEIC Writing Part 1 Package */}
-          <div className="premium-card p-6 border-slate-100 hover:shadow-xl transition-all flex flex-col justify-between">
+          <div className="premium-card p-6 border-slate-100 dark:border-slate-800 hover:shadow-xl transition-all flex flex-col justify-between">
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-700">
+                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400">
                   TOEIC Writing Part 1
                 </span>
-                <span className="text-xs font-bold text-emerald-600">+100 XP</span>
+                <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">+100 XP</span>
               </div>
-              <h3 className="text-lg font-black text-slate-800">✍️ Luyện Viết Qua Tranh</h3>
-              <p className="text-sm text-slate-500 font-medium leading-relaxed">
+              <h3 className="text-lg font-black text-slate-800 dark:text-slate-100">✍️ Luyện Viết Qua Tranh</h3>
+              <p className="text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
                 Thử thách viết câu mô tả bức ảnh văn phòng/doanh nghiệp dựa trên 2-3 từ khóa gợi ý và nhận đánh giá chấm điểm AI tức thì.
               </p>
             </div>
             <button 
               onClick={() => router.push('/toeic/practice/writing')}
-              className="mt-6 w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors"
+              className="mt-6 w-full py-2.5 bg-slate-900 dark:bg-slate-100 hover:bg-slate-800 dark:hover:bg-slate-200 text-white dark:text-slate-900 font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors"
             >
               Luyện ngay <ArrowRight className="w-4 h-4" />
             </button>
           </div>
 
           {/* Mini Mock Test Package */}
-          <div className="premium-card p-6 bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200 hover:shadow-xl transition-all flex flex-col justify-between">
+          <div className="premium-card p-6 bg-gradient-to-br from-blue-50 dark:from-blue-950/30 to-indigo-50 dark:to-indigo-950/30 border-blue-200 dark:border-blue-900/30 hover:shadow-xl transition-all flex flex-col justify-between">
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-blue-100 text-blue-700">
+                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400">
                   30 Mins Mini Mock
                 </span>
-                <span className="text-xs font-bold text-indigo-600">+350 XP</span>
+                <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">+350 XP</span>
               </div>
-              <h3 className="text-lg font-black text-slate-800">⚡ Đề Thi Thử Rút Gọn (Mini)</h3>
-              <p className="text-sm text-slate-500 font-medium leading-relaxed">
+              <h3 className="text-lg font-black text-slate-800 dark:text-slate-100">⚡ Đề Thi Thử Rút Gọn (Mini)</h3>
+              <p className="text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
                 Đề thi rút gọn 35 câu hỏi bao quát đầy đủ 7 Part từ dễ đến khó. Giới hạn thời gian 30 phút, phù hợp để ôn tập nhanh hàng ngày.
               </p>
             </div>
@@ -464,16 +464,16 @@ export default function TOEICPage() {
           </div>
 
           {/* Standard Mock Test Package */}
-          <div className="premium-card p-6 bg-gradient-to-br from-indigo-50 to-purple-50 border-indigo-200 hover:shadow-xl transition-all flex flex-col justify-between">
+          <div className="premium-card p-6 bg-gradient-to-br from-indigo-50 dark:from-indigo-950/30 to-purple-50 dark:to-purple-950/30 border-indigo-200 dark:border-indigo-900/30 hover:shadow-xl transition-all flex flex-col justify-between">
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-indigo-100 text-indigo-700">
+                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400">
                   60 Mins Standard Mock
                 </span>
-                <span className="text-xs font-bold text-emerald-600">+700 XP</span>
+                <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">+700 XP</span>
               </div>
-              <h3 className="text-lg font-black text-slate-800">🏆 Đề Thi Luyện Tập Tiêu Chuẩn</h3>
-              <p className="text-sm text-slate-500 font-medium leading-relaxed">
+              <h3 className="text-lg font-black text-slate-800 dark:text-slate-100">🏆 Đề Thi Luyện Tập Tiêu Chuẩn</h3>
+              <p className="text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
                 Đề thi 70 câu hỏi (10 câu mỗi Part) chuẩn hóa chuyên sâu giúp đánh giá năng lực một cách chính xác nhất. Thời gian làm bài 60 phút.
               </p>
             </div>
@@ -488,18 +488,18 @@ export default function TOEICPage() {
       </section>
 
       {/* AI Study Planner Advisor */}
-      <section className="premium-card p-6 bg-gradient-to-r from-emerald-500/5 to-teal-500/5 border border-emerald-100/50 rounded-3xl space-y-6">
+      <section className="premium-card p-6 bg-gradient-to-r from-emerald-500/5 to-teal-500/5 border border-emerald-100/50 dark:border-emerald-900/30 rounded-3xl space-y-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-start gap-4">
             <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/20 flex-shrink-0">
               <Brain className="w-6 h-6 text-white animate-pulse" />
             </div>
             <div>
-              <h2 className="text-xl font-black text-slate-800 flex items-center gap-2">
+              <h2 className="text-xl font-black text-slate-800 dark:text-slate-100 flex items-center gap-2">
                 Cố Vấn Lộ Trình Học AI (Personal Study Advisor)
-                <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase bg-emerald-100 text-emerald-700 animate-bounce">Smart</span>
+                <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 animate-bounce">Smart</span>
               </h2>
-              <p className="text-sm text-slate-500 font-medium leading-relaxed">
+              <p className="text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
                 Hệ thống tự động phân tích tỷ lệ làm đúng trên lịch sử làm bài để cá nhân hóa giáo trình học tập 4 tuần tối ưu nhất cho bạn.
               </p>
             </div>
@@ -524,47 +524,47 @@ export default function TOEICPage() {
         </div>
 
         {errorPlan && (
-          <div className="p-4 bg-rose-50 border border-rose-100 rounded-2xl text-sm font-bold text-rose-600 flex items-center gap-2">
+          <div className="p-4 bg-rose-50 dark:bg-rose-500/10 border border-rose-100 dark:border-rose-900/30 rounded-2xl text-sm font-bold text-rose-600 dark:text-rose-400 flex items-center gap-2">
             <span>⚠️</span> {errorPlan}
           </div>
         )}
 
         {studyPlan && (
-          <div className="space-y-6 animate-in fade-in slide-in-from-top-4 duration-500 border-t border-slate-100 pt-6">
+          <div className="space-y-6 animate-in fade-in slide-in-from-top-4 duration-500 border-t border-slate-100 dark:border-slate-800 pt-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="p-5 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl shadow-sm space-y-2 md:col-span-2">
-                <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest">Phân tích năng lực</h3>
-                <p className="text-sm text-slate-600 font-semibold leading-relaxed">{studyPlan.summary}</p>
+              <div className="p-5 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl shadow-sm space-y-2 md:col-span-2">
+                <h3 className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Phân tích năng lực</h3>
+                <p className="text-sm text-slate-600 dark:text-slate-300 font-semibold leading-relaxed">{studyPlan.summary}</p>
               </div>
-              <div className="p-5 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl shadow-sm space-y-2 flex flex-col justify-center items-center text-center">
-                <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest">Mục tiêu điểm số</h3>
+              <div className="p-5 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl shadow-sm space-y-2 flex flex-col justify-center items-center text-center">
+                <h3 className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Mục tiêu điểm số</h3>
                 <div className="text-3xl font-black bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mt-1">
                   TOEIC {studyPlan.recommendedTarget}
                 </div>
-                <p className="text-[10px] font-bold text-slate-400 mt-1">Lộ trình 4 tuần cải thiện vượt bậc</p>
+                <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 mt-1">Lộ trình 4 tuần cải thiện vượt bậc</p>
               </div>
             </div>
 
             <div className="space-y-4">
-              <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest">Lộ trình học tập chi tiết 4 tuần</h3>
+              <h3 className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Lộ trình học tập chi tiết 4 tuần</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {studyPlan.weeks?.map((w: any) => (
-                  <div key={w.weekNumber} className="premium-card p-5 border-slate-100/60 bg-white hover:shadow-md transition-all flex flex-col justify-between">
+                  <div key={w.weekNumber} className="premium-card p-5 border-slate-100/60 dark:border-slate-800 bg-white dark:bg-slate-900 hover:shadow-md transition-all flex flex-col justify-between">
                     <div className="space-y-3">
                       <div className="flex items-center gap-2">
-                        <span className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 text-xs font-black flex items-center justify-center flex-shrink-0">
+                        <span className="w-6 h-6 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-xs font-black flex items-center justify-center flex-shrink-0">
                           {w.weekNumber}
                         </span>
-                        <h4 className="text-sm font-black text-slate-800">{w.theme}</h4>
+                        <h4 className="text-sm font-black text-slate-800 dark:text-slate-100">{w.theme}</h4>
                       </div>
                       <div className="flex flex-wrap gap-1.5">
                         {w.focusParts?.map((pNum: number) => (
-                          <span key={pNum} className="px-2 py-0.5 rounded bg-slate-100 text-slate-600 font-extrabold text-[9px] uppercase tracking-wider">
+                          <span key={pNum} className="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-extrabold text-[9px] uppercase tracking-wider">
                             Part {pNum}
                           </span>
                         ))}
                       </div>
-                      <ul className="space-y-1.5 text-xs text-slate-500 font-medium list-disc list-inside">
+                      <ul className="space-y-1.5 text-xs text-slate-500 dark:text-slate-400 font-medium list-disc list-inside">
                         {w.actions?.map((act: string, idx: number) => (
                           <li key={idx} className="leading-relaxed">{act}</li>
                         ))}
@@ -575,7 +575,7 @@ export default function TOEICPage() {
                         <button
                           key={pNum}
                           onClick={() => router.push(`/toeic/practice/part${pNum}`)}
-                          className="flex-1 py-1.5 bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200/60 font-bold rounded-lg text-[10px] transition-colors"
+                          className="flex-1 py-1.5 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-200/60 dark:border-slate-700 font-bold rounded-lg text-[10px] transition-colors"
                         >
                           Luyện Part {pNum}
                         </button>
@@ -596,27 +596,27 @@ export default function TOEICPage() {
             <Clock className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h2 className="text-2xl font-black text-slate-800">Lịch Sử Luyện Tập Gần Đây</h2>
-            <p className="text-sm text-slate-500 font-medium">Theo dõi các bài làm thử gần nhất của bạn</p>
+            <h2 className="text-2xl font-black text-slate-800 dark:text-slate-100">Lịch Sử Luyện Tập Gần Đây</h2>
+            <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">Theo dõi các bài làm thử gần nhất của bạn</p>
           </div>
         </div>
 
         {loadingHistory ? (
-          <div className="premium-card p-12 text-center text-slate-400 font-medium flex items-center justify-center gap-2">
+          <div className="premium-card p-12 text-center text-slate-400 dark:text-slate-500 font-medium flex items-center justify-center gap-2">
             <Loader2 className="w-5 h-5 animate-spin text-primary" /> Đang tải lịch sử làm bài...
           </div>
         ) : history.length === 0 ? (
-          <div className="premium-card p-12 text-center text-slate-400 font-medium border border-dashed border-slate-200">
-            <Target className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+          <div className="premium-card p-12 text-center text-slate-400 dark:text-slate-500 font-medium border border-dashed border-slate-200 dark:border-slate-700">
+            <Target className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
             <p>Bạn chưa tham gia bài luyện tập hay thi thử TOEIC nào.</p>
-            <p className="text-xs text-slate-400 mt-1">Luyện tập từng Part ở trên hoặc bắt đầu một bài thi thử Full Test để tích lũy điểm số!</p>
+            <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">Luyện tập từng Part ở trên hoặc bắt đầu một bài thi thử Full Test để tích lũy điểm số!</p>
           </div>
         ) : (
-          <div className="premium-card overflow-hidden border border-slate-100 shadow-xl rounded-3xl">
+          <div className="premium-card overflow-hidden border border-slate-100 dark:border-slate-800 shadow-xl rounded-3xl">
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-slate-50 border-b border-slate-100 text-[10px] font-black uppercase tracking-widest text-slate-400">
+                  <tr className="bg-slate-50 dark:bg-slate-800 border-b border-slate-100 dark:border-slate-800 text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">
                     <th className="py-4 px-6">Bài luyện tập</th>
                     <th className="py-4 px-6">Ngày làm bài</th>
                     <th className="py-4 px-6 text-center">Tỷ lệ đúng</th>
@@ -624,40 +624,40 @@ export default function TOEICPage() {
                     <th className="py-4 px-6 text-right">Phần thưởng</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-50 text-sm font-semibold text-slate-600">
+                <tbody className="divide-y divide-slate-50 dark:divide-slate-800 text-sm font-semibold text-slate-600 dark:text-slate-300">
                   {history.slice(0, 5).map((h: any) => {
                     const isFullTest = h.part === null;
                     const dateStr = h.createdAt ? new Date(h.createdAt).toLocaleDateString('vi-VN', {
                       day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'
                     }) : '-';
                     const partInfo = isFullTest 
-                      ? { title: "TOEIC Full Practice Test", color: "text-indigo-600 bg-indigo-50 border-indigo-100" }
-                      : { title: `TOEIC Part ${h.part} - ${TOEIC_PARTS.find(p => p.part === h.part)?.title || 'Practice'}`, color: "text-blue-600 bg-blue-50 border-blue-100" };
+                      ? { title: "TOEIC Full Practice Test", color: "text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 border-indigo-100 dark:border-indigo-900/30" }
+                      : { title: `TOEIC Part ${h.part} - ${TOEIC_PARTS.find(p => p.part === h.part)?.title || 'Practice'}`, color: "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 border-blue-100 dark:border-blue-900/30" };
 
                     return (
-                      <tr key={h.id} className="hover:bg-slate-50/50 transition-colors">
+                      <tr key={h.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-colors">
                         <td className="py-4 px-6">
                           <div className="flex items-center gap-3">
                             <span className={cn("px-2.5 py-1 rounded-lg text-[10px] font-black border uppercase tracking-wider", partInfo.color)}>
                               {isFullTest ? "Full" : `Part ${h.part}`}
                             </span>
-                            <span className="font-bold text-slate-800">{partInfo.title}</span>
+                            <span className="font-bold text-slate-800 dark:text-slate-100">{partInfo.title}</span>
                           </div>
                         </td>
-                        <td className="py-4 px-6 text-slate-400 font-medium text-xs">
+                        <td className="py-4 px-6 text-slate-400 dark:text-slate-500 font-medium text-xs">
                           <div className="flex items-center gap-1.5">
                             <Calendar className="w-3.5 h-3.5" /> {dateStr}
                           </div>
                         </td>
-                        <td className="py-4 px-6 text-center font-bold text-slate-700">
+                        <td className="py-4 px-6 text-center font-bold text-slate-700 dark:text-slate-300">
                           {h.correctCount}/{h.totalQuestions}
                         </td>
                         <td className="py-4 px-6 text-center">
-                          <span className="font-black text-indigo-600 bg-indigo-50 px-3 py-1 rounded-xl text-xs">
+                          <span className="font-black text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 px-3 py-1 rounded-xl text-xs">
                             {h.totalScore} / 990
                           </span>
                         </td>
-                        <td className="py-4 px-6 text-right text-emerald-600 font-black text-xs">
+                        <td className="py-4 px-6 text-right text-emerald-600 dark:text-emerald-400 font-black text-xs">
                           +{isFullTest ? 200 : h.correctCount * 10} XP
                         </td>
                       </tr>
@@ -671,29 +671,29 @@ export default function TOEICPage() {
       </section>
 
       {/* Strategy Tips */}
-      <section className="premium-card p-8 bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-100">
+      <section className="premium-card p-8 bg-gradient-to-r from-blue-50 dark:from-blue-950/30 to-indigo-50 dark:to-indigo-950/30 border-blue-100 dark:border-blue-900/30">
         <div className="flex items-start gap-4">
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center flex-shrink-0">
             <ShieldCheck className="w-6 h-6 text-white" />
           </div>
           <div className="space-y-3">
-            <h3 className="text-xl font-black text-slate-800">💡 Chiến lược luyện thi TOEIC hiệu quả</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-slate-600 font-medium">
+            <h3 className="text-xl font-black text-slate-800 dark:text-slate-100">💡 Chiến lược luyện thi TOEIC hiệu quả</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-slate-600 dark:text-slate-300 font-medium">
               <div className="flex items-start gap-2">
                 <Zap className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
-                <span><strong className="text-slate-800">Listening:</strong> Luyện nghe mỗi ngày 30 phút. Tập trung nghe từ khóa, bỏ qua những từ không hiểu.</span>
+                <span><strong className="text-slate-800 dark:text-slate-100">Listening:</strong> Luyện nghe mỗi ngày 30 phút. Tập trung nghe từ khóa, bỏ qua những từ không hiểu.</span>
               </div>
               <div className="flex items-start gap-2">
                 <Zap className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
-                <span><strong className="text-slate-800">Reading:</strong> Tập skim & scan. Part 5 nên hoàn thành trong 10 phút, dành 65 phút cho Part 6-7.</span>
+                <span><strong className="text-slate-800 dark:text-slate-100">Reading:</strong> Tập skim & scan. Part 5 nên hoàn thành trong 10 phút, dành 65 phút cho Part 6-7.</span>
               </div>
               <div className="flex items-start gap-2">
                 <Zap className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
-                <span><strong className="text-slate-800">Thời gian:</strong> Luôn quản lý thời gian nghiêm ngặt. Không dành quá 1 phút cho mỗi câu Part 5.</span>
+                <span><strong className="text-slate-800 dark:text-slate-100">Thời gian:</strong> Luôn quản lý thời gian nghiêm ngặt. Không dành quá 1 phút cho mỗi câu Part 5.</span>
               </div>
               <div className="flex items-start gap-2">
                 <Zap className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
-                <span><strong className="text-slate-800">Mục tiêu:</strong> Đặt mục tiêu cụ thể (ví dụ: 750+) và luyện tập có hệ thống theo từng part yếu.</span>
+                <span><strong className="text-slate-800 dark:text-slate-100">Mục tiêu:</strong> Đặt mục tiêu cụ thể (ví dụ: 750+) và luyện tập có hệ thống theo từng part yếu.</span>
               </div>
             </div>
           </div>

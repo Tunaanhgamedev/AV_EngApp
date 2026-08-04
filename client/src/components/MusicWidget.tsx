@@ -102,7 +102,7 @@ export function MusicWidget() {
           {currentTrack.title}
         </p>
         <div className="flex items-center gap-1.5 mt-0.5">
-          <p className="text-[9px] font-bold text-slate-400 truncate max-w-[100px] sm:max-w-[120px]">
+          <p className="text-[9px] font-bold text-slate-400 dark:text-slate-500 truncate max-w-[100px] sm:max-w-[120px]">
             {currentTrack.artist}
           </p>
           {isPlaying && (
@@ -126,7 +126,7 @@ export function MusicWidget() {
 
         <button
           onClick={nextTrack}
-          className="p-1.5 text-slate-400 hover:text-white active:scale-95 transition-all cursor-pointer"
+          className="p-1.5 text-slate-400 dark:text-slate-500 hover:text-white dark:hover:text-white active:scale-95 transition-all cursor-pointer"
         >
           <SkipForward className="w-3.5 h-3.5" />
         </button>
@@ -139,7 +139,7 @@ export function MusicWidget() {
         >
           <button
             onClick={handleMuteToggle}
-            className="p-1.5 text-slate-400 hover:text-white transition-all cursor-pointer"
+            className="p-1.5 text-slate-400 dark:text-slate-500 hover:text-white dark:hover:text-white transition-all cursor-pointer"
           >
             {isMuted || volume === 0 ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
           </button>
@@ -164,7 +164,7 @@ export function MusicWidget() {
 
         <Link
           href="/music"
-          className="p-1.5 text-slate-400 hover:text-white active:scale-95 transition-all relative cursor-pointer"
+          className="p-1.5 text-slate-400 dark:text-slate-500 hover:text-white dark:hover:text-white active:scale-95 transition-all relative cursor-pointer"
           title="Mở Music Hub"
         >
           <Maximize2 className="w-3.5 h-3.5" />
@@ -175,7 +175,7 @@ export function MusicWidget() {
         {/* Minimize Button */}
         <button
           onClick={() => handleMinimizeToggle(true)}
-          className="p-1.5 text-slate-400 hover:text-white active:scale-95 transition-all cursor-pointer rounded-lg hover:bg-white/10"
+          className="p-1.5 text-slate-400 dark:text-slate-500 hover:text-white dark:hover:text-white active:scale-95 transition-all cursor-pointer rounded-lg hover:bg-white/10"
           title="Thu nhỏ"
         >
           <Minimize2 className="w-3.5 h-3.5" />

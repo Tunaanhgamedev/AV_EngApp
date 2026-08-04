@@ -101,7 +101,7 @@ export default function SpeedQuizGame({ dbWords, category, onClose, awardXp, onS
 
   return (
     <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-300">
-      <div className="bg-white rounded-[2rem] shadow-2xl w-full max-w-xl overflow-hidden animate-in zoom-in-95 duration-300">
+      <div className="bg-white dark:bg-slate-900 rounded-[2rem] shadow-2xl w-full max-w-xl overflow-hidden animate-in zoom-in-95 duration-300">
         <div className="px-8 py-5 bg-gradient-to-r from-rose-500 to-pink-600 text-white">
           <div className="flex justify-between items-center mb-1">
             <span className="text-sm font-black opacity-85">Câu hỏi {qIdx + 1}/{questions.length}</span>
@@ -117,17 +117,17 @@ export default function SpeedQuizGame({ dbWords, category, onClose, awardXp, onS
         {done ? (
           <div className="p-10 text-center space-y-5 animate-in zoom-in duration-500 max-h-[85vh] overflow-y-auto no-scrollbar">
             <div className="text-5xl">{score >= 4 ? '🏆' : score >= 3 ? '🎉' : '📚'}</div>
-            <h3 className="text-2xl font-black text-slate-800">Trả lời đúng {score}/{questions.length} câu!</h3>
-            <p className="text-slate-500 font-semibold">+{score * 20} XP</p>
+            <h3 className="text-2xl font-black text-slate-800 dark:text-slate-100">Trả lời đúng {score}/{questions.length} câu!</h3>
+            <p className="text-slate-500 dark:text-slate-400 font-semibold">+{score * 20} XP</p>
             <div className="flex gap-3 justify-center">
               <button onClick={initGame} className="px-6 py-3 bg-rose-500 text-white rounded-2xl font-bold flex items-center gap-1 shadow-lg shadow-rose-500/30 cursor-pointer"><RotateCcw className="w-4 h-4" />Chơi Lại</button>
-              <button onClick={onClose} className="px-6 py-3 bg-slate-100 text-slate-700 rounded-2xl font-bold hover:bg-slate-200 transition-all">Quay Về</button>
+              <button onClick={onClose} className="px-6 py-3 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-2xl font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">Quay Về</button>
             </div>
             <GameVocabularyRecap words={sessionWords} onSaveWord={onSaveWord} savedWords={savedWords} savingWord={savingWord} />
           </div>
         ) : q ? (
           <div className="p-8 space-y-6">
-            <h3 className="text-xl font-black text-slate-800 leading-snug whitespace-pre-line">{q.q}</h3>
+            <h3 className="text-xl font-black text-slate-800 dark:text-slate-100 leading-snug whitespace-pre-line">{q.q}</h3>
             <div className="grid grid-cols-1 gap-3">
               {q.options.map((opt: string, i: number) => (
                 <button
@@ -136,17 +136,17 @@ export default function SpeedQuizGame({ dbWords, category, onClose, awardXp, onS
                   disabled={selected !== null}
                   className={cn(
                     "p-4 rounded-2xl text-sm font-bold border-2 text-left transition-all cursor-pointer",
-                    selected === null ? "border-slate-100 hover:border-rose-300 hover:bg-rose-50/50" :
-                      i === q.answer ? "bg-green-50 border-green-400 text-green-700" :
-                        i === selected ? "bg-rose-50 border-rose-400 text-rose-700" :
-                          "border-slate-100 opacity-40"
+                    selected === null ? "border-slate-100 dark:border-slate-800 hover:border-rose-300 dark:hover:border-rose-700 hover:bg-rose-50/50 dark:hover:bg-rose-500/10 text-slate-700 dark:text-slate-300" :
+                      i === q.answer ? "bg-green-50 dark:bg-green-500/10 border-green-400 dark:border-green-800 text-green-700 dark:text-green-400" :
+                        i === selected ? "bg-rose-50 dark:bg-rose-500/10 border-rose-400 dark:border-rose-800 text-rose-700 dark:text-rose-400" :
+                          "border-slate-100 dark:border-slate-800 opacity-40 text-slate-700 dark:text-slate-300"
                   )}
                 >{opt}</button>
               ))}
             </div>
           </div>
         ) : (
-          <div className="p-12 text-center text-slate-500">Đang chuẩn bị câu hỏi...</div>
+          <div className="p-12 text-center text-slate-500 dark:text-slate-400">Đang chuẩn bị câu hỏi...</div>
         )}
       </div>
     </div>

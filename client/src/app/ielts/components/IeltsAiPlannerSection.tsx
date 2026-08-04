@@ -38,11 +38,11 @@ export default function IeltsAiPlannerSection() {
             <Brain className="w-6 h-6 text-white animate-pulse" />
           </div>
           <div>
-            <h2 className="text-xl font-black text-slate-800 flex items-center gap-2">
+            <h2 className="text-xl font-black text-slate-800 dark:text-slate-100 flex items-center gap-2">
               Cố Vấn Lộ Trình Học IELTS
-              <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase bg-violet-100 text-violet-700 animate-bounce">AI</span>
+              <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase bg-violet-100 dark:bg-violet-500/10 text-violet-700 dark:text-violet-400 animate-bounce">AI</span>
             </h2>
-            <p className="text-sm text-slate-500 font-medium leading-relaxed">
+            <p className="text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
               Phân tích band score lịch sử 4 kỹ năng để thiết kế lộ trình ôn tập 4 tuần cá nhân hóa tối ưu nhất.
             </p>
           </div>
@@ -61,47 +61,47 @@ export default function IeltsAiPlannerSection() {
       </div>
 
       {errorPlan && (
-        <div className="p-4 bg-rose-50 border border-rose-100 rounded-2xl text-sm font-bold text-rose-600 flex items-center gap-2">
+        <div className="p-4 bg-rose-50 dark:bg-rose-500/10 border border-rose-100 rounded-2xl text-sm font-bold text-rose-600 dark:text-rose-400 flex items-center gap-2">
           <span>⚠️</span> {errorPlan}
         </div>
       )}
 
       {studyPlan && (
-        <div className="space-y-6 animate-in fade-in slide-in-from-top-4 duration-500 border-t border-slate-100 pt-6">
+        <div className="space-y-6 animate-in fade-in slide-in-from-top-4 duration-500 border-t border-slate-100 dark:border-slate-800 pt-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-5 bg-white border border-slate-100 rounded-2xl shadow-sm space-y-2 md:col-span-2">
-              <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest">Phân tích năng lực IELTS</h3>
-              <p className="text-sm text-slate-600 font-semibold leading-relaxed">{studyPlan.summary}</p>
+            <div className="p-5 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl shadow-sm space-y-2 md:col-span-2">
+              <h3 className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Phân tích năng lực IELTS</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-300 font-semibold leading-relaxed">{studyPlan.summary}</p>
             </div>
-            <div className="p-5 bg-white border border-slate-100 rounded-2xl shadow-sm space-y-2 flex flex-col justify-center items-center text-center">
-              <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest">Mục tiêu Band Score</h3>
+            <div className="p-5 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl shadow-sm space-y-2 flex flex-col justify-center items-center text-center">
+              <h3 className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Mục tiêu Band Score</h3>
               <div className="text-3xl font-black bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent mt-1">
                 IELTS {studyPlan.recommendedTarget}
               </div>
-              <p className="text-[10px] font-bold text-slate-400 mt-1">Lộ trình 4 tuần nâng band vượt bậc</p>
+              <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 mt-1">Lộ trình 4 tuần nâng band vượt bậc</p>
             </div>
           </div>
 
           <div className="space-y-4">
-            <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest">Lộ trình học tập chi tiết 4 tuần</h3>
+            <h3 className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Lộ trình học tập chi tiết 4 tuần</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {studyPlan.weeks?.map((w: any) => (
-                <div key={w.weekNumber} className="premium-card p-5 border-slate-100/60 bg-white hover:shadow-md transition-all flex flex-col justify-between">
+                <div key={w.weekNumber} className="premium-card p-5 border-slate-100/60 bg-white dark:bg-slate-900 hover:shadow-md transition-all flex flex-col justify-between">
                   <div className="space-y-3">
                     <div className="flex items-center gap-2">
-                      <span className="w-6 h-6 rounded-full bg-violet-100 text-violet-700 text-xs font-black flex items-center justify-center flex-shrink-0">
+                      <span className="w-6 h-6 rounded-full bg-violet-100 dark:bg-violet-500/10 text-violet-700 dark:text-violet-400 text-xs font-black flex items-center justify-center flex-shrink-0">
                         {w.weekNumber}
                       </span>
-                      <h4 className="text-sm font-black text-slate-800">{w.theme}</h4>
+                      <h4 className="text-sm font-black text-slate-800 dark:text-slate-100">{w.theme}</h4>
                     </div>
                     <div className="flex flex-wrap gap-1.5">
                       {w.focusSkills?.map((s: string) => (
-                        <span key={s} className="px-2 py-0.5 rounded bg-slate-100 text-slate-600 font-extrabold text-[9px] uppercase tracking-wider">
+                        <span key={s} className="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800/50 text-slate-600 dark:text-slate-300 font-extrabold text-[9px] uppercase tracking-wider">
                           {s}
                         </span>
                       ))}
                     </div>
-                    <ul className="space-y-1.5 text-xs text-slate-500 font-medium list-disc list-inside">
+                    <ul className="space-y-1.5 text-xs text-slate-500 dark:text-slate-400 font-medium list-disc list-inside">
                       {w.actions?.map((act: string, idx: number) => (
                         <li key={idx} className="leading-relaxed">{act}</li>
                       ))}
@@ -112,7 +112,7 @@ export default function IeltsAiPlannerSection() {
                       <button
                         key={s}
                         onClick={() => router.push(`/ielts/practice/${s}`)}
-                        className="flex-1 py-1.5 bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200/60 font-bold rounded-lg text-[10px] transition-colors capitalize"
+                        className="flex-1 py-1.5 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:bg-slate-800/50 text-slate-700 dark:text-slate-300 border border-slate-200/60 font-bold rounded-lg text-[10px] transition-colors capitalize"
                       >
                         Luyện {s}
                       </button>

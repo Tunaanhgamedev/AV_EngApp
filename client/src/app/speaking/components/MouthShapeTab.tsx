@@ -282,8 +282,8 @@ export default function MouthShapeTab() {
       <div className="md:col-span-4 space-y-4">
         
         {/* Custom Word Input Block */}
-        <div className="premium-card p-5 bg-white border border-slate-100 shadow-md rounded-3xl space-y-4">
-          <h3 className="font-black text-sm text-slate-800 flex items-center gap-2">
+        <div className="premium-card p-5 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-md rounded-3xl space-y-4">
+          <h3 className="font-black text-sm text-slate-800 dark:text-slate-200 flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-primary fill-primary animate-pulse" /> Tự Nhập Từ Luyện Tập
           </h3>
           <div className="space-y-2.5">
@@ -299,7 +299,7 @@ export default function MouthShapeTab() {
                   if (e.key === 'Enter') handleAnalyzeCustomWord();
                 }}
                 placeholder="Ví dụ: Beautiful, Schedule, Rural..."
-                className="w-full pl-3 pr-8 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-primary transition-all shadow-inner"
+                className="w-full pl-3 pr-8 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-800 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-primary transition-all shadow-inner"
               />
               {customWordInput && (
                 <button 
@@ -307,14 +307,14 @@ export default function MouthShapeTab() {
                     setCustomWordInput("");
                     setCustomWordError(null);
                   }}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 font-bold text-xs"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:text-slate-300 font-bold text-xs"
                 >
                   ×
                 </button>
               )}
             </div>
             {customWordError && (
-              <p className="text-rose-500 font-bold text-[10px] leading-relaxed bg-rose-50 border border-rose-100 p-2.5 rounded-xl flex items-start gap-1.5 animate-in fade-in slide-in-from-top-1 duration-200 shadow-sm">
+              <p className="text-rose-500 font-bold text-[10px] leading-relaxed bg-rose-50 dark:bg-rose-500/10 border border-rose-100 p-2.5 rounded-xl flex items-start gap-1.5 animate-in fade-in slide-in-from-top-1 duration-200 shadow-sm">
                 <AlertCircle className="w-3.5 h-3.5 shrink-0 text-rose-500 mt-0.5" />
                 {customWordError}
               </p>
@@ -326,7 +326,7 @@ export default function MouthShapeTab() {
                 "w-full py-2.5 rounded-xl text-xs font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-sm",
                 customWordInput.trim() && !isMouthAnalyzing
                   ? "bg-slate-900 hover:bg-slate-800 text-white hover:scale-[1.01] active:scale-95 cursor-pointer"
-                  : "bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200/50"
+                  : "bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed border border-slate-200/50 dark:border-slate-700/50"
               )}
             >
               {isMouthAnalyzing ? (
@@ -344,8 +344,8 @@ export default function MouthShapeTab() {
           </div>
         </div>
 
-        <div className="premium-card p-5 bg-white border border-slate-100 shadow-md rounded-3xl">
-          <h3 className="font-black text-base text-slate-800 mb-4 flex items-center gap-2">
+        <div className="premium-card p-5 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-md rounded-3xl">
+          <h3 className="font-black text-base text-slate-800 dark:text-slate-200 mb-4 flex items-center gap-2">
             <BookOpen className="w-4 h-4 text-primary" /> Chọn Âm Cần Luyện
           </h3>
           <div className="space-y-2">
@@ -361,20 +361,20 @@ export default function MouthShapeTab() {
                   "w-full p-4 rounded-xl text-left border-2 transition-all flex items-center gap-4 group",
                   selectedSound.sound === soundItem.sound
                     ? "border-primary bg-primary/5 shadow-sm"
-                    : "bg-white border-slate-100 hover:border-slate-200"
+                    : "bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 hover:border-slate-200 dark:border-slate-700"
                 )}
               >
                 <div className={cn(
                   "w-12 h-12 rounded-xl flex items-center justify-center font-black text-lg font-mono shrink-0",
                   selectedSound.sound === soundItem.sound
                     ? "bg-primary text-white"
-                    : "bg-slate-100 text-slate-600 group-hover:bg-primary/10 group-hover:text-primary transition-colors"
+                    : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 group-hover:bg-primary/10 group-hover:text-primary transition-colors"
                 )}>
                   {soundItem.sound}
                 </div>
                 <div className="min-w-0">
-                  <p className="font-black text-sm text-slate-800">Từ ví dụ: <span className="text-primary font-black underline">{soundItem.word}</span></p>
-                  <p className="text-[10px] text-slate-400 font-medium truncate mt-0.5">{soundItem.desc}</p>
+                  <p className="font-black text-sm text-slate-800 dark:text-slate-200">Từ ví dụ: <span className="text-primary font-black underline">{soundItem.word}</span></p>
+                  <p className="text-[10px] text-slate-400 dark:text-slate-500 font-medium truncate mt-0.5">{soundItem.desc}</p>
                 </div>
               </button>
             ))}
@@ -382,9 +382,9 @@ export default function MouthShapeTab() {
         </div>
 
         {/* Quick articulation tips */}
-        <div className="premium-card p-5 bg-slate-50 border border-slate-100 rounded-3xl space-y-3">
-          <h4 className="font-black text-xs uppercase tracking-widest text-slate-400">Cách Luyện Khẩu Hình Chuẩn</h4>
-          <ul className="text-xs text-slate-600 space-y-2 leading-relaxed list-disc pl-4 font-semibold">
+        <div className="premium-card p-5 bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-800 rounded-3xl space-y-3">
+          <h4 className="font-black text-xs uppercase tracking-widest text-slate-400 dark:text-slate-500">Cách Luyện Khẩu Hình Chuẩn</h4>
+          <ul className="text-xs text-slate-600 dark:text-slate-300 space-y-2 leading-relaxed list-disc pl-4 font-semibold">
             <li>Ngồi thẳng và đặt camera chính diện khuôn mặt.</li>
             <li>Đưa miệng nằm đúng tâm vòng tròn căn chỉnh.</li>
             <li>Quan sát hình dáng môi và lưỡi của mình qua camera.</li>
@@ -425,12 +425,12 @@ export default function MouthShapeTab() {
               </div>
             ) : (
               <div className="space-y-4 py-8">
-                <div className="w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center text-slate-500 mx-auto shadow-inner border border-slate-700">
+                <div className="w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center text-slate-500 dark:text-slate-400 dark:text-slate-500 mx-auto shadow-inner border border-slate-700">
                   <Video className="w-8 h-8" />
                 </div>
                 <div className="space-y-1.5 px-6">
                   <h3 className="font-black text-white text-base">Bật Camera Căn Khẩu Hình</h3>
-                  <p className="text-xs text-slate-400 max-w-[280px] mx-auto leading-relaxed">
+                  <p className="text-xs text-slate-400 dark:text-slate-500 max-w-[280px] mx-auto leading-relaxed">
                     Cho phép quyền sử dụng webcam để nhìn trực quan chuyển động môi và lưỡi của bạn khi phát âm.
                   </p>
                 </div>
@@ -449,7 +449,7 @@ export default function MouthShapeTab() {
           </div>
 
           {/* Sound practice block */}
-          <div className="premium-card p-6 bg-white border border-slate-100 shadow-xl rounded-3xl flex flex-col justify-between h-[340px]">
+          <div className="premium-card p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-xl rounded-3xl flex flex-col justify-between h-[340px]">
             <div className="space-y-4">
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-primary animate-ping" />
@@ -457,21 +457,21 @@ export default function MouthShapeTab() {
               </div>
 
               <div className="flex items-end gap-3">
-                <span className="text-5xl font-black text-slate-800 font-mono">{selectedSound.sound}</span>
-                <span className="text-sm font-bold text-slate-400 pb-1">trong từ</span>
+                <span className="text-5xl font-black text-slate-800 dark:text-slate-200 font-mono">{selectedSound.sound}</span>
+                <span className="text-sm font-bold text-slate-400 dark:text-slate-500 pb-1">trong từ</span>
                 <span className="text-2xl font-black text-primary underline pb-0.5">{selectedSound.word}</span>
               </div>
 
-              <p className="text-xs text-slate-500 leading-relaxed font-semibold bg-slate-50 p-3 rounded-xl border border-slate-200/60">
+              <p className="text-xs text-slate-500 dark:text-slate-400 dark:text-slate-500 leading-relaxed font-semibold bg-slate-50 dark:bg-slate-800 p-3 rounded-xl border border-slate-200/60 dark:border-slate-700/60">
                 {selectedSound.desc}
               </p>
             </div>
 
-            <div className="space-y-3 pt-4 border-t border-slate-100">
+            <div className="space-y-3 pt-4 border-t border-slate-100 dark:border-slate-800">
               <div className="flex items-center gap-2">
                 <button 
                   onClick={() => speak(selectedSound.word)}
-                  className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-1.5 border border-slate-200/40"
+                  className="px-4 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-1.5 border border-slate-200/40 dark:border-slate-700/40"
                 >
                   <Volume2 className="w-3.5 h-3.5 text-primary" /> Nghe từ mẫu
                 </button>
@@ -500,8 +500,8 @@ export default function MouthShapeTab() {
               </div>
 
               {transcript ? (
-                <div className="p-3 bg-emerald-50 border border-emerald-100 rounded-xl flex items-center justify-between gap-2">
-                  <p className="text-[11px] text-emerald-800 font-semibold truncate italic">Đã thu âm: "{transcript}"</p>
+                <div className="p-3 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-100 rounded-xl flex items-center justify-between gap-2">
+                  <p className="text-[11px] text-emerald-800 dark:text-emerald-300 font-semibold truncate italic">Đã thu âm: "{transcript}"</p>
                   <button 
                     onClick={handleAnalyzeMouthShape} 
                     disabled={isMouthAnalyzing}
@@ -535,57 +535,57 @@ export default function MouthShapeTab() {
 
         {/* AI Mouth Shape Feedback / Articulation Guides */}
         {mouthFeedback ? (
-          <div className="premium-card p-6 md:p-8 bg-white border border-slate-100 shadow-xl rounded-3xl space-y-6 animate-in slide-in-from-bottom-3 duration-500">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+          <div className="premium-card p-6 md:p-8 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-xl rounded-3xl space-y-6 animate-in slide-in-from-bottom-3 duration-500">
+            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
               <div className="flex items-center gap-2.5 min-w-0">
                 <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary font-black font-mono shrink-0">
                   {mouthFeedback.sound.length > 5 ? "IPA" : mouthFeedback.sound}
                 </div>
                 <div className="min-w-0">
-                  <h3 className="font-black text-slate-800 text-base truncate">Hướng Dẫn Khẩu Hình Chi Tiết: {mouthFeedback.word}</h3>
-                  <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Cung cấp bởi EngBot Articulation Lab</p>
+                  <h3 className="font-black text-slate-800 dark:text-slate-200 text-base truncate">Hướng Dẫn Khẩu Hình Chi Tiết: {mouthFeedback.word}</h3>
+                  <p className="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">Cung cấp bởi EngBot Articulation Lab</p>
                 </div>
               </div>
-              <span className="px-3 py-1 bg-emerald-50 border border-emerald-100 text-emerald-600 rounded-full font-black text-[9px] uppercase tracking-wider flex items-center gap-1 shrink-0">
+              <span className="px-3 py-1 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-100 text-emerald-600 dark:text-emerald-400 rounded-full font-black text-[9px] uppercase tracking-wider flex items-center gap-1 shrink-0">
                 <Check className="w-3 h-3" /> ĐÃ PHÂN TÍCH
               </span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100 space-y-2">
-                <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1">
+              <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-800 space-y-2">
+                <h4 className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest flex items-center gap-1">
                   <Eye className="w-3.5 h-3.5 text-primary" /> MÔI (LIPS)
                 </h4>
-                <p className="text-xs text-slate-700 leading-relaxed font-semibold">
+                <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-semibold">
                   {mouthFeedback.mouthShape?.lips || "Đang cập nhật..."}
                 </p>
               </div>
 
-              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100 space-y-2">
-                <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1">
+              <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-800 space-y-2">
+                <h4 className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest flex items-center gap-1">
                   <Activity className="w-3.5 h-3.5 text-primary" /> LƯỠI (TONGUE)
                 </h4>
-                <p className="text-xs text-slate-700 leading-relaxed font-semibold">
+                <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-semibold">
                   {mouthFeedback.mouthShape?.tongue || "Đang cập nhật..."}
                 </p>
               </div>
 
-              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100 space-y-2">
-                <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1">
+              <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-800 space-y-2">
+                <h4 className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest flex items-center gap-1">
                   <Waves className="w-3.5 h-3.5 text-primary" /> LUỒNG HƠI (AIRFLOW)
                 </h4>
-                <p className="text-xs text-slate-700 leading-relaxed font-semibold">
+                <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-semibold">
                   {mouthFeedback.mouthShape?.airflow || "Đang cập nhật..."}
                 </p>
               </div>
             </div>
 
             {mouthFeedback.vietnameseMistakes && (
-              <div className="p-4 bg-amber-50 border border-amber-100 rounded-2xl">
-                <h4 className="text-[10px] font-black uppercase tracking-widest text-amber-700 mb-2 flex items-center gap-1">
-                  <AlertCircle className="w-3.5 h-3.5 text-amber-600" /> Lỗi sai người Việt thường gặp:
+              <div className="p-4 bg-amber-50 dark:bg-amber-500/10 border border-amber-100 rounded-2xl">
+                <h4 className="text-[10px] font-black uppercase tracking-widest text-amber-700 dark:text-amber-400 mb-2 flex items-center gap-1">
+                  <AlertCircle className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" /> Lỗi sai người Việt thường gặp:
                 </h4>
-                <p className="text-xs text-amber-800 leading-relaxed font-semibold">
+                <p className="text-xs text-amber-800 dark:text-amber-300 leading-relaxed font-semibold">
                   {mouthFeedback.vietnameseMistakes}
                 </p>
               </div>
@@ -593,14 +593,14 @@ export default function MouthShapeTab() {
 
             {mouthFeedback.correctionSteps && mouthFeedback.correctionSteps.length > 0 && (
               <div className="space-y-3">
-                <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400">Các Bước Thực Hành Điều Chỉnh Khẩu Hình:</h4>
+                <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">Các Bước Thực Hành Điều Chỉnh Khẩu Hình:</h4>
                 <div className="space-y-2">
                   {mouthFeedback.correctionSteps.map((step: string, i: number) => (
-                    <div key={i} className="flex gap-3 p-3 bg-slate-50 border border-slate-100 rounded-xl items-start">
+                    <div key={i} className="flex gap-3 p-3 bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-800 rounded-xl items-start">
                       <span className="w-5 h-5 rounded-full bg-slate-900 text-white font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">
                         {i + 1}
                       </span>
-                      <p className="text-xs text-slate-700 leading-relaxed font-semibold">{step}</p>
+                      <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-semibold">{step}</p>
                     </div>
                   ))}
                 </div>
@@ -612,7 +612,7 @@ export default function MouthShapeTab() {
                 <h4 className="text-[10px] font-black uppercase tracking-widest text-primary mb-2 flex items-center gap-1">
                   <Sparkles className="w-3.5 h-3.5 text-primary fill-primary" /> Đánh giá luyện tập của bạn:
                 </h4>
-                <p className="text-xs text-slate-700 leading-relaxed font-semibold">
+                <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-semibold">
                   {mouthFeedback.feedback}
                 </p>
               </div>
@@ -620,13 +620,13 @@ export default function MouthShapeTab() {
 
           </div>
         ) : (
-          <div className="premium-card p-10 border-2 border-dashed border-slate-200 flex flex-col items-center justify-center text-center space-y-4 bg-slate-50/50 rounded-3xl">
-            <div className="p-5 bg-white rounded-full shadow-md border border-slate-100">
+          <div className="premium-card p-10 border-2 border-dashed border-slate-200 dark:border-slate-700 flex flex-col items-center justify-center text-center space-y-4 bg-slate-50/50 dark:bg-slate-800/50 rounded-3xl">
+            <div className="p-5 bg-white dark:bg-slate-900 rounded-full shadow-md border border-slate-100 dark:border-slate-800">
               <Camera className="w-8 h-8 text-slate-300 animate-pulse" />
             </div>
             <div className="space-y-1">
-              <h3 className="font-bold text-slate-600">Đang chờ khởi chạy Lab</h3>
-              <p className="text-xs text-slate-400 leading-relaxed max-w-sm mx-auto">
+              <h3 className="font-bold text-slate-600 dark:text-slate-300">Đang chờ khởi chạy Lab</h3>
+              <p className="text-xs text-slate-400 dark:text-slate-500 leading-relaxed max-w-sm mx-auto">
                 Chọn một âm cần luyện bên trái, thực hiện thu âm thử hoặc bấm "Phân Tích Cấu Âm Chuẩn" để EngBot phân tích luồng hơi, cách đặt răng môi lưỡi cho bạn.
               </p>
             </div>

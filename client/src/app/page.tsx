@@ -46,7 +46,7 @@ const MiniCalendar = memo(function MiniCalendar({ ictDate }: { ictDate: Date }) 
             "w-6 h-6 rounded-lg text-[9px] font-black flex items-center justify-center transition-all",
             isToday 
               ? "bg-primary text-white shadow-md shadow-primary/30 scale-110" 
-              : "text-slate-600 hover:bg-slate-100"
+              : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
           )}
         >
           {d}
@@ -58,7 +58,7 @@ const MiniCalendar = memo(function MiniCalendar({ ictDate }: { ictDate: Date }) 
 
   return (
     <div className="space-y-2">
-      <div className="grid grid-cols-7 gap-1 text-[8px] font-bold text-slate-400 text-center uppercase tracking-wider">
+      <div className="grid grid-cols-7 gap-1 text-[8px] font-bold text-slate-400 dark:text-slate-500 text-center uppercase tracking-wider">
         <span>T2</span><span>T3</span><span>T4</span><span>T5</span><span>T6</span><span>T7</span><span>CN</span>
       </div>
       <div className="grid grid-cols-7 gap-1 text-center">
@@ -87,7 +87,7 @@ const IctClockWidget = memo(function IctClockWidget() {
   return (
     <div className="premium-card p-6 space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="font-black text-slate-800 text-xs flex items-center gap-1.5 uppercase tracking-wider">
+        <h3 className="font-black text-slate-800 dark:text-slate-100 text-xs flex items-center gap-1.5 uppercase tracking-wider">
           <Clock className="w-4 h-4 text-primary animate-pulse" /> Giờ Việt Nam (ICT)
         </h3>
         <span className="text-[8px] font-black text-primary bg-primary/10 px-2 py-0.5 rounded uppercase tracking-wider">
@@ -99,17 +99,17 @@ const IctClockWidget = memo(function IctClockWidget() {
         <span className="text-3xl font-black tabular-nums tracking-widest block">
           {vietnamTime ? vietnamTime.toLocaleTimeString('vi-VN') : '--:--:--'}
         </span>
-        <span className="text-[9px] font-bold text-slate-400 block mt-1">
+        <span className="text-[9px] font-bold text-slate-400 dark:text-slate-500 block mt-1">
           {vietnamTime ? vietnamTime.toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : ''}
         </span>
         <div className="absolute -right-6 -bottom-6 w-16 h-16 bg-primary/10 rounded-full blur-xl" />
       </div>
 
-      <div className="border-t border-slate-100 pt-4">
+      <div className="border-t border-slate-100 dark:border-slate-800 pt-4">
         {vietnamTime && <MiniCalendar ictDate={vietnamTime} />}
       </div>
 
-      <Link href="/checkin" className="w-full text-center block py-2.5 bg-slate-50 border border-slate-100 hover:bg-slate-100 rounded-xl text-xs font-black uppercase tracking-widest text-slate-600 transition-all">
+      <Link href="/checkin" className="w-full text-center block py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl text-xs font-black uppercase tracking-widest text-slate-600 dark:text-slate-300 transition-all">
         Lịch sử điểm danh ➜
       </Link>
     </div>
@@ -213,7 +213,7 @@ export default function Dashboard() {
     return (
       <div className="flex flex-col items-center justify-center h-[50vh] space-y-4">
         <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-slate-400 font-bold text-xs">Đang tải nhanh dữ liệu bảng điều khiển...</p>
+        <p className="text-slate-400 dark:text-slate-500 font-bold text-xs">Đang tải nhanh dữ liệu bảng điều khiển...</p>
       </div>
     );
   }
@@ -229,7 +229,7 @@ export default function Dashboard() {
           <h1 className="text-5xl md:text-6xl font-black leading-tight">
             Master English with <span className="gradient-text">EngBot</span>
           </h1>
-          <p className="text-xl text-slate-500 font-medium">
+          <p className="text-xl text-slate-500 dark:text-slate-400 font-medium">
             Personalized coaching, real-time feedback, and interactive roleplay. 
             Join thousands of learners worldwide.
           </p>
@@ -241,7 +241,7 @@ export default function Dashboard() {
               Get Started for Free
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
-            <button className="px-8 py-4 glass border rounded-2xl font-bold text-lg hover:bg-slate-50 transition-all cursor-pointer">
+            <button className="px-8 py-4 glass border rounded-2xl font-bold text-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-all cursor-pointer">
               Watch Demo
             </button>
           </div>
@@ -249,25 +249,25 @@ export default function Dashboard() {
 
         <section className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-10">
           <div className="premium-card p-8 space-y-4">
-            <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-500">
+            <div className="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center text-blue-500">
               <MessageSquare className="w-6 h-6" />
             </div>
             <h3 className="text-xl font-bold">Smart AI Chat</h3>
-            <p className="text-slate-500">Natural conversations with EngBot to improve your speaking fluency.</p>
+            <p className="text-slate-500 dark:text-slate-400">Natural conversations with EngBot to improve your speaking fluency.</p>
           </div>
           <div className="premium-card p-8 space-y-4">
-            <div className="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center text-purple-500">
+            <div className="w-12 h-12 rounded-2xl bg-purple-50 dark:bg-purple-500/10 flex items-center justify-center text-purple-500">
               <BookOpen className="w-6 h-6" />
             </div>
             <h3 className="text-xl font-bold">Smart SRS</h3>
-            <p className="text-slate-500">Scientific vocabulary learning system that remembers what you forget.</p>
+            <p className="text-slate-500 dark:text-slate-400">Scientific vocabulary learning system that remembers what you forget.</p>
           </div>
           <div className="premium-card p-8 space-y-4">
-            <div className="w-12 h-12 rounded-2xl bg-rose-50 flex items-center justify-center text-rose-500">
+            <div className="w-12 h-12 rounded-2xl bg-rose-50 dark:bg-rose-500/10 flex items-center justify-center text-rose-500">
               <Target className="w-6 h-6" />
             </div>
             <h3 className="text-xl font-bold">Real-time Coaching</h3>
-            <p className="text-slate-500">Instant grammar and pronunciation feedback while you write or speak.</p>
+            <p className="text-slate-500 dark:text-slate-400">Instant grammar and pronunciation feedback while you write or speak.</p>
           </div>
         </section>
       </div>
@@ -294,21 +294,21 @@ export default function Dashboard() {
           <button 
             onClick={handleCheckin} 
             disabled={checkingIn}
-            className="px-8 py-3 bg-white text-orange-600 rounded-2xl font-black text-sm hover:bg-orange-50 transition-all shadow-md relative z-10 disabled:opacity-50 cursor-pointer"
+            className="px-8 py-3 bg-white dark:bg-slate-900 text-orange-600 dark:text-orange-400 rounded-2xl font-black text-sm hover:bg-orange-50 dark:hover:bg-orange-500/10 transition-all shadow-md relative z-10 disabled:opacity-50 cursor-pointer"
           >
             {checkingIn ? 'ĐANG ĐIỂM DANH...' : 'ĐIỂM DANH NGAY'}
           </button>
           <div className="absolute -right-8 -bottom-8 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
         </div>
       ) : (
-        <div className="premium-card p-4 bg-emerald-50 border-emerald-100 flex items-center justify-between gap-4 animate-in slide-in-from-top-4">
+        <div className="premium-card p-4 bg-emerald-50 dark:bg-emerald-500/10 border-emerald-100 flex items-center justify-between gap-4 animate-in slide-in-from-top-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-lg shadow-emerald-500/20">
               <Flame className="w-5 h-5 text-yellow-200" />
             </div>
             <div>
-              <p className="text-sm font-black text-emerald-950">Hôm nay bạn đã điểm danh thành công! 🎉</p>
-              <p className="text-xs text-emerald-600 font-medium">Bảo vệ chuỗi hoạt động học tập hằng ngày và nâng cao trình độ tiếng Anh.</p>
+              <p className="text-sm font-black text-emerald-950 dark:text-emerald-50">Hôm nay bạn đã điểm danh thành công! 🎉</p>
+              <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">Bảo vệ chuỗi hoạt động học tập hằng ngày và nâng cao trình độ tiếng Anh.</p>
             </div>
           </div>
           <Link href="/checkin" className="px-6 py-2 bg-emerald-500 text-white rounded-xl font-bold text-xs hover:bg-emerald-600 transition-all shadow-md">
@@ -319,14 +319,14 @@ export default function Dashboard() {
 
       {/* Review Reminder Notification */}
       {(needsReview || reviewDue > 0) && (
-        <div className="premium-card p-4 bg-rose-50 border-rose-100 flex items-center justify-between gap-4 animate-in slide-in-from-top-4">
+        <div className="premium-card p-4 bg-rose-50 dark:bg-rose-500/10 border-rose-100 flex items-center justify-between gap-4 animate-in slide-in-from-top-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-rose-500 text-white flex items-center justify-center shadow-lg shadow-rose-500/20">
               <Clock className="w-5 h-5 animate-pulse" />
             </div>
             <div>
-              <p className="text-sm font-black text-rose-900">Đã đến lúc ôn tập từ vựng!</p>
-              <p className="text-xs text-rose-600 font-medium">
+              <p className="text-sm font-black text-rose-900 dark:text-rose-100">Đã đến lúc ôn tập từ vựng!</p>
+              <p className="text-xs text-rose-600 dark:text-rose-400 font-medium">
                 {reviewDue > 0 
                   ? `Bạn có ${reviewDue} từ cần được ôn tập lại hôm nay.`
                   : 'Hãy ôn tập lại từ vựng mỗi ngày để ghi nhớ tốt hơn!'}
@@ -343,7 +343,7 @@ export default function Dashboard() {
       <section className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold">Hi, {user.displayName?.split(' ')[0] || 'Learner'}! 👋</h1>
-          <p className="text-slate-500">
+          <p className="text-slate-500 dark:text-slate-400">
             {dbUser?.streak ? `You're on a ${dbUser.streak}-day streak. Keep it up!` : 'Start your first learning session today!'}
           </p>
         </div>
@@ -362,16 +362,16 @@ export default function Dashboard() {
       {/* Stats Grid */}
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {[
-          { label: 'Words Learned', value: (stats?.wordsLearned ?? 0).toString(), sub: 'Total saved words', icon: BookOpen, color: 'text-blue-500', bg: 'bg-blue-50' },
-          { label: 'Oxford 3000™', value: `${oxfordPct}%`, sub: `${stats?.oxfordLearned || 0} / 3000 learned`, icon: Target, color: 'text-rose-500', bg: 'bg-rose-50' },
-          { label: 'XP Points', value: dbUser?.xp?.toLocaleString() || '0', sub: 'Ranking...', icon: TrendingUp, color: 'text-purple-500', bg: 'bg-purple-50' },
-          { label: 'Learning Time', value: '1.5h', sub: 'This week', icon: Clock, color: 'text-green-500', bg: 'bg-green-50' },
+          { label: 'Words Learned', value: (stats?.wordsLearned ?? 0).toString(), sub: 'Total saved words', icon: BookOpen, color: 'text-blue-500', bg: 'bg-blue-50 dark:bg-blue-500/10' },
+          { label: 'Oxford 3000™', value: `${oxfordPct}%`, sub: `${stats?.oxfordLearned || 0} / 3000 learned`, icon: Target, color: 'text-rose-500', bg: 'bg-rose-50 dark:bg-rose-500/10' },
+          { label: 'XP Points', value: dbUser?.xp?.toLocaleString() || '0', sub: 'Ranking...', icon: TrendingUp, color: 'text-purple-500', bg: 'bg-purple-50 dark:bg-purple-500/10' },
+          { label: 'Learning Time', value: '1.5h', sub: 'This week', icon: Clock, color: 'text-green-500', bg: 'bg-green-50 dark:bg-green-500/10' },
         ].map((stat, i) => (
           <div key={i} className="premium-card p-6 flex items-start justify-between group cursor-pointer hover:premium-card-hover">
             <div>
-              <p className="text-sm font-medium text-slate-500">{stat.label}</p>
+              <p className="text-sm font-medium text-slate-500 dark:text-slate-400">{stat.label}</p>
               <h3 className="text-2xl font-bold mt-1">{stat.value}</h3>
-              <p className="text-xs text-slate-400 mt-1 font-medium">{stat.sub}</p>
+              <p className="text-xs text-slate-400 dark:text-slate-500 mt-1 font-medium">{stat.sub}</p>
             </div>
             <div className={cn("p-3 rounded-xl", stat.bg)}>
               <stat.icon className={cn("w-6 h-6", stat.color)} />
@@ -389,7 +389,7 @@ export default function Dashboard() {
               <p className="text-white/80 mb-6">Your personal AI mentor is ready to help you improve today.</p>
               
               <div className="flex flex-wrap gap-4">
-                <Link href="/chat" className="px-6 py-3 bg-white text-blue-600 rounded-xl font-bold hover:bg-blue-50 transition-colors shadow-lg shadow-black/10">
+                <Link href="/chat" className="px-6 py-3 bg-white dark:bg-slate-900 text-blue-600 dark:text-blue-400 rounded-xl font-bold hover:bg-blue-50 dark:hover:bg-blue-500/10 transition-colors shadow-lg shadow-black/10">
                   Talk to EngBot
                 </Link>
                 <Link href="/learn" className="px-6 py-3 bg-white/20 backdrop-blur-md text-white border border-white/30 rounded-xl font-bold hover:bg-white/30 transition-colors">
@@ -404,33 +404,33 @@ export default function Dashboard() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Link href="/chat" className="premium-card p-6 hover:premium-card-hover cursor-pointer group">
               <div className="flex items-center justify-between mb-4">
-                <div className="p-3 bg-blue-50 rounded-xl">
+                <div className="p-3 bg-blue-50 dark:bg-blue-500/10 rounded-xl">
                   <MessageSquare className="w-6 h-6 text-blue-500" />
                 </div>
                 <ChevronRight className="w-5 h-5 text-slate-300 group-hover:translate-x-1 transition-transform" />
               </div>
               <h3 className="font-bold text-lg">AI Chat Practice</h3>
-              <p className="text-sm text-slate-500 mt-1">Start a conversation with EngBot and get instant feedback.</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Start a conversation with EngBot and get instant feedback.</p>
             </Link>
             <Link href="/journal" className="premium-card p-6 hover:premium-card-hover cursor-pointer group">
               <div className="flex items-center justify-between mb-4">
-                <div className="p-3 bg-rose-50 rounded-xl">
+                <div className="p-3 bg-rose-50 dark:bg-rose-500/10 rounded-xl">
                   <PenTool className="w-6 h-6 text-rose-500" />
                 </div>
                 <ChevronRight className="w-5 h-5 text-slate-300 group-hover:translate-x-1 transition-transform" />
               </div>
               <h3 className="font-bold text-lg">Writing Journal</h3>
-              <p className="text-sm text-slate-500 mt-1">Write your daily journal and let EngBot check your grammar.</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Write your daily journal and let EngBot check your grammar.</p>
             </Link>
             <Link href="/tenses" className="premium-card p-6 hover:premium-card-hover cursor-pointer group">
               <div className="flex items-center justify-between mb-4">
-                <div className="p-3 bg-emerald-50 rounded-xl">
+                <div className="p-3 bg-emerald-50 dark:bg-emerald-500/10 rounded-xl">
                   <Clock className="w-6 h-6 text-emerald-500" />
                 </div>
                 <ChevronRight className="w-5 h-5 text-slate-300 group-hover:translate-x-1 transition-transform" />
               </div>
               <h3 className="font-bold text-lg">5 Tenses AI</h3>
-              <p className="text-sm text-slate-500 mt-1">Học 5 thì cốt lõi cơ bản đến nâng cao và phản xạ nhanh cùng AI.</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Học 5 thì cốt lõi cơ bản đến nâng cao và phản xạ nhanh cùng AI.</p>
             </Link>
           </div>
         </div>
@@ -452,7 +452,7 @@ export default function Dashboard() {
             <div className="flex justify-center mb-6">
               <div className="relative w-36 h-36">
                 <svg className="w-full h-full -rotate-90" viewBox="0 0 120 120">
-                  <circle cx="60" cy="60" r="52" fill="none" stroke="#e2e8f0" strokeWidth="10" />
+                  <circle cx="60" cy="60" r="52" fill="none" stroke="#e2e8f0" strokeWidth="10" className="dark:stroke-slate-700" />
                   <circle 
                     cx="60" cy="60" r="52" fill="none" 
                     stroke="url(#progressGrad)" strokeWidth="10" strokeLinecap="round"
@@ -467,10 +467,10 @@ export default function Dashboard() {
                   </defs>
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-3xl font-black text-slate-800">
+                  <span className="text-3xl font-black text-slate-800 dark:text-slate-100">
                     {Math.round(Number(oxfordPct))}%
                   </span>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Complete</span>
+                  <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Complete</span>
                 </div>
               </div>
             </div>
@@ -484,8 +484,8 @@ export default function Dashboard() {
                 { level: 'B2', color: 'bg-purple-400', desc: 'Upper-Int' },
               ].map(l => (
                 <div key={l.level} className="flex items-center gap-3">
-                  <span className="text-[10px] font-black text-slate-400 w-6">{l.level}</span>
-                  <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
+                  <span className="text-[10px] font-black text-slate-400 dark:text-slate-500 w-6">{l.level}</span>
+                  <div className="flex-1 h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
                     <div className={`h-full ${l.color} rounded-full transition-all duration-700`} style={{ width: '30%' }} />
                   </div>
                   <span className="text-[10px] font-bold text-slate-300 w-16 text-right">{l.desc}</span>
@@ -497,7 +497,7 @@ export default function Dashboard() {
               <Link href="/learn" className="flex-1 text-center py-2.5 bg-primary text-white rounded-xl text-sm font-bold hover:opacity-90 transition-all">
                 Learn Now
               </Link>
-              <Link href="/dictionary/wordlist" className="flex-1 text-center py-2.5 border border-slate-200 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition-colors">
+              <Link href="/dictionary/wordlist" className="flex-1 text-center py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
                 Browse
               </Link>
             </div>
@@ -506,7 +506,7 @@ export default function Dashboard() {
           <div className="premium-card p-6 bg-slate-900 text-white relative overflow-hidden group">
             <div className="relative z-10">
               <h3 className="font-bold mb-2">Join Leaderboard</h3>
-              <p className="text-slate-400 text-sm mb-4">Compete with other learners and win weekly rewards.</p>
+              <p className="text-slate-400 dark:text-slate-500 text-sm mb-4">Compete with other learners and win weekly rewards.</p>
               <Link href="/leaderboard" className="w-full block text-center py-2.5 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl text-sm font-bold hover:opacity-90 transition-opacity">
                 View Rankings
               </Link>

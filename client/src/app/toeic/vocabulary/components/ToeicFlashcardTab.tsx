@@ -40,14 +40,14 @@ export default function ToeicFlashcardTab({
           )}
         >
           {/* Front View */}
-          <div className="absolute w-full h-full backface-hidden flex flex-col items-center justify-center text-center bg-white p-4 sm:p-8 rounded-[2rem]">
+          <div className="absolute w-full h-full backface-hidden flex flex-col items-center justify-center text-center bg-white dark:bg-slate-900 p-4 sm:p-8 rounded-[2rem]">
             <span className="px-2.5 py-0.5 bg-primary/10 border border-primary/20 text-primary text-[9px] font-black rounded-full uppercase tracking-wider mb-2 landscape:mb-1">
               {currentWord.wordType}
             </span>
-            <h2 className="text-3xl sm:text-4xl landscape:text-2xl font-black text-slate-800 tracking-tight mb-1">
+            <h2 className="text-3xl sm:text-4xl landscape:text-2xl font-black text-slate-800 dark:text-slate-100 tracking-tight mb-1">
               {currentWord.word}
             </h2>
-            <p className="text-sm sm:text-base landscape:text-xs font-serif text-slate-400 font-bold mb-4 landscape:mb-2">
+            <p className="text-sm sm:text-base landscape:text-xs font-serif text-slate-400 dark:text-slate-500 font-bold mb-4 landscape:mb-2">
               {currentWord.phonetic}
             </p>
             
@@ -56,12 +56,12 @@ export default function ToeicFlashcardTab({
                 e.stopPropagation();
                 speakWord(currentWord.word);
               }}
-              className="w-12 h-12 landscape:w-10 landscape:h-10 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all shadow-sm cursor-pointer"
+              className="w-12 h-12 landscape:w-10 landscape:h-10 rounded-full bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all shadow-sm cursor-pointer"
             >
               <Volume2 className="w-5 h-5 landscape:w-4 landscape:h-4" />
             </button>
             
-            <p className="absolute bottom-4 landscape:bottom-2 text-[8px] text-slate-300 font-black uppercase tracking-widest">Bấm vào thẻ để xem nghĩa</p>
+            <p className="absolute bottom-4 landscape:bottom-2 text-[8px] text-slate-300 dark:text-slate-600 font-black uppercase tracking-widest">Bấm vào thẻ để xem nghĩa</p>
           </div>
 
           {/* Back View */}
@@ -104,7 +104,7 @@ export default function ToeicFlashcardTab({
               if (currentIndex > 0) setCurrentIndex(prev => prev - 1);
             }}
             disabled={currentIndex === 0}
-            className="flex-1 py-2.5 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition-all font-bold text-xs disabled:opacity-40 cursor-pointer disabled:cursor-not-allowed text-slate-700"
+            className="flex-1 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-all font-bold text-xs disabled:opacity-40 cursor-pointer disabled:cursor-not-allowed text-slate-700 dark:text-slate-300"
           >
             Trước
           </button>
@@ -116,7 +116,7 @@ export default function ToeicFlashcardTab({
               }
             }}
             disabled={currentIndex === selectedList.words.length - 1}
-            className="flex-1 py-2.5 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition-all font-bold text-xs disabled:opacity-40 cursor-pointer disabled:cursor-not-allowed text-slate-700"
+            className="flex-1 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-all font-bold text-xs disabled:opacity-40 cursor-pointer disabled:cursor-not-allowed text-slate-700 dark:text-slate-300"
           >
             Tiếp
           </button>

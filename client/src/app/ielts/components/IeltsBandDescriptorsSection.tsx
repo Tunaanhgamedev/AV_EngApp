@@ -14,8 +14,8 @@ export default function IeltsBandDescriptorsSection() {
             <BarChart3 className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h3 className="text-xl font-black text-slate-800">Thang điểm IELTS Band Score</h3>
-            <p className="text-sm text-slate-500 font-medium">Hiểu rõ mục tiêu điểm số của bạn</p>
+            <h3 className="text-xl font-black text-slate-800 dark:text-slate-100">Thang điểm IELTS Band Score</h3>
+            <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">Hiểu rõ mục tiêu điểm số của bạn</p>
           </div>
         </div>
 
@@ -25,7 +25,7 @@ export default function IeltsBandDescriptorsSection() {
               <div className={cn("h-16 rounded-xl flex items-center justify-center text-white font-black text-lg transition-transform group-hover:scale-105", b.color)}>
                 {b.band}
               </div>
-              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">{b.label}</p>
+              <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{b.label}</p>
             </div>
           ))}
         </div>

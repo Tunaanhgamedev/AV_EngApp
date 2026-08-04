@@ -147,7 +147,7 @@ export default function SpeakingPracticeTab() {
 
   const renderHighlightedPhrase = () => {
     if (!results) {
-      return <span className="text-slate-800">{currentPhrase.text}</span>;
+      return <span className="text-slate-800 dark:text-slate-200">{currentPhrase.text}</span>;
     }
 
     const mispronouncedList = (results.mispronounced || []).map((w: string) => 
@@ -166,8 +166,8 @@ export default function SpeakingPracticeTab() {
               className={cn(
                 "text-3xl font-black transition-all px-1.5 py-0.5 rounded-lg",
                 isWrong 
-                  ? "text-rose-500 bg-rose-50 border border-rose-100 line-through decoration-rose-300" 
-                  : "text-emerald-600 bg-emerald-50/50 border border-emerald-100"
+                  ? "text-rose-500 bg-rose-50 dark:bg-rose-500/10 border border-rose-100 line-through decoration-rose-300" 
+                  : "text-emerald-600 dark:text-emerald-400 bg-emerald-50/50 dark:bg-emerald-500/10 border border-emerald-100"
               )}
             >
               {w}
@@ -183,17 +183,17 @@ export default function SpeakingPracticeTab() {
       <div className="md:col-span-2 space-y-8">
         
         {/* Main Interactive Phrase Practice Card */}
-        <div className="premium-card p-8 md:p-10 flex flex-col items-center text-center space-y-8 relative overflow-hidden bg-white border border-slate-100 shadow-xl rounded-3xl">
+        <div className="premium-card p-8 md:p-10 flex flex-col items-center text-center space-y-8 relative overflow-hidden bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-xl rounded-3xl">
           <div className="absolute top-6 left-6 flex items-center gap-2">
             <span className={cn(
               "px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border",
-              currentPhrase.difficulty === 'Beginner' ? "bg-green-50 text-green-600 border-green-100" :
-              currentPhrase.difficulty === 'Intermediate' ? "bg-blue-50 text-blue-600 border-blue-100" :
-              "bg-purple-50 text-purple-600 border-purple-100"
+              currentPhrase.difficulty === 'Beginner' ? "bg-green-50 dark:bg-green-500/10 text-green-600 dark:text-green-400 border-green-100" :
+              currentPhrase.difficulty === 'Intermediate' ? "bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-100" :
+              "bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-100"
             )}>
               {currentPhrase.difficulty}
             </span>
-            <span className="text-[10px] font-black text-slate-400 uppercase tracking-wider px-2 py-1 bg-slate-50 rounded-full border border-slate-100">
+            <span className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-wider px-2 py-1 bg-slate-50 dark:bg-slate-800 rounded-full border border-slate-100 dark:border-slate-800">
               {currentPhrase.focus}
             </span>
           </div>
@@ -201,18 +201,18 @@ export default function SpeakingPracticeTab() {
           <div className="space-y-6 max-w-2xl w-full pt-4">
             {results ? (
               <div className="space-y-1">
-                <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100">Phân tích từ AI</span>
+                <span className="text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest bg-emerald-50 dark:bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-100">Phân tích từ AI</span>
                 <div className="py-4">{renderHighlightedPhrase()}</div>
               </div>
             ) : (
-              <h2 className="text-3xl font-black leading-snug text-slate-800">
+              <h2 className="text-3xl font-black leading-snug text-slate-800 dark:text-slate-200">
                 {currentPhrase.text}
               </h2>
             )}
 
             <button 
               onClick={() => speak(currentPhrase.text)} 
-              className="flex items-center gap-2 px-5 py-2.5 bg-slate-50 hover:bg-slate-100 rounded-xl text-slate-600 hover:text-primary transition-all mx-auto font-black text-xs uppercase tracking-wider border border-slate-200/60 shadow-sm"
+              className="flex items-center gap-2 px-5 py-2.5 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 dark:bg-slate-800 rounded-xl text-slate-600 dark:text-slate-300 hover:text-primary transition-all mx-auto font-black text-xs uppercase tracking-wider border border-slate-200/60 dark:border-slate-700/60 shadow-sm"
             >
               <Volume2 className="w-4 h-4 text-primary" />
               Nghe phát âm mẫu chuẩn
@@ -220,7 +220,7 @@ export default function SpeakingPracticeTab() {
           </div>
 
           {/* Recording & Action Controls */}
-          <div className="flex flex-col items-center gap-4 w-full pt-4 border-t border-slate-100">
+          <div className="flex flex-col items-center gap-4 w-full pt-4 border-t border-slate-100 dark:border-slate-800">
             {isRecording ? (
               <div className="flex flex-col items-center gap-4 animate-in fade-in">
                 <div className="relative flex items-center justify-center">
@@ -232,7 +232,7 @@ export default function SpeakingPracticeTab() {
                     <Mic2 className="w-8 h-8 animate-pulse" />
                   </button>
                 </div>
-                <div className="flex items-center gap-2 font-mono text-xs font-black text-rose-500 bg-rose-50 px-4 py-1.5 rounded-full border border-rose-100">
+                <div className="flex items-center gap-2 font-mono text-xs font-black text-rose-500 bg-rose-50 dark:bg-rose-500/10 px-4 py-1.5 rounded-full border border-rose-100">
                   <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
                   Đang ghi âm... {timer}s
                 </div>
@@ -240,7 +240,7 @@ export default function SpeakingPracticeTab() {
             ) : isAnalyzing ? (
               <div className="flex flex-col items-center gap-3 py-4">
                 <Loader2 className="w-10 h-10 text-primary animate-spin" />
-                <p className="text-xs font-black text-slate-400 uppercase tracking-widest animate-pulse">EngBot AI đang phân tích âm phổ...</p>
+                <p className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest animate-pulse">EngBot AI đang phân tích âm phổ...</p>
               </div>
             ) : (
               <div className="flex items-center gap-4">
@@ -258,7 +258,7 @@ export default function SpeakingPracticeTab() {
                       setResults(null);
                       setTranscript('');
                     }}
-                    className="p-4 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-2xl font-bold transition-all cursor-pointer"
+                    className="p-4 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-600 dark:text-slate-300 rounded-2xl font-bold transition-all cursor-pointer"
                     title="Làm mới"
                   >
                     <RotateCcw className="w-5 h-5" />
@@ -269,9 +269,9 @@ export default function SpeakingPracticeTab() {
 
             {/* Recognized live transcript snippet */}
             {transcript && (
-              <div className="p-4 bg-slate-50 border border-slate-100 rounded-2xl max-w-xl w-full text-left space-y-1">
-                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Giọng nói nhận diện được:</span>
-                <p className="text-xs font-bold text-slate-700 leading-relaxed italic">"{transcript}"</p>
+              <div className="p-4 bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-800 rounded-2xl max-w-xl w-full text-left space-y-1">
+                <span className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Giọng nói nhận diện được:</span>
+                <p className="text-xs font-bold text-slate-700 dark:text-slate-300 leading-relaxed italic">"{transcript}"</p>
               </div>
             )}
           </div>
@@ -291,27 +291,27 @@ export default function SpeakingPracticeTab() {
                 </div>
               </div>
 
-              <div className="premium-card p-5 text-center space-y-2 bg-white border border-slate-100 rounded-3xl shadow-sm">
+              <div className="premium-card p-5 text-center space-y-2 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl shadow-sm">
                 <Activity className="w-6 h-6 mx-auto text-blue-500" />
                 <div>
-                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Trôi Chảy</p>
-                  <p className="text-2xl font-black text-slate-800">{results.fluency}%</p>
+                  <p className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Trôi Chảy</p>
+                  <p className="text-2xl font-black text-slate-800 dark:text-slate-200">{results.fluency}%</p>
                 </div>
               </div>
 
-              <div className="premium-card p-5 text-center space-y-2 bg-white border border-slate-100 rounded-3xl shadow-sm">
+              <div className="premium-card p-5 text-center space-y-2 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl shadow-sm">
                 <Zap className="w-6 h-6 mx-auto text-purple-500" />
                 <div>
-                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Phát Âm</p>
-                  <p className="text-2xl font-black text-slate-800">{results.pronunciation}%</p>
+                  <p className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Phát Âm</p>
+                  <p className="text-2xl font-black text-slate-800 dark:text-slate-200">{results.pronunciation}%</p>
                 </div>
               </div>
 
-              <div className="premium-card p-5 text-center space-y-2 bg-white border border-slate-100 rounded-3xl shadow-sm">
+              <div className="premium-card p-5 text-center space-y-2 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl shadow-sm">
                 <Waves className="w-6 h-6 mx-auto text-amber-500" />
                 <div>
-                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Độ Chính Xác</p>
-                  <p className="text-2xl font-black text-slate-800">{results.accuracy}%</p>
+                  <p className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Độ Chính Xác</p>
+                  <p className="text-2xl font-black text-slate-800 dark:text-slate-200">{results.accuracy}%</p>
                 </div>
               </div>
             </div>
@@ -324,11 +324,11 @@ export default function SpeakingPracticeTab() {
                 </div>
                 <div>
                   <h3 className="font-black text-base text-white">Đánh Giá Từ Chuyên Gia AI</h3>
-                  <p className="text-xs text-slate-400 font-medium">Nhận xét chi tiết giúp cải thiện giọng nói bản xứ</p>
+                  <p className="text-xs text-slate-400 dark:text-slate-500 font-medium">Nhận xét chi tiết giúp cải thiện giọng nói bản xứ</p>
                 </div>
               </div>
 
-              <p className="text-slate-300 text-sm leading-relaxed font-medium bg-white/5 p-4 rounded-2xl border border-white/5">
+              <p className="text-slate-300 text-sm leading-relaxed font-medium bg-white dark:bg-slate-900/5 p-4 rounded-2xl border border-white/5">
                 "{results.feedback}"
               </p>
 
@@ -359,12 +359,12 @@ export default function SpeakingPracticeTab() {
 
       {/* Right Column: Sentence Library */}
       <div className="space-y-6">
-        <div className="premium-card p-6 bg-white border border-slate-100 shadow-xl rounded-3xl space-y-6">
-          <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-            <h3 className="font-black text-slate-800 text-base flex items-center gap-2">
+        <div className="premium-card p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-xl rounded-3xl space-y-6">
+          <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
+            <h3 className="font-black text-slate-800 dark:text-slate-200 text-base flex items-center gap-2">
               <BookOpen className="w-5 h-5 text-primary" /> Thư Viện Câu Mẫu
             </h3>
-            <span className="text-xs font-bold text-slate-400">{PRACTICE_PHRASES.length} mẫu</span>
+            <span className="text-xs font-bold text-slate-400 dark:text-slate-500">{PRACTICE_PHRASES.length} mẫu</span>
           </div>
 
           <div className="space-y-3">
@@ -382,7 +382,7 @@ export default function SpeakingPracticeTab() {
                     "p-4 rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-4 group",
                     isActive 
                       ? "bg-slate-900 border-slate-800 text-white shadow-md" 
-                      : "bg-slate-50/50 border-slate-100 hover:bg-slate-100/80 text-slate-700"
+                      : "bg-slate-50/50 dark:bg-slate-800/50 border-slate-100 dark:border-slate-800 hover:bg-slate-100/80 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300"
                   )}
                 >
                   <div className="space-y-1 min-w-0 flex-1">
@@ -390,7 +390,7 @@ export default function SpeakingPracticeTab() {
                     <div className="flex items-center gap-2">
                       <span className={cn(
                         "text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full",
-                        isActive ? "bg-white/20 text-white" : "bg-slate-200 text-slate-600"
+                        isActive ? "bg-white dark:bg-slate-900/20 text-white" : "bg-slate-200 text-slate-600 dark:text-slate-300"
                       )}>
                         {phrase.difficulty}
                       </span>

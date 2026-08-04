@@ -106,9 +106,9 @@ export default function WordScrambleGame({ dbWords, category, onClose, awardXp, 
 
   return (
     <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-300">
-      <div className="bg-white rounded-[2rem] shadow-2xl w-full max-w-xl overflow-hidden animate-in zoom-in-95 duration-300">
+      <div className="bg-white dark:bg-slate-900 rounded-[2rem] shadow-2xl w-full max-w-xl overflow-hidden animate-in zoom-in-95 duration-300">
         {/* Header */}
-        <div className="flex items-center justify-between px-8 py-5 border-b border-slate-100 bg-gradient-to-r from-purple-600 to-indigo-600 text-white">
+        <div className="flex items-center justify-between px-8 py-5 border-b border-slate-100 dark:border-slate-800 bg-gradient-to-r from-purple-600 to-indigo-600 text-white">
           <div>
             <h2 className="text-xl font-black text-white">Word Scramble</h2>
             <p className="text-purple-200 text-xs font-medium">Ghép các chữ cái xáo trộn thành một từ có nghĩa (Danh mục: {getCategoryLabel(category)})</p>
@@ -119,31 +119,31 @@ export default function WordScrambleGame({ dbWords, category, onClose, awardXp, 
         {done ? (
           <div className="p-10 text-center space-y-5 animate-in zoom-in duration-500 max-h-[85vh] overflow-y-auto no-scrollbar">
             <div className="text-5xl">🐝</div>
-            <h3 className="text-2xl font-black text-slate-800">Hoàn Thành Ghép Chữ!</h3>
-            <p className="text-slate-500 font-medium">Bạn đã ghép đúng {score}/{scrambleList.length} từ vựng.</p>
-            <p className="text-green-600 font-black">+{score * 15} XP</p>
+            <h3 className="text-2xl font-black text-slate-800 dark:text-slate-100">Hoàn Thành Ghép Chữ!</h3>
+            <p className="text-slate-500 dark:text-slate-400 font-medium">Bạn đã ghép đúng {score}/{scrambleList.length} từ vựng.</p>
+            <p className="text-green-600 dark:text-green-400 font-black">+{score * 15} XP</p>
             <div className="flex gap-3 justify-center">
               <button onClick={initGame} className="px-6 py-3 bg-purple-600 text-white rounded-2xl font-bold flex items-center gap-1 shadow-lg shadow-purple-600/30 cursor-pointer"><RotateCcw className="w-4 h-4" />Chơi Lại</button>
-              <button onClick={onClose} className="px-6 py-3 bg-slate-100 text-slate-700 rounded-2xl font-bold hover:bg-slate-200 transition-all">Quay Về</button>
+              <button onClick={onClose} className="px-6 py-3 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-2xl font-bold hover:bg-slate-200 transition-all">Quay Về</button>
             </div>
             <GameVocabularyRecap words={sessionWords} onSaveWord={onSaveWord} savedWords={savedWords} savingWord={savingWord} />
           </div>
         ) : activeWord ? (
           <div className="p-8 space-y-6">
             {/* Hint Box */}
-            <div className="p-4 bg-purple-50 border border-purple-100 rounded-2xl text-purple-800 text-sm font-medium leading-relaxed">
-              <span className="font-bold block text-xs uppercase tracking-wider text-purple-600 mb-1">Gợi ý từ vựng</span>
+            <div className="p-4 bg-purple-50 dark:bg-purple-500/10 border border-purple-100 rounded-2xl text-purple-800 text-sm font-medium leading-relaxed">
+              <span className="font-bold block text-xs uppercase tracking-wider text-purple-600 dark:text-purple-400 mb-1">Gợi ý từ vựng</span>
               {activeWord?.hint}
             </div>
 
             {/* Answer Box */}
             <div className="space-y-2">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Từ bạn ghép</span>
+              <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Từ bạn ghép</span>
               <div className={cn(
                 "min-h-16 p-3 rounded-2xl border-2 border-dashed flex flex-wrap gap-2 items-center justify-center transition-all duration-300",
-                isCorrect === true ? "bg-green-50 border-green-400" :
-                  isCorrect === false ? "bg-red-50 border-red-400 animate-shake" :
-                    "bg-slate-50 border-slate-200"
+                isCorrect === true ? "bg-green-50 dark:bg-green-500/10 border-green-400" :
+                  isCorrect === false ? "bg-red-50 dark:bg-red-500/10 border-red-400 animate-shake" :
+                    "bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700"
               )}>
                 {answer.map((item, idx) => (
                   <button
@@ -154,13 +154,13 @@ export default function WordScrambleGame({ dbWords, category, onClose, awardXp, 
                     {item.char}
                   </button>
                 ))}
-                {answer.length === 0 && <span className="text-slate-400 text-xs font-bold uppercase tracking-wider">Nhấp các chữ cái bên dưới để bắt đầu</span>}
+                {answer.length === 0 && <span className="text-slate-400 dark:text-slate-500 text-xs font-bold uppercase tracking-wider">Nhấp các chữ cái bên dưới để bắt đầu</span>}
               </div>
             </div>
 
             {/* Pool Box */}
             <div className="space-y-2">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Các chữ cái</span>
+              <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Các chữ cái</span>
               <div className="flex flex-wrap gap-2 justify-center">
                 {lettersPool.map((item, idx) => (
                   <button
@@ -170,8 +170,8 @@ export default function WordScrambleGame({ dbWords, category, onClose, awardXp, 
                     className={cn(
                       "w-12 h-12 rounded-xl text-lg font-black flex items-center justify-center border-2 transition-all cursor-pointer shadow-sm",
                       item.used
-                        ? "bg-slate-100 border-slate-200 text-slate-300 scale-95"
-                        : "bg-white border-purple-200 text-purple-700 hover:scale-115 hover:border-purple-400 active:scale-90"
+                        ? "bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-300 scale-95"
+                        : "bg-white dark:bg-slate-900 border-purple-200 text-purple-700 dark:text-purple-400 hover:scale-115 hover:border-purple-400 active:scale-90"
                     )}
                   >
                     {item.char}
@@ -181,10 +181,10 @@ export default function WordScrambleGame({ dbWords, category, onClose, awardXp, 
             </div>
 
             {/* Controls */}
-            <div className="flex gap-3 justify-end pt-2 border-t border-slate-100">
+            <div className="flex gap-3 justify-end pt-2 border-t border-slate-100 dark:border-slate-800">
               <button
                 onClick={resetWord}
-                className="px-4 py-2 border border-slate-200 rounded-xl font-bold text-xs hover:bg-slate-50 transition-all flex items-center gap-1.5 text-slate-500 cursor-pointer"
+                className="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-xs hover:bg-slate-50 dark:hover:bg-slate-800 transition-all flex items-center gap-1.5 text-slate-500 dark:text-slate-400 cursor-pointer"
               >
                 <RefreshCw className="w-3.5 h-3.5" /> Xóa Tất Cả
               </button>
@@ -198,7 +198,7 @@ export default function WordScrambleGame({ dbWords, category, onClose, awardXp, 
             </div>
           </div>
         ) : (
-          <div className="p-12 text-center text-slate-500">Đang chuẩn bị...</div>
+          <div className="p-12 text-center text-slate-500 dark:text-slate-400">Đang chuẩn bị...</div>
         )}
       </div>
     </div>

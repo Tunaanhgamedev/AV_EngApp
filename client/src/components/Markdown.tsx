@@ -18,22 +18,22 @@ export function Markdown({ content }: MarkdownProps) {
     const rows = currentTable.slice(2); // row 1 is separator |---|---|
     currentTable = [];
     return (
-      <div key={`table-${key}`} className="overflow-x-auto my-3 rounded-xl border border-slate-200 shadow-sm max-w-full">
-        <table className="min-w-full divide-y divide-slate-200 text-xs">
-          <thead className="bg-slate-50 font-bold text-slate-700">
+      <div key={`table-${key}`} className="overflow-x-auto my-3 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm max-w-full">
+        <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-700 text-xs">
+          <thead className="bg-slate-50 dark:bg-slate-800 font-bold text-slate-700 dark:text-slate-300">
             <tr>
               {header.map((col, idx) => (
-                <th key={idx} className="px-3 py-2 text-left font-semibold border-r last:border-r-0 border-slate-200">
+                <th key={idx} className="px-3 py-2 text-left font-semibold border-r last:border-r-0 border-slate-200 dark:border-slate-700">
                   {parseInline(col)}
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100 bg-white text-slate-600">
+          <tbody className="divide-y divide-slate-100 dark:divide-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300">
             {rows.map((row, rIdx) => (
-              <tr key={rIdx} className="hover:bg-slate-50 transition-colors">
+              <tr key={rIdx} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
                 {row.map((col, cIdx) => (
-                  <td key={cIdx} className="px-3 py-2 border-r last:border-r-0 border-slate-200 whitespace-pre-line">
+                  <td key={cIdx} className="px-3 py-2 border-r last:border-r-0 border-slate-200 dark:border-slate-700 whitespace-pre-line">
                     {parseInline(col || '')}
                   </td>
                 ))}
@@ -54,7 +54,7 @@ export function Markdown({ content }: MarkdownProps) {
     return (
       <Tag key={`list-${key}`} className={listClass}>
         {list.items.map((item, idx) => (
-          <li key={idx} className="text-xs text-slate-700">{parseInline(item)}</li>
+          <li key={idx} className="text-xs text-slate-700 dark:text-slate-300">{parseInline(item)}</li>
         ))}
       </Tag>
     );
@@ -67,13 +67,13 @@ export function Markdown({ content }: MarkdownProps) {
     
     return tokens.map((token, idx) => {
       if (token.startsWith('**') && token.endsWith('**')) {
-        return <strong key={idx} className="font-bold text-slate-900">{token.slice(2, -2)}</strong>;
+        return <strong key={idx} className="font-bold text-slate-900 dark:text-slate-100">{token.slice(2, -2)}</strong>;
       }
       if (token.startsWith('*') && token.endsWith('*')) {
-        return <em key={idx} className="italic text-slate-800">{token.slice(1, -1)}</em>;
+        return <em key={idx} className="italic text-slate-800 dark:text-slate-200">{token.slice(1, -1)}</em>;
       }
       if (token.startsWith('`') && token.endsWith('`')) {
-        return <code key={idx} className="bg-slate-100 text-red-600 font-mono px-1 py-0.5 rounded text-[11px] font-semibold">{token.slice(1, -1)}</code>;
+        return <code key={idx} className="bg-slate-100 dark:bg-slate-800 text-red-600 dark:text-red-400 font-mono px-1 py-0.5 rounded text-[11px] font-semibold">{token.slice(1, -1)}</code>;
       }
       return token;
     });
@@ -127,9 +127,9 @@ export function Markdown({ content }: MarkdownProps) {
       const level = line.match(/^#+/)?.[0].length || 1;
       const text = line.replace(/^#+\s*/, '');
       const headerClasses = 
-        level === 1 ? "text-base font-extrabold text-slate-900 mt-4 mb-2" :
-        level === 2 ? "text-sm font-bold text-slate-800 mt-3 mb-2" :
-        "text-xs font-bold text-slate-800 mt-2 mb-1";
+        level === 1 ? "text-base font-extrabold text-slate-900 dark:text-slate-100 mt-4 mb-2" :
+        level === 2 ? "text-sm font-bold text-slate-800 dark:text-slate-200 mt-3 mb-2" :
+        "text-xs font-bold text-slate-800 dark:text-slate-200 mt-2 mb-1";
       blocks.push(
         React.createElement(`h${Math.min(level, 6)}`, { key: blockKey++, className: headerClasses }, parseInline(text))
       );
@@ -138,7 +138,7 @@ export function Markdown({ content }: MarkdownProps) {
 
     // 4. Regular Paragraphs
     blocks.push(
-      <p key={blockKey++} className="text-xs text-slate-700 leading-relaxed mb-2">
+      <p key={blockKey++} className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed mb-2">
         {parseInline(line)}
       </p>
     );

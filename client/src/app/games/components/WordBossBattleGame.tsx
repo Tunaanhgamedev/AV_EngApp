@@ -166,7 +166,7 @@ export default function WordBossBattleGame({ dbWords, category, onClose, awardXp
               <h2 className="text-xl font-black text-white flex items-center gap-2">
                 Word Boss Battle <span className="text-xs px-2.5 py-0.5 rounded-full bg-red-500/20 text-red-400 font-bold border border-red-500/30">RPG Mode</span>
               </h2>
-              <p className="text-xs text-slate-400 font-medium">Thi triển chiêu thức từ vựng để tiêu diệt các Trùm Ngữ Pháp! (Danh mục: {getCategoryLabel(category)})</p>
+              <p className="text-xs text-slate-400 dark:text-slate-500 font-medium">Thi triển chiêu thức từ vựng để tiêu diệt các Trùm Ngữ Pháp! (Danh mục: {getCategoryLabel(category)})</p>
             </div>
           </div>
 
@@ -177,7 +177,7 @@ export default function WordBossBattleGame({ dbWords, category, onClose, awardXp
                 <Flame className="w-4 h-4 text-orange-500 fill-orange-500" /> x{streak}
               </p>
             </div>
-            <button onClick={onClose} className="p-2 bg-slate-800 hover:bg-slate-700 rounded-full text-slate-400 hover:text-white transition-all cursor-pointer">
+            <button onClick={onClose} className="p-2 bg-slate-800 hover:bg-slate-700 rounded-full text-slate-400 dark:text-slate-500 hover:text-white transition-all cursor-pointer">
               <X className="w-5 h-5" />
             </button>
           </div>
@@ -270,7 +270,7 @@ export default function WordBossBattleGame({ dbWords, category, onClose, awardXp
           {/* Spell Attack Actions Bar */}
           {!gameWon && !gameLost && (
             <div className="space-y-3">
-              <h4 className="text-xs font-black uppercase tracking-widest text-slate-400 flex items-center gap-2">
+              <h4 className="text-xs font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-amber-400" /> Chọn Chiêu Thức Tấn Công (Attack Spells)
               </h4>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -295,7 +295,7 @@ export default function WordBossBattleGame({ dbWords, category, onClose, awardXp
                         </span>
                       </div>
                       <p className="font-black text-sm text-white group-hover:text-amber-400 transition-colors">{spell.name}</p>
-                      <p className="text-[10px] text-slate-400 font-medium line-clamp-1 mt-0.5">{spell.desc}</p>
+                      <p className="text-[10px] text-slate-400 dark:text-slate-500 font-medium line-clamp-1 mt-0.5">{spell.desc}</p>
                       <div className="mt-2 text-[10px] font-black text-amber-400">⚡ Sát thương: +{spell.damage}</div>
                     </button>
                   );
@@ -306,7 +306,7 @@ export default function WordBossBattleGame({ dbWords, category, onClose, awardXp
 
           {/* Combat Log Box */}
           <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-1 font-mono text-xs">
-            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Lịch Sử Trận Đấu (Combat Logs)</p>
+            <p className="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-widest">Lịch Sử Trận Đấu (Combat Logs)</p>
             {combatLogs.map((log, idx) => (
               <p key={idx} className="text-slate-300 leading-relaxed">{log}</p>
             ))}
@@ -357,7 +357,7 @@ export default function WordBossBattleGame({ dbWords, category, onClose, awardXp
               <div className="flex items-center gap-2 text-amber-400 font-black text-base">
                 <span className="text-2xl">{selectedSpell.icon}</span> Thi Triển Chiêu Thức: {selectedSpell.name}
               </div>
-              <span className="text-xs text-slate-400 font-bold">Trả lời đúng để tung đòn!</span>
+              <span className="text-xs text-slate-400 dark:text-slate-500 font-bold">Trả lời đúng để tung đòn!</span>
             </div>
 
             <div className="p-4 bg-slate-800/80 rounded-2xl border border-slate-700 text-center space-y-2">
