@@ -116,6 +116,14 @@ export default function TOEICPage() {
                   <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </button>
                 <button
+                  onClick={() => router.push('/toeic/practice/listening')}
+                  className="px-6 py-3.5 bg-gradient-to-r from-violet-500 to-purple-400 text-white rounded-2xl font-black text-xs sm:text-sm hover:opacity-90 transition-all shadow-xl shadow-violet-500/30 flex items-center gap-2 group"
+                >
+                  <Headphones className="w-5 h-5" />
+                  LUYỆN NGHE TOEIC 🔥
+                  <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </button>
+                <button
                   onClick={() => document.getElementById('parts')?.scrollIntoView({ behavior: 'smooth' })}
                   className="px-6 py-3.5 bg-white/10 text-white border border-white/20 rounded-2xl font-black text-xs sm:text-sm hover:bg-white/20 transition-all flex items-center gap-2 backdrop-blur"
                 >
