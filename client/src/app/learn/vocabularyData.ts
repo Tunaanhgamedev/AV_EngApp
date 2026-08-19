@@ -18,6 +18,7 @@ export interface VocabTopic {
 }
 
 import { ADDITIONAL_VOCABULARY_TOPICS } from './additionalVocabularyData';
+import { EXPANDED_VOCABULARY_TOPICS } from './expandedVocabularyData';
 
 const ORIGINAL_VOCABULARY_TOPICS: VocabTopic[] = [
   {
@@ -12670,5 +12671,6 @@ const ORIGINAL_VOCABULARY_TOPICS: VocabTopic[] = [
 
 export const VOCABULARY_TOPICS: VocabTopic[] = [
   ...ORIGINAL_VOCABULARY_TOPICS,
-  ...ADDITIONAL_VOCABULARY_TOPICS
+  ...ADDITIONAL_VOCABULARY_TOPICS,
+  ...EXPANDED_VOCABULARY_TOPICS
 ];
