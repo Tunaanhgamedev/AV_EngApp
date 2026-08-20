@@ -1,16 +1,19 @@
 'use client';
 
-import React, { useState, useEffect, Suspense, lazy } from 'react';
-import { GraduationCap, BrainCircuit, BookOpen } from 'lucide-react';
+import React, { useState, useEffect, useMemo, Suspense, lazy } from 'react';
+import { GraduationCap, BrainCircuit, BookOpen, Layers } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { cn } from '@/lib/utils';
 import { VOCABULARY_TOPICS } from './vocabularyData';
+import { PosCategory, extractAllPosWords } from './posUtils';
 
 // Dynamic lazy imports for optimizing page load
 const LevelSelector = lazy(() => import('./components/LevelSelector'));
 const FlashcardSession = lazy(() => import('./components/FlashcardSession'));
 const TopicSelector = lazy(() => import('./components/TopicSelector'));
 const TopicStudyView = lazy(() => import('./components/TopicStudyView'));
+const PosSelector = lazy(() => import('./components/PosSelector'));
+const PosStudyView = lazy(() => import('./components/PosStudyView'));
 
 interface Word {
   id: string;
@@ -62,7 +65,7 @@ const speak = (text: string) => {
 
       if (preferredVoice) utterance.voice = preferredVoice;
 
-      utterance.onerror = (e) => {
+      utterance.onerror = () => {
         playTranslateTTS();
       };
 
@@ -118,25 +121,36 @@ const TOPIC_CATEGORIES: Record<string, 'daily' | 'work_tech' | 'society_env'> = 
 
 export default function LearnPage() {
   const { user } = useAuth();
-  const [activeMode, setActiveMode] = useState<'vocabulary' | 'topics'>('vocabulary');
+  const [activeMode, setActiveMode] = useState<'vocabulary' | 'topics' | 'pos'>('vocabulary');
 
+  // Topic mode states
   const [vocabSearchQuery, setVocabSearchQuery] = useState('');
   const [vocabActiveCategory, setVocabActiveCategory] = useState<'all' | 'daily' | 'work_tech' | 'society_env'>('all');
-
-  const [selectedLevel, setSelectedLevel] = useState<string | null>(null);
-  const [words, setWords] = useState<Word[]>([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const [showHint, setShowHint] = useState(false);
-  const [completed, setCompleted] = useState(false);
-  const [progress, setProgress] = useState(0);
-
   const [selectedVocabTopicId, setSelectedVocabTopicId] = useState<string | null>(null);
   const [vocabLevel, setVocabLevel] = useState<'beginner' | 'advanced'>('beginner');
   const [vocabIndex, setVocabIndex] = useState<number>(0);
   const [showVocabHint, setShowVocabHint] = useState<boolean>(false);
   const [vocabCompleted, setVocabCompleted] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<'card' | 'list'>('card');
+
+  // CEFR mode states
+  const [selectedLevel, setSelectedLevel] = useState<string | null>(null);
+  const [words, setWords] = useState<Word[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [showHint, setShowHint] = useState(false);
+  const [completed, setCompleted] = useState(false);
+  const [, setProgress] = useState(0);
+
+  // POS mode states
+  const [selectedPosCategory, setSelectedPosCategory] = useState<PosCategory | null>(null);
+  const [posSearchQuery, setPosSearchQuery] = useState('');
+  const [posFilterLevel, setPosFilterLevel] = useState<'all' | 'beginner' | 'advanced'>('all');
+
+  // Extract all words by POS across all topics
+  const { byCategory: posWordsByCategory, counts: posCounts } = useMemo(() => {
+    return extractAllPosWords(VOCABULARY_TOPICS);
+  }, []);
 
   const activeVocabTopic = VOCABULARY_TOPICS.find(t => t.id === selectedVocabTopicId);
   const activeVocabWords = activeVocabTopic ? activeVocabTopic[vocabLevel] : [];
@@ -297,15 +311,15 @@ export default function LearnPage() {
             <GraduationCap className="w-8 h-8 text-blue-600 dark:text-blue-400" /> Study Center
           </h1>
           <p className="text-slate-500 dark:text-slate-400 font-medium text-sm mt-1">
-            Học từ vựng theo trình độ CEFR chuẩn quốc tế và theo các chủ đề thông dụng hàng ngày.
+            Học từ vựng theo trình độ CEFR, theo 106+ chủ đề phong phú và theo phân loại từ loại (Danh từ, Động từ, Tính từ...).
           </p>
         </div>
 
-        <div className="flex bg-slate-100 dark:bg-slate-900 p-1.5 rounded-2xl self-start md:self-center">
+        <div className="flex bg-slate-100 dark:bg-slate-900 p-1.5 rounded-2xl self-start md:self-center overflow-x-auto max-w-full">
           <button
             onClick={() => setActiveMode('vocabulary')}
             className={cn(
-              "px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer",
+              "px-3.5 sm:px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer whitespace-nowrap",
               activeMode === 'vocabulary' ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-950 shadow-md" : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-300"
             )}
           >
@@ -314,11 +328,20 @@ export default function LearnPage() {
           <button
             onClick={() => setActiveMode('topics')}
             className={cn(
-              "px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer",
+              "px-3.5 sm:px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer whitespace-nowrap",
               activeMode === 'topics' ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-950 shadow-md" : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-300"
             )}
           >
             <BookOpen className="w-4 h-4" /> Chủ Đề
+          </button>
+          <button
+            onClick={() => setActiveMode('pos')}
+            className={cn(
+              "px-3.5 sm:px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer whitespace-nowrap",
+              activeMode === 'pos' ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-950 shadow-md" : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-300"
+            )}
+          >
+            <Layers className="w-4 h-4" /> Loại Từ (POS)
           </button>
         </div>
       </header>
@@ -342,7 +365,7 @@ export default function LearnPage() {
               playPronunciation={playPronunciation}
             />
           )
-        ) : (
+        ) : activeMode === 'topics' ? (
           !selectedVocabTopicId ? (
             <TopicSelector
               vocabSearchQuery={vocabSearchQuery}
@@ -377,6 +400,32 @@ export default function LearnPage() {
                 setVocabIndex(0);
                 setShowVocabHint(false);
                 setVocabCompleted(false);
+              }}
+            />
+          )
+        ) : (
+          /* POS Mode */
+          !selectedPosCategory ? (
+            <PosSelector
+              posCounts={posCounts}
+              posSearchQuery={posSearchQuery}
+              setPosSearchQuery={setPosSearchQuery}
+              posFilterLevel={posFilterLevel}
+              setPosFilterLevel={setPosFilterLevel}
+              onSelectPosCategory={(cat) => {
+                setSelectedPosCategory(cat);
+              }}
+            />
+          ) : (
+            <PosStudyView
+              selectedPosCategory={selectedPosCategory}
+              onSelectPosCategory={setSelectedPosCategory}
+              words={posWordsByCategory[selectedPosCategory] || []}
+              posFilterLevel={posFilterLevel}
+              setPosFilterLevel={setPosFilterLevel}
+              speak={speak}
+              onBack={() => {
+                setSelectedPosCategory(null);
               }}
             />
           )

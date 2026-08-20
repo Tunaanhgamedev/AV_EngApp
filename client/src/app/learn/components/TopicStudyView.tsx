@@ -1,6 +1,7 @@
-import React from 'react';
-import { ChevronLeft, Volume2, XCircle, Lightbulb, CheckCircle2, Trophy, Loader2 } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
+import { ChevronLeft, Volume2, XCircle, Lightbulb, CheckCircle2, Trophy, Filter } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { getPosBadge, normalizePos, PosCategory, POS_METADATA } from '../posUtils';
 
 interface VocabWord {
   word: string;
@@ -54,6 +55,32 @@ export default function TopicStudyView({
   speak,
   onBack
 }: TopicStudyViewProps) {
+  const [posFilter, setPosFilter] = useState<PosCategory>('all');
+
+  // Compute POS counts in this topic level
+  const posCounts = useMemo(() => {
+    const counts: Record<PosCategory, number> = {
+      all: activeVocabWords.length,
+      noun: 0,
+      verb: 0,
+      adjective: 0,
+      adverb: 0,
+      idiom: 0,
+      other: 0
+    };
+    for (const w of activeVocabWords) {
+      const cat = normalizePos(w.wordType);
+      counts[cat] = (counts[cat] || 0) + 1;
+    }
+    return counts;
+  }, [activeVocabWords]);
+
+  // Filter words by selected POS
+  const displayedWords = useMemo(() => {
+    if (posFilter === 'all') return activeVocabWords;
+    return activeVocabWords.filter(w => normalizePos(w.wordType) === posFilter);
+  }, [activeVocabWords, posFilter]);
+
   if (vocabCompleted) {
     return (
       <div className="max-w-md mx-auto bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-8 rounded-3xl text-center space-y-6 shadow-xl animate-in zoom-in-95 duration-500">
@@ -75,6 +102,7 @@ export default function TopicStudyView({
                 setShowVocabHint(false);
                 setVocabCompleted(false);
                 setActiveTab('card');
+                setPosFilter('all');
               }}
               className="flex-1 py-3 bg-gradient-to-r from-violet-500 to-purple-600 text-white font-black text-xs uppercase tracking-widest rounded-xl shadow-md transition-all active:scale-95 cursor-pointer"
             >
@@ -92,7 +120,9 @@ export default function TopicStudyView({
     );
   }
 
-  const currentWord = activeVocabWords[vocabIndex];
+  const safeIndex = Math.min(vocabIndex, Math.max(0, displayedWords.length - 1));
+  const currentWord = displayedWords[safeIndex] || activeVocabWords[0];
+  const currentBadge = currentWord ? getPosBadge(currentWord.wordType) : null;
 
   return (
     <div className="max-w-5xl mx-auto space-y-6 animate-in fade-in duration-500">
@@ -117,6 +147,7 @@ export default function TopicStudyView({
                 setShowVocabHint(false);
                 setVocabCompleted(false);
                 setActiveTab('card');
+                setPosFilter('all');
               }}
               className={cn(
                 "px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer",
@@ -134,6 +165,7 @@ export default function TopicStudyView({
                 setShowVocabHint(false);
                 setVocabCompleted(false);
                 setActiveTab('card');
+                setPosFilter('all');
               }}
               className={cn(
                 "px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer",
@@ -145,8 +177,118 @@ export default function TopicStudyView({
               🚀 Nâng cao
             </button>
           </div>
-          <span className="text-xs font-black text-slate-400 dark:text-slate-500">{vocabIndex + 1}/{activeVocabWords.length}</span>
+          <span className="text-xs font-black text-slate-400 dark:text-slate-500">
+            {displayedWords.length > 0 ? `${safeIndex + 1}/${displayedWords.length}` : '0 từ'}
+          </span>
         </div>
+      </div>
+
+      {/* Part of Speech Filter Row inside Topic */}
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar bg-slate-50/70 dark:bg-slate-900/40 p-2 rounded-2xl border border-slate-100 dark:border-slate-800/60">
+        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-2 pr-1 flex items-center gap-1 shrink-0">
+          <Filter className="w-3 h-3" /> Loại từ:
+        </span>
+        <button
+          onClick={() => { setPosFilter('all'); setVocabIndex(0); }}
+          className={cn(
+            "px-2.5 py-1 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer",
+            posFilter === 'all'
+              ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-950 shadow-sm"
+              : "text-slate-500 dark:text-slate-400 hover:bg-slate-200/60 dark:hover:bg-slate-800"
+          )}
+        >
+          Tất cả ({posCounts.all})
+        </button>
+
+        {posCounts.noun > 0 && (
+          <button
+            onClick={() => { setPosFilter('noun'); setVocabIndex(0); }}
+            className={cn(
+              "px-2.5 py-1 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1",
+              posFilter === 'noun'
+                ? "bg-blue-600 text-white shadow-sm"
+                : "text-blue-700 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/40"
+            )}
+          >
+            <span>Danh từ</span>
+            <span className="text-[10px] opacity-80">({posCounts.noun})</span>
+          </button>
+        )}
+
+        {posCounts.verb > 0 && (
+          <button
+            onClick={() => { setPosFilter('verb'); setVocabIndex(0); }}
+            className={cn(
+              "px-2.5 py-1 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1",
+              posFilter === 'verb'
+                ? "bg-emerald-600 text-white shadow-sm"
+                : "text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40"
+            )}
+          >
+            <span>Động từ</span>
+            <span className="text-[10px] opacity-80">({posCounts.verb})</span>
+          </button>
+        )}
+
+        {posCounts.adjective > 0 && (
+          <button
+            onClick={() => { setPosFilter('adjective'); setVocabIndex(0); }}
+            className={cn(
+              "px-2.5 py-1 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1",
+              posFilter === 'adjective'
+                ? "bg-amber-600 text-white shadow-sm"
+                : "text-amber-700 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/40"
+            )}
+          >
+            <span>Tính từ</span>
+            <span className="text-[10px] opacity-80">({posCounts.adjective})</span>
+          </button>
+        )}
+
+        {posCounts.adverb > 0 && (
+          <button
+            onClick={() => { setPosFilter('adverb'); setVocabIndex(0); }}
+            className={cn(
+              "px-2.5 py-1 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1",
+              posFilter === 'adverb'
+                ? "bg-purple-600 text-white shadow-sm"
+                : "text-purple-700 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-950/40"
+            )}
+          >
+            <span>Trạng từ</span>
+            <span className="text-[10px] opacity-80">({posCounts.adverb})</span>
+          </button>
+        )}
+
+        {posCounts.idiom > 0 && (
+          <button
+            onClick={() => { setPosFilter('idiom'); setVocabIndex(0); }}
+            className={cn(
+              "px-2.5 py-1 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1",
+              posFilter === 'idiom'
+                ? "bg-rose-600 text-white shadow-sm"
+                : "text-rose-700 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40"
+            )}
+          >
+            <span>Thành ngữ</span>
+            <span className="text-[10px] opacity-80">({posCounts.idiom})</span>
+          </button>
+        )}
+
+        {posCounts.other > 0 && (
+          <button
+            onClick={() => { setPosFilter('other'); setVocabIndex(0); }}
+            className={cn(
+              "px-2.5 py-1 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1",
+              posFilter === 'other'
+                ? "bg-cyan-600 text-white shadow-sm"
+                : "text-cyan-700 dark:text-cyan-400 hover:bg-cyan-50 dark:hover:bg-cyan-950/40"
+            )}
+          >
+            <span>Khác</span>
+            <span className="text-[10px] opacity-80">({posCounts.other})</span>
+          </button>
+        )}
       </div>
 
       {/* Progress bar */}
@@ -156,7 +298,7 @@ export default function TopicStudyView({
             "h-full rounded-full transition-all duration-500",
             vocabLevel === 'beginner' ? "bg-gradient-to-r from-emerald-400 to-green-500" : "bg-gradient-to-r from-violet-400 to-purple-500"
           )}
-          style={{ width: `${((vocabIndex + 1) / activeVocabWords.length) * 100}%` }}
+          style={{ width: `${displayedWords.length > 0 ? ((safeIndex + 1) / displayedWords.length) * 100 : 0}%` }}
         />
       </div>
 
@@ -183,12 +325,22 @@ export default function TopicStudyView({
                 : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
             )}
           >
-            📋 Danh Sách ({activeVocabWords.length})
+            📋 Danh Sách ({displayedWords.length})
           </button>
         </div>
       )}
 
-      {currentWord && (
+      {displayedWords.length === 0 ? (
+        <div className="text-center py-12 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-3xl space-y-2">
+          <p className="text-sm font-bold text-slate-700 dark:text-slate-300">Không có từ vựng loại này trong chủ đề</p>
+          <button
+            onClick={() => setPosFilter('all')}
+            className="text-xs text-blue-600 font-bold hover:underline cursor-pointer"
+          >
+            Xem tất cả từ vựng ({activeVocabWords.length})
+          </button>
+        </div>
+      ) : (
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 lg:gap-6 items-start">
           {/* Flashcard (3 cols) */}
           <div className={cn("lg:col-span-3 w-full", activeTab === 'card' ? "block" : "hidden lg:block")}>
@@ -199,17 +351,30 @@ export default function TopicStudyView({
               )}>
                 {/* Front */}
                 <div className="absolute w-full h-full backface-hidden flex flex-col items-center justify-center text-center bg-white dark:bg-slate-950 p-6 sm:p-8 rounded-[2.5rem]">
-                  <span className={cn(
-                    "px-3 py-1 text-[11px] sm:text-xs font-bold rounded-full uppercase tracking-wider mb-3",
-                    vocabLevel === 'beginner' ? "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400" : "bg-violet-100 dark:bg-violet-950/60 text-violet-700 dark:text-violet-400"
-                  )}>
-                    {vocabLevel === 'beginner' ? '🌱 Beginner' : '🚀 Advanced'}
-                  </span>
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className={cn(
+                      "px-3 py-1 text-[11px] sm:text-xs font-bold rounded-full uppercase tracking-wider",
+                      vocabLevel === 'beginner' ? "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400" : "bg-violet-100 dark:bg-violet-950/60 text-violet-700 dark:text-violet-400"
+                    )}>
+                      {vocabLevel === 'beginner' ? '🌱 Beginner' : '🚀 Advanced'}
+                    </span>
+                    {currentBadge && (
+                      <span className={cn(
+                        "px-2.5 py-0.5 text-[10px] sm:text-[11px] font-bold rounded-full border",
+                        currentBadge.badgeBg,
+                        currentBadge.badgeText,
+                        currentBadge.badgeBorder
+                      )}>
+                        {currentBadge.labelVi} ({currentBadge.raw})
+                      </span>
+                    )}
+                  </div>
+
                   <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-800 dark:text-slate-100 tracking-tight mb-1 sm:mb-2">{currentWord.word}</h1>
                   <div className="flex items-center gap-2">
                     <span className="text-sm sm:text-base font-serif text-slate-400 dark:text-slate-500">{currentWord.phonetic}</span>
-                    <span className="text-xs sm:text-sm font-semibold text-rose-500 dark:text-rose-455 font-sans italic">({currentWord.wordType})</span>
                   </div>
+
                   <button
                     onClick={() => speak(currentWord.word)}
                     className="mt-4 sm:mt-6 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-green-50 dark:bg-green-950/40 border border-green-100 dark:border-green-900/50 flex items-center justify-center text-green-500 hover:bg-green-500 hover:text-white transition-all shadow-sm cursor-pointer"
@@ -236,7 +401,7 @@ export default function TopicStudyView({
                       {currentWord.exampleVi && <p className="text-xs text-emerald-400/80 dark:text-emerald-400 mt-0.5 italic">→ {currentWord.exampleVi}</p>}
                     </div>
                     <button
-                      onClick={() => speak(currentWord.example)}
+                      onClick={() => speak(currentWord.example || currentWord.word)}
                       className="mt-2 px-4 py-2 bg-white/10 hover:bg-white/20 dark:bg-slate-900/60 dark:hover:bg-slate-900 border border-white/10 dark:border-slate-800 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer mx-auto"
                     >
                       <Volume2 className="w-3.5 h-3.5" /> Nghe ví dụ
@@ -251,13 +416,13 @@ export default function TopicStudyView({
               <button
                 onClick={() => {
                   setShowVocabHint(false);
-                  if (vocabIndex < activeVocabWords.length - 1) {
+                  if (safeIndex < displayedWords.length - 1) {
                     setVocabIndex(prev => prev + 1);
                   } else {
                     setVocabCompleted(true);
                   }
                 }}
-                className="flex flex-col items-center gap-1.5 py-4 bg-slate-55/60 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl hover:bg-rose-50 dark:hover:bg-rose-955/20 hover:border-rose-200 dark:hover:border-rose-900/40 transition-all cursor-pointer"
+                className="flex flex-col items-center gap-1.5 py-4 bg-slate-50/60 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl hover:bg-rose-50 dark:hover:bg-rose-955/20 hover:border-rose-200 dark:hover:border-rose-900/40 transition-all cursor-pointer"
               >
                 <XCircle className="w-6 h-6 text-rose-500" />
                 <span className="text-[10px] sm:text-xs font-bold text-rose-500 uppercase tracking-wider">Đang Học</span>
@@ -265,7 +430,7 @@ export default function TopicStudyView({
 
               <button
                 onClick={() => setShowVocabHint(!showVocabHint)}
-                className="flex flex-col items-center gap-1.5 py-4 bg-slate-55/60 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl hover:bg-amber-50 dark:hover:bg-amber-955/20 hover:border-amber-200 dark:hover:border-amber-900/40 transition-all cursor-pointer"
+                className="flex flex-col items-center gap-1.5 py-4 bg-slate-50/60 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl hover:bg-amber-50 dark:hover:bg-amber-955/20 hover:border-amber-200 dark:hover:border-amber-900/40 transition-all cursor-pointer"
               >
                 <Lightbulb className="w-6 h-6 text-amber-500" />
                 <span className="text-[10px] sm:text-xs font-bold text-amber-500 uppercase tracking-wider">{showVocabHint ? 'Ẩn nghĩa' : 'Lật thẻ'}</span>
@@ -274,13 +439,13 @@ export default function TopicStudyView({
               <button
                 onClick={() => {
                   setShowVocabHint(false);
-                  if (vocabIndex < activeVocabWords.length - 1) {
+                  if (safeIndex < displayedWords.length - 1) {
                     setVocabIndex(prev => prev + 1);
                   } else {
                     setVocabCompleted(true);
                   }
                 }}
-                className="flex flex-col items-center gap-1.5 py-4 bg-slate-55/60 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl hover:bg-green-50 dark:hover:bg-green-955/20 hover:border-green-200 dark:hover:border-green-900/40 transition-all cursor-pointer"
+                className="flex flex-col items-center gap-1.5 py-4 bg-slate-50/60 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl hover:bg-green-50 dark:hover:bg-green-955/20 hover:border-green-200 dark:hover:border-green-900/40 transition-all cursor-pointer"
               >
                 <CheckCircle2 className="w-6 h-6 text-green-500" />
                 <span className="text-[10px] sm:text-xs font-bold text-green-500 uppercase tracking-wider">Đã Thuộc</span>
@@ -291,32 +456,49 @@ export default function TopicStudyView({
           {/* List View (2 cols - Desktop only) */}
           <div className={cn("lg:col-span-2 w-full", activeTab === 'list' ? "block" : "hidden lg:block")}>
             <div className="bg-white dark:bg-slate-950 border border-slate-200/80 dark:border-slate-800/80 rounded-[2.2rem] p-5 sm:p-6 shadow-sm space-y-4 max-h-[500px] overflow-y-auto">
-              <h3 className="text-sm font-black text-slate-800 dark:text-slate-100 flex items-center gap-2">
-                📋 Từ vựng trong chủ đề ({activeVocabWords.length})
+              <h3 className="text-sm font-black text-slate-800 dark:text-slate-100 flex items-center justify-between">
+                <span>📋 Từ vựng trong chủ đề</span>
+                <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-bold">
+                  {displayedWords.length} từ
+                </span>
               </h3>
               <div className="space-y-2">
-                {activeVocabWords.map((word, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => {
-                      setVocabIndex(idx);
-                      setShowVocabHint(false);
-                      setActiveTab('card');
-                    }}
-                    className={cn(
-                      "w-full p-3 rounded-xl border text-left flex items-center justify-between transition-all cursor-pointer",
-                      vocabIndex === idx
-                        ? "border-[#002147] bg-[#002147]/5 dark:border-sky-400 dark:bg-sky-950/20"
-                        : "border-slate-100 dark:border-slate-800 hover:border-slate-200 dark:hover:border-slate-700 bg-slate-50/50 dark:bg-slate-900/20"
-                    )}
-                  >
-                    <div>
-                      <h4 className="text-xs font-black text-slate-800 dark:text-slate-100">{word.word}</h4>
-                      <p className="text-[10px] font-medium text-slate-400 dark:text-slate-500 mt-0.5">{word.meaningVi}</p>
-                    </div>
-                    <span className="text-[10px] font-sans font-semibold text-rose-500 italic">({word.wordType})</span>
-                  </button>
-                ))}
+                {displayedWords.map((word, idx) => {
+                  const badge = getPosBadge(word.wordType);
+
+                  return (
+                    <button
+                      key={idx}
+                      onClick={() => {
+                        setVocabIndex(idx);
+                        setShowVocabHint(false);
+                        setActiveTab('card');
+                      }}
+                      className={cn(
+                        "w-full p-3 rounded-xl border text-left flex items-center justify-between transition-all cursor-pointer",
+                        safeIndex === idx
+                          ? "border-[#002147] bg-[#002147]/5 dark:border-sky-400 dark:bg-sky-950/20 shadow-sm"
+                          : "border-slate-100 dark:border-slate-800 hover:border-slate-200 dark:hover:border-slate-700 bg-slate-50/50 dark:bg-slate-900/20"
+                      )}
+                    >
+                      <div className="min-w-0 flex-1 pr-2">
+                        <div className="flex items-center gap-1.5">
+                          <h4 className="text-xs font-black text-slate-800 dark:text-slate-100 truncate">{word.word}</h4>
+                          <span className="text-[10px] font-serif text-slate-400">{word.phonetic}</span>
+                        </div>
+                        <p className="text-[10px] font-medium text-slate-500 dark:text-slate-400 mt-0.5 truncate">{word.meaningVi}</p>
+                      </div>
+                      <span className={cn(
+                        "text-[9px] font-bold px-1.5 py-0.5 rounded-md border shrink-0",
+                        badge.badgeBg,
+                        badge.badgeText,
+                        badge.badgeBorder
+                      )}>
+                        {badge.short}
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>

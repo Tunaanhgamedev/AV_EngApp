@@ -1,6 +1,7 @@
 import React from 'react';
 import { ChevronLeft, Volume2, XCircle, Lightbulb, CheckCircle2, Loader2, Trophy, BrainCircuit } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { getPosBadge } from '../posUtils';
 
 interface Word {
   id: string;
@@ -55,11 +56,11 @@ export default function FlashcardSession({
   if (words.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[40vh] text-center space-y-6">
-        <div className="w-20 h-20 bg-slate-55 dark:bg-slate-900 rounded-full flex items-center justify-center">
+        <div className="w-20 h-20 bg-slate-50 dark:bg-slate-900 rounded-full flex items-center justify-center">
           <BrainCircuit className="w-10 h-10 text-slate-300 dark:text-slate-700" />
         </div>
         <div>
-          <h2 className="text-2xl font-black text-slate-800 dark:text-slate-105">Không có dữ liệu từ mới</h2>
+          <h2 className="text-2xl font-black text-slate-800 dark:text-slate-100">Không có dữ liệu từ mới</h2>
           <p className="text-sm text-slate-500 dark:text-slate-400 max-w-sm mx-auto mt-1 font-medium">Hiện tại không thể tải từ vựng mới cấp độ {selectedLevel}. Vui lòng thử lại sau.</p>
         </div>
         <button
@@ -79,7 +80,7 @@ export default function FlashcardSession({
           <Trophy className="w-12 h-12 text-white" />
         </div>
         <div>
-          <h1 className="text-3xl font-black text-slate-800 dark:text-slate-105">Tuyệt vời!</h1>
+          <h1 className="text-3xl font-black text-slate-800 dark:text-slate-100">Tuyệt vời!</h1>
           <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 font-medium">Bạn đã hoàn thành việc học 15 từ vựng mới cấp độ {selectedLevel}.</p>
         </div>
         <button
@@ -93,6 +94,7 @@ export default function FlashcardSession({
   }
 
   const currentWord = words[currentIndex];
+  const badge = currentWord ? getPosBadge(currentWord.wordType) : null;
 
   return (
     <div className="max-w-3xl mx-auto space-y-6 animate-in fade-in duration-500">
@@ -117,13 +119,25 @@ export default function FlashcardSession({
         )}>
           {/* Front Side */}
           <div className="absolute w-full h-full backface-hidden flex flex-col items-center justify-center text-center bg-white dark:bg-slate-950 p-6 sm:p-8 rounded-[2.5rem]">
-            <span className="px-3 py-1 bg-green-100 dark:bg-green-950/40 text-green-700 dark:text-green-400 text-[11px] sm:text-xs font-bold rounded-full uppercase tracking-wider mb-3">
-              {currentWord.cefrLevel}
-            </span>
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-800 dark:text-slate-105 tracking-tight mb-1 sm:mb-2">{currentWord.word}</h1>
+            <div className="flex items-center gap-2 mb-3">
+              <span className="px-3 py-1 bg-green-100 dark:bg-green-950/40 text-green-700 dark:text-green-400 text-[11px] sm:text-xs font-bold rounded-full uppercase tracking-wider">
+                {currentWord.cefrLevel}
+              </span>
+              {badge && (
+                <span className={cn(
+                  "px-2.5 py-0.5 text-[10px] sm:text-[11px] font-bold rounded-full border",
+                  badge.badgeBg,
+                  badge.badgeText,
+                  badge.badgeBorder
+                )}>
+                  {badge.labelVi} ({badge.raw})
+                </span>
+              )}
+            </div>
+
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-800 dark:text-slate-100 tracking-tight mb-1 sm:mb-2">{currentWord.word}</h1>
             <div className="flex items-center gap-2">
               <span className="text-sm sm:text-base font-serif text-slate-400 dark:text-slate-500">{currentWord.phonetic}</span>
-              <span className="text-xs sm:text-sm font-semibold text-rose-500 dark:text-rose-455 font-sans italic">({currentWord.wordType})</span>
             </div>
             <button
               onClick={playPronunciation}
@@ -131,7 +145,7 @@ export default function FlashcardSession({
             >
               <Volume2 className="w-7 h-7 sm:w-8 sm:h-8" />
             </button>
-            <p className="absolute bottom-4 sm:bottom-6 text-xs text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">Nhấn "Hiện gợi ý" bên dưới để lật thẻ</p>
+            <p className="absolute bottom-4 sm:bottom-6 text-xs text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">Nhấn &quot;Hiện gợi ý&quot; bên dưới để lật thẻ</p>
           </div>
 
           {/* Back Side */}
@@ -149,12 +163,12 @@ export default function FlashcardSession({
                 </div>
                 <div className="border-t border-white/10 dark:border-slate-800 pt-2 sm:pt-3">
                   <span className="text-[11px] sm:text-xs text-white/40 dark:text-slate-500 font-bold uppercase tracking-widest block">Định nghĩa (EN)</span>
-                  <p className="text-xs sm:text-sm text-slate-200 dark:text-slate-300 mt-1 italic leading-relaxed">"{currentWord.meaningEn}"</p>
+                  <p className="text-xs sm:text-sm text-slate-200 dark:text-slate-300 mt-1 italic leading-relaxed">&quot;{currentWord.meaningEn}&quot;</p>
                 </div>
                 {currentWord.example && (
                   <div className="border-t border-white/10 dark:border-slate-800 pt-2 sm:pt-3 text-left">
                     <span className="text-[11px] sm:text-xs text-white/40 dark:text-slate-500 font-bold uppercase tracking-widest block mb-1">Ví dụ minh họa</span>
-                    <p className="text-xs sm:text-sm text-white font-medium italic">"{currentWord.example}"</p>
+                    <p className="text-xs sm:text-sm text-white font-medium italic">&quot;{currentWord.example}&quot;</p>
                     {currentWord.exampleVi && <p className="text-xs text-emerald-400/80 dark:text-emerald-400 mt-0.5 italic">→ {currentWord.exampleVi}</p>}
                   </div>
                 )}
