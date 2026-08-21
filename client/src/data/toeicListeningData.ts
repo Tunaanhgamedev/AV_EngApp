@@ -1,6 +1,9 @@
+export type PhotoCategory = 'all' | 'people' | 'object' | 'scenery' | 'combined';
+
 export interface ToeicListeningQuestion {
   id: number;
   type: 'photo' | 'question-response';
+  photoCategory?: 'people' | 'object' | 'scenery' | 'combined';
   imageUrl?: string;
   imageDescription?: string;
   audioScript: string;
@@ -8,7 +11,10 @@ export interface ToeicListeningQuestion {
   correctAnswer: number;
   explanation: string;
   explanationVi: string;
-  category?: string;
+  trapAnalysis?: {
+    trapType: string;
+    trapNoteVi: string;
+  };
 }
 
 export interface ConversationQuestion {
@@ -45,19 +51,24 @@ export interface ListeningTrap {
   title: string;
   titleVi: string;
   part: string;
+  category: 'people' | 'object' | 'scenery' | 'combined' | 'part2' | 'part34';
   description: string;
   exampleBad: string;
   exampleGood: string;
   tip: string;
 }
 
-// ========================
-// PART 1: PHOTO DESCRIPTION (20+ Scenarios)
-// ========================
+// =========================================================================
+// PART 1: PHOTO DESCRIPTION (28 Verifiable Scenarios Across 4 Categories)
+// =========================================================================
 export const PHOTO_QUESTIONS: ToeicListeningQuestion[] = [
+  // -------------------------------------------------------------
+  // NHÓM 1: TRANH TẢ VẬT (OBJECTS - Đồ vật, máy móc, vị trí đồ đạc)
+  // -------------------------------------------------------------
   {
     id: 1,
     type: 'photo',
+    photoCategory: 'object',
     imageUrl: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&auto=format&fit=crop',
     imageDescription: 'Văn phòng hiện đại với bàn ghế làm việc được sắp xếp ngăn nắp',
     audioScript: 'A. Office chairs are arranged around desks in a workspace. B. People are cooking in a restaurant kitchen. C. The workers are repairing a car. D. The building is under construction.',
@@ -69,43 +80,134 @@ export const PHOTO_QUESTIONS: ToeicListeningQuestion[] = [
     ],
     correctAnswer: 0,
     explanation: 'The photo shows office chairs arranged around computer workstations in a modern office, matching choice A.',
-    explanationVi: 'Hình ảnh cho thấy ghế văn phòng được sắp xếp quanh các bàn làm việc trong một văn phòng hiện đại, phù hợp với đáp án A.'
+    explanationVi: 'Hình ảnh cho thấy ghế văn phòng được sắp xếp quanh các bàn làm việc trong một văn phòng hiện đại, phù hợp với đáp án A.',
+    trapAnalysis: {
+      trapType: 'Bẫy hành động người trong tranh không có người',
+      trapNoteVi: 'Các đáp án B, C, D đều gán ghép hành động của con người (cooking, repairing) trong khi bức tranh hoàn toàn không có người.'
+    }
   },
   {
     id: 2,
     type: 'photo',
-    imageUrl: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&auto=format&fit=crop',
-    imageDescription: 'Một nhà hàng sang trọng với đĩa thức ăn và ly nước trên bàn',
-    audioScript: 'A. The tables are set for dinner. B. People are swimming in a pool. C. The kitchen is on fire. D. Cars are parked in the lot.',
+    photoCategory: 'object',
+    imageUrl: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=600&auto=format&fit=crop',
+    imageDescription: 'Rau củ và nguyên liệu tươi ngon được bày trên thớt gỗ trong bếp',
+    audioScript: 'A. Books are stacked on a library shelf. B. Fresh vegetables and ingredients are arranged on a wooden board. C. Clothes are hanging in a wardrobe. D. Electronic devices are on display.',
     choices: [
-      'A. The tables are set for dinner.',
-      'B. People are swimming in a pool.',
-      'C. The kitchen is on fire.',
-      'D. Cars are parked in the lot.'
+      'A. Books are stacked on a library shelf.',
+      'B. Fresh vegetables and ingredients are arranged on a wooden board.',
+      'C. Clothes are hanging in a wardrobe.',
+      'D. Electronic devices are on display.'
     ],
-    correctAnswer: 0,
-    explanation: 'The image shows elegantly arranged dining tables in a restaurant, matching choice A.',
-    explanationVi: 'Hình ảnh cho thấy các bàn ăn được bày trí sang trọng trong nhà hàng, phù hợp với đáp án A.'
+    correctAnswer: 1,
+    explanation: 'The image shows fresh cooking ingredients and vegetables laid out on a wooden cutting board, matching choice B.',
+    explanationVi: 'Hình ảnh cho thấy nguyên liệu nấu ăn và rau củ tươi ngon được bày biện trên thớt gỗ, phù hợp với đáp án B.',
+    trapAnalysis: {
+      trapType: 'Bẫy danh từ đồ vật không xuất hiện trong tranh',
+      trapNoteVi: 'Các phương án A (Books), C (Clothes), D (Electronics) dùng các danh từ hoàn toàn sai lệch so với đồ vật trong hình.'
+    }
   },
   {
     id: 3,
     type: 'photo',
-    imageUrl: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&auto=format&fit=crop',
-    imageDescription: 'Một chiếc máy bay phản lực đang bay trên bầu trời xanh',
-    audioScript: 'A. The ship is sailing on the ocean. B. A train is arriving at the station. C. An airplane is flying in the sky. D. A bus is stopped at the traffic light.',
+    photoCategory: 'object',
+    imageUrl: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&auto=format&fit=crop',
+    imageDescription: 'Mô hình một ngôi nhà nhỏ màu đỏ trắng và chùm chìa khóa đặt trên mặt bàn gỗ',
+    audioScript: 'A. A key ring is placed next to a small model house on a table. B. People are shopping in a busy supermarket. C. The hotel has an outdoor swimming pool. D. The factory is producing electronic components.',
     choices: [
-      'A. The ship is sailing on the ocean.',
-      'B. A train is arriving at the station.',
-      'C. An airplane is flying in the sky.',
-      'D. A bus is stopped at the traffic light.'
+      'A. A key ring is placed next to a small model house on a table.',
+      'B. People are shopping in a busy supermarket.',
+      'C. The hotel has an outdoor swimming pool.',
+      'D. The factory is producing electronic components.'
     ],
-    correctAnswer: 2,
-    explanation: 'The photograph clearly shows an airplane in flight against a blue sky, matching choice C.',
-    explanationVi: 'Hình ảnh rõ ràng cho thấy một chiếc máy bay đang bay trên bầu trời xanh, phù hợp với đáp án C.'
+    correctAnswer: 0,
+    explanation: 'The photo shows a metal key ring lying right beside a small miniature model house on a wooden table, perfectly matching choice A.',
+    explanationVi: 'Hình ảnh thể hiện rõ chùm chìa khóa kim loại đặt cạnh một mô hình ngôi nhà nhỏ trên mặt bàn gỗ, hoàn toàn khớp với đáp án A.',
+    trapAnalysis: {
+      trapType: 'Bẫy suy diễn bất động sản/nhà thật',
+      trapNoteVi: 'Đề thi thường dùng tranh mô hình để bẫy thí sinh tưởng là một ngôi nhà thật ngoài đời (Hotel, Factory, Supermarket).'
+    }
   },
   {
     id: 4,
     type: 'photo',
+    photoCategory: 'object',
+    imageUrl: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=600&auto=format&fit=crop',
+    imageDescription: 'Tách cà phê gốm trắng đặt trên quầy gỗ quán cà phê',
+    audioScript: 'A. A cup of coffee is served on the counter. B. Someone is painting a bicycle. C. The train has left the platform. D. Children are running in the school yard.',
+    choices: [
+      'A. A cup of coffee is served on the counter.',
+      'B. Someone is painting a bicycle.',
+      'C. The train has left the platform.',
+      'D. Children are running in the school yard.'
+    ],
+    correctAnswer: 0,
+    explanation: 'The photograph shows a fresh cup of coffee served in a cafe setting, matching choice A.',
+    explanationVi: 'Hình ảnh cho thấy một tách cà phê thơm ngon được phục vụ trên quầy trong quán cà phê, phù hợp với đáp án A.'
+  },
+  {
+    id: 5,
+    type: 'photo',
+    photoCategory: 'object',
+    imageUrl: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600&auto=format&fit=crop',
+    imageDescription: 'Nhà kho lớn với các thùng hàng carton xếp tầng trên kệ',
+    audioScript: 'A. A mechanic is fixing a bicycle tire. B. Cardboard boxes are stacked on high warehouse shelves. C. Doctors are examining medical records. D. The airplane is flying above the clouds.',
+    choices: [
+      'A. A mechanic is fixing a bicycle tire.',
+      'B. Cardboard boxes are stacked on high warehouse shelves.',
+      'C. Doctors are examining medical records.',
+      'D. The airplane is flying above the clouds.'
+    ],
+    correctAnswer: 1,
+    explanation: 'The photo shows a spacious logistics warehouse with boxes stacked high on storage shelves, matching choice B.',
+    explanationVi: 'Hình ảnh chụp một kho hàng logistics rộng lớn với các thùng hàng carton được xếp chồng trên giá kệ cao, phù hợp với đáp án B.'
+  },
+  {
+    id: 6,
+    type: 'photo',
+    photoCategory: 'object',
+    imageUrl: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=600&auto=format&fit=crop',
+    imageDescription: 'Bản vẽ thiết kế kiến trúc và thước đo trải trên bàn làm việc',
+    audioScript: 'A. Architectural blueprints and measuring tools are spread across a drafting table. B. People are dancing at a concert. C. A boat is sailing along a river. D. Food is being cooked in a large pot.',
+    choices: [
+      'A. Architectural blueprints and measuring tools are spread across a drafting table.',
+      'B. People are dancing at a concert.',
+      'C. A boat is sailing along a river.',
+      'D. Food is being cooked in a large pot.'
+    ],
+    correctAnswer: 0,
+    explanation: 'The image shows construction blueprints and architectural drafting tools laid out on a workspace table, matching choice A.',
+    explanationVi: 'Hình ảnh cho thấy các bản vẽ thiết kế kiến trúc cùng thước đo trải dài trên bàn làm việc, phù hợp với đáp án A.'
+  },
+  {
+    id: 7,
+    type: 'photo',
+    photoCategory: 'object',
+    imageUrl: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=600&auto=format&fit=crop',
+    imageDescription: 'Một chiếc xe đạp dựng tựa vào bức tường gạch đỏ',
+    audioScript: 'A. A bicycle is leaning against a brick wall. B. A bus is picking up passengers at a station. C. Trees are being cut down in a forest. D. Boxes are being loaded onto a truck.',
+    choices: [
+      'A. A bicycle is leaning against a brick wall.',
+      'B. A bus is picking up passengers at a station.',
+      'C. Trees are being cut down in a forest.',
+      'D. Boxes are being loaded onto a truck.'
+    ],
+    correctAnswer: 0,
+    explanation: 'The image shows a classic bicycle resting against a brick exterior wall, matching choice A.',
+    explanationVi: 'Hình ảnh chụp một chiếc xe đạp đang dựng tựa vào bức tường gạch, phù hợp với đáp án A.',
+    trapAnalysis: {
+      trapType: 'Bẫy động từ vị trí "leaning against"',
+      trapNoteVi: 'Giới từ và động từ trạng thái "is leaning against" (dựng tựa vào) là cấu trúc cực kỳ phổ biến trong TOEIC Part 1.'
+    }
+  },
+
+  // -------------------------------------------------------------
+  // NHÓM 2: TRANH TẢ NGƯỜI (PEOPLE - 1 người hoặc nhóm người, hành động, ánh nhìn)
+  // -------------------------------------------------------------
+  {
+    id: 8,
+    type: 'photo',
+    photoCategory: 'people',
     imageUrl: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=600&auto=format&fit=crop',
     imageDescription: 'Một nhóm đồng nghiệp đang thảo luận và họp trong phòng họp',
     audioScript: 'A. Everyone is sleeping in the room. B. People are attending a meeting. C. The room is being painted. D. Students are taking an exam.',
@@ -120,8 +222,9 @@ export const PHOTO_QUESTIONS: ToeicListeningQuestion[] = [
     explanationVi: 'Hình ảnh cho thấy một nhóm chuyên gia đang họp và trao đổi công việc trong phòng họp, phù hợp với đáp án B.'
   },
   {
-    id: 5,
+    id: 9,
     type: 'photo',
+    photoCategory: 'people',
     imageUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&auto=format&fit=crop',
     imageDescription: 'Một người đàn ông đang mỉm cười tự tin nhìn vào ống kính',
     audioScript: 'A. The man is crying sadly. B. The man is smiling confidently. C. The man is running in the park. D. The man is cooking in the kitchen.',
@@ -136,88 +239,9 @@ export const PHOTO_QUESTIONS: ToeicListeningQuestion[] = [
     explanationVi: 'Hình ảnh cho thấy một người đàn ông đang mỉm cười tự tin, phù hợp với đáp án B.'
   },
   {
-    id: 6,
-    type: 'photo',
-    imageUrl: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=600&auto=format&fit=crop',
-    imageDescription: 'Rau củ và nguyên liệu tươi ngon được bày trên thớt gỗ trong bếp',
-    audioScript: 'A. Books are stacked on a library shelf. B. Fresh vegetables and ingredients are arranged on a wooden board. C. Clothes are hanging in a wardrobe. D. Electronic devices are on display.',
-    choices: [
-      'A. Books are stacked on a library shelf.',
-      'B. Fresh vegetables and ingredients are arranged on a wooden board.',
-      'C. Clothes are hanging in a wardrobe.',
-      'D. Electronic devices are on display.'
-    ],
-    correctAnswer: 1,
-    explanation: 'The image shows fresh cooking ingredients and vegetables laid out on a wooden cutting board, matching choice B.',
-    explanationVi: 'Hình ảnh cho thấy nguyên liệu nấu ăn và rau củ tươi ngon được bày biện trên thớt gỗ, phù hợp với đáp án B.'
-  },
-  {
-    id: 7,
-    type: 'photo',
-    imageUrl: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&auto=format&fit=crop',
-    imageDescription: 'Không gian làm việc chung với nhiều bàn máy tính',
-    audioScript: 'A. The parking lot is full of cars. B. Workers are using computers in a shared workspace. C. Children are playing in a playground. D. A chef is preparing food.',
-    choices: [
-      'A. The parking lot is full of cars.',
-      'B. Workers are using computers in a shared workspace.',
-      'C. Children are playing in a playground.',
-      'D. A chef is preparing food.'
-    ],
-    correctAnswer: 1,
-    explanation: 'The photo shows a co-working space with multiple computer workstations, matching choice B.',
-    explanationVi: 'Hình ảnh cho thấy không gian làm việc chung với nhiều bàn máy tính, phù hợp với đáp án B.'
-  },
-  {
-    id: 8,
-    type: 'photo',
-    imageUrl: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&auto=format&fit=crop',
-    imageDescription: 'Nội thất nhà hàng với ánh sáng ấm cúng và bàn ghế ăn',
-    audioScript: 'A. The gym is crowded with people. B. A restaurant dining hall has warm lighting. C. The library shelves are filled with books. D. Construction workers are building a wall.',
-    choices: [
-      'A. The gym is crowded with people.',
-      'B. A restaurant dining hall has warm lighting.',
-      'C. The library shelves are filled with books.',
-      'D. Construction workers are building a wall.'
-    ],
-    correctAnswer: 1,
-    explanation: 'The photograph shows a restaurant interior with dining tables and warm ambient lighting, matching choice B.',
-    explanationVi: 'Hình ảnh cho thấy nội thất nhà hàng với ánh sáng ấm cúng và các bàn ăn, phù hợp với đáp án B.'
-  },
-  {
-    id: 9,
-    type: 'photo',
-    imageUrl: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&auto=format&fit=crop',
-    imageDescription: 'Một kỹ sư/nhà nghiên cứu đang làm việc trong phòng lab',
-    audioScript: 'A. A scientist is conducting research in a laboratory. B. A musician is playing guitar on stage. C. A farmer is harvesting crops. D. A pilot is flying an airplane.',
-    choices: [
-      'A. A scientist is conducting research in a laboratory.',
-      'B. A musician is playing guitar on stage.',
-      'C. A farmer is harvesting crops.',
-      'D. A pilot is flying an airplane.'
-    ],
-    correctAnswer: 0,
-    explanation: 'The photo shows a scientist working in a laboratory environment, which matches choice A.',
-    explanationVi: 'Hình ảnh cho thấy một nhà khoa học đang làm việc trong môi trường phòng thí nghiệm, phù hợp với đáp án A.'
-  },
-  {
     id: 10,
     type: 'photo',
-    imageUrl: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&auto=format&fit=crop',
-    imageDescription: 'Mô hình một ngôi nhà nhỏ và chùm chìa khóa đặt trên mặt bàn gỗ',
-    audioScript: 'A. A key ring is placed next to a small model house on a table. B. People are shopping in a busy supermarket. C. The hotel has an outdoor swimming pool. D. The factory is producing electronic components.',
-    choices: [
-      'A. A key ring is placed next to a small model house on a table.',
-      'B. People are shopping in a busy supermarket.',
-      'C. The hotel has an outdoor swimming pool.',
-      'D. The factory is producing electronic components.'
-    ],
-    correctAnswer: 0,
-    explanation: 'The photo shows a metal key ring lying right beside a small miniature model house on a wooden table, perfectly matching choice A.',
-    explanationVi: 'Hình ảnh thể hiện rõ chùm chìa khóa kim loại đặt cạnh một mô hình ngôi nhà nhỏ trên mặt bàn gỗ, hoàn toàn khớp với đáp án A.'
-  },
-  {
-    id: 11,
-    type: 'photo',
+    photoCategory: 'people',
     imageUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&auto=format&fit=crop',
     imageDescription: 'Một phụ nữ trẻ đang mỉm cười nhìn vào ống kính',
     audioScript: 'A. The woman is reading a newspaper. B. The woman is looking at the camera. C. The woman is driving a car. D. The woman is washing dishes.',
@@ -232,8 +256,9 @@ export const PHOTO_QUESTIONS: ToeicListeningQuestion[] = [
     explanationVi: 'Hình ảnh cho thấy một phụ nữ trẻ đang nhìn thẳng vào máy ảnh, phù hợp với đáp án B.'
   },
   {
-    id: 12,
+    id: 11,
     type: 'photo',
+    photoCategory: 'people',
     imageUrl: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&auto=format&fit=crop',
     imageDescription: 'Một nhóm người đang thảo luận xung quanh các máy tính xách tay',
     audioScript: 'A. People are exercising at the gym. B. A team is collaborating around laptops. C. Students are taking a written test. D. Workers are unloading a truck.',
@@ -248,24 +273,81 @@ export const PHOTO_QUESTIONS: ToeicListeningQuestion[] = [
     explanationVi: 'Hình ảnh cho thấy các đồng nghiệp đang làm việc và thảo luận cùng máy tính xách tay trên bàn, phù hợp với đáp án B.'
   },
   {
-    id: 13,
+    id: 12,
     type: 'photo',
-    imageUrl: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=600&auto=format&fit=crop',
-    imageDescription: 'Tách cà phê và máy pha cà phê trong quán cà phê',
-    audioScript: 'A. A cup of coffee is served on the counter. B. Someone is painting a bicycle. C. The train has left the platform. D. Children are running in the school yard.',
+    photoCategory: 'people',
+    imageUrl: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600&auto=format&fit=crop',
+    imageDescription: 'Nữ diễn giả đang trình bày và chỉ vào màn hình trước các đồng nghiệp',
+    audioScript: 'A. A woman is giving a presentation in a conference room. B. Passengers are boarding a train. C. A doctor is examining a patient. D. A chef is tasting soup.',
     choices: [
-      'A. A cup of coffee is served on the counter.',
-      'B. Someone is painting a bicycle.',
-      'C. The train has left the platform.',
-      'D. Children are running in the school yard.'
+      'A. A woman is giving a presentation in a conference room.',
+      'B. Passengers are boarding a train.',
+      'C. A doctor is examining a patient.',
+      'D. A chef is tasting soup.'
     ],
     correctAnswer: 0,
-    explanation: 'The photograph shows a fresh cup of coffee served in a cafe setting, matching choice A.',
-    explanationVi: 'Hình ảnh cho thấy một tách cà phê thơm ngon được phục vụ trên quầy trong quán cà phê, phù hợp với đáp án A.'
+    explanation: 'The image shows a woman presenting slides to audience members in a boardroom, matching choice A.',
+    explanationVi: 'Hình ảnh cho thấy một phụ nữ đang thuyết trình trong phòng hội thảo, phù hợp với đáp án A.'
   },
+  {
+    id: 13,
+    type: 'photo',
+    photoCategory: 'people',
+    imageUrl: 'https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=600&auto=format&fit=crop',
+    imageDescription: 'Một đầu bếp chuyên nghiệp đang nêm nếm và chuẩn bị món ăn trong bếp',
+    audioScript: 'A. A musician is tuning an instrument. B. A chef is preparing food in a kitchen. C. A pilot is checking radar equipment. D. A customer is paying at a register.',
+    choices: [
+      'A. A musician is tuning an instrument.',
+      'B. A chef is preparing food in a kitchen.',
+      'C. A pilot is checking radar equipment.',
+      'D. A customer is paying at a register.'
+    ],
+    correctAnswer: 1,
+    explanation: 'The photograph captures a professional chef preparing a dish inside a commercial kitchen, matching choice B.',
+    explanationVi: 'Hình ảnh chụp một đầu bếp đang chuẩn bị thức ăn trong gian bếp, phù hợp với đáp án B.'
+  },
+
+  // -------------------------------------------------------------
+  // NHÓM 3: TRANH TẢ PHONG CẢNH & KHÔNG GIAN (SCENERY - Thiên nhiên, kiến trúc, giao thông)
+  // -------------------------------------------------------------
   {
     id: 14,
     type: 'photo',
+    photoCategory: 'scenery',
+    imageUrl: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&auto=format&fit=crop',
+    imageDescription: 'Một chiếc máy bay phản lực đang bay trên bầu trời xanh',
+    audioScript: 'A. The ship is sailing on the ocean. B. A train is arriving at the station. C. An airplane is flying in the sky. D. A bus is stopped at the traffic light.',
+    choices: [
+      'A. The ship is sailing on the ocean.',
+      'B. A train is arriving at the station.',
+      'C. An airplane is flying in the sky.',
+      'D. A bus is stopped at the traffic light.'
+    ],
+    correctAnswer: 2,
+    explanation: 'The photograph clearly shows an airplane in flight against a blue sky, matching choice C.',
+    explanationVi: 'Hình ảnh rõ ràng cho thấy một chiếc máy bay đang bay trên bầu trời xanh, phù hợp với đáp án C.'
+  },
+  {
+    id: 15,
+    type: 'photo',
+    photoCategory: 'scenery',
+    imageUrl: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&auto=format&fit=crop',
+    imageDescription: 'Nội thất nhà hàng với ánh sáng ấm cúng và bàn ghế ăn',
+    audioScript: 'A. The gym is crowded with people. B. A restaurant dining hall has warm lighting. C. The library shelves are filled with books. D. Construction workers are building a wall.',
+    choices: [
+      'A. The gym is crowded with people.',
+      'B. A restaurant dining hall has warm lighting.',
+      'C. The library shelves are filled with books.',
+      'D. Construction workers are building a wall.'
+    ],
+    correctAnswer: 1,
+    explanation: 'The photograph shows a restaurant interior with dining tables and warm ambient lighting, matching choice B.',
+    explanationVi: 'Hình ảnh cho thấy nội thất nhà hàng với ánh sáng ấm cúng và các bàn ăn, phù hợp với đáp án B.'
+  },
+  {
+    id: 16,
+    type: 'photo',
+    photoCategory: 'scenery',
     imageUrl: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=600&auto=format&fit=crop',
     imageDescription: 'Các dãy kệ sách cao chứa đầy sách trong thư viện',
     audioScript: 'A. Planes are lined up on the runway. B. Books are neatly arranged on tall library shelves. C. People are sunbathing on the beach. D. The chef is cutting vegetables.',
@@ -280,8 +362,9 @@ export const PHOTO_QUESTIONS: ToeicListeningQuestion[] = [
     explanationVi: 'Hình ảnh cho thấy những dãy kệ sách cao đầy sách được sắp xếp ngăn nắp trong thư viện, phù hợp với đáp án B.'
   },
   {
-    id: 15,
+    id: 17,
     type: 'photo',
+    photoCategory: 'scenery',
     imageUrl: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=600&auto=format&fit=crop',
     imageDescription: 'Rừng thông cao vút trong ánh nắng bình minh',
     audioScript: 'A. Tall pine trees stand in a misty forest. B. Cars are stuck in heavy traffic. C. A cruise ship is docking at the port. D. Workers are cleaning the glass windows.',
@@ -296,40 +379,98 @@ export const PHOTO_QUESTIONS: ToeicListeningQuestion[] = [
     explanationVi: 'Hình ảnh thể hiện những cây thông cao vút trong một khu rừng thiên nhiên hùng vĩ, phù hợp với đáp án A.'
   },
   {
-    id: 16,
-    type: 'photo',
-    imageUrl: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600&auto=format&fit=crop',
-    imageDescription: 'Nhà kho lớn với các kệ hàng hóa chứa đầy thùng carton',
-    audioScript: 'A. A mechanic is fixing a bicycle tire. B. Cardboard boxes are stacked on high warehouse shelves. C. Doctors are examining medical records. D. The airplane is flying above the clouds.',
-    choices: [
-      'A. A mechanic is fixing a bicycle tire.',
-      'B. Cardboard boxes are stacked on high warehouse shelves.',
-      'C. Doctors are examining medical records.',
-      'D. The airplane is flying above the clouds.'
-    ],
-    correctAnswer: 1,
-    explanation: 'The photo shows a spacious logistics warehouse with boxes stacked high on storage shelves, matching choice B.',
-    explanationVi: 'Hình ảnh chụp một kho hàng logistics rộng lớn với các thùng hàng carton được xếp chồng trên giá kệ cao, phù hợp với đáp án B.'
-  },
-  {
-    id: 17,
-    type: 'photo',
-    imageUrl: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=600&auto=format&fit=crop',
-    imageDescription: 'Kiến trúc sư đang xem bản vẽ thiết kế trên bàn làm việc',
-    audioScript: 'A. Architectural blueprints and measuring tools are spread across a drafting table. B. People are dancing at a concert. C. A boat is sailing along a river. D. Food is being cooked in a large pot.',
-    choices: [
-      'A. Architectural blueprints and measuring tools are spread across a drafting table.',
-      'B. People are dancing at a concert.',
-      'C. A boat is sailing along a river.',
-      'D. Food is being cooked in a large pot.'
-    ],
-    correctAnswer: 0,
-    explanation: 'The image shows construction blueprints and architectural drafting tools laid out on a workspace table, matching choice A.',
-    explanationVi: 'Hình ảnh cho thấy các bản vẽ thiết kế kiến trúc cùng thước đo trải dài trên bàn làm việc, phù hợp với đáp án A.'
-  },
-  {
     id: 18,
     type: 'photo',
+    photoCategory: 'scenery',
+    imageUrl: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=600&auto=format&fit=crop',
+    imageDescription: 'Cây cầu thép dài bắc qua dòng sông lúc hoàng hôn',
+    audioScript: 'A. A large bridge spans across a wide river. B. Chefs are preparing pastries in an oven. C. A airplane is parked inside a hangar. D. People are riding horses on a farm.',
+    choices: [
+      'A. A large bridge spans across a wide river.',
+      'B. Chefs are preparing pastries in an oven.',
+      'C. A airplane is parked inside a hangar.',
+      'D. People are riding horses on a farm.'
+    ],
+    correctAnswer: 0,
+    explanation: 'The photograph captures a magnificent suspension bridge spanning over a river, matching choice A.',
+    explanationVi: 'Hình ảnh chụp một cây cầu lớn vắt ngang qua dòng sông rộng lớn, phù hợp với đáp án A.'
+  },
+  {
+    id: 19,
+    type: 'photo',
+    photoCategory: 'scenery',
+    imageUrl: 'https://images.unsplash.com/photo-1477959858617-67f30bc75b82?w=600&auto=format&fit=crop',
+    imageDescription: 'Các tòa nhà cao tầng và dòng xe cộ lưu thông trên đại lộ thành phố',
+    audioScript: 'A. Vehicles are moving along a busy city avenue. B. Children are building sandcastles on a beach. C. An athlete is swimming in an Olympic pool. D. A farmer is driving a tractor through a field.',
+    choices: [
+      'A. Vehicles are moving along a busy city avenue.',
+      'B. Children are building sandcastles on a beach.',
+      'C. An athlete is swimming in an Olympic pool.',
+      'D. A farmer is driving a tractor through a field.'
+    ],
+    correctAnswer: 0,
+    explanation: 'The cityscape photo shows cars traveling on a multilane urban road flanked by skyscrapers, matching choice A.',
+    explanationVi: 'Hình ảnh đô thị cho thấy các phương tiện đang lưu thông trên đại lộ thành phố sầm uất, phù hợp với đáp án A.'
+  },
+
+  // -------------------------------------------------------------
+  // NHÓM 4: TRANH KẾT HỢP NGƯỜI & VẬT/CẢNH (COMBINED - Người tương tác với công cụ, thiết bị)
+  // -------------------------------------------------------------
+  {
+    id: 20,
+    type: 'photo',
+    photoCategory: 'combined',
+    imageUrl: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&auto=format&fit=crop',
+    imageDescription: 'Một nhà hàng sang trọng với bàn ăn được bày biện và có bàn tay phục vụ',
+    audioScript: 'A. The tables are set for dinner in a dining area. B. People are swimming in an outdoor pool. C. The kitchen is completely dark. D. Cars are parked in an underground garage.',
+    choices: [
+      'A. The tables are set for dinner in a dining area.',
+      'B. People are swimming in an outdoor pool.',
+      'C. The kitchen is completely dark.',
+      'D. Cars are parked in an underground garage.'
+    ],
+    correctAnswer: 0,
+    explanation: 'The image shows elegantly arranged dining tables in a restaurant, matching choice A.',
+    explanationVi: 'Hình ảnh cho thấy các bàn ăn được bày trí sang trọng trong nhà hàng, phù hợp với đáp án A.'
+  },
+  {
+    id: 21,
+    type: 'photo',
+    photoCategory: 'combined',
+    imageUrl: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&auto=format&fit=crop',
+    imageDescription: 'Không gian làm việc chung với nhiều nhân viên đang sử dụng máy tính',
+    audioScript: 'A. The parking lot is full of cars. B. Workers are using computers in a shared workspace. C. Children are playing in a playground. D. A chef is preparing food.',
+    choices: [
+      'A. The parking lot is full of cars.',
+      'B. Workers are using computers in a shared workspace.',
+      'C. Children are playing in a playground.',
+      'D. A chef is preparing food.'
+    ],
+    correctAnswer: 1,
+    explanation: 'The photo shows a co-working space with multiple computer workstations, matching choice B.',
+    explanationVi: 'Hình ảnh cho thấy không gian làm việc chung với nhiều bàn máy tính, phù hợp với đáp án B.'
+  },
+  {
+    id: 22,
+    type: 'photo',
+    photoCategory: 'combined',
+    imageUrl: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&auto=format&fit=crop',
+    imageDescription: 'Một kỹ sư/nhà nghiên cứu đang làm việc trong phòng lab',
+    audioScript: 'A. A scientist is conducting research in a laboratory. B. A musician is playing guitar on stage. C. A farmer is harvesting crops. D. A pilot is flying an airplane.',
+    choices: [
+      'A. A scientist is conducting research in a laboratory.',
+      'B. A musician is playing guitar on stage.',
+      'C. A farmer is harvesting crops.',
+      'D. A pilot is flying an airplane.'
+    ],
+    correctAnswer: 0,
+    explanation: 'The photo shows a scientist working in a laboratory environment, which matches choice A.',
+    explanationVi: 'Hình ảnh cho thấy một nhà khoa học đang làm việc trong môi trường phòng thí nghiệm, phù hợp với đáp án A.'
+  },
+  {
+    id: 23,
+    type: 'photo',
+    photoCategory: 'combined',
     imageUrl: 'https://images.unsplash.com/photo-1556742049-0a67e55722c0?w=600&auto=format&fit=crop',
     imageDescription: 'Khách hàng đang thanh toán bằng thẻ tại quầy thu ngân',
     audioScript: 'A. A customer is using a credit card at a payment terminal. B. Someone is swimming across a lake. C. Trees are being planted along the sidewalk. D. A train is departing from the station.',
@@ -344,8 +485,9 @@ export const PHOTO_QUESTIONS: ToeicListeningQuestion[] = [
     explanationVi: 'Hình ảnh cho thấy khách hàng đang thực hiện thanh toán bằng thẻ quẹt tại quầy thu ngân, phù hợp với đáp án A.'
   },
   {
-    id: 19,
+    id: 24,
     type: 'photo',
+    photoCategory: 'combined',
     imageUrl: 'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=600&auto=format&fit=crop',
     imageDescription: 'Người đi bộ đang rèn luyện thể thao trên đường leo núi ngoài trời',
     audioScript: 'A. A vehicle is being washed at a service station. B. A person is walking along an outdoor trail. C. Dishes are being cleaned in a sink. D. Passengers are boarding an airplane.',
@@ -360,26 +502,44 @@ export const PHOTO_QUESTIONS: ToeicListeningQuestion[] = [
     explanationVi: 'Hình ảnh chụp một người đang đi bộ dã ngoại trên con đường mòn ngoài trời, phù hợp với đáp án B.'
   },
   {
-    id: 20,
+    id: 25,
     type: 'photo',
-    imageUrl: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=600&auto=format&fit=crop',
-    imageDescription: 'Cây cầu thép dài bắc qua dòng sông lúc hoàng hôn',
-    audioScript: 'A. A large bridge spans across a wide river. B. Chefs are preparing pastries in an oven. C. A airplane is parked inside a hangar. D. People are riding horses on a farm.',
+    photoCategory: 'combined',
+    imageUrl: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&auto=format&fit=crop',
+    imageDescription: 'Công nhân xây dựng đội mũ bảo hộ đang làm việc tại công trường',
+    audioScript: 'A. A construction worker is wearing protective gear at a worksite. B. A flight attendant is serving drinks on an airplane. C. Students are reading books in a library. D. People are ice skating in a rink.',
     choices: [
-      'A. A large bridge spans across a wide river.',
-      'B. Chefs are preparing pastries in an oven.',
-      'C. A airplane is parked inside a hangar.',
-      'D. People are riding horses on a farm.'
+      'A. A construction worker is wearing protective gear at a worksite.',
+      'B. A flight attendant is serving drinks on an airplane.',
+      'C. Students are reading books in a library.',
+      'D. People are ice skating in a rink.'
     ],
     correctAnswer: 0,
-    explanation: 'The photograph captures a magnificent suspension bridge spanning over a river, matching choice A.',
-    explanationVi: 'Hình ảnh chụp một cây cầu lớn vắt ngang qua dòng sông rộng lớn, phù hợp với đáp án A.'
+    explanation: 'The photo shows a construction laborer wearing a hard hat and safety gear on an active building site, matching choice A.',
+    explanationVi: 'Hình ảnh cho thấy người công nhân xây dựng đội mũ bảo hộ và trang bị an toàn tại công trường, phù hợp với đáp án A.'
+  },
+  {
+    id: 26,
+    type: 'photo',
+    photoCategory: 'combined',
+    imageUrl: 'https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=600&auto=format&fit=crop',
+    imageDescription: 'Người làm vườn đang tưới cây xanh bằng vòi phun nước',
+    audioScript: 'A. A person is watering plants in a greenhouse garden. B. A pilot is steering an airplane on the runway. C. A mechanic is replacing a car battery. D. A cashier is counting money in a bank.',
+    choices: [
+      'A. A person is watering plants in a greenhouse garden.',
+      'B. A pilot is steering an airplane on the runway.',
+      'C. A mechanic is replacing a car battery.',
+      'D. A cashier is counting money in a bank.'
+    ],
+    correctAnswer: 0,
+    explanation: 'The photograph shows an individual holding a watering hose tending to lush green plants, matching choice A.',
+    explanationVi: 'Hình ảnh chụp một người đang cầm vòi tưới nước chăm sóc cây xanh trong vườn, phù hợp với đáp án A.'
   }
 ];
 
-// ========================
-// PART 2: QUESTION-RESPONSE (20+ Authentic TOEIC Patterns)
-// ========================
+// =========================================================================
+// PART 2: QUESTION-RESPONSE (20 Authentic TOEIC Patterns)
+// =========================================================================
 export const QUESTION_RESPONSE_QUESTIONS: ToeicListeningQuestion[] = [
   {
     id: 101,
@@ -392,7 +552,11 @@ export const QUESTION_RESPONSE_QUESTIONS: ToeicListeningQuestion[] = [
     ],
     correctAnswer: 0,
     explanation: '"Where" asks for a location. Choice A provides a specific location (two blocks away, next to the bank).',
-    explanationVi: '"Where" hỏi về địa điểm. Đáp án A cung cấp vị trí cụ thể (cách 2 khu nhà, bên cạnh ngân hàng).'
+    explanationVi: '"Where" hỏi về địa điểm. Đáp án A cung cấp vị trí cụ thể (cách 2 khu nhà, bên cạnh ngân hàng).',
+    trapAnalysis: {
+      trapType: 'Bẫy từ đồng âm & bẫy trả lời Yes/No cho Wh-question',
+      trapNoteVi: 'Đáp án B bị bẫy từ "posting" (đăng bài) lặp từ "post office" và trả lời "Yes" sai quy tắc.'
+    }
   },
   {
     id: 102,
@@ -405,7 +569,11 @@ export const QUESTION_RESPONSE_QUESTIONS: ToeicListeningQuestion[] = [
     ],
     correctAnswer: 1,
     explanation: '"When" asks about time. Choice B provides a specific time (nine in the morning).',
-    explanationVi: '"When" hỏi về thời gian. Đáp án B cung cấp thời gian cụ thể (9 giờ sáng).'
+    explanationVi: '"When" hỏi về thời gian. Đáp án B cung cấp thời gian cụ thể (9 giờ sáng).',
+    trapAnalysis: {
+      trapType: 'Bẫy hỏi When trả lời Where (Địa điểm)',
+      trapNoteVi: 'Đáp án A trả lời nơi chốn (In the auditorium) dành cho câu hỏi Where chứ không phải When.'
+    }
   },
   {
     id: 103,
@@ -643,9 +811,9 @@ export const QUESTION_RESPONSE_QUESTIONS: ToeicListeningQuestion[] = [
   }
 ];
 
-// ========================
-// PART 3: SHORT CONVERSATIONS (Multi-speaker TOEIC dialogues)
-// ========================
+// =========================================================================
+// PART 3: SHORT CONVERSATIONS
+// =========================================================================
 export const TOEIC_CONVERSATIONS: ToeicConversation[] = [
   {
     id: 201,
@@ -827,9 +995,9 @@ export const TOEIC_CONVERSATIONS: ToeicConversation[] = [
   }
 ];
 
-// ========================
-// PART 4: SHORT TALKS (Announcements, Voicemails, Reports)
-// ========================
+// =========================================================================
+// PART 4: SHORT TALKS
+// =========================================================================
 export const TOEIC_TALKS: ToeicTalk[] = [
   {
     id: 301,
@@ -995,63 +1163,79 @@ export const TOEIC_TALKS: ToeicTalk[] = [
   }
 ];
 
-// ========================
-// LISTENING TRAPS & STRATEGIES (Chiến thuật & Bẫy TOEIC)
-// ========================
+// =========================================================================
+// LISTENING TRAPS & STRATEGIES (4 Phân Loại Bẫy Tranh + Part 2 + Part 3/4)
+// =========================================================================
 export const LISTENING_TRAPS: ListeningTrap[] = [
   {
-    id: 'trap-1',
-    title: 'Similar Sounding Distractors (Bẫy từ đồng âm / phát âm gần giống)',
-    titleVi: 'Bẫy từ đồng âm hoặc phát âm suýt giống nhau',
-    part: 'Part 1 & Part 2',
-    description: 'Đề thi thường chèn các từ phát âm gần giống với từ khóa trong câu hỏi để đánh lừa thí sinh nghe lõm bõm.',
-    exampleBad: 'Question: Where did you get that *coffee*?\nTrap choice: Yes, I made a *copy* of the report. (Bẫy từ "copy" phát âm gần giống "coffee")',
-    exampleGood: 'Correct choice: At the cafe around the corner. (Địa điểm trả lời trực tiếp cho "Where")',
-    tip: '💡 Mẹo: Khi nghe thấy từ phát âm "y hệt" hoặc "na ná" một từ vừa xuất hiện trong câu hỏi Part 2, xác suất đó là đáp án bẫy lên tới 80%!'
-  },
-  {
-    id: 'trap-2',
-    title: 'Incorrect Tense & Passive Voice Trap (Bẫy "is being V-ed" vs "has been V-ed")',
-    titleVi: 'Bẫy Thì & Bị Động trong miêu tả tranh Part 1',
+    id: 'trap-people',
+    title: 'Bẫy Tranh Tả Người (Sai hành động V-ing, sai trang phục hoặc tân ngữ)',
+    titleVi: 'Bẫy trong tranh có 1 người hoặc nhóm người',
     part: 'Part 1',
-    description: 'Nếu trong bức tranh KHÔNG CÓ NGƯỜI, nhưng câu mô tả dùng thì hiện tại tiếp diễn bị động "is/are being + V3/ed" (đang được làm bởi ai đó) thì câu đó gần như 99% là SAI.',
-    exampleBad: 'Photo shows empty tables. Trap choice: "The tables *are being set* for dinner." (SAI vì không có người phục vụ đang thao tác tại đó).',
-    exampleGood: 'Correct choice: "The tables *have been set* for dinner." (ĐÚNG - miêu tả trạng thái đã chuẩn bị xong).',
-    tip: '💡 Ngoại lệ duy nhất: Cụm từ "The plants are being watered" (hệ thống phun nước tự động) hoặc "The goods are casting shadows" (chiếc bóng đổ).'
+    category: 'people',
+    description: 'Đề thi thường bẫy bằng cách dùng đúng chủ ngữ (The man / The woman) nhưng gắn sai hành động (đang nhìn vào máy ảnh thay vì đang đọc sách), hoặc dùng sai trạng thái "wearing" (đang mặc sẵn) với "putting on" (đang xỏ tay vào mặc).',
+    exampleBad: 'Người trong tranh đang đội mũ bảo hộ sẵn. Bẫy: "He is *putting on* a helmet." (SAI - "putting on" là hành động đang nhấc mũ lên đội).',
+    exampleGood: 'Đáp án đúng: "He is *wearing* a safety helmet." (ĐÚNG - "wearing" là trạng thái đã mặc/đội xong trên người).',
+    tip: '💡 Quy tắc vàng: Phân biệt "Wear" (trạng thái có sẵn trên người) vs "Put on / Try on" (hành động đang mặc/thử).'
   },
   {
-    id: 'trap-3',
-    title: 'Yes/No Answer to WH-Questions (Bẫy trả lời Yes/No cho câu hỏi Wh-)',
-    titleVi: 'Bẫy trả lời Yes/No cho câu hỏi Where, When, Who, Why, How',
+    id: 'trap-object',
+    title: 'Bẫy Tranh Tả Vật (Bẫy "is being V-ed" trong tranh không người)',
+    titleVi: 'Bẫy thì tiếp diễn bị động trong tranh đồ vật',
+    part: 'Part 1',
+    category: 'object',
+    description: 'Khi tranh chỉ có đồ vật hoặc phòng ốc không có bóng dáng người nào thao tác, nếu câu mô tả dùng cấu trúc bị động tiếp diễn "is/are being + V3/ed" thì câu đó 99% là BẪY SAI.',
+    exampleBad: 'Tranh chụp bàn ăn trống. Bẫy: "The tables *are being set* for lunch." (SAI vì không có nhân viên phục vụ nào đang sắp xếp tại thời điểm đó).',
+    exampleGood: 'Đáp án đúng: "The tables *have been set* for lunch." hoặc "Dishes *are arranged* on the table."',
+    tip: '💡 Mẹo 3 giây: Thấy tranh KHÔNG CÓ NGƯỜI mà tai nghe thấy âm "BEING" (/ˈbiːɪŋ/) -> GẠCH BỎ NGAY!'
+  },
+  {
+    id: 'trap-scenery',
+    title: 'Bẫy Tranh Tả Cảnh & Không Gian (Bẫy vị trí giới từ & chi tiết phụ)',
+    titleVi: 'Bẫy trong tranh phong cảnh, đường phố, kiến trúc',
+    part: 'Part 1',
+    category: 'scenery',
+    description: 'Đề thi thường bẫy bằng cách mô tả sai phương hướng (đối diện vs bên cạnh), sai giới từ (under vs above), hoặc miêu tả một chi tiết quá nhỏ bé không phải trọng tâm bức tranh.',
+    exampleBad: 'Tranh chụp chiếc cầu lớn bắc qua sông. Bẫy: "A ship is *passing under* the bridge" (trong khi mặt nước không có chiếc thuyền nào).',
+    exampleGood: 'Đáp án đúng: "A bridge spans across the river."',
+    tip: '💡 Mẹo: Với tranh tả cảnh rộng, hãy tập trung vào chủ thể bao quát lớn nhất (Cây cầu, con đường, hàng cây, các dãy nhà).'
+  },
+  {
+    id: 'trap-combined',
+    title: 'Bẫy Tranh Kết Hợp Người & Vật/Cảnh (Bẫy nhầm lẫn tương tác)',
+    titleVi: 'Bẫy tương tác giữa người và vật xung quanh',
+    part: 'Part 1',
+    category: 'combined',
+    description: 'Tranh có người lẫn đồ vật thường bẫy bằng cách mô tả đúng người nhưng sai đồ vật người đó đang cầm/sử dụng, hoặc mô tả đúng đồ vật nhưng sai hành động của người.',
+    exampleBad: 'Người phụ nữ đang gõ bàn phím laptop. Bẫy: "She is *repairing* the computer" (Cô ấy chỉ đang gõ phím chứ không hề tháo lắp sửa chữa).',
+    exampleGood: 'Đáp án đúng: "She is *typing on* a keyboard" hoặc "She is *using* a laptop."',
+    tip: '💡 Mẹo: Quan sát kỹ đôi bàn tay (đang cầm nắm gì) và hướng mắt nhìn (đang nhìn vào đâu) của nhân vật.'
+  },
+  {
+    id: 'trap-part2',
+    title: 'Bẫy Từ Đồng Âm & Lặp Từ Trong Part 2 (Sound Distractors)',
+    titleVi: 'Bẫy từ phát âm gần giống hoặc lặp lại từ khóa',
     part: 'Part 2',
-    description: 'Tất cả các câu hỏi bắt đầu bằng Who, Where, When, What, Why, How, Which đều KHÔNG BAO GIỜ được trả lời trực tiếp bằng "Yes" hoặc "No".',
-    exampleBad: 'Question: "When will the shipment arrive?" -> Trap choice: "Yes, yesterday afternoon." (SAI hoàn toàn).',
-    exampleGood: 'Correct choice: "By two o\'clock today." (ĐÚNG - cung cấp mốc thời gian rõ ràng).',
-    tip: '💡 Mẹo loại trừ: Ngay khi tai bắt được từ đầu tiên là "Who/Where/When/Why", nếu đáp án A, B hoặc C mở đầu bằng "Yes" hoặc "No", hãy gạch bỏ ngay lập tức!'
+    category: 'part2',
+    description: 'Đề thi chèn từ phát âm gần giống với từ khóa trong câu hỏi để đánh lừa phản xạ nghe lõm bõm (ví dụ: coffee / copy, walk / work, right / write).',
+    exampleBad: 'Hỏi: "Where can I get some *coffee*?" -> Bẫy: "I made a *copy* of the file."',
+    exampleGood: 'Đáp án đúng: "At the cafeteria down the hall."',
+    tip: '💡 Mẹo: Thấy phương án nào có từ phát âm "y chang" hoặc "na ná" từ khóa trong câu hỏi -> 80% là đáp án BẪY.'
   },
   {
-    id: 'trap-4',
-    title: 'Indirect & Unexpected Responses (Câu trả lời gián tiếp né tránh)',
-    titleVi: 'Câu trả lời gián tiếp - Xu hướng TOEIC kiểu mới',
-    part: 'Part 2',
-    description: 'Trong các đề thi TOEIC hiện đại, người trả lời thường không trực tiếp nói "Yes/No" hay đưa ra thông tin có sẵn mà trả lời gián tiếp bằng cách chỉ định người khác hoặc nêu một sự kiện bất ngờ.',
-    exampleBad: 'Hỏi: "Do you know who took the keys?" -> Người học hay đợi đáp án có tên người "John took it".',
-    exampleGood: 'Đáp án TOEIC thực tế: "I just got back from vacation" (Tôi vừa đi nghỉ về nên tôi không biết) hoặc "Ask the security guard" (Hãy hỏi bảo vệ).',
-    tip: '💡 Mẹo: Những câu thể hiện sự không biết gián tiếp ("It hasn\'t been decided yet", "Check with Sarah", "I wasn\'t invited") thường là đáp án ĐÚNG rất cao!'
-  },
-  {
-    id: 'trap-5',
-    title: 'Paraphrasing & Synonyms in Conversations (Bẫy Từ Đồng Nghĩa)',
-    titleVi: 'Kỹ thuật Paraphrase trong Part 3 & Part 4',
+    id: 'trap-part34',
+    title: 'Bẫy Paraphrase & Từ Đồng Nghĩa Trong Part 3 & 4',
+    titleVi: 'Kỹ thuật Paraphrase trong hội thoại và bài nói ngắn',
     part: 'Part 3 & Part 4',
-    description: 'Trong audio nói một từ, nhưng trong 4 phương án trên giấy lại viết bằng một từ đồng nghĩa (synonym) hoặc cách diễn đạt tương đương.',
-    exampleBad: 'Audio nói: "The computer screen is broken" -> Thí sinh tìm từ "broken", nhưng đáp án lại dùng từ "malfunctioning equipment".',
-    exampleGood: '"delay the meeting" = "postpone / put off" | "hire workers" = "recruit / bring on staff" | "discount" = "special offer / reduced rate".',
-    tip: '💡 Mẹo: Hãy đọc trước câu hỏi và gạch chân từ khóa trước khi đoạn băng phát để dự đoán các từ đồng nghĩa có thể xuất hiện.'
+    category: 'part34',
+    description: 'Trong băng phát âm thanh dùng từ gốc, nhưng 4 đáp án in trong đề thi lại dùng từ đồng nghĩa tương đương.',
+    exampleBad: 'Băng nói: "postpone the meeting" -> Thí sinh đi tìm từ "postpone", nhưng đáp án lại ghi "reschedule / put off".',
+    exampleGood: '"free of charge" = "complimentary" | "purchase" = "order / buy" | "fix" = "repair / service".',
+    tip: '💡 Mẹo: Tận dụng thời gian đọc trước câu hỏi để dự đoán sẵn các từ đồng nghĩa (synonyms) của từ khóa.'
   }
 ];
 
-// Combine all questions for mixed mode
+// Combine all questions for mixed practice
 export const ALL_TOEIC_LISTENING_QUESTIONS: ToeicListeningQuestion[] = [
   ...PHOTO_QUESTIONS,
   ...QUESTION_RESPONSE_QUESTIONS

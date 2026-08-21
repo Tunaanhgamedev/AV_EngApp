@@ -7,7 +7,8 @@ import {
   RotateCcw, Lightbulb, ImageIcon,
   MessageCircleQuestion, Shuffle, ChevronDown, ChevronUp,
   Award, Target, Sparkles, VolumeX, Play, Users, Megaphone,
-  BookOpen, ShieldAlert, Zap, Clock, Info, Check, Eye, EyeOff
+  BookOpen, ShieldAlert, Zap, Clock, Info, Check, Eye, EyeOff,
+  User, Box, Mountain, Layers, AlertTriangle
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
@@ -19,19 +20,26 @@ import {
   ALL_TOEIC_LISTENING_QUESTIONS,
   ToeicListeningQuestion,
   ToeicConversation,
-  ToeicTalk
+  ToeicTalk,
+  PhotoCategory
 } from '@/data/toeicListeningData';
 import { playAudioText, stopAudio } from '@/lib/ttsService';
 
 type TabMode = 'photo' | 'question-response' | 'conversations' | 'talks' | 'traps';
 
-function shuffleArray<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
+function getCategoryBadge(cat?: string) {
+  switch (cat) {
+    case 'people':
+      return { label: '🧑 Tranh Tả Người', color: 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800' };
+    case 'object':
+      return { label: '📦 Tranh Tả Vật', color: 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-800' };
+    case 'scenery':
+      return { label: '🏞️ Tranh Tả Cảnh', color: 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800' };
+    case 'combined':
+      return { label: '👥📦 Người & Vật/Cảnh', color: 'bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-800' };
+    default:
+      return null;
   }
-  return a;
 }
 
 // ==========================================
@@ -65,19 +73,27 @@ const QuestionCard = React.memo(function QuestionCard({
   const isAnswered = selected !== null;
   const isCorrect = selected === question.correctAnswer;
   const isFullPlaying = playingKey === `full-${question.id}`;
+  const catBadge = getCategoryBadge(question.photoCategory);
 
   return (
     <div className="premium-card p-0 overflow-hidden bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl shadow-lg transition-all duration-300">
       {/* Question Header */}
-      <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-800/50">
+      <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-800/50 flex-wrap gap-2">
         <div className="flex items-center gap-3">
           <span className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-white font-black text-sm shadow-lg shadow-blue-600/20">
             {index + 1}
           </span>
           <div>
-            <p className="text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">
-              Câu {index + 1} / {total}
-            </p>
+            <div className="flex items-center gap-2">
+              <p className="text-xs font-black text-slate-700 dark:text-slate-200 uppercase tracking-wider">
+                Câu {index + 1} / {total}
+              </p>
+              {catBadge && (
+                <span className={cn("text-[10px] px-2 py-0.5 rounded-md font-black border", catBadge.color)}>
+                  {catBadge.label}
+                </span>
+              )}
+            </div>
             <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500">
               {question.type === 'photo' ? '📸 Photo Description (Part 1)' : '💬 Question-Response (Part 2)'}
             </p>
@@ -106,10 +122,10 @@ const QuestionCard = React.memo(function QuestionCard({
               className="w-full h-56 md:h-72 object-cover"
               loading="lazy"
             />
-            <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/75 to-transparent px-4 py-3">
+            <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent px-4 py-3">
               <p className="text-white text-xs font-bold flex items-center gap-1.5">
-                <ImageIcon className="w-3.5 h-3.5 text-cyan-300" />
-                {question.imageDescription || 'Quan sát hình ảnh, nghe mô tả và chọn đáp án'}
+                <ImageIcon className="w-3.5 h-3.5 text-cyan-300 flex-shrink-0" />
+                <span>{question.imageDescription || 'Quan sát hình ảnh, nghe mô tả và chọn đáp án đúng nhất'}</span>
               </p>
             </div>
           </div>
@@ -223,21 +239,34 @@ const QuestionCard = React.memo(function QuestionCard({
           })}
         </div>
 
-        {/* Explanation */}
+        {/* Explanation & Trap Analysis */}
         {isAnswered && (
-          <div className="border-t border-slate-100 dark:border-slate-800 pt-4">
+          <div className="border-t border-slate-100 dark:border-slate-800 pt-4 space-y-3">
+            {/* Trap Warning Box */}
+            {question.trapAnalysis && (
+              <div className="p-4 bg-amber-500/10 border border-amber-500/30 rounded-2xl text-xs space-y-1.5">
+                <div className="flex items-center gap-1.5 text-amber-700 dark:text-amber-300 font-black">
+                  <AlertTriangle className="w-4 h-4 text-amber-600 flex-shrink-0" />
+                  <span>Cảnh giác bẫy: {question.trapAnalysis.trapType}</span>
+                </div>
+                <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
+                  {question.trapAnalysis.trapNoteVi}
+                </p>
+              </div>
+            )}
+
             <button
               onClick={onReveal}
               className="flex items-center justify-between w-full text-left font-black text-sm text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-slate-100 cursor-pointer"
             >
               <span className="flex items-center gap-2">
-                <Lightbulb className="w-4 h-4 text-amber-500" /> Giải thích đáp án & Lời dịch
+                <Lightbulb className="w-4 h-4 text-amber-500" /> Giải thích đáp án & Lời dịch chi tiết
               </span>
               {revealed ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
             </button>
 
             {revealed && (
-              <div className="mt-3 p-4 bg-amber-50/50 dark:bg-amber-500/5 border border-amber-100/50 dark:border-amber-500/20 rounded-2xl text-sm font-medium text-slate-600 dark:text-slate-300 leading-relaxed animate-in fade-in duration-300 space-y-2">
+              <div className="p-4 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm font-medium text-slate-600 dark:text-slate-300 leading-relaxed animate-in fade-in duration-300 space-y-2">
                 <p className="text-emerald-700 dark:text-emerald-400 font-black">
                   ✅ Đáp án đúng: {question.choices[question.correctAnswer]}
                 </p>
@@ -279,7 +308,6 @@ function ConversationCard({
   const [showTranscript, setShowTranscript] = useState(false);
   const [showVocab, setShowVocab] = useState(false);
   const isPlayingFull = playingKey === `conv-full-${conv.id}`;
-
   const allQuestionsAnswered = conv.questions.every(q => answers[q.id] !== undefined);
 
   return (
@@ -660,20 +688,55 @@ function TalkCard({
 // Traps & Strategy Tab Component
 // ==========================================
 function TrapsStrategyTab() {
+  const [activeTrapFilter, setActiveTrapFilter] = useState<string>('all');
+
+  const filteredTraps = useMemo(() => {
+    if (activeTrapFilter === 'all') return LISTENING_TRAPS;
+    return LISTENING_TRAPS.filter(t => t.category === activeTrapFilter);
+  }, [activeTrapFilter]);
+
+  const trapFilters = [
+    { id: 'all', label: 'Tất cả bẫy (6)' },
+    { id: 'people', label: '🧑 Bẫy Tranh Tả Người' },
+    { id: 'object', label: '📦 Bẫy Tranh Tả Vật' },
+    { id: 'scenery', label: '🏞️ Bẫy Tranh Tả Cảnh' },
+    { id: 'combined', label: '👥📦 Bẫy Người & Vật' },
+    { id: 'part2', label: '💬 Bẫy Part 2' },
+    { id: 'part34', label: '👥📢 Bẫy Part 3 & 4' },
+  ];
+
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
       <div className="p-6 bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-transparent rounded-3xl border border-amber-200 dark:border-amber-900/40 space-y-2">
         <h2 className="text-xl font-black text-amber-800 dark:text-amber-300 flex items-center gap-2">
           <ShieldAlert className="w-6 h-6 text-amber-600" />
-          Cẩm Nang Nhận Diện Bẫy Đề Thi TOEIC Listening (Part 1 - 4)
+          Cẩm Nang Nhận Diện Bẫy Đề Thi TOEIC Listening (Tranh Người, Vật, Cảnh & Part 2-4)
         </h2>
         <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
           ETS thường xuyên đưa ra các phương án bẫy tinh vi đánh vào phản xạ nghe chưa vững của thí sinh. Hãy ghi nhớ các dạng bẫy kinh điển dưới đây để loại trừ ngay lập tức khi làm bài!
         </p>
       </div>
 
+      {/* Trap Category Filter */}
+      <div className="flex flex-wrap gap-2">
+        {trapFilters.map(f => (
+          <button
+            key={f.id}
+            onClick={() => setActiveTrapFilter(f.id)}
+            className={cn(
+              "px-3 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer border",
+              activeTrapFilter === f.id
+                ? "bg-amber-500 text-white border-amber-500 shadow-sm"
+                : "bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-amber-400"
+            )}
+          >
+            {f.label}
+          </button>
+        ))}
+      </div>
+
       <div className="space-y-4">
-        {LISTENING_TRAPS.map((trap, idx) => (
+        {filteredTraps.map((trap, idx) => (
           <div key={trap.id} className="p-6 bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-md space-y-4">
             <div className="flex items-center justify-between flex-wrap gap-2">
               <div className="flex items-center gap-3">
@@ -722,6 +785,7 @@ function TrapsStrategyTab() {
 export default function ToeicListeningPracticePage() {
   const router = useRouter();
   const [tab, setTab] = useState<TabMode>('photo');
+  const [photoCatFilter, setPhotoCatFilter] = useState<PhotoCategory>('all');
   const [playbackRate, setPlaybackRate] = useState<number>(0.85);
 
   // Part 1 & 2 State
@@ -734,12 +798,18 @@ export default function ToeicListeningPracticePage() {
   const [convAnswers, setConvAnswers] = useState<Record<string, number>>({});
   const [talkAnswers, setTalkAnswers] = useState<Record<string, number>>({});
 
+  // Part 1 Question filtering by category
+  const filteredPhotoQuestions = useMemo(() => {
+    if (photoCatFilter === 'all') return PHOTO_QUESTIONS;
+    return PHOTO_QUESTIONS.filter(q => q.photoCategory === photoCatFilter);
+  }, [photoCatFilter]);
+
   // Question list based on active tab
   const partQuestions = useMemo(() => {
-    if (tab === 'photo') return PHOTO_QUESTIONS;
+    if (tab === 'photo') return filteredPhotoQuestions;
     if (tab === 'question-response') return QUESTION_RESPONSE_QUESTIONS;
     return [];
-  }, [tab]);
+  }, [tab, filteredPhotoQuestions]);
 
   // Statistics calculation
   const totalPartAnswered = useMemo(() => Object.keys(answers).length, [answers]);
@@ -872,6 +942,14 @@ export default function ToeicListeningPracticePage() {
     { id: 'traps', label: 'Bẫy & Chiến Thuật', icon: <ShieldAlert className="w-4 h-4" />, count: LISTENING_TRAPS.length, badge: 'PRO' },
   ];
 
+  const photoCategories: { id: PhotoCategory; label: string; icon: string; count: number }[] = [
+    { id: 'all', label: 'Tất cả tranh', icon: '🌟', count: PHOTO_QUESTIONS.length },
+    { id: 'object', label: 'Tranh Tả Vật', icon: '📦', count: PHOTO_QUESTIONS.filter(q => q.photoCategory === 'object').length },
+    { id: 'people', label: 'Tranh Tả Người', icon: '🧑', count: PHOTO_QUESTIONS.filter(q => q.photoCategory === 'people').length },
+    { id: 'scenery', label: 'Tranh Phong Cảnh', icon: '🏞️', count: PHOTO_QUESTIONS.filter(q => q.photoCategory === 'scenery').length },
+    { id: 'combined', label: 'Người & Vật/Cảnh', icon: '👥📦', count: PHOTO_QUESTIONS.filter(q => q.photoCategory === 'combined').length },
+  ];
+
   return (
     <div className="max-w-4xl mx-auto space-y-8 pb-20 animate-in fade-in duration-500">
       {/* Back Button */}
@@ -894,26 +972,26 @@ export default function ToeicListeningPracticePage() {
             <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/15 text-white rounded-full border border-white/20">
               <Headphones className="w-4 h-4" />
               <span className="text-[10px] font-black uppercase tracking-widest">TOEIC Master Listening Suite</span>
-              <span className="text-[9px] px-2 py-0.5 bg-amber-400 text-amber-950 rounded-full font-black">PART 1 - 4 TRỌN BỘ 🔥</span>
+              <span className="text-[9px] px-2 py-0.5 bg-amber-400 text-amber-950 rounded-full font-black">PHÂN LOẠI 4 NHÓM TRANH & BẪY 🔥</span>
             </div>
 
             <h1 className="text-3xl md:text-4xl font-black text-white leading-tight">
               Luyện Nghe TOEIC Chuyên Sâu
               <br />
               <span className="bg-gradient-to-r from-cyan-300 to-blue-200 bg-clip-text text-transparent">
-                Part 1 • Part 2 • Part 3 • Part 4
+                Tranh Người • Vật • Cảnh • Hội Thoại & Bẫy
               </span>
             </h1>
 
             <p className="text-blue-200/80 text-sm font-medium max-w-xl">
-              Hệ thống luyện nghe toàn diện với ngân hàng câu hỏi phong phú, âm thanh giọng đọc bản xứ đa tốc độ, ẩn text chuẩn thi thật, và bộ cẩm nang nhận diện bẫy đề thi ETS.
+              Hệ thống luyện nghe toàn diện với ngân hàng câu hỏi phân loại chi tiết theo 4 nhóm tranh (Người, Vật, Phong cảnh, Hỗn hợp), rà soát 100% hình ảnh thực tế khớp chính xác với đáp án, cùng cẩm nang bẫy đề thi.
             </p>
 
             {/* Quick Stats Banner */}
             <div className="flex flex-wrap gap-4 text-blue-200/80 text-xs font-bold">
               <div className="flex items-center gap-1.5">
                 <ImageIcon className="w-3.5 h-3.5 text-cyan-300" />
-                <span>{PHOTO_QUESTIONS.length} Tranh Part 1</span>
+                <span>{PHOTO_QUESTIONS.length} Tranh Part 1 (Đã Phân Loại)</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <MessageCircleQuestion className="w-3.5 h-3.5 text-cyan-300" />
@@ -992,6 +1070,42 @@ export default function ToeicListeningPracticePage() {
           </button>
         ))}
       </div>
+
+      {/* Part 1 Category Filter Bar */}
+      {tab === 'photo' && (
+        <div className="p-3 bg-slate-50 dark:bg-slate-800/40 rounded-2xl border border-slate-200 dark:border-slate-700/60 space-y-2 animate-in fade-in duration-300">
+          <div className="flex items-center gap-1.5 text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider px-1">
+            <Layers className="w-3.5 h-3.5 text-indigo-500" />
+            <span>Phân loại tranh Part 1 theo dạng bài:</span>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {photoCategories.map(cat => (
+              <button
+                key={cat.id}
+                onClick={() => {
+                  stopAudio();
+                  setPhotoCatFilter(cat.id);
+                }}
+                className={cn(
+                  "px-3.5 py-2 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer border",
+                  photoCatFilter === cat.id
+                    ? "bg-indigo-600 text-white border-indigo-600 shadow-md scale-105"
+                    : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-indigo-400"
+                )}
+              >
+                <span>{cat.icon}</span>
+                <span>{cat.label}</span>
+                <span className={cn(
+                  "text-[10px] px-1.5 py-0.2 rounded-full font-bold",
+                  photoCatFilter === cat.id ? "bg-white/20 text-white" : "bg-slate-100 dark:bg-slate-800 text-slate-500"
+                )}>
+                  {cat.count}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Part 1 & 2 Progress Bar */}
       {(tab === 'photo' || tab === 'question-response') && totalPartAnswered > 0 && (
