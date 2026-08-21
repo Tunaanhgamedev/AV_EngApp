@@ -18,23 +18,23 @@ export const PHOTO_QUESTIONS: ToeicListeningQuestion[] = [
     id: 1,
     type: 'photo',
     imageUrl: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&auto=format&fit=crop',
-    imageDescription: 'Một văn phòng hiện đại với nhiều người đang làm việc trên máy tính',
-    audioScript: 'A. The office is completely empty. B. People are working at their computers. C. The workers are having lunch together. D. The building is under construction.',
+    imageDescription: 'Văn phòng hiện đại với bàn ghế làm việc được sắp xếp ngăn nắp',
+    audioScript: 'A. Office chairs are arranged around desks in a workspace. B. People are cooking in a restaurant kitchen. C. The workers are repairing a car. D. The building is under construction.',
     choices: [
-      'A. The office is completely empty.',
-      'B. People are working at their computers.',
-      'C. The workers are having lunch together.',
+      'A. Office chairs are arranged around desks in a workspace.',
+      'B. People are cooking in a restaurant kitchen.',
+      'C. The workers are repairing a car.',
       'D. The building is under construction.'
     ],
-    correctAnswer: 1,
-    explanation: 'The photo shows people working at computers in a modern office, which matches choice B.',
-    explanationVi: 'Hình ảnh cho thấy mọi người đang làm việc trên máy tính trong văn phòng hiện đại, phù hợp với đáp án B.'
+    correctAnswer: 0,
+    explanation: 'The photo shows office chairs arranged around computer workstations in a modern office, matching choice A.',
+    explanationVi: 'Hình ảnh cho thấy ghế văn phòng được sắp xếp quanh các bàn làm việc trong một văn phòng hiện đại, phù hợp với đáp án A.'
   },
   {
     id: 2,
     type: 'photo',
     imageUrl: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&auto=format&fit=crop',
-    imageDescription: 'Một nhà hàng sang trọng với bàn ăn được bày trí đẹp mắt',
+    imageDescription: 'Một nhà hàng sang trọng với đĩa thức ăn và ly nước trên bàn',
     audioScript: 'A. The tables are set for dinner. B. People are swimming in a pool. C. The kitchen is on fire. D. Cars are parked in the lot.',
     choices: [
       'A. The tables are set for dinner.',
@@ -50,7 +50,7 @@ export const PHOTO_QUESTIONS: ToeicListeningQuestion[] = [
     id: 3,
     type: 'photo',
     imageUrl: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&auto=format&fit=crop',
-    imageDescription: 'Một chiếc máy bay trên bầu trời xanh',
+    imageDescription: 'Một chiếc máy bay phản lực đang bay trên bầu trời xanh',
     audioScript: 'A. The ship is sailing on the ocean. B. A train is arriving at the station. C. An airplane is flying in the sky. D. A bus is stopped at the traffic light.',
     choices: [
       'A. The ship is sailing on the ocean.',
@@ -66,7 +66,7 @@ export const PHOTO_QUESTIONS: ToeicListeningQuestion[] = [
     id: 4,
     type: 'photo',
     imageUrl: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=600&auto=format&fit=crop',
-    imageDescription: 'Một nhóm người đang họp trong phòng họp',
+    imageDescription: 'Một nhóm đồng nghiệp đang thảo luận và họp trong phòng họp',
     audioScript: 'A. Everyone is sleeping in the room. B. People are attending a meeting. C. The room is being painted. D. Students are taking an exam.',
     choices: [
       'A. Everyone is sleeping in the room.',
@@ -75,14 +75,14 @@ export const PHOTO_QUESTIONS: ToeicListeningQuestion[] = [
       'D. Students are taking an exam.'
     ],
     correctAnswer: 1,
-    explanation: 'The photo shows a group of professionals in a meeting room, which matches choice B.',
-    explanationVi: 'Hình ảnh cho thấy một nhóm chuyên gia trong phòng họp, phù hợp với đáp án B.'
+    explanation: 'The photo shows a group of professionals attending a meeting, which matches choice B.',
+    explanationVi: 'Hình ảnh cho thấy một nhóm chuyên gia đang họp và trao đổi công việc trong phòng họp, phù hợp với đáp án B.'
   },
   {
     id: 5,
     type: 'photo',
     imageUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&auto=format&fit=crop',
-    imageDescription: 'Một người đàn ông đang mỉm cười tự tin',
+    imageDescription: 'Một người đàn ông đang mỉm cười tự tin nhìn vào ống kính',
     audioScript: 'A. The man is crying sadly. B. The man is smiling confidently. C. The man is running in the park. D. The man is cooking in the kitchen.',
     choices: [
       'A. The man is crying sadly.',
@@ -91,24 +91,24 @@ export const PHOTO_QUESTIONS: ToeicListeningQuestion[] = [
       'D. The man is cooking in the kitchen.'
     ],
     correctAnswer: 1,
-    explanation: 'The photograph shows a man with a confident smile, matching choice B.',
+    explanation: 'The photograph shows a man with a confident smile looking at the camera, matching choice B.',
     explanationVi: 'Hình ảnh cho thấy một người đàn ông đang mỉm cười tự tin, phù hợp với đáp án B.'
   },
   {
     id: 6,
     type: 'photo',
     imageUrl: 'https://images.unsplash.com/photo-1495195134817-aeb325a55b65?w=600&auto=format&fit=crop',
-    imageDescription: 'Một quầy bán hoa quả tươi ngon ở chợ',
-    audioScript: 'A. Books are displayed on the shelves. B. Fresh fruits are arranged at a market stall. C. Clothes are hanging on the rack. D. Electronics are on sale.',
+    imageDescription: 'Rau củ và nguyên liệu tươi ngon được bày trên thớt gỗ trong bếp',
+    audioScript: 'A. Books are stacked on a library shelf. B. Fresh vegetables and ingredients are arranged on a wooden board. C. Clothes are hanging in a wardrobe. D. Electronic devices are on display.',
     choices: [
-      'A. Books are displayed on the shelves.',
-      'B. Fresh fruits are arranged at a market stall.',
-      'C. Clothes are hanging on the rack.',
-      'D. Electronics are on sale.'
+      'A. Books are stacked on a library shelf.',
+      'B. Fresh vegetables and ingredients are arranged on a wooden board.',
+      'C. Clothes are hanging in a wardrobe.',
+      'D. Electronic devices are on display.'
     ],
     correctAnswer: 1,
-    explanation: 'The image shows a fresh fruit stall at a market with colorful produce, matching choice B.',
-    explanationVi: 'Hình ảnh cho thấy một quầy hoa quả tươi ngon với nhiều loại trái cây sặc sỡ, phù hợp với đáp án B.'
+    explanation: 'The image shows fresh cooking ingredients and vegetables laid out on a wooden cutting board, matching choice B.',
+    explanationVi: 'Hình ảnh cho thấy nguyên liệu nấu ăn và rau củ tươi ngon được bày biện trên thớt gỗ, phù hợp với đáp án B.'
   },
   {
     id: 7,
@@ -130,23 +130,23 @@ export const PHOTO_QUESTIONS: ToeicListeningQuestion[] = [
     id: 8,
     type: 'photo',
     imageUrl: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&auto=format&fit=crop',
-    imageDescription: 'Nội thất nhà hàng với ánh sáng ấm cúng',
-    audioScript: 'A. The gym is crowded with people. B. A restaurant interior has warm lighting. C. The library shelves are filled with books. D. Construction workers are building a wall.',
+    imageDescription: 'Nội thất nhà hàng với ánh sáng ấm cúng và bàn ghế ăn',
+    audioScript: 'A. The gym is crowded with people. B. A restaurant dining hall has warm lighting. C. The library shelves are filled with books. D. Construction workers are building a wall.',
     choices: [
       'A. The gym is crowded with people.',
-      'B. A restaurant interior has warm lighting.',
+      'B. A restaurant dining hall has warm lighting.',
       'C. The library shelves are filled with books.',
       'D. Construction workers are building a wall.'
     ],
     correctAnswer: 1,
-    explanation: 'The photograph shows a restaurant interior with warm, ambient lighting, matching choice B.',
-    explanationVi: 'Hình ảnh cho thấy nội thất nhà hàng với ánh sáng ấm cúng, phù hợp với đáp án B.'
+    explanation: 'The photograph shows a restaurant interior with dining tables and warm ambient lighting, matching choice B.',
+    explanationVi: 'Hình ảnh cho thấy nội thất nhà hàng với ánh sáng ấm cúng và các bàn ăn, phù hợp với đáp án B.'
   },
   {
     id: 9,
     type: 'photo',
     imageUrl: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&auto=format&fit=crop',
-    imageDescription: 'Một nhà khoa học đang làm việc trong phòng thí nghiệm',
+    imageDescription: 'Một kỹ sư/nhà nghiên cứu đang làm việc trong phòng lab',
     audioScript: 'A. A scientist is conducting research in a laboratory. B. A musician is playing guitar on stage. C. A farmer is harvesting crops. D. A pilot is flying an airplane.',
     choices: [
       'A. A scientist is conducting research in a laboratory.',
@@ -155,46 +155,46 @@ export const PHOTO_QUESTIONS: ToeicListeningQuestion[] = [
       'D. A pilot is flying an airplane.'
     ],
     correctAnswer: 0,
-    explanation: 'The photo shows a scientist working in a lab environment, which matches choice A.',
+    explanation: 'The photo shows a scientist working in a laboratory environment, which matches choice A.',
     explanationVi: 'Hình ảnh cho thấy một nhà khoa học đang làm việc trong môi trường phòng thí nghiệm, phù hợp với đáp án A.'
   },
   {
     id: 10,
     type: 'photo',
     imageUrl: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&auto=format&fit=crop',
-    imageDescription: 'Một ngôi nhà nhỏ xinh xắn với sân vườn xanh mát',
-    audioScript: 'A. The building is a large shopping mall. B. A small house has a green garden. C. The hotel has a swimming pool. D. The factory is producing goods.',
+    imageDescription: 'Mô hình một ngôi nhà nhỏ và chùm chìa khóa đặt trên mặt bàn gỗ',
+    audioScript: 'A. A key ring is placed next to a small model house on a table. B. People are shopping in a busy supermarket. C. The hotel has an outdoor swimming pool. D. The factory is producing electronic components.',
     choices: [
-      'A. The building is a large shopping mall.',
-      'B. A small house has a green garden.',
-      'C. The hotel has a swimming pool.',
-      'D. The factory is producing goods.'
+      'A. A key ring is placed next to a small model house on a table.',
+      'B. People are shopping in a busy supermarket.',
+      'C. The hotel has an outdoor swimming pool.',
+      'D. The factory is producing electronic components.'
     ],
-    correctAnswer: 1,
-    explanation: 'The image shows a small, charming house with a green garden area, matching choice B.',
-    explanationVi: 'Hình ảnh cho thấy một ngôi nhà nhỏ xinh xắn với khu vườn xanh mát, phù hợp với đáp án B.'
+    correctAnswer: 0,
+    explanation: 'The photo shows a metal key ring lying right beside a small miniature model house on a wooden table, perfectly matching choice A.',
+    explanationVi: 'Hình ảnh thể hiện rõ chùm chìa khóa kim loại đặt cạnh một mô hình ngôi nhà nhỏ trên mặt bàn gỗ, hoàn toàn khớp với đáp án A.'
   },
   {
     id: 11,
     type: 'photo',
     imageUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&auto=format&fit=crop',
-    imageDescription: 'Một phụ nữ trẻ đang mỉm cười',
-    audioScript: 'A. The woman is reading a newspaper. B. The woman is smiling at the camera. C. The woman is driving a car. D. The woman is washing dishes.',
+    imageDescription: 'Một phụ nữ trẻ đang mỉm cười nhìn vào ống kính',
+    audioScript: 'A. The woman is reading a newspaper. B. The woman is looking at the camera. C. The woman is driving a car. D. The woman is washing dishes.',
     choices: [
       'A. The woman is reading a newspaper.',
-      'B. The woman is smiling at the camera.',
+      'B. The woman is looking at the camera.',
       'C. The woman is driving a car.',
       'D. The woman is washing dishes.'
     ],
     correctAnswer: 1,
-    explanation: 'The photograph shows a young woman smiling, matching choice B.',
-    explanationVi: 'Hình ảnh cho thấy một phụ nữ trẻ đang mỉm cười, phù hợp với đáp án B.'
+    explanation: 'The photograph shows a young woman looking directly at the camera, matching choice B.',
+    explanationVi: 'Hình ảnh cho thấy một phụ nữ trẻ đang nhìn thẳng vào máy ảnh, phù hợp với đáp án B.'
   },
   {
     id: 12,
     type: 'photo',
     imageUrl: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&auto=format&fit=crop',
-    imageDescription: 'Một nhóm người đang thảo luận xung quanh laptop',
+    imageDescription: 'Một nhóm người đang thảo luận xung quanh các máy tính xách tay',
     audioScript: 'A. People are exercising at the gym. B. A team is collaborating around laptops. C. Students are taking a written test. D. Workers are unloading a truck.',
     choices: [
       'A. People are exercising at the gym.',
@@ -203,8 +203,56 @@ export const PHOTO_QUESTIONS: ToeicListeningQuestion[] = [
       'D. Workers are unloading a truck.'
     ],
     correctAnswer: 1,
-    explanation: 'The image shows a team of people collaborating around laptops, matching choice B.',
-    explanationVi: 'Hình ảnh cho thấy một nhóm người đang cộng tác xung quanh laptop, phù hợp với đáp án B.'
+    explanation: 'The image shows colleagues collaborating together with laptops on the table, matching choice B.',
+    explanationVi: 'Hình ảnh cho thấy các đồng nghiệp đang làm việc và thảo luận cùng máy tính xách tay trên bàn, phù hợp với đáp án B.'
+  },
+  {
+    id: 13,
+    type: 'photo',
+    imageUrl: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=600&auto=format&fit=crop',
+    imageDescription: 'Tách cà phê và máy pha cà phê trong quán cà phê',
+    audioScript: 'A. A cup of coffee is served on the counter. B. Someone is painting a bicycle. C. The train has left the platform. D. Children are running in the school yard.',
+    choices: [
+      'A. A cup of coffee is served on the counter.',
+      'B. Someone is painting a bicycle.',
+      'C. The train has left the platform.',
+      'D. Children are running in the school yard.'
+    ],
+    correctAnswer: 0,
+    explanation: 'The photograph shows a fresh cup of coffee served in a cafe setting, matching choice A.',
+    explanationVi: 'Hình ảnh cho thấy một tách cà phê thơm ngon được phục vụ trên quầy trong quán cà phê, phù hợp với đáp án A.'
+  },
+  {
+    id: 14,
+    type: 'photo',
+    imageUrl: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=600&auto=format&fit=crop',
+    imageDescription: 'Các dãy kệ sách cao chứa đầy sách trong thư viện',
+    audioScript: 'A. Planes are lined up on the runway. B. Books are neatly arranged on tall library shelves. C. People are sunbathing on the beach. D. The chef is cutting vegetables.',
+    choices: [
+      'A. Planes are lined up on the runway.',
+      'B. Books are neatly arranged on tall library shelves.',
+      'C. People are sunbathing on the beach.',
+      'D. The chef is cutting vegetables.'
+    ],
+    correctAnswer: 1,
+    explanation: 'The photo shows rows of tall bookshelves packed with books in a quiet library, matching choice B.',
+    explanationVi: 'Hình ảnh cho thấy những dãy kệ sách cao đầy sách được sắp xếp ngăn nắp trong thư viện, phù hợp với đáp án B.'
+  },
+  {
+    id: 15,
+    type: 'photo',
+    imageUrl: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=600&auto=format&fit=crop',
+    imageDescription: 'Rừng thông cao vút trong ánh nắng bình minh',
+    audioScript: 'A. Tall pine trees stand in a misty forest. B. Cars are stuck in heavy traffic. C. A cruise ship is docking at the port. D. Workers are cleaning the glass windows.',
+    choices: [
+      'A. Tall pine trees stand in a misty forest.',
+      'B. Cars are stuck in heavy traffic.',
+      'C. A cruise ship is docking at the port.',
+      'D. Workers are cleaning the glass windows.'
+    ],
+    correctAnswer: 0,
+    explanation: 'The image depicts tall evergreen pine trees in a scenic natural forest, matching choice A.',
+    explanationVi: 'Hình ảnh thể hiện những cây thông cao vút trong một khu rừng thiên nhiên hùng vĩ, phù hợp với đáp án A.'
   }
 ];
 
@@ -300,51 +348,77 @@ export const QUESTION_RESPONSE_QUESTIONS: ToeicListeningQuestion[] = [
       'C. Because the director had an emergency.'
     ],
     correctAnswer: 2,
-    explanation: '"Why" asks for a reason. Choice C provides a reason with "because" (director had an emergency).',
-    explanationVi: '"Why" hỏi về lý do. Đáp án C cung cấp lý do với "because" (giám đốc có việc khẩn cấp).'
+    explanation: '"Why" asks for a reason. Choice C gives the reason (director had an emergency).',
+    explanationVi: '"Why" hỏi về lý do. Đáp án C đưa ra nguyên nhân (Giám đốc có việc khẩn cấp).'
   },
   {
     id: 108,
     type: 'question-response',
-    audioScript: 'Have you finished reviewing the contract?',
+    audioScript: 'Should we take a taxi or the subway to the airport?',
     choices: [
-      'A. Not yet, I will have it done by tomorrow.',
-      'B. The contract is on page fifteen.',
-      'C. I signed it last year.'
+      'A. The subway is faster during rush hour.',
+      'B. Yes, the airport is very large.',
+      'C. My flight departs at seven.'
     ],
     correctAnswer: 0,
-    explanation: '"Have you finished" asks about completion status. Choice A provides a status update (not yet, by tomorrow).',
-    explanationVi: '"Have you finished" hỏi về trạng thái hoàn thành. Đáp án A cập nhật trạng thái (chưa xong, ngày mai sẽ xong).'
+    explanation: 'This is an alternative question (taxi or subway). Choice A recommends the subway with a valid reason.',
+    explanationVi: 'Đây là câu hỏi lựa chọn (taxi hay tàu điện ngầm). Đáp án A gợi ý tàu điện ngầm vì nhanh hơn vào giờ cao điểm.'
   },
   {
     id: 109,
     type: 'question-response',
-    audioScript: 'Could you send me the sales report?',
+    audioScript: 'Have you received the quarterly financial report?',
     choices: [
-      'A. Sales were up by twenty percent.',
-      'B. Of course, I will email it to you right away.',
-      'C. The report is about ten pages long.'
+      'A. Yes, John emailed it to me this morning.',
+      'B. The report contains twenty pages.',
+      'C. The finance department is on the second floor.'
     ],
-    correctAnswer: 1,
-    explanation: '"Could you" is a polite request. Choice B agrees to fulfill the request (will email right away).',
-    explanationVi: '"Could you" là yêu cầu lịch sự. Đáp án B đồng ý thực hiện yêu cầu (sẽ gửi email ngay).'
+    correctAnswer: 0,
+    explanation: 'Yes/No question with "Have you". Choice A directly confirms receiving it and explains how.',
+    explanationVi: 'Câu hỏi Yes/No với "Have you". Đáp án A trực tiếp xác nhận đã nhận được qua email của John sáng nay.'
   },
   {
     id: 110,
     type: 'question-response',
-    audioScript: 'How often do you travel for work?',
+    audioScript: 'Could you help me print these documents?',
     choices: [
-      'A. I travel to Tokyo and Seoul mostly.',
-      'B. About twice a month, usually on Mondays.',
-      'C. Yes, I enjoy traveling very much.'
+      'A. The printer is currently out of paper.',
+      'B. I read the documents yesterday.',
+      'C. They are ten pages long.'
+    ],
+    correctAnswer: 0,
+    explanation: 'A request for help. Choice A provides a realistic contextual response explaining a temporary obstacle.',
+    explanationVi: 'Lời đề nghị giúp đỡ. Đáp án A phản hồi thực tế giải thích máy in đang hết giấy.'
+  },
+  {
+    id: 111,
+    type: 'question-response',
+    audioScript: 'How much does the annual subscription cost?',
+    choices: [
+      'A. It renews automatically every year.',
+      'B. It is ninety-nine dollars per year.',
+      'C. We have subscribed for three years.'
     ],
     correctAnswer: 1,
-    explanation: '"How often" asks about frequency. Choice B provides a frequency (about twice a month).',
-    explanationVi: '"How often" hỏi về tần suất. Đáp án B cung cấp tần suất (khoảng 2 lần/tháng).'
+    explanation: '"How much" asks about price. Choice B specifies the exact cost ($99/year).',
+    explanationVi: '"How much" hỏi về giá cả. Đáp án B chỉ rõ giá tiền (99 đô la mỗi năm).'
+  },
+  {
+    id: 112,
+    type: 'question-response',
+    audioScript: 'Isn\'t Mr. Tanaka leading the presentation today?',
+    choices: [
+      'A. No, Ms. Garcia will replace him.',
+      'B. The presentation was very informative.',
+      'C. In the conference room B.'
+    ],
+    correctAnswer: 0,
+    explanation: 'Negative question checking information. Choice A clarifies that Ms. Garcia will replace him.',
+    explanationVi: 'Câu hỏi phủ định xác nhận thông tin. Đáp án A đính chính rằng bà Garcia sẽ thay thế ông Tanaka.'
   }
 ];
 
-// Combined pool
+// Combine all questions
 export const ALL_TOEIC_LISTENING_QUESTIONS: ToeicListeningQuestion[] = [
   ...PHOTO_QUESTIONS,
   ...QUESTION_RESPONSE_QUESTIONS
