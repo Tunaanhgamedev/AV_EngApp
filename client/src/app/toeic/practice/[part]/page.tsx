@@ -284,6 +284,8 @@ function TOEICPracticeContent() {
                   const choiceChar = choice.trim().charAt(0); // 'A', 'B', 'C', or 'D'
                   const isSelected = selected === choice;
                   const isChoiceCorrect = choiceChar === q.correctAnswer;
+                  const isAnswered = !!selected || submitted;
+                  const hideChoiceText = (partNum === 1 || partNum === 2) && !isAnswered;
 
                   return (
                     <button
@@ -291,16 +293,24 @@ function TOEICPracticeContent() {
                       disabled={submitted}
                       onClick={() => handleSelectAnswer(q.id, choice)}
                       className={cn(
-                        "p-4 rounded-2xl text-left border-2 font-bold text-sm transition-all flex items-center justify-between",
-                        !submitted && isSelected && "border-primary bg-primary/5 text-primary",
-                        !submitted && !isSelected && "border-slate-100 bg-slate-50 hover:bg-slate-100 hover:border-slate-200 text-slate-700",
-                        submitted && isChoiceCorrect && "border-emerald-500 bg-emerald-50 text-emerald-700",
-                        submitted && isSelected && !isChoiceCorrect && "border-rose-500 bg-rose-50 text-rose-700",
-                        submitted && !isChoiceCorrect && !isSelected && "border-slate-100 bg-slate-50 opacity-60 text-slate-400"
+                        "p-4 rounded-2xl text-left border-2 font-bold text-sm transition-all flex items-center justify-between cursor-pointer",
+                        !submitted && isSelected && "border-blue-600 bg-blue-50/50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400",
+                        !submitted && !isSelected && "border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300",
+                        submitted && isChoiceCorrect && "border-emerald-500 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400",
+                        submitted && isSelected && !isChoiceCorrect && "border-rose-500 bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400",
+                        submitted && !isChoiceCorrect && !isSelected && "border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 opacity-60 text-slate-400 dark:text-slate-500"
                       )}
                     >
-                      <span>{choice}</span>
-                      {!submitted && isSelected && <CheckCircle2 className="w-5 h-5 text-primary" />}
+                      <div className="flex items-center gap-3">
+                        <span className={cn(
+                          "w-7 h-7 rounded-xl font-black text-xs flex items-center justify-center flex-shrink-0",
+                          submitted && isChoiceCorrect ? "bg-emerald-600 text-white" : "bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200"
+                        )}>
+                          {choiceChar}
+                        </span>
+                        <span>{hideChoiceText ? `Đáp án (${choiceChar})` : choice.replace(/^[A-D]\.\s*/, '')}</span>
+                      </div>
+                      {!submitted && isSelected && <CheckCircle2 className="w-5 h-5 text-blue-600" />}
                       {submitted && isChoiceCorrect && <CheckCircle2 className="w-5 h-5 text-emerald-500" />}
                       {submitted && isSelected && !isChoiceCorrect && <XCircle className="w-5 h-5 text-rose-500" />}
                     </button>

@@ -132,9 +132,27 @@ const QuestionCard = React.memo(function QuestionCard({
           </button>
         </div>
 
+        {/* Real TOEIC Exam Notice */}
+        <div className="flex items-center justify-between text-xs px-1">
+          <span className="font-bold text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+            {!isAnswered ? (
+              <>
+                <span className="inline-block w-2 h-2 rounded-full bg-amber-500 animate-ping" />
+                <span>🔒 <strong>Format thi thật:</strong> Lời thoại đang ẩn. Nghe và bấm chọn A, B, C, D</span>
+              </>
+            ) : (
+              <>
+                <span className="inline-block w-2 h-2 rounded-full bg-emerald-500" />
+                <span className="text-emerald-600 dark:text-emerald-400 font-black">🔓 Đã mở khóa Transcript 4 câu mô tả:</span>
+              </>
+            )}
+          </span>
+        </div>
+
         {/* Choices */}
         <div className="space-y-3">
           {question.choices.map((choice, idx) => {
+            const letter = String.fromCharCode(65 + idx);
             const isSelected = selected === idx;
             const isChoiceCorrect = idx === question.correctAnswer;
             const choiceKey = `choice-${question.id}-${idx}`;
@@ -148,14 +166,29 @@ const QuestionCard = React.memo(function QuestionCard({
                   className={cn(
                     "flex-1 p-4 rounded-2xl text-left border-2 font-bold text-sm transition-all flex items-center justify-between cursor-pointer",
                     !isAnswered && isSelected && "border-blue-600 bg-blue-50/50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400",
-                    !isAnswered && !isSelected && "border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 hover:border-slate-200 dark:hover:border-slate-600 text-slate-700 dark:text-slate-300",
-                    isAnswered && isChoiceCorrect && "border-emerald-500 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400",
+                    !isAnswered && !isSelected && "border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 hover:border-blue-300 dark:hover:border-blue-600 text-slate-700 dark:text-slate-300",
+                    isAnswered && isChoiceCorrect && "border-emerald-500 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 shadow-sm",
                     isAnswered && isSelected && !isChoiceCorrect && "border-rose-500 bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400",
-                    isAnswered && !isChoiceCorrect && !isSelected && "border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 opacity-50 text-slate-400 dark:text-slate-500",
+                    isAnswered && !isChoiceCorrect && !isSelected && "border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 opacity-60 text-slate-400 dark:text-slate-500",
                     isAnswered && "cursor-default"
                   )}
                 >
-                  <span className="leading-snug">{choice}</span>
+                  <div className="flex items-center gap-3">
+                    <span className={cn(
+                      "w-7 h-7 rounded-xl font-black text-xs flex items-center justify-center flex-shrink-0 transition-colors",
+                      isAnswered && isChoiceCorrect
+                        ? "bg-emerald-600 text-white"
+                        : isAnswered && isSelected && !isChoiceCorrect
+                        ? "bg-rose-600 text-white"
+                        : "bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200"
+                    )}>
+                      {letter}
+                    </span>
+                    <span className="leading-snug text-sm">
+                      {isAnswered ? choice.replace(/^[A-D]\.\s*/, '') : `Đáp án (${letter})`}
+                    </span>
+                  </div>
+
                   {isAnswered && isChoiceCorrect && <CheckCircle2 className="w-5 h-5 text-emerald-500 flex-shrink-0 ml-2" />}
                   {isAnswered && isSelected && !isChoiceCorrect && <XCircle className="w-5 h-5 text-rose-500 flex-shrink-0 ml-2" />}
                 </button>
@@ -166,15 +199,16 @@ const QuestionCard = React.memo(function QuestionCard({
                     e.stopPropagation();
                     onPlayChoice(choice, choiceKey);
                   }}
-                  title={`Nghe riêng câu ${choice.slice(0, 2)}`}
+                  title={`Nghe riêng câu (${letter})`}
                   className={cn(
-                    "p-4 rounded-2xl border-2 transition-all cursor-pointer flex-shrink-0",
+                    "p-4 rounded-2xl border-2 transition-all cursor-pointer flex-shrink-0 flex items-center gap-1.5",
                     isChoicePlaying
                       ? "bg-indigo-600 text-white border-indigo-600 shadow-md animate-pulse"
-                      : "border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-300"
+                      : "border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-300"
                   )}
                 >
                   <Volume2 className="w-4 h-4" />
+                  <span className="text-xs font-black hidden sm:inline">({letter})</span>
                 </button>
               </div>
             );
