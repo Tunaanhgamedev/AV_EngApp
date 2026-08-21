@@ -23,6 +23,7 @@ import { cn } from '@/lib/utils';
 import { searchWord, saveWordToUser } from '@/services/vocabulary.service';
 import { useAuth } from '@/context/AuthContext';
 import { useSearchParams, useRouter } from 'next/navigation';
+import { playAudioText } from '@/lib/ttsService';
 
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 const LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
@@ -198,30 +199,15 @@ function DictionaryContent() {
     }
   }, []);
 
-  // Debounced search (only for typing — 400ms delay)
+  // Single unified fetch coordinator (300ms debounce for search input, immediate for filter & page clicks)
   useEffect(() => {
+    const isTyping = searchTerm.trim().length > 0;
     const timer = setTimeout(() => {
-      setPage(1);
-      fetchWordlist(1, selectedLetter, selectedLevel, searchTerm);
-    }, 400);
+      fetchWordlist(page, selectedLetter, selectedLevel, searchTerm);
+    }, isTyping ? 300 : 0);
+
     return () => clearTimeout(timer);
-  }, [searchTerm]); // Only debounce text input changes
-
-  // Instant filter changes (letter or level click — no debounce)
-  useEffect(() => {
-    setPage(1);
-    fetchWordlist(1, selectedLetter, selectedLevel, searchTerm);
-  }, [selectedLetter, selectedLevel]);
-
-  // Page navigation
-  useEffect(() => {
-    fetchWordlist(page, selectedLetter, selectedLevel, searchTerm);
-  }, [page]);
-
-  // Initial load
-  useEffect(() => {
-    fetchWordlist(1, selectedLetter, selectedLevel, searchTerm);
-  }, []);
+  }, [fetchWordlist, page, selectedLetter, selectedLevel, searchTerm]);
 
   // Batch enrichment handler (one-by-one, full metadata)
   const handleBatchEnrich = async (batchSize = 10) => {
@@ -287,70 +273,18 @@ function DictionaryContent() {
   };
 
   const playAudio = (word: string, url?: string) => {
-    // Warm up SpeechSynthesis synchronously in the user gesture
-    if (typeof window !== 'undefined' && window.speechSynthesis) {
-      try {
-        const dummy = new SpeechSynthesisUtterance('');
-        window.speechSynthesis.speak(dummy);
-      } catch (e) {}
-    }
-
     if (url) {
       const audio = new Audio(url);
-      audio.play().catch((err) => {
-        console.log("Audio play failed, falling back to speech synthesis:", err);
-        speak(word);
+      audio.play().catch(() => {
+        playAudioText(word, { rate: 0.9 });
       });
     } else {
-      speak(word);
+      playAudioText(word, { rate: 0.9 });
     }
   };
 
   const speak = (text: string) => {
-    if (typeof window !== 'undefined') {
-      const playTranslateTTS = () => {
-        const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=${encodeURIComponent(text)}`;
-        const audio = new Audio(url);
-        audio.play().catch((err) => {
-          console.error("Google Translate TTS fallback failed:", err);
-        });
-      };
-
-      if (window.speechSynthesis) {
-        const voices = window.speechSynthesis.getVoices();
-        
-        // Fallback to Translate TTS if no voices are loaded/installed
-        if (voices.length === 0) {
-          playTranslateTTS();
-          return;
-        }
-
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'en-US';
-        utterance.rate = 0.9; // Slightly slower for clarity
-
-        const preferredVoice = voices.find(v => v.name.includes('Google') && v.lang === 'en-US') ||
-          voices.find(v => v.lang === 'en-US');
-
-        if (preferredVoice) utterance.voice = preferredVoice;
-
-        utterance.onerror = (e) => {
-          console.log("speechSynthesis error, playing Google Translate TTS:", e);
-          playTranslateTTS();
-        };
-
-        if (window.speechSynthesis.speaking) {
-          window.speechSynthesis.cancel();
-          setTimeout(() => {
-            window.speechSynthesis.speak(utterance);
-          }, 50);
-        } else {
-          window.speechSynthesis.speak(utterance);
-        }
-      } else {
-        playTranslateTTS();
-      }
-    }
+    playAudioText(text, { rate: 0.9 });
   };
 
   return (

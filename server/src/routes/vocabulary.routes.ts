@@ -330,7 +330,8 @@ router.get('/wordlist', async (req, res) => {
       `SELECT COUNT(*)::int as total FROM vocabulary_words WHERE ${where}`, params
     );
 
-    // Send response IMMEDIATELY (no blocking)
+    // Send response with browser/CDN cache headers for speed
+    res.setHeader('Cache-Control', 'public, max-age=30, stale-while-revalidate=120');
     res.json({ words, total: cnt[0].total, pages: Math.ceil(cnt[0].total / limit) });
 
     // Background enrichment: fire-and-forget AFTER response is sent

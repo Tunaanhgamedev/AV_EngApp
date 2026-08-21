@@ -38,49 +38,10 @@ const levels = [
   { level: 'C2', label: 'Proficiency', desc: 'Native-like precision and nuance', color: 'from-orange-400 to-amber-500', difficulty: '🏆', words: '~200' },
 ];
 
+import { playAudioText } from '@/lib/ttsService';
+
 const speak = (text: string) => {
-  if (typeof window !== 'undefined') {
-    const playTranslateTTS = () => {
-      const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=${encodeURIComponent(text)}`;
-      const audio = new Audio(url);
-      audio.play().catch((err) => {
-        console.error("Google Translate TTS fallback failed:", err);
-      });
-    };
-
-    if (window.speechSynthesis) {
-      const voices = window.speechSynthesis.getVoices();
-      if (voices.length === 0) {
-        playTranslateTTS();
-        return;
-      }
-
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'en-US';
-      utterance.rate = 0.75;
-
-      const voicesList = window.speechSynthesis.getVoices();
-      const preferredVoice = voicesList.find(v => v.name.includes('Google') && v.lang === 'en-US') ||
-        voicesList.find(v => v.lang === 'en-US');
-
-      if (preferredVoice) utterance.voice = preferredVoice;
-
-      utterance.onerror = () => {
-        playTranslateTTS();
-      };
-
-      if (window.speechSynthesis.speaking) {
-        window.speechSynthesis.cancel();
-        setTimeout(() => {
-          window.speechSynthesis.speak(utterance);
-        }, 50);
-      } else {
-        window.speechSynthesis.speak(utterance);
-      }
-    } else {
-      playTranslateTTS();
-    }
-  }
+  playAudioText(text, { rate: 0.85 });
 };
 
 const TOPIC_CATEGORIES: Record<string, 'daily' | 'work_tech' | 'society_env'> = {
