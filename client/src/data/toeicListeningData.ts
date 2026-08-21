@@ -8,10 +8,51 @@ export interface ToeicListeningQuestion {
   correctAnswer: number;
   explanation: string;
   explanationVi: string;
+  category?: string;
+}
+
+export interface ConversationQuestion {
+  id: string;
+  question: string;
+  choices: string[];
+  correctAnswer: number;
+  explanation: string;
+  explanationVi: string;
+}
+
+export interface ToeicConversation {
+  id: number;
+  title: string;
+  context: string;
+  speakers: { name: string; text: string; role?: string }[];
+  fullAudioScript: string;
+  questions: ConversationQuestion[];
+  vocabHighlights: { word: string; ipa: string; meaningVi: string }[];
+}
+
+export interface ToeicTalk {
+  id: number;
+  title: string;
+  type: 'announcement' | 'advertisement' | 'voicemail' | 'report' | 'speech';
+  context: string;
+  audioScript: string;
+  questions: ConversationQuestion[];
+  vocabHighlights: { word: string; ipa: string; meaningVi: string }[];
+}
+
+export interface ListeningTrap {
+  id: string;
+  title: string;
+  titleVi: string;
+  part: string;
+  description: string;
+  exampleBad: string;
+  exampleGood: string;
+  tip: string;
 }
 
 // ========================
-// PART 1: PHOTO DESCRIPTION
+// PART 1: PHOTO DESCRIPTION (20+ Scenarios)
 // ========================
 export const PHOTO_QUESTIONS: ToeicListeningQuestion[] = [
   {
@@ -253,11 +294,91 @@ export const PHOTO_QUESTIONS: ToeicListeningQuestion[] = [
     correctAnswer: 0,
     explanation: 'The image depicts tall evergreen pine trees in a scenic natural forest, matching choice A.',
     explanationVi: 'Hình ảnh thể hiện những cây thông cao vút trong một khu rừng thiên nhiên hùng vĩ, phù hợp với đáp án A.'
+  },
+  {
+    id: 16,
+    type: 'photo',
+    imageUrl: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600&auto=format&fit=crop',
+    imageDescription: 'Nhà kho lớn với các kệ hàng hóa chứa đầy thùng carton',
+    audioScript: 'A. A mechanic is fixing a bicycle tire. B. Cardboard boxes are stacked on high warehouse shelves. C. Doctors are examining medical records. D. The airplane is flying above the clouds.',
+    choices: [
+      'A. A mechanic is fixing a bicycle tire.',
+      'B. Cardboard boxes are stacked on high warehouse shelves.',
+      'C. Doctors are examining medical records.',
+      'D. The airplane is flying above the clouds.'
+    ],
+    correctAnswer: 1,
+    explanation: 'The photo shows a spacious logistics warehouse with boxes stacked high on storage shelves, matching choice B.',
+    explanationVi: 'Hình ảnh chụp một kho hàng logistics rộng lớn với các thùng hàng carton được xếp chồng trên giá kệ cao, phù hợp với đáp án B.'
+  },
+  {
+    id: 17,
+    type: 'photo',
+    imageUrl: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=600&auto=format&fit=crop',
+    imageDescription: 'Kiến trúc sư đang xem bản vẽ thiết kế trên bàn làm việc',
+    audioScript: 'A. Architectural blueprints and measuring tools are spread across a drafting table. B. People are dancing at a concert. C. A boat is sailing along a river. D. Food is being cooked in a large pot.',
+    choices: [
+      'A. Architectural blueprints and measuring tools are spread across a drafting table.',
+      'B. People are dancing at a concert.',
+      'C. A boat is sailing along a river.',
+      'D. Food is being cooked in a large pot.'
+    ],
+    correctAnswer: 0,
+    explanation: 'The image shows construction blueprints and architectural drafting tools laid out on a workspace table, matching choice A.',
+    explanationVi: 'Hình ảnh cho thấy các bản vẽ thiết kế kiến trúc cùng thước đo trải dài trên bàn làm việc, phù hợp với đáp án A.'
+  },
+  {
+    id: 18,
+    type: 'photo',
+    imageUrl: 'https://images.unsplash.com/photo-1556742049-0a67e55722c0?w=600&auto=format&fit=crop',
+    imageDescription: 'Khách hàng đang thanh toán bằng thẻ tại quầy thu ngân',
+    audioScript: 'A. A customer is using a credit card at a payment terminal. B. Someone is swimming across a lake. C. Trees are being planted along the sidewalk. D. A train is departing from the station.',
+    choices: [
+      'A. A customer is using a credit card at a payment terminal.',
+      'B. Someone is swimming across a lake.',
+      'C. Trees are being planted along the sidewalk.',
+      'D. A train is departing from the station.'
+    ],
+    correctAnswer: 0,
+    explanation: 'The photo shows a customer processing a transaction with a contactless credit card at a counter, matching choice A.',
+    explanationVi: 'Hình ảnh cho thấy khách hàng đang thực hiện thanh toán bằng thẻ quẹt tại quầy thu ngân, phù hợp với đáp án A.'
+  },
+  {
+    id: 19,
+    type: 'photo',
+    imageUrl: 'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=600&auto=format&fit=crop',
+    imageDescription: 'Người đi bộ đang rèn luyện thể thao trên đường leo núi ngoài trời',
+    audioScript: 'A. A vehicle is being washed at a service station. B. A person is walking along an outdoor trail. C. Dishes are being cleaned in a sink. D. Passengers are boarding an airplane.',
+    choices: [
+      'A. A vehicle is being washed at a service station.',
+      'B. A person is walking along an outdoor trail.',
+      'C. Dishes are being cleaned in a sink.',
+      'D. Passengers are boarding an airplane.'
+    ],
+    correctAnswer: 1,
+    explanation: 'The image shows an outdoor fitness enthusiast walking on a trail with a scenic background, matching choice B.',
+    explanationVi: 'Hình ảnh chụp một người đang đi bộ dã ngoại trên con đường mòn ngoài trời, phù hợp với đáp án B.'
+  },
+  {
+    id: 20,
+    type: 'photo',
+    imageUrl: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=600&auto=format&fit=crop',
+    imageDescription: 'Cây cầu thép dài bắc qua dòng sông lúc hoàng hôn',
+    audioScript: 'A. A large bridge spans across a wide river. B. Chefs are preparing pastries in an oven. C. A airplane is parked inside a hangar. D. People are riding horses on a farm.',
+    choices: [
+      'A. A large bridge spans across a wide river.',
+      'B. Chefs are preparing pastries in an oven.',
+      'C. A airplane is parked inside a hangar.',
+      'D. People are riding horses on a farm.'
+    ],
+    correctAnswer: 0,
+    explanation: 'The photograph captures a magnificent suspension bridge spanning over a river, matching choice A.',
+    explanationVi: 'Hình ảnh chụp một cây cầu lớn vắt ngang qua dòng sông rộng lớn, phù hợp với đáp án A.'
   }
 ];
 
 // ========================
-// PART 2: QUESTION-RESPONSE
+// PART 2: QUESTION-RESPONSE (20+ Authentic TOEIC Patterns)
 // ========================
 export const QUESTION_RESPONSE_QUESTIONS: ToeicListeningQuestion[] = [
   {
@@ -415,10 +536,522 @@ export const QUESTION_RESPONSE_QUESTIONS: ToeicListeningQuestion[] = [
     correctAnswer: 0,
     explanation: 'Negative question checking information. Choice A clarifies that Ms. Garcia will replace him.',
     explanationVi: 'Câu hỏi phủ định xác nhận thông tin. Đáp án A đính chính rằng bà Garcia sẽ thay thế ông Tanaka.'
+  },
+  {
+    id: 113,
+    type: 'question-response',
+    audioScript: 'You haven\'t finalized the flight booking yet, have you?',
+    choices: [
+      'A. No, I\'m still waiting for manager approval.',
+      'B. Yes, the airport terminal is crowded.',
+      'C. The flight duration is three hours.'
+    ],
+    correctAnswer: 0,
+    explanation: 'Tag question asking for confirmation. Choice A confirms the booking is pending manager approval.',
+    explanationVi: 'Câu hỏi đuôi xác nhận. Đáp án A xác nhận chưa đặt vì vẫn đang đợi quản lý phê duyệt.'
+  },
+  {
+    id: 114,
+    type: 'question-response',
+    audioScript: 'Which caterer should we hire for the annual gala?',
+    choices: [
+      'A. The gala starts at seven in the evening.',
+      'B. Let\'s go with Delicious Bites; their quote was the lowest.',
+      'C. About one hundred and fifty guests.'
+    ],
+    correctAnswer: 1,
+    explanation: '"Which" asks for a choice among options. Choice B selects a specific catering company with reasoning.',
+    explanationVi: '"Which" hỏi lựa chọn bên cung cấp. Đáp án B chọn Delicious Bites vì báo giá tốt nhất.'
+  },
+  {
+    id: 115,
+    type: 'question-response',
+    audioScript: 'Did you remember to turn off the air conditioner in room 402?',
+    choices: [
+      'A. Yes, I made sure it was off before leaving.',
+      'B. The room temperature is twenty degrees.',
+      'C. We need a new technician.'
+    ],
+    correctAnswer: 0,
+    explanation: 'Direct question on past action. Choice A confirms taking care of it.',
+    explanationVi: 'Câu hỏi xác nhận hành động trong quá khứ. Đáp án A xác nhận đã tắt trước khi rời phòng.'
+  },
+  {
+    id: 116,
+    type: 'question-response',
+    audioScript: 'The photocopier on the second floor is jammed again.',
+    choices: [
+      'A. I\'ll call IT support right away to get it fixed.',
+      'B. Yes, photo albums are very heavy.',
+      'C. It costs twenty cents per page.'
+    ],
+    correctAnswer: 0,
+    explanation: 'Statement describing an office issue. Choice A offers an immediate problem-solving response.',
+    explanationVi: 'Câu trần thuật nêu sự cố máy photocopy. Đáp án A đưa ra cách xử lý (gọi IT hỗ trợ ngay).'
+  },
+  {
+    id: 117,
+    type: 'question-response',
+    audioScript: 'Where did you put the spare HDMI cables?',
+    choices: [
+      'A. In the bottom drawer of the supply cabinet.',
+      'B. We watched the video presentation.',
+      'C. It connects to the projector.'
+    ],
+    correctAnswer: 0,
+    explanation: '"Where" asks for position. Choice A gives the exact location (bottom drawer of supply cabinet).',
+    explanationVi: '"Where" hỏi vị trí để cáp. Đáp án A chỉ rõ vị trí (trong ngăn kéo dưới của tủ đồ dùng).'
+  },
+  {
+    id: 118,
+    type: 'question-response',
+    audioScript: 'How frequently do the company shuttle buses run?',
+    choices: [
+      'A. Every twenty minutes during peak hours.',
+      'B. The bus driver is very polite.',
+      'C. To the central train station.'
+    ],
+    correctAnswer: 0,
+    explanation: '"How frequently" asks for frequency. Choice A states the interval (every 20 minutes).',
+    explanationVi: '"How frequently" hỏi về tần suất. Đáp án A nêu rõ tần suất (cứ mỗi 20 phút vào giờ cao điểm).'
+  },
+  {
+    id: 119,
+    type: 'question-response',
+    audioScript: 'Who should I contact regarding the software licensing agreement?',
+    choices: [
+      'A. The legal department handles all software agreements.',
+      'B. The software update completed successfully.',
+      'C. Yes, we signed the paper last week.'
+    ],
+    correctAnswer: 0,
+    explanation: '"Who should I contact" asks for department or person. Choice A directs to the legal department.',
+    explanationVi: '"Who should I contact" hỏi người liên hệ. Đáp án A hướng dẫn liên hệ phòng pháp chế (legal department).'
+  },
+  {
+    id: 120,
+    type: 'question-response',
+    audioScript: 'Why don\'t we take a short break before reviewing section three?',
+    choices: [
+      'A. That\'s a good idea; let\'s grab a cup of coffee.',
+      'B. The section is ten pages long.',
+      'C. Because the printer was broken.'
+    ],
+    correctAnswer: 0,
+    explanation: '"Why don\'t we" is a suggestion. Choice A accepts the suggestion enthusiastically.',
+    explanationVi: '"Why don\'t we" là lời đề nghị. Đáp án A tán thành lời đề xuất và rủ đi uống cà phê.'
   }
 ];
 
-// Combine all questions
+// ========================
+// PART 3: SHORT CONVERSATIONS (Multi-speaker TOEIC dialogues)
+// ========================
+export const TOEIC_CONVERSATIONS: ToeicConversation[] = [
+  {
+    id: 201,
+    title: 'Rescheduling a Client Meeting',
+    context: 'Cuộc trao đổi giữa hai đồng nghiệp tại văn phòng về việc dời lịch hẹn với khách hàng đối tác.',
+    speakers: [
+      { name: 'Mark', text: 'Hi Emily, did Mr. Henderson confirm our strategy meeting for tomorrow morning at ten?', role: 'Project Lead' },
+      { name: 'Emily', text: 'Actually, he called twenty minutes ago. His flight was delayed due to bad weather in Chicago, so he won\'t arrive until tomorrow afternoon.', role: 'Account Manager' },
+      { name: 'Mark', text: 'I see. Should we move the meeting to Thursday morning, or could we hold a video conference instead?', role: 'Project Lead' },
+      { name: 'Emily', text: 'He mentioned he prefers meeting in person to review the physical product samples. Let\'s reschedule for Thursday at ten in conference room B.', role: 'Account Manager' }
+    ],
+    fullAudioScript: 'Mark: Hi Emily, did Mr. Henderson confirm our strategy meeting for tomorrow morning at ten? Emily: Actually, he called twenty minutes ago. His flight was delayed due to bad weather in Chicago, so he won\'t arrive until tomorrow afternoon. Mark: I see. Should we move the meeting to Thursday morning, or could we hold a video conference instead? Emily: He mentioned he prefers meeting in person to review the physical product samples. Let\'s reschedule for Thursday at ten in conference room B.',
+    questions: [
+      {
+        id: '201-1',
+        question: 'Why was Mr. Henderson unable to attend the meeting tomorrow morning?',
+        choices: [
+          'A. He lost his presentation files.',
+          'B. His flight was delayed due to weather.',
+          'C. He had a medical emergency.',
+          'D. He decided to cancel the project.'
+        ],
+        correctAnswer: 1,
+        explanation: 'Emily explicitly states: "His flight was delayed due to bad weather in Chicago".',
+        explanationVi: 'Emily nêu rõ: "Chuyến bay của ông ấy bị hoãn do thời tiết xấu ở Chicago".'
+      },
+      {
+        id: '201-2',
+        question: 'Why does Mr. Henderson want to meet in person rather than online?',
+        choices: [
+          'A. He doesn\'t have internet access.',
+          'B. He wants to review physical product samples.',
+          'C. The video conferencing software is broken.',
+          'D. He wants to tour the production factory.'
+        ],
+        correctAnswer: 1,
+        explanation: 'Emily explains: "He mentioned he prefers meeting in person to review the physical product samples."',
+        explanationVi: 'Emily giải thích: "Ông ấy muốn gặp trực tiếp để xem các mẫu sản phẩm thực tế".'
+      },
+      {
+        id: '201-3',
+        question: 'When will the rescheduled meeting take place?',
+        choices: [
+          'A. Tomorrow afternoon at two',
+          'B. Wednesday evening at six',
+          'C. Thursday morning at ten',
+          'D. Next Monday morning at nine'
+        ],
+        correctAnswer: 2,
+        explanation: 'Emily confirms: "Let\'s reschedule for Thursday at ten in conference room B."',
+        explanationVi: 'Emily chốt lịch: "Hãy đổi lịch sang thứ Năm lúc 10 giờ tại phòng họp B".'
+      }
+    ],
+    vocabHighlights: [
+      { word: 'reschedule', ipa: '/ˌriːˈskedʒuːl/', meaningVi: 'dời lại lịch trình' },
+      { word: 'strategy meeting', ipa: '/ˈstrætədʒi ˈmiːtɪŋ/', meaningVi: 'cuộc họp chiến lược' },
+      { word: 'product samples', ipa: '/ˈprɒdʌkt ˈsɑːmpəlz/', meaningVi: 'hàng mẫu / mẫu sản phẩm' },
+      { word: 'conference room', ipa: '/ˈkɒnfərəns ruːm/', meaningVi: 'phòng họp / phòng hội nghị' }
+    ]
+  },
+  {
+    id: 202,
+    title: 'Ordering Office Furniture & Equipment',
+    context: 'Cuộc đối thoại giữa nhân viên văn phòng và người phụ trách mua sắm trang thiết bị.',
+    speakers: [
+      { name: 'David', text: 'Good morning Rachel. Our marketing team is expanding next month with four new interns. We need additional desks and ergonomic chairs.', role: 'Marketing Director' },
+      { name: 'Rachel', text: 'Sure thing, David. Our preferred supplier, Apex Office Supplies, is currently running a twenty percent discount on bulk orders over two thousand dollars.', role: 'Procurement Specialist' },
+      { name: 'David', text: 'That sounds perfect. Can we also include two desktop monitors and wireless keyboards in that purchase order?', role: 'Marketing Director' },
+      { name: 'Rachel', text: 'I will submit the requisition to the finance manager today so we can receive delivery by next Friday.', role: 'Procurement Specialist' }
+    ],
+    fullAudioScript: 'David: Good morning Rachel. Our marketing team is expanding next month with four new interns. We need additional desks and ergonomic chairs. Rachel: Sure thing, David. Our preferred supplier, Apex Office Supplies, is currently running a twenty percent discount on bulk orders over two thousand dollars. David: That sounds perfect. Can we also include two desktop monitors and wireless keyboards in that purchase order? Rachel: I will submit the requisition to the finance manager today so we can receive delivery by next Friday.',
+    questions: [
+      {
+        id: '202-1',
+        question: 'Why does David need new office furniture?',
+        choices: [
+          'A. The old furniture was damaged in a flood.',
+          'B. The marketing team is hiring four new interns.',
+          'C. The company is relocating to another city.',
+          'D. The office is being redecorated for a party.'
+        ],
+        correctAnswer: 1,
+        explanation: 'David mentions: "Our marketing team is expanding next month with four new interns."',
+        explanationVi: 'David giải thích: "Đội ngũ marketing sẽ mở rộng vào tháng tới với 4 thực tập sinh mới".'
+      },
+      {
+        id: '202-2',
+        question: 'What special promotion is the supplier offering?',
+        choices: [
+          'A. Free shipping on all international orders',
+          'B. Buy one chair and get one free',
+          'C. A twenty percent discount on bulk orders over $2,000',
+          'D. Free warranty extension for five years'
+        ],
+        correctAnswer: 2,
+        explanation: 'Rachel notes: "running a twenty percent discount on bulk orders over two thousand dollars."',
+        explanationVi: 'Rachel cho biết: "đang giảm giá 20% cho các đơn hàng số lượng lớn trên 2.000 đô la".'
+      },
+      {
+        id: '202-3',
+        question: 'What will Rachel do next?',
+        choices: [
+          'A. Interview the job candidates',
+          'B. Submit a purchase requisition to the finance manager',
+          'C. Assemble the computer workstations herself',
+          'D. Call the delivery truck driver'
+        ],
+        correctAnswer: 1,
+        explanation: 'Rachel states: "I will submit the requisition to the finance manager today..."',
+        explanationVi: 'Rachel khẳng định: "Tôi sẽ nộp phiếu yêu cầu mua sắm cho giám đốc tài chính hôm nay".'
+      }
+    ],
+    vocabHighlights: [
+      { word: 'ergonomic chair', ipa: '/ˌɜːɡəˈnɒmɪk tʃeə/', meaningVi: 'ghế công thái học chống mỏi' },
+      { word: 'procurement', ipa: '/prəˈkjʊəmənt/', meaningVi: 'hoạt động thu mua / cung ứng' },
+      { word: 'requisition', ipa: '/ˌrekwɪˈzɪʃn/', meaningVi: 'phiếu yêu cầu mua sắm' },
+      { word: 'bulk order', ipa: '/bʌlk ˈɔːdə/', meaningVi: 'đơn đặt hàng số lượng lớn' }
+    ]
+  },
+  {
+    id: 203,
+    title: 'Inquiring About Hotel Reservation & Amenities',
+    context: 'Khách hàng liên hệ lễ tân khách sạn để xác nhận phòng và dịch vụ đưa đón sân bay.',
+    speakers: [
+      { name: 'Receptionist', text: 'Thank you for calling Grand Horizon Hotel. How may I assist you today?', role: 'Front Desk' },
+      { name: 'Mr. Vance', text: 'Hello, I have a reservation under the name Thomas Vance for this weekend. Does the hotel offer airport shuttle service?', role: 'Hotel Guest' },
+      { name: 'Receptionist', text: 'Yes, Mr. Vance. We operate a complimentary shuttle every thirty minutes between terminal two and the hotel lobby from 6 AM to midnight.', role: 'Front Desk' },
+      { name: 'Mr. Vance', text: 'Wonderful. Also, could I request a room on a higher floor with a quiet view?', role: 'Hotel Guest' },
+      { name: 'Receptionist', text: 'Certainly! I have upgraded your booking to a deluxe suite on the 14th floor facing the courtyard at no extra charge.', role: 'Front Desk' }
+    ],
+    fullAudioScript: 'Receptionist: Thank you for calling Grand Horizon Hotel. How may I assist you today? Mr. Vance: Hello, I have a reservation under the name Thomas Vance for this weekend. Does the hotel offer airport shuttle service? Receptionist: Yes, Mr. Vance. We operate a complimentary shuttle every thirty minutes between terminal two and the hotel lobby from 6 AM to midnight. Mr. Vance: Wonderful. Also, could I request a room on a higher floor with a quiet view? Receptionist: Certainly! I have upgraded your booking to a deluxe suite on the 14th floor facing the courtyard at no extra charge.',
+    questions: [
+      {
+        id: '203-1',
+        question: 'What is Mr. Vance inquiring about initially?',
+        choices: [
+          'A. The hotel restaurant menu',
+          'B. Airport shuttle transportation service',
+          'C. Cancellation and refund policies',
+          'D. Conference room rental rates'
+        ],
+        correctAnswer: 1,
+        explanation: 'Mr. Vance asks: "Does the hotel offer airport shuttle service?"',
+        explanationVi: 'Ông Vance hỏi thăm: "Khách sạn có dịch vụ xe buýt đưa đón sân bay không?".'
+      },
+      {
+        id: '203-2',
+        question: 'How often does the hotel shuttle run?',
+        choices: [
+          'A. Once every hour',
+          'B. Every thirty minutes',
+          'C. Only upon special request',
+          'D. Twice daily'
+        ],
+        correctAnswer: 1,
+        explanation: 'The receptionist states: "We operate a complimentary shuttle every thirty minutes..."',
+        explanationVi: 'Lễ tân thông báo: "Xe buýt miễn phí chạy cứ mỗi 30 phút một chuyến".'
+      },
+      {
+        id: '203-3',
+        question: 'What special accommodation does the receptionist provide?',
+        choices: [
+          'A. Free breakfast vouchers for two weeks',
+          'B. A rental car with GPS navigation',
+          'C. A free room upgrade to the 14th floor deluxe suite',
+          'D. A 50% discount on spa treatments'
+        ],
+        correctAnswer: 2,
+        explanation: 'The receptionist states: "I have upgraded your booking to a deluxe suite on the 14th floor facing the courtyard at no extra charge."',
+        explanationVi: 'Lễ tân nâng hạng phòng miễn phí lên phòng deluxe tầng 14 nhìn ra sân trong.'
+      }
+    ],
+    vocabHighlights: [
+      { word: 'complimentary', ipa: '/ˌkɒmplɪˈmentri/', meaningVi: 'miễn phí kèm theo' },
+      { word: 'shuttle service', ipa: '/ˈʃʌtl ˈsɜːvɪs/', meaningVi: 'dịch vụ xe buýt đưa đón ngắn hạn' },
+      { word: 'deluxe suite', ipa: '/dɪˈlʌks swiːt/', meaningVi: 'phòng cao cấp sang trọng' },
+      { word: 'reservation', ipa: '/ˌrezəˈveɪʃn/', meaningVi: 'sự đặt chỗ trước' }
+    ]
+  }
+];
+
+// ========================
+// PART 4: SHORT TALKS (Announcements, Voicemails, Reports)
+// ========================
+export const TOEIC_TALKS: ToeicTalk[] = [
+  {
+    id: 301,
+    title: 'Airport Flight Delay & Gate Change Announcement',
+    type: 'announcement',
+    context: 'Thông báo loa phát thanh tại nhà ga sân bay quốc tế dành cho hành khách chuyến bay.',
+    audioScript: 'Attention all passengers on flight Pacific Air 412 bound for Tokyo Haneda. Due to maintenance checks on the aircraft engine, departure has been rescheduled from 3:15 PM to 4:45 PM. In addition, please be advised that our departure gate has changed from Gate 14 to Gate 22 in Concourse B. We apologize for the inconvenience and invite all ticketed passengers to collect a ten-dollar meal voucher at the customer service desk near Gate 20. Thank you for your patience.',
+    questions: [
+      {
+        id: '301-1',
+        question: 'What is the purpose of the announcement?',
+        choices: [
+          'A. To announce a flight delay and departure gate change',
+          'B. To notify passengers about lost luggage',
+          'C. To introduce a new airline loyalty program',
+          'D. To cancel all international flights for the day'
+        ],
+        correctAnswer: 0,
+        explanation: 'The speaker announces a rescheduled departure time (3:15 to 4:45) and a change of gate from 14 to 22.',
+        explanationVi: 'Thông báo nêu việc dời giờ bay (từ 3:15 sang 4:45) và chuyển cổng khởi hành từ cổng 14 sang cổng 22.'
+      },
+      {
+        id: '301-2',
+        question: 'Where should passengers go to board the aircraft?',
+        choices: [
+          'A. Gate 14',
+          'B. Gate 20',
+          'C. Gate 22 in Concourse B',
+          'D. Terminal 3 Baggage Claim'
+        ],
+        correctAnswer: 2,
+        explanation: '"please be advised that our departure gate has changed from Gate 14 to Gate 22 in Concourse B."',
+        explanationVi: '"Cổng khởi hành đã được chuyển từ Cổng 14 sang Cổng 22 ở Khu B".'
+      },
+      {
+        id: '301-3',
+        question: 'What are passengers offered as compensation?',
+        choices: [
+          'A. Free hotel accommodation',
+          'B. A ten-dollar food voucher',
+          'C. Upgraded first-class seating',
+          'D. 50% discount on their next ticket'
+        ],
+        correctAnswer: 1,
+        explanation: '"invite all ticketed passengers to collect a ten-dollar meal voucher at the customer service desk"',
+        explanationVi: '"Mời tất cả hành khách nhận phiếu ăn uống trị giá 10 đô la tại quầy dịch vụ khách hàng".'
+      }
+    ],
+    vocabHighlights: [
+      { word: 'reschedule', ipa: '/ˌriːˈskedʒuːl/', meaningVi: 'đổi giờ bay / dời lịch' },
+      { word: 'maintenance check', ipa: '/ˈmeɪntənəns tʃek/', meaningVi: 'kiểm tra bảo trì kỹ thuật' },
+      { word: 'meal voucher', ipa: '/miːl ˈvaʊtʃə/', meaningVi: 'phiếu quà tặng ăn uống' },
+      { word: 'departure gate', ipa: '/dɪˈpɑːtʃə ɡeɪt/', meaningVi: 'cổng khởi hành lên máy bay' }
+    ]
+  },
+  {
+    id: 302,
+    title: 'Company Voicemail Regarding Contract Proposal',
+    type: 'voicemail',
+    context: 'Tin nhắn thoại lưu lại từ đối tác tư vấn công nghệ gửi cho Giám đốc Dự án.',
+    audioScript: 'Hello Mr. Harrison, this is Claire Dubois from TechWave Solutions calling regarding the cloud migration proposal we sent on Monday. We have reviewed your request for additional cybersecurity protocols and updated our price estimate accordingly. We managed to include twenty-four-seven server monitoring without increasing the overall project budget. Please give me a call back at 555-0194 before 5 PM today so we can finalize the contract details. Thank you and have a productive day.',
+    questions: [
+      {
+        id: '302-1',
+        question: 'Who is the caller and what company does she represent?',
+        choices: [
+          'A. Claire Dubois from TechWave Solutions',
+          'B. A flight attendant from Pacific Air',
+          'C. A real estate agent from Horizon Properties',
+          'D. An IT technician from Apex Supplies'
+        ],
+        correctAnswer: 0,
+        explanation: 'She introduces herself: "this is Claire Dubois from TechWave Solutions calling..."',
+        explanationVi: 'Cô giới thiệu: "Tôi là Claire Dubois từ công ty TechWave Solutions gọi đến...".'
+      },
+      {
+        id: '302-2',
+        question: 'What improvement was added to the proposal at no extra cost?',
+        choices: [
+          'A. Five free laptop computers',
+          'B. 24/7 server monitoring',
+          'C. A three-year warranty extension',
+          'D. Free office relocation assistance'
+        ],
+        correctAnswer: 1,
+        explanation: '"We managed to include twenty-four-seven server monitoring without increasing the overall project budget."',
+        explanationVi: '"Chúng tôi đã bổ sung dịch vụ giám sát máy chủ 24/7 mà không làm tăng ngân sách dự án".'
+      },
+      {
+        id: '302-3',
+        question: 'What does the speaker ask Mr. Harrison to do?',
+        choices: [
+          'A. Send an email with his signature',
+          'B. Call her back before 5 PM today',
+          'C. Visit her office in person tomorrow',
+          'D. Pay the initial deposit invoice'
+        ],
+        correctAnswer: 1,
+        explanation: '"Please give me a call back at 555-0194 before 5 PM today..."',
+        explanationVi: '"Vui lòng gọi lại cho tôi theo số 555-0194 trước 5 giờ chiều hôm nay".'
+      }
+    ],
+    vocabHighlights: [
+      { word: 'cloud migration', ipa: '/klaʊd maɪˈɡreɪʃn/', meaningVi: 'chuyển dịch dữ liệu lên đám mây' },
+      { word: 'cybersecurity', ipa: '/ˌsaɪbəsɪˈkjʊərəti/', meaningVi: 'an ninh mạng' },
+      { word: 'estimate', ipa: '/ˈestɪmət/', meaningVi: 'bản dự toán kinh phí' },
+      { word: 'finalize', ipa: '/ˈfaɪnəlaɪz/', meaningVi: 'hoàn tất / chốt hợp đồng' }
+    ]
+  },
+  {
+    id: 303,
+    title: 'Factory Tour Welcome & Safety Briefing',
+    type: 'speech',
+    context: 'Bài phát biểu chào mừng và hướng dẫn an toàn lao động trước chuyến tham quan nhà máy tự động.',
+    audioScript: 'Good morning everyone and welcome to the Aurora Robotics Manufacturing Facility. Before we begin our tour of the automated assembly line, I must review our essential safety guidelines. All visitors are required to wear the high-visibility vests and safety helmets provided at the entrance. Please remain on the designated yellow walkways at all times, as automated forklifts operate continuously throughout the facility. Photography is strictly prohibited in Area 3 where our prototype units are assembled. Let us begin our tour.',
+    questions: [
+      {
+        id: '303-1',
+        question: 'Where is this tour taking place?',
+        choices: [
+          'A. An art museum exhibition hall',
+          'B. The Aurora Robotics Manufacturing Facility',
+          'C. A commercial airport terminal',
+          'D. An organic farming greenhouse'
+        ],
+        correctAnswer: 1,
+        explanation: 'The speaker greets: "welcome to the Aurora Robotics Manufacturing Facility."',
+        explanationVi: '"Chào mừng mọi người đến với Nhà máy sản xuất robot Aurora".'
+      },
+      {
+        id: '303-2',
+        question: 'What protective gear must visitors wear?',
+        choices: [
+          'A. Safety helmets and high-visibility vests',
+          'B. Ear plugs and swimming goggles',
+          'C. Rubber boots and heavy leather gloves',
+          'D. Warm winter jackets and scarves'
+        ],
+        correctAnswer: 0,
+        explanation: '"All visitors are required to wear the high-visibility vests and safety helmets provided at the entrance."',
+        explanationVi: '"Tất cả khách tham quan phải mặc áo phản quang và đội mũ bảo hộ lao động được cấp tại cửa".'
+      },
+      {
+        id: '303-3',
+        question: 'What activity is prohibited in Area 3?',
+        choices: [
+          'A. Drinking water',
+          'B. Taking photographs',
+          'C. Asking questions',
+          'D. Speaking with employees'
+        ],
+        correctAnswer: 1,
+        explanation: '"Photography is strictly prohibited in Area 3 where our prototype units are assembled."',
+        explanationVi: '"Nghiêm cấm chụp ảnh tại Khu vực 3 nơi lắp ráp các nguyên mẫu thử nghiệm".'
+      }
+    ],
+    vocabHighlights: [
+      { word: 'automated assembly line', ipa: '/ˈɔːtəmeɪtɪd əˈsembli laɪn/', meaningVi: 'dây chuyền lắp ráp tự động' },
+      { word: 'high-visibility vest', ipa: '/haɪ ˌvɪzəˈbɪləti vest/', meaningVi: 'áo khoác phản quang an toàn' },
+      { word: 'designated walkway', ipa: '/ˈdezɪɡneɪtɪd ˈwɔːkweɪ/', meaningVi: 'lối đi quy định cho người đi bộ' },
+      { word: 'strictly prohibited', ipa: '/ˈstrɪktli prəˈhɪbɪtɪd/', meaningVi: 'bị nghiêm cấm tuyệt đối' }
+    ]
+  }
+];
+
+// ========================
+// LISTENING TRAPS & STRATEGIES (Chiến thuật & Bẫy TOEIC)
+// ========================
+export const LISTENING_TRAPS: ListeningTrap[] = [
+  {
+    id: 'trap-1',
+    title: 'Similar Sounding Distractors (Bẫy từ đồng âm / phát âm gần giống)',
+    titleVi: 'Bẫy từ đồng âm hoặc phát âm suýt giống nhau',
+    part: 'Part 1 & Part 2',
+    description: 'Đề thi thường chèn các từ phát âm gần giống với từ khóa trong câu hỏi để đánh lừa thí sinh nghe lõm bõm.',
+    exampleBad: 'Question: Where did you get that *coffee*?\nTrap choice: Yes, I made a *copy* of the report. (Bẫy từ "copy" phát âm gần giống "coffee")',
+    exampleGood: 'Correct choice: At the cafe around the corner. (Địa điểm trả lời trực tiếp cho "Where")',
+    tip: '💡 Mẹo: Khi nghe thấy từ phát âm "y hệt" hoặc "na ná" một từ vừa xuất hiện trong câu hỏi Part 2, xác suất đó là đáp án bẫy lên tới 80%!'
+  },
+  {
+    id: 'trap-2',
+    title: 'Incorrect Tense & Passive Voice Trap (Bẫy "is being V-ed" vs "has been V-ed")',
+    titleVi: 'Bẫy Thì & Bị Động trong miêu tả tranh Part 1',
+    part: 'Part 1',
+    description: 'Nếu trong bức tranh KHÔNG CÓ NGƯỜI, nhưng câu mô tả dùng thì hiện tại tiếp diễn bị động "is/are being + V3/ed" (đang được làm bởi ai đó) thì câu đó gần như 99% là SAI.',
+    exampleBad: 'Photo shows empty tables. Trap choice: "The tables *are being set* for dinner." (SAI vì không có người phục vụ đang thao tác tại đó).',
+    exampleGood: 'Correct choice: "The tables *have been set* for dinner." (ĐÚNG - miêu tả trạng thái đã chuẩn bị xong).',
+    tip: '💡 Ngoại lệ duy nhất: Cụm từ "The plants are being watered" (hệ thống phun nước tự động) hoặc "The goods are casting shadows" (chiếc bóng đổ).'
+  },
+  {
+    id: 'trap-3',
+    title: 'Yes/No Answer to WH-Questions (Bẫy trả lời Yes/No cho câu hỏi Wh-)',
+    titleVi: 'Bẫy trả lời Yes/No cho câu hỏi Where, When, Who, Why, How',
+    part: 'Part 2',
+    description: 'Tất cả các câu hỏi bắt đầu bằng Who, Where, When, What, Why, How, Which đều KHÔNG BAO GIỜ được trả lời trực tiếp bằng "Yes" hoặc "No".',
+    exampleBad: 'Question: "When will the shipment arrive?" -> Trap choice: "Yes, yesterday afternoon." (SAI hoàn toàn).',
+    exampleGood: 'Correct choice: "By two o\'clock today." (ĐÚNG - cung cấp mốc thời gian rõ ràng).',
+    tip: '💡 Mẹo loại trừ: Ngay khi tai bắt được từ đầu tiên là "Who/Where/When/Why", nếu đáp án A, B hoặc C mở đầu bằng "Yes" hoặc "No", hãy gạch bỏ ngay lập tức!'
+  },
+  {
+    id: 'trap-4',
+    title: 'Indirect & Unexpected Responses (Câu trả lời gián tiếp né tránh)',
+    titleVi: 'Câu trả lời gián tiếp - Xu hướng TOEIC kiểu mới',
+    part: 'Part 2',
+    description: 'Trong các đề thi TOEIC hiện đại, người trả lời thường không trực tiếp nói "Yes/No" hay đưa ra thông tin có sẵn mà trả lời gián tiếp bằng cách chỉ định người khác hoặc nêu một sự kiện bất ngờ.',
+    exampleBad: 'Hỏi: "Do you know who took the keys?" -> Người học hay đợi đáp án có tên người "John took it".',
+    exampleGood: 'Đáp án TOEIC thực tế: "I just got back from vacation" (Tôi vừa đi nghỉ về nên tôi không biết) hoặc "Ask the security guard" (Hãy hỏi bảo vệ).',
+    tip: '💡 Mẹo: Những câu thể hiện sự không biết gián tiếp ("It hasn\'t been decided yet", "Check with Sarah", "I wasn\'t invited") thường là đáp án ĐÚNG rất cao!'
+  },
+  {
+    id: 'trap-5',
+    title: 'Paraphrasing & Synonyms in Conversations (Bẫy Từ Đồng Nghĩa)',
+    titleVi: 'Kỹ thuật Paraphrase trong Part 3 & Part 4',
+    part: 'Part 3 & Part 4',
+    description: 'Trong audio nói một từ, nhưng trong 4 phương án trên giấy lại viết bằng một từ đồng nghĩa (synonym) hoặc cách diễn đạt tương đương.',
+    exampleBad: 'Audio nói: "The computer screen is broken" -> Thí sinh tìm từ "broken", nhưng đáp án lại dùng từ "malfunctioning equipment".',
+    exampleGood: '"delay the meeting" = "postpone / put off" | "hire workers" = "recruit / bring on staff" | "discount" = "special offer / reduced rate".',
+    tip: '💡 Mẹo: Hãy đọc trước câu hỏi và gạch chân từ khóa trước khi đoạn băng phát để dự đoán các từ đồng nghĩa có thể xuất hiện.'
+  }
+];
+
+// Combine all questions for mixed mode
 export const ALL_TOEIC_LISTENING_QUESTIONS: ToeicListeningQuestion[] = [
   ...PHOTO_QUESTIONS,
   ...QUESTION_RESPONSE_QUESTIONS

@@ -6,18 +6,24 @@ import {
   Headphones, Volume2, ArrowLeft, CheckCircle2, XCircle,
   RotateCcw, Lightbulb, ImageIcon,
   MessageCircleQuestion, Shuffle, ChevronDown, ChevronUp,
-  Award, Target, Sparkles, VolumeX, Play
+  Award, Target, Sparkles, VolumeX, Play, Users, Megaphone,
+  BookOpen, ShieldAlert, Zap, Clock, Info, Check, Eye, EyeOff
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
   PHOTO_QUESTIONS,
   QUESTION_RESPONSE_QUESTIONS,
+  TOEIC_CONVERSATIONS,
+  TOEIC_TALKS,
+  LISTENING_TRAPS,
   ALL_TOEIC_LISTENING_QUESTIONS,
-  ToeicListeningQuestion
+  ToeicListeningQuestion,
+  ToeicConversation,
+  ToeicTalk
 } from '@/data/toeicListeningData';
 import { playAudioText, stopAudio } from '@/lib/ttsService';
 
-type TabMode = 'photo' | 'question-response' | 'mixed';
+type TabMode = 'photo' | 'question-response' | 'conversations' | 'talks' | 'traps';
 
 function shuffleArray<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -29,7 +35,7 @@ function shuffleArray<T>(arr: T[]): T[] {
 }
 
 // ==========================================
-// QuestionCard component
+// Part 1 & 2 QuestionCard component
 // ==========================================
 const QuestionCard = React.memo(function QuestionCard({
   question,
@@ -40,6 +46,7 @@ const QuestionCard = React.memo(function QuestionCard({
   revealed,
   onReveal,
   playingKey,
+  playbackRate,
   onPlayFull,
   onPlayChoice,
 }: {
@@ -51,6 +58,7 @@ const QuestionCard = React.memo(function QuestionCard({
   revealed: boolean;
   onReveal: () => void;
   playingKey: string | null;
+  playbackRate: number;
   onPlayFull: () => void;
   onPlayChoice: (choiceText: string, choiceKey: string) => void;
 }) {
@@ -59,7 +67,7 @@ const QuestionCard = React.memo(function QuestionCard({
   const isFullPlaying = playingKey === `full-${question.id}`;
 
   return (
-    <div className="premium-card p-0 overflow-hidden bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl shadow-lg">
+    <div className="premium-card p-0 overflow-hidden bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl shadow-lg transition-all duration-300">
       {/* Question Header */}
       <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-800/50">
         <div className="flex items-center gap-3">
@@ -101,7 +109,7 @@ const QuestionCard = React.memo(function QuestionCard({
             <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/75 to-transparent px-4 py-3">
               <p className="text-white text-xs font-bold flex items-center gap-1.5">
                 <ImageIcon className="w-3.5 h-3.5 text-cyan-300" />
-                Quan sát hình ảnh, sau đó nghe mô tả và chọn đáp án đúng nhất
+                {question.imageDescription || 'Quan sát hình ảnh, nghe mô tả và chọn đáp án'}
               </p>
             </div>
           </div>
@@ -121,12 +129,12 @@ const QuestionCard = React.memo(function QuestionCard({
             {isFullPlaying ? (
               <>
                 <VolumeX className="w-5 h-5 animate-bounce" />
-                <span>🔊 Đang phát âm thanh... (Bấm để dừng)</span>
+                <span>🔊 Đang phát âm thanh ({playbackRate}x)... (Bấm để dừng)</span>
               </>
             ) : (
               <>
                 <Volume2 className="w-5 h-5" />
-                <span>{question.type === 'photo' ? '🎧 Nghe toàn bộ mô tả (A, B, C, D)' : '🎧 Nghe toàn bộ câu hỏi & đáp án'}</span>
+                <span>{question.type === 'photo' ? `🎧 Nghe toàn bộ mô tả (A, B, C, D) - ${playbackRate}x` : `🎧 Nghe câu hỏi & đáp án - ${playbackRate}x`}</span>
               </>
             )}
           </button>
@@ -143,7 +151,7 @@ const QuestionCard = React.memo(function QuestionCard({
             ) : (
               <>
                 <span className="inline-block w-2 h-2 rounded-full bg-emerald-500" />
-                <span className="text-emerald-600 dark:text-emerald-400 font-black">🔓 Đã mở khóa Transcript 4 câu mô tả:</span>
+                <span className="text-emerald-600 dark:text-emerald-400 font-black">🔓 Đã mở khóa Transcript 4 câu:</span>
               </>
             )}
           </span>
@@ -245,37 +253,518 @@ const QuestionCard = React.memo(function QuestionCard({
 });
 
 // ==========================================
+// Part 3 ConversationCard component
+// ==========================================
+function ConversationCard({
+  conv,
+  index,
+  total,
+  answers,
+  onSelectAnswer,
+  playingKey,
+  playbackRate,
+  onPlayDialogue,
+  onPlaySpeakerTurn
+}: {
+  conv: ToeicConversation;
+  index: number;
+  total: number;
+  answers: Record<string, number>;
+  onSelectAnswer: (qId: string, choiceIdx: number) => void;
+  playingKey: string | null;
+  playbackRate: number;
+  onPlayDialogue: () => void;
+  onPlaySpeakerTurn: (text: string, turnKey: string) => void;
+}) {
+  const [showTranscript, setShowTranscript] = useState(false);
+  const [showVocab, setShowVocab] = useState(false);
+  const isPlayingFull = playingKey === `conv-full-${conv.id}`;
+
+  const allQuestionsAnswered = conv.questions.every(q => answers[q.id] !== undefined);
+
+  return (
+    <div className="premium-card p-0 overflow-hidden bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl shadow-xl space-y-0">
+      {/* Header */}
+      <div className="px-6 py-5 border-b border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-4 bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-transparent">
+        <div className="flex items-center gap-3">
+          <span className="w-10 h-10 rounded-2xl bg-indigo-600 text-white font-black flex items-center justify-center text-sm shadow-md shadow-indigo-600/30">
+            {index + 1}
+          </span>
+          <div>
+            <h3 className="font-black text-slate-800 dark:text-slate-100 text-base">{conv.title}</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">{conv.context}</p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <button
+            onClick={onPlayDialogue}
+            className={cn(
+              "px-5 py-2.5 rounded-2xl font-black text-xs transition-all flex items-center gap-2 border-2 cursor-pointer shadow-sm",
+              isPlayingFull
+                ? "bg-rose-500 text-white border-rose-500 animate-pulse"
+                : "bg-indigo-600 text-white border-indigo-600 hover:bg-indigo-700"
+            )}
+          >
+            {isPlayingFull ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+            <span>{isPlayingFull ? 'Dừng hội thoại' : `🎧 Nghe Hội Thoại (${playbackRate}x)`}</span>
+          </button>
+        </div>
+      </div>
+
+      <div className="p-6 space-y-6">
+        {/* Dialogue View / Transcript Toggle */}
+        <div className="p-4 bg-slate-50 dark:bg-slate-800/40 rounded-2xl border border-slate-100 dark:border-slate-700/60 space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+              <Users className="w-4 h-4 text-indigo-500" />
+              {showTranscript || allQuestionsAnswered ? 'Transcript Lời thoại' : '🔒 Lời thoại đang được ẩn trong lúc làm bài'}
+            </span>
+            <button
+              onClick={() => setShowTranscript(!showTranscript)}
+              className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1 cursor-pointer"
+            >
+              {showTranscript ? <><EyeOff className="w-3.5 h-3.5" /> Ẩn transcript</> : <><Eye className="w-3.5 h-3.5" /> Mở transcript</>}
+            </button>
+          </div>
+
+          {(showTranscript || allQuestionsAnswered) && (
+            <div className="space-y-3 pt-2 animate-in fade-in duration-300">
+              {conv.speakers.map((spk, idx) => {
+                const turnKey = `turn-${conv.id}-${idx}`;
+                const isTurnPlaying = playingKey === turnKey;
+
+                return (
+                  <div key={idx} className="flex items-start gap-3 text-sm leading-relaxed p-3 bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700">
+                    <span className="font-black text-xs px-2 py-1 bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 rounded-lg flex-shrink-0">
+                      {spk.name}
+                    </span>
+                    <p className="flex-1 text-slate-700 dark:text-slate-200">{spk.text}</p>
+                    <button
+                      onClick={() => onPlaySpeakerTurn(`${spk.name}: ${spk.text}`, turnKey)}
+                      className={cn(
+                        "p-1.5 rounded-lg border transition-all cursor-pointer",
+                        isTurnPlaying ? "bg-indigo-600 text-white border-indigo-600 animate-pulse" : "text-slate-400 hover:text-indigo-600 border-transparent hover:border-slate-200"
+                      )}
+                      title="Nghe riêng lượt thoại này"
+                    >
+                      <Volume2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        {/* 3 Questions for the conversation */}
+        <div className="space-y-6">
+          {conv.questions.map((q, qIdx) => {
+            const selected = answers[q.id];
+            const isAnswered = selected !== undefined;
+            const isCorrect = selected === q.correctAnswer;
+
+            return (
+              <div key={q.id} className="p-5 bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-slate-800 space-y-4">
+                <div className="flex items-center justify-between">
+                  <p className="text-sm font-black text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                    <span className="w-6 h-6 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center text-xs">
+                      {qIdx + 1}
+                    </span>
+                    {q.question}
+                  </p>
+                  {isAnswered && (
+                    <span className={cn(
+                      "text-xs font-black px-2.5 py-1 rounded-full",
+                      isCorrect ? "bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300" : "bg-rose-100 dark:bg-rose-500/20 text-rose-700 dark:text-rose-300"
+                    )}>
+                      {isCorrect ? 'Đúng' : 'Sai'}
+                    </span>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {q.choices.map((choice, cIdx) => {
+                    const isChoiceCorrect = cIdx === q.correctAnswer;
+                    const isChoiceSelected = selected === cIdx;
+
+                    return (
+                      <button
+                        key={cIdx}
+                        disabled={isAnswered}
+                        onClick={() => onSelectAnswer(q.id, cIdx)}
+                        className={cn(
+                          "p-3.5 rounded-xl text-left border-2 text-xs font-bold transition-all flex items-center justify-between cursor-pointer",
+                          !isAnswered && isChoiceSelected && "border-blue-600 bg-blue-50/50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400",
+                          !isAnswered && !isChoiceSelected && "border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800 hover:border-blue-300 text-slate-700 dark:text-slate-300",
+                          isAnswered && isChoiceCorrect && "border-emerald-500 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400",
+                          isAnswered && isChoiceSelected && !isChoiceCorrect && "border-rose-500 bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400",
+                          isAnswered && !isChoiceCorrect && !isChoiceSelected && "border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 opacity-50 text-slate-400",
+                          isAnswered && "cursor-default"
+                        )}
+                      >
+                        <span>{choice}</span>
+                        {isAnswered && isChoiceCorrect && <CheckCircle2 className="w-4 h-4 text-emerald-500 ml-2 flex-shrink-0" />}
+                        {isAnswered && isChoiceSelected && !isChoiceCorrect && <XCircle className="w-4 h-4 text-rose-500 ml-2 flex-shrink-0" />}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {isAnswered && (
+                  <div className="p-3 bg-amber-50/60 dark:bg-amber-500/5 rounded-xl border border-amber-100 dark:border-amber-500/20 text-xs space-y-1">
+                    <p className="font-black text-emerald-700 dark:text-emerald-400">
+                      ✅ Đáp án đúng: {q.choices[q.correctAnswer]}
+                    </p>
+                    <p className="text-slate-600 dark:text-slate-300">{q.explanationVi}</p>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Vocabulary Highlights */}
+        {conv.vocabHighlights && conv.vocabHighlights.length > 0 && (
+          <div className="border-t border-slate-100 dark:border-slate-800 pt-4">
+            <button
+              onClick={() => setShowVocab(!showVocab)}
+              className="text-xs font-bold text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-between w-full cursor-pointer"
+            >
+              <span className="flex items-center gap-1.5">
+                <BookOpen className="w-3.5 h-3.5 text-blue-500" />
+                Từ vựng trọng tâm trong đoạn hội thoại ({conv.vocabHighlights.length} từ)
+              </span>
+              {showVocab ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+            </button>
+
+            {showVocab && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3 animate-in fade-in duration-300">
+                {conv.vocabHighlights.map((v, vIdx) => (
+                  <div key={vIdx} className="p-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 flex items-center justify-between">
+                    <div>
+                      <span className="font-black text-xs text-slate-800 dark:text-slate-100">{v.word}</span>
+                      <span className="text-[10px] text-slate-400 ml-1.5">{v.ipa}</span>
+                      <p className="text-xs text-slate-600 dark:text-slate-300 font-medium">{v.meaningVi}</p>
+                    </div>
+                    <button
+                      onClick={() => playAudioText(v.word, { rate: 0.85 })}
+                      className="p-1.5 text-slate-400 hover:text-indigo-600 cursor-pointer"
+                      title="Phát âm từ"
+                    >
+                      <Volume2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ==========================================
+// Part 4 Short Talks Component
+// ==========================================
+function TalkCard({
+  talk,
+  index,
+  total,
+  answers,
+  onSelectAnswer,
+  playingKey,
+  playbackRate,
+  onPlayTalk
+}: {
+  talk: ToeicTalk;
+  index: number;
+  total: number;
+  answers: Record<string, number>;
+  onSelectAnswer: (qId: string, choiceIdx: number) => void;
+  playingKey: string | null;
+  playbackRate: number;
+  onPlayTalk: () => void;
+}) {
+  const [showTranscript, setShowTranscript] = useState(false);
+  const [showVocab, setShowVocab] = useState(false);
+  const isPlaying = playingKey === `talk-${talk.id}`;
+  const allAnswered = talk.questions.every(q => answers[q.id] !== undefined);
+
+  return (
+    <div className="premium-card p-0 overflow-hidden bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl shadow-xl space-y-0">
+      {/* Header */}
+      <div className="px-6 py-5 border-b border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-4 bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-transparent">
+        <div className="flex items-center gap-3">
+          <span className="w-10 h-10 rounded-2xl bg-purple-600 text-white font-black flex items-center justify-center text-sm shadow-md shadow-purple-600/30">
+            {index + 1}
+          </span>
+          <div>
+            <div className="flex items-center gap-2">
+              <h3 className="font-black text-slate-800 dark:text-slate-100 text-base">{talk.title}</h3>
+              <span className="text-[10px] px-2 py-0.5 rounded-full font-black uppercase bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300">
+                {talk.type}
+              </span>
+            </div>
+            <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">{talk.context}</p>
+          </div>
+        </div>
+
+        <button
+          onClick={onPlayTalk}
+          className={cn(
+            "px-5 py-2.5 rounded-2xl font-black text-xs transition-all flex items-center gap-2 border-2 cursor-pointer shadow-sm",
+            isPlaying
+              ? "bg-rose-500 text-white border-rose-500 animate-pulse"
+              : "bg-purple-600 text-white border-purple-600 hover:bg-purple-700"
+          )}
+        >
+          {isPlaying ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+          <span>{isPlaying ? 'Dừng bài nói' : `🎧 Nghe Bài Nói (${playbackRate}x)`}</span>
+        </button>
+      </div>
+
+      <div className="p-6 space-y-6">
+        {/* Transcript Box */}
+        <div className="p-4 bg-slate-50 dark:bg-slate-800/40 rounded-2xl border border-slate-100 dark:border-slate-700/60 space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+              <Megaphone className="w-4 h-4 text-purple-500" />
+              {showTranscript || allAnswered ? 'Transcript Bài nói' : '🔒 Lời thoại bài nói đang ẩn. Hãy nghe và chọn đáp án'}
+            </span>
+            <button
+              onClick={() => setShowTranscript(!showTranscript)}
+              className="text-xs font-bold text-purple-600 dark:text-purple-400 hover:underline flex items-center gap-1 cursor-pointer"
+            >
+              {showTranscript ? <><EyeOff className="w-3.5 h-3.5" /> Ẩn transcript</> : <><Eye className="w-3.5 h-3.5" /> Xem transcript</>}
+            </button>
+          </div>
+
+          {(showTranscript || allAnswered) && (
+            <p className="text-sm text-slate-700 dark:text-slate-200 leading-relaxed pt-2 animate-in fade-in duration-300 italic">
+              "{talk.audioScript}"
+            </p>
+          )}
+        </div>
+
+        {/* 3 Questions */}
+        <div className="space-y-6">
+          {talk.questions.map((q, qIdx) => {
+            const selected = answers[q.id];
+            const isAnswered = selected !== undefined;
+            const isCorrect = selected === q.correctAnswer;
+
+            return (
+              <div key={q.id} className="p-5 bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-slate-800 space-y-4">
+                <div className="flex items-center justify-between">
+                  <p className="text-sm font-black text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                    <span className="w-6 h-6 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center text-xs">
+                      {qIdx + 1}
+                    </span>
+                    {q.question}
+                  </p>
+                  {isAnswered && (
+                    <span className={cn(
+                      "text-xs font-black px-2.5 py-1 rounded-full",
+                      isCorrect ? "bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300" : "bg-rose-100 dark:bg-rose-500/20 text-rose-700 dark:text-rose-300"
+                    )}>
+                      {isCorrect ? 'Đúng' : 'Sai'}
+                    </span>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {q.choices.map((choice, cIdx) => {
+                    const isChoiceCorrect = cIdx === q.correctAnswer;
+                    const isChoiceSelected = selected === cIdx;
+
+                    return (
+                      <button
+                        key={cIdx}
+                        disabled={isAnswered}
+                        onClick={() => onSelectAnswer(q.id, cIdx)}
+                        className={cn(
+                          "p-3.5 rounded-xl text-left border-2 text-xs font-bold transition-all flex items-center justify-between cursor-pointer",
+                          !isAnswered && isChoiceSelected && "border-purple-600 bg-purple-50/50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400",
+                          !isAnswered && !isChoiceSelected && "border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800 hover:border-purple-300 text-slate-700 dark:text-slate-300",
+                          isAnswered && isChoiceCorrect && "border-emerald-500 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400",
+                          isAnswered && isChoiceSelected && !isChoiceCorrect && "border-rose-500 bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400",
+                          isAnswered && !isChoiceCorrect && !isChoiceSelected && "border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 opacity-50 text-slate-400",
+                          isAnswered && "cursor-default"
+                        )}
+                      >
+                        <span>{choice}</span>
+                        {isAnswered && isChoiceCorrect && <CheckCircle2 className="w-4 h-4 text-emerald-500 ml-2 flex-shrink-0" />}
+                        {isAnswered && isChoiceSelected && !isChoiceCorrect && <XCircle className="w-4 h-4 text-rose-500 ml-2 flex-shrink-0" />}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {isAnswered && (
+                  <div className="p-3 bg-amber-50/60 dark:bg-amber-500/5 rounded-xl border border-amber-100 dark:border-amber-500/20 text-xs space-y-1">
+                    <p className="font-black text-emerald-700 dark:text-emerald-400">
+                      ✅ Đáp án đúng: {q.choices[q.correctAnswer]}
+                    </p>
+                    <p className="text-slate-600 dark:text-slate-300">{q.explanationVi}</p>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Vocab drawer */}
+        {talk.vocabHighlights && (
+          <div className="border-t border-slate-100 dark:border-slate-800 pt-4">
+            <button
+              onClick={() => setShowVocab(!showVocab)}
+              className="text-xs font-bold text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-between w-full cursor-pointer"
+            >
+              <span className="flex items-center gap-1.5">
+                <BookOpen className="w-3.5 h-3.5 text-purple-500" />
+                Từ vựng trọng tâm trong bài nói ({talk.vocabHighlights.length} từ)
+              </span>
+              {showVocab ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+            </button>
+
+            {showVocab && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3 animate-in fade-in duration-300">
+                {talk.vocabHighlights.map((v, vIdx) => (
+                  <div key={vIdx} className="p-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 flex items-center justify-between">
+                    <div>
+                      <span className="font-black text-xs text-slate-800 dark:text-slate-100">{v.word}</span>
+                      <span className="text-[10px] text-slate-400 ml-1.5">{v.ipa}</span>
+                      <p className="text-xs text-slate-600 dark:text-slate-300 font-medium">{v.meaningVi}</p>
+                    </div>
+                    <button
+                      onClick={() => playAudioText(v.word, { rate: 0.85 })}
+                      className="p-1.5 text-slate-400 hover:text-purple-600 cursor-pointer"
+                      title="Phát âm từ"
+                    >
+                      <Volume2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ==========================================
+// Traps & Strategy Tab Component
+// ==========================================
+function TrapsStrategyTab() {
+  return (
+    <div className="space-y-6 animate-in fade-in duration-500">
+      <div className="p-6 bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-transparent rounded-3xl border border-amber-200 dark:border-amber-900/40 space-y-2">
+        <h2 className="text-xl font-black text-amber-800 dark:text-amber-300 flex items-center gap-2">
+          <ShieldAlert className="w-6 h-6 text-amber-600" />
+          Cẩm Nang Nhận Diện Bẫy Đề Thi TOEIC Listening (Part 1 - 4)
+        </h2>
+        <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
+          ETS thường xuyên đưa ra các phương án bẫy tinh vi đánh vào phản xạ nghe chưa vững của thí sinh. Hãy ghi nhớ các dạng bẫy kinh điển dưới đây để loại trừ ngay lập tức khi làm bài!
+        </p>
+      </div>
+
+      <div className="space-y-4">
+        {LISTENING_TRAPS.map((trap, idx) => (
+          <div key={trap.id} className="p-6 bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-md space-y-4">
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <div className="flex items-center gap-3">
+                <span className="w-8 h-8 rounded-xl bg-amber-500 text-white font-black text-xs flex items-center justify-center shadow-md shadow-amber-500/20">
+                  #{idx + 1}
+                </span>
+                <h3 className="font-black text-slate-800 dark:text-slate-100 text-base">{trap.title}</h3>
+              </div>
+              <span className="text-[10px] px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-full font-black uppercase">
+                Áp dụng: {trap.part}
+              </span>
+            </div>
+
+            <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{trap.description}</p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+              <div className="p-4 bg-rose-50 dark:bg-rose-950/20 rounded-2xl border border-rose-200 dark:border-rose-900/40 space-y-1.5">
+                <p className="font-black text-rose-700 dark:text-rose-400 flex items-center gap-1.5">
+                  <XCircle className="w-4 h-4" /> Ví dụ Đáp Án Bẫy:
+                </p>
+                <p className="text-slate-700 dark:text-slate-300 whitespace-pre-line leading-relaxed">{trap.exampleBad}</p>
+              </div>
+
+              <div className="p-4 bg-emerald-50 dark:bg-emerald-950/20 rounded-2xl border border-emerald-200 dark:border-emerald-900/40 space-y-1.5">
+                <p className="font-black text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4" /> Đáp Án Đúng & Nhận Diện:
+                </p>
+                <p className="text-slate-700 dark:text-slate-300 whitespace-pre-line leading-relaxed">{trap.exampleGood}</p>
+              </div>
+            </div>
+
+            <div className="p-3.5 bg-blue-50 dark:bg-blue-950/20 rounded-xl border border-blue-200 dark:border-blue-900/40 text-xs font-bold text-blue-800 dark:text-blue-300 flex items-center gap-2">
+              <Zap className="w-4 h-4 text-blue-600 flex-shrink-0" />
+              <span>{trap.tip}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ==========================================
 // Main Page Component
 // ==========================================
 export default function ToeicListeningPracticePage() {
   const router = useRouter();
   const [tab, setTab] = useState<TabMode>('photo');
+  const [playbackRate, setPlaybackRate] = useState<number>(0.85);
+
+  // Part 1 & 2 State
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [revealedExplanations, setRevealedExplanations] = useState<Record<number, boolean>>({});
   const [playingKey, setPlayingKey] = useState<string | null>(null);
   const [showResults, setShowResults] = useState(false);
-  const [shuffledQuestions, setShuffledQuestions] = useState<ToeicListeningQuestion[]>([]);
 
-  // Get questions based on tab
-  const questions = useMemo(() => {
+  // Part 3 & 4 State
+  const [convAnswers, setConvAnswers] = useState<Record<string, number>>({});
+  const [talkAnswers, setTalkAnswers] = useState<Record<string, number>>({});
+
+  // Question list based on active tab
+  const partQuestions = useMemo(() => {
     if (tab === 'photo') return PHOTO_QUESTIONS;
     if (tab === 'question-response') return QUESTION_RESPONSE_QUESTIONS;
-    return shuffledQuestions.length > 0 ? shuffledQuestions : ALL_TOEIC_LISTENING_QUESTIONS;
-  }, [tab, shuffledQuestions]);
+    return [];
+  }, [tab]);
 
-  // Stats
-  const totalAnswered = useMemo(() => Object.keys(answers).length, [answers]);
-  const correctCount = useMemo(() => {
-    return questions.filter(q => answers[q.id] === q.correctAnswer).length;
-  }, [questions, answers]);
-  const allAnswered = useMemo(() => {
-    return questions.every(q => answers[q.id] !== undefined);
-  }, [questions, answers]);
+  // Statistics calculation
+  const totalPartAnswered = useMemo(() => Object.keys(answers).length, [answers]);
+  const correctPartCount = useMemo(() => {
+    return partQuestions.filter(q => answers[q.id] === q.correctAnswer).length;
+  }, [partQuestions, answers]);
 
-  const handleSelect = useCallback((questionId: number, choiceIdx: number) => {
+  const handleSelectAnswer = useCallback((questionId: number, choiceIdx: number) => {
     setAnswers(prev => {
       if (prev[questionId] !== undefined) return prev;
       return { ...prev, [questionId]: choiceIdx };
+    });
+  }, []);
+
+  const handleSelectConvAnswer = useCallback((qId: string, choiceIdx: number) => {
+    setConvAnswers(prev => {
+      if (prev[qId] !== undefined) return prev;
+      return { ...prev, [qId]: choiceIdx };
+    });
+  }, []);
+
+  const handleSelectTalkAnswer = useCallback((qId: string, choiceIdx: number) => {
+    setTalkAnswers(prev => {
+      if (prev[qId] !== undefined) return prev;
+      return { ...prev, [qId]: choiceIdx };
     });
   }, []);
 
@@ -296,11 +785,11 @@ export default function ToeicListeningPracticePage() {
 
     setPlayingKey(fullKey);
     playAudioText(question.audioScript, {
-      rate: 0.85,
+      rate: playbackRate,
       onEnd: () => setPlayingKey(null),
       onError: () => setPlayingKey(null)
     });
-  }, [playingKey]);
+  }, [playingKey, playbackRate]);
 
   const handlePlayChoice = useCallback((choiceText: string, choiceKey: string) => {
     if (playingKey === choiceKey) {
@@ -311,22 +800,53 @@ export default function ToeicListeningPracticePage() {
 
     setPlayingKey(choiceKey);
     playAudioText(choiceText, {
-      rate: 0.85,
+      rate: playbackRate,
       onEnd: () => setPlayingKey(null),
       onError: () => setPlayingKey(null)
     });
-  }, [playingKey]);
+  }, [playingKey, playbackRate]);
+
+  const handlePlayConv = useCallback((conv: ToeicConversation) => {
+    const convKey = `conv-full-${conv.id}`;
+    if (playingKey === convKey) {
+      stopAudio();
+      setPlayingKey(null);
+      return;
+    }
+
+    setPlayingKey(convKey);
+    playAudioText(conv.fullAudioScript, {
+      rate: playbackRate,
+      onEnd: () => setPlayingKey(null),
+      onError: () => setPlayingKey(null)
+    });
+  }, [playingKey, playbackRate]);
+
+  const handlePlayTalk = useCallback((talk: ToeicTalk) => {
+    const talkKey = `talk-${talk.id}`;
+    if (playingKey === talkKey) {
+      stopAudio();
+      setPlayingKey(null);
+      return;
+    }
+
+    setPlayingKey(talkKey);
+    playAudioText(talk.audioScript, {
+      rate: playbackRate,
+      onEnd: () => setPlayingKey(null),
+      onError: () => setPlayingKey(null)
+    });
+  }, [playingKey, playbackRate]);
 
   const handleReset = useCallback(() => {
     stopAudio();
     setAnswers({});
     setRevealedExplanations({});
+    setConvAnswers({});
+    setTalkAnswers({});
     setPlayingKey(null);
     setShowResults(false);
-    if (tab === 'mixed') {
-      setShuffledQuestions(shuffleArray(ALL_TOEIC_LISTENING_QUESTIONS));
-    }
-  }, [tab]);
+  }, []);
 
   const handleTabChange = useCallback((newTab: TabMode) => {
     stopAudio();
@@ -335,9 +855,6 @@ export default function ToeicListeningPracticePage() {
     setRevealedExplanations({});
     setPlayingKey(null);
     setShowResults(false);
-    if (newTab === 'mixed') {
-      setShuffledQuestions(shuffleArray(ALL_TOEIC_LISTENING_QUESTIONS));
-    }
   }, []);
 
   // Cleanup TTS on unmount
@@ -347,10 +864,12 @@ export default function ToeicListeningPracticePage() {
     };
   }, []);
 
-  const tabs: { id: TabMode; label: string; icon: React.ReactNode; count: number }[] = [
-    { id: 'photo', label: 'Photo Description', icon: <ImageIcon className="w-4 h-4" />, count: PHOTO_QUESTIONS.length },
-    { id: 'question-response', label: 'Question-Response', icon: <MessageCircleQuestion className="w-4 h-4" />, count: QUESTION_RESPONSE_QUESTIONS.length },
-    { id: 'mixed', label: 'Mixed (Trộn)', icon: <Shuffle className="w-4 h-4" />, count: ALL_TOEIC_LISTENING_QUESTIONS.length },
+  const tabs: { id: TabMode; label: string; icon: React.ReactNode; count?: number; badge?: string }[] = [
+    { id: 'photo', label: 'Part 1: Photographs', icon: <ImageIcon className="w-4 h-4" />, count: PHOTO_QUESTIONS.length },
+    { id: 'question-response', label: 'Part 2: Q-Response', icon: <MessageCircleQuestion className="w-4 h-4" />, count: QUESTION_RESPONSE_QUESTIONS.length },
+    { id: 'conversations', label: 'Part 3: Conversations', icon: <Users className="w-4 h-4" />, count: TOEIC_CONVERSATIONS.length, badge: 'NEW' },
+    { id: 'talks', label: 'Part 4: Short Talks', icon: <Megaphone className="w-4 h-4" />, count: TOEIC_TALKS.length, badge: 'NEW' },
+    { id: 'traps', label: 'Bẫy & Chiến Thuật', icon: <ShieldAlert className="w-4 h-4" />, count: LISTENING_TRAPS.length, badge: 'PRO' },
   ];
 
   return (
@@ -374,152 +893,197 @@ export default function ToeicListeningPracticePage() {
           <div className="relative z-10 space-y-5">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/15 text-white rounded-full border border-white/20">
               <Headphones className="w-4 h-4" />
-              <span className="text-[10px] font-black uppercase tracking-widest">TOEIC Listening Practice</span>
-              <span className="text-[9px] px-2 py-0.5 bg-amber-400 text-amber-950 rounded-full font-black">PRO AUDIO 🔊</span>
+              <span className="text-[10px] font-black uppercase tracking-widest">TOEIC Master Listening Suite</span>
+              <span className="text-[9px] px-2 py-0.5 bg-amber-400 text-amber-950 rounded-full font-black">PART 1 - 4 TRỌN BỘ 🔥</span>
             </div>
 
             <h1 className="text-3xl md:text-4xl font-black text-white leading-tight">
-              Luyện Nghe TOEIC
+              Luyện Nghe TOEIC Chuyên Sâu
               <br />
               <span className="bg-gradient-to-r from-cyan-300 to-blue-200 bg-clip-text text-transparent">
-                Nhìn Hình & Chọn Đáp Án
+                Part 1 • Part 2 • Part 3 • Part 4
               </span>
             </h1>
 
             <p className="text-blue-200/80 text-sm font-medium max-w-xl">
-              Luyện tập Part 1 (Photo Description) và Part 2 (Question-Response) với hình ảnh thực tế và âm thanh phát âm đa tầng (Web Speech API + Google Cloud TTS Audio). Rèn phản xạ nghe hiểu chuẩn xác.
+              Hệ thống luyện nghe toàn diện với ngân hàng câu hỏi phong phú, âm thanh giọng đọc bản xứ đa tốc độ, ẩn text chuẩn thi thật, và bộ cẩm nang nhận diện bẫy đề thi ETS.
             </p>
 
+            {/* Quick Stats Banner */}
             <div className="flex flex-wrap gap-4 text-blue-200/80 text-xs font-bold">
               <div className="flex items-center gap-1.5">
                 <ImageIcon className="w-3.5 h-3.5 text-cyan-300" />
-                <span>{PHOTO_QUESTIONS.length} Photo Questions</span>
+                <span>{PHOTO_QUESTIONS.length} Tranh Part 1</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <MessageCircleQuestion className="w-3.5 h-3.5 text-cyan-300" />
-                <span>{QUESTION_RESPONSE_QUESTIONS.length} Q-R Questions</span>
+                <span>{QUESTION_RESPONSE_QUESTIONS.length} Câu Part 2</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <Volume2 className="w-3.5 h-3.5 text-cyan-300" />
-                <span>Hỗ trợ nghe từng câu riêng biệt</span>
+                <Users className="w-3.5 h-3.5 text-cyan-300" />
+                <span>{TOEIC_CONVERSATIONS.length} Hội thoại Part 3</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Megaphone className="w-3.5 h-3.5 text-cyan-300" />
+                <span>{TOEIC_TALKS.length} Bài nói Part 4</span>
               </div>
             </div>
           </div>
         </div>
       </section>
 
+      {/* Playback Speed Controller Bar */}
+      <div className="p-4 bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-2 text-xs font-bold text-slate-600 dark:text-slate-300">
+          <Clock className="w-4 h-4 text-indigo-500" />
+          <span>Tốc độ phát âm thanh:</span>
+        </div>
+        <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
+          {[
+            { rate: 0.75, label: '0.75x (Chậm)' },
+            { rate: 0.85, label: '0.85x (Chuẩn)' },
+            { rate: 1.0, label: '1.0x (Thi thật)' },
+            { rate: 1.25, label: '1.25x (Nhanh)' }
+          ].map(r => (
+            <button
+              key={r.rate}
+              onClick={() => {
+                stopAudio();
+                setPlaybackRate(r.rate);
+              }}
+              className={cn(
+                "px-3 py-1.5 rounded-lg text-xs font-black transition-all cursor-pointer",
+                playbackRate === r.rate
+                  ? "bg-indigo-600 text-white shadow-sm"
+                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100"
+              )}
+            >
+              {r.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Tab Selector */}
-      <div className="flex gap-2 p-1.5 bg-slate-100 dark:bg-slate-800 rounded-2xl">
+      <div className="flex flex-wrap gap-2 p-1.5 bg-slate-100 dark:bg-slate-800 rounded-2xl">
         {tabs.map(t => (
           <button
             key={t.id}
             onClick={() => handleTabChange(t.id)}
             className={cn(
-              "flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-xs transition-all cursor-pointer",
+              "flex-1 min-w-[140px] flex items-center justify-center gap-2 py-3 px-2 rounded-xl font-bold text-xs transition-all cursor-pointer",
               tab === t.id
                 ? "bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-md"
                 : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
             )}
           >
             {t.icon}
-            <span className="hidden sm:inline">{t.label}</span>
-            <span className="text-[10px] px-1.5 py-0.5 bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-400 rounded-full font-black">{t.count}</span>
+            <span>{t.label}</span>
+            {t.count !== undefined && (
+              <span className="text-[10px] px-1.5 py-0.5 bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-full font-black">
+                {t.count}
+              </span>
+            )}
+            {t.badge && (
+              <span className="text-[9px] px-1.5 py-0.5 bg-amber-400 text-amber-950 rounded-full font-black">
+                {t.badge}
+              </span>
+            )}
           </button>
         ))}
       </div>
 
-      {/* Progress Bar */}
-      {totalAnswered > 0 && (
+      {/* Part 1 & 2 Progress Bar */}
+      {(tab === 'photo' || tab === 'question-response') && totalPartAnswered > 0 && (
         <div className="premium-card p-4 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
               <Target className="w-3.5 h-3.5 text-blue-500" /> Tiến trình
             </span>
             <span className="text-xs font-black text-slate-700 dark:text-slate-300">
-              {totalAnswered} / {questions.length} câu • <span className="text-emerald-600 dark:text-emerald-400">{correctCount} đúng</span>
+              {totalPartAnswered} / {partQuestions.length} câu • <span className="text-emerald-600 dark:text-emerald-400">{correctPartCount} đúng</span>
             </span>
           </div>
           <div className="w-full h-2.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
             <div
               className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all duration-500"
-              style={{ width: `${(totalAnswered / questions.length) * 100}%` }}
+              style={{ width: `${(totalPartAnswered / partQuestions.length) * 100}%` }}
             />
           </div>
         </div>
       )}
 
-      {/* Results Summary */}
-      {allAnswered && !showResults && (
-        <div className="text-center">
-          <button
-            onClick={() => setShowResults(true)}
-            className="px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl font-black text-sm hover:opacity-90 transition-all shadow-xl shadow-blue-500/20 flex items-center gap-2 mx-auto cursor-pointer"
-          >
-            <Award className="w-5 h-5" /> XEM KẾT QUẢ LUYỆN TẬP
-          </button>
+      {/* Tab Content */}
+      {tab === 'traps' ? (
+        <TrapsStrategyTab />
+      ) : tab === 'conversations' ? (
+        <div className="space-y-8">
+          {TOEIC_CONVERSATIONS.map((conv, idx) => (
+            <ConversationCard
+              key={conv.id}
+              conv={conv}
+              index={idx}
+              total={TOEIC_CONVERSATIONS.length}
+              answers={convAnswers}
+              onSelectAnswer={handleSelectConvAnswer}
+              playingKey={playingKey}
+              playbackRate={playbackRate}
+              onPlayDialogue={() => handlePlayConv(conv)}
+              onPlaySpeakerTurn={(text, turnKey) => {
+                if (playingKey === turnKey) {
+                  stopAudio();
+                  setPlayingKey(null);
+                  return;
+                }
+                setPlayingKey(turnKey);
+                playAudioText(text, {
+                  rate: playbackRate,
+                  onEnd: () => setPlayingKey(null),
+                  onError: () => setPlayingKey(null)
+                });
+              }}
+            />
+          ))}
+        </div>
+      ) : tab === 'talks' ? (
+        <div className="space-y-8">
+          {TOEIC_TALKS.map((talk, idx) => (
+            <TalkCard
+              key={talk.id}
+              talk={talk}
+              index={idx}
+              total={TOEIC_TALKS.length}
+              answers={talkAnswers}
+              onSelectAnswer={handleSelectTalkAnswer}
+              playingKey={playingKey}
+              playbackRate={playbackRate}
+              onPlayTalk={() => handlePlayTalk(talk)}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="space-y-6">
+          {partQuestions.map((q, idx) => (
+            <QuestionCard
+              key={q.id}
+              question={q}
+              index={idx}
+              total={partQuestions.length}
+              selected={answers[q.id] ?? null}
+              onSelect={(choiceIdx) => handleSelectAnswer(q.id, choiceIdx)}
+              revealed={!!revealedExplanations[q.id]}
+              onReveal={() => handleReveal(q.id)}
+              playingKey={playingKey}
+              playbackRate={playbackRate}
+              onPlayFull={() => handlePlayFull(q)}
+              onPlayChoice={(choiceText, choiceKey) => handlePlayChoice(choiceText, choiceKey)}
+            />
+          ))}
         </div>
       )}
 
-      {showResults && (
-        <section className="premium-card p-8 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 border-blue-200 dark:border-blue-800 shadow-xl rounded-3xl animate-in slide-in-from-top duration-500">
-          <div className="flex flex-col md:flex-row items-center gap-8">
-            <div className="w-32 h-32 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 flex flex-col items-center justify-center text-white shadow-lg flex-shrink-0">
-              <span className="text-3xl font-black">{Math.round((correctCount / questions.length) * 100)}%</span>
-              <span className="text-[9px] font-bold uppercase tracking-wider opacity-80">Chính xác</span>
-            </div>
-            <div className="flex-1 space-y-4 text-center md:text-left">
-              <div className="space-y-1">
-                <h2 className="text-2xl font-black text-slate-800 dark:text-slate-100 flex items-center justify-center md:justify-start gap-2">
-                  <Sparkles className="w-6 h-6 text-amber-500" />
-                  {correctCount >= questions.length * 0.8 ? 'Xuất sắc!' : correctCount >= questions.length * 0.5 ? 'Khá tốt!' : 'Cần cố gắng thêm!'}
-                </h2>
-                <p className="text-slate-500 dark:text-slate-400 font-bold">
-                  Làm đúng {correctCount}/{questions.length} câu hỏi
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-3 justify-center md:justify-start">
-                <button
-                  onClick={handleReset}
-                  className="px-6 py-3 bg-indigo-600 text-white rounded-2xl font-black text-xs hover:opacity-90 transition-all flex items-center gap-2 shadow-lg shadow-indigo-600/20 cursor-pointer"
-                >
-                  <RotateCcw className="w-4 h-4" /> Làm Lại
-                </button>
-                <button
-                  onClick={() => {
-                    stopAudio();
-                    router.push('/toeic');
-                  }}
-                  className="px-6 py-3 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-2xl font-black text-xs hover:bg-slate-300 dark:hover:bg-slate-600 transition-all cursor-pointer"
-                >
-                  Quay Về TOEIC
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Questions List */}
-      <div className="space-y-6">
-        {questions.map((q, idx) => (
-          <QuestionCard
-            key={q.id}
-            question={q}
-            index={idx}
-            total={questions.length}
-            selected={answers[q.id] ?? null}
-            onSelect={(choiceIdx) => handleSelect(q.id, choiceIdx)}
-            revealed={!!revealedExplanations[q.id]}
-            onReveal={() => handleReveal(q.id)}
-            playingKey={playingKey}
-            onPlayFull={() => handlePlayFull(q)}
-            onPlayChoice={(choiceText, choiceKey) => handlePlayChoice(choiceText, choiceKey)}
-          />
-        ))}
-      </div>
-
       {/* Bottom Actions */}
-      {totalAnswered > 0 && !showResults && (
+      {totalPartAnswered > 0 && !showResults && (tab === 'photo' || tab === 'question-response') && (
         <div className="flex justify-between items-center">
           <button
             onClick={handleReset}
@@ -527,15 +1091,6 @@ export default function ToeicListeningPracticePage() {
           >
             <RotateCcw className="w-4 h-4" /> Làm Lại Từ Đầu
           </button>
-
-          {allAnswered && (
-            <button
-              onClick={() => setShowResults(true)}
-              className="px-8 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl font-black text-xs hover:opacity-90 transition-all shadow-xl shadow-blue-500/20 flex items-center gap-2 cursor-pointer"
-            >
-              <Award className="w-5 h-5" /> XEM KẾT QUẢ
-            </button>
-          )}
         </div>
       )}
     </div>
