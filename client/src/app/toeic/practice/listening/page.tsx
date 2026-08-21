@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   Headphones, Volume2, ArrowLeft, CheckCircle2, XCircle,
-  ChevronRight, Play, RotateCcw, Lightbulb, ImageIcon,
+  RotateCcw, Lightbulb, ImageIcon,
   MessageCircleQuestion, Shuffle, ChevronDown, ChevronUp,
-  Award, Target, Sparkles, Eye, EyeOff
+  Award, Target, Sparkles, VolumeX, Play
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
@@ -15,6 +15,7 @@ import {
   ALL_TOEIC_LISTENING_QUESTIONS,
   ToeicListeningQuestion
 } from '@/data/toeicListeningData';
+import { playAudioText, stopAudio } from '@/lib/ttsService';
 
 type TabMode = 'photo' | 'question-response' | 'mixed';
 
@@ -27,16 +28,6 @@ function shuffleArray<T>(arr: T[]): T[] {
   return a;
 }
 
-const speak = (text: string, onEnd?: () => void) => {
-  if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
-  window.speechSynthesis.cancel();
-  const utt = new SpeechSynthesisUtterance(text);
-  utt.lang = 'en-US';
-  utt.rate = 0.85;
-  if (onEnd) utt.onend = onEnd;
-  window.speechSynthesis.speak(utt);
-};
-
 // ==========================================
 // QuestionCard component
 // ==========================================
@@ -48,8 +39,9 @@ const QuestionCard = React.memo(function QuestionCard({
   onSelect,
   revealed,
   onReveal,
-  isPlaying,
-  onPlay,
+  playingKey,
+  onPlayFull,
+  onPlayChoice,
 }: {
   question: ToeicListeningQuestion;
   index: number;
@@ -58,11 +50,13 @@ const QuestionCard = React.memo(function QuestionCard({
   onSelect: (idx: number) => void;
   revealed: boolean;
   onReveal: () => void;
-  isPlaying: boolean;
-  onPlay: () => void;
+  playingKey: string | null;
+  onPlayFull: () => void;
+  onPlayChoice: (choiceText: string, choiceKey: string) => void;
 }) {
   const isAnswered = selected !== null;
   const isCorrect = selected === question.correctAnswer;
+  const isFullPlaying = playingKey === `full-${question.id}`;
 
   return (
     <div className="premium-card p-0 overflow-hidden bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl shadow-lg">
@@ -104,9 +98,9 @@ const QuestionCard = React.memo(function QuestionCard({
               className="w-full h-56 md:h-72 object-cover"
               loading="lazy"
             />
-            <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 to-transparent px-4 py-3">
+            <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/75 to-transparent px-4 py-3">
               <p className="text-white text-xs font-bold flex items-center gap-1.5">
-                <ImageIcon className="w-3.5 h-3.5" />
+                <ImageIcon className="w-3.5 h-3.5 text-cyan-300" />
                 Quan sát hình ảnh, sau đó nghe mô tả và chọn đáp án đúng nhất
               </p>
             </div>
@@ -116,16 +110,25 @@ const QuestionCard = React.memo(function QuestionCard({
         {/* Audio Play Button */}
         <div className="flex items-center gap-3">
           <button
-            onClick={onPlay}
+            onClick={onPlayFull}
             className={cn(
               "flex-1 flex items-center justify-center gap-3 py-4 rounded-2xl font-black text-sm transition-all border-2 cursor-pointer",
-              isPlaying
-                ? "bg-rose-50 dark:bg-rose-500/10 border-rose-200 dark:border-rose-500/30 text-rose-700 dark:text-rose-400 animate-pulse"
+              isFullPlaying
+                ? "bg-rose-50 dark:bg-rose-500/10 border-rose-400 dark:border-rose-500/50 text-rose-700 dark:text-rose-400 animate-pulse shadow-md"
                 : "bg-blue-50 dark:bg-blue-500/10 border-blue-200 dark:border-blue-500/30 text-blue-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-500/20"
             )}
           >
-            <Volume2 className="w-5 h-5" />
-            {isPlaying ? '🔊 Đang phát âm thanh...' : question.type === 'photo' ? '🎧 Nghe mô tả hình ảnh' : '🎧 Nghe câu hỏi'}
+            {isFullPlaying ? (
+              <>
+                <VolumeX className="w-5 h-5 animate-bounce" />
+                <span>🔊 Đang phát âm thanh... (Bấm để dừng)</span>
+              </>
+            ) : (
+              <>
+                <Volume2 className="w-5 h-5" />
+                <span>{question.type === 'photo' ? '🎧 Nghe toàn bộ mô tả (A, B, C, D)' : '🎧 Nghe toàn bộ câu hỏi & đáp án'}</span>
+              </>
+            )}
           </button>
         </div>
 
@@ -134,26 +137,46 @@ const QuestionCard = React.memo(function QuestionCard({
           {question.choices.map((choice, idx) => {
             const isSelected = selected === idx;
             const isChoiceCorrect = idx === question.correctAnswer;
+            const choiceKey = `choice-${question.id}-${idx}`;
+            const isChoicePlaying = playingKey === choiceKey;
 
             return (
-              <button
-                key={idx}
-                disabled={isAnswered}
-                onClick={() => onSelect(idx)}
-                className={cn(
-                  "w-full p-4 rounded-2xl text-left border-2 font-bold text-sm transition-all flex items-center justify-between cursor-pointer",
-                  !isAnswered && isSelected && "border-primary bg-primary/5 dark:bg-primary/10 text-primary",
-                  !isAnswered && !isSelected && "border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 hover:border-slate-200 dark:hover:border-slate-600 text-slate-700 dark:text-slate-300",
-                  isAnswered && isChoiceCorrect && "border-emerald-500 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400",
-                  isAnswered && isSelected && !isChoiceCorrect && "border-rose-500 bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400",
-                  isAnswered && !isChoiceCorrect && !isSelected && "border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 opacity-50 text-slate-400 dark:text-slate-500",
-                  isAnswered && "cursor-default"
-                )}
-              >
-                <span>{choice}</span>
-                {isAnswered && isChoiceCorrect && <CheckCircle2 className="w-5 h-5 text-emerald-500 flex-shrink-0" />}
-                {isAnswered && isSelected && !isChoiceCorrect && <XCircle className="w-5 h-5 text-rose-500 flex-shrink-0" />}
-              </button>
+              <div key={idx} className="flex items-center gap-2">
+                <button
+                  disabled={isAnswered}
+                  onClick={() => onSelect(idx)}
+                  className={cn(
+                    "flex-1 p-4 rounded-2xl text-left border-2 font-bold text-sm transition-all flex items-center justify-between cursor-pointer",
+                    !isAnswered && isSelected && "border-blue-600 bg-blue-50/50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400",
+                    !isAnswered && !isSelected && "border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 hover:border-slate-200 dark:hover:border-slate-600 text-slate-700 dark:text-slate-300",
+                    isAnswered && isChoiceCorrect && "border-emerald-500 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400",
+                    isAnswered && isSelected && !isChoiceCorrect && "border-rose-500 bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400",
+                    isAnswered && !isChoiceCorrect && !isSelected && "border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 opacity-50 text-slate-400 dark:text-slate-500",
+                    isAnswered && "cursor-default"
+                  )}
+                >
+                  <span className="leading-snug">{choice}</span>
+                  {isAnswered && isChoiceCorrect && <CheckCircle2 className="w-5 h-5 text-emerald-500 flex-shrink-0 ml-2" />}
+                  {isAnswered && isSelected && !isChoiceCorrect && <XCircle className="w-5 h-5 text-rose-500 flex-shrink-0 ml-2" />}
+                </button>
+
+                {/* Individual choice speak button */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onPlayChoice(choice, choiceKey);
+                  }}
+                  title={`Nghe riêng câu ${choice.slice(0, 2)}`}
+                  className={cn(
+                    "p-4 rounded-2xl border-2 transition-all cursor-pointer flex-shrink-0",
+                    isChoicePlaying
+                      ? "bg-indigo-600 text-white border-indigo-600 shadow-md animate-pulse"
+                      : "border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-300"
+                  )}
+                >
+                  <Volume2 className="w-4 h-4" />
+                </button>
+              </div>
             );
           })}
         </div>
@@ -166,7 +189,7 @@ const QuestionCard = React.memo(function QuestionCard({
               className="flex items-center justify-between w-full text-left font-black text-sm text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-slate-100 cursor-pointer"
             >
               <span className="flex items-center gap-2">
-                <Lightbulb className="w-4 h-4 text-amber-500" /> Giải thích đáp án
+                <Lightbulb className="w-4 h-4 text-amber-500" /> Giải thích đáp án & Lời dịch
               </span>
               {revealed ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
             </button>
@@ -177,7 +200,7 @@ const QuestionCard = React.memo(function QuestionCard({
                   ✅ Đáp án đúng: {question.choices[question.correctAnswer]}
                 </p>
                 <p className="text-slate-500 dark:text-slate-400 italic">{question.explanation}</p>
-                <p className="text-slate-700 dark:text-slate-300">{question.explanationVi}</p>
+                <p className="text-slate-700 dark:text-slate-300 font-normal">{question.explanationVi}</p>
               </div>
             )}
           </div>
@@ -195,7 +218,7 @@ export default function ToeicListeningPracticePage() {
   const [tab, setTab] = useState<TabMode>('photo');
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [revealedExplanations, setRevealedExplanations] = useState<Record<number, boolean>>({});
-  const [playingId, setPlayingId] = useState<number | null>(null);
+  const [playingKey, setPlayingKey] = useState<string | null>(null);
   const [showResults, setShowResults] = useState(false);
   const [shuffledQuestions, setShuffledQuestions] = useState<ToeicListeningQuestion[]>([]);
 
@@ -229,21 +252,42 @@ export default function ToeicListeningPracticePage() {
     }));
   }, []);
 
-  const handlePlay = useCallback((question: ToeicListeningQuestion) => {
-    if (playingId === question.id) {
-      window.speechSynthesis.cancel();
-      setPlayingId(null);
+  const handlePlayFull = useCallback((question: ToeicListeningQuestion) => {
+    const fullKey = `full-${question.id}`;
+    if (playingKey === fullKey) {
+      stopAudio();
+      setPlayingKey(null);
       return;
     }
-    setPlayingId(question.id);
-    speak(question.audioScript, () => setPlayingId(null));
-  }, [playingId]);
+
+    setPlayingKey(fullKey);
+    playAudioText(question.audioScript, {
+      rate: 0.85,
+      onEnd: () => setPlayingKey(null),
+      onError: () => setPlayingKey(null)
+    });
+  }, [playingKey]);
+
+  const handlePlayChoice = useCallback((choiceText: string, choiceKey: string) => {
+    if (playingKey === choiceKey) {
+      stopAudio();
+      setPlayingKey(null);
+      return;
+    }
+
+    setPlayingKey(choiceKey);
+    playAudioText(choiceText, {
+      rate: 0.85,
+      onEnd: () => setPlayingKey(null),
+      onError: () => setPlayingKey(null)
+    });
+  }, [playingKey]);
 
   const handleReset = useCallback(() => {
-    window.speechSynthesis.cancel();
+    stopAudio();
     setAnswers({});
     setRevealedExplanations({});
-    setPlayingId(null);
+    setPlayingKey(null);
     setShowResults(false);
     if (tab === 'mixed') {
       setShuffledQuestions(shuffleArray(ALL_TOEIC_LISTENING_QUESTIONS));
@@ -251,11 +295,11 @@ export default function ToeicListeningPracticePage() {
   }, [tab]);
 
   const handleTabChange = useCallback((newTab: TabMode) => {
-    window.speechSynthesis.cancel();
+    stopAudio();
     setTab(newTab);
     setAnswers({});
     setRevealedExplanations({});
-    setPlayingId(null);
+    setPlayingKey(null);
     setShowResults(false);
     if (newTab === 'mixed') {
       setShuffledQuestions(shuffleArray(ALL_TOEIC_LISTENING_QUESTIONS));
@@ -265,9 +309,7 @@ export default function ToeicListeningPracticePage() {
   // Cleanup TTS on unmount
   useEffect(() => {
     return () => {
-      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-      }
+      stopAudio();
     };
   }, []);
 
@@ -281,7 +323,10 @@ export default function ToeicListeningPracticePage() {
     <div className="max-w-4xl mx-auto space-y-8 pb-20 animate-in fade-in duration-500">
       {/* Back Button */}
       <button
-        onClick={() => router.push('/toeic')}
+        onClick={() => {
+          stopAudio();
+          router.push('/toeic');
+        }}
         className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition-colors font-bold cursor-pointer"
       >
         <ArrowLeft className="w-4 h-4" /> Quay lại TOEIC Center
@@ -296,7 +341,7 @@ export default function ToeicListeningPracticePage() {
             <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/15 text-white rounded-full border border-white/20">
               <Headphones className="w-4 h-4" />
               <span className="text-[10px] font-black uppercase tracking-widest">TOEIC Listening Practice</span>
-              <span className="text-[9px] px-2 py-0.5 bg-amber-400 text-amber-950 rounded-full font-black">NEW 🔥</span>
+              <span className="text-[9px] px-2 py-0.5 bg-amber-400 text-amber-950 rounded-full font-black">PRO AUDIO 🔊</span>
             </div>
 
             <h1 className="text-3xl md:text-4xl font-black text-white leading-tight">
@@ -308,7 +353,7 @@ export default function ToeicListeningPracticePage() {
             </h1>
 
             <p className="text-blue-200/80 text-sm font-medium max-w-xl">
-              Luyện tập Part 1 (Photo Description) và Part 2 (Question-Response) với hình ảnh thực tế và âm thanh TTS chất lượng cao. Rèn phản xạ nghe hiểu — kỹ năng quan trọng nhất trong TOEIC Listening.
+              Luyện tập Part 1 (Photo Description) và Part 2 (Question-Response) với hình ảnh thực tế và âm thanh phát âm đa tầng (Web Speech API + Google Cloud TTS Audio). Rèn phản xạ nghe hiểu chuẩn xác.
             </p>
 
             <div className="flex flex-wrap gap-4 text-blue-200/80 text-xs font-bold">
@@ -322,7 +367,7 @@ export default function ToeicListeningPracticePage() {
               </div>
               <div className="flex items-center gap-1.5">
                 <Volume2 className="w-3.5 h-3.5 text-cyan-300" />
-                <span>TTS Audio</span>
+                <span>Hỗ trợ nghe từng câu riêng biệt</span>
               </div>
             </div>
           </div>
@@ -406,7 +451,10 @@ export default function ToeicListeningPracticePage() {
                   <RotateCcw className="w-4 h-4" /> Làm Lại
                 </button>
                 <button
-                  onClick={() => router.push('/toeic')}
+                  onClick={() => {
+                    stopAudio();
+                    router.push('/toeic');
+                  }}
                   className="px-6 py-3 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-2xl font-black text-xs hover:bg-slate-300 dark:hover:bg-slate-600 transition-all cursor-pointer"
                 >
                   Quay Về TOEIC
@@ -429,8 +477,9 @@ export default function ToeicListeningPracticePage() {
             onSelect={(choiceIdx) => handleSelect(q.id, choiceIdx)}
             revealed={!!revealedExplanations[q.id]}
             onReveal={() => handleReveal(q.id)}
-            isPlaying={playingId === q.id}
-            onPlay={() => handlePlay(q)}
+            playingKey={playingKey}
+            onPlayFull={() => handlePlayFull(q)}
+            onPlayChoice={(choiceText, choiceKey) => handlePlayChoice(choiceText, choiceKey)}
           />
         ))}
       </div>

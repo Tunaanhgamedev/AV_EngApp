@@ -10,6 +10,7 @@ import {
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
 import { getToeicPractice, submitToeicPractice } from '@/services/toeic.service';
+import { playAudioText, stopAudio } from '@/lib/ttsService';
 
 interface Question {
   id: string;
@@ -40,23 +41,17 @@ function TOEICPracticeContent() {
   const [playingId, setPlayingId] = useState<string | null>(null);
 
   const handleSpeak = (text: string, id: string) => {
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      if (playingId === id) {
-        setPlayingId(null);
-        return;
-      }
-      
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'en-US';
-      utterance.onend = () => setPlayingId(null);
-      utterance.onerror = () => setPlayingId(null);
-      
-      setPlayingId(id);
-      window.speechSynthesis.speak(utterance);
-    } else {
-      alert('Trình duyệt của bạn không hỗ trợ đọc âm thanh tự động.');
+    if (playingId === id) {
+      stopAudio();
+      setPlayingId(null);
+      return;
     }
+    setPlayingId(id);
+    playAudioText(text, {
+      rate: 0.85,
+      onEnd: () => setPlayingId(null),
+      onError: () => setPlayingId(null)
+    });
   };
 
   useEffect(() => {
