@@ -3,61 +3,26 @@
 import React, { useState, lazy, Suspense } from 'react';
 import { BookOpen, Sparkles, Layers, Tag, Compass, Clock, Zap, FileText } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { playAudioText } from '@/lib/ttsService';
 
 // Lazy load components for performance
 const ReadingPassagesTab = lazy(() => import('./components/ReadingPassagesTab'));
 const PronounsReadingTab = lazy(() => import('./components/PronounsReadingTab'));
 const NounEndingsTab = lazy(() => import('./components/NounEndingsTab'));
+const AdjVerbFormsTab = lazy(() => import('./components/AdjVerbFormsTab'));
 const WordPositionsTab = lazy(() => import('./components/WordPositionsTab'));
 const TensesReadingTab = lazy(() => import('./components/TensesReadingTab'));
 const GrammarPracticeTab = lazy(() => import('./components/GrammarPracticeTab'));
 
 const speak = (text: string) => {
-  if (typeof window === 'undefined') return;
-
-  const playTranslateTTS = () => {
-    const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=${encodeURIComponent(text)}`;
-    const audio = new Audio(url);
-    audio.play().catch((err) => {
-      console.error("Google Translate TTS fallback failed:", err);
-    });
-  };
-
-  if (window.speechSynthesis) {
-    const voices = window.speechSynthesis.getVoices();
-    if (voices.length === 0) {
-      playTranslateTTS();
-      return;
-    }
-
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = 'en-US';
-    u.rate = 0.85;
-    const v = voices.find(v => v.lang === 'en-US' && v.name.includes('Google')) || voices.find(v => v.lang === 'en-US');
-    if (v) u.voice = v;
-
-    u.onerror = (e) => {
-      console.log("speechSynthesis error, playing Google Translate TTS:", e);
-      playTranslateTTS();
-    };
-
-    if (window.speechSynthesis.speaking) {
-      window.speechSynthesis.cancel();
-      setTimeout(() => {
-        window.speechSynthesis.speak(u);
-      }, 50);
-    } else {
-      window.speechSynthesis.speak(u);
-    }
-  } else {
-    playTranslateTTS();
-  }
+  playAudioText(text, { rate: 0.85 });
 };
 
 const READING_TABS = [
   { id: 'articles' as const, label: 'Bài Đọc & AI Reading', icon: BookOpen, desc: 'Luyện đọc hiểu theo chủ đề & AI' },
   { id: 'pronouns' as const, label: 'Đại Từ & Quy Chiếu', icon: Layers, desc: 'Kỹ năng tìm từ quy chiếu trong bài đọc' },
-  { id: 'noun_endings' as const, label: 'Chia Đuôi Danh Từ & Số Nhiều', icon: Tag, desc: 'Đuôi -tion, -ment, số ít/nhiều, không đếm được' },
+  { id: 'noun_endings' as const, label: 'Đuôi Danh Từ & Số Nhiều', icon: Tag, desc: 'Đuôi -tion, -ment, số ít/nhiều, không đếm được' },
+  { id: 'adj_verb_forms' as const, label: 'Tính & Động Từ (-ed/-ing, S-V)', icon: Sparkles, desc: 'Tính từ -ed/-ing, OSASCOMP, To-V/V-ing, Bị động' },
   { id: 'word_positions' as const, label: 'Vị Trí Từ Loại & Cách Làm Bài', icon: Compass, desc: 'Vị trí N, V, Adj, Adv & mẹo giải 5 giây' },
   { id: 'tenses_grammar' as const, label: 'Phối Hợp Thì & Chủ Vị', icon: Clock, desc: 'Chuỗi thì when/while/since/before/as soon as' },
   { id: 'practice' as const, label: 'Luyện Tập Thực Chiến', icon: Zap, desc: 'Trắc nghiệm tương tác có giải thích chi tiết' },
@@ -80,7 +45,7 @@ export default function ReadingPage() {
             Reading & Language Tactics
           </h1>
           <p className="text-slate-500 dark:text-slate-400 font-medium text-sm sm:text-base mt-1 max-w-3xl">
-            Luyện đọc hiểu thông minh, làm chủ kỹ năng quy chiếu đại từ, quy tắc chia đuôi danh từ số ít / số nhiều / không đếm được, công thức vị trí từ loại và sự phối hợp thì trong câu.
+            Luyện đọc hiểu thông minh, làm chủ kỹ năng quy chiếu đại từ, quy tắc chia đuôi danh từ số ít / số nhiều, bí kíp tính từ (-ed/-ing, OSASCOMP), chia động từ (S-V, To-V/V-ing), công thức vị trí từ loại và sự phối hợp thì trong câu.
           </p>
         </div>
 
@@ -117,6 +82,7 @@ export default function ReadingPage() {
         {activeTab === 'articles' && <ReadingPassagesTab speak={speak} />}
         {activeTab === 'pronouns' && <PronounsReadingTab speak={speak} />}
         {activeTab === 'noun_endings' && <NounEndingsTab speak={speak} />}
+        {activeTab === 'adj_verb_forms' && <AdjVerbFormsTab speak={speak} />}
         {activeTab === 'word_positions' && <WordPositionsTab speak={speak} />}
         {activeTab === 'tenses_grammar' && <TensesReadingTab speak={speak} />}
         {activeTab === 'practice' && <GrammarPracticeTab speak={speak} />}

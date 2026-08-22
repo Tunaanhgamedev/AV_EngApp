@@ -95,9 +95,26 @@ export interface TenseSequenceRule {
   readingRecognition: string;
 }
 
+export interface AdjVerbRule {
+  id: string;
+  title: string;
+  category: 'adj_suffixes' | 'adj_ed_ing' | 'adj_osascomp' | 'adj_comparison' | 'verb_suffixes' | 'verb_sv_agreement' | 'verb_patterns' | 'verb_passive_reduced';
+  description: string;
+  badge: string;
+  color: string;
+  formula?: string;
+  items: {
+    label: string;
+    rule: string;
+    examples: string[];
+    note?: string;
+    examTip?: string;
+  }[];
+}
+
 export interface GrammarQuestion {
   id: string;
-  category: 'pronoun_reference' | 'noun_plurals' | 'word_positions' | 'tenses_agreement';
+  category: 'pronoun_reference' | 'noun_plurals' | 'word_positions' | 'tenses_agreement' | 'adj_verb_forms';
   question: string;
   highlightWords?: string[];
   options: string[];
@@ -1204,5 +1221,497 @@ export const GRAMMAR_PRACTICE_QUESTIONS: GrammarQuestion[] = [
     correctIndex: 1,
     explanation: '"Each of + Danh từ số nhiều" LUÔN ĐI VỚI ĐỘNG TỪ SỐ ÍT -> Chọn "has" (không chọn have hay are having).',
     ruleFormula: 'Each / Every / Neither / Either of + N(plural) + VERB (số ít: is / has / V-s/es)'
+  },
+
+  // Adjective & Verb Forms Practice Questions
+  {
+    id: 'avq-1',
+    category: 'adj_verb_forms',
+    level: 'A2',
+    question: '"Customer service representatives are instructed to respond to inquiries in a ______ manner."',
+    highlightWords: ['in a', 'manner'],
+    options: ['timely', 'time', 'timed', 'timeliness'],
+    correctIndex: 0,
+    explanation: 'Cấu trúc "in a + [Tính từ] + manner/fashion" (theo một cách thức...). "timely" là TÍNH TỪ mang nghĩa "kịp thời, đúng lúc" (dù có đuôi -ly).',
+    ruleFormula: 'in a + ADJECTIVE (-ly: timely, friendly, orderly) + manner / way'
+  },
+  {
+    id: 'avq-2',
+    category: 'adj_verb_forms',
+    level: 'B1',
+    question: '"The executive board was extremely ______ with the financial turnaround achieved in the fourth quarter."',
+    highlightWords: ['was extremely', 'with the financial turnaround'],
+    options: ['satisfying', 'satisfied', 'satisfy', 'satisfaction'],
+    correctIndex: 1,
+    explanation: 'Chủ thể là người ("The executive board" - ban giám đốc) thể hiện CẢM XÚC hài lòng -> Dùng tính từ phân từ đuôi -ED ("satisfied with"). "satisfying" là bản chất làm hài lòng người khác.',
+    ruleFormula: 'S (người) + be + ADJ(-ed: satisfied, interested, surprised) + with / in / at'
+  },
+  {
+    id: 'avq-3',
+    category: 'adj_verb_forms',
+    level: 'B1',
+    question: '"Due to unforeseen software glitches, management decided ______ the product release until next month."',
+    highlightWords: ['decided', 'the product release'],
+    options: ['postponing', 'to postpone', 'postpone', 'postponed'],
+    correctIndex: 1,
+    explanation: 'Động từ "decide" luôn đi cùng TO-INFINITIVE (decide to V: quyết định làm gì trong tương lai) -> Chọn "to postpone".',
+    ruleFormula: 'decide / plan / hope / promise / agree + TO-V'
+  },
+  {
+    id: 'avq-4',
+    category: 'adj_verb_forms',
+    level: 'B2',
+    question: '"All documents ______ in this safety deposit box are strictly confidential and protected by law."',
+    highlightWords: ['All documents', 'in this safety deposit box'],
+    options: ['storing', 'stored', 'store', 'are storing'],
+    correctIndex: 1,
+    explanation: 'Rút gọn mệnh đề quan hệ dạng BỊ ĐỘNG: "All documents [which are] stored in this box..." -> Bỏ đại từ quan hệ và to be, giữ lại V3/ed ("stored"). Dấu hiệu: phía sau có giới từ "in".',
+    ruleFormula: 'N (vật bị tác động) + V3/ED (stored, manufactured, held) + Giới từ'
+  },
+  {
+    id: 'avq-5',
+    category: 'adj_verb_forms',
+    level: 'B1',
+    question: '"A number of regional delegates ______ already registered for the international trade summit."',
+    highlightWords: ['A number of regional delegates', 'already registered'],
+    options: ['has', 'have', 'is', 'was'],
+    correctIndex: 1,
+    explanation: 'Quy tắc hòa hợp chủ vị: "A number of + N số nhiều" mang nghĩa "Nhiều đại biểu..." -> Đi với ĐỘNG TỪ SỐ NHIỀU -> Chọn "have". (Khác với "The number of" đi với động từ số ít).',
+    ruleFormula: 'A number of + N(plural) + VERB SỐ NHIỀU (have, are, V-bare)'
+  }
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 5. ADJECTIVE & VERB FORMS RULES & IRREGULAR VERBS
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface IrregularVerbGroup {
+  groupName: string;
+  pattern: string;
+  descriptionVi: string;
+  verbs: {
+    v1: string;
+    v2: string;
+    v3: string;
+    meaningVi: string;
+    exampleEn: string;
+  }[];
+}
+
+export const IRREGULAR_VERBS_CATEGORIZED: IrregularVerbGroup[] = [
+  {
+    groupName: 'Nhóm 1: Ba cột giống hệt nhau (V1 = V2 = V3)',
+    pattern: 'V1 = V2 = V3',
+    descriptionVi: 'Không đổi hình thức ở bất kỳ thì nào, dễ nhớ nhất.',
+    verbs: [
+      { v1: 'cut', v2: 'cut', v3: 'cut', meaningVi: 'cắt, giảm bớt', exampleEn: 'The firm cut operational costs.' },
+      { v1: 'cost', v2: 'cost', v3: 'cost', meaningVi: 'có giá, trị giá', exampleEn: 'The repair cost $500.' },
+      { v1: 'put', v2: 'put', v3: 'put', meaningVi: 'đặt, để', exampleEn: 'She put the file on the desk.' },
+      { v1: 'set', v2: 'set', v3: 'set', meaningVi: 'thiết lập, đặt', exampleEn: 'They set new quarterly targets.' },
+      { v1: 'hit', v2: 'hit', v3: 'hit', meaningVi: 'đạt được, đánh trúng', exampleEn: 'Sales hit a record high.' },
+      { v1: 'spread', v2: 'spread', v3: 'spread', meaningVi: 'lan rộng, phổ biến', exampleEn: 'News spread quickly.' },
+      { v1: 'broadcast', v2: 'broadcast', v3: 'broadcast', meaningVi: 'phát sóng', exampleEn: 'The speech was broadcast live.' },
+    ]
+  },
+  {
+    groupName: 'Nhóm 2: Quá khứ và Phân từ 2 giống nhau (V2 = V3)',
+    pattern: 'V2 = V3 (đuôi -t / -d / -ought / -aught)',
+    descriptionVi: 'V2 và V3 có cùng dạng, thường kết thúc bằng phụ âm -t, -d hoặc nguyên âm đổi.',
+    verbs: [
+      { v1: 'buy', v2: 'bought', v3: 'bought', meaningVi: 'mua', exampleEn: 'We bought new office computers.' },
+      { v1: 'bring', v2: 'brought', v3: 'brought', meaningVi: 'mang lại, mang đến', exampleEn: 'The project brought high profits.' },
+      { v1: 'teach', v2: 'taught', v3: 'taught', meaningVi: 'dạy, đào tạo', exampleEn: 'He taught the interns well.' },
+      { v1: 'catch', v2: 'caught', v3: 'caught', meaningVi: 'bắt kịp, phát hiện', exampleEn: 'The audit caught several errors.' },
+      { v1: 'build', v2: 'built', v3: 'built', meaningVi: 'xây dựng, phát triển', exampleEn: 'They built a loyal client base.' },
+      { v1: 'send', v2: 'sent', v3: 'sent', meaningVi: 'gửi đi', exampleEn: 'The email was sent this morning.' },
+      { v1: 'spend', v2: 'spent', v3: 'spent', meaningVi: 'chi tiêu, dành thời gian', exampleEn: 'She spent two hours on the report.' },
+      { v1: 'lead', v2: 'led', v3: 'led', meaningVi: 'dẫn dắt, lãnh đạo', exampleEn: 'The CEO led the merger smoothly.' },
+      { v1: 'find', v2: 'found', v3: 'found', meaningVi: 'tìm thấy, nhận thấy', exampleEn: 'They found the software intuitive.' },
+      { v1: 'keep', v2: 'kept', v3: 'kept', meaningVi: 'giữ, duy trì', exampleEn: 'All records must be kept confidential.' },
+    ]
+  },
+  {
+    groupName: 'Nhóm 3: Đổi nguyên âm i -> a -> u (V1(i) -> V2(a) -> V3(u))',
+    pattern: 'i -> a -> u',
+    descriptionVi: 'Quy luật biến âm tuần hoàn trong tiếng Anh cổ.',
+    verbs: [
+      { v1: 'begin', v2: 'began', v3: 'begun', meaningVi: 'bắt đầu', exampleEn: 'The conference has begun.' },
+      { v1: 'sing', v2: 'sang', v3: 'sung', meaningVi: 'hát', exampleEn: 'They sang the opening anthem.' },
+      { v1: 'sink', v2: 'sank', v3: 'sunk', meaningVi: 'chìm, giảm sâu', exampleEn: 'Stock prices sank yesterday.' },
+      { v1: 'drink', v2: 'drank', v3: 'drunk', meaningVi: 'uống', exampleEn: 'He drank some fresh water.' },
+      { v1: 'swim', v2: 'swam', v3: 'swum', meaningVi: 'bơi', exampleEn: 'She has swum across the bay.' },
+      { v1: 'ring', v2: 'rang', v3: 'rung', meaningVi: 'rung chuông, gọi điện', exampleEn: 'The telephone rang constantly.' },
+    ]
+  },
+  {
+    groupName: 'Nhóm 4: Phân từ 2 kết thúc bằng đuôi -en / -n (V3 tận cùng -en)',
+    pattern: 'V3 = V1/V2 + (e)n',
+    descriptionVi: 'Dạng V3 luôn có đuôi -en, xuất hiện rất nhiều trong câu bị động & thì hoàn thành.',
+    verbs: [
+      { v1: 'write', v2: 'wrote', v3: 'written', meaningVi: 'viết, soạn thảo', exampleEn: 'A formal letter was written.' },
+      { v1: 'take', v2: 'took', v3: 'taken', meaningVi: 'cầm, nắm, thực hiện', exampleEn: 'Appropriate measures were taken.' },
+      { v1: 'give', v2: 'gave', v3: 'given', meaningVi: 'đưa ra, cung cấp', exampleEn: 'Feedback was given promptly.' },
+      { v1: 'break', v2: 'broke', v3: 'broken', meaningVi: 'làm vỡ, hỏng hóc', exampleEn: 'The printer is broken.' },
+      { v1: 'choose', v2: 'chose', v3: 'chosen', meaningVi: 'lựa chọn', exampleEn: 'She was chosen as team lead.' },
+      { v1: 'drive', v2: 'drove', v3: 'driven', meaningVi: 'lái xe, thúc đẩy', exampleEn: 'Technology has driven economic growth.' },
+      { v1: 'speak', v2: 'spoke', v3: 'spoken', meaningVi: 'nói, phát biểu', exampleEn: 'English is spoken globally.' },
+      { v1: 'see', v2: 'saw', v3: 'seen', meaningVi: 'nhìn thấy, chứng kiến', exampleEn: 'We have seen great improvements.' },
+    ]
+  }
+];
+
+export const ADJ_VERB_RULES_DATA: AdjVerbRule[] = [
+  // 1. Adjective Suffixes
+  {
+    id: 'adj-suf',
+    category: 'adj_suffixes',
+    title: 'Hậu Tố Nhận Diện Tính Từ (Adjective Suffixes)',
+    description: 'Tính từ thường được hình thành bằng cách thêm hậu tố đặc trưng vào sau Danh từ hoặc Động từ gốc.',
+    badge: '100% Gặp Trong TOEIC',
+    color: 'from-blue-600 to-indigo-600',
+    formula: 'Noun / Verb + [ -ful, -less, -ive, -able, -al, -ous, -ic, -ent, -ant, -ish, -y ] = Adjective',
+    items: [
+      {
+        label: 'Đuôi -ful (đầy tính chất) & -less (thiếu/không có)',
+        rule: 'Thường ghép sau danh từ chỉ tính chất hoặc hành động.',
+        examples: [
+          'helpful (hữu ích) ≠ helpless (bất lực)',
+          'careful (cẩn thận) ≠ careless (bất cẩn)',
+          'painful (đau đớn) ≠ painless (không đau)',
+          'successful (thành công)',
+          'hopeless (vô vọng)'
+        ],
+        examTip: 'Đuôi -less mang nghĩa phủ định: "harmless" (vô hại), "countless" (vô số không đếm xuể).'
+      },
+      {
+        label: 'Đuôi -ive & -able / -ible (có khả năng, có tính chất)',
+        rule: 'Thường xuất phát từ động từ: create -> creative; afford -> affordable.',
+        examples: [
+          'creative (sáng tạo), productive (năng suất), attractive (hấp dẫn), competitive (cạnh tranh)',
+          'affordable (vừa túi tiền), reliable (đáng tin cậy), flexible (linh hoạt), accessible (dễ tiếp cận)',
+          'responsible (chịu trách nhiệm), eligible (đủ điều kiện)'
+        ],
+        examTip: '"affordable prices" (giá cả phải chăng), "eligible for promotion" (đủ điều kiện thăng chức) là cụm kinh điển trong Part 5!'
+      },
+      {
+        label: 'Đuôi -al, -ous, -ic, -ent / -ant',
+        rule: 'Chiếm tỷ lệ lớn trong từ vựng học thuật và thương mại.',
+        examples: [
+          '-al: professional (chuyên nghiệp), financial (tài chính), regional (khu vực), national (quốc gia)',
+          '-ous: famous (nổi tiếng), continuous (liên tục), ambitious (hoài bão), dangerous (nguy hiểm)',
+          '-ic: strategic (chiến lược), specific (cụ thể), realistic (thực tế)',
+          '-ent / -ant: confident (tự tin), convenient (tiện lợi), significant (đáng kể), hesitant (do dự)'
+        ]
+      },
+      {
+        label: '⚠️ Bẫy đuôi -LY nhưng là TÍNH TỪ (Không phải Trạng từ!)',
+        rule: 'Danh từ + -ly = TÍNH TỪ. Đứng trước danh từ hoặc sau Linking Verb như bình thường.',
+        examples: [
+          'friendly (thân thiện) - a friendly environment',
+          'timely (kịp thời) - in a timely manner',
+          'costly (đắt đỏ, tốn kém) - a costly mistake',
+          'daily / weekly / monthly / yearly (hàng ngày/tuần/tháng/năm)',
+          'orderly (ngăn nắp, trật tự) - an orderly fashion',
+          'lovely (đáng yêu), lively (sống động)'
+        ],
+        examTip: 'Trong đề thi: "in a ______ manner" -> Cần điền TÍNH TỪ, đáp án đúng là "timely" (không phải là trạng từ)!'
+      }
+    ]
+  },
+
+  // 2. Adjective -ed vs -ing
+  {
+    id: 'adj-ed-ing',
+    category: 'adj_ed_ing',
+    title: 'Tính Từ Phân Từ: Đuôi -ED vs Đuôi -ING (Participle Adjectives)',
+    description: 'Quy tắc vàng phân biệt tính từ đuôi -ed (cảm xúc tiếp nhận) và đuôi -ing (bản chất/gây ra cảm xúc).',
+    badge: 'Bẫy Kinh Điển Part 5 & 6',
+    color: 'from-amber-500 to-orange-600',
+    formula: 'Chủ thể CẢM NHẬN cảm xúc -> V-ed | Sự vật/người BẢN CHẤT gây ra cảm xúc -> V-ing',
+    items: [
+      {
+        label: 'Tính từ đuôi -ED: Cảm xúc, trạng thái tiếp nhận tác động',
+        rule: 'Dùng khi chủ thể (thường là con người) trải nghiệm, bị tác động hoặc cảm thấy thế nào.',
+        examples: [
+          'The manager was satisfied with our quarterly report. (Vị giám đốc cảm thấy hài lòng)',
+          'I am interested in learning AI technology. (Tôi cảm thấy thích thú/hứng thú)',
+          'The employees were exhausted after the presentation. (Các nhân viên cảm thấy kiệt sức)',
+          'He felt disappointed by the project delay. (Anh ấy cảm thấy thất vọng)'
+        ],
+        note: 'Cấu trúc thường gặp: be + interested in, satisfied with, surprised at/by, bored with, worried about...'
+      },
+      {
+        label: 'Tính từ đuôi -ING: Bản chất, đặc điểm gây ra cảm xúc hoặc tính chất chủ động',
+        rule: 'Dùng để mô tả tính chất của đồ vật, sự việc hoặc con người tạo ra tác động/cảm xúc đó cho người khác.',
+        examples: [
+          'This is an interesting marketing strategy. (Đây là một chiến lược marketing thú vị - bản chất cuốn hút)',
+          'Working 14 hours a day is exhausting. (Làm việc 14 tiếng/ngày là việc làm kiệt sức - tính chất gây kiệt sức)',
+          'Our company faces demanding clients. (Công ty chúng tôi đối mặt với những khách hàng khó tính/đòi hỏi cao)',
+          'The product launch was a surprising success. (Đợt ra mắt là một thành công đáng kinh ngạc)'
+        ]
+      },
+      {
+        label: 'Cặp từ dễ nhầm lẫn trong môi trường doanh nghiệp',
+        rule: 'Phân biệt theo ngữ cảnh danh từ đứng sau hoặc chủ ngữ:',
+        examples: [
+          'an overwhelming workload (khối lượng việc gây ngợp) vs overwhelmed workers (công nhân bị ngợp)',
+          'a rewarding experience (trải nghiệm bổ ích) vs satisfied customers (khách hàng hài lòng)',
+          'challenging tasks (nhiệm vụ đầy thách thức) vs challenged team (đội ngũ gặp thử thách)',
+          'convincing evidence (bằng chứng thuyết phục) vs convinced investors (nhà đầu tư đã bị thuyết phục)'
+        ]
+      }
+    ]
+  },
+
+  // 3. Adjective OSASCOMP Order
+  {
+    id: 'adj-osascomp',
+    category: 'adj_osascomp',
+    title: 'Trật Tự Tính Từ Đứng Trước Danh Từ (Quy Tắc O-S-A-S-C-O-M-P)',
+    description: 'Khi có từ 2 tính từ trở lên cùng bổ nghĩa cho một Danh từ, chúng phải tuân theo đúng trật tự chuẩn quốc tế.',
+    badge: 'Quy Tắc Vàng OSASCOMP',
+    color: 'from-purple-600 to-indigo-600',
+    formula: 'Opinion -> Size -> Age -> Shape -> Color -> Origin -> Material -> Purpose + NOUN',
+    items: [
+      {
+        label: 'Giải mã từng chữ cái trong OSASCOMP',
+        rule: 'Ghi nhớ thứ tự từ ngoài vào trong sát danh từ chính:',
+        examples: [
+          '1. [O]pinion (Ý kiến, đánh giá): beautiful, wonderful, elegant, delicious, ugly, useful',
+          '2. [S]ize (Kích thước): big, small, large, huge, tiny, tall, short',
+          '3. [A]ge (Độ tuổi, độ mới/cũ): old, new, modern, ancient, young',
+          '4. [S]hape (Hình dạng): round, square, rectangular, oval, triangular',
+          '5. [C]olor (Màu sắc): red, blue, green, black, white, golden',
+          '6. [O]rigin (Xuất xứ, nguồn gốc): Vietnamese, Japanese, European, American',
+          '7. [M]aterial (Chất liệu): leather, wooden, plastic, cotton, silk, metal',
+          '8. [P]urpose (Mục đích sử dụng): sleeping (bag), conference (room), running (shoes)'
+        ]
+      },
+      {
+        label: 'Ví dụ ghép câu hoàn chỉnh',
+        rule: 'Áp dụng trật tự ghép:',
+        examples: [
+          'a luxurious (O) big (S) modern (A) European (O) leather (M) executive (P) chair',
+          'a lovely (O) small (S) round (S) wooden (M) coffee (P) table',
+          'an elegant (O) new (A) Italian (O) silk (M) wedding (P) suit'
+        ],
+        examTip: 'Đề thi thường chỉ cho 2-3 tính từ, bạn chỉ cần nhớ: [Đánh giá chung (Opinion)] luôn đứng trước [Chất liệu (Material)] và [Xuất xứ (Origin)]!'
+      }
+    ]
+  },
+
+  // 4. Adjective Comparisons
+  {
+    id: 'adj-comp',
+    category: 'adj_comparison',
+    title: 'Cấp So Sánh Của Tính Từ (Equal, Comparative, Superlative)',
+    description: 'Toàn bộ quy tắc tính từ ngắn, tính từ dài, so sánh bằng, so sánh hơn, so sánh nhất và các trường hợp bất quy tắc.',
+    badge: 'So Sánh & Biến Đổi',
+    color: 'from-teal-600 to-emerald-600',
+    formula: 'So sánh hơn: Adj-er than / More Adj than | So sánh nhất: The Adj-est / The most Adj',
+    items: [
+      {
+        label: 'Tính từ ngắn (1 âm tiết, hoặc 2 âm tiết đuôi -y, -le, -er, -ow)',
+        rule: 'Thêm đuôi -er (so sánh hơn) và the + -est (so sánh nhất). Nếu tận cùng là -y đổi thành -ier / -iest.',
+        examples: [
+          'fast -> faster than -> the fastest',
+          'simple -> simpler than -> the simplest',
+          'happy -> happier than -> the happiest',
+          'narrow -> narrower than -> the narrowest',
+          'big -> bigger than -> the biggest (gấp đôi phụ âm cuối)'
+        ]
+      },
+      {
+        label: 'Tính từ dài (2 âm tiết trở lên)',
+        rule: 'Dùng more / less + Adj (so sánh hơn) và the most / the least + Adj (so sánh nhất).',
+        examples: [
+          'expensive -> more expensive than -> the most expensive',
+          'efficient -> more efficient than -> the most efficient',
+          'complicated -> less complicated than -> the least complicated'
+        ]
+      },
+      {
+        label: 'Bảng Tính Từ Bất Quy Tắc (Bắt buộc học thuộc)',
+        rule: 'Không theo quy tắc thêm đuôi -er hay -est:',
+        examples: [
+          'good / well -> BETTER than -> the BEST',
+          'bad / badly -> WORSE than -> the WORST',
+          'far -> FARTHER (khoảng cách) / FURTHER (mức độ sâu xa) -> the FARTHEST / FURTHEST',
+          'little -> LESS than -> the LEAST',
+          'many / much -> MORE than -> the MOST'
+        ],
+        examTip: 'Cụm thi TOEIC: "For further information, please contact..." (Để biết thêm thông tin chi tiết...).'
+      }
+    ]
+  },
+
+  // 5. Verb Suffixes & Prefixes
+  {
+    id: 'verb-suf',
+    category: 'verb_suffixes',
+    title: 'Hậu Tố & Tiền Tố Nhận Diện Động Từ (Verb Suffixes & Prefixes)',
+    description: 'Cách nhận biết ngay một từ là Động từ trong câu dựa vào các đuôi hoặc tiền tố đặc trưng.',
+    badge: 'Nhận Diện Động Từ',
+    color: 'from-rose-600 to-pink-600',
+    formula: 'Noun / Adj + [ -ize, -ate, -en, -ify ] HOẶC [ en- / em- ] + Noun/Adj = Verb',
+    items: [
+      {
+        label: 'Đuôi -ize / -ise & -ate (làm cho trở nên, thực hiện)',
+        rule: 'Biến danh từ/tính từ thành hành động có định hướng.',
+        examples: [
+          '-ize/-ise: optimize (tối ưu hóa), prioritize (ưu tiên), modernize (hiện đại hóa), finalize (hoàn tất), customize (tùy biến)',
+          '-ate: activate (kích hoạt), motivate (tạo động lực), communicate (giao tiếp), evaluate (đánh giá), generate (tạo ra)'
+        ]
+      },
+      {
+        label: 'Đuôi -en & -ify (làm tăng thêm, biến thành)',
+        rule: 'Thường ghép sau tính từ chỉ kích thước/tính chất:',
+        examples: [
+          '-en: widen (mở rộng), shorten (rút ngắn), strengthen (tăng cường), brighten (làm sáng), darken (làm tối)',
+          '-ify: simplify (đơn giản hóa), identify (nhận diện), modify (sửa đổi), notify (thông báo), verify (xác thực)'
+        ]
+      },
+      {
+        label: 'Tiền tố en- / em- đứng trước',
+        rule: 'Đặt trước danh từ hoặc tính từ để tạo thành động từ mang nghĩa "trao quyền/làm cho có":',
+        examples: [
+          'enable (cho phép, kích hoạt) - from able',
+          'enrich (làm giàu, phong phú thêm) - from rich',
+          'empower (trao quyền) - from power',
+          'enforce (thực thi) - from force',
+          'encourage (khuyến khích) - from courage'
+        ]
+      }
+    ]
+  },
+
+  // 6. Subject-Verb Agreement Rules
+  {
+    id: 'verb-sv-agree',
+    category: 'verb_sv_agreement',
+    title: 'Quy Tắc Hòa Hợp Chủ Ngữ & Động Từ (Subject-Verb Agreement)',
+    description: 'Chủ ngữ số ít đi với động từ số ít; Chủ ngữ số nhiều đi với động từ số nhiều, cùng các trường hợp bẫy đặc biệt.',
+    badge: 'Chiếm 30% Đề Thi Ngữ Pháp',
+    color: 'from-red-600 to-orange-600',
+    formula: 'Singular S -> V-s/es / is / was / has | Plural S -> V-bare / are / were / have',
+    items: [
+      {
+        label: 'Quy tắc cơ bản & Quy tắc thêm -s/-es',
+        rule: 'Với động từ chia ở Hiện tại đơn ngôi thứ 3 số ít:',
+        examples: [
+          'Tận cùng là -o, -s, -x, -ch, -sh, -z -> thêm -es: passes, watches, fixes, goes, washes',
+          'Phụ âm + y -> đổi y thành -ies: study -> studies, fly -> flies, apply -> applies',
+          'Nguyên âm (u, e, o, a, i) + y -> giữ nguyên y thêm -s: plays, enjoys, buys',
+          'Chủ ngữ là V-ing hoặc To-V -> LUÔN chia động từ SỐ ÍT: "Upgrading the servers REQUIRES downtime."'
+        ]
+      },
+      {
+        label: 'A number of vs The number of (Bẫy kinh điển)',
+        rule: 'Hai cấu trúc đi cùng danh từ số nhiều nhưng chia động từ hoàn toàn trái ngược:',
+        examples: [
+          'A number of + N(số nhiều) + V(SỐ NHIỀU) -> Mang nghĩa "Nhiều/Một số": "A number of applicants HAVE submitted their CVs."',
+          'The number of + N(số nhiều) + V(SỐ ÍT) -> Mang nghĩa "Số lượng của...": "The number of attendees HAS increased significantly."'
+        ],
+        examTip: 'Mẹo nhớ: "A" = Nhiều (chia số nhiều) | "The" = Một con số xác định (chia số ít)!'
+      },
+      {
+        label: 'Chủ ngữ nối bằng cụm từ xen giữa (Chủ ngữ giả / Modifier)',
+        rule: 'Động từ chỉ chia theo Danh từ chính đứng đầu, BỎ QUA toàn bộ cụm xen giữa:',
+        examples: [
+          'S1 + along with / together with / as well as / accompanied by + S2 -> Chia theo S1',
+          'Ví dụ: "The CEO, along with his five assistants, IS attending the summit." (Chia theo CEO)',
+          'Either S1 or S2 / Neither S1 nor S2 / Not only S1 but also S2 -> Chia theo CHỦ NGỮ GẦN ĐỘNG TỪ NHẤT (S2)',
+          'Ví dụ: "Neither the director nor the employees WERE aware of the policy change." (Chia theo employees)'
+        ]
+      }
+    ]
+  },
+
+  // 7. Verb Patterns: To-V, V-ing, Bare V
+  {
+    id: 'verb-patterns',
+    category: 'verb_patterns',
+    title: 'Dạng Động Từ Sau Động Từ: To-V, V-ing hay V nguyên mẫu?',
+    description: 'Bảng phân loại toàn bộ các động từ bắt buộc đi với To-Infinitive, Gerund (V-ing), Bare-Infinitive và các từ đổi nghĩa.',
+    badge: 'Cấu Trúc Động Từ Part 5',
+    color: 'from-violet-600 to-purple-700',
+    formula: 'V1 + TO-V | V1 + V-ING | V1 + O + BARE V',
+    items: [
+      {
+        label: 'Nhóm 1: Động từ theo sau là TO-V (Kế hoạch, mong muốn, quyết định tương lai)',
+        rule: 'Diễn tả ý định, sự sẵn sàng hoặc cam kết làm gì đó trong tương lai.',
+        examples: [
+          'decide to V (quyết định), plan to V (lên kế hoạch), agree to V (đồng ý)',
+          'hope / expect to V (hy vọng/kỳ vọng), promise to V (hứa), offer to V (đề nghị)',
+          'refuse to V (từ chối), afford to V (có đủ khả năng chi trả), manage to V (xoay xở để)',
+          'hesitate to V (do dự), tend to V (có xu hướng), attempt to V (nỗ lực)'
+        ],
+        examTip: '"Do not hesitate to contact us" (Đừng ngần ngại liên hệ chúng tôi) - Cụm xuất hiện 99% trong email TOEIC!'
+      },
+      {
+        label: 'Nhóm 2: Động từ theo sau là V-ING (Gerund - Thói quen, trải nghiệm, việc đã/đang diễn ra)',
+        rule: 'Các hành động liên quan đến việc thưởng thức, hoàn thành, trì hoãn hoặc né tránh.',
+        examples: [
+          'enjoy V-ing (thích thú), avoid V-ing (tránh né), finish V-ing (hoàn tất)',
+          'consider V-ing (cân nhắc), suggest / recommend V-ing (đề xuất/gợi ý)',
+          'postpone / delay V-ing (trì hoãn), mind V-ing (phiền lòng), practice V-ing (luyện tập)',
+          'admit V-ing (thừa nhận), deny V-ing (phủ nhận), look forward to V-ing (trông đợi)'
+        ]
+      },
+      {
+        label: 'Nhóm 3: Động từ Sai Khiến & Giác Quan + O + BARE V (V nguyên mẫu không to)',
+        rule: 'Bắt buộc dùng V nguyên thể không "to" sau Make, Let, Have và Help (có thể dùng to-V hoặc bare):',
+        examples: [
+          'make + O + V (bắt buộc ai làm gì): "The manager made the staff revise the draft."',
+          'let + O + V (cho phép ai làm gì): "Please let me know your decision."',
+          'have + O + V (nhờ/thuê ai làm gì): "We had the technician inspect the system."',
+          'help + O + (to) V (giúp ai làm gì): "The workshop helped participants improve their skills."'
+        ]
+      },
+      {
+        label: 'Nhóm 4: Động từ đổi nghĩa khi đi với To-V vs V-ing',
+        rule: 'Nghĩa thay đổi hoàn toàn tùy thuộc vào dạng động từ phía sau:',
+        examples: [
+          'remember / forget + TO V: Nhớ/quên PHẢI LÀM GÌ (chưa làm) -> "Remember to lock the door."',
+          'remember / forget + V-ING: Nhớ/quên ĐÃ LÀM GÌ TRONG QUÁ KHỨ -> "I remember locking the door."',
+          'stop + TO V: Dừng lại ĐỂ LÀM MỘT VIỆC KHÁC -> "He stopped to answer the phone."',
+          'stop + V-ING: DỪNG HẲN HÀNH ĐỘNG ĐANG LÀM -> "He stopped smoking last year."',
+          'try + TO V: CỐ GẮNG làm gì -> "She tried to meet the deadline."',
+          'try + V-ING: THỬ NGHIỆM làm gì -> "Try restarting your computer."'
+        ]
+      }
+    ]
+  },
+
+  // 8. Passive & Reduced Relative Clauses
+  {
+    id: 'verb-passive-reduced',
+    category: 'verb_passive_reduced',
+    title: 'Câu Bị Động & Rút Gọn Mệnh Đề Quan Hệ (Participle Clauses)',
+    description: 'Chủ động dùng V-ing; Bị động dùng V3/ed. Cách làm bài rút gọn mệnh đề trong vòng 3 giây.',
+    badge: 'Điểm 800+ TOEIC',
+    color: 'from-emerald-600 to-teal-700',
+    formula: 'Chủ động rút gọn: N + V-ING + O | Bị động rút gọn: N + V3/ED + (by O / Giới từ)',
+    items: [
+      {
+        label: 'Rút gọn Mệnh đề quan hệ CHỦ ĐỘNG -> Dùng V-ING',
+        rule: 'Khi danh từ thực hiện hành động, lược bỏ đại từ quan hệ và to be, chuyển V thành V-ing:',
+        examples: [
+          'Câu gốc: The staff who are working on the project need extra time.',
+          'Rút gọn: The staff WORKING on the project need extra time.',
+          'Dấu hiệu: Phía sau chỗ trống CÓ TÂN NGỮ (Danh từ nhận tác động) -> Chọn V-ing!'
+        ]
+      },
+      {
+        label: 'Rút gọn Mệnh đề quan hệ BỊ ĐỘNG -> Dùng V3/ED',
+        rule: 'Khi danh từ nhận tác động, lược bỏ đại từ quan hệ và to be, giữ lại V3/ed:',
+        examples: [
+          'Câu gốc: All products that are manufactured in this facility undergo strict testing.',
+          'Rút gọn: All products MANUFACTURED in this facility undergo strict testing.',
+          'Dấu hiệu: Phía sau chỗ trống KHÔNG CÓ TÂN NGỮ, thường đi liền với giới từ (by, in, at, with...) -> Chọn V3/ed!'
+        ],
+        examTip: 'Công thức 3 giây: Nếu phía sau chỗ trống là GIỚI TỪ (in, by, for, under) -> 95% chọn V3/ed!'
+      }
+    ]
   }
 ];
