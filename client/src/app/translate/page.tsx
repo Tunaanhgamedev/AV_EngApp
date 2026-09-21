@@ -125,11 +125,36 @@ const CACHE_KEY = 'engbot_translate_cache';
 const MAX_CACHE_ENTRIES = 500;
 const AUTO_TRANSLATE_DELAY = 400;
 
+function isPoisonedTranslation(text: string): boolean {
+  if (!text) return false;
+  const upper = text.toUpperCase();
+  return upper.includes('MYMEMORY WARNING')
+    || upper.includes('YOU USED ALL AVAILABLE')
+    || upper.includes('NEXT AVAILABLE IN')
+    || upper.includes('HTTPS://MYMEMORY')
+    || upper.includes('ALL TRANSLATION SERVICES FAILED')
+    || upper.includes('RATE LIMIT');
+}
+
 function loadLocalCache(): Record<string, any> {
   if (typeof window === 'undefined') return {};
   try {
     const raw = localStorage.getItem(CACHE_KEY);
-    return raw ? JSON.parse(raw) : {};
+    if (!raw) return {};
+    const cache = JSON.parse(raw);
+    // Auto-clean poisoned entries on load
+    let cleaned = false;
+    for (const key of Object.keys(cache)) {
+      if (isPoisonedTranslation(cache[key]?.translation)) {
+        delete cache[key];
+        cleaned = true;
+      }
+    }
+    if (cleaned) {
+      localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
+      console.log('[Translate] 🧹 Cleaned poisoned local cache entries');
+    }
+    return cache;
   } catch { return {}; }
 }
 
@@ -216,14 +241,19 @@ export default function TranslatePage() {
     const sortedSkillsStr = (trainedSkills || []).sort().join(',');
     const cacheKey = `${sLang}-${tLang}-${text}-${sortedSkillsStr}`;
     
-    // If cache has it, load instantly
+    // If cache has it and it's clean, load instantly
     if (cacheRef.current[cacheKey]) {
-      setTranslatedText(cacheRef.current[cacheKey].translation);
-      setWordInsight(cacheRef.current[cacheKey].insight || null);
-      setFromCache(true);
-      lastTranslatedRef.current = text;
-      lastTranslatedModeRef.current = mode;
-      return;
+      if (isPoisonedTranslation(cacheRef.current[cacheKey].translation)) {
+        delete cacheRef.current[cacheKey];
+        saveLocalCache(cacheRef.current);
+      } else {
+        setTranslatedText(cacheRef.current[cacheKey].translation);
+        setWordInsight(cacheRef.current[cacheKey].insight || null);
+        setFromCache(true);
+        lastTranslatedRef.current = text;
+        lastTranslatedModeRef.current = mode;
+        return;
+      }
     }
 
     // Abort previous in-flight request
@@ -251,37 +281,45 @@ export default function TranslatePage() {
           setTranslatedText(data.error || 'Dịch thất bại');
           if (res.status === 429) setCooldown(30);
         }
-      } else {
-        setTranslatedText(data.translation);
-        lastTranslatedRef.current = text;
-        lastTranslatedModeRef.current = mode;
-        if (data.cached) setFromCache(true);
-
-        // Fetch Word Insights ONLY in deep mode and ONLY for English source
-        let insight = null;
-        if (mode === 'deep') {
-          const wordCount = text.split(/\s+/).length;
-          if (wordCount <= 3 && sLang === 'English') {
-            try {
-              const insightRes = await fetch(`${API_BASE}/ai/word-insight`, {
-                method: 'POST', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ word: text }),
-                signal: controller.signal,
-              });
-              insight = await insightRes.json();
-              setWordInsight(insight);
-            } catch { /* ignore */ }
+       } else {
+        const translationResult = data.translation || '';
+        // Client-side safety: reject poisoned translations from server
+        if (isPoisonedTranslation(translationResult)) {
+          if (mode === 'deep') {
+            setTranslatedText('⚠️ Dịch vụ dịch thuật tạm quá tải. Vui lòng thử lại sau ít phút.');
           }
-        }
+        } else {
+          setTranslatedText(translationResult);
+          lastTranslatedRef.current = text;
+          lastTranslatedModeRef.current = mode;
+          if (data.cached) setFromCache(true);
 
-        // Save to persistent local cache if we have a valid translation
-        if (data.translation) {
-          cacheRef.current[cacheKey] = { 
-            translation: data.translation, 
-            insight: mode === 'deep' ? insight : (cacheRef.current[cacheKey]?.insight || null), 
-            _ts: Date.now() 
-          };
-          saveLocalCache(cacheRef.current);
+          // Fetch Word Insights ONLY in deep mode and ONLY for English source
+          let insight = null;
+          if (mode === 'deep') {
+            const wordCount = text.split(/\s+/).length;
+            if (wordCount <= 3 && sLang === 'English') {
+              try {
+                const insightRes = await fetch(`${API_BASE}/ai/word-insight`, {
+                  method: 'POST', headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ word: text }),
+                  signal: controller.signal,
+                });
+                insight = await insightRes.json();
+                setWordInsight(insight);
+              } catch { /* ignore */ }
+            }
+          }
+
+          // Save to persistent local cache if we have a valid translation
+          if (translationResult) {
+            cacheRef.current[cacheKey] = { 
+              translation: translationResult, 
+              insight: mode === 'deep' ? insight : (cacheRef.current[cacheKey]?.insight || null), 
+              _ts: Date.now() 
+            };
+            saveLocalCache(cacheRef.current);
+          }
         }
       }
     } catch (err: any) {
@@ -310,13 +348,18 @@ export default function TranslatePage() {
     const sortedSkillsStr = (trainedSkills || []).sort().join(',');
     const cacheKey = `${sourceLang}-${targetLang}-${text}-${sortedSkillsStr}`;
     if (cacheRef.current[cacheKey]) {
-      setTranslatedText(cacheRef.current[cacheKey].translation);
-      setWordInsight(cacheRef.current[cacheKey].insight || null);
-      setFromCache(true);
-      lastTranslatedRef.current = text;
-      lastTranslatedModeRef.current = 'deep';
-      setIsTyping(false);
-      return;
+      if (isPoisonedTranslation(cacheRef.current[cacheKey].translation)) {
+        delete cacheRef.current[cacheKey];
+        saveLocalCache(cacheRef.current);
+      } else {
+        setTranslatedText(cacheRef.current[cacheKey].translation);
+        setWordInsight(cacheRef.current[cacheKey].insight || null);
+        setFromCache(true);
+        lastTranslatedRef.current = text;
+        lastTranslatedModeRef.current = 'deep';
+        setIsTyping(false);
+        return;
+      }
     }
 
     // ── Fast mode timer ──

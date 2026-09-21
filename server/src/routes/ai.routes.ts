@@ -22,7 +22,13 @@ const generateWithRetry = async (model: any, prompt: string, retries = 1) => {
 
 // Extremely Robust Fallback Model Chain to handle any rate limits, permissions or region-blocks!
 const generateContentWithModelFallback = async (prompt: string, retries = 1): Promise<string> => {
-  const models = ["gemini-flash-latest", "gemini-2.0-flash", "gemini-1.5-flash", "gemini-pro"];
+  const models = [
+    "gemini-2.5-flash",
+    "gemini-2.0-flash",
+    "gemini-flash-latest",
+    "gemini-1.5-flash",
+    "gemini-pro"
+  ];
   let lastError = null;
   
   for (const modelName of models) {
@@ -217,18 +223,36 @@ router.post('/translate', async (req, res) => {
       });
 
       if (cached) {
-        console.log(`[Translate] ⚡ Cache HIT for "${cleanText.substring(0, 40)}..." (hits: ${cached.hitCount + 1})`);
-        // Increment hit count in background (fire-and-forget)
-        prisma.translationCache.update({
-          where: { id: cached.id },
-          data: { hitCount: { increment: 1 } }
-        }).catch(() => {});
+        // Validate cached translation is not a poisoned/error entry
+        const cachedUpper = (cached.translation || '').toUpperCase();
+        const isPoisoned = cachedUpper.includes('MYMEMORY WARNING')
+          || cachedUpper.includes('YOU USED ALL AVAILABLE')
+          || cachedUpper.includes('PLEASE GET IN TOUCH')
+          || cachedUpper.includes('NEXT AVAILABLE IN')
+          || cachedUpper.includes('HTTPS://MYMEMORY')
+          || cachedUpper.includes('ALL TRANSLATION SERVICES FAILED')
+          || cachedUpper.includes('RATE LIMIT')
+          || cachedUpper.includes('SERVER CONFIGURATION ERROR');
 
-        return res.json({
-          translation: cached.translation,
-          provider: cached.provider,
-          cached: true
-        });
+        if (isPoisoned) {
+          console.warn(`[Translate] 🗑️ Poisoned cache entry detected for "${cleanText.substring(0, 40)}...", deleting...`);
+          // Delete the bad cache entry in background
+          prisma.translationCache.delete({ where: { id: cached.id } }).catch(() => {});
+          // Fall through to live translation
+        } else {
+          console.log(`[Translate] ⚡ Cache HIT for "${cleanText.substring(0, 40)}..." (hits: ${cached.hitCount + 1})`);
+          // Increment hit count in background (fire-and-forget)
+          prisma.translationCache.update({
+            where: { id: cached.id },
+            data: { hitCount: { increment: 1 } }
+          }).catch(() => {});
+
+          return res.json({
+            translation: cached.translation,
+            provider: cached.provider,
+            cached: true
+          });
+        }
       }
     } catch (dbErr: any) {
       console.warn('[Translate] DB cache lookup failed, proceeding to AI:', dbErr.message);
@@ -410,7 +434,16 @@ Instructions:
   }
 
   // ── Step 3: Save to DB Cache (fire-and-forget) (Bypass if custom trained skills are active to avoid pollution) ──
-  if (!hasTrainedSkills) {
+  // Guard: never cache translations that look like error messages
+  const translationUpper = translation.toUpperCase();
+  const isBadTranslation = translationUpper.includes('MYMEMORY WARNING')
+    || translationUpper.includes('YOU USED ALL AVAILABLE')
+    || translationUpper.includes('NEXT AVAILABLE IN')
+    || translationUpper.includes('HTTPS://MYMEMORY')
+    || translationUpper.includes('ALL TRANSLATION SERVICES FAILED')
+    || translationUpper.includes('RATE LIMIT');
+
+  if (!hasTrainedSkills && !isBadTranslation) {
     prisma.translationCache.upsert({
       where: {
         sourceText_sourceLang_targetLang: {
@@ -439,6 +472,44 @@ Instructions:
   }
 
   return res.json({ translation, provider, cached: false });
+});
+
+// ── Auto-cleanup poisoned cache entries on server start ──
+(async () => {
+  try {
+    const deleted = await prisma.$executeRaw`
+      DELETE FROM "TranslationCache" 
+      WHERE UPPER(translation) LIKE '%MYMEMORY WARNING%'
+         OR UPPER(translation) LIKE '%YOU USED ALL AVAILABLE%'
+         OR UPPER(translation) LIKE '%NEXT AVAILABLE IN%'
+         OR UPPER(translation) LIKE '%HTTPS://MYMEMORY%'
+         OR UPPER(translation) LIKE '%ALL TRANSLATION SERVICES FAILED%'
+         OR UPPER(translation) LIKE '%RATE LIMIT%'
+    `;
+    if (deleted > 0) {
+      console.log(`[Translate] 🧹 Auto-cleaned ${deleted} poisoned cache entries on startup`);
+    }
+  } catch (err: any) {
+    console.warn('[Translate] Auto-cleanup skipped:', err.message);
+  }
+})();
+
+// Manually trigger cache cleanup (admin endpoint)
+router.delete('/translate-cache/cleanup', async (_req, res) => {
+  try {
+    const deleted = await prisma.$executeRaw`
+      DELETE FROM "TranslationCache" 
+      WHERE UPPER(translation) LIKE '%MYMEMORY WARNING%'
+         OR UPPER(translation) LIKE '%YOU USED ALL AVAILABLE%'
+         OR UPPER(translation) LIKE '%NEXT AVAILABLE IN%'
+         OR UPPER(translation) LIKE '%HTTPS://MYMEMORY%'
+         OR UPPER(translation) LIKE '%ALL TRANSLATION SERVICES FAILED%'
+         OR UPPER(translation) LIKE '%RATE LIMIT%'
+    `;
+    res.json({ cleaned: deleted, message: `Deleted ${deleted} poisoned cache entries` });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // AI Translation Explanation & Pedagogical Breakdown
