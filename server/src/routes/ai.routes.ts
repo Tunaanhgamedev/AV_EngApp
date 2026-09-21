@@ -246,7 +246,7 @@ router.post('/translate', async (req, res) => {
       const sLang = targetLang === 'Vietnamese' ? 'en' : 'vi';
       const googleUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sLang}&tl=${tLang}&dt=t&q=${encodeURIComponent(cleanText)}`;
       
-      const gRes = await fetch(googleUrl);
+      const gRes = await fetch(googleUrl, { signal: AbortSignal.timeout(5000) });
       const gData = await gRes.json();
       if (gData && gData[0] && Array.isArray(gData[0])) {
         translation = gData[0].map((item: any) => (item && item[0] ? item[0] : '')).join('');
@@ -254,6 +254,28 @@ router.post('/translate', async (req, res) => {
       }
     } catch (gError) {
       console.error('[AI] Fast Google Translate fallback failed:', gError);
+    }
+
+    // Fast fallback: MyMemory (if Google blocked on this server)
+    if (!translation) {
+      try {
+        const targetCode = targetLang === 'Vietnamese' ? 'vi' : 'en';
+        const sourceCode = targetLang === 'Vietnamese' ? 'en' : 'vi';
+        const mmUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(cleanText)}&langpair=${sourceCode}|${targetCode}`;
+        const mmRes = await fetch(mmUrl, { signal: AbortSignal.timeout(5000) });
+        const mmData = await mmRes.json();
+        const mmText = mmData.responseData?.translatedText || '';
+        const isWarning = mmText.toUpperCase().includes('MYMEMORY WARNING')
+          || mmText.toUpperCase().includes('YOU USED ALL AVAILABLE')
+          || mmText.toUpperCase().includes('LIMIT')
+          || (mmData.responseStatus && mmData.responseStatus !== 200);
+        if (mmText && !isWarning) {
+          translation = mmText;
+          provider = 'Fast (MyMemory)';
+        }
+      } catch (mmErr) {
+        console.error('[AI] Fast MyMemory fallback failed:', mmErr);
+      }
     }
   } else {
     // Deep translation mode: try Gemini
@@ -319,7 +341,7 @@ Instructions:
     }
   }
 
-  // Fallback 2: MyMemory
+  // Fallback 2: MyMemory (with warning filter)
   if (!translation) {
     try {
       const targetCode = targetLang === 'Vietnamese' ? 'vi' : 'en';
@@ -327,17 +349,64 @@ Instructions:
       const fallbackUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(cleanText)}&langpair=${sourceCode}|${targetCode}`;
       const fallbackRes = await fetch(fallbackUrl);
       const fallbackData = await fallbackRes.json();
-      if (fallbackData.responseData?.translatedText) {
-        translation = fallbackData.responseData.translatedText;
+      const myMemoryText = fallbackData.responseData?.translatedText || '';
+      // Filter out MyMemory quota warnings that get returned as "translations"
+      const isWarning = myMemoryText.toUpperCase().includes('MYMEMORY WARNING')
+        || myMemoryText.toUpperCase().includes('YOU USED ALL AVAILABLE')
+        || myMemoryText.toUpperCase().includes('PLEASE GET IN TOUCH')
+        || myMemoryText.toUpperCase().includes('LIMIT')
+        || (fallbackData.responseStatus && fallbackData.responseStatus !== 200);
+      if (myMemoryText && !isWarning) {
+        translation = myMemoryText;
         provider = 'Community (Fallback)';
+      } else {
+        console.warn('[AI] MyMemory returned warning/quota message, skipping.');
       }
     } catch (mError) {
       console.error('[AI] MyMemory Failed:', mError);
     }
   }
 
+  // Fallback 3: LibreTranslate (open-source, no API key needed)
   if (!translation) {
-    return res.status(500).json({ error: 'All translation services failed' });
+    try {
+      const tCode = targetLang === 'Vietnamese' ? 'vi' : 'en';
+      const sCode = targetLang === 'Vietnamese' ? 'en' : 'vi';
+      const libreRes = await fetch('https://libretranslate.com/translate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ q: cleanText, source: sCode, target: tCode, format: 'text' })
+      });
+      const libreData = await libreRes.json();
+      if (libreData.translatedText && !libreData.error) {
+        translation = libreData.translatedText;
+        provider = 'Libre (Fallback)';
+        console.log('[AI] Fallback Success: LibreTranslate');
+      }
+    } catch (libreErr) {
+      console.error('[AI] LibreTranslate Failed:', libreErr);
+    }
+  }
+
+  // Fallback 4: Lingva Translate (another open-source mirror, always free)
+  if (!translation) {
+    try {
+      const tCode = targetLang === 'Vietnamese' ? 'vi' : 'en';
+      const sCode = targetLang === 'Vietnamese' ? 'en' : 'vi';
+      const lingvaRes = await fetch(`https://lingva.ml/api/v1/${sCode}/${tCode}/${encodeURIComponent(cleanText)}`);
+      const lingvaData = await lingvaRes.json();
+      if (lingvaData.translation) {
+        translation = lingvaData.translation;
+        provider = 'Lingva (Fallback)';
+        console.log('[AI] Fallback Success: Lingva');
+      }
+    } catch (lingvaErr) {
+      console.error('[AI] Lingva Failed:', lingvaErr);
+    }
+  }
+
+  if (!translation) {
+    return res.status(500).json({ error: 'Tất cả dịch vụ dịch thuật đều đang quá tải. Vui lòng thử lại sau vài phút.' });
   }
 
   // ── Step 3: Save to DB Cache (fire-and-forget) (Bypass if custom trained skills are active to avoid pollution) ──
