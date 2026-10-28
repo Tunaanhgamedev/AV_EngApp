@@ -3,7 +3,7 @@
 # 🌌 Nebula AI English (AV_EngApp)
 
 ### Enterprise-Grade AI-Powered English Learning, Reading Tactics & Exam Preparation Platform
-hetcuu
+
 [![Next.js Version](https://img.shields.io/badge/Next.js-15.0_App_Router-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.4-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![Node.js](https://img.shields.io/badge/Node.js-20.x-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org)
