@@ -17,7 +17,7 @@ import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 
-import { DICTIONARY_TOPICS } from '../page';
+import { DICTIONARY_TOPICS } from '../dictionaryTopics';
 
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 const LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];

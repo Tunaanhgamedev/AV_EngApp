@@ -21,6 +21,7 @@ import { useRouter } from 'next/navigation';
 
 // Memoized Mini Calendar component - only re-renders when date changes
 const MiniCalendar = memo(function MiniCalendar({ ictDate }: { ictDate: Date }) {
+  const dateString = ictDate.toDateString();
   const days = useMemo(() => {
     const year = ictDate.getFullYear();
     const month = ictDate.getMonth();
@@ -54,7 +55,7 @@ const MiniCalendar = memo(function MiniCalendar({ ictDate }: { ictDate: Date }) 
       );
     }
     return daysArr;
-  }, [ictDate.toDateString()]);
+  }, [dateString, ictDate]);
 
   return (
     <div className="space-y-2">

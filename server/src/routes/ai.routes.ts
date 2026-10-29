@@ -475,19 +475,27 @@ Instructions:
 });
 
 // ── Auto-cleanup poisoned cache entries on server start ──
+const POISONED_TRANSLATION_PATTERNS = [
+  'MYMEMORY WARNING',
+  'YOU USED ALL AVAILABLE',
+  'NEXT AVAILABLE IN',
+  'HTTPS://MYMEMORY',
+  'ALL TRANSLATION SERVICES FAILED',
+  'RATE LIMIT',
+  'SERVER CONFIGURATION ERROR'
+];
+
 (async () => {
   try {
-    const deleted = await prisma.$executeRaw`
-      DELETE FROM "TranslationCache" 
-      WHERE UPPER(translation) LIKE '%MYMEMORY WARNING%'
-         OR UPPER(translation) LIKE '%YOU USED ALL AVAILABLE%'
-         OR UPPER(translation) LIKE '%NEXT AVAILABLE IN%'
-         OR UPPER(translation) LIKE '%HTTPS://MYMEMORY%'
-         OR UPPER(translation) LIKE '%ALL TRANSLATION SERVICES FAILED%'
-         OR UPPER(translation) LIKE '%RATE LIMIT%'
-    `;
-    if (deleted > 0) {
-      console.log(`[Translate] 🧹 Auto-cleaned ${deleted} poisoned cache entries on startup`);
+    const result = await prisma.translationCache.deleteMany({
+      where: {
+        OR: POISONED_TRANSLATION_PATTERNS.map(pattern => ({
+          translation: { contains: pattern, mode: 'insensitive' }
+        }))
+      }
+    });
+    if (result.count > 0) {
+      console.log(`[Translate] 🧹 Auto-cleaned ${result.count} poisoned cache entries on startup`);
     }
   } catch (err: any) {
     console.warn('[Translate] Auto-cleanup skipped:', err.message);
@@ -497,16 +505,14 @@ Instructions:
 // Manually trigger cache cleanup (admin endpoint)
 router.delete('/translate-cache/cleanup', async (_req, res) => {
   try {
-    const deleted = await prisma.$executeRaw`
-      DELETE FROM "TranslationCache" 
-      WHERE UPPER(translation) LIKE '%MYMEMORY WARNING%'
-         OR UPPER(translation) LIKE '%YOU USED ALL AVAILABLE%'
-         OR UPPER(translation) LIKE '%NEXT AVAILABLE IN%'
-         OR UPPER(translation) LIKE '%HTTPS://MYMEMORY%'
-         OR UPPER(translation) LIKE '%ALL TRANSLATION SERVICES FAILED%'
-         OR UPPER(translation) LIKE '%RATE LIMIT%'
-    `;
-    res.json({ cleaned: deleted, message: `Deleted ${deleted} poisoned cache entries` });
+    const result = await prisma.translationCache.deleteMany({
+      where: {
+        OR: POISONED_TRANSLATION_PATTERNS.map(pattern => ({
+          translation: { contains: pattern, mode: 'insensitive' }
+        }))
+      }
+    });
+    res.json({ cleaned: result.count, message: `Deleted ${result.count} poisoned cache entries` });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }

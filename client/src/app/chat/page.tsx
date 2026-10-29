@@ -128,7 +128,15 @@ export default function ChatPage() {
   const [isTyping, setIsTyping] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
-  const [savedSessions, setSavedSessions] = useState<{id: string; title: string; date: string; messages: ChatMessage[]}[]>([]);
+  const [savedSessions, setSavedSessions] = useState<{id: string; title: string; date: string; messages: ChatMessage[]}[]>(() => {
+    if (typeof window === 'undefined') return [];
+    try {
+      const saved = localStorage.getItem('engbot_chat_sessions');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const recognitionRef = useRef<any>(null);
@@ -154,14 +162,6 @@ export default function ChatPage() {
     };
     fetchSkills();
   }, [user]);
-
-  // Load saved sessions from localStorage
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem('engbot_chat_sessions');
-      if (saved) setSavedSessions(JSON.parse(saved));
-    } catch {}
-  }, []);
 
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });

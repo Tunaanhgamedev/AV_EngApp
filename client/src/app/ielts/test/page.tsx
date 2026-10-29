@@ -151,7 +151,7 @@ export default function IELTSFullTestPage() {
     return 4.0;
   };
 
-  const handleSubmitTest = async () => {
+  async function handleSubmitTest() {
     if (submitting) return;
     setSubmitting(true);
 
@@ -224,7 +224,7 @@ export default function IELTSFullTestPage() {
 
       // 5. Calculate Overall Band Score (standard IELTS rounding to nearest 0.5)
       const rawAverage = (listeningBand + readingBand + writingBand + speakingBand) / 4;
-      let overallBand = Math.round(rawAverage * 2) / 2;
+      const overallBand = Math.round(rawAverage * 2) / 2;
 
       // 6. Submit to Database History
       const details = {
@@ -260,7 +260,7 @@ export default function IELTSFullTestPage() {
     } finally {
       setSubmitting(false);
     }
-  };
+  }
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);

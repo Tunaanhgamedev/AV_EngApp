@@ -146,7 +146,7 @@ function TOEICFullTestContent() {
     }
   };
 
-  const handleSubmitTest = async () => {
+  async function handleSubmitTest() {
     if (submitting) return;
     setSubmitting(true);
 
@@ -218,7 +218,7 @@ function TOEICFullTestContent() {
     } finally {
       setSubmitting(false);
     }
-  };
+  }
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);

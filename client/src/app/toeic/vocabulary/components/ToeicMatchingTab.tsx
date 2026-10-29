@@ -16,10 +16,6 @@ export default function ToeicMatchingTab({ selectedList }: Props) {
   const [matchTries, setMatchTries] = useState(0);
   const [matchCompleted, setMatchCompleted] = useState(false);
 
-  useEffect(() => {
-    setupMatchingGame(selectedList);
-  }, [selectedList]);
-
   const setupMatchingGame = (list: TOEICList) => {
     setSelectedMatchCard(null);
     setMatchTries(0);
@@ -49,6 +45,10 @@ export default function ToeicMatchingTab({ selectedList }: Props) {
 
     setMatchingCards(cards.sort(() => 0.5 - Math.random()));
   };
+
+  useEffect(() => {
+    setupMatchingGame(selectedList);
+  }, [selectedList]);
 
   const handleMatchCardClick = (card: MatchCard) => {
     if (card.isMatched || card.isSelected) return;

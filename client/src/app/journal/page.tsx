@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useMemo, memo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, memo } from 'react';
 import { 
   PenTool, 
   History, 
@@ -134,11 +134,7 @@ export default function JournalPage() {
     return { avgScore, totalWords, entriesCount: history.length, streak };
   }, [history]);
 
-  useEffect(() => {
-    if (user) fetchHistory();
-  }, [user]);
-
-  const fetchHistory = async () => {
+  const fetchHistory = useCallback(async () => {
     if (!user) return;
     setIsLoadingHistory(true);
     try {
@@ -150,7 +146,11 @@ export default function JournalPage() {
     } finally {
       setIsLoadingHistory(false);
     }
-  };
+  }, [user]);
+
+  useEffect(() => {
+    if (user) fetchHistory();
+  }, [user, fetchHistory]);
 
   const handleAnalyze = async () => {
     if (!entry.trim() || !user) return;

@@ -61,7 +61,7 @@ export function Markdown({ content }: MarkdownProps) {
   };
 
   function parseInline(text: string): React.ReactNode {
-    let currentText = text.trim();
+    const currentText = text.trim();
     const regex = /(\*\*.*?\*\*|`.*?`|\*.*?\*)/g;
     const tokens = currentText.split(regex);
     

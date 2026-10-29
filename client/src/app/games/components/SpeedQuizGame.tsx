@@ -72,13 +72,6 @@ export default function SpeedQuizGame({ dbWords, category, onClose, awardXp, onS
     }
   }, [done, score, awardXp]);
 
-  useEffect(() => {
-    if (done || selected !== null || questions.length === 0) return;
-    if (timeLeft === 0) { handleAnswer(-1); return; }
-    const t = setTimeout(() => setTimeLeft(p => p - 1), 1000);
-    return () => clearTimeout(t);
-  }, [timeLeft, done, selected, questions]);
-
   const handleAnswer = (idx: number) => {
     if (selected !== null) return;
     setSelected(idx);
@@ -95,6 +88,13 @@ export default function SpeedQuizGame({ dbWords, category, onClose, awardXp, onS
       }
     }, 1200);
   };
+
+  useEffect(() => {
+    if (done || selected !== null || questions.length === 0) return;
+    if (timeLeft === 0) { handleAnswer(-1); return; }
+    const t = setTimeout(() => setTimeLeft(p => p - 1), 1000);
+    return () => clearTimeout(t);
+  }, [timeLeft, done, selected, questions]);
 
   const q = questions[qIdx];
   const pct = (timeLeft / 15) * 100;

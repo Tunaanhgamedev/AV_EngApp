@@ -24,103 +24,10 @@ import { searchWord, saveWordToUser } from '@/services/vocabulary.service';
 import { useAuth } from '@/context/AuthContext';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { playAudioText } from '@/lib/ttsService';
+import { DICTIONARY_TOPICS, type DictionaryTopic } from './dictionaryTopics';
 
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 const LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
-
-export interface DictionaryTopic {
-  id: string;
-  name: string;
-  nameEn: string;
-  icon: string;
-  count: string;
-  color: string;
-  query: string;
-  description: string;
-}
-
-export const DICTIONARY_TOPICS: DictionaryTopic[] = [
-  {
-    id: 'business',
-    name: 'Công sở & Kinh doanh',
-    nameEn: 'Business & Office',
-    icon: '🏢',
-    count: '150+ từ',
-    color: 'from-blue-600 to-indigo-600',
-    query: 'office',
-    description: 'Từ vựng hợp đồng, tuyển dụng, thương lượng và quản trị.'
-  },
-  {
-    id: 'tech',
-    name: 'Công nghệ & AI',
-    nameEn: 'Tech & Artificial Intelligence',
-    icon: '💻',
-    count: '120+ từ',
-    color: 'from-cyan-600 to-blue-600',
-    query: 'computer',
-    description: 'Từ vựng phần mềm, phần cứng, AI và an toàn mạng.'
-  },
-  {
-    id: 'travel',
-    name: 'Du lịch & Vận tải',
-    nameEn: 'Travel & Transport',
-    icon: '✈️',
-    count: '100+ từ',
-    color: 'from-amber-500 to-orange-600',
-    query: 'flight',
-    description: 'Từ vựng sân bay, khách sạn, vé máy bay và lưu trú.'
-  },
-  {
-    id: 'health',
-    name: 'Y tế & Sức khỏe',
-    nameEn: 'Healthcare & Medical',
-    icon: '🏥',
-    count: '90+ từ',
-    color: 'from-emerald-600 to-teal-600',
-    query: 'health',
-    description: 'Từ vựng bệnh viện, điều trị, thuốc men và dinh dưỡng.'
-  },
-  {
-    id: 'environment',
-    name: 'Môi trường & Tự nhiên',
-    nameEn: 'Environment & Nature',
-    icon: '🌱',
-    count: '80+ từ',
-    color: 'from-green-600 to-emerald-600',
-    query: 'nature',
-    description: 'Từ vựng hệ sinh thái, năng lượng xanh và biến đổi khí hậu.'
-  },
-  {
-    id: 'education',
-    name: 'Giáo dục & Học thuật',
-    nameEn: 'Education & Academia',
-    icon: '🎓',
-    count: '110+ từ',
-    color: 'from-purple-600 to-indigo-600',
-    query: 'school',
-    description: 'Từ vựng nghiên cứu khoa học, bằng cấp và giảng đường.'
-  },
-  {
-    id: 'food',
-    name: 'Ẩm thực & Đời sống',
-    nameEn: 'Food & Culinary',
-    icon: '🍔',
-    count: '95+ từ',
-    color: 'from-rose-500 to-pink-600',
-    query: 'food',
-    description: 'Từ vựng món ăn, nhà hàng, công thức và ẩm thực.'
-  },
-  {
-    id: 'finance',
-    name: 'Tài chính & Ngân hàng',
-    nameEn: 'Finance & Banking',
-    icon: '💰',
-    count: '105+ từ',
-    color: 'from-emerald-700 to-cyan-700',
-    query: 'bank',
-    description: 'Từ vựng giao dịch, cổ phiếu, tỷ giá và kế toán.'
-  }
-];
 
 function DictionaryContent() {
   const searchParams = useSearchParams();
@@ -361,7 +268,7 @@ function DictionaryContent() {
                   </p>
                   {wordData.meaningVi && (
                     <p className="text-lg text-[#e32b26] dark:text-rose-400 font-serif italic mt-3 border-l-4 border-[#e32b26]/20 dark:border-rose-400/20 pl-4">
-                      " {wordData.meaningVi} "
+                      &ldquo; {wordData.meaningVi} &rdquo;
                     </p>
                   )}
                 </div>
@@ -376,7 +283,7 @@ function DictionaryContent() {
                 {wordData.example && (
                   <div className="p-6 bg-blue-50/50 dark:bg-blue-900/20 rounded-2xl border border-blue-100/50 dark:border-blue-800/50 space-y-2">
                     <p className="text-xs font-black text-blue-400 dark:text-blue-300 uppercase tracking-widest">Example</p>
-                    <p className="text-sm text-slate-700 dark:text-slate-300 font-medium italic">"{wordData.example}"</p>
+                    <p className="text-sm text-slate-700 dark:text-slate-300 font-medium italic">&ldquo;{wordData.example}&rdquo;</p>
                     {wordData.exampleVi && (
                       <p className="text-xs text-blue-500/70 dark:text-blue-400/70 italic mt-1">→ {wordData.exampleVi}</p>
                     )}
@@ -539,7 +446,7 @@ function DictionaryContent() {
                 )}
                 {searchTerm && !selectedTopic && (
                   <span className="px-3 py-1 bg-slate-700 dark:bg-slate-600 text-white text-xs font-bold rounded-lg flex items-center gap-1.5">
-                    "{searchTerm}"
+                    &ldquo;{searchTerm}&rdquo;
                     <button onClick={() => setSearchTerm('')} className="hover:opacity-70">×</button>
                   </span>
                 )}

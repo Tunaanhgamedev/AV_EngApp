@@ -227,6 +227,7 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
 
   const toggleRepeat = () => setIsRepeat(prev => !prev);
   const toggleShuffle = () => setIsShuffle(prev => !prev);
+  const handleAutoNextRef = useRef<() => void>(() => {});
 
   // Initialize audio element ONLY ONCE on mount to ensure seamless playback without skips or resets!
   useEffect(() => {
@@ -247,7 +248,7 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
     };
 
     const handleEnded = () => {
-      handleAutoNext();
+      handleAutoNextRef.current?.();
     };
 
     audio.addEventListener('timeupdate', handleTimeUpdate);
@@ -283,6 +284,10 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
     const nextIndex = (currentIndex + 1) % currentTracks.length;
     playTrack(currentTracks[nextIndex]);
   };
+
+  useEffect(() => {
+    handleAutoNextRef.current = handleAutoNext;
+  });
 
   // Load custom tracks from localStorage and recreate objectURLs for local audio files dynamically!
   useEffect(() => {
@@ -369,7 +374,7 @@ export function MusicProvider({ children }: { children: React.ReactNode }) {
   }, [isPlaying, currentTrack, durationSec]);
 
   // Handle playing source changes
-  const playTrack = (track: Track) => {
+  function playTrack(track: Track) {
     if (!audioRef.current) return;
     
     try {

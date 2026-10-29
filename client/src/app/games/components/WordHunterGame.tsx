@@ -55,6 +55,18 @@ export default function WordHunterGame({
   const targetWord = currentWord?.word?.toUpperCase() || '';
   const isWordComplete = targetWord.split('').every((ch: string) => guessedLetters.has(ch) || !/[A-Z]/.test(ch));
 
+  const nextWord = () => {
+    if (wordIdx < wordList.length - 1) {
+      setWordIdx(i => i + 1);
+      setGuessedLetters(new Set());
+      setWrongCount(0);
+      setRoundResult(null);
+    } else {
+      setDone(true);
+      if (score > 0) awardXp?.(score * 15, 'Word Hunter Game');
+    }
+  };
+
   useEffect(() => {
     if (!currentWord || done) return;
     if (isWordComplete) {
@@ -67,18 +79,6 @@ export default function WordHunterGame({
       setTimeout(nextWord, 2500);
     }
   }, [guessedLetters, wrongCount]);
-
-  const nextWord = () => {
-    if (wordIdx < wordList.length - 1) {
-      setWordIdx(i => i + 1);
-      setGuessedLetters(new Set());
-      setWrongCount(0);
-      setRoundResult(null);
-    } else {
-      setDone(true);
-      if (score > 0) awardXp?.(score * 15, 'Word Hunter Game');
-    }
-  };
 
   const guessLetter = (letter: string) => {
     if (guessedLetters.has(letter) || roundResult) return;

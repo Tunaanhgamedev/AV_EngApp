@@ -139,6 +139,36 @@ export default function ListeningPage() {
     localStorage.setItem('user_xp', String(xp));
   };
 
+  const stopAudio = () => {
+    if (typeof window !== 'undefined') {
+      if (utteranceRef.current) {
+        utteranceRef.current.onend = null;
+        utteranceRef.current.onerror = null;
+        utteranceRef.current = null;
+      }
+      window.speechSynthesis?.cancel();
+    }
+    if (audioRef.current) {
+      audioRef.current.onended = null;
+      audioRef.current.onerror = null;
+      audioRef.current.pause();
+      audioRef.current = null;
+    }
+    if (simulatedTimerRef.current) {
+      clearTimeout(simulatedTimerRef.current);
+      simulatedTimerRef.current = null;
+    }
+    setIsSimulatedAudio(false);
+  };
+
+  const getLessonDurationInSeconds = (les: Lesson) => {
+    if (!les.transcript || les.transcript.length === 0) return 0;
+    const lastLine = les.transcript[les.transcript.length - 1];
+    const lastLineWords = lastLine.text.split(/\s+/).length;
+    const lastLineDuration = Math.ceil(lastLineWords * 0.4 + 2);
+    return lastLine.time + lastLineDuration;
+  };
+
   // Initialize dictation inputs for selected lesson
   useEffect(() => {
     setDictationInputs(new Array(selected.transcript.length).fill(""));
@@ -177,36 +207,6 @@ export default function ListeningPage() {
     }
     return () => { if (intervalId) clearInterval(intervalId); };
   }, [isPlaying, selected]);
-
-  const stopAudio = () => {
-    if (typeof window !== 'undefined') {
-      if (utteranceRef.current) {
-        utteranceRef.current.onend = null;
-        utteranceRef.current.onerror = null;
-        utteranceRef.current = null;
-      }
-      window.speechSynthesis?.cancel();
-    }
-    if (audioRef.current) {
-      audioRef.current.onended = null;
-      audioRef.current.onerror = null;
-      audioRef.current.pause();
-      audioRef.current = null;
-    }
-    if (simulatedTimerRef.current) {
-      clearTimeout(simulatedTimerRef.current);
-      simulatedTimerRef.current = null;
-    }
-    setIsSimulatedAudio(false);
-  };
-
-  const getLessonDurationInSeconds = (les: Lesson) => {
-    if (!les.transcript || les.transcript.length === 0) return 0;
-    const lastLine = les.transcript[les.transcript.length - 1];
-    const lastLineWords = lastLine.text.split(/\s+/).length;
-    const lastLineDuration = Math.ceil(lastLineWords * 0.4 + 2);
-    return lastLine.time + lastLineDuration;
-  };
 
   const getLineIndexForTime = (sec: number) => {
     let activeIdx = 0;
@@ -753,8 +753,8 @@ export default function ListeningPage() {
                         {selected.transcript.map((line, idx) => {
                           const words = line.text.split(" ");
                           const wordIndex = words.findIndex(w => cleanWordForComparison(w) === cleanWordForComparison(line.gapWord));
-                          let sentenceBefore = words.slice(0, wordIndex).join(" ");
-                          let sentenceAfter = words.slice(wordIndex + 1).join(" ");
+                          const sentenceBefore = words.slice(0, wordIndex).join(" ");
+                          const sentenceAfter = words.slice(wordIndex + 1).join(" ");
                           const isInputCorrect = dictationChecked && cleanWordForComparison(dictationInputs[idx]) === cleanWordForComparison(line.gapWord);
                           return (
                             <div key={idx} className="flex flex-col gap-2.5 p-4 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl hover:shadow-sm transition-all">

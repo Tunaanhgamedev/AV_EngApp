@@ -28,13 +28,6 @@ export default function ToeicQuizTab({
 
   const currentWord = selectedList.words[currentIndex];
 
-  useEffect(() => {
-    setupQuizQuestion(currentIndex);
-    return () => {
-      if (quizTimerRef.current) clearTimeout(quizTimerRef.current);
-    };
-  }, [currentIndex, isReverseQuiz]);
-
   const setupQuizQuestion = (idx: number) => {
     if (quizTimerRef.current) clearTimeout(quizTimerRef.current);
     setQuizAnswered(false);
@@ -57,6 +50,13 @@ export default function ToeicQuizTab({
 
     setQuizOptions(options.sort(() => 0.5 - Math.random()));
   };
+
+  useEffect(() => {
+    setupQuizQuestion(currentIndex);
+    return () => {
+      if (quizTimerRef.current) clearTimeout(quizTimerRef.current);
+    };
+  }, [currentIndex, isReverseQuiz]);
 
   const handleQuizAnswer = (option: string) => {
     if (quizAnswered || !currentWord) return;
