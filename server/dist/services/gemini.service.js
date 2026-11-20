@@ -13,8 +13,6 @@ dotenv_1.default.config();
 exports.genAI = new generative_ai_1.GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 class GeminiService {
     static models = [
-        "gemini-3.5-flash",
-        "gemini-3.1-flash-lite",
         "gemini-2.5-flash",
         "gemini-2.0-flash",
         "gemini-flash-latest",

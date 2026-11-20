@@ -1,21 +1,12 @@
 import { Router } from 'express';
-import { Pool } from 'pg';
 import { authenticate } from '../middleware/auth.middleware';
-import prisma from '../lib/prisma';
+import prisma, { pgPool as pool } from '../lib/prisma';
 import { randomUUID } from 'crypto';
 import { GeminiService } from '../services/gemini.service';
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 const router = Router();
-
-// Direct pg pool for reliable raw SQL (Prisma v7 ORM methods are unstable)
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false
-  }
-});
 
 // Get user learning stats
 router.get('/stats', authenticate, async (req: any, res) => {

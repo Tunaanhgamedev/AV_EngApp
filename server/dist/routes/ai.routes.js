@@ -24,7 +24,13 @@ const generateWithRetry = async (model, prompt, retries = 1) => {
 };
 // Extremely Robust Fallback Model Chain to handle any rate limits, permissions or region-blocks!
 const generateContentWithModelFallback = async (prompt, retries = 1) => {
-    const models = ["gemini-flash-latest", "gemini-2.0-flash", "gemini-1.5-flash", "gemini-pro"];
+    const models = [
+        "gemini-2.5-flash",
+        "gemini-2.0-flash",
+        "gemini-flash-latest",
+        "gemini-1.5-flash",
+        "gemini-pro"
+    ];
     let lastError = null;
     for (const modelName of models) {
         try {
@@ -185,17 +191,37 @@ router.post('/translate', async (req, res) => {
                 }
             });
             if (cached) {
-                console.log(`[Translate] ⚡ Cache HIT for "${cleanText.substring(0, 40)}..." (hits: ${cached.hitCount + 1})`);
-                // Increment hit count in background (fire-and-forget)
-                prisma_1.default.translationCache.update({
-                    where: { id: cached.id },
-                    data: { hitCount: { increment: 1 } }
-                }).catch(() => { });
-                return res.json({
-                    translation: cached.translation,
-                    provider: cached.provider,
-                    cached: true
-                });
+                // Validate cached translation is not a poisoned/error entry
+                const cachedUpper = (cached.translation || '').toUpperCase();
+                const isPoisoned = cachedUpper.includes('MYMEMORY WARNING')
+                    || cachedUpper.includes('YOU USED ALL AVAILABLE')
+                    || cachedUpper.includes('PLEASE GET IN TOUCH')
+                    || cachedUpper.includes('NEXT AVAILABLE IN')
+                    || cachedUpper.includes('HTTPS://MYMEMORY')
+                    || cachedUpper.includes('ALL TRANSLATION SERVICES FAILED')
+                    || cachedUpper.includes('RATE LIMIT')
+                    || cachedUpper.includes('SERVER CONFIGURATION ERROR');
+                if (isPoisoned) {
+                    console.warn(`[Translate] 🗑️ Poisoned cache entry detected for "${cleanText.substring(0, 40)}...", deleting...`);
+                    prisma_1.default.translationCache.delete({ where: { id: cached.id } }).catch(() => { });
+                }
+                else if (mode === 'deep' && !cached.provider?.includes('Gemini')) {
+                    // If the cached translation came from a fast or fallback service, don't serve it for deep mode
+                    console.log(`[Translate] 🔄 Cache has fast/fallback result (${cached.provider}), upgrading to deep AI translation...`);
+                }
+                else {
+                    console.log(`[Translate] ⚡ Cache HIT for "${cleanText.substring(0, 40)}..." (hits: ${cached.hitCount + 1})`);
+                    // Increment hit count in background (fire-and-forget)
+                    prisma_1.default.translationCache.update({
+                        where: { id: cached.id },
+                        data: { hitCount: { increment: 1 } }
+                    }).catch(() => { });
+                    return res.json({
+                        translation: cached.translation,
+                        provider: cached.provider,
+                        cached: true
+                    });
+                }
             }
         }
         catch (dbErr) {
@@ -211,15 +237,44 @@ router.post('/translate', async (req, res) => {
             const tLang = targetLang === 'Vietnamese' ? 'vi' : 'en';
             const sLang = targetLang === 'Vietnamese' ? 'en' : 'vi';
             const googleUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sLang}&tl=${tLang}&dt=t&q=${encodeURIComponent(cleanText)}`;
-            const gRes = await fetch(googleUrl);
-            const gData = await gRes.json();
-            if (gData && gData[0] && Array.isArray(gData[0])) {
-                translation = gData[0].map((item) => (item && item[0] ? item[0] : '')).join('');
-                provider = 'AI (Fast)';
+            const gRes = await fetch(googleUrl, { signal: AbortSignal.timeout(4000) });
+            if (gRes.ok) {
+                const textResp = await gRes.text();
+                if (textResp && textResp.startsWith('[')) {
+                    const gData = JSON.parse(textResp);
+                    if (gData && gData[0] && Array.isArray(gData[0])) {
+                        translation = gData[0].map((item) => (item && item[0] ? item[0] : '')).join('');
+                        provider = 'AI (Fast)';
+                    }
+                }
             }
         }
         catch (gError) {
             console.error('[AI] Fast Google Translate fallback failed:', gError);
+        }
+        // Fast fallback: MyMemory (if Google blocked on this server)
+        if (!translation) {
+            try {
+                const targetCode = targetLang === 'Vietnamese' ? 'vi' : 'en';
+                const sourceCode = targetLang === 'Vietnamese' ? 'en' : 'vi';
+                const mmUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(cleanText)}&langpair=${sourceCode}|${targetCode}`;
+                const mmRes = await fetch(mmUrl, { signal: AbortSignal.timeout(4000) });
+                if (mmRes.ok) {
+                    const mmData = await mmRes.json();
+                    const mmText = mmData.responseData?.translatedText || '';
+                    const isWarning = mmText.toUpperCase().includes('MYMEMORY WARNING')
+                        || mmText.toUpperCase().includes('YOU USED ALL AVAILABLE')
+                        || mmText.toUpperCase().includes('LIMIT')
+                        || (mmData.responseStatus && mmData.responseStatus !== 200);
+                    if (mmText && !isWarning) {
+                        translation = mmText;
+                        provider = 'Fast (MyMemory)';
+                    }
+                }
+            }
+            catch (mmErr) {
+                console.error('[AI] Fast MyMemory fallback failed:', mmErr);
+            }
         }
     }
     else {
@@ -271,40 +326,109 @@ Instructions:
             const tLang = targetLang === 'Vietnamese' ? 'vi' : 'en';
             const sLang = targetLang === 'Vietnamese' ? 'en' : 'vi';
             const googleUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sLang}&tl=${tLang}&dt=t&q=${encodeURIComponent(cleanText)}`;
-            const gRes = await fetch(googleUrl);
-            const gData = await gRes.json();
-            if (gData && gData[0] && Array.isArray(gData[0])) {
-                console.log('[AI] Fallback Success: Google Translate');
-                translation = gData[0].map((item) => (item && item[0] ? item[0] : '')).join('');
-                provider = 'AI (Backup)';
+            const gRes = await fetch(googleUrl, { signal: AbortSignal.timeout(4000) });
+            if (gRes.ok) {
+                const textResp = await gRes.text();
+                if (textResp && textResp.startsWith('[')) {
+                    const gData = JSON.parse(textResp);
+                    if (gData && gData[0] && Array.isArray(gData[0])) {
+                        console.log('[AI] Fallback Success: Google Translate');
+                        translation = gData[0].map((item) => (item && item[0] ? item[0] : '')).join('');
+                        provider = 'AI (Backup)';
+                    }
+                }
             }
         }
         catch (gError) {
             console.error('[AI] Google Fallback Failed:', gError);
         }
     }
-    // Fallback 2: MyMemory
+    // Fallback 2: MyMemory (with warning filter)
     if (!translation) {
         try {
             const targetCode = targetLang === 'Vietnamese' ? 'vi' : 'en';
             const sourceCode = targetLang === 'Vietnamese' ? 'en' : 'vi';
             const fallbackUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(cleanText)}&langpair=${sourceCode}|${targetCode}`;
-            const fallbackRes = await fetch(fallbackUrl);
-            const fallbackData = await fallbackRes.json();
-            if (fallbackData.responseData?.translatedText) {
-                translation = fallbackData.responseData.translatedText;
-                provider = 'Community (Fallback)';
+            const fallbackRes = await fetch(fallbackUrl, { signal: AbortSignal.timeout(4000) });
+            if (fallbackRes.ok) {
+                const fallbackData = await fallbackRes.json();
+                const myMemoryText = fallbackData.responseData?.translatedText || '';
+                // Filter out MyMemory quota warnings that get returned as "translations"
+                const isWarning = myMemoryText.toUpperCase().includes('MYMEMORY WARNING')
+                    || myMemoryText.toUpperCase().includes('YOU USED ALL AVAILABLE')
+                    || myMemoryText.toUpperCase().includes('PLEASE GET IN TOUCH')
+                    || myMemoryText.toUpperCase().includes('LIMIT')
+                    || (fallbackData.responseStatus && fallbackData.responseStatus !== 200);
+                if (myMemoryText && !isWarning) {
+                    translation = myMemoryText;
+                    provider = 'Community (Fallback)';
+                }
+                else {
+                    console.warn('[AI] MyMemory returned warning/quota message, skipping.');
+                }
             }
         }
         catch (mError) {
             console.error('[AI] MyMemory Failed:', mError);
         }
     }
+    // Fallback 3: LibreTranslate (open-source, no API key needed)
     if (!translation) {
-        return res.status(500).json({ error: 'All translation services failed' });
+        try {
+            const tCode = targetLang === 'Vietnamese' ? 'vi' : 'en';
+            const sCode = targetLang === 'Vietnamese' ? 'en' : 'vi';
+            const libreRes = await fetch('https://libretranslate.com/translate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ q: cleanText, source: sCode, target: tCode, format: 'text' }),
+                signal: AbortSignal.timeout(4000)
+            });
+            if (libreRes.ok) {
+                const libreData = await libreRes.json();
+                if (libreData.translatedText && !libreData.error) {
+                    translation = libreData.translatedText;
+                    provider = 'Libre (Fallback)';
+                    console.log('[AI] Fallback Success: LibreTranslate');
+                }
+            }
+        }
+        catch (libreErr) {
+            console.error('[AI] LibreTranslate Failed:', libreErr);
+        }
     }
-    // ── Step 3: Save to DB Cache (fire-and-forget) (Bypass if custom trained skills are active to avoid pollution) ──
-    if (!hasTrainedSkills) {
+    // Fallback 4: Lingva Translate (another open-source mirror, always free)
+    if (!translation) {
+        try {
+            const tCode = targetLang === 'Vietnamese' ? 'vi' : 'en';
+            const sCode = targetLang === 'Vietnamese' ? 'en' : 'vi';
+            const lingvaRes = await fetch(`https://lingva.ml/api/v1/${sCode}/${tCode}/${encodeURIComponent(cleanText)}`, {
+                signal: AbortSignal.timeout(4000)
+            });
+            if (lingvaRes.ok) {
+                const lingvaData = await lingvaRes.json();
+                if (lingvaData.translation) {
+                    translation = lingvaData.translation;
+                    provider = 'Lingva (Fallback)';
+                    console.log('[AI] Fallback Success: Lingva');
+                }
+            }
+        }
+        catch (lingvaErr) {
+            console.error('[AI] Lingva Failed:', lingvaErr);
+        }
+    }
+    if (!translation) {
+        return res.status(500).json({ error: 'Tất cả dịch vụ dịch thuật đều đang quá tải. Vui lòng thử lại sau vài phút.' });
+    }
+    // ── Step 3: Save to DB Cache (fire-and-forget) - ONLY for Deep Gemini translations ──
+    const translationUpper = translation.toUpperCase();
+    const isBadTranslation = translationUpper.includes('MYMEMORY WARNING')
+        || translationUpper.includes('YOU USED ALL AVAILABLE')
+        || translationUpper.includes('NEXT AVAILABLE IN')
+        || translationUpper.includes('HTTPS://MYMEMORY')
+        || translationUpper.includes('ALL TRANSLATION SERVICES FAILED')
+        || translationUpper.includes('RATE LIMIT');
+    if (!hasTrainedSkills && !isBadTranslation && mode === 'deep' && provider.includes('Gemini')) {
         prisma_1.default.translationCache.upsert({
             where: {
                 sourceText_sourceLang_targetLang: {
@@ -332,6 +456,49 @@ Instructions:
         });
     }
     return res.json({ translation, provider, cached: false });
+});
+// ── Auto-cleanup poisoned cache entries on server start ──
+const POISONED_TRANSLATION_PATTERNS = [
+    'MYMEMORY WARNING',
+    'YOU USED ALL AVAILABLE',
+    'NEXT AVAILABLE IN',
+    'HTTPS://MYMEMORY',
+    'ALL TRANSLATION SERVICES FAILED',
+    'RATE LIMIT',
+    'SERVER CONFIGURATION ERROR'
+];
+(async () => {
+    try {
+        const result = await prisma_1.default.translationCache.deleteMany({
+            where: {
+                OR: POISONED_TRANSLATION_PATTERNS.map(pattern => ({
+                    translation: { contains: pattern, mode: 'insensitive' }
+                }))
+            }
+        });
+        if (result.count > 0) {
+            console.log(`[Translate] 🧹 Auto-cleaned ${result.count} poisoned cache entries on startup`);
+        }
+    }
+    catch (err) {
+        console.warn('[Translate] Auto-cleanup skipped:', err.message);
+    }
+})();
+// Manually trigger cache cleanup (admin endpoint)
+router.delete('/translate-cache/cleanup', async (_req, res) => {
+    try {
+        const result = await prisma_1.default.translationCache.deleteMany({
+            where: {
+                OR: POISONED_TRANSLATION_PATTERNS.map(pattern => ({
+                    translation: { contains: pattern, mode: 'insensitive' }
+                }))
+            }
+        });
+        res.json({ cleaned: result.count, message: `Deleted ${result.count} poisoned cache entries` });
+    }
+    catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
 // AI Translation Explanation & Pedagogical Breakdown
 router.post('/explain-translation', async (req, res) => {
@@ -375,12 +542,17 @@ Return the response as a raw JSON object matching the following structure exactl
             // Try fetching Google Translate for a high-quality second opinion
             try {
                 const googleUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sLang}&tl=${tLang}&dt=t&q=${encodeURIComponent(text)}`;
-                const gRes = await fetch(googleUrl);
-                const gData = await gRes.json();
-                if (gData && gData[0] && Array.isArray(gData[0])) {
-                    const alternateResult = gData[0].map((item) => (item && item[0] ? item[0] : '')).join('').trim();
-                    if (alternateResult && alternateResult.toLowerCase() !== translation.toLowerCase()) {
-                        alternatives.push(alternateResult);
+                const gRes = await fetch(googleUrl, { signal: AbortSignal.timeout(4000) });
+                if (gRes.ok) {
+                    const textResp = await gRes.text();
+                    if (textResp && textResp.startsWith('[')) {
+                        const gData = JSON.parse(textResp);
+                        if (gData && gData[0] && Array.isArray(gData[0])) {
+                            const alternateResult = gData[0].map((item) => (item && item[0] ? item[0] : '')).join('').trim();
+                            if (alternateResult && alternateResult.toLowerCase() !== translation.toLowerCase()) {
+                                alternatives.push(alternateResult);
+                            }
+                        }
                     }
                 }
             }
@@ -508,11 +680,16 @@ Return the response as a raw JSON object matching the following structure exactl
                 try {
                     const queryText = meaningEn ? meaningEn : word;
                     const transUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=vi&dt=t&q=${encodeURIComponent(queryText)}`;
-                    const transRes = await fetch(transUrl);
-                    const transData = await transRes.json();
-                    if (transData && transData[0] && Array.isArray(transData[0])) {
-                        const translatedResult = transData[0].map((item) => (item && item[0] ? item[0] : '')).join('').trim();
-                        meaningVi = translatedResult;
+                    const transRes = await fetch(transUrl, { signal: AbortSignal.timeout(4000) });
+                    if (transRes.ok) {
+                        const textResp = await transRes.text();
+                        if (textResp && textResp.startsWith('[')) {
+                            const transData = JSON.parse(textResp);
+                            if (transData && transData[0] && Array.isArray(transData[0])) {
+                                const translatedResult = transData[0].map((item) => (item && item[0] ? item[0] : '')).join('').trim();
+                                meaningVi = translatedResult;
+                            }
+                        }
                     }
                 }
                 catch (transErr) {

@@ -1,30 +1,52 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const pg_1 = require("pg");
 const auth_middleware_1 = require("../middleware/auth.middleware");
-const prisma_1 = __importDefault(require("../lib/prisma"));
+const prisma_1 = __importStar(require("../lib/prisma"));
 const crypto_1 = require("crypto");
 const gemini_service_1 = require("../services/gemini.service");
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 const router = (0, express_1.Router)();
-// Direct pg pool for reliable raw SQL (Prisma v7 ORM methods are unstable)
-const pool = new pg_1.Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false
-    }
-});
 // Get user learning stats
 router.get('/stats', auth_middleware_1.authenticate, async (req, res) => {
     try {
         const userId = req.user.uid;
-        const { rows } = await pool.query(`SELECT COUNT(*)::int as "wordsLearned" FROM user_learned_words WHERE user_id = $1`, [userId]);
+        const { rows } = await prisma_1.pgPool.query(`SELECT COUNT(*)::int as "wordsLearned" FROM user_learned_words WHERE user_id = $1`, [userId]);
         // Get Oxford 3000 progress (words learned that are part of Oxford)
-        const { rows: oxRows } = await pool.query(`SELECT COUNT(*)::int as "oxfordLearned" 
+        const { rows: oxRows } = await prisma_1.pgPool.query(`SELECT COUNT(*)::int as "oxfordLearned" 
        FROM user_learned_words ulw
        JOIN vocabulary_words vw ON ulw.word_id = vw.id
        WHERE ulw.user_id = $1 AND vw.cefr_level IN ('A1', 'A2', 'B1', 'B2', 'C1', 'C2')`, [userId]);
@@ -108,7 +130,7 @@ router.get('/learn-new', auth_middleware_1.authenticate, async (req, res) => {
                         const aiData = await gemini_service_1.GeminiService.enrichWordData(w.word);
                         if (aiData) {
                             enrichCount++;
-                            await pool.query(`UPDATE vocabulary_words SET 
+                            await prisma_1.pgPool.query(`UPDATE vocabulary_words SET 
                   meaning_vi = COALESCE(NULLIF($2, ''), meaning_vi),
                   meaning_en = COALESCE(NULLIF($3, ''), meaning_en),
                   phonetic = COALESCE(NULLIF($4, ''), phonetic),
@@ -203,12 +225,12 @@ router.get('/search', async (req, res) => {
         if (!word)
             return res.status(400).json({ error: 'Search term is required' });
         // Step 1: Try exact match first
-        let result = await pool.query(`SELECT id, word, phonetic, meaning_en as "meaningEn", meaning_vi as "meaningVi", word_type as "wordType", cefr_level as "cefrLevel", audio_us as "audioUs", audio_uk as "audioUk", usage, example, example_vi as "exampleVi"
+        let result = await prisma_1.pgPool.query(`SELECT id, word, phonetic, meaning_en as "meaningEn", meaning_vi as "meaningVi", word_type as "wordType", cefr_level as "cefrLevel", audio_us as "audioUs", audio_uk as "audioUk", usage, example, example_vi as "exampleVi"
        FROM vocabulary_words 
        WHERE LOWER(word) = LOWER($1) LIMIT 1`, [word]);
         // Step 2: If no exact match, try prefix match (fuzzy)
         if (result.rows.length === 0) {
-            result = await pool.query(`SELECT id, word, phonetic, meaning_en as "meaningEn", meaning_vi as "meaningVi", word_type as "wordType", cefr_level as "cefrLevel", audio_us as "audioUs", audio_uk as "audioUk", usage, example, example_vi as "exampleVi"
+            result = await prisma_1.pgPool.query(`SELECT id, word, phonetic, meaning_en as "meaningEn", meaning_vi as "meaningVi", word_type as "wordType", cefr_level as "cefrLevel", audio_us as "audioUs", audio_uk as "audioUk", usage, example, example_vi as "exampleVi"
          FROM vocabulary_words 
          WHERE word ILIKE $1 
          ORDER BY LENGTH(word) ASC LIMIT 1`, [`${word}%`]);
@@ -223,7 +245,7 @@ router.get('/search', async (req, res) => {
                 console.log(`[Search-On-Demand Enrich] Enriching word: ${matchedWord.word}`);
                 const aiData = await gemini_service_1.GeminiService.enrichWordData(matchedWord.word);
                 if (aiData) {
-                    await pool.query(`UPDATE vocabulary_words SET 
+                    await prisma_1.pgPool.query(`UPDATE vocabulary_words SET 
               meaning_vi = COALESCE(NULLIF($2, ''), meaning_vi),
               meaning_en = COALESCE(NULLIF($3, ''), meaning_en),
               phonetic = COALESCE(NULLIF($4, ''), phonetic),
@@ -282,10 +304,11 @@ router.get('/wordlist', async (req, res) => {
             i++;
         }
         const where = conditions.join(' AND ');
-        const { rows: words } = await pool.query(`SELECT id, word, phonetic, meaning_en as "meaningEn", meaning_vi as "meaningVi", word_type as "wordType", cefr_level as "cefrLevel", audio_us as "audioUs", usage, example, example_vi as "exampleVi"
+        const { rows: words } = await prisma_1.pgPool.query(`SELECT id, word, phonetic, meaning_en as "meaningEn", meaning_vi as "meaningVi", word_type as "wordType", cefr_level as "cefrLevel", audio_us as "audioUs", usage, example, example_vi as "exampleVi"
        FROM vocabulary_words WHERE ${where} ORDER BY word ASC LIMIT $${i++} OFFSET $${i++}`, [...params, limit, offset]);
-        const { rows: cnt } = await pool.query(`SELECT COUNT(*)::int as total FROM vocabulary_words WHERE ${where}`, params);
-        // Send response IMMEDIATELY (no blocking)
+        const { rows: cnt } = await prisma_1.pgPool.query(`SELECT COUNT(*)::int as total FROM vocabulary_words WHERE ${where}`, params);
+        // Send response with browser/CDN cache headers for speed
+        res.setHeader('Cache-Control', 'public, max-age=30, stale-while-revalidate=120');
         res.json({ words, total: cnt[0].total, pages: Math.ceil(cnt[0].total / limit) });
         // Background enrichment: fire-and-forget AFTER response is sent
         const shouldEnrich = enrich !== 'false';
@@ -304,7 +327,7 @@ router.get('/wordlist', async (req, res) => {
                             const aiData = await gemini_service_1.GeminiService.enrichWordData(w.word);
                             if (aiData) {
                                 enrichCount++;
-                                pool.query(`UPDATE vocabulary_words SET 
+                                prisma_1.pgPool.query(`UPDATE vocabulary_words SET 
                     meaning_vi = COALESCE(NULLIF($2, ''), meaning_vi),
                     meaning_en = COALESCE(NULLIF($3, ''), meaning_en),
                     phonetic = COALESCE(NULLIF($4, ''), phonetic),
@@ -438,7 +461,7 @@ router.get('/game-data', auth_middleware_1.authenticate, async (req, res) => {
                 // Academic advanced words
                 whereClause += ` AND cefr_level IN ('B2', 'C1', 'C2')`;
             }
-            const { rows } = await pool.query(`SELECT id, word, phonetic, meaning_en as "meaningEn", meaning_vi as "meaningVi", 
+            const { rows } = await prisma_1.pgPool.query(`SELECT id, word, phonetic, meaning_en as "meaningEn", meaning_vi as "meaningVi", 
                 word_type as "wordType", cefr_level as "cefrLevel", example, example_vi as "exampleVi"
          FROM vocabulary_words 
          ${whereClause}
@@ -471,7 +494,7 @@ router.post('/enrich-batch', async (req, res) => {
     try {
         const batchSize = Math.min(Number(req.body?.batchSize) || 10, 15); // Max 15 per batch
         // Find words missing critical data
-        const { rows: incomplete } = await pool.query(`SELECT id, word, phonetic, meaning_en as "meaningEn", meaning_vi as "meaningVi", 
+        const { rows: incomplete } = await prisma_1.pgPool.query(`SELECT id, word, phonetic, meaning_en as "meaningEn", meaning_vi as "meaningVi", 
               word_type as "wordType", cefr_level as "cefrLevel", usage, example, example_vi as "exampleVi"
        FROM vocabulary_words 
        WHERE meaning_vi IS NULL 
@@ -488,7 +511,7 @@ router.post('/enrich-batch', async (req, res) => {
        LIMIT $1`, [batchSize]);
         if (incomplete.length === 0) {
             // Also count remaining
-            const { rows: countRows } = await pool.query(`SELECT COUNT(*)::int as remaining FROM vocabulary_words 
+            const { rows: countRows } = await prisma_1.pgPool.query(`SELECT COUNT(*)::int as remaining FROM vocabulary_words 
          WHERE meaning_vi IS NULL OR meaning_vi = '' OR meaning_vi = word 
             OR phonetic IS NULL OR phonetic = '' 
             OR word_type IS NULL OR word_type = '' OR word_type = '-'
@@ -510,7 +533,7 @@ router.post('/enrich-batch', async (req, res) => {
                 console.log(`[Batch Enrich] Processing: ${w.word}`);
                 const aiData = await gemini_service_1.GeminiService.enrichWordData(w.word);
                 if (aiData) {
-                    await pool.query(`UPDATE vocabulary_words SET 
+                    await prisma_1.pgPool.query(`UPDATE vocabulary_words SET 
               meaning_vi = COALESCE(NULLIF($2, ''), meaning_vi),
               meaning_en = COALESCE(NULLIF($3, ''), meaning_en),
               phonetic = COALESCE(NULLIF($4, ''), phonetic),
@@ -539,7 +562,7 @@ router.post('/enrich-batch', async (req, res) => {
             }
         }
         // Count remaining
-        const { rows: countRows } = await pool.query(`SELECT COUNT(*)::int as remaining FROM vocabulary_words 
+        const { rows: countRows } = await prisma_1.pgPool.query(`SELECT COUNT(*)::int as remaining FROM vocabulary_words 
        WHERE meaning_vi IS NULL OR meaning_vi = '' OR meaning_vi = word 
           OR phonetic IS NULL OR phonetic = '' 
           OR word_type IS NULL OR word_type = '' OR word_type = '-'
@@ -567,14 +590,14 @@ router.post('/bulk-translate', async (req, res) => {
         const level = req.body?.level; // Optional: target specific CEFR level
         // Find untranslated words
         const levelFilter = level ? `AND (cefr_level = '${level}' OR cefr_level = 'OXFORD3000' OR cefr_level = 'Custom')` : '';
-        const { rows: untranslated } = await pool.query(`SELECT id, word, cefr_level as "cefrLevel"
+        const { rows: untranslated } = await prisma_1.pgPool.query(`SELECT id, word, cefr_level as "cefrLevel"
        FROM vocabulary_words 
        WHERE (meaning_vi IS NULL OR meaning_vi = '' OR meaning_vi = word)
        ${levelFilter}
        ORDER BY word ASC
        LIMIT $1`, [batchSize]);
         if (untranslated.length === 0) {
-            const { rows: cnt } = await pool.query(`SELECT COUNT(*)::int as remaining FROM vocabulary_words 
+            const { rows: cnt } = await prisma_1.pgPool.query(`SELECT COUNT(*)::int as remaining FROM vocabulary_words 
          WHERE meaning_vi IS NULL OR meaning_vi = '' OR meaning_vi = word`);
             return res.json({
                 success: true,
@@ -602,7 +625,7 @@ router.post('/bulk-translate', async (req, res) => {
                     continue;
                 }
                 try {
-                    await pool.query(`UPDATE vocabulary_words SET 
+                    await prisma_1.pgPool.query(`UPDATE vocabulary_words SET 
               meaning_vi = COALESCE(NULLIF($2, ''), meaning_vi),
               meaning_en = COALESCE(NULLIF($3, ''), meaning_en),
               phonetic = COALESCE(NULLIF($4, ''), phonetic),
@@ -624,7 +647,7 @@ router.post('/bulk-translate', async (req, res) => {
             results.push({ word: 'batch', status: '❌ AI returned invalid data' });
         }
         // Count remaining
-        const { rows: countRows } = await pool.query(`SELECT COUNT(*)::int as remaining FROM vocabulary_words 
+        const { rows: countRows } = await prisma_1.pgPool.query(`SELECT COUNT(*)::int as remaining FROM vocabulary_words 
        WHERE meaning_vi IS NULL OR meaning_vi = '' OR meaning_vi = word`);
         console.log(`[Bulk Translate] Done: ${translated}/${untranslated.length} translated, ${countRows[0].remaining} remaining`);
         res.json({
@@ -879,7 +902,7 @@ router.get('/review/session', auth_middleware_1.authenticate, async (req, res) =
             include: { word: true },
             take: 20
         });
-        const globalRandomWords = await pool.query(`SELECT meaning_vi as "meaningVi" FROM vocabulary_words ORDER BY RANDOM() LIMIT 20`);
+        const globalRandomWords = await prisma_1.pgPool.query(`SELECT meaning_vi as "meaningVi" FROM vocabulary_words ORDER BY RANDOM() LIMIT 20`);
         const distractorsPool = [
             ...allLearnedWords.map((n) => n.word.meaningVi),
             ...globalRandomWords.rows.map((r) => r.meaningVi)

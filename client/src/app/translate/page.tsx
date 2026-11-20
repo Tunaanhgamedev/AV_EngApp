@@ -242,13 +242,14 @@ export default function TranslatePage() {
     const cacheKey = `${sLang}-${tLang}-${text}-${sortedSkillsStr}`;
     
     // If cache has it and it's clean, load instantly
-    if (cacheRef.current[cacheKey]) {
-      if (isPoisonedTranslation(cacheRef.current[cacheKey].translation)) {
+    const cachedItem = cacheRef.current[cacheKey];
+    if (cachedItem) {
+      if (isPoisonedTranslation(cachedItem.translation)) {
         delete cacheRef.current[cacheKey];
         saveLocalCache(cacheRef.current);
-      } else {
-        setTranslatedText(cacheRef.current[cacheKey].translation);
-        setWordInsight(cacheRef.current[cacheKey].insight || null);
+      } else if (mode === 'fast' || cachedItem.mode === 'deep') {
+        setTranslatedText(cachedItem.translation);
+        setWordInsight(cachedItem.insight || null);
         setFromCache(true);
         lastTranslatedRef.current = text;
         lastTranslatedModeRef.current = mode;
@@ -312,13 +313,18 @@ export default function TranslatePage() {
           }
 
           // Save to persistent local cache if we have a valid translation
-          if (translationResult) {
-            cacheRef.current[cacheKey] = { 
-              translation: translationResult, 
-              insight: mode === 'deep' ? insight : (cacheRef.current[cacheKey]?.insight || null), 
-              _ts: Date.now() 
-            };
-            saveLocalCache(cacheRef.current);
+          if (translationResult && !isPoisonedTranslation(translationResult)) {
+            if (mode === 'deep' || !cacheRef.current[cacheKey]) {
+              cacheRef.current[cacheKey] = { 
+                translation: translationResult, 
+                insight: mode === 'deep' ? insight : (cacheRef.current[cacheKey]?.insight || null), 
+                mode,
+                _ts: Date.now() 
+              };
+              if (mode === 'deep') {
+                saveLocalCache(cacheRef.current);
+              }
+            }
           }
         }
       }
@@ -347,13 +353,14 @@ export default function TranslatePage() {
     // ── Instant cache check (0ms delay for cached words) ──
     const sortedSkillsStr = (trainedSkills || []).sort().join(',');
     const cacheKey = `${sourceLang}-${targetLang}-${text}-${sortedSkillsStr}`;
-    if (cacheRef.current[cacheKey]) {
-      if (isPoisonedTranslation(cacheRef.current[cacheKey].translation)) {
+    const cachedItem = cacheRef.current[cacheKey];
+    if (cachedItem && cachedItem.mode === 'deep') {
+      if (isPoisonedTranslation(cachedItem.translation)) {
         delete cacheRef.current[cacheKey];
         saveLocalCache(cacheRef.current);
       } else {
-        setTranslatedText(cacheRef.current[cacheKey].translation);
-        setWordInsight(cacheRef.current[cacheKey].insight || null);
+        setTranslatedText(cachedItem.translation);
+        setWordInsight(cachedItem.insight || null);
         setFromCache(true);
         lastTranslatedRef.current = text;
         lastTranslatedModeRef.current = 'deep';

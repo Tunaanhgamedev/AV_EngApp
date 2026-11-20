@@ -2,29 +2,30 @@ import { Pool } from 'pg';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '@prisma/client';
 
-const prismaClientSingleton = () => {
-  if (!process.env.DATABASE_URL) {
-    throw new Error('DATABASE_URL is not defined in environment variables');
-  }
+if (!process.env.DATABASE_URL) {
+  throw new Error('DATABASE_URL is not defined in environment variables');
+}
 
-  // Khởi tạo kết nối PostgreSQL truyền thống với cấu hình tối ưu hóa concurrency
-  const pool = new Pool({ 
-    connectionString: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false },
-    max: 25, // Tăng giới hạn kết nối đồng thời từ 10 lên 25
-    idleTimeoutMillis: 30000, // Giải phóng socket nhàn rỗi sau 30 giây
-    connectionTimeoutMillis: 2000 // Hủy kết nối treo quá 2 giây để tránh kẹt hàng đợi
-  });
-  
-  // Sử dụng Adapter để Prisma bản 7 có thể làm việc trực tiếp
-  const adapter = new PrismaPg(pool);
-  
+// Singleton connection pool shared across Prisma and direct SQL queries
+declare global {
+  var pgPool: undefined | Pool;
+  var prisma: undefined | PrismaClient;
+}
+
+export const pgPool = globalThis.pgPool ?? new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false },
+  max: 15,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 10000 // 10s connection timeout for reliable cross-cloud connections
+});
+
+if (process.env.NODE_ENV !== 'production') globalThis.pgPool = pgPool;
+
+const prismaClientSingleton = () => {
+  const adapter = new PrismaPg(pgPool);
   return new PrismaClient({ adapter });
 };
-
-declare global {
-  var prisma: undefined | ReturnType<typeof prismaClientSingleton>;
-}
 
 const prisma = globalThis.prisma ?? prismaClientSingleton();
 
